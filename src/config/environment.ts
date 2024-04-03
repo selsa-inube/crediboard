@@ -6,9 +6,7 @@ const enviroment = {
   CLIENT_SECRET: import.meta.env.VITE_AUTH_CLIENT_SECRET,
   REALM: import.meta.env.VITE_AUTH_REALM,
   PROVIDER: import.meta.env.VITE_AUTH_PROVIDER,
-  REDIRECT_URI: IS_PRODUCTION
-    ? "https://crediboard.vercel.app/"
-    : AUTH_REDIRECT_URI,
+  REDIRECT_URI: IS_PRODUCTION ? window.location.origin : AUTH_REDIRECT_URI,
   ICLIENT_API_URL_QUERY: import.meta.env.VITE_ICLIENT_API_URL_QUERY,
   TEMP_BUSINESS_UNIT: "test",
 };
