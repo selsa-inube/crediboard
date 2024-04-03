@@ -1,21 +1,37 @@
 {
   "root": true,
-  "env": { "browser": true, "es2020": true },
+  "env": {
+    "browser": true,
+    "es2020": true
+  },
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
+    "prettier",
+    "plugin:storybook/recommended"
+  ],
+  "ignorePatterns": [
+    "dist",
+    ".eslintrc.json"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "react-refresh",
+    "@typescript-eslint",
     "prettier"
   ],
-  "ignorePatterns": ["dist", ".eslintrc.json"],
-  "parser": "@typescript-eslint/parser",
-  "plugins": ["react-refresh", "@typescript-eslint", "prettier"],
   "rules": {
     "react-refresh/only-export-components": [
       "warn",
-      { "allowConstantExport": true }
+      {
+        "allowConstantExport": true
+      }
     ],
-    "eqeqeq": ["error", "always"],
+    "eqeqeq": [
+      "error",
+      "always"
+    ],
     "no-empty-function": "error",
     "no-implicit-coercion": "warn",
     "@typescript-eslint/no-explicit-any": "warn",
@@ -28,7 +44,10 @@
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": ["./tsconfig.json", "./tsconfig.node.json"],
+    "project": [
+      "./tsconfig.json",
+      "./tsconfig.node.json"
+    ],
     "tsconfigRootDir": "."
   }
 }
