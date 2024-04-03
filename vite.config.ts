@@ -19,6 +19,7 @@ export default defineConfig({
       "@mocks": path.resolve(__dirname, "./src/mocks"),
       "@ptypes": path.resolve(__dirname, "./src/types"),
       "@forms": path.resolve(__dirname, "./src/forms"),
+      "@assets": path.resolve(__dirname, "./src/assets"),
     },
   },
 });
