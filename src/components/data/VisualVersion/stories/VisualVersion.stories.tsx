@@ -44,6 +44,7 @@ const mockData: IEntries[] = [
 type Story = StoryObj<typeof VisualVersion>;
 
 const meta: Meta<typeof VisualVersion> = {
+  title: "components/data/VisualVersion",
   component: VisualVersion,
 };
 
