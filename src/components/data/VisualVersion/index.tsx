@@ -81,10 +81,12 @@ export const VisualVersion = (props: IVisualVersionProps) => {
                       <Icon
                         icon={<MdOutlineAddCircleOutline />}
                         appearance="primary"
+                        cursorHover
                       />
                       <Icon
                         icon={<MdCheckCircleOutline />}
                         appearance="primary"
+                        cursorHover
                       />
                     </StyledContainerData>
                   </StyledTd>
