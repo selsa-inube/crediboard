@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { inube } from "@inube/design-system";
 
-interface IStyledTdbody {
+interface IStyledTdbodyContainer {
   $zebraEffect: boolean;
 }
 
@@ -12,10 +12,7 @@ export const StyledContainer = styled.div`
   padding-top: ${inube.spacing.s150};
   padding-left: ${inube.spacing.s075};
   padding-right: ${inube.spacing.s075};
-  border: 1px solid
-    ${({ theme }) =>
-      theme?.color?.stroke?.divider?.regular ||
-      inube.color.stroke.divider.regular};
+  border: 1px solid ${inube.color.stroke.divider.regular};
 `;
 
 export const StyledTable = styled.table`
@@ -26,35 +23,26 @@ export const StyledTable = styled.table`
 `;
 
 export const StyledTbody = styled.tbody`
-  background-color: ${({ theme }) =>
-    theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
-`;
-
-export const StyledTr = styled.tr`
-  display: flex;
-  flex-direction: column;
+  background-color: ${inube.color.surface.light.clear};
 `;
 
 export const StyledTdTitle = styled.td`
-  padding: ${inube.spacing.s0} ${inube.spacing.s200};
   text-align: center;
 `;
 
-export const StyledTdbody = styled.td`
-  text-align: center;
-`;
-
-export const StyledTdbodyContainer = styled.tr<IStyledTdbody>`
-  display: flex;
-  flex-direction: column;
-  padding: ${inube.spacing.s025} ${inube.spacing.s200};
+export const StyledTdbodyContainer = styled.tr<IStyledTdbodyContainer>`
   background-color: ${({ $zebraEffect }) =>
     $zebraEffect
       ? inube.color.surface.gray.regular
       : inube.color.surface.gray.clear};
 `;
 
-export const StyledContainerData = styled.div`
+export const StyledTd = styled.td`
   display: flex;
   justify-content: space-between;
+`;
+
+export const StyledContainerData = styled.div`
+  display: flex;
+  flex-direction: row;
 `;

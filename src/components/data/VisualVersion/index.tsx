@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   MdOutlineAddCircleOutline,
   MdCheckCircleOutline,
@@ -7,11 +9,10 @@ import { Icon, Text, Tag } from "@inube/design-system";
 import {
   StyledContainer,
   StyledTable,
-  StyledTr,
   StyledTdTitle,
-  StyledTdbody,
   StyledTdbodyContainer,
   StyledTbody,
+  StyledTd,
   StyledContainerData,
 } from "./styles";
 
@@ -43,56 +44,53 @@ const AppearenceTagObject = {
 } as const;
 
 function appearenceTag(requirementTag: keyof typeof AppearenceTagObject) {
-  console.log(requirementTag, "entro");
-
   return AppearenceTagObject[requirementTag];
 }
 
 export const VisualVersion = (props: IVisualVersionProps) => {
   const { id, entries } = props;
-
   return (
     <StyledContainer id={id}>
       <StyledTable>
         <StyledTbody>
           {entries.map((entry) => (
-            <StyledTr key={entry.section.title}>
-              <StyledTdTitle>
-                <Text appearance="primary" type="title" size="medium">
-                  {entry.section.title}
-                </Text>
-              </StyledTdTitle>
-              <StyledTdbody>
-                {entry.section.requirements.map((requirement, index) => (
-                  <StyledTdbodyContainer
-                    key={requirement.id}
-                    $zebraEffect={index % 2 === 0}
-                  >
-                    <StyledTdbody>
-                      <StyledContainerData>
-                        <Text key={requirement.id} type="body" size="small">
-                          {requirement.description}
-                        </Text>
-                        <Tag
-                          label={requirement.tag}
-                          appearance={appearenceTag(requirement.tag)}
-                        />
-                        <StyledContainerData>
-                          <Icon
-                            icon={<MdOutlineAddCircleOutline />}
-                            appearance="primary"
-                          />
-                          <Icon
-                            icon={<MdCheckCircleOutline />}
-                            appearance="primary"
-                          />
-                        </StyledContainerData>
-                      </StyledContainerData>
-                    </StyledTdbody>
-                  </StyledTdbodyContainer>
-                ))}
-              </StyledTdbody>
-            </StyledTr>
+            <React.Fragment key={entry.section.title}>
+              <tr>
+                <StyledTdTitle colSpan={2}>
+                  <Text appearance="primary" type="title" size="medium">
+                    {entry.section.title}
+                  </Text>
+                </StyledTdTitle>
+              </tr>
+              {entry.section.requirements.map((requirement, index) => (
+                <StyledTdbodyContainer
+                  key={requirement.id}
+                  $zebraEffect={index % 2 === 0}
+                >
+                  <td>
+                    <Text type="body" size="small">
+                      {requirement.description}
+                    </Text>
+                  </td>
+                  <StyledTd>
+                    <Tag
+                      label={requirement.tag}
+                      appearance={appearenceTag(requirement.tag)}
+                    />
+                    <StyledContainerData>
+                      <Icon
+                        icon={<MdOutlineAddCircleOutline />}
+                        appearance="primary"
+                      />
+                      <Icon
+                        icon={<MdCheckCircleOutline />}
+                        appearance="primary"
+                      />
+                    </StyledContainerData>
+                  </StyledTd>
+                </StyledTdbodyContainer>
+              ))}
+            </React.Fragment>
           ))}
         </StyledTbody>
       </StyledTable>
