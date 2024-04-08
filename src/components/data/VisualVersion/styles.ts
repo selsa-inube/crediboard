@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { inube } from "@inube/design-system";
 
 interface IStyledTdbody {
-  zebraEffect: boolean;
+  $zebraEffect: boolean;
 }
 
 export const StyledContainer = styled.div`
@@ -44,15 +44,17 @@ export const StyledTdbody = styled.td`
   text-align: center;
 `;
 
-export const StyledTdbodyContainer = styled.div<IStyledTdbody>`
+export const StyledTdbodyContainer = styled.tr<IStyledTdbody>`
+  display: flex;
+  flex-direction: column;
   padding: ${inube.spacing.s025} ${inube.spacing.s200};
-  background-color: ${({ zebraEffect }) =>
-    zebraEffect
+  background-color: ${({ $zebraEffect }) =>
+    $zebraEffect
       ? inube.color.surface.gray.regular
       : inube.color.surface.gray.clear};
 `;
 
-/*  &:last-child {
-    border-bottom: ${({ $entriesLength, $pageLength }) =>
-      $entriesLength < $pageLength && "none"};
-  } */
+export const StyledContainerData = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;

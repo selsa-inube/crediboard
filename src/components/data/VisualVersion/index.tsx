@@ -1,4 +1,8 @@
-import { Text } from "@inube/design-system";
+import {
+  MdOutlineAddCircleOutline,
+  MdCheckCircleOutline,
+} from "react-icons/md";
+import { Icon, Text, Tag } from "@inube/design-system";
 
 import {
   StyledContainer,
@@ -8,12 +12,13 @@ import {
   StyledTdbody,
   StyledTdbodyContainer,
   StyledTbody,
+  StyledContainerData,
 } from "./styles";
 
 interface IRequirements {
   id: string;
   description: string;
-  tag: string;
+  tag: "Cumple" | "No Cumple" | "Sin Evaluar";
 }
 
 interface ISection {
@@ -29,6 +34,18 @@ export interface IEntries {
 export interface IVisualVersionProps {
   id: string;
   entries: IEntries[];
+}
+
+const AppearenceTagObject = {
+  Cumple: "success",
+  "No Cumple": "error",
+  "Sin Evaluar": "warning",
+} as const;
+
+function appearenceTag(requirementTag: keyof typeof AppearenceTagObject) {
+  console.log(requirementTag, "entro");
+
+  return AppearenceTagObject[requirementTag];
 }
 
 export const VisualVersion = (props: IVisualVersionProps) => {
@@ -49,12 +66,28 @@ export const VisualVersion = (props: IVisualVersionProps) => {
                 {entry.section.requirements.map((requirement, index) => (
                   <StyledTdbodyContainer
                     key={requirement.id}
-                    zebraEffect={index % 2 === 0}
+                    $zebraEffect={index % 2 === 0}
                   >
                     <StyledTdbody>
-                      <Text key={requirement.id} type="body" size="small">
-                        {requirement.description}
-                      </Text>
+                      <StyledContainerData>
+                        <Text key={requirement.id} type="body" size="small">
+                          {requirement.description}
+                        </Text>
+                        <Tag
+                          label={requirement.tag}
+                          appearance={appearenceTag(requirement.tag)}
+                        />
+                        <StyledContainerData>
+                          <Icon
+                            icon={<MdOutlineAddCircleOutline />}
+                            appearance="primary"
+                          />
+                          <Icon
+                            icon={<MdCheckCircleOutline />}
+                            appearance="primary"
+                          />
+                        </StyledContainerData>
+                      </StyledContainerData>
                     </StyledTdbody>
                   </StyledTdbodyContainer>
                 ))}
