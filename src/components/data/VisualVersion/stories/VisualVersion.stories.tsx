@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { VisualVersion } from "..";
+import { IEntries, VisualVersion } from "..";
 
-const mockData = [
+const mockData: IEntries[] = [
   {
     section: {
       title: "Section 1",
@@ -9,12 +9,12 @@ const mockData = [
         {
           id: "1",
           description: "Requirement 1",
-          tag: "1",
+          tag: "Cumple",
         },
         {
           id: "2",
           description: "Requirement 2",
-          tag: "2",
+          tag: "No Cumple",
         },
       ],
       validations: true,
@@ -28,12 +28,12 @@ const mockData = [
         {
           id: "3",
           description: "Requirement 3",
-          tag: "3",
+          tag: "Sin Evaluar",
         },
         {
           id: "4",
           description: "Requirement 4",
-          tag: "4",
+          tag: "No Cumple",
         },
       ],
       validations: false,
