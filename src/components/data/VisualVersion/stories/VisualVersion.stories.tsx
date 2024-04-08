@@ -41,11 +41,11 @@ const mockData: IEntries[] = [
   },
 ];
 
+type Story = StoryObj<typeof VisualVersion>;
+
 const meta: Meta<typeof VisualVersion> = {
   component: VisualVersion,
 };
-
-type Story = StoryObj<typeof VisualVersion>;
 
 export const Default: Story = {
   args: {
