@@ -18,7 +18,9 @@ export const Fieldset = (props: IFieldsetProps) => {
         <Text type="title" appearance="gray">
           {`${title} `}
         </Text>
-        <Text type="title">{descriptionTitle}</Text>
+        <Text type="title" ellipsis>
+          {descriptionTitle}
+        </Text>
       </Stack>
       <StyledContainerFieldset>
         <Stack direction={direction}>{children}</Stack>
