@@ -21,7 +21,7 @@ function SummaryCard(props: ISummaryCardProps) {
     props;
   return (
     <StyledSummaryCard>
-      <Stack direction="column" padding="s100" gap="7px">
+      <Stack direction="column" padding="s100" gap="6px">
         <Stack justifyContent="space-between">
           <Text size="small" appearance="gray">
             No. Rad.:{rad}
@@ -53,7 +53,7 @@ function SummaryCard(props: ISummaryCardProps) {
             <Icon
               icon={<MdOutlineMessage />}
               appearance="dark"
-              size="19px"
+              size="20px"
               cursorHover
             />
           )}
@@ -61,7 +61,7 @@ function SummaryCard(props: ISummaryCardProps) {
             <Icon
               icon={<MdOutlinePushPin />}
               appearance="dark"
-              size="19px"
+              size="20px"
               cursorHover
             />
           )}
