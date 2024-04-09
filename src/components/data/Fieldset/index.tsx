@@ -6,10 +6,11 @@ interface IFieldsetProps {
   title: string;
   descriptionTitle?: string;
   children: JSX.Element | JSX.Element[];
+  direction?: "row" | "column";
 }
 
 export const Fieldset = (props: IFieldsetProps) => {
-  const { children, title, descriptionTitle } = props;
+  const { children, title, descriptionTitle, direction = "row" } = props;
 
   return (
     <Stack direction="column" gap="8px">
@@ -20,7 +21,7 @@ export const Fieldset = (props: IFieldsetProps) => {
         <Text type="title">{descriptionTitle}</Text>
       </Stack>
       <StyledContainerFieldset>
-        <Stack>{children}</Stack>
+        <Stack direction={direction}>{children}</Stack>
       </StyledContainerFieldset>
     </Stack>
   );
