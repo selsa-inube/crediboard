@@ -30,36 +30,46 @@ function SummaryCard(props: ISummaryCardProps) {
             {date}
           </Text>
         </Stack>
-        <Text type="body" size="medium">
+        <Text type="label" size="large">
           {name}
         </Text>
         <Text type="body" size="medium" appearance="gray">
           Destino:
         </Text>
-        <Text type="body" size="medium">
+        <Text type="label" size="large">
           {truncateTextToMaxLength(destination)}
         </Text>
         <Stack gap="8px">
           <Text type="body" size="medium" appearance="gray">
             Valor:
           </Text>
-          <Text type="body" size="medium">
+          <Text type="label" size="large">
             {currencyFormat(value)}
           </Text>
         </Stack>
         <Text type="body" size="medium" appearance="gray">
           Actividad en ejecución:
         </Text>
-        <Text type="body" size="medium">
+        <Text type="label" size="large">
           {truncateTextToMaxLength(toDo)}
         </Text>
         <StyledDivider />
         <Stack gap="8px" justifyContent="flex-end">
           {hasMessage && (
-            <Icon icon={<MdOutlineMessage />} appearance="dark" cursorHover />
+            <Icon
+              icon={<MdOutlineMessage />}
+              appearance="dark"
+              size="19px"
+              cursorHover
+            />
           )}
           {isPinned && (
-            <Icon icon={<MdOutlinePushPin />} appearance="dark" cursorHover />
+            <Icon
+              icon={<MdOutlinePushPin />}
+              appearance="dark"
+              size="19px"
+              cursorHover
+            />
           )}
         </Stack>
       </Stack>
