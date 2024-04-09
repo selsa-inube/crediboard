@@ -8,6 +8,23 @@ type Story = StoryObj<typeof Fieldset>;
 const meta: Meta<typeof Fieldset> = {
   component: Fieldset,
   title: "components/data/Fieldset",
+  argTypes: {
+    title: {
+      control: {
+        type: "text",
+      },
+      description: "title of the component",
+    },
+    descriptionTitle: {
+      control: {
+        type: "text",
+      },
+      description: "description title of the component",
+    },
+    children: {
+      description: "children of the component",
+    },
+  },
 };
 
 const Example = () => (
