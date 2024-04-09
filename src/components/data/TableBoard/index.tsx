@@ -32,7 +32,7 @@ export interface IEntries {
   section: ISection;
 }
 
-export interface IVisualVersionProps {
+export interface ITableBoardProps {
   id: string;
   entries: IEntries[];
 }
@@ -47,7 +47,7 @@ function appearenceTag(requirementTag: keyof typeof AppearenceTagObject) {
   return AppearenceTagObject[requirementTag];
 }
 
-export const VisualVersion = (props: IVisualVersionProps) => {
+export const TableBoard = (props: ITableBoardProps) => {
   const { id, entries } = props;
   return (
     <StyledContainer id={id}>

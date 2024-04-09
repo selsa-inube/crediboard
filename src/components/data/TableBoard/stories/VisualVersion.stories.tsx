@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { IEntries, VisualVersion } from "..";
+import { IEntries, TableBoard } from "..";
 
 const mockData: IEntries[] = [
   {
@@ -41,11 +41,11 @@ const mockData: IEntries[] = [
   },
 ];
 
-type Story = StoryObj<typeof VisualVersion>;
+type Story = StoryObj<typeof TableBoard>;
 
-const meta: Meta<typeof VisualVersion> = {
+const meta: Meta<typeof TableBoard> = {
   title: "components/data/VisualVersion",
-  component: VisualVersion,
+  component: TableBoard,
 };
 
 export const Default: Story = {
