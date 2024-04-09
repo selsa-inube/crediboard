@@ -23,36 +23,30 @@ function SummaryCard(props: ISummaryCardProps) {
     <StyledSummaryCard>
       <Stack direction="column" padding="s100" gap="7px">
         <Stack justifyContent="space-between">
-          <Text type="body" size="small" appearance="gray">
+          <Text size="small" appearance="gray">
             No. Rad.:{rad}
           </Text>
-          <Text type="body" size="small" appearance="gray">
+          <Text size="small" appearance="gray">
             {date}
           </Text>
         </Stack>
-        <Text type="label" size="large">
-          {name}
-        </Text>
-        <Text type="body" size="medium" appearance="gray">
+        <Text type="label">{name}</Text>
+        <Text size="medium" appearance="gray">
           Destino:
         </Text>
-        <Text type="label" size="large">
-          {truncateTextToMaxLength(destination)}
-        </Text>
+        <Text type="label">{truncateTextToMaxLength(destination)}</Text>
         <Stack gap="8px">
-          <Text type="body" size="medium" appearance="gray">
+          <Text size="medium" appearance="gray">
             Valor:
           </Text>
-          <Text type="label" size="large">
-            {currencyFormat(value)}
+          <Text type="label">
+            {value === 0 ? "$ 0" : currencyFormat(value)}
           </Text>
         </Stack>
-        <Text type="body" size="medium" appearance="gray">
+        <Text size="medium" appearance="gray">
           Actividad en ejecución:
         </Text>
-        <Text type="label" size="large">
-          {truncateTextToMaxLength(toDo)}
-        </Text>
+        <Text type="label">{truncateTextToMaxLength(toDo)}</Text>
         <StyledDivider />
         <Stack gap="8px" justifyContent="flex-end">
           {hasMessage && (

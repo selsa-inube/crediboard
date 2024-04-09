@@ -12,7 +12,7 @@ const StyledSummaryCard = styled.label`
   width: 260px;
   height: 270px;
   border-radius: 8px;
-  outline: 2px solid #938e8a;
+  outline: 2px solid ${inube.color.stroke.divider.regular};
   background-color: ${({ theme }: IStyledSummaryCard) =>
     theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);

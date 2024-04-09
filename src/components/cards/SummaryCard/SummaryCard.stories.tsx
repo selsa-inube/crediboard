@@ -1,5 +1,4 @@
 import { StoryFn, Meta } from "@storybook/react";
-
 import { SummaryCard, ISummaryCardProps } from ".";
 import { props } from "./props";
 
@@ -9,11 +8,9 @@ const story: Meta<typeof SummaryCard> = {
   title: "components/cards/SummaryCard",
 };
 
-const Template: StoryFn<ISummaryCardProps> = (args) => (
+export const Default: StoryFn<ISummaryCardProps> = (args) => (
   <SummaryCard {...args} />
 );
-
-export const Default = Template.bind({});
 
 Default.args = {
   rad: 100000012,

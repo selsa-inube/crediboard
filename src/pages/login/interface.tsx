@@ -24,7 +24,7 @@ function LoginUI() {
             <Text type="headline" size="small" textAlign="center">
               Bienvenido
             </Text>
-            <Text as="h1" type="headline" size="large">
+            <Text as="h1" type="headline">
               Crediboard
             </Text>
           </Stack>
