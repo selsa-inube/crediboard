@@ -13,9 +13,11 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
   return (
     <Stack width="-webkit-fill-available" direction="column">
       <Stack direction="column">
-        <Button spacing="compact" variant="none" iconBefore={<MdArrowBack />}>
-          Volver
-        </Button>
+        <Stack justifyContent="start" margin="s0 s0 s250 s0">
+          <Button spacing="compact" variant="none" iconBefore={<MdArrowBack />}>
+            Volver
+          </Button>
+        </Stack>
         <Stack justifyContent="end" gap="32px">
           <Stack gap="16px">
             <Button>{configButtons.buttons.buttonOne.label}</Button>
