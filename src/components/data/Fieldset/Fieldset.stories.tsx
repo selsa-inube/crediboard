@@ -41,8 +41,8 @@ const Example = () => (
 
 export const Default: Story = {
   args: {
-    title: "Title",
-    descriptionTitle: "Text Title",
+    title: "Por hacer",
+    descriptionTitle: "Dorian Medina López",
     children: <Example />,
   },
 };
