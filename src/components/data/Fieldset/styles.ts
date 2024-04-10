@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { inube } from "@inube/design-system";
 
 export const StyledContainerFieldset = styled.div`
-  border-radius: 15px;
+  border-radius: 8px;
   border-width: 2px;
   border-style: solid;
   border-color: ${({ theme }) =>
