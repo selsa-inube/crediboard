@@ -21,9 +21,7 @@ export const Fieldset = (props: IFieldsetProps) => {
           {descriptionTitle}
         </Text>
       </Stack>
-      <StyledContainerFieldset>
-        <Stack>{children}</Stack>
-      </StyledContainerFieldset>
+      <StyledContainerFieldset>{children}</StyledContainerFieldset>
     </Stack>
   );
 };
