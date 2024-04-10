@@ -2,6 +2,7 @@ import { MdArrowBack } from "react-icons/md";
 
 import { Button, Stack } from "@inube/design-system";
 import { StyledHorizontalRule } from "./styles";
+import { configButtons } from "./config";
 
 interface IContainerSectionsProps {
   children?: JSX.Element | JSX.Element[];
@@ -17,14 +18,18 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
         </Button>
         <Stack justifyContent="end" gap="32px">
           <Stack gap="16px">
-            <Button>Rechazar</Button>
-            <Button>Anular</Button>
-            <Button>Imprimir</Button>
+            <Button>{configButtons.buttons.buttonOne.label}</Button>
+            <Button>{configButtons.buttons.buttonTwo.label}</Button>
+            <Button>{configButtons.buttons.buttonTree.label}</Button>
           </Stack>
           <StyledHorizontalRule />
           <Stack gap="16px">
-            <Button variant="outlined">Adjuntar</Button>
-            <Button variant="outlined">Ver Adjuntos</Button>
+            <Button variant="outlined">
+              {configButtons.buttonsOutlined.buttonOne.label}
+            </Button>
+            <Button variant="outlined">
+              {configButtons.buttonsOutlined.buttonTwo.label}
+            </Button>
           </Stack>
         </Stack>
       </Stack>
