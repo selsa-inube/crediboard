@@ -14,8 +14,7 @@ const StyledSummaryCard = styled.div`
   border-radius: 8px;
   outline: 2px solid
     ${({ theme }: IStyledSummaryCard) =>
-      theme?.color?.stroke?.divider?.regular ||
-      inube.color.stroke.divider.regular};
+      theme?.color?.stroke?.gray?.regular || inube.color.stroke.gray.regular};
   background-color: ${({ theme }: IStyledSummaryCard) =>
     theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);
