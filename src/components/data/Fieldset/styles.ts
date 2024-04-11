@@ -6,9 +6,8 @@ export const StyledContainerFieldset = styled.div`
   border-width: 2px;
   border-style: solid;
   border-color: ${({ theme }) =>
-    theme?.color?.stroke?.divider?.regular ||
-    inube.color.stroke.divider.regular};
-  box-shadow: 2px 2px 6px
+    theme?.color?.stroke?.gray?.regular || inube.color.stroke.gray.regular};
+  box-shadow: 0px 2px 6px
     ${({ theme }) =>
       theme?.color?.stroke?.divider?.regular ||
       inube.color.stroke.divider.regular};
