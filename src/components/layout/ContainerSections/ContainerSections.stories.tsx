@@ -4,7 +4,7 @@ import { ContainerSections } from ".";
 type Story = StoryObj<typeof ContainerSections>;
 
 const meta: Meta<typeof ContainerSections> = {
-  title: "components/layout/ContainerSections",
+  title: "layouts/ContainerSections",
   component: ContainerSections,
 };
 
