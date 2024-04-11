@@ -1,5 +1,7 @@
 import { StoryFn, Meta } from "@storybook/react";
-import { SummaryCard, ISummaryCardProps } from ".";
+
+import { SummaryCard, ISummaryCardProps } from "..";
+
 import { props } from "./props";
 
 const story: Meta<typeof SummaryCard> = {

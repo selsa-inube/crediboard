@@ -1,9 +1,10 @@
-import { StyledSummaryCard } from "./styles";
-import { Stack, Text, Icon } from "@inube/design-system";
-import { StyledDivider } from "./styles";
+import { Stack, Text, Icon, inube } from "@inube/design-system";
 import { MdOutlineMessage, MdOutlinePushPin } from "react-icons/md";
-import { currencyFormat } from "@src/mocks/utils/formatData/currency";
-import { truncateTextToMaxLength } from "@src/mocks/utils/formatData/text";
+
+import { currencyFormat } from "@utils/formatData/currency";
+import { truncateTextToMaxLength } from "@utils/formatData/text";
+
+import { StyledSummaryCard, StyledDivider } from "./styles";
 
 interface ISummaryCardProps {
   rad: number;
@@ -21,7 +22,7 @@ function SummaryCard(props: ISummaryCardProps) {
     props;
   return (
     <StyledSummaryCard>
-      <Stack direction="column" padding="s100" gap="6px">
+      <Stack direction="column" padding="s100" gap={inube.spacing.s075}>
         <Stack justifyContent="space-between">
           <Text size="small" appearance="gray">
             No. Rad.:{rad}
@@ -35,7 +36,7 @@ function SummaryCard(props: ISummaryCardProps) {
           Destino:
         </Text>
         <Text type="label">{truncateTextToMaxLength(destination)}</Text>
-        <Stack gap="8px">
+        <Stack gap={inube.spacing.s100}>
           <Text size="medium" appearance="gray">
             Valor:
           </Text>
@@ -48,7 +49,7 @@ function SummaryCard(props: ISummaryCardProps) {
         </Text>
         <Text type="label">{truncateTextToMaxLength(toDo)}</Text>
         <StyledDivider />
-        <Stack gap="8px" justifyContent="flex-end">
+        <Stack gap={inube.spacing.s100} justifyContent="flex-end">
           {hasMessage && (
             <Icon
               icon={<MdOutlineMessage />}

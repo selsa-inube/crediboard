@@ -4,7 +4,7 @@ function CheckingCredentialsUI() {
   return (
     <Stack gap="16px" direction="column">
       <Stack direction="column">
-        <Text type="title" textAlign="center">
+        <Text type="title" size="large" textAlign="center">
           Validando credenciales
         </Text>
         <Text type="title" size="small" textAlign="center">

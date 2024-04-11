@@ -68,7 +68,9 @@ export const TableBoard = (props: ITableBoardProps) => {
                   $zebraEffect={index % 2 === 0}
                 >
                   <td>
-                    <Text size="small">{requirement.description}</Text>
+                    <Text type="body" size="small">
+                      {requirement.description}
+                    </Text>
                   </td>
                   <StyledTd>
                     <Tag
