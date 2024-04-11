@@ -1,6 +1,6 @@
 import { MdArrowBack } from "react-icons/md";
-
 import { Button, Stack, inube } from "@inube/design-system";
+
 import { StyledHorizontalRule } from "./styles";
 import { configButtons } from "./config";
 
