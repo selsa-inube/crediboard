@@ -1,8 +1,8 @@
 import { MdArrowBack } from "react-icons/md";
 import { Button, Stack, inube } from "@inube/design-system";
 
-import { StyledHorizontalRule } from "./styles";
 import { configButtons } from "./config";
+import { StyledHorizontalDivider } from "./styles";
 
 interface IContainerSectionsProps {
   children?: JSX.Element | JSX.Element[];
@@ -13,7 +13,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
   return (
     <Stack width="-webkit-fill-available" direction="column">
       <Stack direction="column">
-        <Stack justifyContent="start" margin="s0 s0 s250 s0">
+        <Stack justifyContent="start" margin="s0 s0 s250">
           <Button spacing="compact" variant="none" iconBefore={<MdArrowBack />}>
             Volver
           </Button>
@@ -24,7 +24,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
             <Button>{configButtons.buttons.buttonTwo.label}</Button>
             <Button>{configButtons.buttons.buttonTree.label}</Button>
           </Stack>
-          <StyledHorizontalRule />
+          <StyledHorizontalDivider />
           <Stack gap={inube.spacing.s200}>
             <Button variant="outlined">
               {configButtons.buttonsOutlined.buttonOne.label}
