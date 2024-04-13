@@ -21,7 +21,11 @@ import {
   StyledLogo,
 } from "@components/layout/AppPage/styles";
 
-import { navigationConfig, logoutConfig } from "./config/apps.config";
+import {
+  navigationConfig,
+  logoutConfig,
+  filterOptions,
+} from "./config/apps.config";
 import { StyledHome } from "./styles";
 
 const renderLogo = (imgUrl: string) => {
@@ -85,11 +89,7 @@ function HomeUI() {
                 id="FilterCards"
                 name="FilterCards"
                 placeholder="Seleccione una opción"
-                options={[
-                  { id: "1", label: "Opcion 1", disabled: false },
-                  { id: "2", label: "Opcion 2", disabled: false },
-                  { id: "3", label: "Opcion 3", disabled: false },
-                ]}
+                options={filterOptions}
                 fullwidth
               />
             </Stack>
