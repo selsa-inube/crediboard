@@ -8,6 +8,13 @@ import React from "react";
 import { Text, Tag } from "@inube/design-system";
 
 import {
+  AppearenceTagObject,
+  IEntries,
+  IEntriesTranform,
+  ITableBoardProps,
+} from "./types";
+
+import {
   StyledContainer,
   StyledTable,
   StyledTdTitle,
@@ -18,40 +25,6 @@ import {
   StyledThTitle,
   StyledThead,
 } from "./styles";
-
-interface IRequirements {
-  id: string;
-  description: string;
-  tag: "Cumple" | "No Cumple" | "Sin Evaluar";
-}
-
-interface ISection {
-  title: string;
-  requirements: IRequirements[];
-  priority: number;
-  validations: boolean;
-}
-
-export interface IEntries {
-  section: ISection;
-}
-
-export interface ITableBoardProps {
-  id: string;
-  withTitles: boolean;
-  entries: IEntries[];
-}
-
-interface IEntriesTranform {
-  id: string;
-  [key: string]: string;
-}
-
-const AppearenceTagObject = {
-  Cumple: "success",
-  "No Cumple": "error",
-  "Sin Evaluar": "warning",
-} as const;
 
 function appearenceTag(requirementTag: keyof typeof AppearenceTagObject) {
   return AppearenceTagObject[requirementTag];
