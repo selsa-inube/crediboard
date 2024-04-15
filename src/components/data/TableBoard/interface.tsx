@@ -71,9 +71,7 @@ const EntriesSectionsTableBoard = (
               $zebraEffect={index % 2 === 0}
             >
               <td>
-                <Text type="body" size="small">
-                  {requirement.description}
-                </Text>
+                <Text size="small">{requirement.description}</Text>
               </td>
               <StyledTd>
                 <Tag
@@ -101,9 +99,7 @@ const EntriesTableBoard = (
           {entries.map((data) => (
             <React.Fragment key={data.section.title}>
               <td>
-                <Text type="body" size="small">
-                  {entry[data.section.title]}
-                </Text>
+                <Text size="small">{entry[data.section.title]}</Text>
               </td>
               <StyledTd>
                 <Tag
