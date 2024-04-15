@@ -1,7 +1,6 @@
-import { ITableBoardProps } from "./types";
-
-import { TableBoardUI } from "./interface";
 import { transformData } from "./stories/utils";
+import { ITableBoardProps } from "./types";
+import { TableBoardUI } from "./interface";
 
 export const TableBoard = (props: ITableBoardProps) => {
   const { id, entries, withTitles, colspan = "1" } = props;

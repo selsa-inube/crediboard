@@ -17,6 +17,7 @@ import {
   StyledThTitle,
   StyledThead,
 } from "./styles";
+
 import { appearenceTag } from "./stories/utils";
 
 interface ITableBordUIprops extends ITableBoardProps {
