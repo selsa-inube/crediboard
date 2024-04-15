@@ -73,12 +73,14 @@ const EntriesSectionsTableBoard = (
               <td>
                 <Text size="small">{requirement.description}</Text>
               </td>
-              <StyledTd>
-                <Tag
-                  label={requirement.tag}
-                  appearance={appearenceTag(requirement.tag)}
-                />
-              </StyledTd>
+              {requirement.tag && (
+                <StyledTd>
+                  <Tag
+                    label={requirement.tag}
+                    appearance={appearenceTag(requirement.tag)}
+                  />
+                </StyledTd>
+              )}
             </StyledTdbodyContainer>
           ))}
         </React.Fragment>
@@ -101,16 +103,18 @@ const EntriesTableBoard = (
               <td>
                 <Text size="small">{entry[data.section.title]}</Text>
               </td>
-              <StyledTd>
-                <Tag
-                  label={entry[entry[data.section.title]]}
-                  appearance={appearenceTag(
-                    entry[
-                      entry[data.section.title]
-                    ] as keyof typeof AppearenceTagObject
-                  )}
-                />
-              </StyledTd>
+              {entry[entry[data.section.title]] && (
+                <StyledTd>
+                  <Tag
+                    label={entry[entry[data.section.title]]}
+                    appearance={appearenceTag(
+                      entry[
+                        entry[data.section.title]
+                      ] as keyof typeof AppearenceTagObject
+                    )}
+                  />
+                </StyledTd>
+              )}
             </React.Fragment>
           ))}
         </StyledTdbodyContainer>
