@@ -40,4 +40,23 @@ export const mockData: IEntries[] = [
       validations: true,
     },
   },
+  {
+    section: {
+      title: "Section 3",
+      priority: 3,
+      requirements: [
+        {
+          id: "5",
+          description: "Requirement 5",
+          tag: "Cumple",
+        },
+        {
+          id: "6",
+          description: "Requirement 6",
+          tag: "No Cumple",
+        },
+      ],
+      validations: true,
+    },
+  },
 ];

@@ -15,6 +15,7 @@ export const Default: Story = {
     id: "1",
     entries: mockData,
     withTitles: false,
+    colspan: "2",
   },
 };
 export default meta;
