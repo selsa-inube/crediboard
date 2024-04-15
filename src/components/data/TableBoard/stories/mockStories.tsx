@@ -53,7 +53,6 @@ export const mockData: IEntries[] = [
         {
           id: "6",
           description: "Requirement 6",
-          tag: "No Cumple",
         },
       ],
       validations: true,
