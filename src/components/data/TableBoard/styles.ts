@@ -6,6 +6,10 @@ interface IStyledTdbodyContainer {
   $zebraEffect: boolean;
 }
 
+interface IStyledThTitle {
+  colSpan: string;
+}
+
 export const StyledContainer = styled.div`
   border-radius: 8px;
   overflow: hidden;
@@ -35,7 +39,7 @@ export const StyledTdTitle = styled.td`
   text-align: center;
 `;
 
-export const StyledThTitle = styled.th`
+export const StyledThTitle = styled.th<IStyledThTitle>`
   background-color: ${inube.color.surface.gray.clear};
 `;
 
@@ -49,9 +53,4 @@ export const StyledTdbodyContainer = styled.tr<IStyledTdbodyContainer>`
 export const StyledTd = styled.td`
   display: flex;
   justify-content: space-between;
-`;
-
-export const StyledContainerData = styled.div`
-  display: flex;
-  flex-direction: row;
 `;
