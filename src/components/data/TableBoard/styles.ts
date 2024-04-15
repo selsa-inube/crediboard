@@ -26,8 +26,17 @@ export const StyledTbody = styled.tbody`
   background-color: ${inube.color.surface.light.clear};
 `;
 
+export const StyledThead = styled.thead`
+  background-color: ${({ theme }) =>
+    theme.color?.surface?.light?.clear || inube.color.surface.light.clear};
+`;
+
 export const StyledTdTitle = styled.td`
   text-align: center;
+`;
+
+export const StyledThTitle = styled.th`
+  background-color: ${inube.color.surface.gray.clear};
 `;
 
 export const StyledTdbodyContainer = styled.tr<IStyledTdbodyContainer>`
