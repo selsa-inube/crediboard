@@ -37,6 +37,7 @@ export interface IEntries {
 export interface ITableBoardProps {
   id: string;
   withTitles: boolean;
+  colspan?: string;
   entries: IEntries[];
 }
 
