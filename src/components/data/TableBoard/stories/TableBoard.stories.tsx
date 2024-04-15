@@ -5,6 +5,7 @@ const mockData: IEntries[] = [
   {
     section: {
       title: "Section 1",
+      priority: 1,
       requirements: [
         {
           id: "1",
@@ -24,6 +25,7 @@ const mockData: IEntries[] = [
   {
     section: {
       title: "Section 2",
+      priority: 2,
       requirements: [
         {
           id: "3",
@@ -36,7 +38,7 @@ const mockData: IEntries[] = [
           tag: "No Cumple",
         },
       ],
-      validations: false,
+      validations: true,
     },
   },
 ];
@@ -52,6 +54,7 @@ export const Default: Story = {
   args: {
     id: "1",
     entries: mockData,
+    withTitles: false,
   },
 };
 export default meta;
