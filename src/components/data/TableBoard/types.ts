@@ -20,7 +20,7 @@ export interface IAction {
 interface IRequirements {
   id: string;
   description: string;
-  tag: "Cumple" | "No Cumple" | "Sin Evaluar";
+  tag?: "Cumple" | "No Cumple" | "Sin Evaluar";
 }
 
 interface ISection {
