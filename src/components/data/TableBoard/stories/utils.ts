@@ -16,7 +16,7 @@ export const transformData = (data: IEntries[]) => {
         transformed.push({ id: requirement.id });
       }
       transformed[index][sectionTitle] = requirement.description;
-      transformed[index][requirement.description] = requirement.tag;
+      transformed[index][requirement.description] = requirement.tag as string;
     });
   });
 
