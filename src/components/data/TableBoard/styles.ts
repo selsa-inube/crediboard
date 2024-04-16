@@ -13,10 +13,13 @@ interface IStyledThTitle {
 export const StyledContainer = styled.div`
   border-radius: 8px;
   overflow: hidden;
-  padding-top: ${inube.spacing.s150};
-  padding-left: ${inube.spacing.s075};
-  padding-right: ${inube.spacing.s075};
-  border: 1px solid ${inube.color.stroke.divider.regular};
+  padding-top: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
+  padding-left: ${({ theme }) => theme?.spacing?.s075 || inube.spacing.s075};
+  padding-right: ${({ theme }) => theme?.spacing?.s075 || inube.spacing.s075};
+  border: 1px solid
+    ${({ theme }) =>
+      theme?.color?.stroke?.divider?.regular ||
+      inube.color.stroke.divider.regular};
 `;
 
 export const StyledTable = styled.table`
@@ -27,12 +30,13 @@ export const StyledTable = styled.table`
 `;
 
 export const StyledTbody = styled.tbody`
-  background-color: ${inube.color.surface.light.clear};
+  background-color: ${({ theme }) =>
+    theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
 `;
 
 export const StyledThead = styled.thead`
   background-color: ${({ theme }) =>
-    theme.color?.surface?.light?.clear || inube.color.surface.light.clear};
+    theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
 `;
 
 export const StyledTdTitle = styled.td`
@@ -40,14 +44,15 @@ export const StyledTdTitle = styled.td`
 `;
 
 export const StyledThTitle = styled.th<IStyledThTitle>`
-  background-color: ${inube.color.surface.gray.clear};
+  background-color: ${({ theme }) =>
+    theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
 `;
 
 export const StyledTdbodyContainer = styled.tr<IStyledTdbodyContainer>`
-  background-color: ${({ $zebraEffect }) =>
+  background-color: ${({ theme, $zebraEffect }) =>
     $zebraEffect
-      ? inube.color.surface.gray.regular
-      : inube.color.surface.gray.clear};
+      ? theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
+      : theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
 `;
 
 export const StyledTd = styled.td`
