@@ -4,19 +4,6 @@ export const AppearenceTagObject = {
   "Sin Evaluar": "warning",
 } as const;
 
-export interface ITitle {
-  id: string;
-  titleName: string;
-  priority: number;
-}
-
-export interface IAction {
-  id: string;
-  actionName: string;
-  content: (entry: IEntries) => React.ReactNode;
-  mobilePriority?: boolean;
-}
-
 interface IRequirements {
   id: string;
   description: string;
@@ -34,11 +21,11 @@ export interface IEntries {
   section: ISection;
 }
 
-export interface ITableBoardProps {
+export interface IAction {
   id: string;
-  withTitles: boolean;
-  colspan?: string;
-  entries: IEntries[];
+  actionName?: string;
+  content: (entry: IEntries) => React.ReactNode;
+  mobilePriority?: boolean;
 }
 
 export interface IEntriesTranform {
