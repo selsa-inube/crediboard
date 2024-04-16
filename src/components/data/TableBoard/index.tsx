@@ -1,11 +1,21 @@
-import { transformData } from "./stories/utils";
-import { ITableBoardProps } from "./types";
+import { transformData } from "./utils";
 import { TableBoardUI } from "./interface";
+import { IAction, IEntries } from "./types";
+
+export interface ITableBoardProps {
+  id: string;
+  withTitles: boolean;
+  colspan?: string;
+  entries: IEntries[];
+  actions?: IAction[];
+}
 
 export const TableBoard = (props: ITableBoardProps) => {
-  const { id, entries, withTitles, colspan = "1" } = props;
+  const { id, entries, withTitles, actions, colspan = "1" } = props;
 
   const normalizedEntries = transformData(entries);
+
+  console.log(actions?.length, "actions");
 
   return (
     <TableBoardUI
@@ -14,6 +24,7 @@ export const TableBoard = (props: ITableBoardProps) => {
       withTitles={withTitles}
       colspan={colspan}
       normalizedEntries={normalizedEntries}
+      actions={actions}
     />
   );
 };
