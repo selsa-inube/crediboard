@@ -1,11 +1,8 @@
 import React from "react";
-import { Text, Tag } from "@inube/design-system";
+import { Text, Tag, Icon } from "@inube/design-system";
 
-import {
-  ITableBoardProps,
-  AppearenceTagObject,
-  IEntriesTranform,
-} from "./types";
+import { appearenceTag } from "./utils";
+import { AppearenceTagObject, IEntriesTranform } from "./types";
 
 import {
   StyledContainer,
@@ -18,7 +15,8 @@ import {
   StyledThead,
 } from "./styles";
 
-import { appearenceTag } from "./stories/utils";
+import { ITableBoardProps } from ".";
+import { MdAddCircleOutline } from "react-icons/md";
 
 interface ITableBordUIprops extends ITableBoardProps {
   normalizedEntries: IEntriesTranform[];
@@ -123,8 +121,28 @@ const EntriesTableBoard = (
   );
 };
 
+/* const ActionsTableBoard = (props: Pick<ITableBoardProps, "actions">) => {
+  const { actions } = props;
+
+  return (
+    <>
+      {actions &&
+        actions.map((action) => (
+          <StyledTd key={action.id}>{action.content}</StyledTd>
+        ))}
+    </>
+  );
+};
+ */
 export const TableBoardUI = (props: ITableBordUIprops) => {
-  const { id, entries, withTitles, colspan = "1", normalizedEntries } = props;
+  const {
+    id,
+    entries,
+    withTitles,
+    colspan = "1",
+    normalizedEntries,
+    //actions,
+  } = props;
 
   return (
     <StyledContainer id={id}>
@@ -145,6 +163,9 @@ export const TableBoardUI = (props: ITableBordUIprops) => {
               normalizedEntries={normalizedEntries}
             />
           )}
+          <tr>
+            <Icon icon={<MdAddCircleOutline />} appearance="primary" />
+          </tr>
         </StyledTbody>
       </StyledTable>
     </StyledContainer>
