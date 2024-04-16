@@ -1,4 +1,4 @@
-import { AppearenceTagObject, IEntries, IEntriesTranform } from "../types";
+import { AppearenceTagObject, IEntries, IEntriesTranform } from "./types";
 
 export const appearenceTag = (
   requirementTag: keyof typeof AppearenceTagObject
