@@ -1,4 +1,7 @@
-import { IEntries } from "../types";
+import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
+import { Icon } from "@inube/design-system";
+
+import { IAction, IEntries } from "../types";
 
 export const mockData: IEntries[] = [
   {
@@ -57,5 +60,34 @@ export const mockData: IEntries[] = [
       ],
       validations: true,
     },
+  },
+];
+
+const resiveData = (data: IEntries) => {
+  console.log(data, "function que recibe data");
+};
+
+export const actionsMock: IAction[] = [
+  {
+    id: "agregar",
+    actionName: "Agregar",
+    content: (data: IEntries) => (
+      <Icon
+        icon={<MdAddCircleOutline />}
+        appearance="primary"
+        onClick={() => resiveData(data)}
+      />
+    ),
+  },
+  {
+    id: "aprobar",
+    actionName: "Aprobar",
+    content: (data: IEntries) => (
+      <Icon
+        icon={<MdOutlineCheckCircle />}
+        appearance="primary"
+        onClick={() => resiveData(data)}
+      />
+    ),
   },
 ];

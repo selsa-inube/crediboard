@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { mockData } from "./mockStories";
+import { actionsMock, mockData } from "./mockStories";
 import { TableBoard } from "..";
 
 type Story = StoryObj<typeof TableBoard>;
@@ -16,6 +16,7 @@ export const Default: Story = {
     entries: mockData,
     withTitles: false,
     colspan: "2",
+    actions: actionsMock,
   },
 };
 export default meta;
