@@ -14,6 +14,13 @@ const props = {
     },
     description: "Section background",
   },
+  orientation: {
+    control: {
+      type: "select",
+      options: ["vertical", "horizontal"],
+    },
+    description: "Section orientation",
+  },
   children: {
     control: "object",
     description: "Child elements of the component",
