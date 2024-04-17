@@ -1,3 +1,5 @@
 type SectionBackground = "gray" | "light";
 
-export type { SectionBackground };
+type SectionOrientation = "horizontal" | "vertical";
+
+export type { SectionBackground, SectionOrientation };

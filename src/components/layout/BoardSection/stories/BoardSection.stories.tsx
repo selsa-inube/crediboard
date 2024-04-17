@@ -15,6 +15,10 @@ export const Default: StoryFn<IBoardSectionProps> = (args) => (
   <BoardSection {...args} />
 );
 
+export const Horizontal: StoryFn<IBoardSectionProps> = (args) => (
+  <BoardSection {...args} />
+);
+
 const SummaryCardInfo = {
   rad: 100000012,
   date: "Septiembre 30/23",
@@ -41,6 +45,12 @@ Default.args = {
   numberActiveCards: 5,
   children: <EmptyCards />,
   sectionBackground: "gray",
+  orientation: "vertical",
+};
+
+Horizontal.args = {
+  ...Default.args,
+  orientation: "horizontal",
 };
 
 export default story;

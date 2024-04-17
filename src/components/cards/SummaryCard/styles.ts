@@ -12,7 +12,7 @@ const StyledSummaryCard = styled.div`
   width: 260px;
   height: 270px;
   border-radius: 8px;
-  outline: 2px solid
+  outline: 1px solid
     ${({ theme }: IStyledSummaryCard) =>
       theme?.color?.stroke?.gray?.regular || inube.color.stroke.gray.regular};
   background-color: ${({ theme }: IStyledSummaryCard) =>
