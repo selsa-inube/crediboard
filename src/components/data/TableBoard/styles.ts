@@ -19,7 +19,7 @@ export const StyledContainer = styled.div<IStyledContainer>`
   padding-right: ${({ theme }) => theme?.spacing?.s075 || inube.spacing.s075};
   border: ${({ theme, $borderTable }) =>
     $borderTable &&
-    `1px solid ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}`};
+    `2px solid ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}`};
 `;
 
 export const StyledTable = styled.table`
