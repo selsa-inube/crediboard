@@ -1,5 +1,5 @@
-import { TableBoardUI } from "./interface";
 import { IAction, IEntries, ITitle } from "./types";
+import { TableBoardUI } from "./interface";
 
 export interface ITableBoardProps {
   id: string;

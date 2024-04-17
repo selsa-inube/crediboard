@@ -28,7 +28,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                   appearance="primary"
                   type="title"
                   size="medium"
-                  padding="4px"
+                  padding="0px 4px"
                 >
                   {title.titleName}
                 </Text>
@@ -47,7 +47,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                   {typeof entry[title] !== "string" ? (
                     entry[title]
                   ) : (
-                    <Text size="small" padding="4px">
+                    <Text size="small" padding="0px 4px">
                       {entry[title]}
                     </Text>
                   )}
