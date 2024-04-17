@@ -2,30 +2,28 @@ import styled from "styled-components";
 
 import { inube } from "@inube/design-system";
 
+interface IStyledContainer {
+  $borderTable: boolean;
+}
+
 interface IStyledTdbodyContainer {
   $zebraEffect: boolean;
 }
 
-interface IStyledThTitle {
-  colSpan: string;
-}
-
-export const StyledContainer = styled.div`
+export const StyledContainer = styled.div<IStyledContainer>`
   border-radius: 8px;
   overflow: hidden;
   padding-top: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
+  padding-bottom: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
   padding-left: ${({ theme }) => theme?.spacing?.s075 || inube.spacing.s075};
   padding-right: ${({ theme }) => theme?.spacing?.s075 || inube.spacing.s075};
-  border: 1px solid
-    ${({ theme }) =>
-      theme?.color?.stroke?.divider?.regular ||
-      inube.color.stroke.divider.regular};
+  border: ${({ theme, $borderTable }) =>
+    $borderTable &&
+    `1px solid ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}`};
 `;
 
 export const StyledTable = styled.table`
-  box-sizing: border-box;
   border-collapse: collapse;
-  table-layout: auto;
   width: 100%;
 `;
 
@@ -39,23 +37,16 @@ export const StyledThead = styled.thead`
     theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
 `;
 
-export const StyledTdTitle = styled.td`
-  text-align: center;
-`;
-
-export const StyledThTitle = styled.th<IStyledThTitle>`
+export const StyledTh = styled.th`
   background-color: ${({ theme }) =>
     theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
 `;
 
-export const StyledTdbodyContainer = styled.tr<IStyledTdbodyContainer>`
+export const StyledTr = styled.tr<IStyledTdbodyContainer>`
+  vertical-align: middle;
+  white-space: nowrap;
   background-color: ${({ theme, $zebraEffect }) =>
     $zebraEffect
       ? theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
       : theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
-`;
-
-export const StyledTd = styled.td`
-  display: flex;
-  justify-content: space-between;
 `;
