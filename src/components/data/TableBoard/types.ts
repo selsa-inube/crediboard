@@ -1,24 +1,12 @@
-export const AppearenceTagObject = {
-  Cumple: "success",
-  "No Cumple": "error",
-  "Sin Evaluar": "warning",
-} as const;
-
-interface IRequirements {
+export interface ITitle {
   id: string;
-  description: string;
-  tag?: "Cumple" | "No Cumple" | "Sin Evaluar";
-}
-
-interface ISection {
-  title: string;
-  requirements: IRequirements[];
+  titleName: string;
   priority: number;
-  validations: boolean;
 }
 
 export interface IEntries {
-  section: ISection;
+  id: string;
+  [key: string]: React.ReactNode;
 }
 
 export interface IAction {
@@ -26,9 +14,4 @@ export interface IAction {
   actionName?: string;
   content: (entry: IEntries) => React.ReactNode;
   mobilePriority?: boolean;
-}
-
-export interface IEntriesTranform {
-  id: string;
-  [key: string]: string;
 }
