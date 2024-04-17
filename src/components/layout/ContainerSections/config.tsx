@@ -19,3 +19,25 @@ export const configButtons = {
     },
   },
 };
+
+export const configData = [
+  {
+    title: "Por hacer",
+    descriptionTitle: "Dorian Medina Lopéz",
+  },
+  {
+    title: "Aprobaciones",
+  },
+  {
+    title: "Requisitos",
+  },
+  {
+    title: "Gestión",
+  },
+  {
+    title: "Pagarés y Libranzas",
+  },
+  {
+    title: "Comprobantes de Contabilización",
+  },
+];
