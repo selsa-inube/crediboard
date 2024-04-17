@@ -22,6 +22,7 @@ export default defineConfig({
       "@ptypes": path.resolve(__dirname, "./src/types"),
       "@forms": path.resolve(__dirname, "./src/forms"),
       "@assets": path.resolve(__dirname, "./src/assets"),
+      "@services": path.resolve(__dirname, "./src/services"),
     },
   },
 });
