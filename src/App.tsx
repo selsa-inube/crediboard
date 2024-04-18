@@ -10,7 +10,6 @@ import { useAuth } from "@inube/auth";
 import { ErrorPage } from "@components/layout/ErrorPage";
 import AppContextProvider, { AppContext } from "@context/AppContext";
 import { Login } from "@pages/login";
-import { Home } from "@pages/home";
 import { initializeDataDB } from "@mocks/utils/initializeDataDB";
 
 import { GlobalStyles } from "./styles/global";
@@ -22,12 +21,12 @@ function LogOut() {
   localStorage.clear();
   const { logout } = useAuth();
   logout();
-  return <Home />;
+  return <BoardRoutes />;
 }
 
 function FirstPage() {
   const { user } = useContext(AppContext);
-  return user.company.length === 0 ? <Login /> : <Home />;
+  return user.company.length === 0 ? <Login /> : <BoardRoutes />;
 }
 
 const router = createBrowserRouter(
