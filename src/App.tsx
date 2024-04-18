@@ -34,7 +34,7 @@ const router = createBrowserRouter(
     <>
       <Route path="/" element={<FirstPage />} errorElement={<ErrorPage />} />
       <Route path="login/*" element={<LoginRoutes />} />
-      <Route path="board/*" element={<BoardRoutes />} />
+      <Route path="/*" element={<BoardRoutes />} />
       <Route path="logout" element={<LogOut />} />
       <Route path="sections" element={<ContainerSections />} />
     </>
