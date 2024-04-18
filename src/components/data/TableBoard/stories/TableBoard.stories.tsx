@@ -1,57 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { IEntries, TableBoard } from "..";
 
-const mockData: IEntries[] = [
-  {
-    section: {
-      title: "Section 1",
-      requirements: [
-        {
-          id: "1",
-          description: "Requirement 1",
-          tag: "Cumple",
-        },
-        {
-          id: "2",
-          description: "Requirement 2",
-          tag: "No Cumple",
-        },
-      ],
-      validations: true,
-    },
-  },
-
-  {
-    section: {
-      title: "Section 2",
-      requirements: [
-        {
-          id: "3",
-          description: "Requirement 3",
-          tag: "Sin Evaluar",
-        },
-        {
-          id: "4",
-          description: "Requirement 4",
-          tag: "No Cumple",
-        },
-      ],
-      validations: false,
-    },
-  },
-];
+import { actionsMock, mockData, titlesMock } from "./mockStories";
+import { TableBoard } from "..";
+import { props } from "./props";
 
 type Story = StoryObj<typeof TableBoard>;
 
 const meta: Meta<typeof TableBoard> = {
-  title: "components/data/VisualVersion",
+  title: "components/data/TableBoard",
   component: TableBoard,
+  argTypes: props,
 };
 
 export const Default: Story = {
   args: {
     id: "1",
     entries: mockData,
+    titles: titlesMock,
+    actions: actionsMock,
+    borderTable: true,
   },
 };
 export default meta;

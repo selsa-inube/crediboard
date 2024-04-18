@@ -2,47 +2,51 @@ import styled from "styled-components";
 
 import { inube } from "@inube/design-system";
 
+interface IStyledContainer {
+  $borderTable: boolean;
+}
+
 interface IStyledTdbodyContainer {
   $zebraEffect: boolean;
 }
 
-export const StyledContainer = styled.div`
+export const StyledContainer = styled.div<IStyledContainer>`
   border-radius: 8px;
   overflow: hidden;
-  padding-top: ${inube.spacing.s150};
-  padding-left: ${inube.spacing.s075};
-  padding-right: ${inube.spacing.s075};
-  border: 1px solid ${inube.color.stroke.divider.regular};
+  padding-top: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
+  padding-bottom: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
+  padding-left: ${({ theme }) => theme?.spacing?.s075 || inube.spacing.s075};
+  padding-right: ${({ theme }) => theme?.spacing?.s075 || inube.spacing.s075};
+  border: ${({ theme, $borderTable }) =>
+    $borderTable &&
+    `2px solid ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}`};
 `;
 
 export const StyledTable = styled.table`
-  box-sizing: border-box;
   border-collapse: collapse;
-  table-layout: auto;
   width: 100%;
 `;
 
 export const StyledTbody = styled.tbody`
-  background-color: ${inube.color.surface.light.clear};
+  background-color: ${({ theme }) =>
+    theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
 `;
 
-export const StyledTdTitle = styled.td`
-  text-align: center;
+export const StyledThead = styled.thead`
+  background-color: ${({ theme }) =>
+    theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
 `;
 
-export const StyledTdbodyContainer = styled.tr<IStyledTdbodyContainer>`
-  background-color: ${({ $zebraEffect }) =>
+export const StyledTh = styled.th`
+  background-color: ${({ theme }) =>
+    theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
+`;
+
+export const StyledTr = styled.tr<IStyledTdbodyContainer>`
+  vertical-align: middle;
+  white-space: nowrap;
+  background-color: ${({ theme, $zebraEffect }) =>
     $zebraEffect
-      ? inube.color.surface.gray.regular
-      : inube.color.surface.gray.clear};
-`;
-
-export const StyledTd = styled.td`
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const StyledContainerData = styled.div`
-  display: flex;
-  flex-direction: row;
+      ? theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
+      : theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
 `;
