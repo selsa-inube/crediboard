@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Outlet } from "react-router-dom";
-import { Header, Nav, Grid, useMediaQuery } from "@inube/design-system";
+import { Header, Nav, Grid, useMediaQueries } from "@inube/design-system";
 import { navigationConfig } from "@pages/home/config/apps.config";
 
 import {
@@ -24,7 +24,7 @@ const renderLogo = (imgUrl: string) => {
 function AppPage() {
   const { user } = useContext(AppContext);
 
-  const smallScreen = useMediaQuery("(max-width: 849px)");
+  const [laptop] = Object.values(useMediaQueries(["(min-width: 945px)"]));
   return (
     <StyledAppPage>
       <Grid templateRows="auto 1fr" height="100vh" justifyContent="unset">
@@ -37,10 +37,10 @@ function AppPage() {
         />
         <StyledContainer>
           <Grid
-            templateColumns={smallScreen ? "1fr" : "auto 1fr"}
+            templateColumns={!laptop ? "1fr" : "auto 1fr"}
             alignContent="unset"
           >
-            {!smallScreen && (
+            {laptop && (
               <StyledContainerNav>
                 <Nav
                   navigation={navigationConfig}
