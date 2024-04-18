@@ -1,7 +1,8 @@
 import { Stack, inube, Text, Grid } from "@inube/design-system";
-import { Fieldset } from "@src/components/data/Fieldset";
-import { ContainerSections } from "@src/components/layout/ContainerSections";
-import { configData } from "@src/components/layout/ContainerSections/config";
+
+import { configData } from "@components/layout/ContainerSections/config";
+import { ContainerSections } from "@components/layout/ContainerSections";
+import { Fieldset } from "@components/data/Fieldset";
 
 const FinancialReportingSections = () => {
   return (
