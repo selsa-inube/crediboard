@@ -3,7 +3,7 @@ import { MouseEventHandler } from "react";
 
 export interface OptionListProps {
   children: JSX.Element | JSX.Element[];
-  onClick: MouseEventHandler<HTMLUListElement>;
+  onClick?: MouseEventHandler<HTMLUListElement>;
 }
 
 const OptionList = (props: OptionListProps) => {
