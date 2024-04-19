@@ -28,8 +28,8 @@ function MenuItem(props: MenuItemProps) {
 
   return (
     <StyledMenuItemLink
-      spacing={spacing}
-      disabled={isDisabled}
+      $spacing={spacing}
+      $disabled={isDisabled}
       to={path}
       onClick={onClick}
     >

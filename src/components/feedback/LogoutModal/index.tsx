@@ -8,7 +8,6 @@ import {
   useMediaQuery,
 } from "@inube/design-system";
 import { MdClose } from "react-icons/md";
-import { Link } from "react-router-dom";
 
 import { StyledBackdropBlanket, StyledModal } from "./styles";
 
@@ -24,15 +23,11 @@ function LogoutModal(props: ILogoutModalProps) {
   return (
     <StyledBackdropBlanket>
       <Blanket>
-        <StyledModal isSmallScreen={isSmallScreen}>
+        <StyledModal $isSmallScreen={isSmallScreen}>
           <Stack direction="column" gap={inube.spacing.s300} padding="s300">
             <Stack direction="column" gap={inube.spacing.s300}>
-              <Stack direction="row" justifyContent="space-between">
-                <Text
-                  type="title"
-                  size={isSmallScreen ? "small" : "medium"}
-                  appearance="dark"
-                >
+              <Stack justifyContent="space-between">
+                <Text type="title" size={isSmallScreen ? "small" : "medium"}>
                   Cerrar sesión
                 </Text>
                 <Icon
@@ -47,7 +42,7 @@ function LogoutModal(props: ILogoutModalProps) {
                 ¿Realmente quieres cerrar sesión?
               </Text>
             </Stack>
-            <Stack justifyContent="flex-end" gap="8px">
+            <Stack justifyContent="flex-end" gap={inube.spacing.s200}>
               <Button
                 appearance="gray"
                 spacing={isSmallScreen ? "compact" : "wide"}
@@ -55,15 +50,15 @@ function LogoutModal(props: ILogoutModalProps) {
               >
                 Cancelar
               </Button>
-              <Link to={logoutPath}>
-                <Button
-                  appearance="primary"
-                  spacing={isSmallScreen ? "compact" : "wide"}
-                  onClick={handleShowBlanket}
-                >
-                  Cerrar sesión
-                </Button>
-              </Link>
+              <Button
+                appearance="primary"
+                spacing={isSmallScreen ? "compact" : "wide"}
+                onClick={handleShowBlanket}
+                type="link"
+                path={logoutPath}
+              >
+                Cerrar sesión
+              </Button>
             </Stack>
           </Stack>
         </StyledModal>

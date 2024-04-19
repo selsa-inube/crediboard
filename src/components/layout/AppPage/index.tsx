@@ -35,7 +35,7 @@ function AppPage() {
   const handleClickOutside = (event: MouseEvent) => {
     if (
       userMenuRef.current &&
-      !userMenuRef.current.contains(event.target as Node) &&
+      !userMenuRef.current.contains(event.target as HTMLElement) &&
       event.target !== userMenuRef.current
     ) {
       setShowUserMenu(false);
@@ -61,6 +61,18 @@ function AppPage() {
     setShowUserMenu(false);
   };
 
+  const sections = [
+    {
+      links: [
+        {
+          title: "Cerrar sesión",
+          iconBefore: <MdLogout />,
+          onClick: handleToggleLogoutModal,
+        },
+      ],
+    },
+  ];
+
   return (
     <StyledAppPage>
       <Grid templateRows="auto 1fr" height="100vh" justifyContent="unset">
@@ -75,20 +87,7 @@ function AppPage() {
           {showUserMenu && (
             <StyledMenuContainer ref={userMenuRef}>
               <MenuUser userName={user.username} businessUnit={user.company} />
-              <MenuSection
-                sections={[
-                  {
-                    links: [
-                      {
-                        title: "Cerrar sesión",
-                        iconBefore: <MdLogout />,
-                        onClick: handleToggleLogoutModal,
-                      },
-                    ],
-                  },
-                ]}
-                divider={true}
-              />
+              <MenuSection sections={sections} divider={true} />
             </StyledMenuContainer>
           )}
           {showLogoutModal && (

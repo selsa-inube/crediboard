@@ -17,9 +17,7 @@ function MenuUser(props: MenuUserProps) {
         </Stack>
       )}
       <Stack direction="column" justifyContent="center">
-        <Text type="body" size="medium">
-          {userName}
-        </Text>
+        <Text size="medium">{userName}</Text>
         <Text type="body" size="small" appearance="gray">
           {businessUnit}
         </Text>
