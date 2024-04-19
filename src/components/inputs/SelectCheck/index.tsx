@@ -1,7 +1,8 @@
-/* import { useEffect, useRef, useState } from "react";
-import { SelectUI } from "./interface";
+import { useState } from "react";
+
 import { Size, Status } from "./types";
 import { IOptionItemProps } from "./OptionItem";
+import { SelectUI } from "./interface";
 
 export interface ISelectProps {
   label?: string;
@@ -21,9 +22,10 @@ export interface ISelectProps {
   onFocus?: (event: FocusEvent) => void;
   onBlur?: (event: FocusEvent) => void;
   onClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeCheck?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const Select = (props: ISelectProps) => {
+export const SelectCheck = (props: ISelectProps) => {
   const {
     label,
     name,
@@ -42,12 +44,11 @@ export const Select = (props: ISelectProps) => {
     onFocus,
     onChange,
     onClick,
+    onChangeCheck,
   } = props;
 
   const [focused, setFocused] = useState(false);
   const [displayList, setDisplayList] = useState(false);
-
-  const selectRef = useRef<{ contains: (e: EventTarget) => EventTarget }>(null);
 
   const handleFocus = (e: FocusEvent) => {
     setFocused(true);
@@ -59,25 +60,6 @@ export const Select = (props: ISelectProps) => {
     onBlur && onBlur(e);
   };
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (selectRef.current && !selectRef.current.contains(event.target!)) {
-      setDisplayList(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [selectRef]);
-
-  const onInsideClick = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e, name);
-    setDisplayList(false);
-  };
-
   const handleClick = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (readonly) return;
     onClick && onClick(e);
@@ -86,7 +68,6 @@ export const Select = (props: ISelectProps) => {
 
   return (
     <SelectUI
-      ref={selectRef}
       label={label}
       name={name}
       id={id}
@@ -106,8 +87,7 @@ export const Select = (props: ISelectProps) => {
       onChange={onChange}
       onClick={handleClick}
       displayList={displayList}
-      onOptionClick={onInsideClick}
+      onChangeCheck={onChangeCheck}
     />
   );
 };
- */

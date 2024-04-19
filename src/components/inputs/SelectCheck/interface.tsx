@@ -1,9 +1,9 @@
-/* import { forwardRef } from "react";
 import {
   MdOutlineError,
   MdCheckCircle,
   MdOutlineArrowDropDown,
 } from "react-icons/md";
+
 import { Text, Icon, Label, Stack } from "@inube/design-system";
 
 import { Size } from "./types";
@@ -15,7 +15,6 @@ import { OptionItem } from "./OptionItem";
 export interface ISelectInterfaceProps extends ISelectProps {
   focused?: boolean;
   displayList: boolean;
-  onOptionClick: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const getTypo = (size: Size) => {
@@ -52,7 +51,7 @@ const Message = (
   );
 };
 
-const SelectUI = forwardRef((props: ISelectInterfaceProps, ref) => {
+export const SelectUI = (props: ISelectInterfaceProps) => {
   const {
     label,
     name,
@@ -72,12 +71,13 @@ const SelectUI = forwardRef((props: ISelectInterfaceProps, ref) => {
     onBlur,
     onClick,
     onChange,
-    onOptionClick,
+
     displayList,
+    onChangeCheck,
   } = props;
 
   return (
-    <StyledContainer fullwidth={fullwidth} disabled={disabled} ref={ref}>
+    <StyledContainer $fullwidth={fullwidth} disabled={disabled}>
       <Stack
         alignItems="center"
         margin="s0 s0 s050 s0"
@@ -106,10 +106,10 @@ const SelectUI = forwardRef((props: ISelectInterfaceProps, ref) => {
 
       <StyledInputContainer
         disabled={disabled}
-        focused={focused}
-        status={status}
+        $focused={focused!}
+        $status={status}
         onClick={onClick}
-        readonly={readonly}
+        $readonly={readonly}
       >
         <StyledInput
           autoComplete="off"
@@ -119,11 +119,11 @@ const SelectUI = forwardRef((props: ISelectInterfaceProps, ref) => {
           id={id}
           placeholder={placeholder}
           disabled={disabled}
-          required={required}
-          size={size}
-          status={status}
-          fullwidth={fullwidth}
-          focused={focused}
+          $required={required}
+          $size={size}
+          $status={status}
+          $fullwidth={fullwidth}
+          $focused={focused!}
           onFocus={onFocus}
           onBlur={onBlur}
           onChange={onChange}
@@ -145,19 +145,18 @@ const SelectUI = forwardRef((props: ISelectInterfaceProps, ref) => {
         <Message disabled={disabled} status={status} message={message} />
       )}
       {displayList && !disabled && (
-        <OptionList onClick={onOptionClick!}>
+        <OptionList>
           {options.map((optionItem) => (
             <OptionItem
               key={optionItem.id}
               id={optionItem.id}
               label={optionItem.label}
+              checked={optionItem.checked}
+              onchange={onChangeCheck}
             />
           ))}
         </OptionList>
       )}
     </StyledContainer>
   );
-});
-
-export { SelectUI };
- */
+};
