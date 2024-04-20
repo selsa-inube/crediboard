@@ -33,12 +33,10 @@ function AppPage() {
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (
-      userMenuRef.current &&
-      !userMenuRef.current.contains(event.target as HTMLElement) &&
-      event.target !== userMenuRef.current
-    ) {
-      setShowUserMenu(false);
+    if (event.target instanceof HTMLElement) {
+      if (userMenuRef.current && event.target !== userMenuRef.current) {
+        setShowUserMenu(false);
+      }
     }
   };
 
