@@ -19,14 +19,9 @@ function MenuSection(props: MenuSectionProps) {
   return (
     <>
       {sections.map((section, index) => (
-        <Stack key={section.title || index} width="312px" direction="column">
+        <Stack key={index} width="312px" direction="column">
           {divider && (
-            <Stack
-              key={section.title || index}
-              width="280px"
-              margin="s0 s0 s0 s200"
-              direction="column"
-            >
+            <Stack width="280px" margin="s0 s0 s0 s200" direction="column">
               <Divider />
             </Stack>
           )}
@@ -35,7 +30,7 @@ function MenuSection(props: MenuSectionProps) {
           <Stack
             direction="column"
             gap={spacing === "compact" ? inube.spacing.s050 : inube.spacing.s0}
-            margin={`s075 s0`}
+            margin="s075 s0"
           >
             {section.links.map((link) => (
               <MenuItem
