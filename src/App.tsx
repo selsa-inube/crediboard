@@ -15,7 +15,7 @@ import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
 import AppContextProvider, { AppContext } from "./context/AppContext";
 import { ErrorPage } from "./components/layout/ErrorPage";
-import { FinancialReporting } from "./pages/home/financialReporting";
+import { FinancialReporting } from "./pages/board/outlets/financialReporting";
 
 function LogOut() {
   localStorage.clear();
