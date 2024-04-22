@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { OptionList } from ".";
+
 import { OptionItem } from "../OptionItem";
+import { parameters, props } from "./props";
+import { OptionList } from ".";
 
 type Story = StoryObj<typeof OptionList>;
 
@@ -13,6 +15,8 @@ const options = [
 const meta: Meta<typeof OptionList> = {
   title: "components/inputs/SelectCheck/OptionList",
   component: OptionList,
+  parameters,
+  argTypes: props,
 };
 
 export const Dedfault: Story = {
