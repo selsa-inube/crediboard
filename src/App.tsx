@@ -8,26 +8,25 @@ import {
 import { useAuth } from "@inube/auth";
 
 import { Login } from "@pages/login";
-import { Home } from "@pages/home";
-import { ErrorPage } from "@components/layout/ErrorPage";
-import AppContextProvider, { AppContext } from "@context/AppContext";
-import { FinancialReporting } from "@pages/home/financialReporting";
 import { initializeDataDB } from "@mocks/utils/initializeDataDB";
 
 import { GlobalStyles } from "./styles/global";
 import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
+import AppContextProvider, { AppContext } from "./context/AppContext";
+import { ErrorPage } from "./components/layout/ErrorPage";
+import { FinancialReporting } from "./pages/home/financialReporting";
 
 function LogOut() {
   localStorage.clear();
   const { logout } = useAuth();
   logout();
-  return <Home />;
+  return <BoardRoutes />;
 }
 
 function FirstPage() {
   const { user } = useContext(AppContext);
-  return user.company.length === 0 ? <Login /> : <Home />;
+  return user.company.length === 0 ? <Login /> : <BoardRoutes />;
 }
 
 const router = createBrowserRouter(
@@ -35,7 +34,7 @@ const router = createBrowserRouter(
     <>
       <Route path="/" element={<FirstPage />} errorElement={<ErrorPage />} />
       <Route path="login/*" element={<LoginRoutes />} />
-      <Route path="board/*" element={<BoardRoutes />} />
+      <Route path="/*" element={<BoardRoutes />} />
       <Route path="logout" element={<LogOut />} />
       <Route path="financial-reporting" element={<FinancialReporting />} />
     </>
