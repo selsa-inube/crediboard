@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { ControllerSelectCheck } from "./constroller";
 
+import { parameters, props } from "../props";
 import { SelectCheck } from "..";
 
 const options = [
@@ -14,6 +15,8 @@ type Story = StoryObj<typeof SelectCheck>;
 const meta: Meta<typeof SelectCheck> = {
   title: "components/inputs/SelectCheck",
   component: ControllerSelectCheck,
+  parameters,
+  argTypes: props,
 };
 
 export const Default: Story = {
