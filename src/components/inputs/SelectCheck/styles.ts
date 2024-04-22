@@ -90,9 +90,7 @@ export const StyledInput = styled.input<IStyledInput>`
   outline: none;
   border-radius: 8px;
   padding: 0px 12px 0px 16px;
-  border-width: none;
   border-style: none;
-  border-color: none;
   font-family: ${({ theme }) =>
     theme?.typography?.body?.large?.font || inube.typography.body.large.font};
   font-size: ${({ theme }) =>
