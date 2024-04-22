@@ -6,11 +6,12 @@ import {
 
 import { Text, Icon, Label, Stack } from "@inube/design-system";
 
-import { Size } from "./types";
-import { OptionList } from "./OptionList";
-import { ISelectProps } from ".";
-import { StyledContainer, StyledInputContainer, StyledInput } from "./styles";
 import { OptionItem } from "./OptionItem";
+import { OptionList } from "./OptionList";
+
+import { Size } from "./types";
+import { StyledContainer, StyledInputContainer, StyledInput } from "./styles";
+import { ISelectProps } from ".";
 
 export interface ISelectInterfaceProps extends ISelectProps {
   focused?: boolean;

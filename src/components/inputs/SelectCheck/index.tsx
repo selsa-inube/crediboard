@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { Size, Status } from "./types";
 import { IOptionItemProps } from "./OptionItem";
+import { Size, Status } from "./types";
 import { SelectUI } from "./interface";
 
 export interface ISelectProps {
