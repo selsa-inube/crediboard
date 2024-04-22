@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { ControllerSelectCheck } from "./constroller";
+
 import { SelectCheck } from "..";
 
 const options = [
@@ -11,11 +13,7 @@ type Story = StoryObj<typeof SelectCheck>;
 
 const meta: Meta<typeof SelectCheck> = {
   title: "components/inputs/SelectCheck",
-  component: SelectCheck,
-};
-
-const handreGange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  console.log({ name: e.target.name, checked: e.target.checked });
+  component: ControllerSelectCheck,
 };
 
 export const Default: Story = {
@@ -32,7 +30,6 @@ export const Default: Story = {
     options: options,
     onBlur: () => {},
     onFocus: () => {},
-    onChangeCheck: handreGange,
     onClick: () => {},
   },
 };
