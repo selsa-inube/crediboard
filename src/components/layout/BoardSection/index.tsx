@@ -5,6 +5,7 @@ import { MdOutlineChevronRight } from "react-icons/md";
 import { SummaryCard } from "@components/cards/SummaryCard";
 import { Requests } from "@services/types";
 import { formatISODatetoCustomFormat } from "@utils/formatData/date";
+import { capitalizeFirstLetter } from "@utils/formatData/text";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
@@ -82,7 +83,9 @@ function BoardSection(props: IBoardSectionProps) {
             <SummaryCard
               key={index}
               rad={request.k_Prospe}
-              date={formatISODatetoCustomFormat(request.f_Prospe)}
+              date={capitalizeFirstLetter(
+                formatISODatetoCustomFormat(request.f_Prospe)
+              )}
               name={request.nnasocia}
               destination={request.k_Desdin}
               value={request.v_Monto}

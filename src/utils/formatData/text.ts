@@ -3,13 +3,7 @@ const truncateTextToMaxLength = (text: string, maxLength = 50) => {
 };
 
 function capitalizeFirstLetter(text: string) {
-  return text
-    .toLowerCase()
-    .split(" ")
-    .map(function (word) {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    })
-    .join(" ");
+  return text.toLowerCase().replace(/\b\w/g, (word) => word.toUpperCase());
 }
 
 export { truncateTextToMaxLength, capitalizeFirstLetter };
