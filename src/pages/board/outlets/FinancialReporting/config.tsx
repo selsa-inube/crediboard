@@ -73,7 +73,7 @@ export const entriesFinanacialReporting = [
           spacing="compact"
           cursorHoverh
           size="16px"
-          onClick={resiveData}
+          onClick={resiveData.bind(this)}
         />
       </div>
     ),
