@@ -1,9 +1,6 @@
 import { MdOutlineSend, MdOutlineRemoveRedEye } from "react-icons/md";
 
 import { Icon, Tag } from "@inube/design-system";
-const resiveData = (e: React.ChangeEvent) => {
-  console.log(e, "function que recibe data");
-};
 
 export const titlesFinanacialReporting = [
   {
@@ -51,7 +48,7 @@ export const entriesFinanacialReporting = [
         <Icon
           icon={<MdOutlineRemoveRedEye />}
           appearance="primary"
-          onClick={resiveData}
+          onClick={() => {}}
           spacing="compact"
           size="16px"
           cursorHover
@@ -73,7 +70,7 @@ export const entriesFinanacialReporting = [
           spacing="compact"
           cursorHoverh
           size="16px"
-          onClick={resiveData.bind(this)}
+          onClick={() => {}}
         />
       </div>
     ),
