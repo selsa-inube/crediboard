@@ -15,7 +15,8 @@ import { initializeDataDB } from "@mocks/utils/initializeDataDB";
 import { GlobalStyles } from "./styles/global";
 import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
-import { ContainerSections } from "./components/layout/ContainerSections";
+//import { ContainerSections } from "./components/layout/ContainerSections";
+import { PromissoryNotes } from "./pages/board/outlets/FinancialReporting";
 
 function LogOut() {
   localStorage.clear();
@@ -36,7 +37,7 @@ const router = createBrowserRouter(
       <Route path="login/*" element={<LoginRoutes />} />
       <Route path="/*" element={<BoardRoutes />} />
       <Route path="logout" element={<LogOut />} />
-      <Route path="sections" element={<ContainerSections />} />
+      <Route path="/sections/:id" element={<PromissoryNotes />} />
     </>
   )
 );
