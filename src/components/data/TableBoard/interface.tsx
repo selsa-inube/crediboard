@@ -17,6 +17,7 @@ interface ITableBoardUIProps extends ITableBoardProps {
 
 export const TableBoardUI = (props: ITableBoardUIProps) => {
   const { id, entries, actions, titles, titlesList, borderTable } = props;
+
   return (
     <StyledContainer id={id} $borderTable={borderTable!}>
       <StyledTable>
@@ -31,6 +32,18 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                   padding="0px 4px"
                 >
                   {title.titleName}
+                </Text>
+              </StyledTh>
+            ))}
+            {actions?.map((action) => (
+              <StyledTh key={action.id}>
+                <Text
+                  appearance="primary"
+                  type="title"
+                  size="medium"
+                  padding="0px 4px"
+                >
+                  {action.actionName}
                 </Text>
               </StyledTh>
             ))}
