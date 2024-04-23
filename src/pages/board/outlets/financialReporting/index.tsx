@@ -1,10 +1,16 @@
 import { Stack, inube, Text, Grid } from "@inube/design-system";
 
-import { configData } from "@components/layout/ContainerSections/config";
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { Fieldset } from "@components/data/Fieldset";
 
-const FinancialReportingSections = () => {
+export interface IFinancialReportingSectionsProps {
+  children?: JSX.Element | JSX.Element[];
+}
+
+const FinancialReportingSections = (
+  props: IFinancialReportingSectionsProps
+) => {
+  const { children } = props;
   return (
     <Stack direction="column" gap={inube.spacing.s500}>
       <Stack direction="column">
@@ -13,11 +19,7 @@ const FinancialReportingSections = () => {
         </Fieldset>
       </Stack>
       <Grid templateColumns="repeat(2,1fr)" gap="s200" autoRows="auto">
-        {configData.map((data) => (
-          <Fieldset title={data.title} descriptionTitle={data.descriptionTitle}>
-            <Text></Text>
-          </Fieldset>
-        ))}
+        {children}
       </Grid>
     </Stack>
   );
