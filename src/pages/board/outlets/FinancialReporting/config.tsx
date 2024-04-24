@@ -2,6 +2,34 @@ import { MdOutlineSend, MdOutlineRemoveRedEye } from "react-icons/md";
 
 import { Icon, Tag } from "@inube/design-system";
 
+const entrySelection = (e: React.ChangeEvent<HTMLButtonElement>) => {
+  const padre = e.target.closest("tr");
+  const tdElements = padre?.querySelectorAll("td");
+
+  const rowData: { [key: string]: string | undefined } = {};
+
+  tdElements?.forEach((td, index) => {
+    const value = td?.textContent?.trim();
+
+    switch (index) {
+      case 0:
+        rowData.id = value;
+        break;
+      case 1:
+        rowData["No. de Obligación"] = value;
+        break;
+      case 2:
+        rowData["No. de Documento"] = value;
+        break;
+      case 3:
+        rowData.Tipo = value;
+        break;
+    }
+  });
+
+  return rowData;
+};
+
 export const titlesFinanacialReporting = [
   {
     id: "numObligacion",
@@ -48,7 +76,7 @@ export const entriesFinanacialReporting = [
         <Icon
           icon={<MdOutlineRemoveRedEye />}
           appearance="primary"
-          onClick={() => {}}
+          onClick={entrySelection}
           spacing="compact"
           size="16px"
           cursorHover
@@ -68,9 +96,9 @@ export const entriesFinanacialReporting = [
           icon={<MdOutlineSend />}
           appearance="primary"
           spacing="compact"
-          cursorHoverh
+          cursorHover
           size="16px"
-          onClick={() => {}}
+          onClick={entrySelection}
         />
       </div>
     ),
