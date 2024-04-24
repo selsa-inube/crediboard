@@ -66,9 +66,10 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                   )}
                 </td>
               ))}
-              {actions?.map((action) => (
-                <td key={action.id}>{action.content(entry)}</td>
-              ))}
+              {actions &&
+                actions.map((action) => (
+                  <td key={action.id}>{action.content(entry)}</td>
+                ))}
             </StyledTr>
           ))}
         </StyledTbody>
