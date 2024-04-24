@@ -5,6 +5,7 @@ import { currencyFormat } from "@utils/formatData/currency";
 import {
   truncateTextToMaxLength,
   capitalizeFirstLetter,
+  capitalizeFirstLetterEachWord,
 } from "@utils/formatData/text";
 
 import { StyledSummaryCard, StyledDivider } from "./styles";
@@ -21,8 +22,16 @@ interface ISummaryCardProps {
 }
 
 function SummaryCard(props: ISummaryCardProps) {
-  const { rad, date, name, destination, value, toDo, isPinned, hasMessage } =
-    props;
+  const {
+    rad,
+    date,
+    name,
+    destination,
+    value,
+    toDo,
+    isPinned = false,
+    hasMessage = false,
+  } = props;
   return (
     <StyledSummaryCard>
       <Stack
@@ -39,7 +48,7 @@ function SummaryCard(props: ISummaryCardProps) {
             {date}
           </Text>
         </Stack>
-        <Text type="label">{capitalizeFirstLetter(name)}</Text>
+        <Text type="label">{capitalizeFirstLetterEachWord(name)}</Text>
         <Text size="medium" appearance="gray">
           Destino:
         </Text>
@@ -57,7 +66,9 @@ function SummaryCard(props: ISummaryCardProps) {
         <Text size="medium" appearance="gray">
           Actividad en ejecución:
         </Text>
-        <Text type="label">{truncateTextToMaxLength(toDo, 60)}</Text>
+        <Text type="label">
+          {capitalizeFirstLetter(truncateTextToMaxLength(toDo, 60))}
+        </Text>
         <Stack direction="column" gap={inube.spacing.s075}>
           <StyledDivider />
           <Stack gap={inube.spacing.s100} justifyContent="flex-end">
