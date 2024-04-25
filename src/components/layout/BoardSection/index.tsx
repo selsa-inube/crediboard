@@ -2,24 +2,27 @@ import { useState } from "react";
 import { Stack, Text, Icon, useMediaQuery, inube } from "@inube/design-system";
 import { MdOutlineChevronRight } from "react-icons/md";
 
+import { SummaryCard } from "@components/cards/SummaryCard";
+import { Requests } from "@services/types";
+import { formatISODatetoCustomFormat } from "@utils/formatData/date";
+import { capitalizeFirstLetter } from "@utils/formatData/text";
+
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
 
 interface IBoardSectionProps {
   sectionTitle: string;
-  numberActiveCards: number;
   sectionBackground: SectionBackground;
   orientation: SectionOrientation;
-  children: JSX.Element | JSX.Element[];
+  sectionInformation: Requests[];
 }
 
 function BoardSection(props: IBoardSectionProps) {
   const {
     sectionTitle,
-    numberActiveCards,
     sectionBackground = "light",
     orientation = "vertical",
-    children,
+    sectionInformation,
   } = props;
 
   const smallScreen = useMediaQuery("(max-width: 595px)");
@@ -66,7 +69,7 @@ function BoardSection(props: IBoardSectionProps) {
           </Text>
         </Stack>
         <Text type="title" size="medium">
-          {numberActiveCards}
+          {sectionInformation.length}
         </Text>
       </Stack>
       {collapse && (
@@ -76,7 +79,21 @@ function BoardSection(props: IBoardSectionProps) {
           justifyContent={smallScreen ? "center" : "flex-start"}
           gap={inube.spacing.s250}
         >
-          {children}
+          {sectionInformation.map((request, index) => (
+            <SummaryCard
+              key={index}
+              rad={request.k_Prospe}
+              date={capitalizeFirstLetter(
+                formatISODatetoCustomFormat(request.f_Prospe)
+              )}
+              name={request.nnasocia}
+              destination={request.k_Desdin}
+              value={request.v_Monto}
+              toDo={request.n_Descr_Tarea}
+              isPinned={true}
+              hasMessage={true}
+            />
+          ))}
         </Stack>
       )}
     </StyledBoardSection>
