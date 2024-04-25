@@ -3,10 +3,6 @@ const props = {
     control: "text",
     description: "Section title",
   },
-  numberActiveCards: {
-    control: "number",
-    description: "Number of active cards in the section",
-  },
   sectionBackground: {
     control: {
       type: "select",
@@ -21,9 +17,9 @@ const props = {
     },
     description: "Section orientation",
   },
-  children: {
-    control: "object",
-    description: "Child elements of the component",
+  sectionInformation: {
+    control: "array",
+    description: "information about section summary cards",
   },
 };
 
