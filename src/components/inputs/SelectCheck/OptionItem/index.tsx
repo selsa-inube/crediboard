@@ -10,7 +10,7 @@ export interface IOptionItemProps {
 }
 
 export const OptionItem = (props: IOptionItemProps) => {
-  const { id, label, checked, onchange } = props;
+  const { id, label, checked = false, onchange } = props;
 
   return (
     <StyledOptionItem>
