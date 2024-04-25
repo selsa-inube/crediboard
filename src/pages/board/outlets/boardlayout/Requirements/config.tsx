@@ -64,12 +64,12 @@ export const entriesRequirements: IEntries[][] = [
     {
       id: "seis",
       "Requisitos documentales": "Desprendible de pago",
-      tag: <Tag label="Cumple" appearance="success" />,
+      tag: <Tag label="Sin Evaluar" appearance="warning" />,
     },
     {
       id: "siete",
       "Requisitos documentales": "Declaración de renta",
-      tag: <Tag label="Cumple" appearance="success" />,
+      tag: <Tag label="Sin Evaluar" appearance="warning" />,
     },
   ],
   [
@@ -113,7 +113,7 @@ export const actionsRequirements = [
             icon={<MdOutlineCheckCircle />}
             appearance="primary"
             spacing="compact"
-            cursorHoverh
+            cursorHover
             size="18px"
             onClick={() => resiveData(data)}
             disabled={
