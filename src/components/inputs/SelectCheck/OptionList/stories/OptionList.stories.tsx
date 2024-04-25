@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { OptionItem } from "../OptionItem";
+import { OptionItem } from "@components/inputs/SelectCheck/OptionItem";
+
 import { parameters, props } from "./props";
-import { OptionList } from ".";
+import { OptionList } from "..";
 
 type Story = StoryObj<typeof OptionList>;
 
