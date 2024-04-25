@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { parameters, props } from "./props";
-import { OptionItem } from ".";
+import { OptionItem } from "..";
 
 type Story = StoryObj<typeof OptionItem>;
 
