@@ -9,15 +9,15 @@ import { useAuth } from "@inube/auth";
 
 import { Login } from "@pages/login";
 import { initializeDataDB } from "@mocks/utils/initializeDataDB";
+import { ErrorPage } from "@components/layout/ErrorPage";
+import { FinancialReporting } from "@pages/board/outlets/financialReporting";
+import { Requirements } from "@pages/board/outlets/boardlayout/Requirements";
+import { dataRequirements } from "@pages/board/outlets/boardlayout/Requirements/config";
 
 import { GlobalStyles } from "./styles/global";
 import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
 import AppContextProvider, { AppContext } from "./context/AppContext";
-import { ErrorPage } from "./components/layout/ErrorPage";
-import { FinancialReporting } from "./pages/board/outlets/financialReporting";
-import { Requirements } from "./pages/board/outlets/boardlayout/Requirements";
-import { dataRequirements } from "./pages/board/outlets/boardlayout/Requirements/config";
 
 function LogOut() {
   localStorage.clear();

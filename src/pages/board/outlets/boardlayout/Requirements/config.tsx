@@ -1,8 +1,8 @@
 import { isValidElement } from "react";
+import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
 import { Icon, Tag } from "@inube/design-system";
 
-import { IEntries } from "@src/components/data/TableBoard/types";
-import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
+import { IEntries } from "@components/data/TableBoard/types";
 
 const resiveData = (data: IEntries) => {
   console.log(data, "function que recibe data");
