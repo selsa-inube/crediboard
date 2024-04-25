@@ -35,7 +35,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           </Stack>
         </Stack>
       </Stack>
-      <Stack>{children}</Stack>
+      <Stack direction="column">{children}</Stack>
     </Stack>
   );
 };
