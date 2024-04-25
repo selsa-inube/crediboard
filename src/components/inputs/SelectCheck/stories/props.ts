@@ -1,4 +1,4 @@
-import { sizes } from "./types";
+import { sizes } from "../types";
 
 export const parameters = {
   docs: {

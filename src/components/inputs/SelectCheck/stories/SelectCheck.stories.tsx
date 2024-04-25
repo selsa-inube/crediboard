@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ControllerSelectCheck } from "./constroller";
 
-import { parameters, props } from "../props";
+import { ControllerSelectCheck } from "./constroller";
+import { parameters, props } from "./props";
 import { SelectCheck } from "..";
 
 const options = [
