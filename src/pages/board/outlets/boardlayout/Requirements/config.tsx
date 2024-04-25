@@ -129,16 +129,19 @@ export const actionsRequirements = [
 
 export const dataRequirements = [
   {
+    id: "tabla1",
     titlesRequirements: titlesRequirements[0],
     entriesRequirements: entriesRequirements[0],
     actionsRequirements: actionsRequirements[0],
   },
   {
+    id: "tabla2",
     titlesRequirements: titlesRequirements[1],
     entriesRequirements: entriesRequirements[1],
     actionsRequirements: actionsRequirements[0],
   },
   {
+    id: "tabla3",
     titlesRequirements: titlesRequirements[2],
     entriesRequirements: entriesRequirements[2],
     actionsRequirements: actionsRequirements[0],

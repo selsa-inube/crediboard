@@ -5,6 +5,7 @@ import { TableBoard } from "@components/data/TableBoard";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 
 interface IData {
+  id: string;
   titlesRequirements: ITitle[];
   entriesRequirements: IEntries[];
   actionsRequirements: IAction[];
@@ -19,10 +20,10 @@ export const Requirements = (props: IRequirementsProps) => {
   return (
     <Stack>
       <Fieldset title="Requerimientos">
-        {data.map((item, index) => (
+        {data.map((item) => (
           <TableBoard
-            key={index}
-            id={index.toString()}
+            key={item.id}
+            id={item.id}
             titles={item.titlesRequirements}
             entries={item.entriesRequirements}
             actions={item.actionsRequirements}
