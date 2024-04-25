@@ -1,22 +1,21 @@
+import { useContext, useEffect } from "react";
 import {
   Route,
   RouterProvider,
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import { useContext, useEffect } from "react";
 import { useAuth } from "@inube/auth";
 
-import { ErrorPage } from "@components/layout/ErrorPage";
-import AppContextProvider, { AppContext } from "@context/AppContext";
 import { Login } from "@pages/login";
 import { initializeDataDB } from "@mocks/utils/initializeDataDB";
 
 import { GlobalStyles } from "./styles/global";
 import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
-//import { ContainerSections } from "./components/layout/ContainerSections";
-import { PromissoryNotes } from "./pages/board/outlets/FinancialReporting";
+import AppContextProvider, { AppContext } from "./context/AppContext";
+import { ErrorPage } from "./components/layout/ErrorPage";
+import { FinancialReporting } from "./pages/board/outlets/financialReporting";
 
 function LogOut() {
   localStorage.clear();
@@ -37,7 +36,7 @@ const router = createBrowserRouter(
       <Route path="login/*" element={<LoginRoutes />} />
       <Route path="/*" element={<BoardRoutes />} />
       <Route path="logout" element={<LogOut />} />
-      <Route path="/sections/:id" element={<PromissoryNotes />} />
+      <Route path="financial-reporting" element={<FinancialReporting />} />
     </>
   )
 );
