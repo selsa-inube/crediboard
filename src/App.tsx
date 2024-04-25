@@ -16,6 +16,8 @@ import { BoardRoutes } from "./routes/board";
 import AppContextProvider, { AppContext } from "./context/AppContext";
 import { ErrorPage } from "./components/layout/ErrorPage";
 import { FinancialReporting } from "./pages/board/outlets/financialReporting";
+import { Requirements } from "./pages/board/outlets/boardlayout/Requirements";
+import { dataRequirements } from "./pages/board/outlets/boardlayout/Requirements/config";
 
 function LogOut() {
   localStorage.clear();
@@ -36,7 +38,14 @@ const router = createBrowserRouter(
       <Route path="login/*" element={<LoginRoutes />} />
       <Route path="/*" element={<BoardRoutes />} />
       <Route path="logout" element={<LogOut />} />
-      <Route path="financial-reporting" element={<FinancialReporting />} />
+      <Route
+        path="financial-reporting"
+        element={
+          <FinancialReporting
+            requirements={<Requirements data={dataRequirements} />}
+          />
+        }
+      />
     </>
   )
 );
