@@ -4,9 +4,9 @@ import { inube } from "@inube/design-system";
 import { ISelectProps } from ".";
 
 interface IStyledInputContainer {
+  disabled: ISelectProps["disabled"];
   $focused: boolean;
   $status: ISelectProps["status"];
-  disabled: ISelectProps["disabled"];
   $readonly: ISelectProps["readonly"];
   onClick: ISelectProps["onClick"];
 }
@@ -21,19 +21,15 @@ const sizeOptions = {
 };
 
 interface IStyledInput {
-  value: ISelectProps["value"];
   $focused: boolean;
   $size: ISelectProps["size"];
-  disabled: ISelectProps["disabled"];
   $status: ISelectProps["status"];
   $fullwidth: ISelectProps["fullwidth"];
-  readOnly?: ISelectProps["readonly"];
   $required: ISelectProps["required"];
   onClick?: ISelectProps["onClick"];
   onFocus: ISelectProps["onFocus"];
   onBlur?: ISelectProps["onBlur"];
   onChange?: ISelectProps["onChange"];
-  autocomplete?: string;
 }
 
 interface IStyledContainer {
@@ -89,7 +85,8 @@ export const StyledInputContainer = styled.div<IStyledInputContainer>`
 export const StyledInput = styled.input<IStyledInput>`
   outline: none;
   border-radius: 8px;
-  padding: 0px 12px 0px 16px;
+  padding-right: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
+  padding-left: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
   border-style: none;
   font-family: ${({ theme }) =>
     theme?.typography?.body?.large?.font || inube.typography.body.large.font};
