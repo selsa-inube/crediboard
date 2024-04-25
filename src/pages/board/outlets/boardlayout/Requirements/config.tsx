@@ -1,4 +1,6 @@
+import { isValidElement } from "react";
 import { Icon, Tag } from "@inube/design-system";
+
 import { IEntries } from "@src/components/data/TableBoard/types";
 import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
 
@@ -106,14 +108,20 @@ export const actionsRequirements = [
       id: "aprobar",
       actionName: "Aprobar",
       content: (data: IEntries) => (
-        <Icon
-          icon={<MdOutlineCheckCircle />}
-          appearance="primary"
-          spacing="compact"
-          cursorHoverh
-          size="18px"
-          onClick={() => resiveData(data)}
-        />
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Icon
+            icon={<MdOutlineCheckCircle />}
+            appearance="primary"
+            spacing="compact"
+            cursorHoverh
+            size="18px"
+            onClick={() => resiveData(data)}
+            disabled={
+              isValidElement(data?.tag) &&
+              data?.tag?.props?.label === "No Cumple"
+            }
+          />
+        </div>
       ),
     },
   ],
