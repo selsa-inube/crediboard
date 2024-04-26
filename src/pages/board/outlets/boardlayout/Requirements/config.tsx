@@ -1,10 +1,10 @@
 import { isValidElement } from "react";
 import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
-import { Icon, Tag } from "@inube/design-system";
+import { Icon, Stack, Tag } from "@inube/design-system";
 
 import { IEntries } from "@components/data/TableBoard/types";
 
-const resiveData = (data: IEntries) => {
+const receiveData = (data: IEntries) => {
   console.log(data, "function que recibe data");
 };
 
@@ -92,36 +92,36 @@ export const actionsRequirements = [
       id: "agregar",
       actionName: "Agregar",
       content: (data: IEntries) => (
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <Stack justifyContent="center">
           <Icon
             icon={<MdAddCircleOutline />}
             appearance="primary"
-            onClick={() => resiveData(data)}
+            onClick={() => receiveData(data)}
             spacing="compact"
             size="18px"
             cursorHover
           />
-        </div>
+        </Stack>
       ),
     },
     {
       id: "aprobar",
       actionName: "Aprobar",
       content: (data: IEntries) => (
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <Stack justifyContent="center">
           <Icon
             icon={<MdOutlineCheckCircle />}
             appearance="primary"
             spacing="compact"
             cursorHover
             size="18px"
-            onClick={() => resiveData(data)}
+            onClick={() => receiveData(data)}
             disabled={
               isValidElement(data?.tag) &&
               data?.tag?.props?.label === "No Cumple"
             }
           />
-        </div>
+        </Stack>
       ),
     },
   ],
