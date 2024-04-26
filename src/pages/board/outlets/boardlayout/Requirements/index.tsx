@@ -19,7 +19,7 @@ export const Requirements = (props: IRequirementsProps) => {
 
   return (
     <Stack>
-      <Fieldset title="Requerimientos">
+      <Fieldset title="Requisitos">
         {data.map((item) => (
           <TableBoard
             key={item.id}
