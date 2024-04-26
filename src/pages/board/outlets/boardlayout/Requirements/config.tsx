@@ -4,6 +4,11 @@ import { Icon, Stack, Tag } from "@inube/design-system";
 
 import { IEntries } from "@components/data/TableBoard/types";
 
+export const dataButton = {
+  title: "Agregar Requesito",
+  onClick: () => console.log("Agregar"),
+};
+
 const receiveData = (data: IEntries) => {
   console.log(data, "function que recibe data");
 };
