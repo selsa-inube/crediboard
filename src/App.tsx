@@ -39,7 +39,7 @@ const router = createBrowserRouter(
       <Route path="/*" element={<BoardRoutes />} />
       <Route path="logout" element={<LogOut />} />
       <Route
-        path="financial-reporting"
+        path="solicitud/:id"
         element={
           <FinancialReporting
             requirements={<Requirements data={dataRequirements} />}
