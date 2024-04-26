@@ -1,78 +1,47 @@
-import { MdOutlinePushPin, MdSearch } from "react-icons/md";
-import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
-import {
-  Stack,
-  Button,
-  Textfield,
-  Select,
-  Text,
-  Switch,
-  Icon,
-  inube,
-} from "@inube/design-system";
+import { useEffect, useState } from "react";
 
+import { SectionOrientation } from "@components/layout/BoardSection/types";
+import { getAll } from "@services/dataMock.service";
+import { mockRequests } from "@mocks/requests/requests.mock";
+
+import { BoardLayoutUI } from "./interface";
 import { filterOptions } from "./config/select";
+import { IBoardData } from "./types";
 
 function BoardLayout() {
+  const [boardOrientation, setBoardOrientation] =
+    useState<SectionOrientation>("vertical");
+
+  const handleOrientationChange = (orientation: SectionOrientation) => {
+    setBoardOrientation(orientation);
+  };
+
+  const [boardData, setBoardData] = useState<IBoardData>({
+    boardRequests: [],
+  });
+
+  useEffect(() => {
+    getAll("board-requests")
+      .then((data) => {
+        if (data !== null) {
+          setBoardData((prevData) => ({
+            ...prevData,
+            boardRequests: mockRequests,
+          }));
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching requests data:", error.message);
+      });
+  }, []);
+
   return (
-    <Stack
-      alignItems="center"
-      direction="column"
-      margin="s400 s600 s200"
-      gap={inube.spacing.s500}
-    >
-      <Stack gap={inube.spacing.s200} alignItems="center">
-        <Stack width="480px">
-          <Textfield
-            id="SearchCards"
-            name="SearchCards"
-            placeholder="Buscar..."
-            size="compact"
-            iconAfter={<MdSearch />}
-            fullwidth
-          />
-        </Stack>
-        <Button spacing="compact">Buscar</Button>
-      </Stack>
-      <Stack width="100%" justifyContent="space-between" alignItems="center">
-        <Stack width="500px">
-          <Select
-            label="Filtrado por"
-            id="FilterCards"
-            name="FilterCards"
-            placeholder="Seleccione una opción"
-            options={filterOptions}
-            fullwidth
-          />
-        </Stack>
-        <Stack gap={inube.spacing.s200}>
-          <Stack gap={inube.spacing.s100} alignItems="center">
-            <Icon icon={<MdOutlinePushPin />} appearance="dark" size="24px" />
-            <Text type="label">Ver unicamente los anclados</Text>
-            <Switch
-              id="SeePinned"
-              name="SeePinned"
-              size="large"
-              onChange={() => {}}
-            ></Switch>
-          </Stack>
-          <Stack gap={inube.spacing.s100}>
-            <Icon
-              icon={<RxDragHandleVertical />}
-              appearance="dark"
-              size="24px"
-              cursorHover
-            />
-            <Icon
-              icon={<RxDragHandleHorizontal />}
-              appearance="gray"
-              size="24px"
-              cursorHover
-            />
-          </Stack>
-        </Stack>
-      </Stack>
-    </Stack>
+    <BoardLayoutUI
+      filterOptions={filterOptions}
+      boardOrientation={boardOrientation}
+      BoardRequests={boardData.boardRequests}
+      onOrientationChange={handleOrientationChange}
+    />
   );
 }
 
