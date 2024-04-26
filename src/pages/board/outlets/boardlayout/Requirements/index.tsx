@@ -3,6 +3,7 @@ import { Stack } from "@inube/design-system";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
+import { dataButton } from "./config";
 
 interface IData {
   id: string;
@@ -19,16 +20,18 @@ export const Requirements = (props: IRequirementsProps) => {
 
   return (
     <Stack>
-      <Fieldset title="Requisitos">
-        {data.map((item) => (
-          <TableBoard
-            key={item.id}
-            id={item.id}
-            titles={item.titlesRequirements}
-            entries={item.entriesRequirements}
-            actions={item.actionsRequirements}
-          />
-        ))}
+      <Fieldset title="Requisitos" activeButton={dataButton}>
+        <div style={{ height: "340px" }}>
+          {data.map((item) => (
+            <TableBoard
+              key={item.id}
+              id={item.id}
+              titles={item.titlesRequirements}
+              entries={item.entriesRequirements}
+              actions={item.actionsRequirements}
+            />
+          ))}
+        </div>
       </Fieldset>
     </Stack>
   );
