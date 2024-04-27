@@ -13,4 +13,14 @@ export const StyledContainerFieldset = styled.div`
       theme?.color?.stroke?.divider?.regular ||
       inube.color.stroke.divider.regular};
   padding: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
+
+  &::-webkit-scrollbar {
+    border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) =>
+      theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
+    border-radius: 8px;
+  }
 `;
