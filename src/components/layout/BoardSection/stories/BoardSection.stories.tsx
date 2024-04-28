@@ -2,7 +2,7 @@ import { StoryFn, Meta } from "@storybook/react";
 
 import { mockRequests } from "@mocks/requests/requests.mock";
 
-import { BoardSection, IBoardSectionProps } from "..";
+import { BoardSection, BoardSectionProps } from "..";
 import { props } from "./props";
 
 const story: Meta<typeof BoardSection> = {
@@ -11,15 +11,16 @@ const story: Meta<typeof BoardSection> = {
   title: "layouts/BoardSection",
 };
 
-export const Default: StoryFn<IBoardSectionProps> = (args) => (
+export const Default: StoryFn<BoardSectionProps> = (args) => (
   <BoardSection {...args} />
 );
 
-export const Horizontal: StoryFn<IBoardSectionProps> = (args) => (
+export const Horizontal: StoryFn<BoardSectionProps> = (args) => (
   <BoardSection {...args} />
 );
 
 Default.args = {
+  id: "BoardId",
   sectionTitle: "BoardSectionTitle",
   sectionBackground: "gray",
   orientation: "vertical",
