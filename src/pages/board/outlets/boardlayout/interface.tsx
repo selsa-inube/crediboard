@@ -69,7 +69,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 name="SeePinned"
                 size="large"
                 onChange={() => {}}
-              ></Switch>
+              />
             </Stack>
             <Stack gap={inube.spacing.s100}>
               <Icon

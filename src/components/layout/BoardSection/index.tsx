@@ -51,10 +51,15 @@ function BoardSection(props: BoardSectionProps) {
         justifyContent={
           orientation === "vertical" ? "space-between" : "flex-start"
         }
-        alignItems="center"
+        alignItems="end"
         gap={inube.spacing.s300}
       >
-        <Stack alignItems="center" gap={inube.spacing.s100}>
+        <Stack
+          alignItems="end"
+          gap={inube.spacing.s100}
+          width={orientation === "vertical" ? "180px" : "auto"}
+          height={orientation === "vertical" ? "56px" : "auto"}
+        >
           {orientation !== "vertical" && (
             <StyledCollapseIcon
               $collapse={collapse}
@@ -77,7 +82,6 @@ function BoardSection(props: BoardSectionProps) {
             size={
               orientation === "vertical" || smallScreen ? "large" : "medium"
             }
-            ellipsis
           >
             {sectionTitle}
           </Text>

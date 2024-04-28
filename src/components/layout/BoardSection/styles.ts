@@ -20,7 +20,6 @@ const StyledBoardSection = styled.div<IStyledBoardSection>`
   gap: ${inube.spacing.s150};
   padding: ${inube.spacing.s300} ${inube.spacing.s150} ${inube.spacing.s150};
   width: calc(100% - 24px);
-  min-width: 281px;
   border-top: 1px solid;
   border-bottom: ${({ $orientation }) =>
     $orientation !== "horizontal" ? "1px solid" : "none"};

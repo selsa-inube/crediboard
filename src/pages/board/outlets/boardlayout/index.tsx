@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { getAll } from "@services/dataMock.service";
-import { mockRequests } from "@mocks/requests/requests.mock";
 
 import { BoardLayoutUI } from "./interface";
 import { filterOptions } from "./config/select";
@@ -21,13 +20,10 @@ function BoardLayout() {
   });
 
   useEffect(() => {
-    getAll("board-requests")
+    getAll("requests")
       .then((data) => {
         if (data !== null) {
-          setBoardData((prevData) => ({
-            ...prevData,
-            boardRequests: mockRequests,
-          }));
+          setBoardData({ boardRequests: data } as IBoardData);
         }
       })
       .catch((error) => {

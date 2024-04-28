@@ -7,7 +7,11 @@ interface IStyledBoardContainer {
   $orientation: SectionOrientation;
 }
 
-const StyledInputsContainer = styled.div`
+interface IStyledInputsContainer {
+  theme?: typeof inube;
+}
+
+const StyledInputsContainer = styled.div<IStyledInputsContainer>`
   display: flex;
   flex-direction: column;
   align-items: center;
