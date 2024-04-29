@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import { inube } from "@inube/design-system";
 
-export const StyledOptionList = styled.ul`
+interface IStyledOptionList {
+  onClick?: React.ChangeEventHandler<HTMLInputElement>;
+}
+
+export const StyledOptionList = styled.ul<IStyledOptionList>`
   display: flex;
   flex-direction: column;
   width: -webkit-fill-available;

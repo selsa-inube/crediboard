@@ -1,9 +1,8 @@
 import { StyledOptionList } from "./styles";
-import { MouseEventHandler } from "react";
 
 export interface OptionListProps {
   children: JSX.Element | JSX.Element[];
-  onClick?: MouseEventHandler<HTMLUListElement>;
+  onClick?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 const OptionList = (props: OptionListProps) => {

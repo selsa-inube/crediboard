@@ -146,7 +146,7 @@ export const SelectUI = (props: ISelectInterfaceProps) => {
         <Message disabled={disabled} status={status} message={message} />
       )}
       {displayList && !disabled && (
-        <OptionList>
+        <OptionList onClick={onChangeCheck}>
           {options.map((optionItem) => (
             <OptionItem
               key={optionItem.id}
