@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { SelectCheck, ISelectProps } from "..";
+import { Selectcheck, ISelectcheckProps } from "..";
 
-export const ControllerSelectCheck = (props: ISelectProps) => {
+export const ControllerSelectCheck = (props: ISelectcheckProps) => {
   const { options } = props;
 
   const [data, setData] = useState(options);
@@ -32,6 +32,6 @@ export const ControllerSelectCheck = (props: ISelectProps) => {
   };
 
   return (
-    <SelectCheck onChangeCheck={handleToggleEntry} {...props} options={data} />
+    <Selectcheck onChangeCheck={handleToggleEntry} {...props} options={data} />
   );
 };

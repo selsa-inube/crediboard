@@ -11,9 +11,9 @@ import { OptionList } from "./OptionList";
 
 import { Size } from "./types";
 import { StyledContainer, StyledInputContainer, StyledInput } from "./styles";
-import { ISelectProps } from ".";
+import { ISelectcheckProps } from ".";
 
-export interface ISelectInterfaceProps extends ISelectProps {
+export interface ISelectcheckUIProps extends ISelectcheckProps {
   focused?: boolean;
   displayList: boolean;
 }
@@ -26,7 +26,7 @@ const getTypo = (size: Size) => {
 };
 
 const Message = (
-  props: Pick<ISelectProps, "disabled" | "status"> & { message?: string }
+  props: Pick<ISelectcheckProps, "disabled" | "status"> & { message?: string }
 ) => {
   const { disabled, status, message } = props;
 
@@ -52,7 +52,7 @@ const Message = (
   );
 };
 
-export const SelectUI = (props: ISelectInterfaceProps) => {
+export const SelectcheckUI = (props: ISelectcheckUIProps) => {
   const {
     label,
     name,

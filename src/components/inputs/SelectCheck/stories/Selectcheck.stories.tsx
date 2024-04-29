@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { ControllerSelectCheck } from "./constroller";
 import { parameters, props } from "./props";
-import { SelectCheck } from "..";
+import { Selectcheck } from "..";
 
 const options = [
   { id: "uno", label: "Option 1", checked: false },
@@ -10,9 +10,9 @@ const options = [
   { id: "tres", label: "Option 3", checked: true },
 ];
 
-type Story = StoryObj<typeof SelectCheck>;
+type Story = StoryObj<typeof Selectcheck>;
 
-const meta: Meta<typeof SelectCheck> = {
+const meta: Meta<typeof Selectcheck> = {
   title: "components/inputs/SelectCheck",
   component: ControllerSelectCheck,
   parameters,
@@ -21,14 +21,14 @@ const meta: Meta<typeof SelectCheck> = {
 
 export const Default: Story = {
   args: {
-    name: "SelectCheck",
-    id: "SelectCheck",
-    placeholder: "SelectCheck",
+    name: "Selectcheck",
+    id: "Selectcheck",
+    placeholder: "Selectcheck",
     disabled: false,
     readonly: false,
     required: false,
     status: "pending",
-    message: "SelectCheck",
+    message: "Selectcheck",
     fullwidth: false,
     options: options,
     onBlur: () => {},

@@ -2,9 +2,9 @@ import { useState } from "react";
 
 import { IOptionItemProps } from "./OptionItem";
 import { Size, Status } from "./types";
-import { SelectUI } from "./interface";
+import { SelectcheckUI } from "./interface";
 
-export interface ISelectProps {
+export interface ISelectcheckProps {
   label?: string;
   name: string;
   id: string;
@@ -25,7 +25,7 @@ export interface ISelectProps {
   onChangeCheck?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const SelectCheck = (props: ISelectProps) => {
+export const Selectcheck = (props: ISelectcheckProps) => {
   const {
     label,
     name,
@@ -67,7 +67,7 @@ export const SelectCheck = (props: ISelectProps) => {
   };
 
   return (
-    <SelectUI
+    <SelectcheckUI
       label={label}
       name={name}
       id={id}

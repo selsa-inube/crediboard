@@ -1,14 +1,14 @@
 import styled from "styled-components";
 import { inube } from "@inube/design-system";
 
-import { ISelectProps } from ".";
+import { ISelectcheckProps } from ".";
 
 interface IStyledInputContainer {
-  disabled: ISelectProps["disabled"];
+  disabled: ISelectcheckProps["disabled"];
   $focused: boolean;
-  $status: ISelectProps["status"];
-  $readonly: ISelectProps["readonly"];
-  onClick: ISelectProps["onClick"];
+  $status: ISelectcheckProps["status"];
+  $readonly: ISelectcheckProps["readonly"];
+  onClick: ISelectcheckProps["onClick"];
 }
 
 const sizeOptions = {
@@ -22,19 +22,19 @@ const sizeOptions = {
 
 interface IStyledInput {
   $focused: boolean;
-  $size: ISelectProps["size"];
-  $status: ISelectProps["status"];
-  $fullwidth: ISelectProps["fullwidth"];
-  $required: ISelectProps["required"];
-  onClick?: ISelectProps["onClick"];
-  onFocus: ISelectProps["onFocus"];
-  onBlur?: ISelectProps["onBlur"];
-  onChange?: ISelectProps["onChange"];
+  $size: ISelectcheckProps["size"];
+  $status: ISelectcheckProps["status"];
+  $fullwidth: ISelectcheckProps["fullwidth"];
+  $required: ISelectcheckProps["required"];
+  onClick?: ISelectcheckProps["onClick"];
+  onFocus: ISelectcheckProps["onFocus"];
+  onBlur?: ISelectcheckProps["onBlur"];
+  onChange?: ISelectcheckProps["onChange"];
 }
 
 interface IStyledContainer {
-  disabled: ISelectProps["disabled"];
-  $fullwidth: ISelectProps["fullwidth"];
+  disabled: ISelectcheckProps["disabled"];
+  $fullwidth: ISelectcheckProps["fullwidth"];
 }
 
 export const StyledContainer = styled.div<IStyledContainer>`
