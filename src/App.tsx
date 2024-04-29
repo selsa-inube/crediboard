@@ -10,9 +10,6 @@ import { useAuth } from "@inube/auth";
 import { Login } from "@pages/login";
 import { initializeDataDB } from "@mocks/utils/initializeDataDB";
 import { ErrorPage } from "@components/layout/ErrorPage";
-import { FinancialReporting } from "@pages/board/outlets/financialReporting";
-import { Requirements } from "@pages/board/outlets/boardlayout/Requirements";
-import { dataRequirements } from "@pages/board/outlets/boardlayout/Requirements/config";
 
 import { GlobalStyles } from "./styles/global";
 import { LoginRoutes } from "./routes/login";
@@ -38,14 +35,6 @@ const router = createBrowserRouter(
       <Route path="login/*" element={<LoginRoutes />} />
       <Route path="/*" element={<BoardRoutes />} />
       <Route path="logout" element={<LogOut />} />
-      <Route
-        path="solicitud/:id"
-        element={
-          <FinancialReporting
-            requirements={<Requirements data={dataRequirements} />}
-          />
-        }
-      />
     </>
   )
 );
