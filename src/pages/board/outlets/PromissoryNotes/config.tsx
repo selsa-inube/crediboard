@@ -78,7 +78,7 @@ export const entriesFinanacialReporting = [
           appearance="primary"
           onClick={entrySelection}
           spacing="compact"
-          size="16px"
+          size="24px"
           cursorHover
         />
       </div>
@@ -97,7 +97,7 @@ export const entriesFinanacialReporting = [
           appearance="primary"
           spacing="compact"
           cursorHover
-          size="16px"
+          size="24px"
           onClick={entrySelection}
         />
       </div>
