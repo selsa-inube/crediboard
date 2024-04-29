@@ -72,7 +72,12 @@ export const entriesFinanacialReporting = [
     tag: <Tag label="En tramite" appearance="warning" />,
     Reenviar: "",
     "Ver Imagen": (
-      <Stack display="flex" justifyContent="center" width="60px">
+      <Stack
+        direction="column"
+        display="flex"
+        justifyContent="center"
+        width="60px"
+      >
         <Icon
           icon={<MdOutlineRemoveRedEye />}
           appearance="primary"
@@ -91,7 +96,12 @@ export const entriesFinanacialReporting = [
     Tipo: "Pagare",
     tag: <Tag label="Firmado" appearance="success" />,
     Reenviar: (
-      <Stack display="flex" justifyContent="center" width="60px">
+      <Stack
+        direction="column"
+        display="flex"
+        justifyContent="center"
+        width="60px"
+      >
         <Icon
           icon={<MdOutlineSend />}
           appearance="primary"
