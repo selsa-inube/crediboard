@@ -1,10 +1,11 @@
+import { forwardRef } from "react";
 import {
   MdOutlineError,
   MdCheckCircle,
   MdOutlineArrowDropDown,
 } from "react-icons/md";
 
-import { Text, Icon, Label, Stack } from "@inube/design-system";
+import { Text, Icon, Label, Stack, inube } from "@inube/design-system";
 
 import { OptionItem } from "./OptionItem";
 import { OptionList } from "./OptionList";
@@ -52,112 +53,113 @@ const Message = (
   );
 };
 
-export const SelectcheckUI = (props: ISelectcheckUIProps) => {
-  const {
-    label,
-    name,
-    id,
-    placeholder,
-    disabled,
-    readonly,
-    required,
-    status,
-    message,
-    size,
-    value,
-    fullwidth,
-    options,
-    focused,
-    onFocus,
-    onBlur,
-    onClick,
-    onChange,
+export const SelectcheckUI = forwardRef<HTMLDivElement, ISelectcheckUIProps>(
+  (props: ISelectcheckUIProps, ref) => {
+    const {
+      label,
+      name,
+      id,
+      placeholder,
+      disabled,
+      readonly,
+      required,
+      status,
+      message,
+      size,
+      value,
+      fullwidth,
+      options,
+      focused,
+      onFocus,
+      onBlur,
+      onClick,
+      onChange,
+      displayList,
+      onChangeCheck,
+    } = props;
 
-    displayList,
-    onChangeCheck,
-  } = props;
+    return (
+      <StyledContainer $fullwidth={fullwidth} disabled={disabled} ref={ref}>
+        <Stack
+          alignItems="center"
+          margin="s0 s0 s050 s0"
+          padding="s0 s0 s0 s200"
+          gap={inube.spacing.s050}
+        >
+          {label && (
+            <Label
+              htmlFor={id}
+              disabled={disabled}
+              focused={!readonly && focused}
+              invalid={status === "invalid" && !readonly}
+              size={getTypo(size!)}
+              margin="0px 0px 0px 2px"
+            >
+              {label}
+            </Label>
+          )}
 
-  return (
-    <StyledContainer $fullwidth={fullwidth} disabled={disabled}>
-      <Stack
-        alignItems="center"
-        margin="s0 s0 s050 s0"
-        padding="s0 s0 s0 s200"
-        gap="2px"
-      >
-        {label && (
-          <Label
-            htmlFor={id}
-            disabled={disabled}
-            focused={!readonly && focused}
-            invalid={status === "invalid" && !readonly}
-            size={getTypo(size!)}
-            margin="0px 0px 0px 2px"
-          >
-            {label}
-          </Label>
-        )}
+          {required && !disabled && (
+            <Text type="body" size="small" appearance="dark">
+              (Requerido)
+            </Text>
+          )}
+        </Stack>
 
-        {required && !disabled && (
-          <Text type="body" size="small" appearance="dark">
-            (Requerido)
-          </Text>
-        )}
-      </Stack>
-
-      <StyledInputContainer
-        disabled={disabled}
-        $focused={focused!}
-        $status={status}
-        onClick={onClick}
-        $readonly={readonly}
-      >
-        <StyledInput
-          autoComplete="off"
-          readOnly
-          value={value}
-          name={name}
-          id={id}
-          placeholder={placeholder}
+        <StyledInputContainer
           disabled={disabled}
-          $required={required}
-          $size={size}
-          $status={status}
-          $fullwidth={fullwidth}
           $focused={focused!}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          onChange={onChange}
+          $status={status}
           onClick={onClick}
-        />
-
-        {!readonly && (
-          <Icon
-            appearance="dark"
-            icon={<MdOutlineArrowDropDown />}
-            size="24px"
-            spacing="none"
+          $readonly={readonly}
+        >
+          <StyledInput
+            autoComplete="off"
+            readOnly
+            value={value}
+            name={name}
+            id={id}
+            placeholder={placeholder}
             disabled={disabled}
+            $required={required}
+            $size={size}
+            $status={status}
+            $fullwidth={fullwidth}
+            $focused={focused!}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            onChange={onChange}
+            onClick={onClick}
           />
-        )}
-      </StyledInputContainer>
 
-      {status && !readonly && (
-        <Message disabled={disabled} status={status} message={message} />
-      )}
-      {displayList && !disabled && (
-        <OptionList onClick={onChangeCheck}>
-          {options.map((optionItem) => (
-            <OptionItem
-              key={optionItem.id}
-              id={optionItem.id}
-              label={optionItem.label}
-              checked={optionItem.checked}
-              onchange={onChangeCheck}
+          {!readonly && (
+            <Icon
+              appearance="dark"
+              icon={<MdOutlineArrowDropDown />}
+              size="24px"
+              spacing="none"
+              disabled={disabled}
             />
-          ))}
-        </OptionList>
-      )}
-    </StyledContainer>
-  );
-};
+          )}
+        </StyledInputContainer>
+
+        {status && !readonly && (
+          <Message disabled={disabled} status={status} message={message} />
+        )}
+        {displayList && !disabled && (
+          <OptionList onClick={onChangeCheck}>
+            {options.map((optionItem) => (
+              <OptionItem
+                key={optionItem.id}
+                id={optionItem.id}
+                label={optionItem.label}
+                checked={optionItem.checked}
+                onchange={onChangeCheck}
+              />
+            ))}
+          </OptionList>
+        )}
+      </StyledContainer>
+    );
+  }
+);

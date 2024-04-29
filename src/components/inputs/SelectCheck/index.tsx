@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { IOptionItemProps } from "./OptionItem";
 import { Size, Status } from "./types";
@@ -50,6 +50,25 @@ export const Selectcheck = (props: ISelectcheckProps) => {
   const [focused, setFocused] = useState(false);
   const [displayList, setDisplayList] = useState(false);
 
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      selectRef.current &&
+      !selectRef.current.contains(event.target as Node)
+    ) {
+      setDisplayList(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [selectRef]);
+
   const handleFocus = (e: FocusEvent) => {
     setFocused(true);
     onFocus && onFocus(e);
@@ -68,6 +87,7 @@ export const Selectcheck = (props: ISelectcheckProps) => {
 
   return (
     <SelectcheckUI
+      ref={selectRef}
       label={label}
       name={name}
       id={id}
