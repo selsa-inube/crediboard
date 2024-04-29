@@ -1,4 +1,8 @@
 const props = {
+  id: {
+    control: "text",
+    description: "Section id",
+  },
   sectionTitle: {
     control: "text",
     description: "Section title",
