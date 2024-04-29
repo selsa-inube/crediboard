@@ -103,7 +103,7 @@ export const actionsRequirements = [
             appearance="primary"
             onClick={() => receiveData(data)}
             spacing="compact"
-            size="18px"
+            size="24px"
             cursorHover
           />
         </Stack>
@@ -119,7 +119,7 @@ export const actionsRequirements = [
             appearance="primary"
             spacing="compact"
             cursorHover
-            size="18px"
+            size="24px"
             onClick={() => receiveData(data)}
             disabled={
               isValidElement(data?.tag) &&
