@@ -50,3 +50,8 @@ export const StyledTr = styled.tr<IStyledTdbodyContainer>`
       ? theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
       : theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
 `;
+
+export const StyledTd = styled.td`
+  min-width: 218px;
+  max-width: 310px;
+`;
