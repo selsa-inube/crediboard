@@ -1,21 +1,20 @@
 import styled from "styled-components";
-
 import { inube } from "@inube/design-system";
 
 export const StyledOptionItem = styled.li`
   display: flex;
   align-items: center;
   align-self: stretch;
-  min-height: ${inube.spacing.s500};
-  border-left: ${inube.spacing.s050} solid transparent;
-  padding: ${() =>
-    `${inube.spacing.s050} ${inube.spacing.s200} ${inube.spacing.s050} ${inube.spacing.s150}`};
   cursor: pointer;
-
-  border-left-width: ${inube.spacing.s050};
+  min-height: 40px;
   border-left-style: solid;
+  border-left-width: 2px;
   border-left-color: ${({ theme }) =>
     theme?.color?.stroke?.light?.regular || inube.color.stroke.light.regular};
+  padding-top: ${({ theme }) => theme?.spacing?.s050 || inube.spacing.s050};
+  padding-right: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
+  padding-bottom: ${({ theme }) => theme?.spacing?.s050 || inube.spacing.s050};
+  padding-left: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
 
   p {
     color: ${({ theme }) =>
