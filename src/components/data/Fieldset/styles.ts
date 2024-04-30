@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { inube } from "@inube/design-system";
 
 export const StyledContainerFieldset = styled.div`
+  overflow-y: auto;
   border-radius: 8px;
   border-width: 2px;
   border-style: solid;
@@ -12,4 +13,14 @@ export const StyledContainerFieldset = styled.div`
       theme?.color?.stroke?.divider?.regular ||
       inube.color.stroke.divider.regular};
   padding: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
+
+  &::-webkit-scrollbar {
+    border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) =>
+      theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
+    border-radius: 8px;
+  }
 `;
