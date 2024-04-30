@@ -8,6 +8,8 @@ import {
   StyledTr,
   StyledTh,
   StyledTd,
+  StyledThactions,
+  StyledTdactions,
 } from "./styles";
 
 import { ITableBoardProps } from ".";
@@ -36,18 +38,24 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                 </Text>
               </StyledTh>
             ))}
-            {actions?.map((action) => (
-              <StyledTh key={action.id}>
-                <Text
-                  appearance="primary"
-                  type="title"
-                  size="medium"
-                  padding="0px 4px"
-                >
-                  {action.actionName}
-                </Text>
-              </StyledTh>
-            ))}
+          </tr>
+          <tr>
+            {actions &&
+              actions.map(
+                (action) =>
+                  action.actionName && (
+                    <StyledThactions key={action.id}>
+                      <Text
+                        appearance="primary"
+                        type="title"
+                        size="medium"
+                        padding="0px 4px"
+                      >
+                        {action.actionName}
+                      </Text>
+                    </StyledThactions>
+                  )
+              )}
           </tr>
         </StyledThead>
         <StyledTbody>
@@ -69,7 +77,9 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
               ))}
               {actions &&
                 actions.map((action) => (
-                  <td key={action.id}>{action.content(entry)}</td>
+                  <StyledTdactions key={action.id}>
+                    {action.content(entry)}
+                  </StyledTdactions>
                 ))}
             </StyledTr>
           ))}
