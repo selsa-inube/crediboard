@@ -1,19 +1,19 @@
 import { Label, Stack } from "@inube/design-system";
 
-import { StyledOptionItem } from "./styles";
+import { StyledOptionItemChecked } from "./styles";
 
-export interface IOptionItemProps {
+export interface IOptionItemCheckedProps {
   id: string;
   label: string;
   checked?: boolean;
   onchange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const OptionItem = (props: IOptionItemProps) => {
+export const OptionItemChecked = (props: IOptionItemCheckedProps) => {
   const { id, label, checked = false, onchange } = props;
 
   return (
-    <StyledOptionItem>
+    <StyledOptionItemChecked>
       <Stack>
         <input
           readOnly
@@ -25,6 +25,6 @@ export const OptionItem = (props: IOptionItemProps) => {
         />
         <Label htmlFor={id}>{label}</Label>
       </Stack>
-    </StyledOptionItem>
+    </StyledOptionItemChecked>
   );
 };

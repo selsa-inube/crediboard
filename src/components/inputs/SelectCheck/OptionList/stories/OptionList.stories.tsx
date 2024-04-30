@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { OptionItem } from "@components/inputs/SelectCheck/OptionItem";
+import { OptionItemChecked } from "@components/inputs/SelectCheck/OptionItem";
 
 import { parameters, props } from "./props";
 import { OptionList } from "..";
@@ -23,7 +23,7 @@ const meta: Meta<typeof OptionList> = {
 export const Dedfault: Story = {
   args: {
     children: options.map((optionItem) => (
-      <OptionItem
+      <OptionItemChecked
         key={optionItem.id}
         id={optionItem.id}
         label={optionItem.label}

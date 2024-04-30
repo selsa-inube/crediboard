@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { inube } from "@inube/design-system";
 
-export const StyledOptionItem = styled.li`
+export const StyledOptionItemChecked = styled.li`
   display: flex;
   align-items: center;
   align-self: stretch;

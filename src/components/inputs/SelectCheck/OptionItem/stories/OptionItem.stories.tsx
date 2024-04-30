@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { parameters, props } from "./props";
-import { OptionItem } from "..";
+import { OptionItemChecked } from "..";
 
-type Story = StoryObj<typeof OptionItem>;
+type Story = StoryObj<typeof OptionItemChecked>;
 
-const meta: Meta<typeof OptionItem> = {
+const meta: Meta<typeof OptionItemChecked> = {
   title: "components/inputs/SelectCheck/OptionItem",
-  component: OptionItem,
+  component: OptionItemChecked,
   parameters,
   argTypes: props,
 };

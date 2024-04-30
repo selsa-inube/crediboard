@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { IOptionItemProps } from "./OptionItem";
+import { IOptionItemCheckedProps } from "./OptionItem";
 import { Size, Status } from "./types";
 import { SelectcheckUI } from "./interface";
 
@@ -8,7 +8,7 @@ export interface ISelectcheckProps {
   id: string;
   name: string;
   value: string | number;
-  options: IOptionItemProps[];
+  options: IOptionItemCheckedProps[];
   onChange: (event: React.ChangeEvent<HTMLInputElement>, name: string) => void;
   label?: string;
   placeholder?: string;

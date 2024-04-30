@@ -6,7 +6,7 @@ import {
 } from "react-icons/md";
 import { Text, Icon, Label, Stack, inube } from "@inube/design-system";
 
-import { OptionItem } from "./OptionItem";
+import { OptionItemChecked } from "./OptionItem";
 import { OptionList } from "./OptionList";
 import { Size } from "./types";
 import { StyledContainer, StyledInputContainer, StyledInput } from "./styles";
@@ -147,7 +147,7 @@ export const SelectcheckUI = forwardRef<HTMLDivElement, ISelectcheckUIProps>(
         {displayList && !disabled && (
           <OptionList onClick={onChangeCheck}>
             {options.map((optionItem) => (
-              <OptionItem
+              <OptionItemChecked
                 key={optionItem.id}
                 id={optionItem.id}
                 label={optionItem.label}
