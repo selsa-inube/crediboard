@@ -7,6 +7,7 @@ import {
   StyledThead,
   StyledTr,
   StyledTh,
+  StyledTd,
 } from "./styles";
 
 import { ITableBoardProps } from ".";
@@ -43,7 +44,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
               $zebraEffect={index % 2 === 0}
             >
               {titlesList.map((title) => (
-                <td key={title}>
+                <StyledTd key={title}>
                   {typeof entry[title] !== "string" ? (
                     entry[title]
                   ) : (
@@ -51,7 +52,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                       {entry[title]}
                     </Text>
                   )}
-                </td>
+                </StyledTd>
               ))}
               {actions?.map((action) => (
                 <td key={action.id}>{action.content(entry)}</td>

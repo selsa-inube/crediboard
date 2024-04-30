@@ -58,7 +58,7 @@ export const actionsMock: IAction[] = [
         icon={<MdOutlineCheckCircle />}
         appearance="primary"
         spacing="compact"
-        cursorHoverh
+        cursorHover
         size="18px"
         onClick={() => resiveData(data)}
       />
