@@ -1,6 +1,6 @@
 import { StoryFn, Meta } from "@storybook/react";
 
-import { SummaryCard, ISummaryCardProps } from "..";
+import { SummaryCard, SummaryCardProps } from "..";
 
 import { props } from "./props";
 
@@ -10,7 +10,7 @@ const story: Meta<typeof SummaryCard> = {
   title: "components/cards/SummaryCard",
 };
 
-export const Default: StoryFn<ISummaryCardProps> = (args) => (
+export const Default: StoryFn<SummaryCardProps> = (args) => (
   <SummaryCard {...args} />
 );
 

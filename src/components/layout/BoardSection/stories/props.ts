@@ -25,6 +25,10 @@ const props = {
     control: "array",
     description: "information about section summary cards",
   },
+  showPinnedOnly: {
+    control: "boolean",
+    description: "functionality to show pinned section information",
+  },
 };
 
 export { props };

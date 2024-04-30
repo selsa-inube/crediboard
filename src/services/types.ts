@@ -11,6 +11,7 @@ interface Requests {
   nnasocia: string;
   n_Descr_Etapa: string;
   n_Descr_Tarea: string;
+  isPinned?: boolean;
 }
 
 type DmEtapasPrs =

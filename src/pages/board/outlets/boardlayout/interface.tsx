@@ -23,7 +23,12 @@ interface BoardLayoutProps {
   filterOptions: FilterOption[];
   boardOrientation: SectionOrientation;
   BoardRequests: Requests[];
+  searchRequests: string;
+  showPinnedOnly: boolean;
+  handleShowPinnedOnly: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
+  handleSearchRequests: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleFilterRequests: () => void;
 }
 
 function BoardLayoutUI(props: BoardLayoutProps) {
@@ -31,8 +36,14 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     filterOptions,
     boardOrientation,
     BoardRequests,
+    searchRequests,
+    showPinnedOnly,
+    handleShowPinnedOnly,
     onOrientationChange,
+    handleSearchRequests,
+    handleFilterRequests,
   } = props;
+
   return (
     <Stack direction="column">
       <StyledInputsContainer>
@@ -45,9 +56,13 @@ function BoardLayoutUI(props: BoardLayoutProps) {
               size="compact"
               iconAfter={<MdSearch />}
               fullwidth
+              value={searchRequests}
+              onChange={handleSearchRequests}
             />
           </Stack>
-          <Button spacing="compact">Buscar</Button>
+          <Button spacing="compact" onClick={handleFilterRequests}>
+            Buscar
+          </Button>
         </Stack>
         <Stack width="100%" justifyContent="space-between" alignItems="center">
           <Stack width="500px">
@@ -68,7 +83,8 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 id="SeePinned"
                 name="SeePinned"
                 size="large"
-                onChange={() => {}}
+                checked={showPinnedOnly}
+                onChange={handleShowPinnedOnly}
               />
             </Stack>
             <Stack gap={inube.spacing.s100}>
@@ -99,6 +115,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
             sectionBackground={column.sectionBackground}
             orientation={boardOrientation}
             sectionInformation={BoardRequests}
+            showPinnedOnly={showPinnedOnly}
           />
         ))}
       </StyledBoardContainer>
