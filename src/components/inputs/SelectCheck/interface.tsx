@@ -4,12 +4,10 @@ import {
   MdCheckCircle,
   MdOutlineArrowDropDown,
 } from "react-icons/md";
-
 import { Text, Icon, Label, Stack, inube } from "@inube/design-system";
 
 import { OptionItem } from "./OptionItem";
 import { OptionList } from "./OptionList";
-
 import { Size } from "./types";
 import { StyledContainer, StyledInputContainer, StyledInput } from "./styles";
 import { ISelectcheckProps } from ".";
@@ -31,25 +29,25 @@ const Message = (
 ) => {
   const { disabled, status, message } = props;
 
-  return status !== "pending" ? (
-    <Stack alignItems="center" gap="4px" margin="s050 s0 s0 s200">
-      <Icon
-        appearance={status === "invalid" ? "error" : "success"}
-        disabled={disabled}
-        icon={status === "invalid" ? <MdOutlineError /> : <MdCheckCircle />}
-        size="14px"
-      />
-      <Text
-        type="body"
-        size="small"
-        appearance={status === "invalid" ? "error" : "success"}
-        disabled={disabled}
-      >
-        {message && `${message}`}
-      </Text>
-    </Stack>
-  ) : (
-    <></>
+  return (
+    status !== "pending" && (
+      <Stack alignItems="center" gap="4px" margin="s050 s0 s0 s200">
+        <Icon
+          appearance={status === "invalid" ? "error" : "success"}
+          disabled={disabled}
+          icon={status === "invalid" ? <MdOutlineError /> : <MdCheckCircle />}
+          size="14px"
+        />
+        <Text
+          type="body"
+          size="small"
+          appearance={status === "invalid" ? "error" : "success"}
+          disabled={disabled}
+        >
+          {message && `${message}`}
+        </Text>
+      </Stack>
+    )
   );
 };
 
