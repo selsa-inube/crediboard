@@ -5,20 +5,20 @@ import { Size, Status } from "./types";
 import { SelectcheckUI } from "./interface";
 
 export interface ISelectcheckProps {
-  label?: string;
-  name: string;
   id: string;
+  name: string;
+  value: string | number;
+  options: IOptionItemProps[];
+  onChange: (event: React.ChangeEvent<HTMLInputElement>, name: string) => void;
+  label?: string;
   placeholder?: string;
   disabled?: boolean;
   readonly?: boolean;
-  value: string | number;
   required?: boolean;
   status?: Status;
   message?: string;
   size?: Size;
   fullwidth?: boolean;
-  options: IOptionItemProps[];
-  onChange: (event: React.ChangeEvent<HTMLInputElement>, name: string) => void;
   onFocus?: (event: FocusEvent) => void;
   onBlur?: (event: FocusEvent) => void;
   onClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
