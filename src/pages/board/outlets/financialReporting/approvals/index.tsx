@@ -1,14 +1,14 @@
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
-import { entriesApprovals, titlesApprovals } from "./config";
+import { entriesApprobals, titlesApprobals } from "./config";
 
-export const Approvals = () => {
+export const Approbals = () => {
   return (
-    <Fieldset title="Aprovaciones">
+    <Fieldset title="Aprobaciones">
       <TableBoard
         id="usuarios"
-        titles={titlesApprovals}
-        entries={entriesApprovals}
+        titles={titlesApprobals}
+        entries={entriesApprobals}
       />
     </Fieldset>
   );

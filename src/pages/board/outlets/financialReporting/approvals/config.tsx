@@ -1,6 +1,6 @@
 import { Tag } from "@inube/design-system";
 
-export const titlesApprovals = [
+export const titlesApprobals = [
   {
     id: "usuarios",
     titleName: "Usuarios",
@@ -13,7 +13,7 @@ export const titlesApprovals = [
   },
 ];
 
-export const entriesApprovals = [
+export const entriesApprobals = [
   {
     id: "uno",
     usuarios: "Pedro Pablo Iregui Gerrero",
