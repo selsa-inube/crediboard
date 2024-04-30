@@ -61,6 +61,6 @@ export const StyledTr = styled.tr<IStyledTdbodyContainer>`
 `;
 
 export const StyledTd = styled.td`
-  min-width: 218px;
-  max-width: 310px;
+  width: 310px;
+  height: 24px;
 `;
