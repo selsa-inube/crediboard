@@ -1,6 +1,5 @@
 import { MdOutlineSend, MdOutlineRemoveRedEye } from "react-icons/md";
-
-import { Icon, Tag, Stack } from "@inube/design-system";
+import { Icon, Tag } from "@inube/design-system";
 
 const entrySelection = (e: React.ChangeEvent<HTMLButtonElement>) => {
   const padre = e.target.closest("tr");
@@ -72,21 +71,14 @@ export const entriesFinanacialReporting = [
     tag: <Tag label="En tramite" appearance="warning" />,
     Reenviar: "",
     "Ver Imagen": (
-      <Stack
-        direction="column"
-        display="flex"
-        justifyContent="center"
-        width="60px"
-      >
-        <Icon
-          icon={<MdOutlineRemoveRedEye />}
-          appearance="primary"
-          onClick={entrySelection}
-          spacing="compact"
-          size="24px"
-          cursorHover
-        />
-      </Stack>
+      <Icon
+        icon={<MdOutlineRemoveRedEye />}
+        appearance="primary"
+        onClick={entrySelection}
+        spacing="none"
+        size="24px"
+        cursorHover
+      />
     ),
   },
   {
@@ -96,21 +88,14 @@ export const entriesFinanacialReporting = [
     Tipo: "Pagare",
     tag: <Tag label="Firmado" appearance="success" />,
     Reenviar: (
-      <Stack
-        direction="column"
-        display="flex"
-        justifyContent="center"
-        width="60px"
-      >
-        <Icon
-          icon={<MdOutlineSend />}
-          appearance="primary"
-          spacing="compact"
-          cursorHover
-          size="24px"
-          onClick={entrySelection}
-        />
-      </Stack>
+      <Icon
+        icon={<MdOutlineSend />}
+        appearance="primary"
+        spacing="none"
+        cursorHover
+        size="24px"
+        onClick={entrySelection}
+      />
     ),
     "Ver Imagen": "",
   },
