@@ -1,6 +1,6 @@
 import { Label, Stack } from "@inube/design-system";
 
-import { StyledOptionItem, StyledInput } from "./styles";
+import { StyledOptionItem } from "./styles";
 
 export interface IOptionItemProps {
   id: string;
@@ -15,7 +15,7 @@ export const OptionItem = (props: IOptionItemProps) => {
   return (
     <StyledOptionItem>
       <Stack>
-        <StyledInput
+        <input
           readOnly
           type="checkbox"
           id={id}

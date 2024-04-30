@@ -36,5 +36,3 @@ export const StyledOptionItem = styled.li`
     }
   }
 `;
-
-export const StyledInput = styled.input``;
