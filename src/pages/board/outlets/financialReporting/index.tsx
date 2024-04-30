@@ -31,12 +31,16 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
             </Fieldset>
           </Stack>
           <Grid templateColumns="repeat(2,1fr)" gap="s200" autoRows="auto">
-            <Stack direction="column">{toDo}</Stack>
-            <Stack direction="column">{approvals}</Stack>
-            <Stack direction="column">{requirements}</Stack>
-            <Stack direction="column">{management}</Stack>
-            <Stack direction="column">{promissoryNotes}</Stack>
-            <Stack direction="column">{postingVouchers}</Stack>
+            {toDo && <Stack direction="column">{toDo}</Stack>}
+            {approvals && <Stack direction="column">{approvals}</Stack>}
+            {requirements && <Stack direction="column">{requirements}</Stack>}
+            {management && <Stack direction="column">{management}</Stack>}
+            {promissoryNotes && (
+              <Stack direction="column">{promissoryNotes}</Stack>
+            )}
+            {postingVouchers && (
+              <Stack direction="column">{postingVouchers}</Stack>
+            )}
           </Grid>
         </Stack>
       </ContainerSections>
