@@ -9,11 +9,8 @@ import { useAuth } from "@inube/auth";
 
 import { Login } from "@pages/login";
 import { initializeDataDB } from "@mocks/utils/initializeDataDB";
-
-import AppContextProvider, { AppContext } from "@context/AppContext";
 import { ErrorPage } from "@components/layout/ErrorPage";
-import { FinancialReporting } from "@pages/board/outlets/financialReporting";
-import { PromissoryNotes } from "@pages/board/outlets/PromissoryNotes";
+import AppContextProvider, { AppContext } from "@context/AppContext";
 
 import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
@@ -38,10 +35,6 @@ const router = createBrowserRouter(
       <Route path="login/*" element={<LoginRoutes />} />
       <Route path="/*" element={<BoardRoutes />} />
       <Route path="logout" element={<LogOut />} />
-      <Route
-        path="financial-reporting"
-        element={<FinancialReporting promissoryNotes={<PromissoryNotes />} />}
-      />
     </>
   )
 );
