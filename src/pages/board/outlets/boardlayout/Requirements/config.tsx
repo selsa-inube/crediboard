@@ -95,7 +95,6 @@ export const actionsRequirements = [
   [
     {
       id: "agregar",
-      actionName: "Agregar",
       content: (data: IEntries) => (
         <Stack justifyContent="center">
           <Icon
@@ -111,7 +110,6 @@ export const actionsRequirements = [
     },
     {
       id: "aprobar",
-      actionName: "Aprobar",
       content: (data: IEntries) => (
         <Stack justifyContent="center">
           <Icon
