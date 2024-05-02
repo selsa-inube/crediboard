@@ -42,6 +42,15 @@ export const StyledTh = styled.th`
     theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
 `;
 
+export const StyledThactions = styled.th`
+  text-align: center;
+`;
+
+export const StyledTdactions = styled.td`
+  text-align: -webkit-center;
+  max-width: 24px;
+`;
+
 export const StyledTr = styled.tr<IStyledTdbodyContainer>`
   vertical-align: middle;
   white-space: nowrap;
@@ -52,6 +61,6 @@ export const StyledTr = styled.tr<IStyledTdbodyContainer>`
 `;
 
 export const StyledTd = styled.td`
-  min-width: 218px;
-  max-width: 310px;
+  width: 310px;
+  height: 24px;
 `;
