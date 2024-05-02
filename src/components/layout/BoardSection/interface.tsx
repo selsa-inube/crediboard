@@ -101,7 +101,7 @@ function BoardSectionUI(props: BoardSectionUIProps) {
               toDo={request.n_Descr_Tarea}
               isPinned={request.isPinned}
               onPinChange={(isPinned) => handlePinChange(request, isPinned)}
-              hasMessage={true}
+              hasMessage
             />
           ))}
         </Stack>

@@ -26,7 +26,7 @@ const useBoardData = () => {
     getAll("requests")
       .then((data) => {
         if (data && Array.isArray(data)) {
-          setBoardData({ boardRequests: data } as IBoardData);
+          setBoardData({ boardRequests: data });
           setFilteredRequests(data);
         }
       })
