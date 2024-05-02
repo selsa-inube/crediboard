@@ -10,11 +10,11 @@ import { useAuth } from "@inube/auth";
 import { Login } from "@pages/login";
 import { initializeDataDB } from "@mocks/utils/initializeDataDB";
 import { ErrorPage } from "@components/layout/ErrorPage";
+import AppContextProvider, { AppContext } from "@context/AppContext";
 
-import { GlobalStyles } from "./styles/global";
 import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
-import AppContextProvider, { AppContext } from "./context/AppContext";
+import { GlobalStyles } from "./styles/global";
 
 function LogOut() {
   localStorage.clear();
