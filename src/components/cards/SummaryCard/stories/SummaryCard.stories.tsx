@@ -1,4 +1,5 @@
 import { StoryFn, Meta } from "@storybook/react";
+import { BrowserRouter } from "react-router-dom";
 
 import { SummaryCard, ISummaryCardProps } from "..";
 
@@ -8,6 +9,13 @@ const story: Meta<typeof SummaryCard> = {
   component: SummaryCard,
   argTypes: props,
   title: "components/cards/SummaryCard",
+  decorators: [
+    (Story: StoryFn) => (
+      <BrowserRouter>
+        <Story />
+      </BrowserRouter>
+    ),
+  ],
 };
 
 export const Default: StoryFn<ISummaryCardProps> = (args) => (
@@ -21,6 +29,7 @@ Default.args = {
   destination: "Educación de Postgrado a menos de tres meses",
   value: 10000000,
   toDo: "Aceptación por parte del cliente de la propuesta",
+  path: "/",
   isPinned: true,
   hasMessage: true,
 };
