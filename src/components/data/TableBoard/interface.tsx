@@ -7,6 +7,9 @@ import {
   StyledThead,
   StyledTr,
   StyledTh,
+  StyledTd,
+  StyledThactions,
+  StyledTdactions,
 } from "./styles";
 
 import { ITableBoardProps } from ".";
@@ -17,6 +20,7 @@ interface ITableBoardUIProps extends ITableBoardProps {
 
 export const TableBoardUI = (props: ITableBoardUIProps) => {
   const { id, entries, actions, titles, titlesList, borderTable } = props;
+
   return (
     <StyledContainer id={id} $borderTable={borderTable!}>
       <StyledTable>
@@ -35,6 +39,24 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
               </StyledTh>
             ))}
           </tr>
+          <tr>
+            {actions &&
+              actions.map(
+                (action) =>
+                  action.actionName && (
+                    <StyledThactions key={action.id}>
+                      <Text
+                        appearance="primary"
+                        type="title"
+                        size="medium"
+                        padding="0px 4px"
+                      >
+                        {action.actionName}
+                      </Text>
+                    </StyledThactions>
+                  )
+              )}
+          </tr>
         </StyledThead>
         <StyledTbody>
           {entries.map((entry, index) => (
@@ -43,7 +65,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
               $zebraEffect={index % 2 === 0}
             >
               {titlesList.map((title) => (
-                <td key={title}>
+                <StyledTd key={title}>
                   {typeof entry[title] !== "string" ? (
                     entry[title]
                   ) : (
@@ -51,11 +73,14 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                       {entry[title]}
                     </Text>
                   )}
-                </td>
+                </StyledTd>
               ))}
-              {actions?.map((action) => (
-                <td key={action.id}>{action.content(entry)}</td>
-              ))}
+              {actions &&
+                actions.map((action) => (
+                  <StyledTdactions key={action.id}>
+                    {action.content(entry)}
+                  </StyledTdactions>
+                ))}
             </StyledTr>
           ))}
         </StyledTbody>

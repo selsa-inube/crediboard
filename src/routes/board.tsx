@@ -1,9 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 
-import { ErrorPage } from "@src/components/layout/ErrorPage";
-import { ContainerSections } from "@src/components/layout/ContainerSections";
-import { Board } from "@src/pages/board";
+import { ErrorPage } from "@components/layout/ErrorPage";
+import { Board } from "@pages/board";
 import { BoardLayout } from "@pages/board/outlets/boardlayout";
+import { FinancialReporting } from "@pages/board/outlets/financialReporting";
+import { Requirements } from "@pages/board/outlets/boardlayout/Requirements";
+import { dataRequirements } from "@pages/board/outlets/boardlayout/Requirements/config";
+import { PromissoryNotes } from "@pages/board/outlets/PromissoryNotes";
 
 function BoardRoutes() {
   return (
@@ -11,8 +14,13 @@ function BoardRoutes() {
       <Route path="/" element={<Board />}>
         <Route path="/" element={<BoardLayout />} />
         <Route
-          path="/solicitud/:solicitud_id"
-          element={<ContainerSections />}
+          path="solicitud/:id"
+          element={
+            <FinancialReporting
+              requirements={<Requirements data={dataRequirements} />}
+              promissoryNotes={<PromissoryNotes />}
+            />
+          }
         />
       </Route>
       <Route path="/*" element={<ErrorPage />} />
