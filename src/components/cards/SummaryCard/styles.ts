@@ -1,9 +1,23 @@
 import styled from "styled-components";
 import { inube } from "@inube/design-system";
+import { Link } from "react-router-dom";
 
 interface IStyledSummaryCard {
   theme?: typeof inube;
 }
+
+const StyledLink = styled(Link)`
+  display: flex;
+  text-decoration: none;
+  flex-direction: column;
+  padding-bottom: ${({ theme }) => theme?.spacing?.s100 || inube.spacing.s100};
+  justify-content: space-between;
+  height: 100%;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 const StyledSummaryCard = styled.div`
   display: flex;
@@ -18,10 +32,6 @@ const StyledSummaryCard = styled.div`
   background-color: ${({ theme }: IStyledSummaryCard) =>
     theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const StyledDivider = styled.hr`
@@ -34,4 +44,4 @@ const StyledDivider = styled.hr`
     inube.color.stroke.divider.regular};
 `;
 
-export { StyledSummaryCard, StyledDivider };
+export { StyledLink, StyledSummaryCard, StyledDivider };
