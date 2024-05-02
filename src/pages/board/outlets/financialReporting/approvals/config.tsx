@@ -1,4 +1,12 @@
-import { Tag } from "@inube/design-system";
+import { isValidElement } from "react";
+import { MdNotificationsNone } from "react-icons/md";
+import { Icon, Tag } from "@inube/design-system";
+
+import { IEntries } from "@components/data/TableBoard/types";
+
+const handledata = (data: IEntries) => {
+  console.log(data, "function that receives data");
+};
 
 export const titlesApprobals = [
   {
@@ -7,8 +15,8 @@ export const titlesApprobals = [
     priority: 1,
   },
   {
-    id: "desicion",
-    titleName: "Desición",
+    id: "decision",
+    titleName: "Decisión",
     priority: 2,
   },
 ];
@@ -17,43 +25,62 @@ export const entriesApprobals = [
   {
     id: "uno",
     usuarios: "Pedro Pablo Iregui Gerrero",
-    desicion: <Tag label="En tramite" appearance="warning" />,
+    decision: <Tag label="Aprobado" appearance="success" />,
   },
   {
     id: "dos",
     usuarios: "Carlos Alberto Combita",
-    desicion: <Tag label="Aprobado" appearance="success" />,
+    decision: <Tag label="Rechazado" appearance="error" />,
   },
   {
     id: "tres",
     usuarios: "Jaime Alberto Linares Guacaneme",
-    desicion: <Tag label="Rechazado" appearance="error" />,
+    decision: <Tag label="Aprovado" appearance="success" />,
   },
   {
     id: "cuatro",
     usuarios: "Miguel Angel Fuentes",
-    desicion: <Tag label="En tramite" appearance="warning" />,
+    decision: <Tag label="Pendiente" appearance="warning" />,
   },
   {
     id: "cinco",
     usuarios: "Cesar Augusto Corredor",
-    desicion: <Tag label="Aprobado" appearance="success" />,
+    decision: <Tag label="Aprobado" appearance="success" />,
   },
   {
     id: "seis",
     usuarios: "Paula Andrea Betancurt",
-    desicion: <Tag label="Rechazado" appearance="error" />,
+    decision: <Tag label="Rechazado" appearance="error" />,
   },
   {
     id: "siete",
     usuarios: "Jaime Alejandro Vargas",
-    desicion: <Tag label="En tramite" appearance="warning" />,
+    decision: <Tag label="Pendiente" appearance="warning" />,
   },
   {
     id: "ocho",
     usuarios: "Viviana Amador Tejada",
-    desicion: <Tag label="Aprobado" appearance="success" />,
+    decision: <Tag label="Aprobado" appearance="success" />,
   },
 ];
 
-export const actionsApprovals = [{}];
+export const actionsApprovals = [
+  {
+    id: "notificaciones",
+    actionName: "Notificar",
+    content: (data: IEntries) => (
+      <Icon
+        icon={<MdNotificationsNone />}
+        appearance="primary"
+        spacing="compact"
+        cursorHover
+        size="24px"
+        onClick={() => handledata(data)}
+        disabled={
+          isValidElement(data?.decision) &&
+          data?.decision?.props?.label === "Pendiente"
+        }
+      />
+    ),
+  },
+];

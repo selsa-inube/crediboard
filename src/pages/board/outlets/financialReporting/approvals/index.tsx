@@ -1,6 +1,6 @@
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
-import { entriesApprobals, titlesApprobals } from "./config";
+import { actionsApprovals, entriesApprobals, titlesApprobals } from "./config";
 
 export const Approbals = () => {
   return (
@@ -9,6 +9,7 @@ export const Approbals = () => {
         id="usuarios"
         titles={titlesApprobals}
         entries={entriesApprobals}
+        actions={actionsApprovals}
       />
     </Fieldset>
   );
