@@ -3,30 +3,13 @@ import { Icon } from "@inube/design-system";
 
 const entrySelection = (e: React.ChangeEvent<HTMLButtonElement>) => {
   const padre = e.target.closest("tr");
-  const tdElements = padre?.querySelectorAll("td");
 
-  const rowData: { [key: string]: string | undefined } = {};
+  const tdElements = padre?.querySelectorAll("td")[0].textContent?.trim();
 
-  tdElements?.forEach((td, index) => {
-    const value = td?.textContent?.trim();
-
-    switch (index) {
-      case 0:
-        rowData.id = value;
-        break;
-      case 1:
-        rowData["No. de Obligación"] = value;
-        break;
-      case 2:
-        rowData["No. de Documento"] = value;
-        break;
-      case 3:
-        rowData.Tipo = value;
-        break;
-    }
-  });
-
-  return rowData;
+  const data = entriesPostingvouchers.find(
+    (entry) => entry["No. de Obligación"] === tdElements
+  );
+  return data;
 };
 
 export const titlesPostingvouchers = [
