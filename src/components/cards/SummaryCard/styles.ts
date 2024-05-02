@@ -10,13 +10,9 @@ const StyledLink = styled(Link)`
   display: flex;
   text-decoration: none;
   flex-direction: column;
-  padding-bottom: ${({ theme }) => theme?.spacing?.s100 || inube.spacing.s100};
+  padding: ${({ theme }) => theme?.spacing?.s100 || inube.spacing.s100};
   justify-content: space-between;
   height: 100%;
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const StyledSummaryCard = styled.div`
