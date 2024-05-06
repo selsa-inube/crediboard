@@ -6,6 +6,7 @@ import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { getById } from "@mocks/utils/dataMock.service";
 import { Requests } from "@services/types";
+import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import {
   optionSelectDecision,
   optionsSelectAnalista,
@@ -45,7 +46,10 @@ export const ToDo = (props: IToDoProps) => {
   }, [id]);
 
   return (
-    <Fieldset title="Por hacer" descriptionTitle={data?.nnasocia}>
+    <Fieldset
+      title="Por hacer"
+      descriptionTitle={capitalizeFirstLetterEachWord(data?.nnasocia)}
+    >
       <Stack direction="column">
         <Stack>
           <Text>{data?.n_Descr_Tarea}</Text>
@@ -62,6 +66,7 @@ export const ToDo = (props: IToDoProps) => {
               options={optionSelectDecision}
             />
           </Stack>
+
           <Stack padding="s200 s0 s0 s0">
             <Button
               onClick={onClick}
