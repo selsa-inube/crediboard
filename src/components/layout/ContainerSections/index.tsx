@@ -14,9 +14,6 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
 
   const navigation = useNavigate();
 
-  const handleClick = () => {
-    navigation(-1);
-  };
   return (
     <Stack width="-webkit-fill-available" direction="column">
       <Stack direction="column">
@@ -25,7 +22,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
             spacing="compact"
             variant="none"
             iconBefore={<MdArrowBack />}
-            onClick={handleClick}
+            onClick={() => navigation(-1)}
           >
             Volver
           </Button>
