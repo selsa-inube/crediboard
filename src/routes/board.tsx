@@ -7,6 +7,7 @@ import { FinancialReporting } from "@pages/board/outlets/financialReporting";
 import { Requirements } from "@pages/board/outlets/boardlayout/Requirements";
 import { dataRequirements } from "@pages/board/outlets/boardlayout/Requirements/config";
 import { PromissoryNotes } from "@pages/board/outlets/PromissoryNotes";
+import { Approvals } from "@pages/board/outlets/financialReporting/approvals";
 
 function BoardRoutes() {
   return (
@@ -19,6 +20,7 @@ function BoardRoutes() {
             <FinancialReporting
               requirements={<Requirements data={dataRequirements} />}
               promissoryNotes={<PromissoryNotes />}
+              approvals={<Approvals />}
             />
           }
         />
