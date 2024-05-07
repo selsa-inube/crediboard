@@ -48,7 +48,9 @@ export const ToDo = (props: IToDoProps) => {
   return (
     <Fieldset
       title="Por hacer"
-      descriptionTitle={capitalizeFirstLetterEachWord(data?.nnasocia)}
+      descriptionTitle={
+        data.nnasocia ? capitalizeFirstLetterEachWord(data?.nnasocia) : ""
+      }
     >
       <Stack direction="column">
         <Stack>
