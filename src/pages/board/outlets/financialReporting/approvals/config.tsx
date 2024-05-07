@@ -8,7 +8,7 @@ const handledata = (data: IEntries) => {
   console.log(data, "function that receives data");
 };
 
-export const titlesApprobals = [
+export const titlesApprovals = [
   {
     id: "usuarios",
     titleName: "Usuarios",
@@ -26,7 +26,7 @@ export const titlesApprobals = [
   },
 ];
 
-export const entriesApprobals = [
+export const entriesApprovals = [
   {
     id: "uno",
     usuarios: "Pedro Pablo Iregui Gerrero",
