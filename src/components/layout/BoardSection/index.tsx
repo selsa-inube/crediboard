@@ -109,8 +109,9 @@ function BoardSection(props: BoardSectionProps) {
               destination={request.k_Desdin}
               value={request.v_Monto}
               toDo={request.n_Descr_Tarea}
-              isPinned={true}
-              hasMessage={true}
+              path={`solicitud/${request.k_Prospe}`}
+              isPinned
+              hasMessage
             />
           ))}
         </Stack>
