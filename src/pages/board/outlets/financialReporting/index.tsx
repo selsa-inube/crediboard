@@ -24,7 +24,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   return (
     <Stack direction="column" margin="s250">
       <ContainerSections>
-        <Stack direction="column" gap={inube.spacing.s500}>
+        <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
             <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
               <Text></Text>
