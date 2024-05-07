@@ -51,8 +51,9 @@ export const ToDo = (props: IToDoProps) => {
       descriptionTitle={
         data.nnasocia ? capitalizeFirstLetterEachWord(data?.nnasocia) : ""
       }
+      heigthFieldset="284px"
     >
-      <Stack direction="column">
+      <Stack direction="column" gap="6px">
         <Stack>
           <Text>{data?.n_Descr_Tarea}</Text>
         </Stack>
@@ -100,7 +101,7 @@ export const ToDo = (props: IToDoProps) => {
           />
 
           {icon && (
-            <Stack height="73px" alignItems="end">
+            <Stack height="70px" alignItems="end">
               <Icon
                 icon={icon.icon}
                 appearance="primary"

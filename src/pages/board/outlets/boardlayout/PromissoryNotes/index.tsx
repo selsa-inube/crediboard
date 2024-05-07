@@ -10,7 +10,7 @@ import {
 export const PromissoryNotes = () => {
   return (
     <Stack direction="column">
-      <Fieldset title="Pagarés y Libranzas">
+      <Fieldset title="Pagarés y Libranzas" heigthFieldset="163px">
         <TableBoard
           id="promissoryNotes"
           titles={titlesFinanacialReporting}
