@@ -6,7 +6,7 @@ import { BoardLayout } from "@pages/board/outlets/boardlayout";
 import { FinancialReporting } from "@pages/board/outlets/financialReporting";
 import { Requirements } from "@pages/board/outlets/boardlayout/Requirements";
 import { dataRequirements } from "@pages/board/outlets/boardlayout/Requirements/config";
-import { Approbals } from "@src/pages/board/outlets/financialReporting/approvals";
+import { Approvals } from "@src/pages/board/outlets/financialReporting/approvals";
 
 function BoardRoutes() {
   return (
@@ -18,7 +18,7 @@ function BoardRoutes() {
           element={
             <FinancialReporting
               requirements={<Requirements data={dataRequirements} />}
-              approvals={<Approbals />}
+              approvals={<Approvals />}
             />
           }
         />

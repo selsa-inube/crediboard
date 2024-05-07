@@ -2,7 +2,7 @@ import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { actionsApprovals, entriesApprobals, titlesApprobals } from "./config";
 
-export const Approbals = () => {
+export const Approvals = () => {
   return (
     <Fieldset title="Aprobaciones">
       <TableBoard
