@@ -38,8 +38,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                 </Text>
               </StyledTh>
             ))}
-          </tr>
-          <tr>
+
             {actions &&
               actions.map(
                 (action) =>

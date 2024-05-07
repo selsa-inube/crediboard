@@ -1,15 +1,27 @@
 const props = {
   rad: {
     control: "number",
-    description: "Número de referencia del resumen",
+    description: "Reference number of the summary",
   },
-  date: { control: "date", description: "Fecha de la solicitud" },
-  name: { control: "text", description: "Nombre del titular" },
-  destination: { control: "text", description: "Destino de la solicitud" },
-  value: { control: "number", description: "Valor de la solicitud" },
+  date: { control: "date", description: "Date of the request" },
+  name: { control: "text", description: "Name of the request holder" },
+  destination: { control: "text", description: "Destination of the request" },
+  value: { control: "number", description: "Total value of the request" },
   toDo: {
     control: "text",
-    description: "Actividad de ejecución de la solicitud",
+    description: "Activity to be performed in the request",
+  },
+  path: {
+    control: "text",
+    description: "Navigation path when clicking on the card",
+  },
+  isPinned: {
+    control: "boolean",
+    description: "Indicates whether the card is pinned",
+  },
+  hasMessage: {
+    control: "boolean",
+    description: "Indicates whether the card has a message",
   },
 };
 
