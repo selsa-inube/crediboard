@@ -6,7 +6,9 @@ import { BoardLayout } from "@pages/board/outlets/boardlayout";
 import { FinancialReporting } from "@pages/board/outlets/financialReporting";
 import { Requirements } from "@pages/board/outlets/boardlayout/Requirements";
 import { dataRequirements } from "@pages/board/outlets/boardlayout/Requirements/config";
-import { PromissoryNotes } from "@pages/board/outlets/PromissoryNotes";
+import { PromissoryNotes } from "@pages/board/outlets/boardlayout/PromissoryNotes";
+import { Postingvouchers } from "@pages/board/outlets/boardlayout/Postingvouchers";
+import { Approvals } from "@pages/board/outlets/financialReporting/approvals";
 import { ToDo } from "@pages/board/outlets/boardlayout/ToDo";
 import { infoIcon } from "@pages/board/outlets/boardlayout/ToDo/config";
 
@@ -21,6 +23,8 @@ function BoardRoutes() {
             <FinancialReporting
               requirements={<Requirements data={dataRequirements} />}
               promissoryNotes={<PromissoryNotes />}
+              postingVouchers={<Postingvouchers />}
+              approvals={<Approvals />}
               toDo={<ToDo icon={infoIcon} />}
             />
           }
