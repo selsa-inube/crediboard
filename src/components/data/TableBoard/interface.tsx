@@ -1,4 +1,5 @@
-import { Text } from "@inube/design-system";
+import { Suspense } from "react";
+import { Text, SkeletonIcon, SkeletonLine } from "@inube/design-system";
 
 import {
   StyledContainer,
@@ -28,14 +29,16 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
           <tr>
             {titles.map((title) => (
               <StyledTh key={title.id + id}>
-                <Text
-                  appearance="primary"
-                  type="title"
-                  size="medium"
-                  padding="0px 4px"
-                >
-                  {title.titleName}
-                </Text>
+                <Suspense fallback={<SkeletonLine animated />}>
+                  <Text
+                    appearance="primary"
+                    type="title"
+                    size="medium"
+                    padding="0px 4px"
+                  >
+                    {title.titleName}
+                  </Text>
+                </Suspense>
               </StyledTh>
             ))}
 
@@ -44,14 +47,16 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                 (action) =>
                   action.actionName && (
                     <StyledThactions key={action.id}>
-                      <Text
-                        appearance="primary"
-                        type="title"
-                        size="medium"
-                        padding="0px 4px"
-                      >
-                        {action.actionName}
-                      </Text>
+                      <Suspense fallback={<SkeletonLine animated />}>
+                        <Text
+                          appearance="primary"
+                          type="title"
+                          size="medium"
+                          padding="0px 4px"
+                        >
+                          {action.actionName}
+                        </Text>
+                      </Suspense>
                     </StyledThactions>
                   )
               )}
@@ -64,21 +69,25 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
               $zebraEffect={index % 2 === 0}
             >
               {titlesList.map((title) => (
-                <StyledTd key={title}>
-                  {typeof entry[title] !== "string" ? (
-                    entry[title]
-                  ) : (
-                    <Text size="small" padding="0px 4px">
-                      {entry[title]}
-                    </Text>
-                  )}
-                </StyledTd>
+                <Suspense fallback={<SkeletonLine animated />}>
+                  <StyledTd key={title}>
+                    {typeof entry[title] !== "string" ? (
+                      entry[title]
+                    ) : (
+                      <Text size="small" padding="0px 4px">
+                        {entry[title]}
+                      </Text>
+                    )}
+                  </StyledTd>
+                </Suspense>
               ))}
               {actions &&
                 actions.map((action) => (
-                  <StyledTdactions key={action.id}>
-                    {action.content(entry)}
-                  </StyledTdactions>
+                  <Suspense fallback={<SkeletonIcon animated size="24px" />}>
+                    <StyledTdactions key={action.id}>
+                      {action.content(entry)}
+                    </StyledTdactions>
+                  </Suspense>
                 ))}
             </StyledTr>
           ))}
