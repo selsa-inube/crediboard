@@ -115,7 +115,6 @@ function BoardLayoutUI(props: BoardLayoutProps) {
             sectionBackground={column.sectionBackground}
             orientation={boardOrientation}
             sectionInformation={BoardRequests}
-            showPinnedOnly={showPinnedOnly}
           />
         ))}
       </StyledBoardContainer>
