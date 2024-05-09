@@ -82,19 +82,17 @@ export const ToDo = (props: IToDoProps) => {
         </Stack>
         <Stack gap={inube.spacing.s200} padding="s100 s0" alignItems="center">
           <Stack width="340px">
-            <div style={{ position: "absolute" }}>
-              <Select
-                id="toDo"
-                name="decision"
-                label="Decisión"
-                value={changeSelect.decision}
-                placeholder="Seleccione una opción"
-                size="compact"
-                fullwidth
-                options={optionSelectDecision}
-                onChange={onChange}
-              />
-            </div>
+            <Select
+              id="toDo"
+              name="decision"
+              label="Decisión"
+              value={changeSelect.decision}
+              placeholder="Seleccione una opción"
+              size="compact"
+              fullwidth
+              options={optionSelectDecision}
+              onChange={onChange}
+            />
           </Stack>
 
           <Stack padding="s200 s0 s0 s0">
