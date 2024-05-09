@@ -7,7 +7,7 @@ interface IStyledContainer {
 }
 
 interface IStyledTdbodyContainer {
-  $zebraEffect: boolean;
+  $zebraEffect?: boolean;
 }
 
 export const StyledContainer = styled.div<IStyledContainer>`
@@ -44,11 +44,11 @@ export const StyledTh = styled.th`
 
 export const StyledThactions = styled.th`
   text-align: center;
+  min-width: 100px;
 `;
 
 export const StyledTdactions = styled.td`
   text-align: -webkit-center;
-  max-width: 24px;
 `;
 
 export const StyledTr = styled.tr<IStyledTdbodyContainer>`
