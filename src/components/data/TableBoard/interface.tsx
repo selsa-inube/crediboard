@@ -1,6 +1,6 @@
-import { Suspense } from "react";
-import { Text, SkeletonIcon, SkeletonLine } from "@inube/design-system";
+import { Text, SkeletonLine } from "@inube/design-system";
 
+import { ITitle } from "./types";
 import {
   StyledContainer,
   StyledTable,
@@ -12,15 +12,61 @@ import {
   StyledThactions,
   StyledTdactions,
 } from "./styles";
-
 import { ITableBoardProps } from ".";
 
 interface ITableBoardUIProps extends ITableBoardProps {
   titlesList: string[];
+  loading: boolean;
 }
 
+const RenderActionsTitles = ({ actionName }: { actionName: string }) => {
+  return (
+    <StyledThactions>
+      <Text
+        appearance="primary"
+        type="title"
+        size="medium"
+        padding="0px 4px"
+        textAlign="center"
+      >
+        {actionName}
+      </Text>
+    </StyledThactions>
+  );
+};
+
+const actionsLoading = (numberActions: number) => {
+  const cellsOfActionsLoading = [];
+  for (let cellAction = 0; cellAction < numberActions; cellAction++) {
+    cellsOfActionsLoading.push(
+      <StyledTd key={cellAction}>
+        <SkeletonLine animated />
+      </StyledTd>
+    );
+  }
+  return cellsOfActionsLoading;
+};
+
+const dataLoading = (titleColumns: ITitle[], numberActions: number) => {
+  const rowsLoading = [];
+  for (let rows = 0; rows < 3; rows++) {
+    rowsLoading.push(
+      <StyledTr key={rows}>
+        {titleColumns.map((title) => (
+          <StyledTd key={`e-${title.id}`}>
+            <SkeletonLine animated />
+          </StyledTd>
+        ))}
+        {actionsLoading(numberActions)}
+      </StyledTr>
+    );
+  }
+  return rowsLoading;
+};
+
 export const TableBoardUI = (props: ITableBoardUIProps) => {
-  const { id, entries, actions, titles, titlesList, borderTable } = props;
+  const { id, entries, actions, titles, titlesList, borderTable, loading } =
+    props;
 
   return (
     <StyledContainer id={id} $borderTable={borderTable!}>
@@ -29,16 +75,14 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
           <tr>
             {titles.map((title) => (
               <StyledTh key={title.id + id}>
-                <Suspense fallback={<SkeletonLine animated />}>
-                  <Text
-                    appearance="primary"
-                    type="title"
-                    size="medium"
-                    padding="0px 4px"
-                  >
-                    {title.titleName}
-                  </Text>
-                </Suspense>
+                <Text
+                  appearance="primary"
+                  type="title"
+                  size="medium"
+                  padding="0px 4px"
+                >
+                  {title.titleName}
+                </Text>
               </StyledTh>
             ))}
 
@@ -46,51 +90,45 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
               actions.map(
                 (action) =>
                   action.actionName && (
-                    <StyledThactions key={action.id}>
-                      <Suspense fallback={<SkeletonLine animated />}>
-                        <Text
-                          appearance="primary"
-                          type="title"
-                          size="medium"
-                          padding="0px 4px"
-                        >
-                          {action.actionName}
-                        </Text>
-                      </Suspense>
-                    </StyledThactions>
+                    <RenderActionsTitles
+                      key={action.id}
+                      actionName={action.actionName}
+                    />
                   )
               )}
           </tr>
         </StyledThead>
         <StyledTbody>
-          {entries.map((entry, index) => (
-            <StyledTr
-              key={`${entry.id}-${index}`}
-              $zebraEffect={index % 2 === 0}
-            >
-              {titlesList.map((title) => (
-                <Suspense fallback={<SkeletonLine animated />}>
-                  <StyledTd key={title}>
-                    {typeof entry[title] !== "string" ? (
-                      entry[title]
-                    ) : (
-                      <Text size="small" padding="0px 4px">
-                        {entry[title]}
-                      </Text>
-                    )}
-                  </StyledTd>
-                </Suspense>
+          {loading ? (
+            dataLoading(titles, actions?.length || 0)
+          ) : (
+            <>
+              {entries.map((entry, index) => (
+                <StyledTr
+                  key={`${entry.id}-${index}`}
+                  $zebraEffect={index % 2 === 0}
+                >
+                  {titlesList.map((title) => (
+                    <StyledTd key={title}>
+                      {typeof entry[title] !== "string" ? (
+                        entry[title]
+                      ) : (
+                        <Text size="small" padding="0px 4px">
+                          {entry[title]}
+                        </Text>
+                      )}
+                    </StyledTd>
+                  ))}
+                  {actions &&
+                    actions.map((action) => (
+                      <StyledTdactions key={action.id}>
+                        {action.content(entry)}
+                      </StyledTdactions>
+                    ))}
+                </StyledTr>
               ))}
-              {actions &&
-                actions.map((action) => (
-                  <Suspense fallback={<SkeletonIcon animated size="24px" />}>
-                    <StyledTdactions key={action.id}>
-                      {action.content(entry)}
-                    </StyledTdactions>
-                  </Suspense>
-                ))}
-            </StyledTr>
-          ))}
+            </>
+          )}
         </StyledTbody>
       </StyledTable>
     </StyledContainer>
