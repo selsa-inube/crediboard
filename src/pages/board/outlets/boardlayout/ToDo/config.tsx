@@ -22,39 +22,3 @@ export const optionSelectDecision = [
     disabled: false,
   },
 ];
-
-export const optionsSelectGestorComercial = [
-  {
-    id: "gestor1",
-    label: "Gestor 1",
-    disabled: false,
-  },
-  {
-    id: "gestor2",
-    label: "Gestor 2",
-    disabled: false,
-  },
-  {
-    id: "gestor3",
-    label: "Gestor 3",
-    disabled: false,
-  },
-];
-
-export const optionsSelectAnalista = [
-  {
-    id: "analista1",
-    label: "Analista 1",
-    disabled: false,
-  },
-  {
-    id: "analista2",
-    label: "Analista 2",
-    disabled: false,
-  },
-  {
-    id: "analista3",
-    label: "Analista 3",
-    disabled: false,
-  },
-];
