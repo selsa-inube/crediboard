@@ -53,7 +53,7 @@ export const ToDo = (props: IToDoProps) => {
       }
       heigthFieldset="284px"
     >
-      <Stack direction="column" gap="6px">
+      <Stack direction="column" gap={inube.spacing.s075}>
         <Stack>
           <Text>{data?.n_Descr_Tarea}</Text>
         </Stack>
