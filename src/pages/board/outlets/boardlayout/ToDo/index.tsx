@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Button, Icon, Stack, Select, Text, inube } from "@inube/design-system";
+import {
+  Button,
+  Icon,
+  Stack,
+  Select,
+  Text,
+  Textfield,
+  inube,
+} from "@inube/design-system";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { getById } from "@mocks/utils/dataMock.service";
 import { Requests } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
-import {
-  optionSelectDecision,
-  optionsSelectAnalista,
-  optionsSelectGestorComercial,
-} from "./config";
+
+import { optionSelectDecision } from "./config";
 
 interface IICon {
   icon: JSX.Element;
@@ -37,7 +42,25 @@ export const ToDo = (props: IToDoProps) => {
 
   const [data, setData] = useState({} as Requests);
 
+  const [changeTextfield, setChangeTextfield] = useState({
+    gestorComercial: "",
+    analista: "",
+  });
+
+  const [changeSelect, setChangeSelect] = useState<{ [key: string]: string }>({
+    decision: "",
+  });
+
   const { id } = useParams();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setChangeTextfield({ ...changeTextfield, [e.target.name]: e.target.value });
+  };
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.innerText;
+    setChangeSelect({ decision: value });
+  };
 
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requeriment) => {
@@ -59,15 +82,19 @@ export const ToDo = (props: IToDoProps) => {
         </Stack>
         <Stack gap={inube.spacing.s200} padding="s100 s0" alignItems="center">
           <Stack width="340px">
-            <Select
-              id="toDo"
-              name="decision"
-              label="Decisión"
-              placeholder="Seleccione una opción"
-              size="compact"
-              fullwidth
-              options={optionSelectDecision}
-            />
+            <div style={{ position: "absolute" }}>
+              <Select
+                id="toDo"
+                name="decision"
+                label="Decisión"
+                value={changeSelect.decision}
+                placeholder="Seleccione una opción"
+                size="compact"
+                fullwidth
+                options={optionSelectDecision}
+                onChange={onChange}
+              />
+            </div>
           </Stack>
 
           <Stack padding="s200 s0 s0 s0">
@@ -84,20 +111,22 @@ export const ToDo = (props: IToDoProps) => {
         </Stack>
         <Divider />
         <Stack gap={inube.spacing.s200} alignItems="center" padding="s100 s0">
-          <Select
+          <Textfield
             id="gestorComercial"
             name="gestorComercial"
             label="Gestor Comercial"
             placeholder="Gestor Comercial"
-            options={optionsSelectGestorComercial}
+            value={changeTextfield.gestorComercial}
+            onChange={handleChange}
           />
 
-          <Select
+          <Textfield
             id="analista"
             name="analista"
             label="Analista"
             placeholder="Analista"
-            options={optionsSelectAnalista}
+            value={changeTextfield.analista}
+            onChange={handleChange}
           />
 
           {icon && (
