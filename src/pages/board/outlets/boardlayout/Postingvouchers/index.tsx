@@ -2,7 +2,11 @@ import { Stack } from "@inube/design-system";
 
 import { Fieldset } from "@src/components/data/Fieldset";
 import { TableBoard } from "@src/components/data/TableBoard";
-import { entriesPostingvouchers, titlesPostingvouchers } from "./config";
+import {
+  actionsPostingvouchers,
+  entriesPostingvouchers,
+  titlesPostingvouchers,
+} from "./config";
 
 export const Postingvouchers = () => {
   return (
@@ -10,8 +14,10 @@ export const Postingvouchers = () => {
       <Fieldset title="Comprobantes de Contabilización">
         <TableBoard
           id="postingvouchers"
+          loading={false}
           titles={titlesPostingvouchers}
           entries={entriesPostingvouchers}
+          actions={actionsPostingvouchers}
         />
       </Fieldset>
     </Stack>
