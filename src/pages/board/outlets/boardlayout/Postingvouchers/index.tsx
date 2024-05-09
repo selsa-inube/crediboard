@@ -7,7 +7,7 @@ import { entriesPostingvouchers, titlesPostingvouchers } from "./config";
 export const Postingvouchers = () => {
   return (
     <Stack direction="column">
-      <Fieldset title="Comprobantes de Contabilización">
+      <Fieldset title="Comprobantes de Contabilización" heigthFieldset="163px">
         <TableBoard
           id="postingvouchers"
           titles={titlesPostingvouchers}

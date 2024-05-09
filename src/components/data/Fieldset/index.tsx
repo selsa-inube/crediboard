@@ -11,19 +11,27 @@ interface IPtionsButton {
 
 interface IFieldsetProps {
   title: string;
-  descriptionTitle?: string;
   children: JSX.Element | JSX.Element[];
+  heigthFieldset?: string;
+  descriptionTitle?: string;
   activeButton?: IPtionsButton;
 }
 
 export const Fieldset = (props: IFieldsetProps) => {
-  const { children, title, descriptionTitle, activeButton } = props;
+  const {
+    children,
+    title,
+    heigthFieldset = "auto",
+    descriptionTitle,
+    activeButton,
+  } = props;
 
   return (
     <Stack
       direction="column"
       gap={inube.spacing.s100}
       width="-webkit-fill-available"
+      height={heigthFieldset}
     >
       <Stack justifyContent={activeButton && "space-between"}>
         <Stack gap={inube.spacing.s100}>
