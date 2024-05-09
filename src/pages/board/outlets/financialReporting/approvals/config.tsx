@@ -55,7 +55,7 @@ export async function handleData() {
         },
       ];
       resolve(entriesApprovals);
-    }, 5000);
+    }, 2000);
   });
 }
 
