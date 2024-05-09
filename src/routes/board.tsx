@@ -8,7 +8,7 @@ import { Requirements } from "@pages/board/outlets/boardlayout/Requirements";
 import { dataRequirements } from "@pages/board/outlets/boardlayout/Requirements/config";
 import { PromissoryNotes } from "@pages/board/outlets/boardlayout/PromissoryNotes";
 import { Postingvouchers } from "@pages/board/outlets/boardlayout/Postingvouchers";
-import { Approvals } from "@src/pages/board/outlets/financialReporting/Approvals";
+import { Approvals } from "@pages/board/outlets/financialReporting/Approvals";
 import { ToDo } from "@pages/board/outlets/boardlayout/ToDo";
 import { infoIcon } from "@pages/board/outlets/boardlayout/ToDo/config";
 
