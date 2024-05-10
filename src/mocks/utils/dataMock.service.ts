@@ -39,7 +39,9 @@ export async function getById(
     const optionsData = await get(option);
 
     if (Array.isArray(optionsData)) {
-      const foundData = optionsData.find((data) => data[key] === identifier);
+      const foundData = optionsData.find(
+        (data) => data[key] === Number(identifier)
+      );
       if (!foundData) throw new Error(`No find identifier ${identifier}`);
       return foundData;
     }
