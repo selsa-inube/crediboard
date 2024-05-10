@@ -18,7 +18,7 @@ export const Approvals = () => {
   }, []);
 
   return (
-    <Fieldset title="Aprobaciones" heigthFieldset="282px">
+    <Fieldset title="Aprobaciones" heigthFieldset="282px" aspectRatio="3/1">
       <TableBoard
         id="usuarios"
         titles={titlesApprovals}
