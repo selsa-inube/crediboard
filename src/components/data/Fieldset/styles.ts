@@ -1,11 +1,16 @@
 import styled from "styled-components";
 import { inube } from "@inube/design-system";
 
-export const StyledContainerFieldset = styled.div`
+interface IStyledContainerFieldset {
+  $aspectRatio?: string;
+}
+
+export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   overflow-y: auto;
   border-radius: 8px;
   border-width: 2px;
   border-style: solid;
+  aspect-ratio: ${({ $aspectRatio }) => $aspectRatio};
   border-color: ${({ theme }) =>
     theme?.color?.stroke?.gray?.regular || inube.color.stroke.gray.regular};
   box-shadow: 0px 2px 6px

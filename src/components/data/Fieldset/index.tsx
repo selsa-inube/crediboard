@@ -12,6 +12,7 @@ interface IPtionsButton {
 interface IFieldsetProps {
   title: string;
   children: JSX.Element | JSX.Element[];
+  aspectRatio?: string;
   heigthFieldset?: string;
   descriptionTitle?: string;
   activeButton?: IPtionsButton;
@@ -22,6 +23,7 @@ export const Fieldset = (props: IFieldsetProps) => {
     children,
     title,
     heigthFieldset = "auto",
+    aspectRatio,
     descriptionTitle,
     activeButton,
   } = props;
@@ -54,7 +56,9 @@ export const Fieldset = (props: IFieldsetProps) => {
           </Stack>
         )}
       </Stack>
-      <StyledContainerFieldset>{children}</StyledContainerFieldset>
+      <StyledContainerFieldset $aspectRatio={aspectRatio}>
+        {children}
+      </StyledContainerFieldset>
     </Stack>
   );
 };
