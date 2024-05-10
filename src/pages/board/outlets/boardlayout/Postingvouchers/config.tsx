@@ -46,6 +46,7 @@ export const actionsPostingvouchers = [
       <Icon
         appearance="primary"
         size="24px"
+        cursorHover
         icon={<MdOutlineRemoveRedEye />}
         onClick={() => entrySelection(data)}
       />

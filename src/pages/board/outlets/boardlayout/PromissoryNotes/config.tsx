@@ -62,6 +62,7 @@ export const actionsFinanacialReporting = [
       <Icon
         appearance="primary"
         size="24px"
+        cursorHover
         icon={<MdOutlineRemoveRedEye />}
         onClick={() => entrySelection(data)}
       />
@@ -73,6 +74,7 @@ export const actionsFinanacialReporting = [
     content: (data: IEntries) => (
       <Icon
         appearance="primary"
+        cursorHover
         size="24px"
         icon={<MdOutlineSend />}
         onClick={() => entrySelection(data)}
