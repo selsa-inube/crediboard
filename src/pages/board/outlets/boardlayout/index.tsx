@@ -40,19 +40,30 @@ function BoardLayout() {
   useEffect(() => {
     localStorage.setItem("showPinnedOnly", JSON.stringify(showPinnedOnly));
 
-    if (showPinnedOnly) {
-      setFilteredRequests((prevFilteredRequests) =>
-        prevFilteredRequests.filter((req) =>
-          boardData.requestsPinned
-            .filter((req) => req.isPinned === "Y")
-            .map((req) => req.requestId)
-            .includes(req.k_Prospe)
-        )
-      );
-    } else {
-      setFilteredRequests(boardData.boardRequests);
-    }
-  }, [showPinnedOnly, boardData.requestsPinned, boardData.boardRequests]);
+    const filteredRequests = boardData.boardRequests.filter((request) => {
+      const isSearchMatch =
+        request.nnasocia
+          .toLowerCase()
+          .includes(searchRequestValue.toLowerCase()) ||
+        request.k_Prospe.toString().includes(searchRequestValue);
+
+      const isPinned =
+        !showPinnedOnly ||
+        boardData.requestsPinned
+          .filter((req) => req.isPinned === "Y")
+          .map((req) => req.requestId)
+          .includes(request.k_Prospe);
+
+      return isSearchMatch && isPinned;
+    });
+
+    setFilteredRequests(filteredRequests);
+  }, [
+    showPinnedOnly,
+    searchRequestValue,
+    boardData.requestsPinned,
+    boardData.boardRequests,
+  ]);
 
   useEffect(() => {
     get("requests")
@@ -117,23 +128,6 @@ function BoardLayout() {
     setSearchRequestValue(e.target.value);
   };
 
-  const handleClickSearchButton = () => {
-    const requests = boardData.boardRequests.filter(
-      (request) =>
-        (request.nnasocia
-          .toLowerCase()
-          .includes(searchRequestValue.toLowerCase()) ||
-          request.k_Prospe.toString().includes(searchRequestValue)) &&
-        (!showPinnedOnly ||
-          boardData.requestsPinned
-            .filter((req) => req.isPinned === "Y")
-            .map((req) => req.requestId)
-            .includes(request.k_Prospe))
-    );
-    setSearchRequestValue("");
-    setFilteredRequests(requests);
-  };
-
   return (
     <BoardLayoutUI
       filterOptions={filterOptions}
@@ -142,7 +136,6 @@ function BoardLayout() {
       searchRequestValue={searchRequestValue}
       showPinnedOnly={showPinnedOnly}
       pinnedRequests={boardData.requestsPinned}
-      handleClickSearchButton={handleClickSearchButton}
       handlePinRequest={handlePinRequest}
       handleShowPinnedOnly={handleShowPinnedOnly}
       handleSearchRequestsValue={handleSearchRequestsValue}

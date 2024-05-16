@@ -2,7 +2,6 @@ import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
 import {
   Stack,
-  Button,
   Textfield,
   Select,
   Text,
@@ -26,7 +25,6 @@ interface BoardLayoutProps {
   searchRequestValue: string;
   showPinnedOnly: boolean;
   pinnedRequests: PinnedRequest[];
-  handleClickSearchButton: () => void;
   handlePinRequest: (requestId: number) => void;
   handleShowPinnedOnly: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -41,7 +39,6 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     searchRequestValue,
     showPinnedOnly,
     pinnedRequests,
-    handleClickSearchButton,
     handlePinRequest,
     handleShowPinnedOnly,
     handleSearchRequestsValue,
@@ -51,22 +48,17 @@ function BoardLayoutUI(props: BoardLayoutProps) {
   return (
     <Stack direction="column">
       <StyledInputsContainer>
-        <Stack gap={inube.spacing.s200} alignItems="center">
-          <Stack width="480px">
-            <Textfield
-              id="SearchCards"
-              name="SearchCards"
-              placeholder="Buscar..."
-              size="compact"
-              iconAfter={<MdSearch />}
-              fullwidth
-              value={searchRequestValue}
-              onChange={handleSearchRequestsValue}
-            />
-          </Stack>
-          <Button spacing="compact" onClick={handleClickSearchButton}>
-            Buscar
-          </Button>
+        <Stack width="480px">
+          <Textfield
+            id="SearchCards"
+            name="SearchCards"
+            placeholder="Buscar..."
+            size="compact"
+            iconAfter={<MdSearch />}
+            fullwidth
+            value={searchRequestValue}
+            onChange={handleSearchRequestsValue}
+          />
         </Stack>
         <Stack width="100%" justifyContent="space-between" alignItems="center">
           <Stack width="500px">
