@@ -13,7 +13,7 @@ import {
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { BoardSection } from "@components/layout/BoardSection";
-import { Requests } from "@services/types";
+import { PinnedRequest, Requests } from "@services/types";
 
 import { FilterOption } from "./config/select";
 import { StyledInputsContainer, StyledBoardContainer } from "./styles";
@@ -23,12 +23,14 @@ interface BoardLayoutProps {
   filterOptions: FilterOption[];
   boardOrientation: SectionOrientation;
   BoardRequests: Requests[];
-  searchRequests: string;
+  searchRequestValue: string;
   showPinnedOnly: boolean;
+  pinnedRequests: PinnedRequest[];
+  handleClickSearchButton: () => void;
+  handlePinRequest: (requestId: number) => void;
   handleShowPinnedOnly: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
-  handleSearchRequests: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleFilterRequests: () => void;
 }
 
 function BoardLayoutUI(props: BoardLayoutProps) {
@@ -36,12 +38,14 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     filterOptions,
     boardOrientation,
     BoardRequests,
-    searchRequests,
+    searchRequestValue,
     showPinnedOnly,
+    pinnedRequests,
+    handleClickSearchButton,
+    handlePinRequest,
     handleShowPinnedOnly,
+    handleSearchRequestsValue,
     onOrientationChange,
-    handleSearchRequests,
-    handleFilterRequests,
   } = props;
 
   return (
@@ -56,11 +60,11 @@ function BoardLayoutUI(props: BoardLayoutProps) {
               size="compact"
               iconAfter={<MdSearch />}
               fullwidth
-              value={searchRequests}
-              onChange={handleSearchRequests}
+              value={searchRequestValue}
+              onChange={handleSearchRequestsValue}
             />
           </Stack>
-          <Button spacing="compact" onClick={handleFilterRequests}>
+          <Button spacing="compact" onClick={handleClickSearchButton}>
             Buscar
           </Button>
         </Stack>
@@ -115,6 +119,8 @@ function BoardLayoutUI(props: BoardLayoutProps) {
             sectionBackground={column.sectionBackground}
             orientation={boardOrientation}
             sectionInformation={BoardRequests}
+            pinnedRequests={pinnedRequests}
+            handlePinRequest={handlePinRequest}
           />
         ))}
       </StyledBoardContainer>
