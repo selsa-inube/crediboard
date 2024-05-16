@@ -41,8 +41,8 @@ function BoardLayout() {
     localStorage.setItem("showPinnedOnly", JSON.stringify(showPinnedOnly));
 
     if (showPinnedOnly) {
-      setFilteredRequests(
-        filteredRequests.filter((req) =>
+      setFilteredRequests((prevFilteredRequests) =>
+        prevFilteredRequests.filter((req) =>
           boardData.requestsPinned
             .filter((req) => req.isPinned === "Y")
             .map((req) => req.requestId)
@@ -52,7 +52,7 @@ function BoardLayout() {
     } else {
       setFilteredRequests(boardData.boardRequests);
     }
-  }, [showPinnedOnly, boardData]);
+  }, [showPinnedOnly, boardData.requestsPinned, boardData.boardRequests]);
 
   useEffect(() => {
     get("requests")
