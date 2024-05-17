@@ -11,6 +11,7 @@ import { Postingvouchers } from "@pages/board/outlets/boardlayout/Postingvoucher
 import { Approvals } from "@pages/board/outlets/financialReporting/Approvals";
 import { ToDo } from "@pages/board/outlets/boardlayout/ToDo";
 import { infoIcon } from "@pages/board/outlets/boardlayout/ToDo/config";
+import { CreditProfileInfo } from "@src/pages/board/outlets/creditProfileInfo";
 
 function BoardRoutes() {
   return (
@@ -28,6 +29,10 @@ function BoardRoutes() {
               toDo={<ToDo icon={infoIcon} />}
             />
           }
+        />
+        <Route
+          path="solicitud/:id/credit-profile"
+          element={<CreditProfileInfo />}
         />
       </Route>
       <Route path="/*" element={<ErrorPage />} />
