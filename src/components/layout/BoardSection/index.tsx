@@ -9,7 +9,6 @@ import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
 
 interface BoardSectionProps {
-  id: string;
   sectionTitle: string;
   sectionBackground: SectionBackground;
   orientation: SectionOrientation;
@@ -20,7 +19,6 @@ interface BoardSectionProps {
 
 function BoardSection(props: BoardSectionProps) {
   const {
-    id,
     sectionTitle,
     sectionBackground = "light",
     orientation = "vertical",
@@ -28,12 +26,7 @@ function BoardSection(props: BoardSectionProps) {
     pinnedRequests,
     handlePinRequest,
   } = props;
-
-  const filteredRequests = sectionInformation.filter(
-    (request) => request.i_Estprs === id
-  );
-
-  const disabledCollapse = filteredRequests.length === 0;
+  const disabledCollapse = sectionInformation.length === 0;
 
   const smallScreen = useMediaQuery("(max-width: 595px)");
 
@@ -98,7 +91,7 @@ function BoardSection(props: BoardSectionProps) {
           </Text>
         </Stack>
         <Text type="title" size="medium">
-          {filteredRequests.length}
+          {sectionInformation.length}
         </Text>
       </Stack>
       {(collapse || orientation === "vertical") && (
@@ -109,7 +102,7 @@ function BoardSection(props: BoardSectionProps) {
           justifyContent={smallScreen ? "center" : "flex-start"}
           gap={inube.spacing.s250}
         >
-          {filteredRequests.map((request, index) => (
+          {sectionInformation.map((request, index) => (
             <SummaryCard
               key={index}
               rad={request.k_Prospe}

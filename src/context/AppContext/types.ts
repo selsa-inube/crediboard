@@ -1,6 +1,12 @@
+import { SectionOrientation } from "@src/components/layout/BoardSection/types";
 interface IOperator {
   name: string;
   logo: string;
+}
+
+interface IPreferences {
+  boardOrientation: SectionOrientation;
+  showPinnedOnly: boolean;
 }
 
 interface IUser {
@@ -8,6 +14,7 @@ interface IUser {
   id: string;
   company: string;
   operator: IOperator;
+  preferences: IPreferences;
 }
 
 interface IClient {
@@ -20,10 +27,11 @@ interface IClient {
 interface IAppContext {
   user: IUser;
   handleClientChange: (client: IClient) => void;
+  updatePreferences: (newPreferences: Partial<IPreferences>) => void;
 }
 
 interface AppContextProviderProps {
   children: React.ReactNode;
 }
 
-export type { IAppContext, IClient, AppContextProviderProps };
+export type { IAppContext, IClient, AppContextProviderProps, IPreferences };

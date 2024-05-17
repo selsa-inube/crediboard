@@ -103,18 +103,23 @@ function BoardLayoutUI(props: BoardLayoutProps) {
         </Stack>
       </StyledInputsContainer>
       <StyledBoardContainer $orientation={boardOrientation}>
-        {boardColumns.map((column) => (
-          <BoardSection
-            key={column.id}
-            id={column.id}
-            sectionTitle={column.value}
-            sectionBackground={column.sectionBackground}
-            orientation={boardOrientation}
-            sectionInformation={BoardRequests}
-            pinnedRequests={pinnedRequests}
-            handlePinRequest={handlePinRequest}
-          />
-        ))}
+        {boardColumns.map((column) => {
+          const filteredRequests = BoardRequests.filter(
+            (request) => request.i_Estprs === column.id
+          );
+
+          return (
+            <BoardSection
+              key={column.id}
+              sectionTitle={column.value}
+              sectionBackground={column.sectionBackground}
+              orientation={boardOrientation}
+              sectionInformation={filteredRequests}
+              pinnedRequests={pinnedRequests}
+              handlePinRequest={handlePinRequest}
+            />
+          );
+        })}
       </StyledBoardContainer>
     </Stack>
   );

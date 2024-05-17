@@ -1,69 +1,28 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { get, updateActive } from "@mocks/utils/dataMock.service";
-import { PinnedRequest } from "@services/types";
+import { PinnedRequest, Requests } from "@services/types";
+import { AppContext } from "@src/context/AppContext";
 
 import { BoardLayoutUI } from "./interface";
 import { filterOptions } from "./config/select";
 import { IBoardData } from "./types";
 
 function BoardLayout() {
+  const { user, updatePreferences } = useContext(AppContext);
+  const [searchRequestValue, setSearchRequestValue] = useState("");
+  const [filteredRequests, setFilteredRequests] = useState<Requests[]>([]);
   const [boardData, setBoardData] = useState<IBoardData>({
     boardRequests: [],
     requestsPinned: [],
   });
-
   const [boardOrientation, setBoardOrientation] = useState<SectionOrientation>(
-    () => {
-      const saved = localStorage.getItem("boardOrientation");
-      return (saved as SectionOrientation) || "vertical";
-    }
+    user.preferences.boardOrientation || "vertical"
   );
-
-  const [showPinnedOnly, setShowPinnedOnly] = useState(() => {
-    const saved = localStorage.getItem("showPinnedOnly");
-    const initialValue = JSON.parse(saved!);
-    return initialValue || false;
-  });
-
-  const [filteredRequests, setFilteredRequests] = useState(
-    boardData.boardRequests
+  const [showPinnedOnly, setShowPinnedOnly] = useState(
+    user.preferences.showPinnedOnly || false
   );
-
-  const [searchRequestValue, setSearchRequestValue] = useState("");
-
-  useEffect(() => {
-    localStorage.setItem("boardOrientation", boardOrientation);
-  }, [boardOrientation]);
-
-  useEffect(() => {
-    localStorage.setItem("showPinnedOnly", JSON.stringify(showPinnedOnly));
-
-    const filteredRequests = boardData.boardRequests.filter((request) => {
-      const isSearchMatch =
-        request.nnasocia
-          .toLowerCase()
-          .includes(searchRequestValue.toLowerCase()) ||
-        request.k_Prospe.toString().includes(searchRequestValue);
-
-      const isPinned =
-        !showPinnedOnly ||
-        boardData.requestsPinned
-          .filter((req) => req.isPinned === "Y")
-          .map((req) => req.requestId)
-          .includes(request.k_Prospe);
-
-      return isSearchMatch && isPinned;
-    });
-
-    setFilteredRequests(filteredRequests);
-  }, [
-    showPinnedOnly,
-    searchRequestValue,
-    boardData.requestsPinned,
-    boardData.boardRequests,
-  ]);
 
   useEffect(() => {
     get("requests")
@@ -93,31 +52,57 @@ function BoardLayout() {
       });
   }, []);
 
+  useEffect(() => {
+    const filteredRequests = boardData.boardRequests.filter((request) => {
+      const isSearchMatch =
+        request.nnasocia
+          .toLowerCase()
+          .includes(searchRequestValue.toLowerCase()) ||
+        request.k_Prospe.toString().includes(searchRequestValue);
+
+      const isPinned =
+        !showPinnedOnly ||
+        boardData.requestsPinned
+          .filter((req) => req.isPinned === "Y")
+          .map((req) => req.requestId)
+          .includes(request.k_Prospe);
+
+      return isSearchMatch && isPinned;
+    });
+
+    setFilteredRequests(filteredRequests);
+  }, [
+    showPinnedOnly,
+    searchRequestValue,
+    boardData.requestsPinned,
+    boardData.boardRequests,
+  ]);
+
   const handleOrientationChange = (orientation: SectionOrientation) => {
     setBoardOrientation(orientation);
+    updatePreferences({ boardOrientation: orientation });
   };
 
   const handleShowPinnedOnly = (e: React.ChangeEvent<HTMLInputElement>) => {
     setShowPinnedOnly(e.target.checked);
+    updatePreferences({ showPinnedOnly: e.target.checked });
   };
 
   const handlePinRequest = async (requestId: number) => {
     setBoardData((prevState) => ({
       ...prevState,
       requestsPinned: prevState.requestsPinned.map((request) => {
-        if (request.requestId === requestId) {
-          updateActive({
-            key: "requestId",
-            nameDB: "requests-pinned",
-            identifier: requestId,
-            editData: { isPinned: request.isPinned === "Y" ? "N" : "Y" },
-          });
-          return {
-            ...request,
-            isPinned: request.isPinned === "Y" ? "N" : "Y",
-          } as PinnedRequest;
-        }
-        return request;
+        if (request.requestId !== requestId) return request;
+
+        const isPinned = request.isPinned === "Y" ? "N" : "Y";
+        updateActive({
+          key: "requestId",
+          nameDB: "requests-pinned",
+          identifier: requestId,
+          editData: { isPinned },
+        });
+
+        return { ...request, isPinned } as PinnedRequest;
       }),
     }));
   };
