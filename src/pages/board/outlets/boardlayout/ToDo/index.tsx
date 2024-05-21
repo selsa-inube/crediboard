@@ -63,8 +63,8 @@ export const ToDo = (props: IToDoProps) => {
   };
 
   useEffect(() => {
-    getById("k_Prospe", "requests", id!).then((requeriment) => {
-      setData(requeriment);
+    getById("k_Prospe", "requests", id!).then((requirement) => {
+      setData(requirement);
     });
   }, [id]);
 

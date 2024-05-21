@@ -31,7 +31,7 @@ function BoardRoutes() {
           }
         />
         <Route
-          path="solicitud/:id/credit-profile"
+          path="solicitud/:id/perfil-crediticio"
           element={<CreditProfileInfo />}
         />
       </Route>

@@ -16,8 +16,8 @@ export const CreditProfileInfo = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    getById("k_Prospe", "requests", id!).then((requeriment) => {
-      setData(requeriment);
+    getById("k_Prospe", "requests", id!).then((requirement) => {
+      setData(requirement);
     });
   }, [id]);
 
@@ -34,7 +34,7 @@ export const CreditProfileInfo = () => {
         </Button>
         <Stack gap={inube.spacing.s200} alignItems="center">
           <Text type="title" appearance="gray">
-            Perfil Créditicio del Cliente
+            Perfil crediticio del cliente
           </Text>
           <Text type="headline" size="medium">
             {data.nnasocia ? capitalizeFirstLetterEachWord(data?.nnasocia) : ""}
