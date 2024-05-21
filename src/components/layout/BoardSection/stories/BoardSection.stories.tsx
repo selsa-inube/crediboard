@@ -20,7 +20,6 @@ export const Horizontal: StoryFn<BoardSectionProps> = (args) => (
 );
 
 Default.args = {
-  id: "BoardId",
   sectionTitle: "BoardSectionTitle",
   sectionBackground: "gray",
   orientation: "vertical",
