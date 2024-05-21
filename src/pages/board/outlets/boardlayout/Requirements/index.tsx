@@ -20,7 +20,11 @@ export const Requirements = (props: IRequirementsProps) => {
 
   return (
     <Stack>
-      <Fieldset title="Requisitos" activeButton={dataButton}>
+      <Fieldset
+        title="Requisitos"
+        activeButton={dataButton}
+        heigthFieldset="340px"
+      >
         <div style={{ height: "340px" }}>
           {data.map((item) => (
             <TableBoard

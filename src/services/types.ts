@@ -13,6 +13,10 @@ interface Requests {
   n_Descr_Tarea: string;
 }
 
+interface PinnedRequest {
+  requestId: number;
+  isPinned: "Y" | "N";
+}
 type DmEtapasPrs =
   | "CUMPLIMIENTO_REQUISITOS"
   | "FORMALIZACION_GARANTIAS"
@@ -58,4 +62,11 @@ type DmDecisions =
   | "CREAR_OBLIGACIONES_DE_CARTERA"
   | "DECLINAR_OBLIGACIONES_DE_CARTERA";
 
-export type { Requests, DmEtapasPrs, DmTareasPrs, DmConceptos, DmDecisions };
+export type {
+  Requests,
+  DmEtapasPrs,
+  DmTareasPrs,
+  DmConceptos,
+  DmDecisions,
+  PinnedRequest,
+};
