@@ -1,42 +1,20 @@
 import { MdOutlineSend, MdOutlineRemoveRedEye } from "react-icons/md";
 import { Icon, Tag } from "@inube/design-system";
 
-const entrySelection = (e: React.ChangeEvent<HTMLButtonElement>) => {
-  const padre = e.target.closest("tr");
-  const tdElements = padre?.querySelectorAll("td");
+import { IEntries } from "@components/data/TableBoard/types";
 
-  const rowData: { [key: string]: string | undefined } = {};
-
-  tdElements?.forEach((td, index) => {
-    const value = td?.textContent?.trim();
-
-    switch (index) {
-      case 0:
-        rowData.id = value;
-        break;
-      case 1:
-        rowData["No. de Obligación"] = value;
-        break;
-      case 2:
-        rowData["No. de Documento"] = value;
-        break;
-      case 3:
-        rowData.Tipo = value;
-        break;
-    }
-  });
-
-  return rowData;
+const entrySelection = (data: IEntries) => {
+  console.log(data);
 };
 
 export const titlesFinanacialReporting = [
   {
-    id: "numObligacion",
+    id: "No. de Obligación",
     titleName: "No. de Obligación",
     priority: 1,
   },
   {
-    id: "numDocumento",
+    id: "No. de Documento",
     titleName: "No. de Documento",
     priority: 2,
   },
@@ -50,16 +28,6 @@ export const titlesFinanacialReporting = [
     titleName: "Estado",
     priority: 4,
   },
-  {
-    id: "Reenviar",
-    titleName: "Reenviar",
-    priority: 5,
-  },
-  {
-    id: "VerImagen",
-    titleName: "Ver Imagen",
-    priority: 6,
-  },
 ];
 
 export const entriesFinanacialReporting = [
@@ -68,44 +36,49 @@ export const entriesFinanacialReporting = [
     "No. de Obligación": "1234554545",
     "No. de Documento": "1234567890",
     Tipo: "Pagare",
-    tag: <Tag label="En tramite" appearance="warning" />,
-    Reenviar: "",
-    "Ver Imagen": (
-      <Icon
-        icon={<MdOutlineRemoveRedEye />}
-        appearance="primary"
-        onClick={entrySelection}
-        spacing="none"
-        size="24px"
-        cursorHover
-      />
-    ),
+    Estado: <Tag label="En tramite" appearance="warning" />,
   },
   {
     id: "2",
     "No. de Obligación": "1234567890",
     "No. de Documento": "1234567890",
     Tipo: "Pagare",
-    tag: <Tag label="Firmado" appearance="success" />,
-    Reenviar: (
-      <Icon
-        icon={<MdOutlineSend />}
-        appearance="primary"
-        spacing="none"
-        cursorHover
-        size="24px"
-        onClick={entrySelection}
-      />
-    ),
-    "Ver Imagen": "",
+    Estado: <Tag label="Firmado" appearance="success" />,
   },
   {
     id: "3",
     "No. de Obligación": "1234564321",
     "No. de Documento": "1234567890",
     Tipo: "Libranza",
-    tag: <Tag label="Con Error" appearance="error" />,
-    Reenviar: "",
-    "Ver Imagen": "",
+    Estado: <Tag label="Con Error" appearance="error" />,
+  },
+];
+
+export const actionsFinanacialReporting = [
+  {
+    id: "ver imagen",
+    actionName: "Ver Imagen",
+    content: (data: IEntries) => (
+      <Icon
+        appearance="primary"
+        size="24px"
+        cursorHover
+        icon={<MdOutlineRemoveRedEye />}
+        onClick={() => entrySelection(data)}
+      />
+    ),
+  },
+  {
+    id: "enviar",
+    actionName: "Enviar",
+    content: (data: IEntries) => (
+      <Icon
+        appearance="primary"
+        cursorHover
+        size="24px"
+        icon={<MdOutlineSend />}
+        onClick={() => entrySelection(data)}
+      />
+    ),
   },
 ];

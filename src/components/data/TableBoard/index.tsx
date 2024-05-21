@@ -3,23 +3,36 @@ import { TableBoardUI } from "./interface";
 
 export interface ITableBoardProps {
   id: string;
-  borderTable?: boolean;
-  titles: ITitle[];
   entries: IEntries[];
+  titles: ITitle[];
   actions?: IAction[];
+  borderTable?: boolean;
+  loading?: boolean;
+  portalId?: string;
 }
 
 export const TableBoard = (props: ITableBoardProps) => {
-  const { id, entries, actions, titles, borderTable = false } = props;
-  const titlesList = Object.keys(entries[0]).filter((key) => key !== "id");
+  const {
+    id,
+    entries,
+    titles,
+    actions,
+    loading = false,
+    borderTable = false,
+    portalId,
+  } = props;
+
+  const titlesList = titles.map((title) => title.id);
 
   return (
     <TableBoardUI
       id={id}
-      entries={entries}
-      titles={titles}
       actions={actions}
+      entries={entries}
       borderTable={borderTable}
+      loading={loading}
+      portalId={portalId}
+      titles={titles}
       titlesList={titlesList}
     />
   );
