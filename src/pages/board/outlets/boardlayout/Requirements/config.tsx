@@ -16,23 +16,38 @@ const receiveData = (data: IEntries) => {
 export const titlesRequirements = [
   [
     {
-      id: "uno",
+      id: "Validaciones del sistema",
       titleName: "Validaciones del sistema",
       priority: 1,
     },
-  ],
-  [
     {
-      id: "dos",
-      titleName: "Requisitos documentales",
-      priority: 1,
+      id: "tag",
+      titleName: "",
+      priority: 2,
     },
   ],
   [
     {
-      id: "tres",
+      id: "Requisitos documentales",
+      titleName: "Requisitos documentales",
+      priority: 1,
+    },
+    {
+      id: "tag",
+      titleName: "",
+      priority: 2,
+    },
+  ],
+  [
+    {
+      id: "Validaciones humanas",
       titleName: "Validaciones humanas",
       priority: 1,
+    },
+    {
+      id: "tag",
+      titleName: "",
+      priority: 2,
     },
   ],
 ];

@@ -2,7 +2,6 @@ import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
 import {
   Stack,
-  Button,
   Textfield,
   Select,
   Text,
@@ -13,7 +12,7 @@ import {
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { BoardSection } from "@components/layout/BoardSection";
-import { Requests } from "@services/types";
+import { PinnedRequest, Requests } from "@services/types";
 
 import { FilterOption } from "./config/select";
 import { StyledInputsContainer, StyledBoardContainer } from "./styles";
@@ -23,6 +22,12 @@ interface BoardLayoutProps {
   filterOptions: FilterOption[];
   boardOrientation: SectionOrientation;
   BoardRequests: Requests[];
+  searchRequestValue: string;
+  showPinnedOnly: boolean;
+  pinnedRequests: PinnedRequest[];
+  handlePinRequest: (requestId: number) => void;
+  handleShowPinnedOnly: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
 }
 
@@ -31,23 +36,29 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     filterOptions,
     boardOrientation,
     BoardRequests,
+    searchRequestValue,
+    showPinnedOnly,
+    pinnedRequests,
+    handlePinRequest,
+    handleShowPinnedOnly,
+    handleSearchRequestsValue,
     onOrientationChange,
   } = props;
+
   return (
     <Stack direction="column">
       <StyledInputsContainer>
-        <Stack gap={inube.spacing.s200} alignItems="center">
-          <Stack width="480px">
-            <Textfield
-              id="SearchCards"
-              name="SearchCards"
-              placeholder="Buscar..."
-              size="compact"
-              iconAfter={<MdSearch />}
-              fullwidth
-            />
-          </Stack>
-          <Button spacing="compact">Buscar</Button>
+        <Stack width="480px">
+          <Textfield
+            id="SearchCards"
+            name="SearchCards"
+            placeholder="Buscar..."
+            size="compact"
+            iconAfter={<MdSearch />}
+            fullwidth
+            value={searchRequestValue}
+            onChange={handleSearchRequestsValue}
+          />
         </Stack>
         <Stack width="100%" justifyContent="space-between" alignItems="center">
           <Stack width="500px">
@@ -68,7 +79,8 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 id="SeePinned"
                 name="SeePinned"
                 size="large"
-                onChange={() => {}}
+                checked={showPinnedOnly}
+                onChange={handleShowPinnedOnly}
               />
             </Stack>
             <Stack gap={inube.spacing.s100}>
@@ -91,16 +103,23 @@ function BoardLayoutUI(props: BoardLayoutProps) {
         </Stack>
       </StyledInputsContainer>
       <StyledBoardContainer $orientation={boardOrientation}>
-        {boardColumns.map((column) => (
-          <BoardSection
-            key={column.id}
-            id={column.id}
-            sectionTitle={column.value}
-            sectionBackground={column.sectionBackground}
-            orientation={boardOrientation}
-            sectionInformation={BoardRequests}
-          />
-        ))}
+        {boardColumns.map((column) => {
+          const filteredRequests = BoardRequests.filter(
+            (request) => request.i_Estprs === column.id
+          );
+
+          return (
+            <BoardSection
+              key={column.id}
+              sectionTitle={column.value}
+              sectionBackground={column.sectionBackground}
+              orientation={boardOrientation}
+              sectionInformation={filteredRequests}
+              pinnedRequests={pinnedRequests}
+              handlePinRequest={handlePinRequest}
+            />
+          );
+        })}
       </StyledBoardContainer>
     </Stack>
   );

@@ -51,6 +51,34 @@ export async function getById(
   }
 }
 
+interface functionActiveById {
+  key: string;
+  nameDB: string;
+  identifier: number | string;
+  editData: { [key: string]: string };
+}
+
+export async function updateActive(props: functionActiveById) {
+  const { key, nameDB, identifier, editData } = props;
+
+  try {
+    const data = await get(nameDB);
+    if (Array.isArray(data)) {
+      const indexData = data.findIndex((item) => item[key] === identifier);
+
+      for (const field in editData) {
+        data[indexData][field] = editData[field];
+      }
+
+      await localforage.setItem(nameDB, data);
+    } else {
+      throw new Error("data structure not valid, must be an object list");
+    }
+  } catch (error) {
+    return error;
+  }
+}
+
 async function fakeNetwork() {
   return new Promise((res) => {
     setTimeout(res, 0);

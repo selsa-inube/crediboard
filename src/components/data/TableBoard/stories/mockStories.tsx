@@ -6,26 +6,31 @@ import { IAction, IEntries } from "../types";
 export const mockData: IEntries[] = [
   {
     id: "1",
-    "validaciones del sistema": "Que el asociado sea activo",
+    "Validaciones del sistema": "Que el asociado sea activo",
     tag: <Tag label="Cumple" appearance="success" />,
   },
   {
     id: "2",
-    "validaciones del sistema": "Que este al días con las obligaciones",
+    "Validaciones del sistema": "Que este al días con las obligaciones",
     tag: <Tag label="No Cumple" appearance="error" />,
   },
   {
     id: "3",
-    "validaciones del sistema": "Que tenga mas de 30 años",
+    "Validaciones del sistema": "Que tenga mas de 30 años",
     tag: <Tag label="Sin Validar" appearance="warning" />,
   },
 ];
 
 export const titlesMock = [
   {
-    id: "validaciones del sistema",
+    id: "Validaciones del sistema",
     titleName: "Validaciones del sistema",
     priority: 1,
+  },
+  {
+    id: "tag",
+    titleName: "",
+    priority: 2,
   },
 ];
 
