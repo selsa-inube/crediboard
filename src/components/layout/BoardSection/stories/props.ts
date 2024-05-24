@@ -1,8 +1,4 @@
 const props = {
-  id: {
-    control: "text",
-    description: "Section id",
-  },
   sectionTitle: {
     control: "text",
     description: "Section title",
@@ -24,6 +20,10 @@ const props = {
   sectionInformation: {
     control: "array",
     description: "information about section summary cards",
+  },
+  showPinnedOnly: {
+    control: "boolean",
+    description: "functionality to show pinned section information",
   },
 };
 

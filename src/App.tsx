@@ -5,7 +5,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import { useAuth } from "@inube/auth";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import { Login } from "@pages/login";
 import { initializeDataDB } from "@mocks/utils/initializeDataDB";
@@ -15,11 +15,12 @@ import AppContextProvider, { AppContext } from "@context/AppContext";
 import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
 import { GlobalStyles } from "./styles/global";
+import { enviroment } from "./config/environment";
 
 function LogOut() {
   localStorage.clear();
-  const { logout } = useAuth();
-  logout();
+  const { logout } = useAuth0();
+  logout({ logoutParams: { returnTo: enviroment.REDIRECT_URI } });
   return <BoardRoutes />;
 }
 
@@ -40,7 +41,7 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth();
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
