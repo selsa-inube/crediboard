@@ -1,24 +1,24 @@
-import { AuthProvider } from "@inube/auth";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Auth0Provider } from "@auth0/auth0-react";
 
-import { enviroment } from "@src/config/environment.ts";
+import { enviroment } from "./config/environment";
 
-import App from "./App.tsx";
+import App from "./App";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const redirect_uri = enviroment.REDIRECT_URI;
+
+const root = ReactDOM.createRoot(document.getElementById("root")!);
+root.render(
   <React.StrictMode>
-    <AuthProvider
+    <Auth0Provider
+      domain={enviroment.AUTH0_DOMAIN}
       clientId={enviroment.CLIENT_ID}
-      clientSecret={enviroment.CLIENT_SECRET}
-      provider={enviroment.PROVIDER}
-      realm={enviroment.REALM}
       authorizationParams={{
-        redirectUri: enviroment.REDIRECT_URI,
-        scope: ["openid", "profile", "email"],
+        redirect_uri,
       }}
     >
       <App />
-    </AuthProvider>
+    </Auth0Provider>
   </React.StrictMode>
 );

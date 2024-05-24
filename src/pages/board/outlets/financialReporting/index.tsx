@@ -1,7 +1,7 @@
-import { Stack, inube, Text, Grid } from "@inube/design-system";
+import { Stack, inube, Grid } from "@inube/design-system";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
-import { Fieldset } from "@components/data/Fieldset";
+import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 
 export interface IFinancialReportingProps {
   toDo?: JSX.Element | JSX.Element[];
@@ -26,9 +26,15 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
       <ContainerSections>
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
-            <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
-              <Text></Text>
-            </Fieldset>
+            <Stack direction="column">
+              <ComercialManagement
+                name="juan sebastian moralez garcía"
+                rad="100000012"
+                date="2023-09-30T00:00:00-05:00"
+                destination="Educación de Postgrado a menos de tres meses"
+                value={10000000}
+              />
+            </Stack>
           </Stack>
           <Grid templateColumns="repeat(2,1fr)" gap="s200" autoRows="auto">
             <Stack direction="column">{toDo}</Stack>

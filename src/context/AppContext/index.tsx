@@ -1,8 +1,8 @@
 import { createContext, useState, useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import linparLogo from "@assets/images/linpar.png";
-import { useAuth } from "@inube/auth";
-import { SectionOrientation } from "@src/components/layout/BoardSection/types";
+import { SectionOrientation } from "@components/layout/BoardSection/types";
 
 import {
   IAppContext,
@@ -28,7 +28,7 @@ export const AppContext = createContext<IAppContext>({
 
 export default function AppContextProvider(props: AppContextProviderProps) {
   const { children } = props;
-  const { user } = useAuth();
+  const { user } = useAuth0();
   const [clientSigla, setClientSigla] = useState(
     localStorage.getItem("clientSigla") || ""
   );
@@ -65,7 +65,7 @@ export default function AppContextProvider(props: AppContextProviderProps) {
 
   const userContext: IAppContext = {
     user: {
-      username: `${user?.firstName + " " + user?.firstLastName}`,
+      username: `${user?.name}`,
       id: "abc123",
       company: company,
       operator: {
