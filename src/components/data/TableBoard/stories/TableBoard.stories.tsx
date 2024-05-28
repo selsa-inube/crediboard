@@ -19,6 +19,7 @@ export const Default: Story = {
     titles: titlesMock,
     actions: actionsMock,
     borderTable: true,
+    efectzebra: true,
   },
 };
 export default meta;

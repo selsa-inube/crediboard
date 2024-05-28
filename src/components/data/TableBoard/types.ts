@@ -15,3 +15,5 @@ export interface IAction {
   content: (entry: IEntries) => React.ReactNode;
   mobilePriority?: boolean;
 }
+
+export type appearances = "dark" | "primary";
