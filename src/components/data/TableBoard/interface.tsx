@@ -1,6 +1,6 @@
 import { Text, SkeletonLine } from "@inube/design-system";
 
-import { ITitle } from "./types";
+import { ITitle, appearances } from "./types";
 import {
   StyledContainer,
   StyledTable,
@@ -19,11 +19,17 @@ interface ITableBoardUIProps extends ITableBoardProps {
   loading: boolean;
 }
 
-const RenderActionsTitles = ({ actionName }: { actionName: string }) => {
+interface IRenderActionsTitles {
+  actionName: string;
+  appearance: appearances;
+}
+
+const RenderActionsTitles = (props: IRenderActionsTitles) => {
+  const { actionName, appearance } = props;
   return (
     <StyledThactions>
       <Text
-        appearance="primary"
+        appearance={appearance}
         type="title"
         size="medium"
         padding="0px 4px"
@@ -65,8 +71,17 @@ const dataLoading = (titleColumns: ITitle[], numberActions: number) => {
 };
 
 export const TableBoardUI = (props: ITableBoardUIProps) => {
-  const { id, entries, actions, titles, titlesList, borderTable, loading } =
-    props;
+  const {
+    id,
+    entries,
+    actions,
+    titles,
+    titlesList,
+    borderTable,
+    loading,
+    efectzebra,
+    appearanceTitles,
+  } = props;
 
   return (
     <StyledContainer id={id} $borderTable={borderTable!}>
@@ -76,7 +91,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
             {titles.map((title) => (
               <StyledTh key={title.id + id}>
                 <Text
-                  appearance="primary"
+                  appearance={appearanceTitles}
                   type="title"
                   size="medium"
                   padding="0px 4px"
@@ -93,6 +108,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                     <RenderActionsTitles
                       key={action.id}
                       actionName={action.actionName}
+                      appearance={appearanceTitles!}
                     />
                   )
               )}
@@ -106,14 +122,14 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
               {entries.map((entry, index) => (
                 <StyledTr
                   key={`${entry.id}-${index}`}
-                  $zebraEffect={index % 2 === 0}
+                  $zebraEffect={efectzebra ? index % 2 === 0 : false}
                 >
                   {titlesList.map((title) => (
                     <StyledTd key={title}>
                       {typeof entry[title] !== "string" ? (
                         entry[title]
                       ) : (
-                        <Text size="small" padding="0px 4px">
+                        <Text size="medium" padding="0px 4px">
                           {entry[title]}
                         </Text>
                       )}
