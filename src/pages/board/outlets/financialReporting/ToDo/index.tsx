@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
 import {
   Button,
   Icon,
@@ -12,9 +11,7 @@ import {
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
-import { getById } from "@mocks/utils/dataMock.service";
 import { Requests } from "@services/types";
-import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 
 import { optionSelectDecision } from "./config";
 
@@ -33,25 +30,22 @@ interface IButton {
 interface IToDoProps {
   icon?: IICon;
   button?: IButton;
+  data: Requests;
 }
 
 export const ToDo = (props: IToDoProps) => {
-  const { icon, button } = props;
+  const { icon, button, data } = props;
 
   const { label, onClick, disabled, loading } = button || {};
 
-  const [data, setData] = useState({} as Requests);
-
   const [changeTextfield, setChangeTextfield] = useState({
-    gestorComercial: "",
+    gestorComercial: "Juan Sebastian Moralez García",
     analista: "",
   });
 
   const [changeSelect, setChangeSelect] = useState<{ [key: string]: string }>({
     decision: "",
   });
-
-  const { id } = useParams();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChangeTextfield({ ...changeTextfield, [e.target.name]: e.target.value });
@@ -61,19 +55,10 @@ export const ToDo = (props: IToDoProps) => {
     const value = e.target.innerText;
     setChangeSelect({ decision: value });
   };
-
-  useEffect(() => {
-    getById("k_Prospe", "requests", id!).then((requirement) => {
-      setData(requirement);
-    });
-  }, [id]);
-
   return (
     <Fieldset
       title="Por hacer"
-      descriptionTitle={
-        data.nnasocia ? capitalizeFirstLetterEachWord(data?.nnasocia) : ""
-      }
+      descriptionTitle="Juan Sebastian Moralez García"
       heigthFieldset="284px"
     >
       <Stack direction="column" gap={inube.spacing.s075}>

@@ -7,6 +7,7 @@ import {
   MdOutlineSend,
   MdOutlineEdit,
 } from "react-icons/md";
+import { useParams } from "react-router-dom";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Stack, Icon, Text, Button, inube } from "@inube/design-system";
@@ -17,20 +18,19 @@ import {
 } from "@utils/formatData/text";
 import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
+import { Requests } from "@services/types";
 
 import { StyledCollapseIcon, StyledIcon, StyledDivider } from "./styles";
 
 interface ComercialManagementProps {
-  name: string;
-  rad: string;
-  date: string;
-  destination: string;
-  value: number;
+  data: Requests;
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { name, rad, date, destination, value } = props;
+  const { data } = props;
   const [collapse, setCollapse] = useState(false);
+
+  const { id } = useParams();
 
   const handleCollapse = () => {
     setCollapse(!collapse);
@@ -47,11 +47,13 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   No. Rad.:
                 </Text>
                 <Text type="title" size="small">
-                  {rad}
+                  {data.k_Prospe}
                 </Text>
               </Stack>
               <Text type="title" size="small" appearance="gray">
-                {capitalizeFirstLetter(formatISODatetoCustomFormat(date))}
+                {capitalizeFirstLetter(
+                  formatISODatetoCustomFormat(data.f_Prospe)
+                )}
               </Text>
             </Stack>
             <Stack gap={inube.spacing.s050}>
@@ -59,9 +61,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                 Destino:
               </Text>
               <Text type="title" size="small">
-                {capitalizeFirstLetter(
-                  truncateTextToMaxLength(destination, 60)
-                )}
+                {data.nnasocia &&
+                  capitalizeFirstLetter(
+                    truncateTextToMaxLength(data.k_Desdin, 60)
+                  )}
               </Text>
             </Stack>
             <Stack gap={inube.spacing.s050}>
@@ -69,15 +72,22 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                 Valor:
               </Text>
               <Text type="title" size="small">
-                {value === 0 ? "$ 0" : currencyFormat(value)}
+                {data.v_Monto === 0 ? "$ 0" : currencyFormat(data.v_Monto)}
               </Text>
             </Stack>
           </Stack>
 
           <Stack alignItems="center" gap={inube.spacing.s400}>
-            <Text type="title">{capitalizeFirstLetterEachWord(name)}</Text>
+            <Text type="title">
+              {data.nnasocia &&
+                capitalizeFirstLetterEachWord(
+                  truncateTextToMaxLength(data.nnasocia)
+                )}
+            </Text>
             <Stack gap={inube.spacing.s200}>
-              <Button>Ver perfil créditicio</Button>
+              <Button type="link" path={`/solicitud/${id}/perfil-crediticio`}>
+                Ver perfil créditicio
+              </Button>
               <StyledIcon>
                 <Icon
                   icon={<MdOutlinePhone />}

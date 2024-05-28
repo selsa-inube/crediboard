@@ -1,10 +1,16 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Stack, inube, Grid } from "@inube/design-system";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
+import { getById } from "@mocks/utils/dataMock.service";
+import { Requests } from "@services/types";
+
+import { ToDo } from "./ToDo";
+import { infoIcon } from "./ToDo/config";
 
 export interface IFinancialReportingProps {
-  toDo?: JSX.Element | JSX.Element[];
   requirements?: JSX.Element | JSX.Element[];
   promissoryNotes?: JSX.Element | JSX.Element[];
   approvals?: JSX.Element | JSX.Element[];
@@ -14,30 +20,36 @@ export interface IFinancialReportingProps {
 
 export const FinancialReporting = (props: IFinancialReportingProps) => {
   const {
-    toDo,
     requirements,
     promissoryNotes,
     approvals,
     management,
     postingVouchers,
   } = props;
+
+  const [data, setData] = useState({} as Requests);
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    getById("k_Prospe", "requests", id!).then((requirement) => {
+      setData(requirement);
+    });
+  }, [id]);
+
   return (
     <Stack direction="column" margin="s250">
       <ContainerSections>
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
             <Stack direction="column">
-              <ComercialManagement
-                name="juan sebastian moralez garcía"
-                rad="100000012"
-                date="2023-09-30T00:00:00-05:00"
-                destination="Educación de Postgrado a menos de tres meses"
-                value={10000000}
-              />
+              <ComercialManagement data={data} />
             </Stack>
           </Stack>
           <Grid templateColumns="repeat(2,1fr)" gap="s200" autoRows="auto">
-            <Stack direction="column">{toDo}</Stack>
+            <Stack direction="column">
+              {<ToDo icon={infoIcon} data={data} />}
+            </Stack>
             <Stack direction="column">{approvals}</Stack>
             <Stack direction="column">{requirements}</Stack>
             <Stack direction="column">{management}</Stack>
