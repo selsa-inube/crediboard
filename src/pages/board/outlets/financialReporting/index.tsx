@@ -1,7 +1,9 @@
 import { Stack, inube, Grid } from "@inube/design-system";
 
-import { ContainerSections } from "@components/layout/ContainerSections";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
+import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
+import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
+import { ContainerSections } from "@components/layout/ContainerSections";
 
 export interface IFinancialReportingProps {
   toDo?: JSX.Element | JSX.Element[];
@@ -33,6 +35,9 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
                 date="2023-09-30T00:00:00-05:00"
                 destination="Educación de Postgrado a menos de tres meses"
                 value={10000000}
+                children={
+                  <DataCommercialManagement dataAccordeon={dataAccordeon} />
+                }
               />
             </Stack>
           </Stack>

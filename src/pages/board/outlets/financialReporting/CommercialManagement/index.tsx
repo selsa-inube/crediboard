@@ -7,9 +7,9 @@ import {
   MdOutlineSend,
   MdOutlineEdit,
 } from "react-icons/md";
+import { Stack, Icon, Text, Button, inube } from "@inube/design-system";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { Stack, Icon, Text, Button, inube } from "@inube/design-system";
 import {
   truncateTextToMaxLength,
   capitalizeFirstLetter,
@@ -26,10 +26,11 @@ interface ComercialManagementProps {
   date: string;
   destination: string;
   value: number;
+  children?: JSX.Element;
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { name, rad, date, destination, value } = props;
+  const { name, rad, date, destination, value, children } = props;
   const [collapse, setCollapse] = useState(false);
 
   const handleCollapse = () => {
@@ -107,7 +108,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         </Stack>
         {collapse && <StyledDivider />}
         {collapse && (
-          <Stack>
+          <Stack direction="column" gap="10px">
             <Stack gap={inube.spacing.s200}>
               <StyledIcon>
                 <Icon
@@ -134,6 +135,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                 />
               </StyledIcon>
             </Stack>
+            <Stack direction="column">{children}</Stack>
           </Stack>
         )}
       </Stack>
