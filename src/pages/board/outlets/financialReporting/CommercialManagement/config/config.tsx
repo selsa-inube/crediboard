@@ -23,21 +23,36 @@ export const titlesCommercialManagementAccordeon = [
 export const entriesCommercialManagementAccordeon = [
   {
     id: "1",
-    obligacion: <Text type="label">Medio de Pago</Text>,
-    "Compra primera Vivienda": "Nómina",
-    "Libre Inversion": "Nómina",
+    obligacion: (
+      <Stack gap="20px">
+        <Text type="label">Junio 30/2023 </Text>
+        <Text type="label">Nómina</Text>
+      </Stack>
+    ),
+    "Compra primera Vivienda": "$1.500.000",
+    "Libre Inversion": "",
   },
   {
     id: "2",
-    obligacion: <Text type="label">Tpo de Garantía</Text>,
-    "Compra primera Vivienda": "Hipoteca",
-    "Libre Inversion": "Sin Garantía",
+    obligacion: (
+      <Stack gap="20px">
+        <Text type="label">Junio 30/2023</Text>
+        <Text type="label">Nómina</Text>
+      </Stack>
+    ),
+    "Compra primera Vivienda": "$1.000.000",
+    "Libre Inversion": "",
   },
   {
     id: "3",
-    obligacion: <Text type="label">Número de Coutas</Text>,
-    "Compra primera Vivienda": "24",
-    "Libre Inversion": "24",
+    obligacion: (
+      <Stack gap="20px">
+        <Text type="label">Junio 30/2023</Text>
+        <Text type="label">Nómina</Text>
+      </Stack>
+    ),
+    "Compra primera Vivienda": "$1.000.000",
+    "Libre Inversion": "",
   },
 ];
 
@@ -49,10 +64,10 @@ export const dataAccordeon = [
         <div style={{ flex: "1" }}>
           <Text type="label">Pagos Extra Pactados</Text>
         </div>
-        <div style={{ flex: "1" }}>
+        <div style={{ flex: "1 1 1.5%" }}>
           <Text size="medium">$10.000.000</Text>
         </div>
-        <div style={{ flex: "1" }}>
+        <div style={{ flex: "1 1 1.5%" }}>
           <Text size="medium">$0</Text>
         </div>
       </Stack>
@@ -111,23 +126,4 @@ export const entriesCommercialManagement = [
     "Compra primera Vivienda": "24",
     "Libre Inversion": "24",
   },
-  /* {
-    id: "4",
-    obligacion: (
-      <Accordeon
-        name="Pagos Extra Pactados"
-        title={<Text type="label">Pagos Extra Pactados</Text>}
-        children={
-          <TableBoard
-            id="dataAcordeon"
-            titles={titlesCommercialManagementAccordeon}
-            entries={entriesCommercialManagementAccordeon}
-            efectzebra={false}
-          />
-        }
-      />
-    ),
-    "Compra primera Vivienda": "$10.000.000",
-    "Libre Inversion": "$0",
-  }, */
 ];
