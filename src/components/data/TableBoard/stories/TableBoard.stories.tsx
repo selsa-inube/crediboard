@@ -19,7 +19,7 @@ export const Default: Story = {
     titles: titlesMock,
     actions: actionsMock,
     borderTable: true,
-    efectzebra: true,
+    appearanceTable: { title: "primary", efectzebra: true, borderTable: false },
   },
 };
 export default meta;
