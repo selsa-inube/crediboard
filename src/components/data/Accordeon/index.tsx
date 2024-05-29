@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { MdOutlineChevronRight } from "react-icons/md";
-import { Stack, Icon } from "@inube/design-system";
+import { Icon, Stack, Text } from "@inube/design-system";
 
 import { StyledDetails, StyledSummary, StyledCollapseIcon } from "./styles";
 
 export interface IAccordionProps {
   name: string;
   title: React.ReactNode;
-  component?: JSX.Element;
+  content?: React.ReactNode;
 }
 
 export const Accordeon = (props: IAccordionProps) => {
-  const { name, title, component } = props;
+  const { name, title, content } = props;
 
   const [collapse, setCollapse] = useState(false);
 
@@ -31,9 +31,17 @@ export const Accordeon = (props: IAccordionProps) => {
               onClick={() => setCollapse(!collapse)}
             />
           </StyledCollapseIcon>
-          {title}
+          {typeof title === "string" || typeof title === "number" ? (
+            <Text>{title}</Text>
+          ) : (
+            title
+          )}
         </StyledSummary>
-        {component}
+        {typeof content === "string" || typeof content === "number" ? (
+          <Text>{content}</Text>
+        ) : (
+          content
+        )}
       </StyledDetails>
     </Stack>
   );
