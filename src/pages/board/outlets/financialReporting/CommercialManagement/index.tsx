@@ -145,7 +145,9 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                 />
               </StyledIcon>
             </Stack>
-            <Stack direction="column">{children}</Stack>
+            <Stack direction="column" width="fit-content">
+              {children}
+            </Stack>
           </Stack>
         )}
       </Stack>
