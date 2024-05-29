@@ -25,7 +25,7 @@ export const DataCommercialManagement = (props: IDataCommercialManagement) => {
           key={accordeon.name}
           name={accordeon.name}
           title={accordeon.title}
-          component={accordeon.component}
+          content={accordeon.content}
         />
       ))}
     </>
