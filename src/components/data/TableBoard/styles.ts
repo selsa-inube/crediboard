@@ -8,6 +8,8 @@ interface IStyledContainer {
 
 interface IStyledTdbodyContainer {
   $zebraEffect?: boolean;
+  $borderTable?: boolean;
+  $background?: boolean;
 }
 
 export const StyledContainer = styled.div<IStyledContainer>`
@@ -58,6 +60,15 @@ export const StyledTr = styled.tr<IStyledTdbodyContainer>`
     $zebraEffect
       ? theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
       : theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
+  border-bottom: ${({ theme, $borderTable }) =>
+    $borderTable &&
+    `1px solid ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}`};
+
+  &:first-child {
+    border-top: ${({ theme, $borderTable }) =>
+      $borderTable &&
+      `1px solid ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}`};
+  }
 `;
 
 export const StyledTd = styled.td`

@@ -5,6 +5,7 @@ interface IAppearances {
   title?: appearances;
   efectzebra?: boolean;
   borderTable?: boolean;
+  background?: boolean;
 }
 
 export interface ITableBoardProps {
@@ -31,6 +32,7 @@ export const TableBoard = (props: ITableBoardProps) => {
       title: "primary",
       efectzebra: true,
       borderTable: false,
+      background: false,
     },
   } = props;
 
