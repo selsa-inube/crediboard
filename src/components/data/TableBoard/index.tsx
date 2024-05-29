@@ -1,13 +1,5 @@
-import { IAction, IEntries, ITitle, appearances } from "./types";
+import { IAction, IEntries, ITitle, IAppearances } from "./types";
 import { TableBoardUI } from "./interface";
-
-interface IAppearances {
-  title?: appearances;
-  efectzebra?: boolean;
-  borderTable?: boolean;
-  background?: boolean;
-  widthTd?: string;
-}
 
 export interface ITableBoardProps {
   id: string;

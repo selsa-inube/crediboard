@@ -1,3 +1,5 @@
+export type appearances = "dark" | "primary";
+
 export interface ITitle {
   id: string;
   titleName: string;
@@ -16,4 +18,10 @@ export interface IAction {
   mobilePriority?: boolean;
 }
 
-export type appearances = "dark" | "primary";
+export interface IAppearances {
+  title?: appearances;
+  efectzebra?: boolean;
+  borderTable?: boolean;
+  background?: boolean;
+  widthTd?: string;
+}
