@@ -79,8 +79,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
     titlesList,
     borderTable,
     loading,
-    efectzebra,
-    appearanceTitles,
+    appearanceTable,
   } = props;
 
   return (
@@ -91,7 +90,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
             {titles.map((title) => (
               <StyledTh key={title.id + id}>
                 <Text
-                  appearance={appearanceTitles}
+                  appearance={appearanceTable!.title}
                   type="title"
                   size="medium"
                   padding="0px 4px"
@@ -108,7 +107,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                     <RenderActionsTitles
                       key={action.id}
                       actionName={action.actionName}
-                      appearance={appearanceTitles!}
+                      appearance={appearanceTable!.title!}
                     />
                   )
               )}
@@ -122,7 +121,10 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
               {entries.map((entry, index) => (
                 <StyledTr
                   key={`${entry.id}-${index}`}
-                  $zebraEffect={efectzebra ? index % 2 === 0 : false}
+                  $zebraEffect={
+                    appearanceTable!.efectzebra ? index % 2 === 0 : false
+                  }
+                  $borderTable={appearanceTable!.borderTable}
                 >
                   {titlesList.map((title) => (
                     <StyledTd key={title}>
