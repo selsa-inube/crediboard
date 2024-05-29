@@ -72,12 +72,17 @@ export const dataAccordeon = [
         </div>
       </Stack>
     ),
-    component: (
+    content: (
       <TableBoard
         id="dataAcordeon"
         titles={titlesCommercialManagementAccordeon}
         entries={entriesCommercialManagementAccordeon}
-        efectzebra={false}
+        appearanceTable={{
+          title: "dark",
+          efectzebra: false,
+          borderTable: true,
+          background: true,
+        }}
       />
     ),
   },
