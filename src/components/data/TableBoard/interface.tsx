@@ -130,7 +130,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                   $background={appearanceTable!.background}
                 >
                   {titlesList.map((title) => (
-                    <StyledTd key={title}>
+                    <StyledTd key={title} $widthTd={appearanceTable?.widthTd}>
                       {typeof entry[title] !== "string" ? (
                         entry[title]
                       ) : (

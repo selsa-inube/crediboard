@@ -82,6 +82,7 @@ export const dataAccordeon = [
           efectzebra: false,
           borderTable: true,
           background: true,
+          widthTd: "190px",
         }}
       />
     ),

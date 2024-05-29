@@ -6,6 +6,7 @@ interface IAppearances {
   efectzebra?: boolean;
   borderTable?: boolean;
   background?: boolean;
+  widthTd?: string;
 }
 
 export interface ITableBoardProps {

@@ -18,6 +18,7 @@ export const Postingvouchers = () => {
           titles={titlesPostingvouchers}
           entries={entriesPostingvouchers}
           actions={actionsPostingvouchers}
+          appearanceTable={{ widthTd: "310px", efectzebra: true }}
         />
       </Fieldset>
     </Stack>

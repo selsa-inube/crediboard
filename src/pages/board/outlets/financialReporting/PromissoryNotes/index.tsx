@@ -17,6 +17,7 @@ export const PromissoryNotes = () => {
           titles={titlesFinanacialReporting}
           entries={entriesFinanacialReporting}
           actions={actionsFinanacialReporting}
+          appearanceTable={{ widthTd: "310px", efectzebra: true }}
         />
       </Fieldset>
     </Stack>

@@ -12,6 +12,10 @@ interface IStyledTdbodyContainer {
   $background?: boolean;
 }
 
+interface IStyledTd {
+  $widthTd?: string;
+}
+
 export const StyledContainer = styled.div<IStyledContainer>`
   border-radius: 8px;
   overflow: hidden;
@@ -71,7 +75,7 @@ export const StyledTr = styled.tr<IStyledTdbodyContainer>`
   }
 `;
 
-export const StyledTd = styled.td`
-  width: 310px;
+export const StyledTd = styled.td<IStyledTd>`
+  width: ${({ $widthTd }) => $widthTd};
   height: 24px;
 `;

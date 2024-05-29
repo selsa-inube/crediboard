@@ -17,7 +17,7 @@ export const DataCommercialManagement = (props: IDataCommercialManagement) => {
         id="commercialManagement"
         titles={titlesCommercialManagement}
         entries={entriesCommercialManagement}
-        appearanceTable={{ title: "dark", borderTable: true }}
+        appearanceTable={{ title: "dark", borderTable: true, widthTd: "190px" }}
       />
       {dataAccordeon.map((accordeon) => (
         <Accordeon
