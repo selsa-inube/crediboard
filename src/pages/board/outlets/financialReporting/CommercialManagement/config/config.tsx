@@ -25,7 +25,7 @@ export const entriesCommercialManagementAccordeon = [
     id: "1",
     obligacion: (
       <Stack gap="20px">
-        <Text type="label">Junio 30/2023 </Text>
+        <Text type="label">Junio 30/2023</Text>
         <Text type="label">Nómina</Text>
       </Stack>
     ),
