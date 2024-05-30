@@ -12,7 +12,7 @@ interface IStyledTdbodyContainer {
 
 export const StyledContainer = styled.div<IStyledContainer>`
   border-radius: 8px;
-  overflow: hidden;
+  //overflow: hidden;
   padding-top: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
   padding-bottom: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
   padding-left: ${({ theme }) => theme?.spacing?.s075 || inube.spacing.s075};
@@ -20,6 +20,9 @@ export const StyledContainer = styled.div<IStyledContainer>`
   border: ${({ theme, $borderTable }) =>
     $borderTable &&
     `2px solid ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}`};
+  max-width: 100%;
+  overflow-x: auto;
+  position: relative;
 `;
 
 export const StyledTable = styled.table`
@@ -45,10 +48,18 @@ export const StyledTh = styled.th`
 export const StyledThactions = styled.th`
   text-align: center;
   min-width: 100px;
+  position: sticky;
+  right: 0;
+  z-index: 2;
 `;
 
 export const StyledTdactions = styled.td`
   text-align: -webkit-center;
+  min-width: 100%;
+  position: sticky;
+  right: 0;
+
+  z-index: 1;
 `;
 
 export const StyledTr = styled.tr<IStyledTdbodyContainer>`
