@@ -57,7 +57,7 @@ export const entriesFinanacialReporting = [
 export const actionsFinanacialReporting = [
   {
     id: "Reenviar",
-    actionName: "Renviar",
+    actionName: "Reenviar",
     content: (data: IEntries) => (
       <Icon
         appearance="primary"
