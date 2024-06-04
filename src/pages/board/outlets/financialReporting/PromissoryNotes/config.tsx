@@ -56,6 +56,19 @@ export const entriesFinanacialReporting = [
 
 export const actionsFinanacialReporting = [
   {
+    id: "Reenviar",
+    actionName: "Renviar",
+    content: (data: IEntries) => (
+      <Icon
+        appearance="primary"
+        cursorHover
+        size="24px"
+        icon={<MdOutlineSend />}
+        onClick={() => entrySelection(data)}
+      />
+    ),
+  },
+  {
     id: "ver imagen",
     actionName: "Ver Imagen",
     content: (data: IEntries) => (
@@ -64,19 +77,6 @@ export const actionsFinanacialReporting = [
         size="24px"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
-        onClick={() => entrySelection(data)}
-      />
-    ),
-  },
-  {
-    id: "enviar",
-    actionName: "Enviar",
-    content: (data: IEntries) => (
-      <Icon
-        appearance="primary"
-        cursorHover
-        size="24px"
-        icon={<MdOutlineSend />}
         onClick={() => entrySelection(data)}
       />
     ),
