@@ -34,7 +34,11 @@ export const Requirements = (props: IRequirementsProps) => {
               titles={item.titlesRequirements}
               entries={item.entriesRequirements}
               actions={item.actionsRequirements}
-              appearanceTable={{ widthTd: "310px", efectzebra: true }}
+              appearanceTable={{
+                widthTd: "310px",
+                efectzebra: true,
+                title: "primary",
+              }}
             />
           ))}
         </div>
