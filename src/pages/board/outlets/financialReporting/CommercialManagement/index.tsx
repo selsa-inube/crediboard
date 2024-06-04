@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   MdOutlineChevronRight,
   MdOutlinePhone,
@@ -7,10 +8,9 @@ import {
   MdOutlineSend,
   MdOutlineEdit,
 } from "react-icons/md";
-import { useParams } from "react-router-dom";
+import { Stack, Icon, Text, Button, inube } from "@inube/design-system";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { Stack, Icon, Text, Button, inube } from "@inube/design-system";
 import {
   truncateTextToMaxLength,
   capitalizeFirstLetter,
@@ -24,10 +24,11 @@ import { StyledCollapseIcon, StyledIcon, StyledDivider } from "./styles";
 
 interface ComercialManagementProps {
   data: Requests;
+  children?: JSX.Element;
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { data } = props;
+  const { data, children } = props;
   const [collapse, setCollapse] = useState(false);
 
   const { id } = useParams();
@@ -117,7 +118,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         </Stack>
         {collapse && <StyledDivider />}
         {collapse && (
-          <Stack>
+          <Stack direction="column" gap="10px">
             <Stack gap={inube.spacing.s200}>
               <StyledIcon>
                 <Icon
@@ -143,6 +144,9 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   cursorHover
                 />
               </StyledIcon>
+            </Stack>
+            <Stack direction="column" width="fit-content">
+              {children}
             </Stack>
           </Stack>
         )}

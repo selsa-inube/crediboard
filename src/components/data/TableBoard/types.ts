@@ -1,3 +1,5 @@
+export type appearances = "dark" | "primary";
+
 export interface ITitle {
   id: string;
   titleName: string;
@@ -14,4 +16,12 @@ export interface IAction {
   actionName?: string;
   content: (entry: IEntries) => React.ReactNode;
   mobilePriority?: boolean;
+}
+
+export interface IAppearances {
+  title?: appearances;
+  efectzebra?: boolean;
+  borderTable?: boolean;
+  background?: boolean;
+  widthTd?: string;
 }

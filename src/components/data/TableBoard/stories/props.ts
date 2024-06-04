@@ -19,4 +19,17 @@ export const props = {
     control: "object",
     description: "Titles or th of the table",
   },
+  loading: {
+    control: "boolean",
+    description: "Indicates whether the table is loading data or not",
+  },
+  portalId: {
+    control: "text",
+    description: "Portal identifier",
+  },
+  appearanceTable: {
+    control: "object",
+    description:
+      "Defines the appearance of the table by allowing customization of various properties such as the title text color, the presence of a zebra stripe effect, and whether the table will display bottom borders.",
+  },
 };
