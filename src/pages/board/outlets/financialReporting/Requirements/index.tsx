@@ -15,6 +15,7 @@ interface IData {
 export interface IRequirementsProps {
   data: IData[];
 }
+
 export const Requirements = (props: IRequirementsProps) => {
   const { data } = props;
 
@@ -33,6 +34,7 @@ export const Requirements = (props: IRequirementsProps) => {
               titles={item.titlesRequirements}
               entries={item.entriesRequirements}
               actions={item.actionsRequirements}
+              appearanceTable={{ widthTd: "310px", efectzebra: true }}
             />
           ))}
         </div>

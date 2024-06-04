@@ -1,4 +1,4 @@
-import { IAction, IEntries, ITitle } from "./types";
+import { IAction, IEntries, ITitle, IAppearances } from "./types";
 import { TableBoardUI } from "./interface";
 
 export interface ITableBoardProps {
@@ -9,6 +9,7 @@ export interface ITableBoardProps {
   borderTable?: boolean;
   loading?: boolean;
   portalId?: string;
+  appearanceTable?: IAppearances;
 }
 
 export const TableBoard = (props: ITableBoardProps) => {
@@ -20,6 +21,12 @@ export const TableBoard = (props: ITableBoardProps) => {
     loading = false,
     borderTable = false,
     portalId,
+    appearanceTable = {
+      title: "primary",
+      efectzebra: true,
+      borderTable: false,
+      background: false,
+    },
   } = props;
 
   const titlesList = titles.map((title) => title.id);
@@ -34,6 +41,7 @@ export const TableBoard = (props: ITableBoardProps) => {
       portalId={portalId}
       titles={titles}
       titlesList={titlesList}
+      appearanceTable={appearanceTable}
     />
   );
 };

@@ -3,8 +3,10 @@ import { useParams } from "react-router-dom";
 import { Stack, inube, Grid } from "@inube/design-system";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
-import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
+import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
+import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
+import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { Requests } from "@services/types";
 
 import { ToDo } from "./ToDo";
@@ -43,7 +45,12 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
             <Stack direction="column">
-              <ComercialManagement data={data} />
+              <ComercialManagement
+                data={data}
+                children={
+                  <DataCommercialManagement dataAccordeon={dataAccordeon} />
+                }
+              />
             </Stack>
           </Stack>
           <Grid templateColumns="repeat(2,1fr)" gap="s200" autoRows="auto">
