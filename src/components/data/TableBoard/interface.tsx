@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Text, SkeletonLine } from "@inube/design-system";
 
 import { ITitle, appearances } from "./types";
@@ -17,17 +18,20 @@ import { ITableBoardProps } from ".";
 interface ITableBoardUIProps extends ITableBoardProps {
   titlesList: string[];
   loading: boolean;
+  isTablet: boolean;
 }
 
 interface IRenderActionsTitles {
   actionName: string;
   appearance: appearances;
+  right?: number;
+  isTablet: boolean;
 }
 
 const RenderActionsTitles = (props: IRenderActionsTitles) => {
-  const { actionName, appearance } = props;
+  const { actionName, appearance, right = 0, isTablet } = props;
   return (
-    <StyledThactions>
+    <StyledThactions $right={right} $isTablet={isTablet}>
       <Text
         appearance={appearance}
         type="title"
@@ -80,7 +84,18 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
     borderTable,
     loading,
     appearanceTable,
+    isTablet,
   } = props;
+
+  const widthActions = useRef<HTMLTableCellElement>(null);
+
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    if (widthActions.current) {
+      setWidth(widthActions.current.offsetWidth);
+    }
+  }, [isTablet]);
 
   return (
     <StyledContainer id={id} $borderTable={borderTable!}>
@@ -102,12 +117,14 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
 
             {actions &&
               actions.map(
-                (action) =>
+                (action, index) =>
                   action.actionName && (
                     <RenderActionsTitles
                       key={action.id}
                       actionName={action.actionName}
                       appearance={appearanceTable!.title!}
+                      right={width * (actions.length - 1 - index)}
+                      isTablet={isTablet}
                     />
                   )
               )}
@@ -141,8 +158,13 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                     </StyledTd>
                   ))}
                   {actions &&
-                    actions.map((action) => (
-                      <StyledTdactions key={action.id}>
+                    actions.map((action, index) => (
+                      <StyledTdactions
+                        key={action.id}
+                        ref={widthActions}
+                        $isTablet={isTablet}
+                        $right={width * (actions.length - 1 - index)}
+                      >
                         {action.content(entry)}
                       </StyledTdactions>
                     ))}

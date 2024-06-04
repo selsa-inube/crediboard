@@ -1,3 +1,5 @@
+import { useMediaQuery } from "@inube/design-system";
+
 import { IAction, IEntries, ITitle, IAppearances } from "./types";
 import { TableBoardUI } from "./interface";
 
@@ -31,6 +33,8 @@ export const TableBoard = (props: ITableBoardProps) => {
 
   const titlesList = titles.map((title) => title.id);
 
+  const isTablet = useMediaQuery("(max-width: 850px)");
+
   return (
     <TableBoardUI
       id={id}
@@ -42,6 +46,7 @@ export const TableBoard = (props: ITableBoardProps) => {
       titles={titles}
       titlesList={titlesList}
       appearanceTable={appearanceTable}
+      isTablet={isTablet}
     />
   );
 };
