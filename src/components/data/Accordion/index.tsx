@@ -10,7 +10,7 @@ export interface IAccordionProps {
   content?: React.ReactNode;
 }
 
-export const Accordeon = (props: IAccordionProps) => {
+export const Accordion = (props: IAccordionProps) => {
   const { name, title, content } = props;
 
   const [collapse, setCollapse] = useState(false);

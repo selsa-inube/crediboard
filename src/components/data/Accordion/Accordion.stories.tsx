@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { Accordeon } from ".";
+import { Accordion } from ".";
 
-type Story = StoryObj<typeof Accordeon>;
+type Story = StoryObj<typeof Accordion>;
 
-const meta: Meta<typeof Accordeon> = {
-  component: Accordeon,
+const meta: Meta<typeof Accordion> = {
+  component: Accordion,
   title: "components/data/Accordeon",
   argTypes: {
     name: {

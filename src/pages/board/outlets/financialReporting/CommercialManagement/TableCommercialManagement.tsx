@@ -1,5 +1,8 @@
 import { TableBoard } from "@components/data/TableBoard";
-import { Accordeon, type IAccordionProps } from "@components/data/Accordeon";
+import {
+  Accordion,
+  type IAccordionProps,
+} from "@src/components/data/Accordion";
 import {
   entriesCommercialManagement,
   titlesCommercialManagement,
@@ -20,7 +23,7 @@ export const DataCommercialManagement = (props: IDataCommercialManagement) => {
         appearanceTable={{ title: "dark", borderTable: true, widthTd: "190px" }}
       />
       {dataAccordeon.map((accordeon) => (
-        <Accordeon
+        <Accordion
           key={accordeon.name}
           name={accordeon.name}
           title={accordeon.title}
