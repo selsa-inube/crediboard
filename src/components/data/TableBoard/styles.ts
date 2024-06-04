@@ -42,7 +42,7 @@ export const StyledTable = styled.table<IStyledTable>`
 
   ${({ $zebraEffect, theme }) =>
     $zebraEffect &&
-    `tbody tr:nth-child(odd) {background-color: ${theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};}; tbody tr:nth-child(even) {background-color: ${theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};}`}
+    `tbody tr:nth-child(even) {background-color: ${theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};}; tbody tr:nth-child(odd) {background-color: ${theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};}`}
 `;
 
 export const StyledTbody = styled.tbody`
