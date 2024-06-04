@@ -19,7 +19,7 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
     <CardInfoContainer
       title="Capacidad de pago"
       icon={<MdOutlinePaid />}
-      heigthCardInfoContainer="272px"
+      heightCardInfoContainer="272px"
     >
       <Stack direction="column" gap={inube.spacing.s200}>
         <Stack alignItems="center" gap={inube.spacing.s400}>

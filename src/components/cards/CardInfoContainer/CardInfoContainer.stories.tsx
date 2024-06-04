@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { Button, Stack, Text } from "@inube/design-system";
+import { Button, Stack, Text, inube } from "@inube/design-system";
 import { MdAndroid } from "react-icons/md";
 
 import { CardInfoContainer } from ".";
@@ -23,7 +23,7 @@ const meta: Meta<typeof CardInfoContainer> = {
 };
 
 const Example = () => (
-  <Stack direction="column" gap="16px">
+  <Stack direction="column" gap={inube.spacing.s400}>
     <Text appearance="dark">
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum culpa
       neque ab! Ab, quibusdam magnam! Quod enim dolor blanditiis quos voluptatum

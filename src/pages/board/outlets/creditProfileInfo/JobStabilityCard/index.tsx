@@ -17,7 +17,7 @@ export function JobStabilityCard(props: JobStabilityCardProps) {
     <CardInfoContainer
       title="Estabilidad Laboral"
       icon={<MdOutlineBusinessCenter />}
-      heigthCardInfoContainer="272px"
+      heightCardInfoContainer="272px"
     >
       <Stack direction="column" gap={inube.spacing.s200}>
         <Stack alignItems="center" gap={inube.spacing.s400}>

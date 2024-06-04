@@ -7,7 +7,7 @@ interface CardInfoContainerProps {
   children: JSX.Element | JSX.Element[];
   aspectRatio?: string;
   icon?: React.JSX.Element;
-  heigthCardInfoContainer?: string;
+  heightCardInfoContainer?: string;
 }
 
 export const CardInfoContainer = (props: CardInfoContainerProps) => {
@@ -16,17 +16,17 @@ export const CardInfoContainer = (props: CardInfoContainerProps) => {
     children,
     aspectRatio,
     icon,
-    heigthCardInfoContainer = "auto",
+    heightCardInfoContainer = "auto",
   } = props;
 
   return (
     <Stack
       direction="column"
       width="-webkit-fill-available"
-      height={heigthCardInfoContainer}
+      height={heightCardInfoContainer}
     >
       <Stack gap={inube.spacing.s100} alignItems="center">
-        <Icon icon={icon} appearance="primary" size="56px" cursorHover />
+        <Icon icon={icon} appearance="primary" size="56px" />
         <Text type="title" appearance="primary" ellipsis>
           {title}
         </Text>
