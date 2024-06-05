@@ -9,9 +9,14 @@ import {
 } from "@inube/design-system";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
-import { useState } from "react";
+import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
+import * as Yup from "yup";
 
 import { StyledModal } from "./styles";
+
+interface FormValues {
+  textarea: string;
+}
 
 export interface TextAreaModalProps {
   title: string;
@@ -20,7 +25,7 @@ export interface TextAreaModalProps {
   inputPlaceholder: string;
   maxLength?: number;
   portalId?: string;
-  onSubmit?: () => void;
+  onSubmit?: (values: { textarea: string }) => void;
   onCloseModal?: () => void;
 }
 
@@ -35,34 +40,17 @@ export function TextAreaModal(props: TextAreaModalProps) {
     onSubmit,
     onCloseModal,
   } = props;
-  const [input, setInput] = useState({ value: "", status: "" });
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput({ value: e.target.value, status: "pending" });
-    return;
-  };
-
-  const onFocus = () => {
-    if (input.status === "invalid") {
-      return setInput({ ...input, status: "invalid" });
-    }
-    setInput({ ...input, status: "pending" });
-  };
-
-  const onBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length > maxLength) {
-      setInput({ ...input, status: "invalid" });
-    } else setInput({ ...input, status: "valid" });
-  };
-  const message =
-    input.status === "valid"
-      ? "El campo ha sido validado exitosamente"
-      : "El número de caracteres es demasiado largo";
+  const validationSchema = Yup.object().shape({
+    textarea: Yup.string()
+      .max(maxLength, "El número de caracteres es demasiado largo")
+      .required("Este campo es obligatorio"),
+  });
 
   const isMobile = useMediaQuery("(max-width: 700px)");
   const node = document.getElementById(portalId);
 
-  if (node === null) {
+  if (!node) {
     throw new Error(
       "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
     );
@@ -80,28 +68,50 @@ export function TextAreaModal(props: TextAreaModalProps) {
             <MdClear size={24} cursor="pointer" onClick={onCloseModal} />
           </Stack>
         </Stack>
-        <Textarea
-          label={inputLabel}
-          placeholder={inputPlaceholder}
-          value={input.value}
-          status={input.status}
-          maxLength={maxLength}
-          onChange={onChange}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          message={message}
-          fullwidth
-        />
-        <Stack justifyContent="flex-end">
-          <Button
-            onClick={onSubmit}
-            disabled={
-              input.value.length > maxLength || input.value.length === 0
-            }
-          >
-            {buttonText}
-          </Button>
-        </Stack>
+        <Formik
+          initialValues={{ textarea: "" }}
+          validationSchema={validationSchema}
+          onSubmit={(
+            values: FormValues,
+            { setSubmitting }: FormikHelpers<FormValues>
+          ) => {
+            onSubmit?.(values);
+            setSubmitting(false);
+          }}
+        >
+          {({ errors, touched, isSubmitting }) => (
+            <Form>
+              <Field name="textarea">
+                {({ field, form: { setFieldTouched } }: FieldProps) => (
+                  <Textarea
+                    {...field}
+                    label={inputLabel}
+                    placeholder={inputPlaceholder}
+                    maxLength={maxLength}
+                    status={
+                      touched.textarea && errors.textarea
+                        ? "invalid"
+                        : "pending"
+                    }
+                    message={
+                      touched.textarea && errors.textarea ? errors.textarea : ""
+                    }
+                    fullwidth
+                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+                      setFieldTouched("textarea");
+                      field.onBlur(e);
+                    }}
+                  />
+                )}
+              </Field>
+              <Stack justifyContent="flex-end" margin="s200 s0">
+                <Button type="submit" disabled={isSubmitting}>
+                  {buttonText}
+                </Button>
+              </Stack>
+            </Form>
+          )}
+        </Formik>
       </StyledModal>
     </Blanket>,
     node

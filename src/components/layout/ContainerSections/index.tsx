@@ -14,14 +14,14 @@ interface IContainerSectionsProps {
 
 export const ContainerSections = (props: IContainerSectionsProps) => {
   const { children } = props;
-  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [showRejectionModal, setShowRejectionModal] = useState(false);
 
   const handleToggleRejectModal = () => {
-    setShowRejectModal(!showRejectModal);
+    setShowRejectionModal(!showRejectionModal);
   };
 
   const handleSubmitRejectModal = () => {
-    setShowRejectModal(!showRejectModal);
+    setShowRejectionModal(!showRejectionModal);
   };
 
   const navigation = useNavigate();
@@ -61,7 +61,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
         </Stack>
         <Stack direction="column">{children}</Stack>
       </Stack>
-      {showRejectModal && (
+      {showRejectionModal && (
         <TextAreaModal
           title="Rechazar"
           buttonText="Confirmar"
