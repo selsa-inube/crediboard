@@ -98,8 +98,12 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
   }, [isTablet]);
 
   return (
-    <StyledContainer id={id} $borderTable={borderTable!}>
-      <StyledTable $zebraEffect={appearanceTable?.efectzebra}>
+    <StyledContainer id={id} $borderTable={borderTable!} $isTablet={isTablet}>
+      <StyledTable
+        $zebraEffect={appearanceTable!.efectzebra!}
+        $background={appearanceTable!.background!}
+        $isTablet={isTablet}
+      >
         <StyledThead>
           <tr>
             {titles.map((title) => (
@@ -139,7 +143,6 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                 <StyledTr
                   key={`${entry.id}-${index}`}
                   $borderTable={appearanceTable!.borderTable}
-                  $background={appearanceTable!.background}
                 >
                   {titlesList.map((title) => (
                     <StyledTd key={title} $widthTd={appearanceTable?.widthTd}>
