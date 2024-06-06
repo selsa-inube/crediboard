@@ -24,14 +24,15 @@ interface ITableBoardUIProps extends ITableBoardProps {
 interface IRenderActionsTitles {
   actionName: string;
   appearance: appearances;
-  right?: number;
   isTablet: boolean;
+  firstColumn: boolean;
+  right?: number;
 }
 
 const RenderActionsTitles = (props: IRenderActionsTitles) => {
-  const { actionName, appearance, right = 0, isTablet } = props;
+  const { actionName, appearance, right = 0, isTablet, firstColumn } = props;
   return (
-    <StyledThactions $right={right} $isTablet={isTablet}>
+    <StyledThactions $right={right} $isTablet={isTablet} $isFirst={firstColumn}>
       <Text
         appearance={appearance}
         type="title"
@@ -129,6 +130,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                       appearance={appearanceTable!.title!}
                       right={width * (actions.length - 1 - index)}
                       isTablet={isTablet}
+                      firstColumn={index === 0}
                     />
                   )
               )}
@@ -162,6 +164,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                         ref={widthActions}
                         $isTablet={isTablet}
                         $right={width * (actions.length - 1 - index)}
+                        $isFirst={index === 0}
                       >
                         {action.content(entry)}
                       </StyledTdactions>
