@@ -17,7 +17,7 @@ export function OpenWallet(props: OpenWalletProps) {
     <CardInfoContainer
       title="Cartera descubierta"
       icon={<MdOutlineRequestQuote />}
-      heightCardInfoContainer="272px"
+      heightCardInfoContainer="182px"
     >
       <Stack direction="column" gap={inube.spacing.s200}>
         <Stack alignItems="center" gap={inube.spacing.s400}>
