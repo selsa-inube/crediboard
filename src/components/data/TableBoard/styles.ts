@@ -9,6 +9,9 @@ interface IStyledContainer {
 export const StyledContainer = styled.div<IStyledContainer>`
   border-radius: 8px;
   overflow: hidden;
+  max-width: 100%;
+  overflow-x: auto;
+  position: relative;
   padding-top: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
   padding-bottom: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
   padding-left: ${({ theme }) => theme?.spacing?.s075 || inube.spacing.s075};
@@ -17,32 +20,36 @@ export const StyledContainer = styled.div<IStyledContainer>`
   border: ${({ theme, $borderTable }) =>
     $borderTable &&
     `2px solid ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}`};
-  max-width: 100%;
-  overflow-x: auto;
-  position: relative;
 `;
 
 interface IStyledThactions {
   $right: number;
   $isTablet: boolean;
+  $isFirst: boolean;
 }
 export const StyledThactions = styled.th<IStyledThactions>`
-  text-align: center;
-  // min-width: 100px;
-  //width: 100px;
-  ${({ $isTablet, $right }) =>
-    $isTablet && `position: sticky; right: ${$right}px; z-index: 22;`};
+  ${({ $isTablet, $right, $isFirst, theme }) =>
+    $isTablet &&
+    `position: sticky; right: ${$right}px; z-index: 22; background-color: white; ${
+      $isFirst &&
+      `&::before { content: ""; position: absolute; top: 0; left: -2px; width: 2px; height: 100%;  box-shadow: 0px 1px 3px 1px #DFE1E6; background-color: ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}; }`
+    }`}
 `;
 
 interface IStyledTdactions {
   $right: number;
   $isTablet: boolean;
+  $isFirst: boolean;
 }
 
 export const StyledTdactions = styled.td<IStyledTdactions>`
-  text-align: -webkit-center;
-  ${({ $isTablet, $right }) =>
-    $isTablet && `position: sticky; right: ${$right}px; z-index: 22;`};
+  text-align: center;
+  ${({ $isTablet, $right, $isFirst, theme }) =>
+    $isTablet &&
+    `position: sticky; right: ${$right}px; z-index: 22; ${
+      $isFirst &&
+      `&::before { content: ""; position: absolute; top: 0; left: -2px; width: 2px; height: 100%; box-shadow: 0px 1px 3px 1px #DFE1E6; background-color: ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}; }`
+    }`}
 `;
 
 interface IStyledTable {
@@ -109,16 +116,9 @@ export const StyledTr = styled.tr<IStyledTdbodyContainer>`
   vertical-align: middle;
   white-space: nowrap;
   box-sizing: border-box;
-
   border-bottom: ${({ theme, $borderTable }) =>
     $borderTable &&
     `1px solid ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}`};
-
-  &:first-child {
-    border-top: ${({ theme, $borderTable }) =>
-      $borderTable &&
-      `1px solid ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}`};
-  }
 `;
 
 interface IStyledTd {
@@ -129,3 +129,13 @@ export const StyledTd = styled.td<IStyledTd>`
   width: ${({ $widthTd }) => $widthTd};
   height: 24px;
 `;
+
+/* :first-of-type::before {content: ""; position: absolute; top: 0; left: 0; width: 1px; height: 100%; background-color: red} */
+
+/* box-shadow: 0px 1px 3px 1px #00000026;
+
+box-shadow: 0px 1px 2px 0px #0000004D; */
+
+/* box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+
+box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3); */
