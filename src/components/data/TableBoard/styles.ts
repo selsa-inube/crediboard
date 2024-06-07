@@ -8,12 +8,18 @@ interface IStyledContainer {
 
 export const StyledContainer = styled.div<IStyledContainer>`
   border-radius: 8px;
-  overflow: hidden;
   max-width: 100%;
-  overflow-x: auto;
   position: relative;
-  padding-top: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
-  padding-bottom: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
+  box-shadow: ${({ $isTablet }) => $isTablet && "1px 1px 3px 1px #DFE1E6"};
+  overflow-x: ${({ $isTablet }) => ($isTablet ? "auto" : "hidden")};
+  padding-top: ${({ theme, $isTablet }) =>
+    $isTablet
+      ? theme?.spacing?.s75 || inube.spacing.s75
+      : theme?.spacing?.s150 || inube.spacing.s150};
+  padding-bottom: ${({ theme, $isTablet }) =>
+    $isTablet
+      ? theme?.spacing?.s75 || inube.spacing.s75
+      : theme?.spacing?.s150 || inube.spacing.s150};
   padding-left: ${({ theme }) => theme?.spacing?.s075 || inube.spacing.s075};
   padding-right: ${({ theme, $isTablet }) =>
     ($isTablet ? "0px" : theme?.spacing?.s075) || inube.spacing.s075};
@@ -129,13 +135,3 @@ export const StyledTd = styled.td<IStyledTd>`
   width: ${({ $widthTd }) => $widthTd};
   height: 24px;
 `;
-
-/* :first-of-type::before {content: ""; position: absolute; top: 0; left: 0; width: 1px; height: 100%; background-color: red} */
-
-/* box-shadow: 0px 1px 3px 1px #00000026;
-
-box-shadow: 0px 1px 2px 0px #0000004D; */
-
-/* box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-
-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3); */
