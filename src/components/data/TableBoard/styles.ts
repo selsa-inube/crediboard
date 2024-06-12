@@ -31,12 +31,12 @@ export const StyledContainer = styled.div<IStyledContainer>`
 interface IStyledThactions {
   $right: number;
   $isTablet: boolean;
-  $isFirst: boolean;
+  $isFirst?: boolean;
 }
 export const StyledThactions = styled.th<IStyledThactions>`
   ${({ $isTablet, $right, $isFirst, theme }) =>
     $isTablet &&
-    `position: sticky; right: ${$right}px; z-index: 22; background-color: white; ${
+    `position: sticky; right: ${$right}px; z-index: 22; background-color: white; text-align: end; ${
       $isFirst &&
       `&::before { content: ""; position: absolute; top: 0; left: -2px; width: 2px; height: 100%;  box-shadow: 0px 1px 3px 1px #DFE1E6; background-color: ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}; }`
     }`}
