@@ -11,6 +11,9 @@ import { currencyFormat } from "@utils/formatData/currency";
 import { JobStabilityCard } from "./JobStabilityCard";
 import { PaymentCapacity } from "./PaymentCapacity";
 import { OpenWallet } from "./OpenWallet";
+import { CreditBehavior } from "./CreditBehaviorCard";
+import { RiskScoring } from "./RiskScoring";
+import { Guarantees } from "./Guarantees";
 
 export const CreditProfileInfo = () => {
   const navigation = useNavigate();
@@ -69,6 +72,32 @@ export const CreditProfileInfo = () => {
           overdraftFactor={10}
           valueDiscovered={50000000}
           reciprocity={5}
+        />
+      </Grid>
+      <Grid
+        templateColumns="repeat(auto-fit, minmax(350px, 1fr))"
+        gap="s250"
+        autoRows="auto"
+      >
+        <CreditBehavior
+          centralScoreRisky={250}
+          centralScoreDate="2023-08-31T00:00:00-05:00"
+          numberInternalBlackberries={9}
+          maximumNumberInstallmentsArrears={3}
+        />
+        <RiskScoring
+          totalScore={456}
+          minimumScore={500}
+          yearsOldScore={120}
+          riskCenterScore={-100}
+          jobStabilityIndexScore={300}
+          maritalStatusScore={50}
+          economicActivityScore={106}
+        />
+        <Guarantees
+          guaranteesRequired="Ninguna garantía real, o fianza o codeudor."
+          guaranteesOffered="Ninguna, casa Bogotá 200 mt2, o fianza o codeudor Pedro Pérez."
+          guaranteesCurrent="Ninguna, apartamento, en Bogotá 80 mt2, o vehículo Mazda 323."
         />
       </Grid>
     </Stack>

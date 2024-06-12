@@ -19,11 +19,11 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
     <CardInfoContainer
       title="Capacidad de pago"
       icon={<MdOutlinePaid />}
-      heightCardInfoContainer="272px"
+      heightCardInfoContainer="182px"
     >
       <Stack direction="column" gap={inube.spacing.s200}>
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="150px">
+          <Stack width="100px">
             <Text size="medium">Valor disponible</Text>
           </Stack>
           <Stack>
@@ -34,7 +34,7 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="150px">
+          <Stack width="100px">
             <Text size="medium">% Disponible</Text>
           </Stack>
           <Stack>
@@ -50,7 +50,7 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="150px">
+          <Stack width="100px">
             <Text size="medium">% Usado</Text>
           </Stack>
           <Stack>

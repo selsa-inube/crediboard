@@ -20,11 +20,7 @@ export const CardInfoContainer = (props: CardInfoContainerProps) => {
   } = props;
 
   return (
-    <Stack
-      direction="column"
-      width="-webkit-fill-available"
-      height={heightCardInfoContainer}
-    >
+    <Stack direction="column" width="-webkit-fill-available">
       <Stack gap={inube.spacing.s100} alignItems="center">
         <Icon icon={icon} appearance="primary" size="56px" />
         <Text type="title" appearance="primary" ellipsis>
@@ -32,7 +28,10 @@ export const CardInfoContainer = (props: CardInfoContainerProps) => {
         </Text>
       </Stack>
 
-      <StyledContainerCardInfo $aspectRatio={aspectRatio}>
+      <StyledContainerCardInfo
+        $aspectRatio={aspectRatio}
+        $containerHeight={heightCardInfoContainer}
+      >
         {children}
       </StyledContainerCardInfo>
     </Stack>

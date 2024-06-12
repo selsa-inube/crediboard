@@ -7,4 +7,14 @@ function formatISODatetoCustomFormat(isoDateString: string) {
   return `${month} ${day}/${year}`;
 }
 
-export { formatISODatetoCustomFormat };
+function formatDateWithFullYear(dateString: string) {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.toLocaleString("es-CO", { month: "long" });
+  const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
+  const year = date.getFullYear();
+
+  return `${capitalizedMonth} ${day} / ${year}`;
+}
+
+export { formatISODatetoCustomFormat, formatDateWithFullYear };

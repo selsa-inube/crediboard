@@ -17,11 +17,11 @@ export function JobStabilityCard(props: JobStabilityCardProps) {
     <CardInfoContainer
       title="Estabilidad Laboral"
       icon={<MdOutlineBusinessCenter />}
-      heightCardInfoContainer="272px"
+      heightCardInfoContainer="182px"
     >
       <Stack direction="column" gap={inube.spacing.s200}>
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="200px">
+          <Stack width="170px">
             <Text size="medium">Antigüedad en la empresa</Text>
           </Stack>
           <Stack>
@@ -32,7 +32,7 @@ export function JobStabilityCard(props: JobStabilityCardProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="200px">
+          <Stack width="170px">
             <Text size="medium">Indice de estabilidad laboral</Text>
           </Stack>
           <Stack>
@@ -46,7 +46,7 @@ export function JobStabilityCard(props: JobStabilityCardProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="200px">
+          <Stack width="170px">
             <Text size="medium">Indemnización estimada</Text>
           </Stack>
           <Stack>
