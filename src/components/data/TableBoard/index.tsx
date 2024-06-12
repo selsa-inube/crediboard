@@ -33,7 +33,7 @@ export const TableBoard = (props: ITableBoardProps) => {
 
   const titlesList = titles.map((title) => title.id);
 
-  const isTablet = useMediaQuery("(max-width: 850px)");
+  const isTablet = useMediaQuery("(max-width: 720px)");
 
   return (
     <TableBoardUI
