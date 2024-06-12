@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Text, SkeletonLine } from "@inube/design-system";
+import { MdOutlineInfo } from "react-icons/md";
+import { Icon, Text, SkeletonLine } from "@inube/design-system";
 
 import { ITitle, appearances } from "./types";
 import {
@@ -121,6 +122,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
             ))}
 
             {actions &&
+              !isTablet &&
               actions.map(
                 (action, index) =>
                   action.actionName && (
@@ -134,6 +136,20 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                     />
                   )
               )}
+            {isTablet && (
+              <StyledThactions
+                colSpan={actions?.length}
+                $right={0}
+                $isTablet={isTablet}
+                $isFirst
+              >
+                <Icon
+                  icon={<MdOutlineInfo />}
+                  appearance="primary"
+                  size="32px"
+                />
+              </StyledThactions>
+            )}
           </tr>
         </StyledThead>
         <StyledTbody>
