@@ -65,7 +65,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
         <TextAreaModal
           title="Rechazar"
           buttonText="Confirmar"
-          inputLabel="Motivo del Rechazo"
+          inputLabel="Motivo del rechazo."
           inputPlaceholder="Describa el motivo del rechazo."
           onCloseModal={handleToggleRejectModal}
           onSubmit={handleSubmitRejectModal}
