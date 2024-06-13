@@ -2,7 +2,7 @@ import { Text, Stack } from "@inube/design-system";
 
 import { TableBoard } from "@components/data/TableBoard";
 
-export const titlesCommercialManagement = [
+export const titlesCommercialManagementAccordion = [
   {
     id: "obligacion",
     titleName: "",
@@ -16,6 +16,24 @@ export const titlesCommercialManagement = [
   {
     id: "Libre Inversion",
     titleName: "",
+    priority: 3,
+  },
+];
+
+export const titlesCommercialManagement = [
+  {
+    id: "obligacion",
+    titleName: "",
+    priority: 1,
+  },
+  {
+    id: "Compra primera Vivienda",
+    titleName: "Compra primera Vivienda",
+    priority: 2,
+  },
+  {
+    id: "Libre Inversion",
+    titleName: "Libre Inversion",
     priority: 3,
   },
 ];
@@ -97,8 +115,16 @@ export const entriesCreditsCollected = [
         <Text type="label">Neto a Girar</Text>
       </Stack>
     ),
-    "Compra primera Vivienda": "$49.500.000",
-    "Libre Inversion": "$5.200.000",
+    "Compra primera Vivienda": (
+      <Text size="medium" padding="0px 0px 0px 12px">
+        $49.500.000"
+      </Text>
+    ),
+    "Libre Inversion": (
+      <Text size="medium" padding="0px 0px 0px 8px">
+        $5.200.000
+      </Text>
+    ),
   },
 ];
 
@@ -121,7 +147,7 @@ export const dataAccordeon = [
     content: (
       <TableBoard
         id="dataAcordeon"
-        titles={titlesCommercialManagement}
+        titles={titlesCommercialManagementAccordion}
         entries={entriesCommercialManagementAccordeon}
         appearanceTable={{
           title: "dark",
@@ -151,7 +177,7 @@ export const dataAccordeon = [
     content: (
       <TableBoard
         id="Descuentos"
-        titles={titlesCommercialManagement}
+        titles={titlesCommercialManagementAccordion}
         entries={entriesAppliedDiscounts}
         appearanceTable={{
           title: "dark",
@@ -181,7 +207,7 @@ export const dataAccordeon = [
     content: (
       <TableBoard
         id="dataAcordeon"
-        titles={titlesCommercialManagement}
+        titles={titlesCommercialManagementAccordion}
         entries={entriesCreditsCollected}
         appearanceTable={{
           title: "dark",
@@ -192,6 +218,24 @@ export const dataAccordeon = [
         }}
       />
     ),
+  },
+];
+
+export const titlesCommercialManagementPRueba = [
+  {
+    id: "obligacion",
+    titleName: "",
+    priority: 1,
+  },
+  {
+    id: "Compra primera Vivienda",
+    titleName: "Compra primera Vivienda",
+    priority: 2,
+  },
+  {
+    id: "Libre Inversion",
+    titleName: "Libre Inversión",
+    priority: 3,
   },
 ];
 
