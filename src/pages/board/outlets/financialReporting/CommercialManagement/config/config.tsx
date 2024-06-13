@@ -115,16 +115,8 @@ export const entriesCreditsCollected = [
         <Text type="label">Neto a Girar</Text>
       </Stack>
     ),
-    "Compra primera Vivienda": (
-      <Text size="medium" padding="0px 0px 0px 12px">
-        $49.500.000"
-      </Text>
-    ),
-    "Libre Inversion": (
-      <Text size="medium" padding="0px 0px 0px 8px">
-        $5.200.000
-      </Text>
-    ),
+    "Compra primera Vivienda": "$49.500.000",
+    "Libre Inversion": "$5.200.000",
   },
 ];
 
@@ -136,10 +128,10 @@ export const dataAccordeon = [
         <div style={{ flex: "1" }}>
           <Text type="label">Pagos Extra Pactados</Text>
         </div>
-        <div style={{ flex: "1 1 1.5%" }}>
+        <div style={{ flex: "1 1 3.5%" }}>
           <Text size="medium">$10.000.000</Text>
         </div>
-        <div style={{ flex: "1 1 1.5%" }}>
+        <div style={{ flex: "1 1 2.5%" }}>
           <Text size="medium">$0</Text>
         </div>
       </Stack>
@@ -166,10 +158,10 @@ export const dataAccordeon = [
         <div style={{ flex: "1" }}>
           <Text type="label">Descuentos Aplicados</Text>
         </div>
-        <div style={{ flex: "1 1 1.5%" }}>
+        <div style={{ flex: "1 1 3.5%" }}>
           <Text size="medium">$49.500.000</Text>
         </div>
-        <div style={{ flex: "1 1 1.5%" }}>
+        <div style={{ flex: "1 1 2.5%" }}>
           <Text size="medium">$50.000</Text>
         </div>
       </Stack>
@@ -196,10 +188,10 @@ export const dataAccordeon = [
         <div style={{ flex: "1" }}>
           <Text type="label">Créditos Recogidos",</Text>
         </div>
-        <div style={{ flex: "1 1 1.5%" }}>
+        <div style={{ flex: "1 1 3.5%" }}>
           <Text size="medium">$49.500.000</Text>
         </div>
-        <div style={{ flex: "1 1 1.5%" }}>
+        <div style={{ flex: "1 1 2.5%" }}>
           <Text size="medium">$50.000</Text>
         </div>
       </Stack>
