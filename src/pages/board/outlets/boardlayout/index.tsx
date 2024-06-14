@@ -1,28 +1,29 @@
 import { useContext, useEffect, useState } from "react";
 
-import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { get, updateActive } from "@mocks/utils/dataMock.service";
 import { PinnedRequest, Requests } from "@services/types";
-import { AppContext } from "@src/context/AppContext";
+import { AppContext } from "@context/AppContext";
 
 import { BoardLayoutUI } from "./interface";
-import { filterOptions } from "./config/select";
+import { selectCheckOptions } from "./config/select";
 import { IBoardData } from "./types";
 
 function BoardLayout() {
   const { user, updatePreferences } = useContext(AppContext);
-  const [searchRequestValue, setSearchRequestValue] = useState("");
-  const [filteredRequests, setFilteredRequests] = useState<Requests[]>([]);
+
   const [boardData, setBoardData] = useState<IBoardData>({
     boardRequests: [],
     requestsPinned: [],
   });
-  const [boardOrientation, setBoardOrientation] = useState<SectionOrientation>(
-    user.preferences.boardOrientation || "vertical"
-  );
-  const [showPinnedOnly, setShowPinnedOnly] = useState(
-    user.preferences.showPinnedOnly || false
-  );
+
+  const [filters, setFilters] = useState({
+    searchRequestValue: "",
+    showPinnedOnly: user.preferences.showPinnedOnly || false,
+    selectOptions: selectCheckOptions,
+    boardOrientation: user.preferences.boardOrientation || "vertical",
+  });
+
+  const [filteredRequests, setFilteredRequests] = useState<Requests[]>([]);
 
   useEffect(() => {
     get("requests")
@@ -57,11 +58,11 @@ function BoardLayout() {
       const isSearchMatch =
         request.nnasocia
           .toLowerCase()
-          .includes(searchRequestValue.toLowerCase()) ||
-        request.k_Prospe.toString().includes(searchRequestValue);
+          .includes(filters.searchRequestValue.toLowerCase()) ||
+        request.k_Prospe.toString().includes(filters.searchRequestValue);
 
       const isPinned =
-        !showPinnedOnly ||
+        !filters.showPinnedOnly ||
         boardData.requestsPinned
           .filter((req) => req.isPinned === "Y")
           .map((req) => req.requestId)
@@ -70,22 +71,54 @@ function BoardLayout() {
       return isSearchMatch && isPinned;
     });
 
-    setFilteredRequests(filteredRequests);
-  }, [
-    showPinnedOnly,
-    searchRequestValue,
-    boardData.requestsPinned,
-    boardData.boardRequests,
-  ]);
+    const activeFilterIds = filters.selectOptions
+      .filter((option) => option.checked)
+      .map((option) => option.id);
 
-  const handleOrientationChange = (orientation: SectionOrientation) => {
-    setBoardOrientation(orientation);
-    updatePreferences({ boardOrientation: orientation });
-  };
+    const finalFilteredRequests = filteredRequests.filter((request) => {
+      if (activeFilterIds.length === 0) return true;
 
-  const handleShowPinnedOnly = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setShowPinnedOnly(e.target.checked);
-    updatePreferences({ showPinnedOnly: e.target.checked });
+      return activeFilterIds.some((filterId) => {
+        switch (filterId) {
+          case "2":
+            return [
+              "GESTION_COMERCIAL",
+              "VERIFICACION_APROBACION",
+              "FORMALIZACION_GARANTIAS",
+              "TRAMITE_DESEMBOLSO",
+            ].includes(request.i_Estprs);
+          case "3":
+            return request.i_Estprs === "GESTION_COMERCIAL";
+          case "4":
+            return request.i_Estprs === "VERIFICACION_APROBACION";
+          case "5":
+            return request.i_Estprs === "FORMALIZACION_GARANTIAS";
+          case "6":
+            return request.i_Estprs === "TRAMITE_DESEMBOLSO";
+          case "7":
+            return request.i_Estprs === "CUMPLIMIENTO_REQUISITOS";
+          default:
+            return false;
+        }
+      });
+    });
+
+    setFilteredRequests(finalFilteredRequests);
+  }, [filters, boardData]);
+
+  const handleFiltersChange = (newFilters: Partial<typeof filters>) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      ...newFilters,
+    }));
+
+    if (newFilters.boardOrientation !== undefined) {
+      updatePreferences({ boardOrientation: newFilters.boardOrientation });
+    }
+
+    if (newFilters.showPinnedOnly !== undefined) {
+      updatePreferences({ showPinnedOnly: newFilters.showPinnedOnly });
+    }
   };
 
   const handlePinRequest = async (requestId: number) => {
@@ -107,24 +140,33 @@ function BoardLayout() {
     }));
   };
 
-  const handleSearchRequestsValue = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setSearchRequestValue(e.target.value);
-  };
-
   return (
     <BoardLayoutUI
-      filterOptions={filterOptions}
-      boardOrientation={boardOrientation}
+      selectOptions={filters.selectOptions}
+      boardOrientation={filters.boardOrientation}
       BoardRequests={filteredRequests}
-      searchRequestValue={searchRequestValue}
-      showPinnedOnly={showPinnedOnly}
+      searchRequestValue={filters.searchRequestValue}
+      showPinnedOnly={filters.showPinnedOnly}
       pinnedRequests={boardData.requestsPinned}
+      handleSelectCheckChange={(e) =>
+        handleFiltersChange({
+          selectOptions: filters.selectOptions.map((option) =>
+            option.id === e.target.name
+              ? { ...option, checked: e.target.checked }
+              : option
+          ),
+        })
+      }
       handlePinRequest={handlePinRequest}
-      handleShowPinnedOnly={handleShowPinnedOnly}
-      handleSearchRequestsValue={handleSearchRequestsValue}
-      onOrientationChange={handleOrientationChange}
+      handleShowPinnedOnly={(e) =>
+        handleFiltersChange({ showPinnedOnly: e.target.checked })
+      }
+      handleSearchRequestsValue={(e) =>
+        handleFiltersChange({ searchRequestValue: e.target.value })
+      }
+      onOrientationChange={(orientation) =>
+        handleFiltersChange({ boardOrientation: orientation })
+      }
     />
   );
 }
