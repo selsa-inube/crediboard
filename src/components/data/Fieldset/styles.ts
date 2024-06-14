@@ -17,7 +17,10 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
     ${({ theme }) =>
       theme?.color?.stroke?.divider?.regular ||
       inube.color.stroke.divider.regular};
-  padding: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
+  padding-top: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
+  padding-bottom: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
+  padding-right: ${({ theme }) => theme?.spacing?.s100 || inube.spacing.s100};
+  padding-left: ${({ theme }) => theme?.spacing?.s100 || inube.spacing.s100};
 
   &::-webkit-scrollbar {
     border-radius: 8px;
