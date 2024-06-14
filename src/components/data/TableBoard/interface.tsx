@@ -1,4 +1,6 @@
-import { Text, SkeletonLine } from "@inube/design-system";
+import { useEffect, useRef, useState } from "react";
+import { MdOutlineInfo } from "react-icons/md";
+import { Icon, Text, SkeletonLine } from "@inube/design-system";
 
 import { ITitle, appearances } from "./types";
 import {
@@ -17,17 +19,21 @@ import { ITableBoardProps } from ".";
 interface ITableBoardUIProps extends ITableBoardProps {
   titlesList: string[];
   loading: boolean;
+  isTablet: boolean;
 }
 
 interface IRenderActionsTitles {
   actionName: string;
   appearance: appearances;
+  isTablet: boolean;
+  firstColumn: boolean;
+  right?: number;
 }
 
 const RenderActionsTitles = (props: IRenderActionsTitles) => {
-  const { actionName, appearance } = props;
+  const { actionName, appearance, right = 0, isTablet, firstColumn } = props;
   return (
-    <StyledThactions>
+    <StyledThactions $right={right} $isTablet={isTablet} $isFirst={firstColumn}>
       <Text
         appearance={appearance}
         type="title"
@@ -80,11 +86,26 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
     borderTable,
     loading,
     appearanceTable,
+    isTablet,
   } = props;
 
+  const widthActions = useRef<HTMLTableCellElement>(null);
+
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    if (widthActions.current) {
+      setWidth(widthActions.current.offsetWidth);
+    }
+  }, [isTablet]);
+
   return (
-    <StyledContainer id={id} $borderTable={borderTable!}>
-      <StyledTable>
+    <StyledContainer id={id} $borderTable={borderTable!} $isTablet={isTablet}>
+      <StyledTable
+        $zebraEffect={appearanceTable!.efectzebra!}
+        $background={appearanceTable!.background!}
+        $isTablet={isTablet}
+      >
         <StyledThead>
           <tr>
             {titles.map((title) => (
@@ -101,16 +122,34 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
             ))}
 
             {actions &&
+              !isTablet &&
               actions.map(
-                (action) =>
+                (action, index) =>
                   action.actionName && (
                     <RenderActionsTitles
                       key={action.id}
                       actionName={action.actionName}
                       appearance={appearanceTable!.title!}
+                      right={width * (actions.length - 1 - index)}
+                      isTablet={isTablet}
+                      firstColumn={index === 0}
                     />
                   )
               )}
+            {isTablet && (
+              <StyledThactions
+                colSpan={actions?.length}
+                $right={0}
+                $isTablet={isTablet}
+                $isFirst
+              >
+                <Icon
+                  icon={<MdOutlineInfo />}
+                  appearance="primary"
+                  size="32px"
+                />
+              </StyledThactions>
+            )}
           </tr>
         </StyledThead>
         <StyledTbody>
@@ -121,13 +160,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
               {entries.map((entry, index) => (
                 <StyledTr
                   key={`${entry.id}-${index}`}
-                  $zebraEffect={
-                    appearanceTable!.efectzebra && !appearanceTable!.background
-                      ? index % 2 === 0
-                      : appearanceTable!.background
-                  }
                   $borderTable={appearanceTable!.borderTable}
-                  $background={appearanceTable!.background}
                 >
                   {titlesList.map((title) => (
                     <StyledTd key={title} $widthTd={appearanceTable?.widthTd}>
@@ -141,8 +174,14 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                     </StyledTd>
                   ))}
                   {actions &&
-                    actions.map((action) => (
-                      <StyledTdactions key={action.id}>
+                    actions.map((action, index) => (
+                      <StyledTdactions
+                        key={action.id}
+                        ref={widthActions}
+                        $isTablet={isTablet}
+                        $right={width * (actions.length - 1 - index)}
+                        $isFirst={index === 0}
+                      >
                         {action.content(entry)}
                       </StyledTdactions>
                     ))}
