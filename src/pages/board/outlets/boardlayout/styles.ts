@@ -16,9 +16,9 @@ const StyledInputsContainer = styled.div<IStyledInputsContainer>`
   flex-direction: column;
   align-items: center;
   padding-top: ${({ theme }) => theme?.spacing?.s400 || inube.spacing.s400};
-  padding-right: ${({ theme }) => theme?.spacing?.s600 || inube.spacing.s600};
+  padding-right: ${({ theme }) => theme?.spacing?.s500 || inube.spacing.s500};
   padding-bottom: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
-  padding-left: ${({ theme }) => theme?.spacing?.s600 || inube.spacing.s600};
+  padding-left: ${({ theme }) => theme?.spacing?.s500 || inube.spacing.s500};
   gap: ${inube.spacing.s500};
   box-shadow: 0px 1px 3px 0px #00000040;
 `;
@@ -28,9 +28,9 @@ const StyledBoardContainer = styled.div<IStyledBoardContainer>`
   flex-direction: ${({ $orientation }) =>
     $orientation === "horizontal" ? "column" : "row"};
   padding-top: ${({ theme }) => theme?.spacing?.s400 || inube.spacing.s400};
-  padding-right: ${({ theme }) => theme?.spacing?.s600 || inube.spacing.s600};
+  padding-right: ${({ theme }) => theme?.spacing?.s500 || inube.spacing.s500};
   padding-bottom: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
-  padding-left: ${({ theme }) => theme?.spacing?.s600 || inube.spacing.s600};
+  padding-left: ${({ theme }) => theme?.spacing?.s500 || inube.spacing.s500};
   overflow: auto;
 `;
 
