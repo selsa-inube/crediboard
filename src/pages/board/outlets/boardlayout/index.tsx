@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useMediaQuery } from "@inube/design-system";
 
 import { get, updateActive } from "@mocks/utils/dataMock.service";
 import { PinnedRequest, Requests } from "@services/types";
@@ -24,6 +25,16 @@ function BoardLayout() {
   });
 
   const [filteredRequests, setFilteredRequests] = useState<Requests[]>([]);
+
+  const isMobile = useMediaQuery("(max-width: 1024px)");
+
+  useEffect(() => {
+    const orientation = isMobile ? "horizontal" : "vertical";
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      boardOrientation: orientation,
+    }));
+  }, [isMobile]);
 
   useEffect(() => {
     get("requests")
@@ -142,6 +153,7 @@ function BoardLayout() {
 
   return (
     <BoardLayoutUI
+      isMobile={isMobile}
       selectOptions={filters.selectOptions}
       boardOrientation={filters.boardOrientation}
       BoardRequests={filteredRequests}

@@ -19,6 +19,7 @@ import { StyledInputsContainer, StyledBoardContainer } from "./styles";
 import { boardColumns } from "./config/board";
 
 interface BoardLayoutProps {
+  isMobile: boolean;
   selectOptions: IOptionItemCheckedProps[];
   boardOrientation: SectionOrientation;
   BoardRequests: Requests[];
@@ -34,6 +35,7 @@ interface BoardLayoutProps {
 
 function BoardLayoutUI(props: BoardLayoutProps) {
   const {
+    isMobile,
     selectOptions,
     boardOrientation,
     BoardRequests,
@@ -49,37 +51,47 @@ function BoardLayoutUI(props: BoardLayoutProps) {
 
   return (
     <Stack direction="column">
-      <StyledInputsContainer>
-        <Stack width="480px">
-          <Textfield
-            id="SearchCards"
-            name="SearchCards"
-            placeholder="Buscar..."
-            size="compact"
-            iconAfter={<MdSearch />}
-            fullwidth
-            value={searchRequestValue}
-            onChange={handleSearchRequestsValue}
-          />
-        </Stack>
-        <Stack width="100%" justifyContent="space-between" alignItems="center">
-          <Stack width="500px">
-            <Selectcheck
-              label="Filtrado por"
-              id="FilterRequests"
-              name="FilterRequests"
-              placeholder="Seleccione una opción"
-              options={selectOptions}
-              onChangeCheck={handleSelectCheckChange}
-              value=""
-              onChange={() => {}}
+      <StyledInputsContainer $isMobile={isMobile}>
+        {!isMobile && (
+          <Stack width="480px">
+            <Textfield
+              id="SearchCards"
+              name="SearchCards"
+              placeholder="Buscar..."
+              size="compact"
+              iconAfter={<MdSearch />}
+              value={searchRequestValue}
+              onChange={handleSearchRequestsValue}
               fullwidth
             />
           </Stack>
+        )}
+        <Stack
+          width="100%"
+          justifyContent={isMobile ? "end" : "space-between"}
+          alignItems="center"
+        >
+          {!isMobile && (
+            <Stack width="500px">
+              <Selectcheck
+                label="Filtrado por"
+                id="FilterRequests"
+                name="FilterRequests"
+                placeholder="Seleccione una opción"
+                options={selectOptions}
+                onChangeCheck={handleSelectCheckChange}
+                value=""
+                onChange={() => {}}
+                fullwidth
+              />
+            </Stack>
+          )}
           <Stack gap={inube.spacing.s200}>
             <Stack gap={inube.spacing.s100} alignItems="center">
               <Icon icon={<MdOutlinePushPin />} appearance="dark" size="24px" />
-              <Text type="label">Ver unicamente los anclados</Text>
+              {!isMobile && (
+                <Text type="label">Ver unicamente los anclados</Text>
+              )}
               <Switch
                 id="SeePinned"
                 name="SeePinned"
@@ -88,26 +100,33 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 onChange={handleShowPinnedOnly}
               />
             </Stack>
-            <Stack gap={inube.spacing.s100}>
-              <Icon
-                icon={<RxDragHandleVertical />}
-                appearance={boardOrientation === "vertical" ? "dark" : "gray"}
-                size="24px"
-                cursorHover
-                onClick={() => onOrientationChange("vertical")}
-              />
-              <Icon
-                icon={<RxDragHandleHorizontal />}
-                appearance={boardOrientation === "horizontal" ? "dark" : "gray"}
-                size="24px"
-                cursorHover
-                onClick={() => onOrientationChange("horizontal")}
-              />
-            </Stack>
+            {!isMobile && (
+              <Stack gap={inube.spacing.s100}>
+                <Icon
+                  icon={<RxDragHandleVertical />}
+                  appearance={boardOrientation === "vertical" ? "dark" : "gray"}
+                  size="24px"
+                  cursorHover
+                  onClick={() => onOrientationChange("vertical")}
+                />
+                <Icon
+                  icon={<RxDragHandleHorizontal />}
+                  appearance={
+                    boardOrientation === "horizontal" ? "dark" : "gray"
+                  }
+                  size="24px"
+                  cursorHover
+                  onClick={() => onOrientationChange("horizontal")}
+                />
+              </Stack>
+            )}
           </Stack>
         </Stack>
       </StyledInputsContainer>
-      <StyledBoardContainer $orientation={boardOrientation}>
+      <StyledBoardContainer
+        $orientation={boardOrientation}
+        $isMobile={isMobile}
+      >
         {boardColumns.map((column) => {
           const filteredRequests = BoardRequests.filter(
             (request) => request.i_Estprs === column.id
