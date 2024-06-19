@@ -8,6 +8,7 @@ export interface ITableBoardProps {
   entries: IEntries[];
   titles: ITitle[];
   actions?: IAction[];
+  actionMobile?: IAction[];
   borderTable?: boolean;
   loading?: boolean;
   portalId?: string;
@@ -20,6 +21,7 @@ export const TableBoard = (props: ITableBoardProps) => {
     entries,
     titles,
     actions,
+    actionMobile,
     loading = false,
     borderTable = false,
     portalId,
@@ -31,15 +33,18 @@ export const TableBoard = (props: ITableBoardProps) => {
     },
   } = props;
 
-  const titlesList = titles.map((title) => title.id);
-
   const isTablet = useMediaQuery("(max-width: 720px)");
+
+  const titlesList = !isTablet
+    ? titles.map((title) => title.id)
+    : titles.map((title) => title.id).filter((title) => title !== "tag");
 
   return (
     <TableBoardUI
       id={id}
       actions={actions}
       entries={entries}
+      actionMobile={actionMobile}
       borderTable={borderTable}
       loading={loading}
       portalId={portalId}
