@@ -26,7 +26,7 @@ function BoardLayout() {
 
   const [filteredRequests, setFilteredRequests] = useState<Requests[]>([]);
 
-  const isMobile = useMediaQuery("(max-width: 1515px)");
+  const isMobile = useMediaQuery("(max-width: 1024px)");
 
   useEffect(() => {
     const orientation = isMobile ? "horizontal" : "vertical";
