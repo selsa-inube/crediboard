@@ -56,6 +56,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                   appearance="primary"
                   size="32px"
                   spacing="none"
+                  onClick={() => navigation(-1)}
                 />
                 <Text>Volver</Text>
               </Stack>
