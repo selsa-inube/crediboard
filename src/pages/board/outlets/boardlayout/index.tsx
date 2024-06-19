@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useMediaQuery } from "@inube/design-system";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { get, updateActive } from "@mocks/utils/dataMock.service";
@@ -23,6 +24,15 @@ function BoardLayout() {
   const [showPinnedOnly, setShowPinnedOnly] = useState(
     user.preferences.showPinnedOnly || false
   );
+  const isMobile = useMediaQuery("(max-width: 1515px)");
+
+  useEffect(() => {
+    if (isMobile) {
+      setBoardOrientation("horizontal");
+    } else {
+      setBoardOrientation(user.preferences.boardOrientation || "vertical");
+    }
+  }, [isMobile, user.preferences.boardOrientation]);
 
   useEffect(() => {
     get("requests")
@@ -115,6 +125,7 @@ function BoardLayout() {
 
   return (
     <BoardLayoutUI
+      isMobile={isMobile}
       filterOptions={filterOptions}
       boardOrientation={boardOrientation}
       BoardRequests={filteredRequests}
