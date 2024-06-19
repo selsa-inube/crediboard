@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+//import { useEffect, useRef, useState } from "react";
 import { MdOutlineInfo } from "react-icons/md";
 import { Icon, Text, SkeletonLine } from "@inube/design-system";
 
-import { ITitle, appearances } from "./types";
+import { IAction, IEntries, ITitle, appearances } from "./types";
 import {
   StyledContainer,
   StyledTable,
@@ -23,27 +23,35 @@ interface ITableBoardUIProps extends ITableBoardProps {
 }
 
 interface IRenderActionsTitles {
-  actionName: string;
-  appearance: appearances;
+  actions: IAction[];
   isTablet: boolean;
-  firstColumn: boolean;
-  right?: number;
+  appearance: appearances;
 }
 
 const RenderActionsTitles = (props: IRenderActionsTitles) => {
-  const { actionName, appearance, right = 0, isTablet, firstColumn } = props;
+  const { actions, appearance, isTablet } = props;
   return (
-    <StyledThactions $right={right} $isTablet={isTablet} $isFirst={firstColumn}>
-      <Text
-        appearance={appearance}
-        type="title"
-        size="medium"
-        padding="0px 4px"
-        textAlign="center"
-      >
-        {actionName}
-      </Text>
-    </StyledThactions>
+    <>
+      {!isTablet ? (
+        actions.map((actionTitle) => (
+          <StyledThactions key={actionTitle.id}>
+            <Text
+              appearance={appearance}
+              type="title"
+              size="medium"
+              padding="0px 4px"
+              textAlign="center"
+            >
+              {actionTitle.actionName}
+            </Text>
+          </StyledThactions>
+        ))
+      ) : (
+        <StyledThactions $isTablet={isTablet} colSpan={3} $isFirst>
+          <Icon icon={<MdOutlineInfo />} appearance="primary" size="32px" />
+        </StyledThactions>
+      )}
+    </>
   );
 };
 
@@ -76,6 +84,39 @@ const dataLoading = (titleColumns: ITitle[], numberActions: number) => {
   return rowsLoading;
 };
 
+interface IActionsComponent {
+  actions: IAction[];
+  isTablet: boolean;
+  entry: IEntries;
+  actionMobile?: IAction[];
+}
+
+const Actions = (props: IActionsComponent) => {
+  const { actions, isTablet, entry, actionMobile } = props;
+
+  return (
+    <>
+      {!isTablet &&
+        actions.map((action) => (
+          <StyledTdactions key={action.id}>
+            {action.content(entry)}
+          </StyledTdactions>
+        ))}
+      {isTablet &&
+        actionMobile &&
+        actionMobile.map((action, index) => (
+          <StyledTdactions
+            key={action.id}
+            $isTablet={isTablet}
+            $isFirst={index === 0}
+          >
+            {action.content(entry)}
+          </StyledTdactions>
+        ))}
+    </>
+  );
+};
+
 export const TableBoardUI = (props: ITableBoardUIProps) => {
   const {
     id,
@@ -87,9 +128,10 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
     loading,
     appearanceTable,
     isTablet,
+    actionMobile,
   } = props;
 
-  const widthActions = useRef<HTMLTableCellElement>(null);
+  /*  const widthActions = useRef<HTMLTableCellElement>(null);
 
   const [width, setWidth] = useState(0);
 
@@ -97,7 +139,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
     if (widthActions.current) {
       setWidth(widthActions.current.offsetWidth);
     }
-  }, [isTablet]);
+  }, [isTablet]); */
 
   return (
     <StyledContainer id={id} $borderTable={borderTable!} $isTablet={isTablet}>
@@ -121,34 +163,12 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
               </StyledTh>
             ))}
 
-            {actions &&
-              !isTablet &&
-              actions.map(
-                (action, index) =>
-                  action.actionName && (
-                    <RenderActionsTitles
-                      key={action.id}
-                      actionName={action.actionName}
-                      appearance={appearanceTable!.title!}
-                      right={width * (actions.length - 1 - index)}
-                      isTablet={isTablet}
-                      firstColumn={index === 0}
-                    />
-                  )
-              )}
-            {isTablet && (
-              <StyledThactions
-                colSpan={actions?.length}
-                $right={0}
-                $isTablet={isTablet}
-                $isFirst
-              >
-                <Icon
-                  icon={<MdOutlineInfo />}
-                  appearance="primary"
-                  size="32px"
-                />
-              </StyledThactions>
+            {actions && (
+              <RenderActionsTitles
+                actions={actions}
+                appearance={appearanceTable!.title!}
+                isTablet={isTablet}
+              />
             )}
           </tr>
         </StyledThead>
@@ -164,7 +184,8 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                 >
                   {titlesList.map((title) => (
                     <StyledTd key={title} $widthTd={appearanceTable?.widthTd}>
-                      {typeof entry[title] !== "string" ? (
+                      {typeof entry[title] !== "string" &&
+                      entry[title] !== undefined ? (
                         entry[title]
                       ) : (
                         <Text size="medium" padding="0px 4px">
@@ -173,18 +194,14 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                       )}
                     </StyledTd>
                   ))}
-                  {actions &&
-                    actions.map((action, index) => (
-                      <StyledTdactions
-                        key={action.id}
-                        ref={widthActions}
-                        $isTablet={isTablet}
-                        $right={width * (actions.length - 1 - index)}
-                        $isFirst={index === 0}
-                      >
-                        {action.content(entry)}
-                      </StyledTdactions>
-                    ))}
+                  {actions && (
+                    <Actions
+                      actions={actions}
+                      isTablet={isTablet}
+                      entry={entry}
+                      actionMobile={actionMobile}
+                    />
+                  )}
                 </StyledTr>
               ))}
             </>
@@ -194,3 +211,16 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
     </StyledContainer>
   );
 };
+
+/* 
+actions.map((action, index) => (
+  <StyledTdactions
+    key={action.id}
+    ref={widthActions}
+    $isTablet={isTablet}
+    $right={width * (actions.length - 1 - index)}
+    
+  >
+    {action.content(entry)}
+  </StyledTdactions>
+)); */

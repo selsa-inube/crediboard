@@ -1,5 +1,11 @@
 import { isValidElement } from "react";
-import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
+import {
+  MdAddCircleOutline,
+  MdCheck,
+  MdClose,
+  MdOutlineCheckCircle,
+  MdRemove,
+} from "react-icons/md";
 import { Icon, Stack, Tag } from "@inube/design-system";
 
 import { IAction, IEntries } from "../types";
@@ -30,7 +36,7 @@ export const mockData: IEntries[] = [
     "Validaciones del sistema": "Que este al días con las obligaciones",
     tag: (
       <Stack padding="s0 s100 s0 s0">
-        <Tag label="Sin Validar" appearance="warning" />
+        <Tag label="No Cumple" appearance="warning" />
       </Stack>
     ),
   },
@@ -107,6 +113,67 @@ export const actionsMock: IAction[] = [
           isValidElement(data?.tag) &&
           data?.tag?.props?.children?.props?.label === "Sin Validar"
         }
+      />
+    ),
+  },
+];
+
+const resiveDataMobile = (data: IEntries) => {
+  console.log(data, "function que recibe data");
+};
+
+const iconActionsMobile = (tag: string) => {
+  if (tag === "Cumple") {
+    return <MdCheck />;
+  } else if (tag === "Sin Validar") {
+    return <MdRemove />;
+  } else {
+    return <MdClose />;
+  }
+};
+
+export const actionMobileMock: IAction[] = [
+  {
+    id: "aprobar1",
+    actionName: "Aprobar",
+    content: (data) => (
+      <Icon
+        icon={
+          isValidElement(data?.tag) &&
+          iconActionsMobile(data?.tag?.props?.children?.props?.label)
+        }
+        appearance={isValidElement(data?.tag) && "primary"}
+        spacing="compact"
+        cursorHover
+        variant="filled"
+        shape="circle"
+      />
+    ),
+  },
+  {
+    id: "agregar",
+    actionName: "Agregar",
+    content: (data: IEntries) => (
+      <Icon
+        icon={<MdAddCircleOutline />}
+        appearance="primary"
+        spacing="compact"
+        size="24px"
+        cursorHover
+        onClick={() => resiveDataMobile(data)}
+      />
+    ),
+  },
+  {
+    id: "aprobar",
+    actionName: "Aprobar",
+    content: () => (
+      <Icon
+        icon={<MdOutlineCheckCircle />}
+        appearance="primary"
+        spacing="compact"
+        cursorHover
+        size="24px"
       />
     ),
   },

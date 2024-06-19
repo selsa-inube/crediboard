@@ -29,30 +29,29 @@ export const StyledContainer = styled.div<IStyledContainer>`
 `;
 
 interface IStyledThactions {
-  $right: number;
-  $isTablet: boolean;
+  $isTablet?: boolean;
   $isFirst?: boolean;
 }
 export const StyledThactions = styled.th<IStyledThactions>`
-  ${({ $isTablet, $right, $isFirst, theme }) =>
+  ${({ $isTablet, $isFirst, theme }) =>
     $isTablet &&
-    `position: sticky; right: ${$right}px; z-index: 22; background-color: white; text-align: end; ${
+    `position: sticky; z-index: 22; background-color: white; text-align: end; ${
       $isFirst &&
       `&::before { content: ""; position: absolute; top: 0; left: -2px; width: 2px; height: 100%;  box-shadow: 0px 1px 3px 1px #DFE1E6; background-color: ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}; }`
     }`}
 `;
 
 interface IStyledTdactions {
-  $right: number;
-  $isTablet: boolean;
-  $isFirst: boolean;
+  $right?: number;
+  $isTablet?: boolean;
+  $isFirst?: boolean;
 }
 
 export const StyledTdactions = styled.td<IStyledTdactions>`
   text-align: center;
-  ${({ $isTablet, $right, $isFirst, theme }) =>
+  ${({ $isTablet, $isFirst, theme }) =>
     $isTablet &&
-    `position: sticky; right: ${$right}px; z-index: 22; ${
+    `position: sticky; z-index: 22; ${
       $isFirst &&
       `&::before { content: ""; position: absolute; top: 0; left: -2px; width: 2px; height: 100%; box-shadow: 0px 1px 3px 1px #DFE1E6; background-color: ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}; }`
     }`}
@@ -96,6 +95,7 @@ export const StyledTable = styled.table<IStyledTable>`
       &:nth-child(odd) ${StyledTdactions} {
         background-color: ${theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
       }
+      
     }`}
 `;
 
