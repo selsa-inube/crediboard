@@ -27,6 +27,7 @@ export const Management = () => {
                 icon={<MdOutlineSend />}
             />
           </ Stack>
+          
           </ManagementContainer>
           </Fieldset>
 
