@@ -12,6 +12,7 @@ interface IPtionsButton {
 interface IFieldsetProps {
   title: string;
   children: JSX.Element | JSX.Element[];
+  isMobile?: boolean;
   aspectRatio?: string;
   heigthFieldset?: string;
   descriptionTitle?: string;
@@ -22,6 +23,7 @@ export const Fieldset = (props: IFieldsetProps) => {
   const {
     children,
     title,
+    isMobile,
     heigthFieldset = "auto",
     aspectRatio,
     descriptionTitle,
@@ -36,11 +38,15 @@ export const Fieldset = (props: IFieldsetProps) => {
       height={heigthFieldset}
     >
       <Stack justifyContent={activeButton && "space-between"}>
-        <Stack gap={inube.spacing.s100}>
-          <Text type="title" appearance="gray">
+        <Stack gap={isMobile ? inube.spacing.s150 : inube.spacing.s100}>
+          <Text
+            type="title"
+            appearance="gray"
+            size={isMobile ? "medium" : "large"}
+          >
             {`${title} `}
           </Text>
-          <Text type="title" ellipsis>
+          <Text type="title" ellipsis size={isMobile ? "medium" : "large"}>
             {descriptionTitle}
           </Text>
         </Stack>
@@ -56,7 +62,7 @@ export const Fieldset = (props: IFieldsetProps) => {
           </Stack>
         )}
       </Stack>
-      <StyledContainerFieldset $aspectRatio={aspectRatio}>
+      <StyledContainerFieldset $aspectRatio={aspectRatio} $isMobile={isMobile}>
         {children}
       </StyledContainerFieldset>
     </Stack>
