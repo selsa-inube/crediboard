@@ -1,6 +1,11 @@
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@src/components/data/TableBoard";
-import { actionsApprovals, handleData, titlesApprovals } from "./config";
+import {
+  actionMobileApprovals,
+  actionsApprovals,
+  handleData,
+  titlesApprovals,
+} from "./config";
 import { useEffect, useState } from "react";
 import { IEntries } from "@src/components/data/TableBoard/types";
 
@@ -25,6 +30,8 @@ export const Approvals = () => {
         entries={entriesApprovals}
         actions={actionsApprovals}
         loading={loading}
+        actionMobile={actionMobileApprovals}
+        nameTitleTag="decision"
       />
     </Fieldset>
   );

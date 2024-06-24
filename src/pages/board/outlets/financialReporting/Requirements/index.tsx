@@ -38,6 +38,7 @@ export const Requirements = (props: IRequirementsProps) => {
                 widthTd: "310px",
                 efectzebra: true,
                 title: "primary",
+                isStyleMobile: false,
               }}
             />
           ))}
