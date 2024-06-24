@@ -13,6 +13,7 @@ export interface ITableBoardProps {
   loading?: boolean;
   portalId?: string;
   appearanceTable?: IAppearances;
+  nameTitleTag?: string;
 }
 
 export const TableBoard = (props: ITableBoardProps) => {
@@ -30,14 +31,12 @@ export const TableBoard = (props: ITableBoardProps) => {
       efectzebra: true,
       borderTable: false,
       background: false,
+      isStyleMobile: true,
     },
+    nameTitleTag,
   } = props;
 
   const isTablet = useMediaQuery("(max-width: 720px)");
-
-  const titlesList = !isTablet
-    ? titles.map((title) => title.id)
-    : titles.map((title) => title.id).filter((title) => title !== "tag");
 
   return (
     <TableBoardUI
@@ -49,9 +48,9 @@ export const TableBoard = (props: ITableBoardProps) => {
       loading={loading}
       portalId={portalId}
       titles={titles}
-      titlesList={titlesList}
       appearanceTable={appearanceTable}
       isTablet={isTablet}
+      nameTitleTag={nameTitleTag}
     />
   );
 };

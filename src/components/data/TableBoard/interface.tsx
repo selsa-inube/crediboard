@@ -17,7 +17,6 @@ import {
 import { ITableBoardProps } from ".";
 
 interface ITableBoardUIProps extends ITableBoardProps {
-  titlesList: string[];
   loading: boolean;
   isTablet: boolean;
 }
@@ -26,10 +25,12 @@ interface IRenderActionsTitles {
   actions: IAction[];
   isTablet: boolean;
   appearance: appearances;
+  isStyleMobile: boolean;
 }
 
 const RenderActionsTitles = (props: IRenderActionsTitles) => {
-  const { actions, appearance, isTablet } = props;
+  const { actions, appearance, isTablet, isStyleMobile } = props;
+
   return (
     <>
       {!isTablet ? (
@@ -48,7 +49,9 @@ const RenderActionsTitles = (props: IRenderActionsTitles) => {
         ))
       ) : (
         <StyledThactions $isTablet={isTablet} colSpan={3} $isFirst>
-          <Icon icon={<MdOutlineInfo />} appearance="primary" size="32px" />
+          {isStyleMobile && (
+            <Icon icon={<MdOutlineInfo />} appearance="primary" size="32px" />
+          )}
         </StyledThactions>
       )}
     </>
@@ -123,7 +126,6 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
     entries,
     actions,
     titles,
-    titlesList,
     borderTable,
     loading,
     appearanceTable,
@@ -150,24 +152,29 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
       >
         <StyledThead>
           <tr>
-            {titles.map((title) => (
-              <StyledTh key={title.id + id}>
-                <Text
-                  appearance={appearanceTable!.title}
-                  type="title"
-                  size="medium"
-                  padding="0px 4px"
-                >
-                  {title.titleName}
-                </Text>
-              </StyledTh>
-            ))}
+            {titles
+              .filter((title) => !(isTablet && title.id === "tag"))
+              .map((title) =>
+                !isTablet || title.titleName ? (
+                  <StyledTh key={title.id + id}>
+                    <Text
+                      appearance={appearanceTable!.title}
+                      type="title"
+                      size="medium"
+                      padding="0px 4px"
+                    >
+                      {title.titleName}
+                    </Text>
+                  </StyledTh>
+                ) : null
+              )}
 
             {actions && (
               <RenderActionsTitles
                 actions={actions}
                 appearance={appearanceTable!.title!}
                 isTablet={isTablet}
+                isStyleMobile={appearanceTable!.isStyleMobile!}
               />
             )}
           </tr>
@@ -182,18 +189,22 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                   key={`${entry.id}-${index}`}
                   $borderTable={appearanceTable!.borderTable}
                 >
-                  {titlesList.map((title) => (
-                    <StyledTd key={title} $widthTd={appearanceTable?.widthTd}>
-                      {typeof entry[title] !== "string" &&
-                      entry[title] !== undefined ? (
-                        entry[title]
-                      ) : (
-                        <Text size="medium" padding="0px 4px">
-                          {entry[title]}
-                        </Text>
-                      )}
-                    </StyledTd>
-                  ))}
+                  {titles
+                    .filter((title) => !(isTablet && title.id === "tag"))
+                    .map((title) => (
+                      <StyledTd
+                        key={title.id}
+                        $widthTd={appearanceTable?.widthTd}
+                      >
+                        {typeof entry[title.id] !== "string" ? (
+                          entry[title.id]
+                        ) : (
+                          <Text size="medium" padding="0px 4px">
+                            {entry[title.id]}
+                          </Text>
+                        )}
+                      </StyledTd>
+                    ))}
                   {actions && (
                     <Actions
                       actions={actions}
@@ -211,16 +222,3 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
     </StyledContainer>
   );
 };
-
-/* 
-actions.map((action, index) => (
-  <StyledTdactions
-    key={action.id}
-    ref={widthActions}
-    $isTablet={isTablet}
-    $right={width * (actions.length - 1 - index)}
-    
-  >
-    {action.content(entry)}
-  </StyledTdactions>
-)); */
