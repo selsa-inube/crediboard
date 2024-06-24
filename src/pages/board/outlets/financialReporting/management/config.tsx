@@ -1,4 +1,5 @@
-import { Textfield } from "@inubekit/textfield"
+// src/config.tsx
+import { Textfield } from "@inubekit/textfield";
 import { MdOutlineSend } from "react-icons/md";
 import { Icon } from "@inube/design-system";
 import { LuPaperclip } from "react-icons/lu";
@@ -12,7 +13,7 @@ export const chatManagement = [
                 appearance="primary"
                 cursorHover
                 size="24px"
-                icon={<LuPaperclip  />}
+                icon={<LuPaperclip />}
             />
         }
     },
@@ -20,7 +21,7 @@ export const chatManagement = [
         id: "Barra texto",
         actionName: "Barra texto",
         content: () => {
-            < Textfield id="text" placeholder="Ej.: Escriba su mensaje"/>
+            <Textfield id="text" placeholder="Ej.: Escriba su mensaje" />
         }
     },
     {
