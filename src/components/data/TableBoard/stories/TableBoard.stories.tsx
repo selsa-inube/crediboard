@@ -26,6 +26,7 @@ export const Default: Story = {
     actionMobile: actionMobileMock,
     borderTable: true,
     appearanceTable: { title: "primary", efectzebra: true, borderTable: false },
+    nameTitleTag: "",
   },
 };
 export default meta;

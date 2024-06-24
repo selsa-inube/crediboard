@@ -132,17 +132,37 @@ const iconActionsMobile = (tag: string) => {
   }
 };
 
+interface TagProps {
+  children?: {
+    props: {
+      label?: string;
+      appearance?: string;
+    };
+  };
+}
+
+interface TagElement {
+  props: TagProps;
+}
+
+const isValidTagElement = (element: unknown): element is TagElement => {
+  return isValidElement(element) && element.props !== undefined;
+};
+
 export const actionMobileMock: IAction[] = [
   {
-    id: "aprobar1",
+    id: "tags",
     actionName: "Aprobar",
     content: (data) => (
       <Icon
         icon={
-          isValidElement(data?.tag) &&
+          isValidTagElement(data?.tag) &&
           iconActionsMobile(data?.tag?.props?.children?.props?.label)
         }
-        appearance={isValidElement(data?.tag) && "primary"}
+        appearance={
+          isValidTagElement(data?.tag) &&
+          data?.tag?.props?.children?.props?.appearance
+        }
         spacing="compact"
         cursorHover
         variant="filled"
