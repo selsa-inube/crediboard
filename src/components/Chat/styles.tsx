@@ -35,3 +35,8 @@ export const MessageWrapper = styled.div<MessageProps>`
     `}
   }
 `;
+
+export const Timestamp = styled.div`
+  font-size: 0.8em;
+  color: gray;
+`;
