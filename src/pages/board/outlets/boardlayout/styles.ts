@@ -5,32 +5,52 @@ import { SectionOrientation } from "@components/layout/BoardSection/types";
 
 interface IStyledBoardContainer {
   $orientation: SectionOrientation;
+  $isMobile: boolean;
 }
 
 interface IStyledInputsContainer {
   theme?: typeof inube;
+  $isMobile: boolean;
 }
 
 const StyledInputsContainer = styled.div<IStyledInputsContainer>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: ${({ theme }) => theme?.spacing?.s400 || inube.spacing.s400};
-  padding-right: ${({ theme }) => theme?.spacing?.s600 || inube.spacing.s600};
+  padding-top: ${({ $isMobile, theme }) =>
+    $isMobile
+      ? theme?.spacing?.s150 || inube.spacing.s150
+      : theme?.spacing?.s400 || inube.spacing.s400};
+  padding-right: ${({ $isMobile, theme }) =>
+    $isMobile
+      ? theme?.spacing?.s200 || inube.spacing.s200
+      : theme?.spacing?.s500 || inube.spacing.s500};
   padding-bottom: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
-  padding-left: ${({ theme }) => theme?.spacing?.s600 || inube.spacing.s600};
+  padding-left: ${({ $isMobile, theme }) =>
+    $isMobile
+      ? theme?.spacing?.s200 || inube.spacing.s200
+      : theme?.spacing?.s500 || inube.spacing.s500};
   gap: ${inube.spacing.s500};
-  box-shadow: 0px 1px 3px 0px #00000040;
+  box-shadow: ${({ $isMobile }) => !$isMobile && "0px 1px 3px 0px #00000040"};
 `;
 
 const StyledBoardContainer = styled.div<IStyledBoardContainer>`
   display: flex;
   flex-direction: ${({ $orientation }) =>
     $orientation === "horizontal" ? "column" : "row"};
-  padding-top: ${({ theme }) => theme?.spacing?.s400 || inube.spacing.s400};
-  padding-right: ${({ theme }) => theme?.spacing?.s600 || inube.spacing.s600};
+  padding-top: ${({ $isMobile, theme }) =>
+    $isMobile
+      ? theme?.spacing?.s0 || inube.spacing.s0
+      : theme?.spacing?.s400 || inube.spacing.s400};
+  padding-right: ${({ $isMobile, theme }) =>
+    $isMobile
+      ? theme?.spacing?.s200 || inube.spacing.s200
+      : theme?.spacing?.s500 || inube.spacing.s500};
   padding-bottom: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
-  padding-left: ${({ theme }) => theme?.spacing?.s600 || inube.spacing.s600};
+  padding-left: ${({ $isMobile, theme }) =>
+    $isMobile
+      ? theme?.spacing?.s200 || inube.spacing.s200
+      : theme?.spacing?.s500 || inube.spacing.s500};
   overflow: auto;
 `;
 
