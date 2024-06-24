@@ -8,11 +8,10 @@ export const MessageWrapper = styled.div<MessageProps>`
   max-width: 35%;
   margin: 5px 10px;
   padding: 7px;
-  border-radius: 0px 4px 4px 4px;   
+  border-radius: 4px;   
   background-color: ${props => props.type === 'sent' ? '#DEEBFF' : '#F4F5F7'};
   align-self: ${props => props.type === 'sent' ? 'flex-end' : 'flex-start'};
   position: relative;
-  font-family: Roboto;
   border: 1px solid ${props => props.type === 'sent' ? '#B3D4FF' : '#DFE1E6'}; 
   border-style: solid;
   &::after {
