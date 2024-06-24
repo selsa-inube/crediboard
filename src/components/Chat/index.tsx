@@ -1,17 +1,15 @@
-import Message from '@components/Chat/styles';
+import React from 'react';
+import { MessageWrapper } from './styles';
 
+interface MessageProps {
+  type: 'sent' | 'received';
+  children: React.ReactNode;
+}
 
-const ChatContent = () => (
-  <div>
-    <Message type="received">Hola</Message>
-    <Message type="sent">¿Cómo estás?</Message>
-    <Message type="received">Hola</Message>
-    <Message type="sent">¿Cómo estás?</Message>
-    <Message type="received">Hola</Message>
-    <Message type="sent">¿Cómo estás?</Message>
-    <Message type="received">Hola</Message>
-    <Message type="sent">¿Cómo estás?</Message>
-  </div>
-);
-
-export default ChatContent;
+export const Message: React.FC<MessageProps> = ({ type, children }) => {
+  return (
+    <MessageWrapper type={type}>
+      {children}
+    </MessageWrapper>
+  );
+};

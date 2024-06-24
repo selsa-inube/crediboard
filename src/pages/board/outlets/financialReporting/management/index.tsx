@@ -2,9 +2,10 @@ import { Fieldset } from "@components/data/Fieldset";
 import { MdOutlineSend } from "react-icons/md";
 import { Icon, inube, Stack, Textfield } from "@inube/design-system";
 import { LuPaperclip } from "react-icons/lu";
-import { ManagementContainer, ChatContent, Message } from "./styles";
+import { ManagementContainer, ChatContent } from "./styles";
+import { Message } from "@components/Chat";  
 
-export const Management = () => {
+export const Management: React.FC = () => {
   return (
     <Fieldset title="Gestión" heigthFieldset="340px" aspectRatio="1">
       <ManagementContainer>
