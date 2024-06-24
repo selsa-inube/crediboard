@@ -4,13 +4,15 @@ import { inube } from "@inube/design-system";
 interface IStyledContainer {
   $borderTable: boolean;
   $isTablet: boolean;
+  $actionsMobile: boolean;
 }
 
 export const StyledContainer = styled.div<IStyledContainer>`
   border-radius: 8px;
   max-width: 100%;
   position: relative;
-  box-shadow: ${({ $isTablet }) => $isTablet && "1px 1px 3px 1px #DFE1E6"};
+  box-shadow: ${({ $isTablet, $actionsMobile }) =>
+    $isTablet && $actionsMobile && "1px 1px 3px 1px #DFE1E6"};
   overflow-x: ${({ $isTablet }) => ($isTablet ? "auto" : "hidden")};
   padding-top: ${({ theme, $isTablet }) =>
     $isTablet

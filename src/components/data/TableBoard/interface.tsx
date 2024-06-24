@@ -144,7 +144,12 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
   }, [isTablet]); */
 
   return (
-    <StyledContainer id={id} $borderTable={borderTable!} $isTablet={isTablet}>
+    <StyledContainer
+      id={id}
+      $borderTable={borderTable!}
+      $isTablet={isTablet}
+      $actionsMobile={Boolean(actionMobile)}
+    >
       <StyledTable
         $zebraEffect={appearanceTable!.efectzebra!}
         $background={appearanceTable!.background!}
