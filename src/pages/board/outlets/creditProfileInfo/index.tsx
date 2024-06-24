@@ -33,7 +33,7 @@ export const CreditProfileInfo = () => {
   }, [id]);
 
   const renderPDFContent = () => (
-    <Stack direction="column" margin="s250 s500" gap={inube.spacing.s500}>
+    <Stack direction="column" gap={inube.spacing.s500}>
       <Stack
         gap={inube.spacing.s200}
         alignItems="center"
@@ -109,11 +109,30 @@ export const CreditProfileInfo = () => {
 
     const canvas = await html2canvas(pdfContainer);
     const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a3");
+    const pdf = new jsPDF("l", "mm", "a4");
     const imgProps = pdf.getImageProperties(imgData);
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+    const margins = {
+      top: 20,
+      bottom: 10,
+      left: 10,
+      right: 10,
+    };
+
+    const contentWidth = pdfWidth - margins.left - margins.right;
+    const contentHeight = pdfHeight - margins.top - margins.bottom;
+
+    pdf.addImage(
+      imgData,
+      "PNG",
+      margins.left,
+      margins.top,
+      contentWidth,
+      contentHeight
+    );
+
     pdf.save("credit-profile.pdf");
 
     document.body.removeChild(pdfContainer);
