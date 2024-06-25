@@ -3,6 +3,8 @@ import { inube } from "@inube/design-system";
 
 interface IStyledContainerFieldset {
   $aspectRatio?: string;
+  $isMobile: boolean;
+  $hasTable: boolean;
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
@@ -17,15 +19,28 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
     ${({ theme }) =>
       theme?.color?.stroke?.divider?.regular ||
       inube.color.stroke.divider.regular};
-  padding: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
+  padding-top: ${({ theme, $isMobile, $hasTable }) =>
+    (!$isMobile || !$hasTable) && (theme?.spacing?.s200 || inube.spacing.s200)};
+  padding-bottom: ${({ theme, $isMobile, $hasTable }) =>
+    (!$isMobile || !$hasTable) && (theme?.spacing?.s200 || inube.spacing.s200)};
+  padding-right: ${({ theme, $isMobile, $hasTable }) =>
+    (!$isMobile || !$hasTable) && (theme?.spacing?.s100 || inube.spacing.s100)};
+  padding-left: ${({ theme, $isMobile, $hasTable }) =>
+    (!$isMobile || !$hasTable) && (theme?.spacing?.s100 || inube.spacing.s100)};
 
-  &::-webkit-scrollbar {
-    border-radius: 8px;
-  }
+  ${({ $isMobile, theme }) =>
+    !$isMobile &&
+    `
+    &::-webkit-scrollbar {
+      width: 8px; 
+      border-radius: 8px;
+    }
 
-  &::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) =>
-      theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
-    border-radius: 8px;
-  }
+    &::-webkit-scrollbar-thumb {
+      background-color: ${
+        theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
+      };
+      border-radius: 8px;
+    }
+  `}
 `;

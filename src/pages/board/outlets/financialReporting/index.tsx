@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Stack, inube, Grid } from "@inube/design-system";
+import { Stack, inube, Grid, useMediaQuery } from "@inube/design-system";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { getById } from "@mocks/utils/dataMock.service";
@@ -33,6 +33,8 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
 
   const { id } = useParams();
 
+  const isMobile: boolean = useMediaQuery("(max-width: 720px)");
+
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
       setData(requirement);
@@ -53,7 +55,11 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
               />
             </Stack>
           </Stack>
-          <Grid templateColumns="repeat(2,1fr)" gap="s200" autoRows="auto">
+          <Grid
+            templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
+            gap="s200"
+            autoRows="auto"
+          >
             <Stack direction="column">
               {<ToDo icon={infoIcon} data={data} />}
             </Stack>

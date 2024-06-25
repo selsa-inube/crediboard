@@ -1,7 +1,14 @@
-import { MdOutlineSend, MdOutlineRemoveRedEye } from "react-icons/md";
+import {
+  MdOutlineSend,
+  MdOutlineRemoveRedEye,
+  MdCheck,
+  MdRemove,
+  MdClose,
+} from "react-icons/md";
 import { Icon, Tag } from "@inube/design-system";
 
 import { IEntries } from "@components/data/TableBoard/types";
+import { isValidElement } from "react";
 
 const entrySelection = (data: IEntries) => {
   console.log(data);
@@ -24,7 +31,7 @@ export const titlesFinanacialReporting = [
     priority: 3,
   },
   {
-    id: "Estado",
+    id: "tag",
     titleName: "Estado",
     priority: 4,
   },
@@ -36,21 +43,21 @@ export const entriesFinanacialReporting = [
     "No. de Obligación": "1234554545",
     "No. de Documento": "1234567890",
     Tipo: "Pagare",
-    Estado: <Tag label="En tramite" appearance="warning" />,
+    tag: <Tag label="En tramite" appearance="warning" />,
   },
   {
     id: "2",
     "No. de Obligación": "1234567890",
     "No. de Documento": "1234567890",
     Tipo: "Pagare",
-    Estado: <Tag label="Firmado" appearance="success" />,
+    tag: <Tag label="Firmado" appearance="success" />,
   },
   {
     id: "3",
     "No. de Obligación": "1234564321",
     "No. de Documento": "1234567890",
     Tipo: "Libranza",
-    Estado: <Tag label="Con Error" appearance="error" />,
+    tag: <Tag label="Con Error" appearance="error" />,
   },
 ];
 
@@ -63,6 +70,79 @@ export const actionsFinanacialReporting = [
         appearance="primary"
         cursorHover
         size="24px"
+        icon={<MdOutlineSend />}
+        onClick={() => entrySelection(data)}
+      />
+    ),
+  },
+  {
+    id: "ver imagen",
+    actionName: "Ver Imagen",
+    content: (data: IEntries) => (
+      <Icon
+        appearance="primary"
+        size="24px"
+        cursorHover
+        icon={<MdOutlineRemoveRedEye />}
+        onClick={() => entrySelection(data)}
+      />
+    ),
+  },
+];
+
+const iconActionsMobile = (tag: string) => {
+  if (tag === "Aprobado") {
+    return <MdCheck />;
+  } else if (tag === "Pendiente") {
+    return <MdRemove />;
+  } else {
+    return <MdClose />;
+  }
+};
+
+interface TagProps {
+  appearance?: string;
+  label?: string;
+}
+
+interface TagElement {
+  props: TagProps;
+}
+
+const isValidTagElement = (element: unknown): element is TagElement => {
+  return isValidElement(element) && element.props !== undefined;
+};
+
+export const actionMobile = [
+  {
+    id: "tags",
+    actionName: "",
+    content: (data: IEntries) => (
+      <Icon
+        icon={
+          isValidElement(data?.tag) &&
+          iconActionsMobile(data?.tag?.props?.label)
+        }
+        appearance={
+          isValidTagElement(data?.tag)
+            ? data?.tag?.props?.appearance
+            : undefined
+        }
+        spacing="none"
+        cursorHover
+        variant="filled"
+        shape="circle"
+      />
+    ),
+  },
+  {
+    id: "Reenviar",
+    actionName: "Reenviar",
+    content: (data: IEntries) => (
+      <Icon
+        appearance="primary"
+        size="24px"
+        cursorHover
         icon={<MdOutlineSend />}
         onClick={() => entrySelection(data)}
       />

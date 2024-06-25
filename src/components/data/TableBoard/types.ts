@@ -24,4 +24,5 @@ export interface IAppearances {
   borderTable?: boolean;
   background?: boolean;
   widthTd?: string;
+  isStyleMobile?: boolean;
 }

@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { actionsMock, mockData, titlesMock } from "./mockStories";
+import {
+  actionMobileMock,
+  actionsMock,
+  mockData,
+  titlesMock,
+} from "./mockStories";
 import { TableBoard } from "..";
 import { props } from "./props";
 
@@ -18,8 +23,10 @@ export const Default: Story = {
     entries: mockData,
     titles: titlesMock,
     actions: actionsMock,
+    actionMobile: actionMobileMock,
     borderTable: true,
     appearanceTable: { title: "primary", efectzebra: true, borderTable: false },
+    nameTitleTag: "",
   },
 };
 export default meta;
