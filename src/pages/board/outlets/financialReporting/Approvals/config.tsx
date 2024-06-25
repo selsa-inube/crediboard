@@ -219,7 +219,6 @@ export const actionMobileApprovals = [
             ? data?.tag?.props?.appearance
             : undefined
         }
-        spacing="compact"
         cursorHover
         variant="filled"
         shape="circle"
