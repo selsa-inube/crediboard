@@ -1,16 +1,16 @@
 import styled from 'styled-components';
- 
+
 interface MessageProps {
   type: 'sent' | 'received';
 }
- 
+
 export const MessageWrapper = styled.div<MessageProps>`
   display: flex;
   flex-direction: column;
   align-items: ${props => props.type === 'sent' ? 'flex-end' : 'flex-start'};
   margin: 10px ;
 `;
- 
+
 export const MessageContent = styled.div<MessageProps>`
   max-width: 35%;
   padding: 7px;
@@ -38,12 +38,14 @@ export const MessageContent = styled.div<MessageProps>`
     `}
   }
 `;
- 
+
 export const Timestamp = styled.div<MessageProps>`
-  font-size: 0.8em;
-  color: gray;
+  font-size: 10px;
+  font-family: Roboto;
+  color: #000000;
   align-self: ${props => props.type === 'sent' ? 'flex-end' : 'flex-start'};
-  margin-top: 5px;
+  margin-top: 5px; 
   margin-left: 10px;
   margin-right: 10px;
 `;
+  

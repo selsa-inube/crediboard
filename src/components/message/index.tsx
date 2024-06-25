@@ -1,9 +1,9 @@
 import React from 'react';
-import { MessageWrapper, Timestamp } from './styles';
+import { MessageWrapper, MessageContent, Timestamp } from './styles';
 
 interface MessageProps {
   type: 'sent' | 'received';
-  timestamp: number; 
+  timestamp: number;
   children: React.ReactNode;
 }
 
@@ -14,9 +14,13 @@ export const Message: React.FC<MessageProps> = ({ type, timestamp, children }) =
   };
 
   return (
-    <MessageWrapper type={type}>
-      {children}
-      <Timestamp>{formatDate(timestamp)}</Timestamp>
-    </MessageWrapper>
+    <div>
+      <MessageWrapper type={type}>
+        <MessageContent type={type}>
+          {children}
+        </MessageContent>
+        <Timestamp type={type}>{formatDate(timestamp)}</Timestamp>
+      </MessageWrapper>
+    </div>
   );
 };

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { MdOutlineSend } from "react-icons/md";
-import { Icon } from "@inubekit/icon"
+import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/Stack";
 import { Textfield } from "@inubekit/textfield";
 import { LuPaperclip } from "react-icons/lu";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { Message } from "@components/Chat";
+import { Message } from "@components/message";
 
 import { ManagementContainer, ChatContent } from './styles';
 
