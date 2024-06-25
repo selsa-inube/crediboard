@@ -26,6 +26,7 @@ export const Requirements = (props: IRequirementsProps) => {
         title="Requisitos"
         activeButton={dataButton}
         heigthFieldset="340px"
+        hasTable
       >
         <div style={{ height: "340px" }}>
           {data.map((item) => (

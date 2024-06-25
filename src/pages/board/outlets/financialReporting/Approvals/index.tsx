@@ -23,7 +23,12 @@ export const Approvals = () => {
   }, []);
 
   return (
-    <Fieldset title="Aprobaciones" heigthFieldset="282px" aspectRatio="3/1">
+    <Fieldset
+      title="Aprobaciones"
+      heigthFieldset="282px"
+      aspectRatio="3/1"
+      hasTable
+    >
       <TableBoard
         id="usuarios"
         titles={titlesApprovals}
