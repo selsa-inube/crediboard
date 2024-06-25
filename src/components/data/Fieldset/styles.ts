@@ -4,6 +4,7 @@ import { inube } from "@inube/design-system";
 interface IStyledContainerFieldset {
   $aspectRatio?: string;
   $isMobile: boolean;
+  $hasTable: boolean;
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
@@ -18,16 +19,20 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
     ${({ theme }) =>
       theme?.color?.stroke?.divider?.regular ||
       inube.color.stroke.divider.regular};
-  padding-top: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
-  padding-bottom: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
-  padding-right: ${({ theme }) => theme?.spacing?.s100 || inube.spacing.s100};
-  padding-left: ${({ theme }) => theme?.spacing?.s100 || inube.spacing.s100};
+  padding-top: ${({ theme, $isMobile, $hasTable }) =>
+    (!$isMobile || !$hasTable) && (theme?.spacing?.s200 || inube.spacing.s200)};
+  padding-bottom: ${({ theme, $isMobile, $hasTable }) =>
+    (!$isMobile || !$hasTable) && (theme?.spacing?.s200 || inube.spacing.s200)};
+  padding-right: ${({ theme, $isMobile, $hasTable }) =>
+    (!$isMobile || !$hasTable) && (theme?.spacing?.s100 || inube.spacing.s100)};
+  padding-left: ${({ theme, $isMobile, $hasTable }) =>
+    (!$isMobile || !$hasTable) && (theme?.spacing?.s100 || inube.spacing.s100)};
 
   ${({ $isMobile, theme }) =>
     !$isMobile &&
     `
     &::-webkit-scrollbar {
-      width: 8px;  /* Añade el ancho del scrollbar */
+      width: 8px; 
       border-radius: 8px;
     }
 

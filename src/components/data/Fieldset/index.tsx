@@ -22,6 +22,7 @@ interface IFieldsetProps {
   heigthFieldset?: string;
   descriptionTitle?: string;
   activeButton?: IPtionsButton;
+  hasTable?: boolean;
 }
 
 export const Fieldset = (props: IFieldsetProps) => {
@@ -32,6 +33,7 @@ export const Fieldset = (props: IFieldsetProps) => {
     aspectRatio,
     descriptionTitle,
     activeButton,
+    hasTable = false,
   } = props;
 
   const isMobile = useMediaQuery("(max-width: 720px)");
@@ -64,7 +66,11 @@ export const Fieldset = (props: IFieldsetProps) => {
           </Stack>
         )}
       </Stack>
-      <StyledContainerFieldset $aspectRatio={aspectRatio} $isMobile={isMobile}>
+      <StyledContainerFieldset
+        $aspectRatio={aspectRatio}
+        $isMobile={isMobile}
+        $hasTable={hasTable}
+      >
         {children}
       </StyledContainerFieldset>
     </Stack>
