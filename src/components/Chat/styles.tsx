@@ -1,19 +1,23 @@
 import styled from 'styled-components';
-
+ 
 interface MessageProps {
   type: 'sent' | 'received';
 }
-
+ 
 export const MessageWrapper = styled.div<MessageProps>`
+  display: flex;
+  flex-direction: column;
+  align-items: ${props => props.type === 'sent' ? 'flex-end' : 'flex-start'};
+  margin: 10px ;
+`;
+ 
+export const MessageContent = styled.div<MessageProps>`
   max-width: 35%;
-  margin: 5px 10px;
   padding: 7px;
-  border-radius: 4px;   
+  border-radius: 4px;
   background-color: ${props => props.type === 'sent' ? '#DEEBFF' : '#F4F5F7'};
-  align-self: ${props => props.type === 'sent' ? 'flex-end' : 'flex-start'};
+  border: 1px solid ${props => props.type === 'sent' ? '#B3D4FF' : '#DFE1E6'};
   position: relative;
-  border: 1px solid ${props => props.type === 'sent' ? '#B3D4FF' : '#DFE1E6'}; 
-  border-style: solid;
   &::after {
     content: '';
     position: absolute;
@@ -21,7 +25,6 @@ export const MessageWrapper = styled.div<MessageProps>`
     border-style: solid;
     border-color: transparent;
     top: 0px;
-    
     ${props => props.type === 'sent' ? `
       right: -10px;
       border-left-color: #DEEBFF;
@@ -35,8 +38,12 @@ export const MessageWrapper = styled.div<MessageProps>`
     `}
   }
 `;
-
-export const Timestamp = styled.div`
+ 
+export const Timestamp = styled.div<MessageProps>`
   font-size: 0.8em;
   color: gray;
+  align-self: ${props => props.type === 'sent' ? 'flex-end' : 'flex-start'};
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
