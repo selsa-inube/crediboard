@@ -1,6 +1,12 @@
 import { MdAdd } from "react-icons/md";
 
-import { Button, Stack, Text, inube } from "@inube/design-system";
+import {
+  Button,
+  Stack,
+  Text,
+  inube,
+  useMediaQuery,
+} from "@inube/design-system";
 
 import { StyledContainerFieldset } from "./styles";
 
@@ -27,6 +33,8 @@ export const Fieldset = (props: IFieldsetProps) => {
     descriptionTitle,
     activeButton,
   } = props;
+
+  const isMobile = useMediaQuery("(max-width: 720px)");
 
   return (
     <Stack
@@ -56,7 +64,7 @@ export const Fieldset = (props: IFieldsetProps) => {
           </Stack>
         )}
       </Stack>
-      <StyledContainerFieldset $aspectRatio={aspectRatio}>
+      <StyledContainerFieldset $aspectRatio={aspectRatio} $isMobile={isMobile}>
         {children}
       </StyledContainerFieldset>
     </Stack>

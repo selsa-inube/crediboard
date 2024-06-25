@@ -3,6 +3,7 @@ import { Stack } from "@inube/design-system";
 import { Fieldset } from "@src/components/data/Fieldset";
 import { TableBoard } from "@src/components/data/TableBoard";
 import {
+  actionMobile,
   actionsFinanacialReporting,
   entriesFinanacialReporting,
   titlesFinanacialReporting,
@@ -17,9 +18,11 @@ export const PromissoryNotes = () => {
           titles={titlesFinanacialReporting}
           entries={entriesFinanacialReporting}
           actions={actionsFinanacialReporting}
+          actionMobile={actionMobile}
           appearanceTable={{
             efectzebra: true,
             title: "primary",
+            isStyleMobile: true,
           }}
         />
       </Fieldset>

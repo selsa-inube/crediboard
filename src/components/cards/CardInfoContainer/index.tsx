@@ -1,4 +1,4 @@
-import { Stack, Text, inube, Icon } from "@inube/design-system";
+import { Icon, Stack, Text, inube, useMediaQuery } from "@inube/design-system";
 
 import { StyledContainerCardInfo } from "./styles";
 
@@ -19,6 +19,8 @@ export const CardInfoContainer = (props: CardInfoContainerProps) => {
     heightCardInfoContainer = "auto",
   } = props;
 
+  const isMobile = useMediaQuery("(max-width: 720px)");
+
   return (
     <Stack direction="column" width="-webkit-fill-available">
       <Stack gap={inube.spacing.s100} alignItems="center">
@@ -31,6 +33,7 @@ export const CardInfoContainer = (props: CardInfoContainerProps) => {
       <StyledContainerCardInfo
         $aspectRatio={aspectRatio}
         $containerHeight={heightCardInfoContainer}
+        $isMobile={isMobile}
       >
         {children}
       </StyledContainerCardInfo>
