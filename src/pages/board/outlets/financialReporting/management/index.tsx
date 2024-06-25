@@ -5,7 +5,7 @@ import { Stack } from "@inubekit/Stack";
 import { Textfield } from "@inubekit/textfield";
 import { LuPaperclip } from "react-icons/lu";
 import { ManagementContainer,ChatContent } from "./styles";
-import { Message } from "@src/components/messages";
+import { Message } from "@src/components/chat";
 
 export const Management: React.FC = () => {
   const handleSendClick = () => {
