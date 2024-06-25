@@ -4,6 +4,7 @@ import { inube } from "@inube/design-system";
 interface IStyledContainerCardInfo {
   $aspectRatio?: string;
   $containerHeight?: string;
+  $isMobile: boolean;
 }
 
 export const StyledContainerCardInfo = styled.div<IStyledContainerCardInfo>`
@@ -22,13 +23,19 @@ export const StyledContainerCardInfo = styled.div<IStyledContainerCardInfo>`
       inube.color.stroke.divider.regular};
   padding: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
 
-  &::-webkit-scrollbar {
-    border-radius: 8px;
-  }
+  ${({ $isMobile, theme }) =>
+    !$isMobile &&
+    `
+    &::-webkit-scrollbar {
+      width: 8px;  /* Añade el ancho del scrollbar */
+      border-radius: 8px;
+    }
 
-  &::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) =>
-      theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
-    border-radius: 8px;
-  }
+    &::-webkit-scrollbar-thumb {
+      background-color: ${
+        theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
+      };
+      border-radius: 8px;
+    }
+  `}
 `;

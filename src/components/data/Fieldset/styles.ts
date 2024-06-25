@@ -3,6 +3,7 @@ import { inube } from "@inube/design-system";
 
 interface IStyledContainerFieldset {
   $aspectRatio?: string;
+  $isMobile: boolean;
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
@@ -22,13 +23,19 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   padding-right: ${({ theme }) => theme?.spacing?.s100 || inube.spacing.s100};
   padding-left: ${({ theme }) => theme?.spacing?.s100 || inube.spacing.s100};
 
-  &::-webkit-scrollbar {
-    border-radius: 8px;
-  }
+  ${({ $isMobile, theme }) =>
+    !$isMobile &&
+    `
+    &::-webkit-scrollbar {
+      width: 8px;  /* Añade el ancho del scrollbar */
+      border-radius: 8px;
+    }
 
-  &::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) =>
-      theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
-    border-radius: 8px;
-  }
+    &::-webkit-scrollbar-thumb {
+      background-color: ${
+        theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
+      };
+      border-radius: 8px;
+    }
+  `}
 `;
