@@ -20,7 +20,7 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   padding: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
 
   &::-webkit-scrollbar {
-    border-radius: 8px;
+    border-radius: 10px;
   }
 
   &::-webkit-scrollbar-thumb {
