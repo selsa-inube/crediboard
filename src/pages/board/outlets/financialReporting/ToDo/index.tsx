@@ -60,7 +60,7 @@ export const ToDo = (props: IToDoProps) => {
     <Fieldset
       title="Por hacer"
       descriptionTitle="Juan Sebastian Moralez García"
-      heigthFieldset="284px"
+      heigthFieldset={isMobile ? "inherit" : "284px"}
       isMobile={isMobile}
     >
       <Stack
@@ -115,7 +115,7 @@ export const ToDo = (props: IToDoProps) => {
           direction={isMobile ? "column" : "row"}
           gap={inube.spacing.s200}
           alignItems="center"
-          padding="s100 s0"
+          padding="s100 s0 s0 s0"
         >
           <Stack direction="column" width="100%" alignItems="end">
             {icon && isMobile && (
