@@ -5,7 +5,6 @@ import { StyledContainerCardInfo } from "./styles";
 interface CardInfoContainerProps {
   title: string;
   children: JSX.Element | JSX.Element[];
-  aspectRatio?: string;
   icon?: React.JSX.Element;
   heightCardInfoContainer?: string;
 }
@@ -14,7 +13,7 @@ export const CardInfoContainer = (props: CardInfoContainerProps) => {
   const {
     title,
     children,
-    aspectRatio,
+
     icon,
     heightCardInfoContainer = "auto",
   } = props;
@@ -31,7 +30,6 @@ export const CardInfoContainer = (props: CardInfoContainerProps) => {
       </Stack>
 
       <StyledContainerCardInfo
-        $aspectRatio={aspectRatio}
         $containerHeight={heightCardInfoContainer}
         $isMobile={isMobile}
       >
