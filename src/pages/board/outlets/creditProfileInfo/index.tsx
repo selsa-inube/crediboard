@@ -117,8 +117,8 @@ export const CreditProfileInfo = () => {
     const margins = {
       top: 20,
       bottom: 0,
-      left: 5,
-      right: 20,
+      left: 25.4,
+      right: 25.4,
     };
 
     const contentWidth = pdfWidth - margins.left - margins.right;
