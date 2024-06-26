@@ -43,7 +43,7 @@ export const Fieldset = (props: IFieldsetProps) => {
       direction="column"
       gap={inube.spacing.s100}
       width="-webkit-fill-available"
-      height={heigthFieldset}
+      height={!isMobile && heigthFieldset}
     >
       <Stack justifyContent={activeButton && "space-between"}>
         <Stack gap={inube.spacing.s100}>
