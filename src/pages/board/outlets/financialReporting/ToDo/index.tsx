@@ -70,7 +70,7 @@ export const ToDo = (props: IToDoProps) => {
         <Stack direction={isMobile ? "column" : "row"}>
           {isMobile && (
             <Text appearance="primary" type="title" size="medium">
-              tarea
+              Tarea
             </Text>
           )}
           <Text size={isMobile ? "medium" : "large"}>
