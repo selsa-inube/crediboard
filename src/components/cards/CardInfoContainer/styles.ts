@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { inube } from "@inube/design-system";
 
 interface IStyledContainerCardInfo {
-  $aspectRatio?: string;
   $containerHeight?: string;
   $isMobile: boolean;
 }
@@ -12,8 +11,6 @@ export const StyledContainerCardInfo = styled.div<IStyledContainerCardInfo>`
   border-radius: 8px;
   border-width: 2px;
   border-style: solid;
-  height: ${({ $containerHeight }) => $containerHeight};
-  aspect-ratio: ${({ $aspectRatio }) => $aspectRatio};
   border-color: ${({ theme }) =>
     theme?.color?.stroke?.primary?.regular ||
     inube.color.stroke.primary.regular};

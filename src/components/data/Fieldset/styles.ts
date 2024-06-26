@@ -12,21 +12,21 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   border-radius: 8px;
   border-width: 2px;
   border-style: solid;
-  aspect-ratio: ${({ $aspectRatio }) => $aspectRatio};
+  aspect-ratio: ${({ $aspectRatio, $isMobile }) => !$isMobile && $aspectRatio};
   border-color: ${({ theme }) =>
     theme?.color?.stroke?.gray?.regular || inube.color.stroke.gray.regular};
   box-shadow: 0px 2px 6px
     ${({ theme }) =>
       theme?.color?.stroke?.divider?.regular ||
       inube.color.stroke.divider.regular};
-  padding-top: ${({ theme, $isMobile, $hasTable }) =>
-    (!$isMobile || !$hasTable) && (theme?.spacing?.s200 || inube.spacing.s200)};
-  padding-bottom: ${({ theme, $isMobile, $hasTable }) =>
-    (!$isMobile || !$hasTable) && (theme?.spacing?.s200 || inube.spacing.s200)};
-  padding-right: ${({ theme, $isMobile, $hasTable }) =>
-    (!$isMobile || !$hasTable) && (theme?.spacing?.s100 || inube.spacing.s100)};
-  padding-left: ${({ theme, $isMobile, $hasTable }) =>
-    (!$isMobile || !$hasTable) && (theme?.spacing?.s100 || inube.spacing.s100)};
+  padding-top: ${({ theme, $hasTable }) =>
+    !$hasTable && (theme?.spacing?.s200 || inube.spacing.s200)};
+  padding-bottom: ${({ theme, $hasTable }) =>
+    !$hasTable && (theme?.spacing?.s200 || inube.spacing.s200)};
+  padding-right: ${({ theme, $hasTable }) =>
+    !$hasTable && (theme?.spacing?.s100 || inube.spacing.s100)};
+  padding-left: ${({ theme, $hasTable }) =>
+    !$hasTable && (theme?.spacing?.s100 || inube.spacing.s100)};
 
   ${({ $isMobile, theme }) =>
     !$isMobile &&
