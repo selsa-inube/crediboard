@@ -1,19 +1,13 @@
 import styled from "styled-components";
-
-const ManagementContainer = styled.div`
+import { inube } from "@inube/design-system";
+ 
+export const ManagementContainer = styled.div`
     display: flex;
     flex-direction: column;
     height: 100%;
-
-    button{
-        border: none;
-        padding: 0;
-        background: none;
-        margin-top: 1%;
-    }
-
+ 
 `;
-
+ 
 export const ChatContent = styled.div`
   flex: 1;
   overflow-y: auto;
@@ -22,6 +16,15 @@ export const ChatContent = styled.div`
   color: #000000;
   font-family: Roboto;
   flex-direction: column;
+ 
+  &::-webkit-scrollbar {
+    border-radius: 8px;
+  }
+ 
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) =>
+      theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
+    border-radius: 8px;
+  }
 `;
-
-export {ManagementContainer}
+ 
