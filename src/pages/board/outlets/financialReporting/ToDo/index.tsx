@@ -13,7 +13,8 @@ import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { Requests } from "@services/types";
 
-import { optionSelectDecision } from "./config";
+import { optionSelectDecision, officials } from "./config";
+import { OfficialsModal } from "./OfficialsModal";
 
 interface IICon {
   icon: JSX.Element;
@@ -27,142 +28,161 @@ interface IButton {
   loading?: boolean;
 }
 
-interface IToDoProps {
+interface ToDoProps {
   icon?: IICon;
   button?: IButton;
   isMobile?: boolean;
   data: Requests;
 }
 
-export const ToDo = (props: IToDoProps) => {
+export const ToDo = (props: ToDoProps) => {
   const { icon, button, isMobile, data } = props;
-
   const { label, onClick, disabled, loading } = button || {};
-
-  const [changeTextfield, setChangeTextfield] = useState({
-    gestorComercial: "Juan Sebastian Moralez García",
-    analista: "",
+  const [showOfficialsModal, setShowOfficialsModal] = useState(false);
+  const [assignedOfficials, setAssignedOfficials] = useState({
+    commercialManager: "Jorge Enrique Díaz Vargas",
+    analyst: "Ana Patricia García Herrera",
   });
+  const [tempOfficials, setTempOfficials] = useState(assignedOfficials);
+  const [changeDecision, setChangeDecision] = useState({ decision: "" });
 
-  const [changeSelect, setChangeSelect] = useState<{ [key: string]: string }>({
-    decision: "",
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setChangeTextfield({ ...changeTextfield, [e.target.name]: e.target.value });
+  const handleToggleOfficialsModal = () => {
+    setShowOfficialsModal(!showOfficialsModal);
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSelectOfficial =
+    (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.innerText;
+      setTempOfficials((prev) => ({ ...prev, [key]: value }));
+    };
+
+  const onChangeDecision = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.innerText;
-    setChangeSelect({ decision: value });
+    setChangeDecision({ decision: value });
   };
-  return (
-    <Fieldset
-      title="Por hacer"
-      descriptionTitle="Juan Sebastian Moralez García"
-      heigthFieldset={isMobile ? "inherit" : "284px"}
-      isMobile={isMobile}
-    >
-      <Stack
-        direction="column"
-        gap={isMobile ? inube.spacing.s050 : inube.spacing.s075}
-      >
-        <Stack direction={isMobile ? "column" : "row"}>
-          {isMobile && (
-            <Text appearance="primary" type="title" size="medium">
-              Tarea
-            </Text>
-          )}
-          <Text size={isMobile ? "medium" : "large"}>
-            {data?.n_Descr_Tarea}
-          </Text>
-        </Stack>
-        <Stack
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? inube.spacing.s025 : inube.spacing.s200}
-          padding="s100 s0"
-          alignItems="center"
-        >
-          <Stack width={isMobile ? "100%" : "340px"}>
-            <Select
-              id="toDo"
-              name="decision"
-              label="Decisión"
-              value={changeSelect.decision}
-              placeholder="Seleccione una opción"
-              size="compact"
-              fullwidth
-              options={optionSelectDecision}
-              onChange={onChange}
-            />
-          </Stack>
 
-          <Stack padding="s200 s0 s0 s0" width={isMobile ? "100%" : "auto"}>
-            <Button
-              onClick={onClick}
-              cursorHover
-              disabled={disabled || false}
-              loading={loading || false}
-              type="submit"
-              fullwidth={isMobile}
-            >
-              {label || "Enviar"}
-            </Button>
-          </Stack>
-        </Stack>
-        <Divider />
+  const handleSubmit = () => {
+    setAssignedOfficials(tempOfficials);
+    handleToggleOfficialsModal();
+  };
+
+  return (
+    <>
+      <Fieldset
+        title="Por hacer"
+        descriptionTitle="Juan Sebastian Moralez García"
+        heigthFieldset={isMobile ? "inherit" : "284px"}
+        isMobile={isMobile}
+      >
         <Stack
-          direction={isMobile ? "column" : "row"}
-          gap={inube.spacing.s200}
-          alignItems="center"
-          padding="s100 s0 s0 s0"
+          direction="column"
+          gap={isMobile ? inube.spacing.s050 : inube.spacing.s075}
         >
-          <Stack direction="column" width="100%" alignItems="end">
-            {icon && isMobile && (
-              <Icon
-                icon={icon.icon}
-                appearance="primary"
-                size="32px"
-                onClick={icon.onClick}
-                cursorHover
-              />
+          <Stack direction={isMobile ? "column" : "row"}>
+            {isMobile && (
+              <Text appearance="primary" type="title" size="medium">
+                Tarea
+              </Text>
             )}
+            <Text size={isMobile ? "medium" : "large"}>
+              {data?.n_Descr_Tarea}
+            </Text>
+          </Stack>
+          <Stack
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? inube.spacing.s025 : inube.spacing.s200}
+            padding="s100 s0"
+            alignItems="center"
+          >
+            <Stack width={isMobile ? "100%" : "340px"}>
+              <Select
+                id="toDo"
+                name="decision"
+                label="Decisión"
+                value={changeDecision.decision}
+                placeholder="Seleccione una opción"
+                size="compact"
+                fullwidth
+                options={optionSelectDecision}
+                onChange={onChangeDecision}
+              />
+            </Stack>
+
+            <Stack padding="s200 s0 s0 s0" width={isMobile ? "100%" : "auto"}>
+              <Button
+                onClick={onClick}
+                cursorHover
+                disabled={disabled || false}
+                loading={loading || false}
+                type="submit"
+                fullwidth={isMobile}
+              >
+                {label || "Enviar"}
+              </Button>
+            </Stack>
+          </Stack>
+          <Divider />
+          <Stack
+            direction={isMobile ? "column" : "row"}
+            gap={inube.spacing.s200}
+            alignItems="center"
+            padding="s100 s0 s0 s0"
+          >
+            <Stack direction="column" width="100%" alignItems="end">
+              {icon && isMobile && (
+                <Icon
+                  icon={icon.icon}
+                  appearance="primary"
+                  size="32px"
+                  onClick={handleToggleOfficialsModal}
+                  cursorHover
+                />
+              )}
+              <Textfield
+                id="gestorComercial"
+                name="gestorComercial"
+                label="Gestor Comercial"
+                placeholder="Gestor Comercial"
+                value={assignedOfficials.commercialManager}
+                fullwidth
+                readOnly
+              />
+            </Stack>
+
             <Textfield
-              id="gestorComercial"
-              name="gestorComercial"
-              label="Gestor Comercial"
-              placeholder="Gestor Comercial"
-              value={changeTextfield.gestorComercial}
-              onChange={handleChange}
+              id="analista"
+              name="analista"
+              label="Analista"
+              placeholder="Analista"
+              value={assignedOfficials.analyst}
               fullwidth
               readOnly
             />
+
+            {icon && !isMobile && (
+              <Stack width="100px" height="70px" alignItems="end">
+                <Icon
+                  icon={icon.icon}
+                  appearance="primary"
+                  size="36px"
+                  onClick={handleToggleOfficialsModal}
+                  cursorHover
+                />
+              </Stack>
+            )}
           </Stack>
-
-          <Textfield
-            id="analista"
-            name="analista"
-            label="Analista"
-            placeholder="Analista"
-            value={changeTextfield.analista}
-            onChange={handleChange}
-            fullwidth
-            readOnly
-          />
-
-          {icon && !isMobile && (
-            <Stack width="100px" height="70px" alignItems="end">
-              <Icon
-                icon={icon.icon}
-                appearance="primary"
-                size="36px"
-                onClick={icon.onClick}
-                cursorHover
-              />
-            </Stack>
-          )}
         </Stack>
-      </Stack>
-    </Fieldset>
+      </Fieldset>
+      {showOfficialsModal && (
+        <OfficialsModal
+          commercialManager={tempOfficials.commercialManager}
+          analyst={tempOfficials.analyst}
+          officials={officials}
+          onChange={handleSelectOfficial}
+          onSubmit={handleSubmit}
+          onCloseModal={handleToggleOfficialsModal}
+        />
+      )}
+    </>
   );
 };
