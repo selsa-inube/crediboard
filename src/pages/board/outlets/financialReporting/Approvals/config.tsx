@@ -53,11 +53,6 @@ export async function handleData() {
           usuarios: "Jaime Alejandro Vargas",
           tag: <Tag label="Pendiente" appearance="warning" />,
         },
-        {
-          id: "ocho",
-          usuarios: "Viviana Amador Tejada",
-          tag: <Tag label="Aprobado" appearance="success" />,
-        },
       ];
       resolve(entriesApprovals);
     }, 2000);
@@ -154,7 +149,7 @@ export const actionsApprovals = [
         appearance="warning"
         spacing="compact"
         cursorHover
-        size="24px"
+        size="20px"
         onClick={() => handledata(data)}
         disabled={
           isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
@@ -171,7 +166,7 @@ export const actionsApprovals = [
         appearance="primary"
         spacing="compact"
         cursorHover
-        size="24px"
+        size="20px"
         onClick={() => handledata(data)}
         disabled={
           isValidElement(data?.tag) && data?.tag?.props?.label === "Pendiente"
@@ -234,7 +229,7 @@ export const actionMobileApprovals = [
         appearance="warning"
         spacing="compact"
         cursorHover
-        size="24px"
+        size="20px"
         onClick={() => handledata(data)}
         disabled={
           isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
@@ -251,7 +246,7 @@ export const actionMobileApprovals = [
         appearance="primary"
         spacing="compact"
         cursorHover
-        size="24px"
+        size="20px"
         onClick={() => handledata(data)}
         disabled={
           isValidElement(data?.tag) && data?.tag?.props?.label === "Pendiente"

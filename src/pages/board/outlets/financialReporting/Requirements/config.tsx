@@ -122,7 +122,7 @@ export const actionsRequirements = [
             icon={<MdAddCircleOutline />}
             appearance="primary"
             onClick={() => receiveData(data)}
-            spacing="compact"
+            spacing="none"
             size="24px"
             cursorHover
           />
@@ -136,7 +136,7 @@ export const actionsRequirements = [
           <Icon
             icon={<MdOutlineCheckCircle />}
             appearance="primary"
-            spacing="compact"
+            spacing="none"
             cursorHover
             size="24px"
             onClick={() => receiveData(data)}
@@ -203,7 +203,7 @@ const actionsMobile = [
           icon={<MdAddCircleOutline />}
           appearance="primary"
           onClick={() => receiveData(data)}
-          spacing="compact"
+          spacing="none"
           size="24px"
           cursorHover
         />
@@ -217,7 +217,7 @@ const actionsMobile = [
         <Icon
           icon={<MdOutlineCheckCircle />}
           appearance="primary"
-          spacing="compact"
+          spacing="none"
           cursorHover
           size="24px"
           onClick={() => receiveData(data)}
