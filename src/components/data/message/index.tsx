@@ -14,13 +14,13 @@ export const Message: React.FC<MessageProps> = ({ type, timestamp, children }) =
   };
 
   return (
-    <div>
+    <>
       <MessageWrapper type={type}>
         <MessageContent type={type}>
           {children}
         </MessageContent>
         <Timestamp type={type}>{formatDate(timestamp)}</Timestamp>
       </MessageWrapper>
-    </div>
+    </>
   );
 };

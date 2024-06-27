@@ -1,5 +1,5 @@
 import { Meta } from "@storybook/react";
-import { Message } from "@components/message";
+import { Message } from "@src/components/data/message";
 
 export default {
   title: "Components/Message",
