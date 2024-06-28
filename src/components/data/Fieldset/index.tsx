@@ -46,11 +46,15 @@ export const Fieldset = (props: IFieldsetProps) => {
       height={!isMobile && heigthFieldset}
     >
       <Stack justifyContent={activeButton && "space-between"}>
-        <Stack gap={inube.spacing.s100}>
-          <Text type="title" appearance="gray">
+        <Stack gap={isMobile ? inube.spacing.s150 : inube.spacing.s100}>
+          <Text
+            type="title"
+            appearance="gray"
+            size={isMobile ? "medium" : "large"}
+          >
             {`${title} `}
           </Text>
-          <Text type="title" ellipsis>
+          <Text type="title" ellipsis size={isMobile ? "medium" : "large"}>
             {descriptionTitle}
           </Text>
         </Stack>
