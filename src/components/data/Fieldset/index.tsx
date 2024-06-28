@@ -14,7 +14,7 @@ interface IFieldsetProps {
   children: JSX.Element | JSX.Element[];
   isMobile?: boolean;
   aspectRatio?: string;
-  heigthFieldset?: string;
+  heightFieldset?: string;
   descriptionTitle?: string;
   activeButton?: IPtionsButton;
 }
@@ -24,7 +24,7 @@ export const Fieldset = (props: IFieldsetProps) => {
     children,
     title,
     isMobile,
-    heigthFieldset = "auto",
+    heightFieldset = "auto",
     aspectRatio,
     descriptionTitle,
     activeButton,
@@ -35,7 +35,7 @@ export const Fieldset = (props: IFieldsetProps) => {
       direction="column"
       gap={inube.spacing.s100}
       width="-webkit-fill-available"
-      height={heigthFieldset}
+      height={heightFieldset}
     >
       <Stack justifyContent={activeButton && "space-between"}>
         <Stack gap={isMobile ? inube.spacing.s150 : inube.spacing.s100}>

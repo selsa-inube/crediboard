@@ -11,7 +11,7 @@ import {
 export const Postingvouchers = () => {
   return (
     <Stack direction="column">
-      <Fieldset title="Comprobantes de Contabilización" heigthFieldset="163px">
+      <Fieldset title="Comprobantes de Contabilización" heightFieldset="163px">
         <TableBoard
           id="postingvouchers"
           loading={false}
