@@ -16,12 +16,12 @@ export const StyledContainer = styled.div<IStyledContainer>`
   overflow-x: ${({ $isTablet }) => ($isTablet ? "auto" : "hidden")};
   padding-top: ${({ theme, $isTablet }) =>
     $isTablet
-      ? theme?.spacing?.s75 || inube.spacing.s75
-      : theme?.spacing?.s150 || inube.spacing.s150};
+      ? theme?.spacing?.s075 || inube.spacing.s075
+      : theme?.spacing?.s075 || inube.spacing.s075};
   padding-bottom: ${({ theme, $isTablet }) =>
     $isTablet
-      ? theme?.spacing?.s75 || inube.spacing.s75
-      : theme?.spacing?.s150 || inube.spacing.s150};
+      ? theme?.spacing?.s075 || inube.spacing.s075
+      : theme?.spacing?.s075 || inube.spacing.s075};
   padding-left: ${({ theme }) => theme?.spacing?.s075 || inube.spacing.s075};
   padding-right: ${({ theme, $isTablet }) =>
     ($isTablet ? "0px" : theme?.spacing?.s075) || inube.spacing.s075};
