@@ -3,6 +3,7 @@ import { inube } from "@inube/design-system";
 
 interface IStyledContainerFieldset {
   $aspectRatio?: string;
+  $hiddenScroll?: boolean;
   $isMobile?: boolean;
 }
 
@@ -25,7 +26,8 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
 
   &::-webkit-scrollbar {
     border-radius: 8px;
-    width: ${({ $isMobile }) => ($isMobile ? "10px" : "17px")};
+    width: ${({ $hiddenScroll, $isMobile }) =>
+      $hiddenScroll ? "0px" : $isMobile ? "10px" : "17px"};
   }
 
   &::-webkit-scrollbar-thumb {
