@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import {ReactNode} from "react";
 import { MdOutlineSend } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 import { StyledButton } from "./styles"

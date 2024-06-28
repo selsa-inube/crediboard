@@ -1,50 +1,47 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Icon } from "@inubekit/icon";
-import { Stack } from "@inubekit/Stack";
+import { Stack } from "@inubekit/stack";
 import { Textfield } from "@inubekit/textfield";
 import { LuPaperclip } from "react-icons/lu";
 import localforage from "localforage";
 import { useParams } from "react-router-dom";
  
 import { Fieldset } from "@components/data/Fieldset";
-import { Message } from "@src/components/data/message";
-import { SubmitButton } from '@components/feedback/SubmitButton'
-
+import { Message } from "@components/data/message";
+import { SubmitButton } from "@components/inputs/SubmitButton";
+ 
 import { ManagementContainer, ChatContent } from "./styles";
  
 interface MessageType {
+  id: string;
   type: "sent" | "received";
   timestamp: number;
   text: string;
 }
  
-export const Management: React.FC = () => {
+export const Management = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
-  const [newMessage, setNewMessage] = useState<string>("");
+  const [newMessage, setNewMessage] = useState("");
   const { id } = useParams<{ id: string }>();
  
   useEffect(() => {
-    if (id) {
-      localforage
-        .getItem<MessageType[]>(`messages_${id}`)
-        .then((savedMessages) => {
-          if (savedMessages) {
-            setMessages(savedMessages);
-          }
-        })
-        .catch((err) => {
-          console.error("Error al cargar mensajes:", err);
-        });
-    }
-  }, [id]);
+    localforage
+      .getItem<MessageType[]>("messages")
+      .then((savedMessages) => {
+        if (savedMessages) {
+          setMessages(savedMessages);
+        }
+      })
+      .catch((err) => {
+        console.error("Error al cargar mensajes:", err);
+      });
+  }, []);
  
   useEffect(() => {
-    if (id) {
-      localforage.setItem(`messages_${id}`, messages).catch((err) => {
-        console.error("Error al guardar mensajes:", err);
-      });
-    }
-  }, [messages, id]);
+    localforage.setItem("messages", messages).catch((err) => {
+      console.error("Error al guardar mensajes:", err);
+    });
+  }, [messages]);
  
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,6 +51,7 @@ export const Management: React.FC = () => {
   const sendMessage = () => {
     if (newMessage.trim() !== "") {
       const newMsg: MessageType = {
+        id: id ?? "default",
         type: "sent",
         timestamp: Date.now(),
         text: newMessage,
@@ -67,11 +65,13 @@ export const Management: React.FC = () => {
     setNewMessage(e.target.value);
   };
  
+  const filteredMessages = messages.filter((msg) => msg.id === id);
+ 
   return (
     <Fieldset title="Gestión" heigthFieldset="340px" aspectRatio="1">
       <ManagementContainer>
         <ChatContent>
-          {messages.map((msg, index) => (
+          {filteredMessages.map((msg, index) => (
             <Message key={index} type={msg.type} timestamp={msg.timestamp}>
               {msg.text}
             </Message>
@@ -92,7 +92,7 @@ export const Management: React.FC = () => {
               value={newMessage}
               onChange={handleInputChange}
             />
-            <SubmitButton/>
+            <SubmitButton />
           </Stack>
         </form>
       </ManagementContainer>

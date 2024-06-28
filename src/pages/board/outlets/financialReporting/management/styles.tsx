@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { inube } from "@inube/design-system";
+
  
 export const ManagementContainer = styled.div`
     display: flex;

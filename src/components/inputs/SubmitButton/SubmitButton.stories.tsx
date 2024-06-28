@@ -1,9 +1,9 @@
 import { Meta } from '@storybook/react';
-import { SubmitButton } from '@components/feedback/SubmitButton'
+import { SubmitButton } from '@components/inputs/SubmitButton'
 
  
 export default {
-  title: 'Components/feedback/SubmitButton',
+  title: 'components/inputs/SubmitButton',
   component: SubmitButton,
 } as Meta;
  

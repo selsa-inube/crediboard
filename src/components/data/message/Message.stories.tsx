@@ -1,8 +1,8 @@
 import { Meta } from "@storybook/react";
-import { Message } from "@src/components/data/message";
+import { Message } from "@components/data/message";
 
 export default {
-  title: "Components/Message",
+  title: "components/data/message",
   component: Message,
 } as Meta;
 
