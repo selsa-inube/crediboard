@@ -7,6 +7,11 @@ interface IStyledContainerFieldset {
   $isMobile?: boolean;
 }
 
+const getScrollbarWidth = ($hiddenScroll?: boolean, $isMobile?: boolean) => {
+  if ($hiddenScroll) return "0px";
+  return $isMobile ? "10px" : "17px";
+};
+
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   overflow-y: auto;
   border-radius: 8px;
@@ -27,7 +32,7 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   &::-webkit-scrollbar {
     border-radius: 8px;
     width: ${({ $hiddenScroll, $isMobile }) =>
-      $hiddenScroll ? "0px" : $isMobile ? "10px" : "17px"};
+      getScrollbarWidth($hiddenScroll, $isMobile)};
   }
 
   &::-webkit-scrollbar-thumb {
