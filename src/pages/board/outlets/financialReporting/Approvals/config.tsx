@@ -6,9 +6,10 @@ import {
   MdRemove,
   MdWarningAmber,
 } from "react-icons/md";
-import { Icon, Tag } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
 
 import { IEntries } from "@components/data/TableBoard/types";
+import { Tag } from "@components/data/Tag";
 
 const handledata = (data: IEntries) => {
   console.log(data, "function that receives data");
@@ -26,7 +27,7 @@ export async function handleData() {
         {
           id: "dos",
           usuarios: "Carlos Alberto Combita",
-          tag: <Tag label="Rechazado" appearance="error" />,
+          tag: <Tag label="Rechazado" appearance="danger" />,
         },
         {
           id: "tres",
@@ -46,7 +47,7 @@ export async function handleData() {
         {
           id: "seis",
           usuarios: "Paula Andrea Betancurt",
-          tag: <Tag label="Rechazado" appearance="error" />,
+          tag: <Tag label="Rechazado" appearance="danger" />,
         },
         {
           id: "siete",
@@ -82,14 +83,14 @@ export const entriesApprovals = [
   {
     id: "dos",
     usuarios: "Carlos Alberto Combita",
-    decision: <Tag label="Rechazado" appearance="error" />,
+    decision: <Tag label="Rechazado" appearance="danger" />,
     error: (
       <Icon
         icon={<MdWarningAmber />}
         appearance="warning"
-        spacing="compact"
+        spacing="none"
         cursorHover
-        size="24px"
+        size="22px"
       />
     ),
   },
@@ -114,14 +115,14 @@ export const entriesApprovals = [
   {
     id: "seis",
     usuarios: "Paula Andrea Betancurt",
-    decision: <Tag label="Rechazado" appearance="error" />,
+    decision: <Tag label="Rechazado" appearance="danger" />,
     error: (
       <Icon
         icon={<MdWarningAmber />}
         appearance="warning"
-        spacing="compact"
+        spacing="none"
         cursorHover
-        size="24px"
+        size="22px"
       />
     ),
   },
@@ -147,9 +148,9 @@ export const actionsApprovals = [
       <Icon
         icon={<MdWarningAmber />}
         appearance="warning"
-        spacing="compact"
+        spacing="none"
         cursorHover
-        size="20px"
+        size="22px"
         onClick={() => handledata(data)}
         disabled={
           isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
@@ -164,9 +165,9 @@ export const actionsApprovals = [
       <Icon
         icon={<MdNotificationsNone />}
         appearance="primary"
-        spacing="compact"
+        spacing="none"
         cursorHover
-        size="20px"
+        size="22px"
         onClick={() => handledata(data)}
         disabled={
           isValidElement(data?.tag) && data?.tag?.props?.label === "Pendiente"
@@ -227,7 +228,7 @@ export const actionMobileApprovals = [
       <Icon
         icon={<MdWarningAmber />}
         appearance="warning"
-        spacing="compact"
+        spacing="none"
         cursorHover
         size="20px"
         onClick={() => handledata(data)}
@@ -244,7 +245,7 @@ export const actionMobileApprovals = [
       <Icon
         icon={<MdNotificationsNone />}
         appearance="primary"
-        spacing="compact"
+        spacing="none"
         cursorHover
         size="20px"
         onClick={() => handledata(data)}

@@ -1,3 +1,4 @@
+import { isValidElement } from "react";
 import {
   MdOutlineSend,
   MdOutlineRemoveRedEye,
@@ -5,10 +6,10 @@ import {
   MdRemove,
   MdClose,
 } from "react-icons/md";
-import { Icon, Tag } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
 
+import { Tag } from "@components/data/Tag";
 import { IEntries } from "@components/data/TableBoard/types";
-import { isValidElement } from "react";
 
 const entrySelection = (data: IEntries) => {
   console.log(data);
@@ -57,7 +58,7 @@ export const entriesFinanacialReporting = [
     "No. de Obligación": "1234564321",
     "No. de Documento": "1234567890",
     Tipo: "Libranza",
-    tag: <Tag label="Con Error" appearance="error" />,
+    tag: <Tag label="Con Error" appearance="danger" />,
   },
 ];
 
@@ -69,9 +70,11 @@ export const actionsFinanacialReporting = [
       <Icon
         appearance="primary"
         cursorHover
-        size="24px"
+        size="22px"
+        variant="none"
         icon={<MdOutlineSend />}
         onClick={() => entrySelection(data)}
+        spacing="none"
       />
     ),
   },
@@ -81,7 +84,9 @@ export const actionsFinanacialReporting = [
     content: (data: IEntries) => (
       <Icon
         appearance="primary"
-        size="24px"
+        size="22px"
+        spacing="none"
+        variant="none"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
         onClick={() => entrySelection(data)}
@@ -141,7 +146,8 @@ export const actionMobile = [
     content: (data: IEntries) => (
       <Icon
         appearance="primary"
-        size="24px"
+        size="22px"
+        spacing="none"
         cursorHover
         icon={<MdOutlineSend />}
         onClick={() => entrySelection(data)}
@@ -154,7 +160,8 @@ export const actionMobile = [
     content: (data: IEntries) => (
       <Icon
         appearance="primary"
-        size="24px"
+        size="22px"
+        spacing="none"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
         onClick={() => entrySelection(data)}

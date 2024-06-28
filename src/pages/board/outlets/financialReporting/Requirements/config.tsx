@@ -6,8 +6,10 @@ import {
   MdOutlineCheckCircle,
   MdRemove,
 } from "react-icons/md";
-import { Icon, Stack, Tag } from "@inube/design-system";
+import { Stack } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
 
+import { Tag } from "@components/data/Tag";
 import { IEntries } from "@components/data/TableBoard/types";
 
 export const dataButton = {
@@ -78,7 +80,7 @@ export const entriesRequirements: IEntries[][] = [
     {
       id: "cuatro",
       "Validaciones del sistema": "Que tenga más de 30 años",
-      tag: <Tag label="No Cumple" appearance="error" />,
+      tag: <Tag label="No Cumple" appearance="danger" />,
     },
   ],
   [
@@ -107,7 +109,7 @@ export const entriesRequirements: IEntries[][] = [
     {
       id: "nueve",
       "Validaciones humanas": "Proponer un codeudor",
-      tag: <Tag label="No Cumple" appearance="error" />,
+      tag: <Tag label="No Cumple" appearance="danger" />,
     },
   ],
 ];
@@ -123,7 +125,7 @@ export const actionsRequirements = [
             appearance="primary"
             onClick={() => receiveData(data)}
             spacing="none"
-            size="24px"
+            size="22px"
             cursorHover
           />
         </Stack>
@@ -138,7 +140,7 @@ export const actionsRequirements = [
             appearance="primary"
             spacing="none"
             cursorHover
-            size="24px"
+            size="22px"
             onClick={() => receiveData(data)}
             disabled={
               isValidElement(data?.tag) &&
@@ -204,7 +206,7 @@ const actionsMobile = [
           appearance="primary"
           onClick={() => receiveData(data)}
           spacing="none"
-          size="24px"
+          size="22px"
           cursorHover
         />
       </Stack>
@@ -219,7 +221,7 @@ const actionsMobile = [
           appearance="primary"
           spacing="none"
           cursorHover
-          size="24px"
+          size="22px"
           onClick={() => receiveData(data)}
           disabled={
             isValidElement(data?.tag) && data?.tag?.props?.label === "No Cumple"
