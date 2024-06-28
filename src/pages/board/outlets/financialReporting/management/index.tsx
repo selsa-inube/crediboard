@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Icon } from "@inubekit/icon";
-import { Stack } from "@inubekit/stack";
+import { Stack , inube} from "@inube/design-system";
+
 import { Textfield } from "@inubekit/textfield";
 import { LuPaperclip } from "react-icons/lu";
 import localforage from "localforage";
@@ -78,7 +79,7 @@ export const Management = () => {
           ))}
         </ChatContent>
         <form onSubmit={handleFormSubmit}>
-          <Stack direction="row" gap="8px" alignItems="center">
+        <Stack alignItems="center" direction="row" gap={inube.spacing.s150}>
             <Icon
               appearance="primary"
               cursorHover
