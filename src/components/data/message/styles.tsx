@@ -7,11 +7,12 @@ interface MessageProps {
 export const MessageWrapper = styled.div<MessageProps>`
   display: flex;
   flex-direction: column;
-  align-items: ${props => props.type === 'sent' ? 'flex-end' : 'flex-start'};
+  align-items: ${({ type }) => type === 'sent' ? 'flex-end' : 'flex-start'};
   margin: 10px ;
 `;
 
 export const MessageContent = styled.div<MessageProps>`
+  font-family: Roboto;
   max-width: 35%;
   padding: 7px;
   border-radius: 4px;

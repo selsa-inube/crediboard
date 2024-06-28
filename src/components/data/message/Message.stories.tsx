@@ -2,7 +2,7 @@ import { Meta } from "@storybook/react";
 import { Message } from "@components/data/message";
 
 export default {
-  title: "components/data/message",
+  title: "components/data/Message",
   component: Message,
 } as Meta;
 
