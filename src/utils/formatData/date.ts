@@ -17,4 +17,8 @@ function formatDateWithFullYear(dateString: string) {
   return `${capitalizedMonth} ${day} / ${year}`;
 }
 
-export { formatISODatetoCustomFormat, formatDateWithFullYear };
+function isValidDate(value: string) {
+  return /^(19|20)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/.test(value);
+}
+
+export { formatISODatetoCustomFormat, formatDateWithFullYear, isValidDate };
