@@ -10,7 +10,7 @@ import {
   useMediaQuery,
 } from "@inube/design-system";
 
-import { StyledContainerChildren, StyledModal } from "./styles";
+import { StyledContainerContent, StyledModal } from "./styles";
 
 export interface IListmodalProps {
   title: string;
@@ -49,7 +49,9 @@ export const Listmodal = (props: IListmodalProps) => {
             />
           </Stack>
         </Stack>
-        <StyledContainerChildren>{content}</StyledContainerChildren>
+        <StyledContainerContent $smallScreen={isMobile}>
+          {content}
+        </StyledContainerContent>
         <Stack justifyContent="flex-end" margin="s200 s0">
           <Button onClick={handleClose}>Cerrar</Button>
         </Stack>

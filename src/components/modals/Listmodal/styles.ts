@@ -20,7 +20,7 @@ export const StyledModal = styled.div<IStyledModal>`
   border-radius: ${inube.spacing.s100};
 `;
 
-export const StyledContainerChildren = styled.div`
+export const StyledContainerContent = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -29,13 +29,19 @@ export const StyledContainerChildren = styled.div`
   padding-bottom: 4px;
   padding-left: 4px;
 
-  &::-webkit-scrollbar {
-    border-radius: 8px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) =>
-      theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
-    border-radius: 8px;
-  }
+  ${({ $smallScreen, theme }) =>
+    !$smallScreen &&
+    `
+    &::-webkit-scrollbar {
+      width: 16px;
+      height: 75px
+      border-radius: 8px;
+    }
+      &::-webkit-scrollbar-thumb {
+      background-color: ${
+        theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
+      };
+      border-radius: 8px;
+    }
+  `}
 `;
