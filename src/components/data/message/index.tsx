@@ -1,9 +1,9 @@
 import { MessageWrapper, MessageContent, Timestamp } from './styles';
 
-interface MessageProps {
+export interface MessageProps {
   type: 'sent' | 'received';
   timestamp: number;
-  children: JSX.Element | JSX.Element[] | string;
+  message: string;
 }
 
 const formatDate = (timestamp: number) => {
@@ -11,12 +11,12 @@ const formatDate = (timestamp: number) => {
   return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 };
 
-export const Message: React.FC<MessageProps> = ({ type, timestamp, children }) => {
+export const Message: React.FC<MessageProps> = ({ type, timestamp, message }) => {
   return (
     <>
       <MessageWrapper type={type}>
         <MessageContent type={type}>
-          {children}
+          {message}
         </MessageContent>
         <Timestamp type={type}>{formatDate(timestamp)}</Timestamp>
       </MessageWrapper>

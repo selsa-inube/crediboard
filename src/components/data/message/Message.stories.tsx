@@ -1,27 +1,23 @@
-import { Meta } from "@storybook/react";
-import { Message } from "@components/data/message";
+import { Meta, StoryFn } from "@storybook/react";
+import { Message, MessageProps } from "@components/data/message";
 
 export default {
   title: "components/data/Message",
   component: Message,
-} as Meta;
+} as Meta<typeof Message>;
 
-export const SentMessage = (args: { message: string }) => (
-  <Message type="sent" timestamp={Date.now()}>
-    {args.message}
-  </Message>
-);
+const Template: StoryFn<MessageProps> = (args) => <Message {...args} />;
 
+export const SentMessage = Template.bind({});
 SentMessage.args = {
+  type: 'sent',
+  timestamp: Date.now(),
   message: "Esto es un mensaje enviado.",
 };
 
-export const ReceivedMessage = (args: { message: string }) => (
-  <Message type="received" timestamp={Date.now()}>
-    {args.message}
-  </Message>
-);
-
+export const ReceivedMessage = Template.bind({});
 ReceivedMessage.args = {
+  type: 'received',
+  timestamp: Date.now(),
   message: "Esto es un mensaje recibido.",
 };
