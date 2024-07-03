@@ -20,4 +20,14 @@ const StyledModal = styled.div<IStyledModal>`
   border-radius: ${inube.spacing.s100};
 `;
 
-export { StyledModal };
+const StyledLabel = styled.label`
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  color: #333;
+`;
+
+export { StyledModal, StyledLabel };

@@ -15,6 +15,7 @@ interface IContainerSectionsProps {
 export const ContainerSections = (props: IContainerSectionsProps) => {
   const { children } = props;
   const [showRejectionModal, setShowRejectionModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
   const handleToggleRejectModal = () => {
     setShowRejectionModal(!showRejectionModal);
@@ -22,6 +23,14 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
 
   const handleSubmitRejectModal = () => {
     setShowRejectionModal(!showRejectionModal);
+  };
+
+  const handleToggleCancelModal = () => {
+    setShowCancelModal(!showCancelModal);
+  };
+
+  const handleSubmitCancelModal = () => {
+    setShowCancelModal(!showCancelModal);
   };
 
   const navigation = useNavigate();
@@ -45,7 +54,9 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
               <Button onClick={handleToggleRejectModal}>
                 {configButtons.buttons.buttonOne.label}
               </Button>
-              <Button>{configButtons.buttons.buttonTwo.label}</Button>
+              <Button onClick={handleToggleCancelModal}>
+                {configButtons.buttons.buttonTwo.label}
+              </Button>
               <Button>{configButtons.buttons.buttonTree.label}</Button>
             </Stack>
             <StyledHorizontalDivider />
@@ -69,6 +80,16 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           inputPlaceholder="Describa el motivo del rechazo."
           onCloseModal={handleToggleRejectModal}
           onSubmit={handleSubmitRejectModal}
+        />
+      )}
+      {showCancelModal && (
+        <TextAreaModal
+          title="Anular"
+          buttonText="Confirmar"
+          inputLabel="Motivo de la anulacion."
+          inputPlaceholder="Describa el motivo de la anulacion."
+          onCloseModal={handleToggleCancelModal}
+          onSubmit={handleSubmitCancelModal}
         />
       )}
     </>
