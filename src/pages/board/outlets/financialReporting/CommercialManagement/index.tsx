@@ -21,6 +21,9 @@ import { currencyFormat } from "@utils/formatData/currency";
 import { Requests } from "@services/types";
 
 import { StyledCollapseIcon, StyledIcon, StyledDivider } from "./styles";
+import { generatePDF } from "@src/utils/pdf/generetePDF";
+import { DataCommercialManagement } from "./TableCommercialManagement";
+import { dataAccordeon } from "./config/config";
 
 interface ComercialManagementProps {
   data: Requests;
@@ -31,10 +34,25 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const { data, children } = props;
   const [collapse, setCollapse] = useState(false);
 
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+
   const { id } = useParams();
 
   const handleCollapse = () => {
     setCollapse(!collapse);
+  };
+
+  const handleGeneratePDF = async () => {
+    try {
+      setIsGeneratingPdf(true);
+      await generatePDF(
+        <DataCommercialManagement dataAccordeon={dataAccordeon} />
+      );
+      setIsGeneratingPdf(false);
+    } catch (error) {
+      console.error("Error al generar PDF:", error);
+      setIsGeneratingPdf(false);
+    }
   };
 
   return (
@@ -126,6 +144,8 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   appearance="primary"
                   size="18px"
                   cursorHover
+                  disabled={isGeneratingPdf}
+                  onClick={handleGeneratePDF}
                 />
               </StyledIcon>
               <StyledIcon>
