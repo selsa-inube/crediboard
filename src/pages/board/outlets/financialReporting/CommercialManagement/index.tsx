@@ -51,20 +51,25 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       <Stack direction="column" gap={inube.spacing.s150}>
         <Stack justifyContent="space-between" alignItems="center">
           <Stack direction="column">
-            <Stack gap={inube.spacing.s450}>
-              <Stack gap={inube.spacing.s050}>
+            <Stack>
+              <Stack gap={inube.spacing.s075} width="max-content">
                 <Text type="title" size="small" appearance="gray">
                   No. Rad.:
                 </Text>
                 <Text type="title" size="small">
                   {data.k_Prospe}
                 </Text>
+                <Text
+                  type="title"
+                  size="small"
+                  appearance="gray"
+                  padding="0px 0px 0px 8px"
+                >
+                  {capitalizeFirstLetter(
+                    formatISODatetoCustomFormat(data.f_Prospe)
+                  )}
+                </Text>
               </Stack>
-              <Text type="title" size="small" appearance="gray">
-                {capitalizeFirstLetter(
-                  formatISODatetoCustomFormat(data.f_Prospe)
-                )}
-              </Text>
             </Stack>
             {isMobile && (
               <Stack margin="s050 s0">
@@ -76,10 +81,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                 </Text>
               </Stack>
             )}
-            <Stack
-              gap={!isMobile ? inube.spacing.s050 : "0px"}
-              direction="column"
-            >
+            <Stack gap={!isMobile ? inube.spacing.s050 : "4px"}>
               <Text type="title" size="small" appearance="gray">
                 Destino:
               </Text>
