@@ -40,7 +40,11 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
               Volver
             </Button>
           </Stack>
-          <Stack justifyContent="end" gap={inube.spacing.s200}>
+          <Stack
+            justifyContent="end"
+            gap={inube.spacing.s200}
+            padding="s0 s300"
+          >
             <Stack gap={inube.spacing.s400}>
               <Button onClick={handleToggleRejectModal}>
                 {configButtons.buttons.buttonOne.label}
