@@ -71,7 +71,11 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
             )}
           </Stack>
           {!isMobile && (
-            <Stack justifyContent="end" gap={inube.spacing.s200}>
+            <Stack
+              justifyContent="end"
+              gap={inube.spacing.s200}
+              margin={!isMobile ? "s0 s0 s200 s0" : "s0"}
+            >
               <Stack gap={inube.spacing.s400}>
                 <Button onClick={handleToggleRejectModal}>
                   {configButtons.buttons.buttonOne.label}
