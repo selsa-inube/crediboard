@@ -1,5 +1,12 @@
-import { MdWarningAmber } from "react-icons/md";
+import { isValidElement } from "react";
+import { MdNotificationsNone, MdWarningAmber } from "react-icons/md";
 import { Icon, Tag } from "@inube/design-system";
+
+import { IEntries } from "@components/data/TableBoard/types";
+
+const handledata = (data: IEntries) => {
+  console.log(data, "function that receives data");
+};
 
 export async function handleData() {
   return new Promise((resolve) => {
@@ -129,5 +136,44 @@ export const entriesApprovals = [
     usuarios: "Viviana Amador Tejada",
     decision: <Tag label="Aprobado" appearance="success" />,
     error: "",
+  },
+];
+
+export const actionsApprovals = [
+  {
+    id: "Error",
+    actionName: "Error",
+    content: (data: IEntries) => (
+      <Icon
+        icon={<MdWarningAmber />}
+        appearance="warning"
+        spacing="compact"
+        cursorHover
+        size="24px"
+        onClick={() => handledata(data)}
+        disabled={
+          isValidElement(data?.decision) &&
+          data?.decision?.props?.label !== "Pendiente"
+        }
+      />
+    ),
+  },
+  {
+    id: "notificaciones",
+    actionName: "Notificar",
+    content: (data: IEntries) => (
+      <Icon
+        icon={<MdNotificationsNone />}
+        appearance="primary"
+        spacing="compact"
+        cursorHover
+        size="24px"
+        onClick={() => handledata(data)}
+        disabled={
+          isValidElement(data?.decision) &&
+          data?.decision?.props?.label === "Pendiente"
+        }
+      />
+    ),
   },
 ];
