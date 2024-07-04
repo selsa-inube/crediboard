@@ -47,7 +47,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
   const { children } = props;
   const [showRejectionModal, setShowRejectionModal] = useState(false);
 
-  const [showAttachmentsModal, setShowAttachmentsModal] = useState(false);
+  const [attachDocuments, setAttachDocuments] = useState(false);
 
   const handleToggleRejectModal = () => {
     setShowRejectionModal(!showRejectionModal);
@@ -88,15 +88,15 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
               </Button>
               <Button
                 variant="outlined"
-                onClick={() => setShowAttachmentsModal(true)}
+                onClick={() => setAttachDocuments(true)}
               >
                 {configButtons.buttonsOutlined.buttonTwo.label}
               </Button>
-              {showAttachmentsModal && (
+              {attachDocuments && (
                 <Listmodal
                   title="Ver Adjuntos"
                   content={<Listdata data={configDataAttachments} />}
-                  handleClose={() => setShowAttachmentsModal(false)}
+                  handleClose={() => setAttachDocuments(false)}
                 />
               )}
             </Stack>
