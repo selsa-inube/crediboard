@@ -73,7 +73,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             </Stack>
             {isMobile && (
               <Stack margin="s050 s0">
-                <Text type="title">
+                <Text type="title" size={!isMobile ? "large" : "medium"}>
                   {data.nnasocia &&
                     capitalizeFirstLetterEachWord(
                       truncateTextToMaxLength(data.nnasocia)
