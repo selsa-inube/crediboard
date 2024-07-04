@@ -11,6 +11,7 @@ import { Requests } from "@services/types";
 
 import { ToDo } from "./ToDo";
 import { infoIcon } from "./ToDo/config";
+import ErrorAlert from "@components/ErrorAlert";
 
 export interface IFinancialReportingProps {
   requirements?: JSX.Element | JSX.Element[];
@@ -30,17 +31,24 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   } = props;
 
   const [data, setData] = useState({} as Requests);
+  const [errorKey, setErrorKey] = useState(false);
 
   const { id } = useParams();
 
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
-      setData(requirement);
+      const simulatedRequirement = { ...requirement, hasError: true };
+      
+      setData(simulatedRequirement);
+      if (simulatedRequirement.hasError) {
+        setErrorKey(true);
+      }
     });
   }, [id]);
 
   return (
     <Stack direction="column" margin="s250">
+      {errorKey && <ErrorAlert errorKey={errorKey} />} {}
       <ContainerSections>
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
