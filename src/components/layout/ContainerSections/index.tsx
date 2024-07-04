@@ -17,22 +17,6 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
 
-  const handleToggleRejectModal = () => {
-    setShowRejectionModal(!showRejectionModal);
-  };
-
-  const handleSubmitRejectModal = () => {
-    setShowRejectionModal(!showRejectionModal);
-  };
-
-  const handleToggleCancelModal = () => {
-    setShowCancelModal(!showCancelModal);
-  };
-
-  const handleSubmitCancelModal = () => {
-    setShowCancelModal(!showCancelModal);
-  };
-
   const navigation = useNavigate();
 
   return (
@@ -51,10 +35,10 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           </Stack>
           <Stack justifyContent="end" gap={inube.spacing.s200}>
             <Stack gap={inube.spacing.s400}>
-              <Button onClick={handleToggleRejectModal}>
+              <Button onClick={() => setShowRejectionModal(!showRejectionModal)}>
                 {configButtons.buttons.buttonOne.label}
               </Button>
-              <Button onClick={handleToggleCancelModal}>
+              <Button onClick={() => setShowCancelModal(!showCancelModal)}>
                 {configButtons.buttons.buttonTwo.label}
               </Button>
               <Button>{configButtons.buttons.buttonTree.label}</Button>
@@ -78,18 +62,18 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           buttonText="Confirmar"
           inputLabel="Motivo del rechazo."
           inputPlaceholder="Describa el motivo del rechazo."
-          onCloseModal={handleToggleRejectModal}
-          onSubmit={handleSubmitRejectModal}
+          onCloseModal={() => setShowRejectionModal(!showRejectionModal)}
+          onSubmit={() => setShowRejectionModal(!showRejectionModal)}
         />
       )}
       {showCancelModal && (
         <TextAreaModal
           title="Anular"
           buttonText="Confirmar"
-          inputLabel="Motivo de la anulacion."
+          inputLabel="Motivode la anulacion."
           inputPlaceholder="Describa el motivo de la anulacion."
-          onCloseModal={handleToggleCancelModal}
-          onSubmit={handleSubmitCancelModal}
+          onCloseModal={() => setShowCancelModal(!showCancelModal)}
+          onSubmit={() => setShowCancelModal(!showCancelModal)}
         />
       )}
     </>

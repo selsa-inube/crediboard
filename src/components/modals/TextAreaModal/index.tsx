@@ -12,7 +12,7 @@ import { MdClear } from "react-icons/md";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 
-import { StyledModal, StyledLabel } from "./styles";
+import { StyledModal } from "./styles";
 
 interface FormValues {
   textarea: string;
@@ -85,7 +85,7 @@ export function TextAreaModal(props: TextAreaModalProps) {
                 {({ field, form: { setFieldTouched } }: FieldProps) => (
                   <Textarea
                     {...field}
-                    label={<StyledLabel>{inputLabel}</StyledLabel>} // Aquí usamos StyledLabel
+                    label={inputLabel}
                     placeholder={inputPlaceholder}
                     maxLength={maxLength}
                     status={
