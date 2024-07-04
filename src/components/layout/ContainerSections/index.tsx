@@ -70,7 +70,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
         <TextAreaModal
           title="Anular"
           buttonText="Confirmar"
-          inputLabel="Motivode la anulacion."
+          inputLabel="Motivo de la anulacion."
           inputPlaceholder="Describa el motivo de la anulacion."
           onCloseModal={() => setShowCancelModal(!showCancelModal)}
           onSubmit={() => setShowCancelModal(!showCancelModal)}
