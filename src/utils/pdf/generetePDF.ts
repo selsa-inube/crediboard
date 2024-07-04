@@ -1,4 +1,5 @@
 import { createRoot } from "react-dom/client";
+
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
@@ -12,12 +13,14 @@ export const generatePDF = async (content: JSX.Element, titleSave?: string) => {
 
   root.render(content);
 
+  // ReactDOM.render(content, containerPDF);
+
   const canvas = await html2canvas(containerPDF, {
-    height: 100,
+    height: 1000,
   });
   const imgData = canvas.toDataURL("image/png");
   const pdf = new jsPDF("l", "mm", "a4");
-  console.log("imgData", imgData);
+  console.log("imgData", content);
 
   const imgProps = pdf.getImageProperties(imgData);
   const pdfWidth = pdf.internal.pageSize.getWidth();
