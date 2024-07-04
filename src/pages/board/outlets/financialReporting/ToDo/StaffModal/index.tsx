@@ -13,28 +13,28 @@ import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 
 import { StyledModal } from "./styles";
-import { IOfficial } from "../config";
+import { IStaff } from "@services/types";
 
 interface FormValues {
   commercialManager: string;
   analyst: string;
 }
 
-export interface OfficialsModalProps {
+export interface StaffModalProps {
   commercialManager: string;
   analyst: string;
-  officials: IOfficial[];
+  staff: IStaff[];
   portalId?: string;
   onChange: (key: string) => void;
   onSubmit?: (values: { commercialManager: string; analyst: string }) => void;
   onCloseModal?: () => void;
 }
 
-export function OfficialsModal(props: OfficialsModalProps) {
+export function StaffModal(props: StaffModalProps) {
   const {
     commercialManager,
     analyst,
-    officials,
+    staff,
     portalId = "portal",
     onChange,
     onSubmit,
@@ -56,7 +56,7 @@ export function OfficialsModal(props: OfficialsModalProps) {
   }
 
   const getOptions = (position: string) =>
-    officials
+    staff
       .filter((official) => official.position === position)
       .map((official) => ({ id: official.id, label: official.name }));
 

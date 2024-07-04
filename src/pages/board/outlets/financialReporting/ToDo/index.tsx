@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   Icon,
@@ -11,10 +11,11 @@ import {
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
-import { Requests } from "@services/types";
+import { IStaff, Requests } from "@services/types";
+import { get } from "@mocks/utils/dataMock.service";
 
-import { optionSelectDecision, officials } from "./config";
-import { OfficialsModal } from "./OfficialsModal";
+import { optionSelectDecision } from "./config";
+import { StaffModal } from "./StaffModal";
 
 interface IICon {
   icon: JSX.Element;
@@ -38,22 +39,23 @@ interface ToDoProps {
 export const ToDo = (props: ToDoProps) => {
   const { icon, button, isMobile, data } = props;
   const { label, onClick, disabled, loading } = button || {};
-  const [showOfficialsModal, setShowOfficialsModal] = useState(false);
-  const [assignedOfficials, setAssignedOfficials] = useState({
+  const [showStaffModal, setShowStaffModal] = useState(false);
+  const [staff, setStaff] = useState<IStaff[]>([]);
+  const [assignedStaff, setAssignedStaff] = useState({
     commercialManager: "Jorge Enrique Díaz Vargas",
     analyst: "Ana Patricia García Herrera",
   });
-  const [tempOfficials, setTempOfficials] = useState(assignedOfficials);
+  const [tempStaff, setTempStaff] = useState(assignedStaff);
   const [changeDecision, setChangeDecision] = useState({ decision: "" });
 
-  const handleToggleOfficialsModal = () => {
-    setShowOfficialsModal(!showOfficialsModal);
+  const handleToggleStaffModal = () => {
+    setShowStaffModal(!showStaffModal);
   };
 
   const handleSelectOfficial =
     (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.innerText;
-      setTempOfficials((prev) => ({ ...prev, [key]: value }));
+      setTempStaff((prev) => ({ ...prev, [key]: value }));
     };
 
   const onChangeDecision = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,9 +64,21 @@ export const ToDo = (props: ToDoProps) => {
   };
 
   const handleSubmit = () => {
-    setAssignedOfficials(tempOfficials);
-    handleToggleOfficialsModal();
+    setAssignedStaff(tempStaff);
+    handleToggleStaffModal();
   };
+
+  useEffect(() => {
+    get("staff")
+      .then((data) => {
+        if (data && Array.isArray(data)) {
+          setStaff(data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching staff data:", error.message);
+      });
+  }, []);
 
   return (
     <>
@@ -134,7 +148,7 @@ export const ToDo = (props: ToDoProps) => {
                   icon={icon.icon}
                   appearance="primary"
                   size="32px"
-                  onClick={handleToggleOfficialsModal}
+                  onClick={handleToggleStaffModal}
                   cursorHover
                 />
               )}
@@ -143,7 +157,7 @@ export const ToDo = (props: ToDoProps) => {
                 name="gestorComercial"
                 label="Gestor Comercial"
                 placeholder="Gestor Comercial"
-                value={assignedOfficials.commercialManager}
+                value={assignedStaff.commercialManager}
                 fullwidth
                 readOnly
               />
@@ -154,7 +168,7 @@ export const ToDo = (props: ToDoProps) => {
               name="analista"
               label="Analista"
               placeholder="Analista"
-              value={assignedOfficials.analyst}
+              value={assignedStaff.analyst}
               fullwidth
               readOnly
             />
@@ -165,7 +179,7 @@ export const ToDo = (props: ToDoProps) => {
                   icon={icon.icon}
                   appearance="primary"
                   size="36px"
-                  onClick={handleToggleOfficialsModal}
+                  onClick={handleToggleStaffModal}
                   cursorHover
                 />
               </Stack>
@@ -173,14 +187,14 @@ export const ToDo = (props: ToDoProps) => {
           </Stack>
         </Stack>
       </Fieldset>
-      {showOfficialsModal && (
-        <OfficialsModal
-          commercialManager={tempOfficials.commercialManager}
-          analyst={tempOfficials.analyst}
-          officials={officials}
+      {showStaffModal && (
+        <StaffModal
+          commercialManager={tempStaff.commercialManager}
+          analyst={tempStaff.analyst}
+          staff={staff}
           onChange={handleSelectOfficial}
           onSubmit={handleSubmit}
-          onCloseModal={handleToggleOfficialsModal}
+          onCloseModal={handleToggleStaffModal}
         />
       )}
     </>
