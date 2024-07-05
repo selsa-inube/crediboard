@@ -61,7 +61,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
             autoRows="auto"
           >
             <Stack direction="column">
-              {<ToDo icon={infoIcon} data={data} />}
+              {<ToDo icon={infoIcon} data={data} isMobile={isMobile} />}
             </Stack>
             <Stack direction="column">{approvals}</Stack>
             <Stack direction="column">{requirements}</Stack>
