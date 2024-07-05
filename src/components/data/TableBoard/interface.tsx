@@ -166,7 +166,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                       appearance={appearanceTable!.title}
                       type="title"
                       size="medium"
-                      padding="0px 4px"
+                      padding={isTablet ? "0px" : "0px 4px"}
                     >
                       {title.titleName}
                     </Text>
@@ -204,7 +204,10 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                         {typeof entry[title.id] !== "string" ? (
                           entry[title.id]
                         ) : (
-                          <Text size="medium" padding="0px 4px">
+                          <Text
+                            size="medium"
+                            padding={isTablet ? "0px" : "0px 4px"}
+                          >
                             {entry[title.id]}
                           </Text>
                         )}
