@@ -7,11 +7,11 @@ import { getById } from "@mocks/utils/dataMock.service";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
+import  ErrorAlert  from "@components/ErrorAlert";
 import { Requests } from "@services/types";
 
 import { ToDo } from "./ToDo";
 import { infoIcon } from "./ToDo/config";
-import ErrorAlert from "@components/ErrorAlert";
 
 export interface IFinancialReportingProps {
   requirements?: JSX.Element | JSX.Element[];
