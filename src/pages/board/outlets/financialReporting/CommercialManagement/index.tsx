@@ -16,12 +16,12 @@ import {
   capitalizeFirstLetter,
   capitalizeFirstLetterEachWord,
 } from "@utils/formatData/text";
+import { generatePDF } from "@utils/pdf/generetePDF";
 import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { Requests } from "@services/types";
 
 import { StyledCollapseIcon, StyledIcon, StyledDivider } from "./styles";
-import { generatePDF } from "@src/utils/pdf/generetePDF";
 import { DataCommercialManagement } from "./TableCommercialManagement";
 import { dataAccordeon } from "./config/config";
 
