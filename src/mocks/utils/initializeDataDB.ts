@@ -1,9 +1,10 @@
 import localforage from "localforage";
 
-import { intializedData } from "@src/mocks/utils/dataMock.service";
+import { intializedData } from "@mocks/utils/dataMock.service";
 import { themes } from "@mocks/design/themes";
 import { mockRequests } from "@mocks/requests/requests.mock";
 import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
+import { mockStaff } from "@mocks/staff/staff.mock";
 
 export function initializeDataDB() {
   localforage.clear();
@@ -14,4 +15,5 @@ export function initializeDataDB() {
     "requests-pinned",
     mockRequestsPinned
   );
+  intializedData<(typeof mockStaff)[number]>("staff", mockStaff);
 }
