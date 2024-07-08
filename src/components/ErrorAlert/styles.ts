@@ -21,15 +21,7 @@ export const AlertContainer = styled.div`
 
 export const Text = styled.span`
   flex: 1; 
-  margin-right: 45px; 
-`;
-
-export const CloseButton = styled.button`
-  background: none;
-  border: none;
+  margin-left: 20px;
+  margin-right: 20px; 
   font-size: 16px;
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
 `;

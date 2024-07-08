@@ -7,9 +7,8 @@ import { getById } from "@mocks/utils/dataMock.service";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
-import  ErrorAlert  from "@components/ErrorAlert";
+import ErrorAlert from "@components/ErrorAlert";
 import { Requests } from "@services/types";
-
 import { ToDo } from "./ToDo";
 import { infoIcon } from "./ToDo/config";
 
@@ -46,9 +45,13 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
     });
   }, [id]);
 
+  const handleCloseErrorAlert = () => {
+    setErrorKey(false);
+  };
+
   return (
     <Stack direction="column" margin="s250">
-      {errorKey && <ErrorAlert errorKey={errorKey} />} {}
+      {errorKey && <ErrorAlert errorKey={errorKey} onClose={handleCloseErrorAlert} />}
       <ContainerSections>
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
