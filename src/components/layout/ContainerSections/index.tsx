@@ -1,13 +1,17 @@
-import { useNavigate } from "react-router-dom";
-import { MdArrowBack, MdOutlineRemoveRedEye } from "react-icons/md";
-import { Button, Icon, Stack, Text, inube } from "@inube/design-system";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  MdAddCircleOutline,
+  MdArrowBack,
+  MdOutlineRemoveRedEye,
+} from "react-icons/md";
+import { Button, Icon, Stack, Text, inube } from "@inube/design-system";
 
+import { IOptionButtons, Listmodal } from "@components/modals/Listmodal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 
 import { configButtons, configDataAttachments } from "./config";
 import { StyledHorizontalDivider, StyledItem } from "./styles";
-import { Listmodal } from "@components/modals/Listmodal";
 
 interface IContainerSectionsProps {
   children?: JSX.Element | JSX.Element[];
@@ -15,10 +19,19 @@ interface IContainerSectionsProps {
 
 interface IListdataProps {
   data: { id: string; name: string }[];
+  icon?: React.ReactNode;
 }
 
+const optionButtons: IOptionButtons = {
+  label: "Adjuntar archivo",
+  variant: "none",
+  icon: <MdAddCircleOutline />,
+  fullwidth: false,
+  onClick: () => console.log("Adjuntar archivo"),
+};
+
 const Listdata = (props: IListdataProps) => {
-  const { data } = props;
+  const { data, icon } = props;
 
   return (
     <ul
@@ -31,7 +44,7 @@ const Listdata = (props: IListdataProps) => {
         <StyledItem key={element.id}>
           <Text>{element.name}</Text>
           <Icon
-            icon={<MdOutlineRemoveRedEye />}
+            icon={icon}
             appearance="dark"
             spacing="none"
             size="24px"
@@ -48,6 +61,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
   const [showRejectionModal, setShowRejectionModal] = useState(false);
 
   const [attachDocuments, setAttachDocuments] = useState(false);
+  const [showAttachments, setShowAttachments] = useState(false);
 
   const handleToggleRejectModal = () => {
     setShowRejectionModal(!showRejectionModal);
@@ -83,9 +97,20 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
             </Stack>
             <StyledHorizontalDivider />
             <Stack gap={inube.spacing.s200}>
-              <Button variant="outlined">
+              <Button
+                variant="outlined"
+                onClick={() => setShowAttachments(true)}
+              >
                 {configButtons.buttonsOutlined.buttonOne.label}
               </Button>
+              {showAttachments && (
+                <Listmodal
+                  title="Adjuntar"
+                  content={<Listdata data={configDataAttachments} />}
+                  handleClose={() => setShowAttachments(false)}
+                  optionButtons={optionButtons}
+                />
+              )}
               <Button
                 variant="outlined"
                 onClick={() => setAttachDocuments(true)}
@@ -95,7 +120,12 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
               {attachDocuments && (
                 <Listmodal
                   title="Ver Adjuntos"
-                  content={<Listdata data={configDataAttachments} />}
+                  content={
+                    <Listdata
+                      data={configDataAttachments}
+                      icon={<MdOutlineRemoveRedEye />}
+                    />
+                  }
                   handleClose={() => setAttachDocuments(false)}
                 />
               )}

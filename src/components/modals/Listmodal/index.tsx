@@ -11,16 +11,26 @@ import {
 } from "@inube/design-system";
 
 import { StyledContainerContent, StyledModal } from "./styles";
+import React from "react";
+
+export interface IOptionButtons {
+  label: string;
+  variant: "filled" | "outlined" | "none";
+  icon?: React.ReactNode;
+  fullwidth?: boolean;
+  onClick?: () => void;
+}
 
 export interface IListmodalProps {
   title: string;
   portalId?: string;
   content?: JSX.Element | JSX.Element[];
+  optionButtons?: IOptionButtons;
   handleClose: () => void;
 }
 
 export const Listmodal = (props: IListmodalProps) => {
-  const { title, portalId, content, handleClose } = props;
+  const { title, portalId, content, optionButtons, handleClose } = props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -52,6 +62,18 @@ export const Listmodal = (props: IListmodalProps) => {
         <StyledContainerContent $smallScreen={isMobile}>
           {content}
         </StyledContainerContent>
+        {optionButtons && (
+          <Button
+            spacing="compact"
+            iconBefore={optionButtons?.icon}
+            variant={optionButtons?.variant}
+            onClick={optionButtons?.onClick}
+            fullwidth={optionButtons?.fullwidth}
+            cursorHover
+          >
+            {optionButtons?.label}
+          </Button>
+        )}
         <Stack justifyContent="flex-end" margin="s200 s0">
           <Button onClick={handleClose}>Cerrar</Button>
         </Stack>
