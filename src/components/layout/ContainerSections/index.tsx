@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   MdAddCircleOutline,
   MdArrowBack,
+  MdDeleteOutline,
   MdOutlineRemoveRedEye,
 } from "react-icons/md";
 import { Button, Icon, Stack, Text, inube } from "@inube/design-system";
@@ -106,7 +107,12 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
               {showAttachments && (
                 <Listmodal
                   title="Adjuntar"
-                  content={<Listdata data={configDataAttachments} />}
+                  content={
+                    <Listdata
+                      data={configDataAttachments}
+                      icon={<MdDeleteOutline />}
+                    />
+                  }
                   handleClose={() => setShowAttachments(false)}
                   optionButtons={optionButtons}
                 />
