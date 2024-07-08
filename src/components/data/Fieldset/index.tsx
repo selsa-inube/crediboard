@@ -17,7 +17,7 @@ interface IFieldsetProps {
   heigthFieldset?: string;
   descriptionTitle?: string;
   activeButton?: IPtionsButton;
-  hiddenScroll?: boolean;
+  hasOverflow?: boolean;
 }
 
 export const Fieldset = (props: IFieldsetProps) => {
@@ -29,7 +29,7 @@ export const Fieldset = (props: IFieldsetProps) => {
     aspectRatio,
     descriptionTitle,
     activeButton,
-    hiddenScroll = false,
+    hasOverflow,
   } = props;
 
   return (
@@ -66,8 +66,8 @@ export const Fieldset = (props: IFieldsetProps) => {
       </Stack>
       <StyledContainerFieldset
         $aspectRatio={aspectRatio}
-        $hiddenScroll={hiddenScroll}
         $isMobile={isMobile}
+        $hasOverflow={hasOverflow}
       >
         {children}
       </StyledContainerFieldset>

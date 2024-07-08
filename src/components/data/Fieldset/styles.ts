@@ -3,17 +3,12 @@ import { inube } from "@inube/design-system";
 
 interface IStyledContainerFieldset {
   $aspectRatio?: string;
-  $hiddenScroll?: boolean;
   $isMobile?: boolean;
+  $hasOverflow?: boolean;
 }
 
-const getScrollbarWidth = ($hiddenScroll?: boolean, $isMobile?: boolean) => {
-  if ($hiddenScroll) return "0px";
-  return $isMobile ? "10px" : "17px";
-};
-
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
-  overflow-y: auto;
+  overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "none" : "auto")};
   border-radius: 8px;
   border-width: 2px;
   border-style: solid;
@@ -31,8 +26,7 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
 
   &::-webkit-scrollbar {
     border-radius: 8px;
-    width: ${({ $hiddenScroll, $isMobile }) =>
-      getScrollbarWidth($hiddenScroll, $isMobile)};
+    width: ${({ $isMobile }) => ($isMobile ? "10px" : "17px")};
   }
 
   &::-webkit-scrollbar-thumb {
