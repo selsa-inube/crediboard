@@ -1,27 +1,29 @@
 import { createRoot } from "react-dom/client";
-
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-export const generatePDF = async (content: JSX.Element, titleSave?: string) => {
+export const generatePDF = async (
+  content: JSX.Element,
+  titleSave = "document.pdf"
+) => {
   const containerPDF = document.createElement("div");
-  console.log("entra");
 
   document.body.appendChild(containerPDF);
 
   const root = createRoot(containerPDF);
-
   root.render(content);
 
-  // ReactDOM.render(content, containerPDF);
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const canvas = await html2canvas(containerPDF, {
-    height: 1000,
+    height: containerPDF.scrollHeight,
+    width: containerPDF.scrollWidth,
+    useCORS: true,
+    allowTaint: true,
   });
+
   const imgData = canvas.toDataURL("image/png");
   const pdf = new jsPDF("l", "mm", "a4");
-  console.log("imgData", content);
-
   const imgProps = pdf.getImageProperties(imgData);
   const pdfWidth = pdf.internal.pageSize.getWidth();
   const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
@@ -45,7 +47,7 @@ export const generatePDF = async (content: JSX.Element, titleSave?: string) => {
     contentHeight
   );
 
-  pdf.save(`${titleSave}.pdf` ?? "document.pdf");
+  pdf.save(`${titleSave}.pdf`);
 
   document.body.removeChild(containerPDF);
 };
