@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Stack, inube, Grid } from "@inube/design-system";
-
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { getById } from "@mocks/utils/dataMock.service";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
-import ErrorAlert from "@components/ErrorAlert";
+import { ErrorAlert } from "@components/ErrorAlert";
 import { Requests } from "@services/types";
 import { ToDo } from "./ToDo";
 import { infoIcon } from "./ToDo/config";
@@ -30,7 +29,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   } = props;
 
   const [data, setData] = useState({} as Requests);
-  const [errorKey, setErrorKey] = useState(false);
+  const [errorVisible, setErrorVisible] = useState(false);
 
   const { id } = useParams();
 
@@ -40,18 +39,18 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
       
       setData(simulatedRequirement);
       if (simulatedRequirement.hasError) {
-        setErrorKey(true);
+        setErrorVisible(true);
       }
     });
   }, [id]);
 
   const handleCloseErrorAlert = () => {
-    setErrorKey(false);
+    setErrorVisible(false);
   };
 
   return (
     <Stack direction="column" margin="s250">
-      {errorKey && <ErrorAlert errorKey={errorKey} onClose={handleCloseErrorAlert} />}
+      {errorVisible && <ErrorAlert message="Existe un error sin evaluar" onClose={handleCloseErrorAlert} />}
       <ContainerSections>
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">

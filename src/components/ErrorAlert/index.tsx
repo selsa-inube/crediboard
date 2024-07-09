@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { Icon } from "@inubekit/icon";
+import { Text } from "@inubekit/text";
 import { MdWarningAmber, MdClear } from "react-icons/md";
-import { AlertContainer, Text } from "./styles";
+import { AlertContainer } from "./styles";
 
 export interface ErrorAlertProps {
-  errorKey: boolean;
   message?: string;
   onClose: () => void;
 }
 
-const ErrorAlert = ({ errorKey, message, onClose }: ErrorAlertProps) => {
-  const [visible, setVisible] = useState(errorKey);
+const ErrorAlert = (props: ErrorAlertProps) => {
+  const { message, onClose } = props;
+  const [visible, setVisible] = useState(true);
 
   const handleClose = () => {
     setVisible(false);
@@ -18,17 +19,15 @@ const ErrorAlert = ({ errorKey, message, onClose }: ErrorAlertProps) => {
   };
 
   return (
-    <AlertContainer style={{ display: visible ? "flex" : "none" }}>
-      <Icon
-        appearance="warning"
-        icon={<MdWarningAmber />}
-        size="24px"
-      />
-      <Text>{message || "Existe un error sin evaluar"}</Text>
+    <AlertContainer $visible={visible}>
+      <Icon appearance="warning" icon={<MdWarningAmber />} size="24px" />
+      <Text size="large" padding="0px 70px 0px 10px">
+        {message || "Existe un error sin evaluar"}
+      </Text>
       <Icon
         appearance="dark"
         icon={<MdClear />}
-        size="18px"
+        size="16px"
         cursorHover
         onClick={handleClose}
       />
@@ -36,4 +35,4 @@ const ErrorAlert = ({ errorKey, message, onClose }: ErrorAlertProps) => {
   );
 };
 
-export default ErrorAlert;
+export { ErrorAlert };

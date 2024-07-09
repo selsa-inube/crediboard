@@ -1,15 +1,19 @@
 import styled from 'styled-components';
 
-export const AlertContainer = styled.div`
-  display: flex;
+interface AlertContainerProps {
+  $visible: boolean;
+}
+
+export const AlertContainer = styled.div<AlertContainerProps>`
+  display: ${({ $visible }) => ($visible ? "flex" : "none")};
   align-items: center;
-  background-color: #FFFAE6;
+  background-color: #fffae6;
   color: #091E42;
-  padding: 12px;
+  padding: 8px;
   border-radius: 4px;
+  border: 1px solid #efefef;
   font-weight: 500;
   font-family: Roboto;
-  border: #d4d4d4 1px solid;
   position: fixed;
   top: 62px;
   left: 0;
@@ -17,11 +21,4 @@ export const AlertContainer = styled.div`
   margin: auto;
   max-width: 330px;
   z-index: 1000;
-`;
-
-export const Text = styled.span`
-  flex: 1; 
-  margin-left: 20px;
-  margin-right: 20px; 
-  font-size: 16px;
 `;
