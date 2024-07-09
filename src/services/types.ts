@@ -13,6 +13,14 @@ interface Requests {
   n_Descr_Tarea: string;
 }
 
+interface IStaff {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  position: string;
+}
+
 interface PinnedRequest {
   requestId: number;
   isPinned: "Y" | "N";
@@ -64,6 +72,7 @@ type DmDecisions =
 
 export type {
   Requests,
+  IStaff,
   DmEtapasPrs,
   DmTareasPrs,
   DmConceptos,
