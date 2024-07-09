@@ -22,50 +22,54 @@ export interface IRequirementsProps {
 export const Requirements = (props: IRequirementsProps) => {
   const { data } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
+  const [modalData, setModalData] = useState<{
+    date?: string;
+    details?: string;
+  }>({});
 
-  const handleToggleSeeDetailsModal = () => {
+  const handleToggleSeeDetailsModal = (date?: string, details?: string) => {
+    setModalData({ date, details });
     setShowSeeDetailsModal((prevState) => !prevState);
   };
 
-  const handleSubmitSeeDetailsModal = () => {
-    setShowSeeDetailsModal((prevState) => !prevState);
+  const renderAddIcon = (entry: IEntries) => {
+    const date = typeof entry.date === "string" ? entry.date : undefined;
+    const details =
+      typeof entry.details === "string" ? entry.details : undefined;
+
+    return (
+      <Stack justifyContent="center">
+        <Icon
+          icon={<MdAddCircleOutline />}
+          appearance="primary"
+          onClick={() => handleToggleSeeDetailsModal(date, details)}
+          spacing="compact"
+          size="24px"
+          cursorHover
+        />
+      </Stack>
+    );
   };
+
+  const renderCheckIcon = (entry: IEntries) => (
+    <Stack justifyContent="center">
+      <Icon
+        icon={<MdOutlineCheckCircle />}
+        appearance="primary"
+        spacing="compact"
+        cursorHover
+        size="24px"
+        onClick={() => {}}
+        disabled={
+          isValidElement(entry?.tag) && entry?.tag?.props?.label === "No Cumple"
+        }
+      />
+    </Stack>
+  );
 
   const actionsRequirements: IAction[] = [
-    {
-      id: "agregar",
-      content: () => (
-        <Stack justifyContent="center">
-          <Icon
-            icon={<MdAddCircleOutline />}
-            appearance="primary"
-            onClick={handleToggleSeeDetailsModal}
-            spacing="compact"
-            size="24px"
-            cursorHover
-          />
-        </Stack>
-      ),
-    },
-    {
-      id: "aprobar",
-      content: (data: IEntries) => (
-        <Stack justifyContent="center">
-          <Icon
-            icon={<MdOutlineCheckCircle />}
-            appearance="primary"
-            spacing="compact"
-            cursorHover
-            size="24px"
-            onClick={() => {}}
-            disabled={
-              isValidElement(data?.tag) &&
-              data?.tag?.props?.label === "No Cumple"
-            }
-          />
-        </Stack>
-      ),
-    },
+    { id: "agregar", content: renderAddIcon },
+    { id: "aprobar", content: renderCheckIcon },
   ];
 
   return (
@@ -96,9 +100,9 @@ export const Requirements = (props: IRequirementsProps) => {
       </Stack>
       {showSeeDetailsModal && (
         <SeeDetailsModal
+          date={String(modalData.date)}
+          details={String(modalData.details)}
           onCloseModal={handleToggleSeeDetailsModal}
-          onSubmit={handleSubmitSeeDetailsModal}
-          maxLength={400}
         />
       )}
     </>
