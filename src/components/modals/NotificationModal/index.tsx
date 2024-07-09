@@ -12,7 +12,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { StyledModal } from "./styles";
 
-interface NotificationModalProps {
+export interface NotificationModalProps {
   title: string;
   buttonText: string;
   confirmationText: string;
@@ -21,14 +21,14 @@ interface NotificationModalProps {
   onCloseModal: () => void;
 }
 
-export function NotificationModal({
+export const NotificationModal: React.FC<NotificationModalProps> = ({
   title,
   buttonText,
   confirmationText,
   portalId = "portal",
   onSubmit,
   onCloseModal,
-}: NotificationModalProps) {
+}) => {
   const isMobile = useMediaQuery("(max-width: 700px)");
   const node = document.getElementById(portalId);
 
@@ -45,7 +45,7 @@ export function NotificationModal({
           <Text type="headline" size="small">
             {title}
           </Text>
-          <Stack direction="row" alignItems="center" gap={inube.spacing.s100}>
+          <Stack gap={inube.spacing.s100}>
             <Text>Cerrar</Text>
             <MdClear size={24} cursor="pointer" onClick={onCloseModal} />
           </Stack>
@@ -64,13 +64,13 @@ export function NotificationModal({
           {({ isSubmitting }) => (
             <Form>
               <Stack spacing="s200">
-                <Text>{confirmationText}</Text>
+                <Text padding="0px 0px 20px">{confirmationText}</Text>
               </Stack>
               <Stack justifyContent="flex-end" margin="s200 s0">
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  onClick={() => console.log("sent")}
+                  onClick={onCloseModal}
                 >
                   {buttonText}
                 </Button>
@@ -82,4 +82,4 @@ export function NotificationModal({
     </Blanket>,
     node
   );
-}
+};
