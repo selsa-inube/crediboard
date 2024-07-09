@@ -1,84 +1,85 @@
 import {
-    Stack,
-    useMediaQuery,
-    Blanket,
-    Text,
-    Button,
-    inube,
-  } from "@inube/design-system";
-  import { createPortal } from "react-dom";
-  import { MdClear } from "react-icons/md";
-  import { Formik, Form } from "formik";
-  import * as Yup from "yup";
-  import { StyledModal } from "./styles";
-  
-  interface NotificationModalProps {
-    title: string;
-    buttonText: string;
-    confirmationText: string;
-    portalId?: string;
-    onSubmit: (values: { textarea: string }) => void;
-    onCloseModal: () => void;
-  }
-  
-  export function NotificationModal({
-    title,
-    buttonText,
-    confirmationText,
-    portalId = "portal",
-    onSubmit,
-    onCloseModal,
-  }: NotificationModalProps) {
-    const isMobile = useMediaQuery("(max-width: 700px)");
-    const node = document.getElementById(portalId);
-  
-    if (!node) {
-      throw new Error(
-        "El nodo del portal no está definido. Esto puede ocurrir cuando el nodo específico utilizado para renderizar el portal no se ha definido correctamente."
-      );
-    }
-  
-    return createPortal(
-      <Blanket>
-        <StyledModal $smallScreen={isMobile}>
-          <Stack alignItems="center" justifyContent="space-between">
-            <Text type="headline" size="small">
-              {title}
-            </Text>
-            <Stack gap={inube.spacing.s100}>
-              <Text>Cerrar</Text>
-              <MdClear size={24} cursor="pointer" onClick={onCloseModal} />
-            </Stack>
-          </Stack>
-          <Formik
-            initialValues={{ textarea: "" }}
-            validationSchema={Yup.object().shape({
-              textarea: Yup.string()
-                .max(200, "El número de caracteres es demasiado largo")
-                .required("Este campo es obligatorio"),
-            })}
-            onSubmit={(values, { setSubmitting }) => {
-              onSubmit(values);
-              setSubmitting(false);
-              onCloseModal();
-            }}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                <Stack spacing="s200">
-                  <Text>{confirmationText}</Text>
-                </Stack>
-                <Stack justifyContent="flex-end" marginTop="20px">
-                  <Button type="submit" disabled={isSubmitting}>
-                    {buttonText}
-                  </Button>
-                </Stack>
-              </Form>
-            )}
-          </Formik>
-        </StyledModal>
-      </Blanket>,
-      node
+  Stack,
+  useMediaQuery,
+  Blanket,
+  Text,
+  Button,
+  inube,
+} from "@inube/design-system";
+import { createPortal } from "react-dom";
+import { MdClear } from "react-icons/md";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import { StyledModal } from "./styles";
+
+interface NotificationModalProps {
+  title: string;
+  buttonText: string;
+  confirmationText: string;
+  portalId?: string;
+  onSubmit: (values: { textarea: string }) => void;
+  onCloseModal: () => void;
+}
+
+export function NotificationModal({
+  title,
+  buttonText,
+  confirmationText,
+  portalId = "portal",
+  onSubmit,
+  onCloseModal,
+}: NotificationModalProps) {
+  const isMobile = useMediaQuery("(max-width: 700px)");
+  const node = document.getElementById(portalId);
+
+  if (!node) {
+    throw new Error(
+      "El nodo del portal no está definido. Esto puede ocurrir cuando el nodo específico utilizado para renderizar el portal no se ha definido correctamente."
     );
   }
-  
+
+  return createPortal(
+    <Blanket>
+      <StyledModal $smallScreen={isMobile}>
+        <Stack alignItems="center" justifyContent="space-between">
+          <Text type="headline" size="small">
+            {title}
+          </Text>
+          <Stack direction="row" alignItems="center" gap={inube.spacing.s100}>
+            <Text>Cerrar</Text>
+            <MdClear size={24} cursor="pointer" onClick={onCloseModal} />
+          </Stack>
+        </Stack>
+        <Formik
+          initialValues={{ textarea: "" }}
+          validationSchema={Yup.object().shape({
+            textarea: Yup.string(),
+          })}
+          onSubmit={(values, { setSubmitting }) => {
+            onSubmit(values);
+            setSubmitting(false);
+            onCloseModal();
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <Stack spacing="s200">
+                <Text>{confirmationText}</Text>
+              </Stack>
+              <Stack justifyContent="flex-end" margin="s200 s0">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  onClick={() => console.log("sent")}
+                >
+                  {buttonText}
+                </Button>
+              </Stack>
+            </Form>
+          )}
+        </Formik>
+      </StyledModal>
+    </Blanket>,
+    node
+  );
+}
