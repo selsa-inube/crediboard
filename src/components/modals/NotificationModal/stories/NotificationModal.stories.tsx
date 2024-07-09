@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import { NotificationModal, NotificationModalProps } from "../index";
 import { Button } from "@inube/design-system";
-import { props } from "./props"; // Importa las props definidas
+import { props } from "./props"; 
 
 export default {
   title: "Components/modals/NotificationModal",
   component: NotificationModal,
-  argTypes: props, // Utiliza las props importadas aquí
+  argTypes: props, 
 } as Meta;
 
 const Template: StoryFn<NotificationModalProps> = (args: NotificationModalProps) => {
