@@ -9,23 +9,35 @@ interface JobStabilityCardProps {
   companySeniority: number;
   stabilityIndex: number;
   estimatedCompensation: number;
+  isMobile?: boolean;
 }
 
 export function JobStabilityCard(props: JobStabilityCardProps) {
-  const { companySeniority, stabilityIndex, estimatedCompensation } = props;
+  const { companySeniority, stabilityIndex, estimatedCompensation, isMobile } =
+    props;
   return (
     <CardInfoContainer
       title="Estabilidad Laboral"
       icon={<MdOutlineBusinessCenter />}
-      heightCardInfoContainer="182px"
+      heightCardInfoContainer={isMobile ? "126px" : "182px"}
+      isMobile={isMobile}
     >
-      <Stack direction="column" gap={inube.spacing.s200}>
+      <Stack
+        direction="column"
+        gap={isMobile ? inube.spacing.s075 : inube.spacing.s200}
+      >
         <Stack alignItems="center" gap={inube.spacing.s400}>
           <Stack width="170px">
-            <Text size="medium">Antigüedad en la empresa</Text>
+            <Text size={isMobile ? "small" : "medium"}>
+              Antigüedad en la empresa
+            </Text>
           </Stack>
           <Stack>
-            <Text appearance="primary" type="headline" size="medium">
+            <Text
+              appearance="primary"
+              type="headline"
+              size={isMobile ? "small" : "medium"}
+            >
               {companySeniority} años
             </Text>
           </Stack>
@@ -33,24 +45,36 @@ export function JobStabilityCard(props: JobStabilityCardProps) {
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
           <Stack width="170px">
-            <Text size="medium">Indice de estabilidad laboral</Text>
+            <Text size={isMobile ? "small" : "medium"}>
+              Indice de estabilidad laboral
+            </Text>
           </Stack>
           <Stack>
             <Stack alignItems="center" gap={inube.spacing.s100}>
-              <Text appearance="primary" type="headline" size="medium">
+              <Text
+                appearance="primary"
+                type="headline"
+                size={isMobile ? "small" : "medium"}
+              >
                 {stabilityIndex}
               </Text>
-              <Text size="medium">/1000</Text>
+              <Text size={isMobile ? "small" : "medium"}>/1000</Text>
             </Stack>
           </Stack>
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
           <Stack width="170px">
-            <Text size="medium">Indemnización estimada</Text>
+            <Text size={isMobile ? "small" : "medium"}>
+              Indemnización estimada
+            </Text>
           </Stack>
           <Stack>
-            <Text appearance="primary" type="headline" size="medium">
+            <Text
+              appearance="primary"
+              type="headline"
+              size={isMobile ? "small" : "medium"}
+            >
               {estimatedCompensation === 0
                 ? "$ 0"
                 : currencyFormat(estimatedCompensation)}

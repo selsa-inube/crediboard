@@ -4,10 +4,11 @@ import { inube } from "@inube/design-system";
 interface IStyledContainerCardInfo {
   $aspectRatio?: string;
   $containerHeight?: string;
+  $isMobile?: boolean;
 }
 
 export const StyledContainerCardInfo = styled.div<IStyledContainerCardInfo>`
-  overflow-y: auto;
+  overflow-y: ${({ $isMobile }) => ($isMobile ? "hidden" : "auto")};
   border-radius: 8px;
   border-width: 2px;
   border-style: solid;
@@ -20,7 +21,10 @@ export const StyledContainerCardInfo = styled.div<IStyledContainerCardInfo>`
     ${({ theme }) =>
       theme?.color?.stroke?.divider?.regular ||
       inube.color.stroke.divider.regular};
-  padding: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
+  padding: ${({ theme, $isMobile }) =>
+    $isMobile
+      ? theme?.spacing?.s100 || inube.spacing.s100
+      : theme?.spacing?.s200 || inube.spacing.s200};
 
   &::-webkit-scrollbar {
     border-radius: 8px;
