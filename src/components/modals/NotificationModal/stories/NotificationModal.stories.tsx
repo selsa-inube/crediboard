@@ -1,20 +1,13 @@
-// src/components/modals/NotificationModal.stories.tsx
-
 import { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { NotificationModal, NotificationModalProps } from "./index";
+import { NotificationModal, NotificationModalProps } from "../index";
 import { Button } from "@inube/design-system";
+import { props } from "./props"; // Importa las props definidas
 
 export default {
   title: "Components/modals/NotificationModal",
   component: NotificationModal,
-  argTypes: {
-    title: { control: "text" },
-    buttonText: { control: "text" },
-    confirmationText: { control: "text" },
-    onSubmit: { action: "submitted" },
-    onCloseModal: { action: "closed" },
-  },
+  argTypes: props, // Utiliza las props importadas aquí
 } as Meta;
 
 const Template: StoryFn<NotificationModalProps> = (args: NotificationModalProps) => {
