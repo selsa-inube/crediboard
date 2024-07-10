@@ -46,16 +46,9 @@ const Listdata = (props: IListdataProps) => {
 export const ContainerSections = (props: IContainerSectionsProps) => {
   const { children } = props;
   const [showRejectionModal, setShowRejectionModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
   const [attachDocuments, setAttachDocuments] = useState(false);
-
-  const handleToggleRejectModal = () => {
-    setShowRejectionModal(!showRejectionModal);
-  };
-
-  const handleSubmitRejectModal = () => {
-    setShowRejectionModal(!showRejectionModal);
-  };
 
   const navigation = useNavigate();
 
@@ -75,10 +68,14 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           </Stack>
           <Stack justifyContent="end" gap={inube.spacing.s200}>
             <Stack gap={inube.spacing.s400}>
-              <Button onClick={handleToggleRejectModal}>
+              <Button
+                onClick={() => setShowRejectionModal(!showRejectionModal)}
+              >
                 {configButtons.buttons.buttonOne.label}
               </Button>
-              <Button>{configButtons.buttons.buttonTwo.label}</Button>
+              <Button onClick={() => setShowCancelModal(!showCancelModal)}>
+                {configButtons.buttons.buttonTwo.label}
+              </Button>
               <Button>{configButtons.buttons.buttonTree.label}</Button>
             </Stack>
             <StyledHorizontalDivider />
@@ -110,8 +107,18 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           buttonText="Confirmar"
           inputLabel="Motivo del rechazo."
           inputPlaceholder="Describa el motivo del rechazo."
-          onCloseModal={handleToggleRejectModal}
-          onSubmit={handleSubmitRejectModal}
+          onCloseModal={() => setShowRejectionModal(!showRejectionModal)}
+          onSubmit={() => setShowRejectionModal(!showRejectionModal)}
+        />
+      )}
+      {showCancelModal && (
+        <TextAreaModal
+          title="Anular"
+          buttonText="Confirmar"
+          inputLabel="Motivo de la anulacion."
+          inputPlaceholder="Describa el motivo de la anulacion."
+          onCloseModal={() => setShowCancelModal(!showCancelModal)}
+          onSubmit={() => setShowCancelModal(!showCancelModal)}
         />
       )}
     </>
