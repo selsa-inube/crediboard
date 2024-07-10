@@ -1,8 +1,10 @@
-import { Fieldset } from "@components/data/Fieldset";
-import { TableBoard } from "@src/components/data/TableBoard";
-import { actionsApprovals, handleData, titlesApprovals } from "./config";
 import { useEffect, useState } from "react";
-import { IEntries } from "@src/components/data/TableBoard/types";
+
+import { Fieldset } from "@components/data/Fieldset";
+import { TableBoard } from "@components/data/TableBoard";
+import { IEntries } from "@components/data/TableBoard/types";
+
+import { actionsApprovals, handleData, titlesApprovals } from "./config";
 
 export const Approvals = () => {
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);

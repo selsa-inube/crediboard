@@ -1,16 +1,10 @@
-import { isValidElement } from "react";
-import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
-import { Icon, Stack, Tag } from "@inube/design-system";
+import { Tag } from "@inube/design-system";
 
 import { IEntries } from "@components/data/TableBoard/types";
 
 export const dataButton = {
   title: "Agregar Requesito",
   onClick: () => console.log("Agregar"),
-};
-
-const receiveData = (data: IEntries) => {
-  console.log(data, "function que recibe data");
 };
 
 export const titlesRequirements = [
@@ -106,62 +100,20 @@ export const entriesRequirements: IEntries[][] = [
   ],
 ];
 
-export const actionsRequirements = [
-  [
-    {
-      id: "agregar",
-      content: (data: IEntries) => (
-        <Stack justifyContent="center">
-          <Icon
-            icon={<MdAddCircleOutline />}
-            appearance="primary"
-            onClick={() => receiveData(data)}
-            spacing="compact"
-            size="24px"
-            cursorHover
-          />
-        </Stack>
-      ),
-    },
-    {
-      id: "aprobar",
-      content: (data: IEntries) => (
-        <Stack justifyContent="center">
-          <Icon
-            icon={<MdOutlineCheckCircle />}
-            appearance="primary"
-            spacing="compact"
-            cursorHover
-            size="24px"
-            onClick={() => receiveData(data)}
-            disabled={
-              isValidElement(data?.tag) &&
-              data?.tag?.props?.label === "No Cumple"
-            }
-          />
-        </Stack>
-      ),
-    },
-  ],
-];
-
 export const dataRequirements = [
   {
     id: "tabla1",
     titlesRequirements: titlesRequirements[0],
     entriesRequirements: entriesRequirements[0],
-    actionsRequirements: actionsRequirements[0],
   },
   {
     id: "tabla2",
     titlesRequirements: titlesRequirements[1],
     entriesRequirements: entriesRequirements[1],
-    actionsRequirements: actionsRequirements[0],
   },
   {
     id: "tabla3",
     titlesRequirements: titlesRequirements[2],
     entriesRequirements: entriesRequirements[2],
-    actionsRequirements: actionsRequirements[0],
   },
 ];
