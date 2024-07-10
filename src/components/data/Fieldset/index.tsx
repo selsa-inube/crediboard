@@ -23,17 +23,19 @@ interface IFieldsetProps {
   descriptionTitle?: string;
   activeButton?: IPtionsButton;
   hasTable?: boolean;
+  hasOverflow?: boolean;
 }
 
 export const Fieldset = (props: IFieldsetProps) => {
   const {
     children,
     title,
-    heigthFieldset,
+    heigthFieldset = "auto",
     aspectRatio,
     descriptionTitle,
     activeButton,
     hasTable = false,
+    hasOverflow,
   } = props;
 
   const isMobile = useMediaQuery("(max-width: 720px)");
@@ -74,6 +76,7 @@ export const Fieldset = (props: IFieldsetProps) => {
         $aspectRatio={aspectRatio}
         $isMobile={isMobile}
         $hasTable={hasTable}
+        $hasOverflow={hasOverflow}
       >
         {children}
       </StyledContainerFieldset>
