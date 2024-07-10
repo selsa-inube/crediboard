@@ -8,6 +8,8 @@ import {
 } from "@inube/design-system";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
+import { Icon } from "@inubekit/icon";
+import { MdOutlineEmail, MdOutlinePhone } from "react-icons/md";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Textfield } from "@inubekit/textfield";
@@ -83,7 +85,15 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                       id="field1"
                       {...field}
                       label="Correo"
-                      placeholder="Enter Email"
+                      iconBefore={
+                        <Icon
+                          appearance="dark"
+                          icon={<MdOutlineEmail />}
+                          size="24px"
+                          spacing="wide"
+                        />
+                      }
+                      placeholder="usuario@inube.com"
                       message={
                         touched.field1 && errors.field1 ? errors.field1 : ""
                       }
@@ -103,7 +113,15 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                       id="field2"
                       {...field}
                       label="Telefono"
-                      placeholder="Enter Field 2"
+                      iconBefore={
+                        <Icon
+                          appearance="dark"
+                          icon={<MdOutlinePhone />}
+                          size="24px"
+                          spacing="wide"
+                        />
+                      }
+                      placeholder="3122638128"
                       message={
                         touched.field2 && errors.field2 ? errors.field2 : ""
                       }
@@ -123,7 +141,15 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                       id="field3"
                       {...field}
                       label="Whatsapp"
-                      placeholder="Enter Field 3"
+                      iconBefore={
+                        <Icon
+                          appearance="dark"
+                          icon={<MdOutlinePhone />}
+                          size="24px"
+                          spacing="wide"
+                        />
+                      }
+                      placeholder="3122638128"
                       message={
                         touched.field3 && errors.field3 ? errors.field3 : ""
                       }

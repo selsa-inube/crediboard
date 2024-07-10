@@ -16,6 +16,10 @@ export const PromissoryNotes = () => {
     setShowModal(true);
   };
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <Stack direction="column">
       <Fieldset title="Pagarés y Libranzas">
@@ -23,22 +27,21 @@ export const PromissoryNotes = () => {
           id="promissoryNotes"
           titles={titlesFinanacialReporting}
           entries={entriesFinanacialReporting}
-          actions={actionsFinanacialReporting}
+          actions={actionsFinanacialReporting(handleSendButtonClick)}
           appearanceTable={{
             efectzebra: true,
             title: "primary",
           }}
         />
-        <button onClick={handleSendButtonClick}>Enviar</button>
       </Fieldset>
       {showModal && (
         <PromissoryNotesModal
           title="Gestor Comercial y Analista"
           buttonText="Aceptar"
-          onCloseModal={() => setShowModal(false)}
+          onCloseModal={handleCloseModal}
           onSubmit={(values) => {
             console.log("Form submitted with values:", values);
-            setShowModal(false);
+            handleCloseModal();
           }}
         />
       )}

@@ -1,11 +1,6 @@
 import { MdOutlineSend, MdOutlineRemoveRedEye } from "react-icons/md";
 import { Icon, Tag } from "@inube/design-system";
-
 import { IEntries } from "@components/data/TableBoard/types";
-
-const entrySelection = (data: IEntries) => {
-  console.log(data);
-};
 
 export const titlesFinanacialReporting = [
   {
@@ -54,7 +49,7 @@ export const entriesFinanacialReporting = [
   },
 ];
 
-export const actionsFinanacialReporting = [
+export const actionsFinanacialReporting = (handleSendButtonClick: (entry: IEntries) => void) => [
   {
     id: "Reenviar",
     actionName: "Reenviar",
@@ -64,7 +59,7 @@ export const actionsFinanacialReporting = [
         cursorHover
         size="24px"
         icon={<MdOutlineSend />}
-        onClick={() => entrySelection(data)}
+        onClick={() => handleSendButtonClick(data)}
       />
     ),
   },
@@ -77,7 +72,7 @@ export const actionsFinanacialReporting = [
         size="24px"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
-        onClick={() => entrySelection(data)}
+        onClick={() => console.log(data)}
       />
     ),
   },
