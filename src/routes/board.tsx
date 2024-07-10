@@ -10,7 +10,7 @@ import { PromissoryNotes } from "@pages/board/outlets/financialReporting/Promiss
 import { Postingvouchers } from "@pages/board/outlets/financialReporting/Postingvouchers";
 import { Approvals } from "@pages/board/outlets/financialReporting/Approvals";
 import { CreditProfileInfo } from "@pages/board/outlets/creditProfileInfo";
-import { Management } from "@src/pages/board/outlets/financialReporting/management";
+import { Management } from "@pages/board/outlets/financialReporting/management";
 
 function BoardRoutes() {
   return (

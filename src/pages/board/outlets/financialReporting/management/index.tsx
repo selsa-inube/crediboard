@@ -5,9 +5,11 @@ import { Textfield } from "@inubekit/textfield";
 import { LuPaperclip } from "react-icons/lu";
 import localforage from "localforage";
 import { useParams } from "react-router-dom";
+
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/message";
 import { SubmitButton } from "@components/inputs/SubmitButton";
+
 import { ManagementContainer, ChatContent } from "./styles";
 
 interface MessageType {

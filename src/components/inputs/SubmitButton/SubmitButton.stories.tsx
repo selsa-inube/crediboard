@@ -1,13 +1,14 @@
 import { Meta } from '@storybook/react';
 import { SubmitButton } from '@components/inputs/SubmitButton'
 
- 
-export default {
+const meta: Meta<typeof SubmitButton> =  {
   title: 'components/inputs/SubmitButton',
   component: SubmitButton,
-} as Meta;
+};
  
-export const Default = () => (
+const Default = () => (
  <SubmitButton/>
 );
  
+export { Default }
+export default meta;

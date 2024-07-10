@@ -13,13 +13,11 @@ const formatDate = (timestamp: number) => {
 
 export const Message: React.FC<MessageProps> = ({ type, timestamp, message }) => {
   return (
-    <>
       <MessageWrapper type={type}>
         <MessageContent type={type}>
           {message}
         </MessageContent>
         <Timestamp type={type}>{formatDate(timestamp)}</Timestamp>
       </MessageWrapper>
-    </>
   );
 };
