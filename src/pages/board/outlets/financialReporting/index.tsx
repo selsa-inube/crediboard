@@ -30,22 +30,20 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
 
   const [data, setData] = useState({} as Requests);
   const [errorVisible, setErrorVisible] = useState(false);
-
   const { id } = useParams();
 
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
       const simulatedRequirement = { ...requirement, hasError: true };
-      
       setData(simulatedRequirement);
       if (simulatedRequirement.hasError) {
-        setErrorVisible(true);
+        setErrorVisible(true); 
       }
     });
   }, [id]);
 
   const handleCloseErrorAlert = () => {
-    setErrorVisible(false);
+    setErrorVisible(false); 
   };
 
   return (
@@ -54,18 +52,14 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
       <ContainerSections>
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
-            <Stack direction="column">
-              <ComercialManagement
-                data={data}
-                children={
-                  <DataCommercialManagement dataAccordeon={dataAccordeon} />
-                }
-              />
-            </Stack>
+            <ComercialManagement
+              data={data}
+              children={<DataCommercialManagement dataAccordeon={dataAccordeon} />}
+            />
           </Stack>
           <Grid templateColumns="repeat(2,1fr)" gap="s200" autoRows="auto">
             <Stack direction="column">
-              {<ToDo icon={infoIcon} data={data} />}
+              <ToDo icon={infoIcon} data={data} />
             </Stack>
             <Stack direction="column">{approvals}</Stack>
             <Stack direction="column">{requirements}</Stack>

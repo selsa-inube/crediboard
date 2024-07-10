@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { inube } from "@inube/design-system";
 
 interface AlertContainerProps {
   $visible: boolean;
@@ -7,13 +8,13 @@ interface AlertContainerProps {
 export const AlertContainer = styled.div<AlertContainerProps>`
   display: ${({ $visible }) => ($visible ? "flex" : "none")};
   align-items: center;
-  background-color: #fffae6;
-  color: #091E42;
+  background-color: ${({ theme }) =>
+    theme?.color?.stroke?.gray?.regular || inube.color.surface.warning.clear};
   padding: 8px;
   border-radius: 4px;
-  border: 1px solid #efefef;
+  border: 1px solid ${({ theme }) =>
+     theme?.color?.stroke?.gray?.regular || inube.color.surface.gray.regular};
   font-weight: 500;
-  font-family: Roboto;
   position: fixed;
   top: 62px;
   left: 0;
