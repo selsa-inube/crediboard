@@ -5,10 +5,11 @@ interface IStyledContainerFieldset {
   $aspectRatio?: string;
   $isMobile: boolean;
   $hasTable: boolean;
+  $hasOverflow?: boolean;
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
-  overflow-y: auto;
+  overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "none" : "auto")};
   border-radius: 8px;
   border-width: 2px;
   border-style: solid;
