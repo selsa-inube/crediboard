@@ -20,6 +20,6 @@ export const AlertContainer = styled.div<AlertContainerProps>`
   left: 0;
   right: 0;
   margin: auto;
-  max-width: 330px;
+  max-width: 328px;
   z-index: 1000;
 `;
