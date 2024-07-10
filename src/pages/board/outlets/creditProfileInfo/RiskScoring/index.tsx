@@ -57,63 +57,63 @@ export function RiskScoring(props: RiskScoringProps) {
         <StyledDivider />
         <Stack
           direction="column"
-          gap={isMobile ? inube.spacing.s025 : inube.spacing.s100}
+          gap={isMobile ? inube.spacing.s050 : inube.spacing.s100}
         >
           <Stack alignItems="center">
-            <Stack width="500px">
+            <Stack width={isMobile ? "600px" : "500px"}>
               <Text size={isMobile ? "small" : "medium"}>
                 Antigüedad de 10 años
               </Text>
             </Stack>
-            <Stack justifyContent="center" width="100%">
+            <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
               <Text appearance="primary" type="title" size="large">
                 {yearsOldScore}
               </Text>
             </Stack>
           </Stack>
           <Stack alignItems="center">
-            <Stack width="500px">
+            <Stack width={isMobile ? "600px" : "500px"}>
               <Text size={isMobile ? "small" : "medium"}>
                 Central de riesgo de 250 P
               </Text>
             </Stack>
-            <Stack justifyContent="center" width="100%">
+            <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
               <Text appearance="primary" type="title" size="large">
                 {riskCenterScore}
               </Text>
             </Stack>
           </Stack>
           <Stack alignItems="center">
-            <Stack width="500px">
+            <Stack width={isMobile ? "600px" : "500px"}>
               <Text size={isMobile ? "small" : "medium"}>
                 Indice de estabilidad laboral 900 P
               </Text>
             </Stack>
-            <Stack justifyContent="center" width="100%">
+            <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
               <Text appearance="primary" type="title" size="large">
                 {jobStabilityIndexScore}
               </Text>
             </Stack>
           </Stack>
           <Stack alignItems="center">
-            <Stack width="500px">
+            <Stack width={isMobile ? "600px" : "500px"}>
               <Text size={isMobile ? "small" : "medium"}>
                 Estado civil - Casado
               </Text>
             </Stack>
-            <Stack justifyContent="center" width="100%">
+            <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
               <Text appearance="primary" type="title" size="large">
                 {maritalStatusScore}
               </Text>
             </Stack>
           </Stack>
           <Stack alignItems="center">
-            <Stack width="500px">
+            <Stack width={isMobile ? "600px" : "500px"}>
               <Text size={isMobile ? "small" : "medium"}>
                 Actividad economica - Pensionado
               </Text>
             </Stack>
-            <Stack justifyContent="center" width="100%">
+            <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
               <Text appearance="primary" type="title" size="large">
                 {economicActivityScore}
               </Text>

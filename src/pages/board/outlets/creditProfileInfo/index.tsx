@@ -4,7 +4,7 @@ import {
   Button,
   Text,
   Grid,
-  useMediaQuery,
+  useMediaQueries,
   Icon,
 } from "@inube/design-system";
 import { useNavigate, useParams } from "react-router-dom";
@@ -33,8 +33,8 @@ export const CreditProfileInfo = () => {
   const [data, setData] = useState({} as Requests);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
-  const isTablet = useMediaQuery("(max-width: 1200px)");
-  const isMobile = useMediaQuery("(max-width: 751px)");
+  const { "(max-width: 1200px)": isTablet, "(max-width: 751px)": isMobile } =
+    useMediaQueries(["(max-width: 1200px)", "(max-width: 751px)"]);
 
   useEffect(() => {
     if (id) {

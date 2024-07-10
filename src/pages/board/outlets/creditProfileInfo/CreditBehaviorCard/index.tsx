@@ -33,7 +33,7 @@ export function CreditBehavior(props: CreditBehaviorProps) {
         gap={isMobile ? inube.spacing.s075 : inube.spacing.s200}
       >
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="170px">
+          <Stack width={isMobile ? "120px" : "170px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Score central de riesgo
             </Text>
@@ -53,7 +53,7 @@ export function CreditBehavior(props: CreditBehaviorProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="170px">
+          <Stack width={isMobile ? "120px" : "170px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Número de moras internas
             </Text>
@@ -70,7 +70,7 @@ export function CreditBehavior(props: CreditBehaviorProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="170px">
+          <Stack width={isMobile ? "120px" : "170px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Máximo de número de cuotas en mora
             </Text>

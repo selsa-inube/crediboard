@@ -33,7 +33,7 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
         gap={isMobile ? inube.spacing.s075 : inube.spacing.s200}
       >
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="100px">
+          <Stack width="110px">
             <Text size={isMobile ? "small" : "medium"}>Valor disponible</Text>
           </Stack>
           <Stack>
@@ -48,7 +48,7 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="100px">
+          <Stack width="120px">
             <Text size={isMobile ? "small" : "medium"}>% Disponible</Text>
           </Stack>
           <Stack>
@@ -68,7 +68,7 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="100px">
+          <Stack width="110px">
             <Text size={isMobile ? "small" : "medium"}>% Usado</Text>
           </Stack>
           <Stack>

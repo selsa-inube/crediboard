@@ -26,7 +26,7 @@ export function OpenWallet(props: OpenWalletProps) {
         gap={isMobile ? inube.spacing.s075 : inube.spacing.s200}
       >
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="150px">
+          <Stack width={isMobile ? "110px" : "150px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Factor de descubierto
             </Text>
@@ -48,7 +48,7 @@ export function OpenWallet(props: OpenWalletProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="150px">
+          <Stack width={isMobile ? "110px" : "150px"}>
             <Text size={isMobile ? "small" : "medium"}>Valor descubierto</Text>
           </Stack>
           <Stack>
@@ -63,7 +63,7 @@ export function OpenWallet(props: OpenWalletProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="150px">
+          <Stack width={isMobile ? "120px" : "150px"}>
             <Text size={isMobile ? "small" : "medium"}>Reciprocidad</Text>
           </Stack>
           <Stack>

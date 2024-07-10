@@ -27,7 +27,7 @@ export function JobStabilityCard(props: JobStabilityCardProps) {
         gap={isMobile ? inube.spacing.s075 : inube.spacing.s200}
       >
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="170px">
+          <Stack width={isMobile ? "110px" : "170px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Antigüedad en la empresa
             </Text>
@@ -44,7 +44,7 @@ export function JobStabilityCard(props: JobStabilityCardProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="170px">
+          <Stack width={isMobile ? "110px" : "170px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Indice de estabilidad laboral
             </Text>
@@ -64,7 +64,7 @@ export function JobStabilityCard(props: JobStabilityCardProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="170px">
+          <Stack width={isMobile ? "110px" : "170px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Indemnización estimada
             </Text>
