@@ -15,7 +15,9 @@
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
     "@inube/design-system": "^5.15.0",
-    "@inubekit/textfield": "^2.6.0",
+    "@inubekit/icon": "^1.9.0",
+    "@inubekit/stack": "^2.4.0",
+    "@inubekit/textfield": "^2.7.0",
     "@types/yup": "^0.32.0",
     "formik": "^2.4.6",
     "jspdf-html2canvas": "^1.5.2",
