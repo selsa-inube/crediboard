@@ -24,7 +24,7 @@ export const StyledContainerCardInfo = styled.div<IStyledContainerCardInfo>`
     !$isMobile &&
     `
     &::-webkit-scrollbar {
-      width: 8px;  /* Añade el ancho del scrollbar */
+      width: 8px;  
       border-radius: 8px;
     }
 

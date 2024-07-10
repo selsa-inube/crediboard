@@ -73,8 +73,8 @@ export const titlesMock = [
   },
 ];
 
-const resiveData = (data: IEntries) => {
-  console.log(data, "function que recibe data");
+const receiveData = (data: IEntries) => {
+  console.log(data);
 };
 
 export const actionsMock: IAction[] = [
@@ -90,7 +90,7 @@ export const actionsMock: IAction[] = [
               ? data?.tag?.props?.children?.props?.label
               : "primary"
           )}
-          onClick={() => resiveData(data)}
+          onClick={() => receiveData(data)}
           spacing="compact"
           size="24px"
           cursorHover
@@ -108,7 +108,7 @@ export const actionsMock: IAction[] = [
         spacing="compact"
         cursorHover
         size="24px"
-        onClick={() => resiveData(data)}
+        onClick={() => receiveData(data)}
         disabled={
           isValidElement(data?.tag) &&
           data?.tag?.props?.children?.props?.label === "Sin Validar"

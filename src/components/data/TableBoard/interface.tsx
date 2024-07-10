@@ -1,4 +1,3 @@
-//import { useEffect, useRef, useState } from "react";
 import { MdOutlineInfo } from "react-icons/md";
 import { Icon, Text, SkeletonLine } from "@inube/design-system";
 
@@ -132,16 +131,6 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
     isTablet,
     actionMobile,
   } = props;
-
-  /*  const widthActions = useRef<HTMLTableCellElement>(null);
-
-  const [width, setWidth] = useState(0);
-
-  useEffect(() => {
-    if (widthActions.current) {
-      setWidth(widthActions.current.offsetWidth);
-    }
-  }, [isTablet]); */
 
   return (
     <StyledContainer
