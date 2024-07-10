@@ -8,6 +8,7 @@ import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 
 import { dataButton } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
+import { AprovalsModal } from "./AprovalsModal";
 
 interface IData {
   id: string;
@@ -26,6 +27,11 @@ export const Requirements = (props: IRequirementsProps) => {
     date?: string;
     details?: string;
   }>({});
+  const [showAprovalsModal, setShowAprovalsModal] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+
+  const toggleAprovalsModal = () => setShowAprovalsModal(!showAprovalsModal);
+  const changeApprove = () => setIsApproved(!isApproved);
 
   const handleToggleSeeDetailsModal = (date?: string, details?: string) => {
     setModalData({ date, details });
@@ -59,7 +65,10 @@ export const Requirements = (props: IRequirementsProps) => {
         spacing="compact"
         cursorHover
         size="24px"
-        onClick={() => {}}
+        onClick={() => {
+          setIsApproved(false);
+          toggleAprovalsModal();
+        }}
         disabled={
           isValidElement(entry?.tag) && entry?.tag?.props?.label === "No Cumple"
         }
@@ -103,6 +112,18 @@ export const Requirements = (props: IRequirementsProps) => {
           date={String(modalData.date)}
           details={String(modalData.details)}
           onCloseModal={handleToggleSeeDetailsModal}
+        />
+      )}
+      {showAprovalsModal && (
+        <AprovalsModal
+          title="Aprobaciones"
+          buttonText="Confirmar"
+          inputLabel="Observaciones de aprobación o rechazo"
+          inputPlaceholder="Observaciones para la aprobación o rechazo."
+          isApproved={isApproved}
+          onCloseModal={toggleAprovalsModal}
+          onSubmit={toggleAprovalsModal}
+          onChangeApprove={changeApprove}
         />
       )}
     </>
