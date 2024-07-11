@@ -50,9 +50,9 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
           </Stack>
         </Stack>
         <Stack spacing="s200">
-          <Text padding="0px 0px 20px">{confirmationText}</Text>
+          <Text padding="0px 0px 10px">{confirmationText}</Text>
         </Stack>
-        <Stack justifyContent="flex-end" margin="s200 s0">
+        <Stack justifyContent="flex-end" >
         <Button onClick={() => { onSubmit({ textarea: "example" }); onCloseModal(); }}>
             {buttonText}
           </Button>

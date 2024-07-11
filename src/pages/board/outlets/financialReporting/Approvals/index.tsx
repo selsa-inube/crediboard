@@ -55,7 +55,7 @@ export const Approvals = () => {
         <NotificationModal
           title="Notificación"
           buttonText="Enviar"
-          confirmationText="Esta seguro que deseas enviar esta solicitud para aprobación... la necesidad de evaluar esta solicitud."
+          confirmationText="Esta seguro de enviar nuevamente para notificación... esta solicitud para aprobación... la necesidad de evaluar esta solicitud."
           onSubmit={handleSubmit}
           onCloseModal={handleCloseModal}
         />
