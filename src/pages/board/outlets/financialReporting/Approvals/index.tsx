@@ -4,7 +4,12 @@ import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 
-import { actionsApprovals, handleData, titlesApprovals } from "./config";
+import {
+  actionMobileApprovals,
+  actionsApprovals,
+  handleData,
+  titlesApprovals,
+} from "./config";
 
 export const Approvals = () => {
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
@@ -20,13 +25,20 @@ export const Approvals = () => {
   }, []);
 
   return (
-    <Fieldset title="Aprobaciones" heigthFieldset="282px" aspectRatio="3/1">
+    <Fieldset
+      title="Aprobaciones"
+      heigthFieldset="282px"
+      aspectRatio="3/1"
+      hasTable
+    >
       <TableBoard
         id="usuarios"
         titles={titlesApprovals}
         entries={entriesApprovals}
         actions={actionsApprovals}
         loading={loading}
+        actionMobile={actionMobileApprovals}
+        nameTitleTag="decision"
       />
     </Fieldset>
   );
