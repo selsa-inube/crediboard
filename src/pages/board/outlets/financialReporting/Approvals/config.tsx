@@ -1,8 +1,15 @@
 import { isValidElement } from "react";
-import { MdNotificationsNone, MdWarningAmber } from "react-icons/md";
-import { Icon, Tag } from "@inube/design-system";
+import {
+  MdCheck,
+  MdClose,
+  MdNotificationsNone,
+  MdRemove,
+  MdWarningAmber,
+} from "react-icons/md";
+import { Icon } from "@inubekit/icon";
 
 import { IEntries } from "@components/data/TableBoard/types";
+import { Tag } from "@components/data/Tag";
 
 const handledata = (data: IEntries) => {
   console.log(data, "function that receives data");
@@ -15,43 +22,37 @@ export async function handleData() {
         {
           id: "uno",
           usuarios: "Pedro Pablo Iregui Gerrero",
-          decision: <Tag label="Aprobado" appearance="success" />,
+          tag: <Tag label="Aprobado" appearance="success" />,
         },
         {
           id: "dos",
           usuarios: "Carlos Alberto Combita",
-          decision: <Tag label="Rechazado" appearance="error" />,
+          tag: <Tag label="Rechazado" appearance="danger" />,
         },
         {
           id: "tres",
           usuarios: "Jaime Alberto Linares Guacaneme",
-          decision: <Tag label="Aprovado" appearance="success" />,
-          erro: "",
+          tag: <Tag label="Aprobado" appearance="success" />,
         },
         {
           id: "cuatro",
           usuarios: "Miguel Angel Fuentes",
-          decision: <Tag label="Pendiente" appearance="warning" />,
+          tag: <Tag label="Pendiente" appearance="warning" />,
         },
         {
           id: "cinco",
           usuarios: "Cesar Augusto Corredor",
-          decision: <Tag label="Aprobado" appearance="success" />,
+          tag: <Tag label="Aprobado" appearance="success" />,
         },
         {
           id: "seis",
           usuarios: "Paula Andrea Betancurt",
-          decision: <Tag label="Rechazado" appearance="error" />,
+          tag: <Tag label="Rechazado" appearance="danger" />,
         },
         {
           id: "siete",
           usuarios: "Jaime Alejandro Vargas",
-          decision: <Tag label="Pendiente" appearance="warning" />,
-        },
-        {
-          id: "ocho",
-          usuarios: "Viviana Amador Tejada",
-          decision: <Tag label="Aprobado" appearance="success" />,
+          tag: <Tag label="Pendiente" appearance="warning" />,
         },
       ];
       resolve(entriesApprovals);
@@ -66,7 +67,7 @@ export const titlesApprovals = [
     priority: 1,
   },
   {
-    id: "decision",
+    id: "tag",
     titleName: "Decisión",
     priority: 2,
   },
@@ -82,21 +83,21 @@ export const entriesApprovals = [
   {
     id: "dos",
     usuarios: "Carlos Alberto Combita",
-    decision: <Tag label="Rechazado" appearance="error" />,
+    decision: <Tag label="Rechazado" appearance="danger" />,
     error: (
       <Icon
         icon={<MdWarningAmber />}
         appearance="warning"
-        spacing="compact"
+        spacing="none"
         cursorHover
-        size="24px"
+        size="22px"
       />
     ),
   },
   {
     id: "tres",
     usuarios: "Jaime Alberto Linares Guacaneme",
-    decision: <Tag label="Aprovado" appearance="success" />,
+    decision: <Tag label="Aprobado" appearance="success" />,
     erro: "",
   },
   {
@@ -114,14 +115,14 @@ export const entriesApprovals = [
   {
     id: "seis",
     usuarios: "Paula Andrea Betancurt",
-    decision: <Tag label="Rechazado" appearance="error" />,
+    decision: <Tag label="Rechazado" appearance="danger" />,
     error: (
       <Icon
         icon={<MdWarningAmber />}
         appearance="warning"
-        spacing="compact"
+        spacing="none"
         cursorHover
-        size="24px"
+        size="22px"
       />
     ),
   },
@@ -147,13 +148,12 @@ export const actionsApprovals = [
       <Icon
         icon={<MdWarningAmber />}
         appearance="warning"
-        spacing="compact"
+        spacing="none"
         cursorHover
-        size="24px"
+        size="22px"
         onClick={() => handledata(data)}
         disabled={
-          isValidElement(data?.decision) &&
-          data?.decision?.props?.label !== "Pendiente"
+          isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
         }
       />
     ),
@@ -165,13 +165,92 @@ export const actionsApprovals = [
       <Icon
         icon={<MdNotificationsNone />}
         appearance="primary"
-        spacing="compact"
+        spacing="none"
         cursorHover
-        size="24px"
+        size="22px"
         onClick={() => handledata(data)}
         disabled={
-          isValidElement(data?.decision) &&
-          data?.decision?.props?.label === "Pendiente"
+          isValidElement(data?.tag) && data?.tag?.props?.label === "Pendiente"
+        }
+      />
+    ),
+  },
+];
+
+const iconActionsMobile = (tag: string) => {
+  if (tag === "Aprobado") {
+    return <MdCheck />;
+  } else if (tag === "Pendiente") {
+    return <MdRemove />;
+  } else {
+    return <MdClose />;
+  }
+};
+
+interface TagProps {
+  appearance?: string;
+  label?: string;
+}
+
+interface TagElement {
+  props: TagProps;
+}
+
+const isValidTagElement = (element: unknown): element is TagElement => {
+  return isValidElement(element) && element.props !== undefined;
+};
+
+export const actionMobileApprovals = [
+  {
+    id: "tags",
+    actionName: "",
+    content: (data: IEntries) => (
+      <Icon
+        icon={
+          isValidElement(data?.tag) &&
+          iconActionsMobile(data?.tag?.props?.label)
+        }
+        appearance={
+          isValidTagElement(data?.tag)
+            ? data?.tag?.props?.appearance
+            : undefined
+        }
+        cursorHover
+        variant="filled"
+        shape="circle"
+      />
+    ),
+  },
+  {
+    id: "Error",
+    actionName: "",
+    content: (data: IEntries) => (
+      <Icon
+        icon={<MdWarningAmber />}
+        appearance="warning"
+        spacing="none"
+        cursorHover
+        size="20px"
+        onClick={() => handledata(data)}
+        disabled={
+          isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
+        }
+      />
+    ),
+  },
+  {
+    id: "notificaciones",
+    actionName: "",
+    content: (data: IEntries) => (
+      <Icon
+        icon={<MdNotificationsNone />}
+        appearance="primary"
+        spacing="none"
+        cursorHover
+        size="20px"
+        onClick={() => handledata(data)}
+        disabled={
+          isValidElement(data?.tag) && data?.tag?.props?.label === "Pendiente"
         }
       />
     ),

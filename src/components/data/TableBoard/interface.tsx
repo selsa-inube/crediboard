@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
 import { MdOutlineInfo } from "react-icons/md";
 import { Icon, Text, SkeletonLine } from "@inube/design-system";
 
-import { ITitle, appearances } from "./types";
+import { IAction, IEntries, ITitle, appearances } from "./types";
 import {
   StyledContainer,
   StyledTable,
@@ -17,33 +16,44 @@ import {
 import { ITableBoardProps } from ".";
 
 interface ITableBoardUIProps extends ITableBoardProps {
-  titlesList: string[];
   loading: boolean;
   isTablet: boolean;
 }
 
 interface IRenderActionsTitles {
-  actionName: string;
-  appearance: appearances;
+  actions: IAction[];
   isTablet: boolean;
-  firstColumn: boolean;
-  right?: number;
+  appearance: appearances;
+  isStyleMobile: boolean;
 }
 
 const RenderActionsTitles = (props: IRenderActionsTitles) => {
-  const { actionName, appearance, right = 0, isTablet, firstColumn } = props;
+  const { actions, appearance, isTablet, isStyleMobile } = props;
+
   return (
-    <StyledThactions $right={right} $isTablet={isTablet} $isFirst={firstColumn}>
-      <Text
-        appearance={appearance}
-        type="title"
-        size="medium"
-        padding="0px 4px"
-        textAlign="center"
-      >
-        {actionName}
-      </Text>
-    </StyledThactions>
+    <>
+      {!isTablet ? (
+        actions.map((actionTitle) => (
+          <StyledThactions key={actionTitle.id}>
+            <Text
+              appearance={appearance}
+              type="title"
+              size="medium"
+              padding="0px 4px"
+              textAlign="center"
+            >
+              {actionTitle.actionName}
+            </Text>
+          </StyledThactions>
+        ))
+      ) : (
+        <StyledThactions $isTablet={isTablet} colSpan={3} $isFirst>
+          {isStyleMobile && (
+            <Icon icon={<MdOutlineInfo />} appearance="primary" size="32px" />
+          )}
+        </StyledThactions>
+      )}
+    </>
   );
 };
 
@@ -76,31 +86,59 @@ const dataLoading = (titleColumns: ITitle[], numberActions: number) => {
   return rowsLoading;
 };
 
+interface IActionsComponent {
+  actions: IAction[];
+  isTablet: boolean;
+  entry: IEntries;
+  actionMobile?: IAction[];
+}
+
+const Actions = (props: IActionsComponent) => {
+  const { actions, isTablet, entry, actionMobile } = props;
+
+  return (
+    <>
+      {!isTablet &&
+        actions.map((action) => (
+          <StyledTdactions key={action.id}>
+            {action.content(entry)}
+          </StyledTdactions>
+        ))}
+      {isTablet &&
+        actionMobile &&
+        actionMobile.map((action, index) => (
+          <StyledTdactions
+            key={action.id}
+            $isTablet={isTablet}
+            $isFirst={index === 0}
+          >
+            {action.content(entry)}
+          </StyledTdactions>
+        ))}
+    </>
+  );
+};
+
 export const TableBoardUI = (props: ITableBoardUIProps) => {
   const {
     id,
     entries,
     actions,
     titles,
-    titlesList,
     borderTable,
     loading,
     appearanceTable,
     isTablet,
+    actionMobile,
   } = props;
 
-  const widthActions = useRef<HTMLTableCellElement>(null);
-
-  const [width, setWidth] = useState(0);
-
-  useEffect(() => {
-    if (widthActions.current) {
-      setWidth(widthActions.current.offsetWidth);
-    }
-  }, [isTablet]);
-
   return (
-    <StyledContainer id={id} $borderTable={borderTable!} $isTablet={isTablet}>
+    <StyledContainer
+      id={id}
+      $borderTable={borderTable!}
+      $isTablet={isTablet}
+      $actionsMobile={Boolean(actionMobile)}
+    >
       <StyledTable
         $zebraEffect={appearanceTable!.efectzebra!}
         $background={appearanceTable!.background!}
@@ -108,47 +146,30 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
       >
         <StyledThead>
           <tr>
-            {titles.map((title) => (
-              <StyledTh key={title.id + id}>
-                <Text
-                  appearance={appearanceTable!.title}
-                  type="title"
-                  size="medium"
-                  padding="0px 4px"
-                >
-                  {title.titleName}
-                </Text>
-              </StyledTh>
-            ))}
-
-            {actions &&
-              !isTablet &&
-              actions.map(
-                (action, index) =>
-                  action.actionName && (
-                    <RenderActionsTitles
-                      key={action.id}
-                      actionName={action.actionName}
-                      appearance={appearanceTable!.title!}
-                      right={width * (actions.length - 1 - index)}
-                      isTablet={isTablet}
-                      firstColumn={index === 0}
-                    />
-                  )
+            {titles
+              .filter((title) => !(isTablet && title.id === "tag"))
+              .map((title) =>
+                !isTablet || title.titleName ? (
+                  <StyledTh key={title.id + id}>
+                    <Text
+                      appearance={appearanceTable!.title}
+                      type="title"
+                      size="medium"
+                      padding={isTablet ? "0px" : "0px 4px"}
+                    >
+                      {title.titleName}
+                    </Text>
+                  </StyledTh>
+                ) : null
               )}
-            {isTablet && (
-              <StyledThactions
-                colSpan={actions?.length}
-                $right={0}
-                $isTablet={isTablet}
-                $isFirst
-              >
-                <Icon
-                  icon={<MdOutlineInfo />}
-                  appearance="primary"
-                  size="32px"
-                />
-              </StyledThactions>
+
+            {actions && (
+              <RenderActionsTitles
+                actions={actions}
+                appearance={appearanceTable!.title!}
+                isTablet={isTablet}
+                isStyleMobile={appearanceTable!.isStyleMobile!}
+              />
             )}
           </tr>
         </StyledThead>
@@ -162,29 +183,33 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                   key={`${entry.id}-${index}`}
                   $borderTable={appearanceTable!.borderTable}
                 >
-                  {titlesList.map((title) => (
-                    <StyledTd key={title} $widthTd={appearanceTable?.widthTd}>
-                      {typeof entry[title] !== "string" ? (
-                        entry[title]
-                      ) : (
-                        <Text size="medium" padding="0px 4px">
-                          {entry[title]}
-                        </Text>
-                      )}
-                    </StyledTd>
-                  ))}
-                  {actions &&
-                    actions.map((action, index) => (
-                      <StyledTdactions
-                        key={action.id}
-                        ref={widthActions}
-                        $isTablet={isTablet}
-                        $right={width * (actions.length - 1 - index)}
-                        $isFirst={index === 0}
+                  {titles
+                    .filter((title) => !(isTablet && title.id === "tag"))
+                    .map((title) => (
+                      <StyledTd
+                        key={title.id}
+                        $widthTd={appearanceTable?.widthTd}
                       >
-                        {action.content(entry)}
-                      </StyledTdactions>
+                        {typeof entry[title.id] !== "string" ? (
+                          entry[title.id]
+                        ) : (
+                          <Text
+                            size="medium"
+                            padding={isTablet ? "0px" : "0px 4px"}
+                          >
+                            {entry[title.id]}
+                          </Text>
+                        )}
+                      </StyledTd>
                     ))}
+                  {actions && (
+                    <Actions
+                      actions={actions}
+                      isTablet={isTablet}
+                      entry={entry}
+                      actionMobile={actionMobile}
+                    />
+                  )}
                 </StyledTr>
               ))}
             </>

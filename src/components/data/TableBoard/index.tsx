@@ -8,10 +8,12 @@ export interface ITableBoardProps {
   entries: IEntries[];
   titles: ITitle[];
   actions?: IAction[];
+  actionMobile?: IAction[];
   borderTable?: boolean;
   loading?: boolean;
   portalId?: string;
   appearanceTable?: IAppearances;
+  nameTitleTag?: string;
 }
 
 export const TableBoard = (props: ITableBoardProps) => {
@@ -20,6 +22,7 @@ export const TableBoard = (props: ITableBoardProps) => {
     entries,
     titles,
     actions,
+    actionMobile,
     loading = false,
     borderTable = false,
     portalId,
@@ -28,10 +31,10 @@ export const TableBoard = (props: ITableBoardProps) => {
       efectzebra: true,
       borderTable: false,
       background: false,
+      isStyleMobile: true,
     },
+    nameTitleTag,
   } = props;
-
-  const titlesList = titles.map((title) => title.id);
 
   const isTablet = useMediaQuery("(max-width: 720px)");
 
@@ -40,13 +43,14 @@ export const TableBoard = (props: ITableBoardProps) => {
       id={id}
       actions={actions}
       entries={entries}
+      actionMobile={actionMobile}
       borderTable={borderTable}
       loading={loading}
       portalId={portalId}
       titles={titles}
-      titlesList={titlesList}
       appearanceTable={appearanceTable}
       isTablet={isTablet}
+      nameTitleTag={nameTitleTag}
     />
   );
 };

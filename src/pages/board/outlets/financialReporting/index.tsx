@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Stack, inube, Grid } from "@inube/design-system";
+import { Stack, inube, Grid, useMediaQuery } from "@inube/design-system";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { getById } from "@mocks/utils/dataMock.service";
@@ -33,6 +33,8 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
 
   const { id } = useParams();
 
+  const isMobile: boolean = useMediaQuery("(max-width: 720px)");
+
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
       setData(requirement);
@@ -40,7 +42,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   }, [id]);
 
   return (
-    <Stack direction="column" margin="s250 s500">
+    <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"}>
       <ContainerSections>
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
@@ -53,9 +55,13 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
               />
             </Stack>
           </Stack>
-          <Grid templateColumns="repeat(2,1fr)" gap="s200" autoRows="auto">
+          <Grid
+            templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
+            gap="s200"
+            autoRows="auto"
+          >
             <Stack direction="column">
-              {<ToDo icon={infoIcon} data={data} />}
+              {<ToDo icon={infoIcon} data={data} isMobile={isMobile} />}
             </Stack>
             <Stack direction="column">{approvals}</Stack>
             <Stack direction="column">{requirements}</Stack>
