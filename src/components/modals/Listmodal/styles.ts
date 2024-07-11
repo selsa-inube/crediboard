@@ -24,7 +24,6 @@ export const StyledContainerContent = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  padding: 8px;
 
   ${({ $smallScreen, theme }) =>
     !$smallScreen &&
