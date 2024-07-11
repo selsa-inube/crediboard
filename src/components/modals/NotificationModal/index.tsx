@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Stack,
   useMediaQuery,
@@ -8,8 +9,6 @@ import {
 } from "@inube/design-system";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
 import { StyledModal } from "./styles";
 
 export interface NotificationModalProps {
@@ -50,34 +49,14 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
             <MdClear size={24} cursor="pointer" onClick={onCloseModal} />
           </Stack>
         </Stack>
-        <Formik
-          initialValues={{ textarea: "" }}
-          validationSchema={Yup.object().shape({
-            textarea: Yup.string(),
-          })}
-          onSubmit={(values, { setSubmitting }) => {
-            onSubmit(values);
-            setSubmitting(false);
-            onCloseModal();
-          }}
-        >
-          {({ isSubmitting }) => (
-            <Form>
-              <Stack spacing="s200">
-                <Text padding="0px 0px 20px">{confirmationText}</Text>
-              </Stack>
-              <Stack justifyContent="flex-end" margin="s200 s0">
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  onClick={onCloseModal}
-                >
-                  {buttonText}
-                </Button>
-              </Stack>
-            </Form>
-          )}
-        </Formik>
+        <Stack spacing="s200">
+          <Text padding="0px 0px 20px">{confirmationText}</Text>
+        </Stack>
+        <Stack justifyContent="flex-end" margin="s200 s0">
+        <Button onClick={() => { onSubmit({ textarea: "example" }); onCloseModal(); }}>
+            {buttonText}
+          </Button>
+        </Stack>
       </StyledModal>
     </Blanket>,
     node
