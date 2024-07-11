@@ -6,13 +6,15 @@ import { AlertContainer } from "./styles";
 export interface ErrorAlertProps {
   message?: string;
   onClose: () => void;
+  top: string;
+  left: string;
 }
 
 const ErrorAlert = (props: ErrorAlertProps) => {
-  const { message, onClose } = props;
+  const { message, onClose, top, left } = props;
 
   return (
-    <AlertContainer $visible={true}>
+    <AlertContainer $visible={true} $top={top} $left={left}>
       <Icon appearance="warning" icon={<MdWarningAmber />} size="24px" />
       <Text size="large" padding="0px 70px 0px 10px">
         {message || "Existe un error sin evaluar"}

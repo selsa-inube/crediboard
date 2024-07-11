@@ -37,18 +37,17 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
       const simulatedRequirement = { ...requirement, hasError: true };
       setData(simulatedRequirement);
       if (simulatedRequirement.hasError) {
-        setErrorVisible(true); 
+        setErrorVisible(true);
       }
     });
   }, [id]);
 
   const handleCloseErrorAlert = () => {
-    setErrorVisible(false); 
+    setErrorVisible(false);
   };
 
   return (
     <Stack direction="column" margin="s250">
-      {errorVisible && <ErrorAlert message="Existe un error sin evaluar" onClose={handleCloseErrorAlert} />}
       <ContainerSections>
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
@@ -69,6 +68,14 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
           </Grid>
         </Stack>
       </ContainerSections>
+      {errorVisible && (
+        <ErrorAlert
+          message="Existe un error sin evaluar"
+          onClose={handleCloseErrorAlert}
+          top="60px"
+          left="50%"
+        />
+      )}
     </Stack>
   );
 };
