@@ -1,4 +1,4 @@
-import { Stack, Text, inube, Icon } from "@inube/design-system";
+import { Icon, Stack, Text, inube } from "@inube/design-system";
 
 import { StyledContainerCardInfo } from "./styles";
 
@@ -6,7 +6,6 @@ interface CardInfoContainerProps {
   title: string;
   children: JSX.Element | JSX.Element[];
   isMobile?: boolean;
-  aspectRatio?: string;
   icon?: React.JSX.Element;
   heightCardInfoContainer?: string;
 }
@@ -16,7 +15,6 @@ export const CardInfoContainer = (props: CardInfoContainerProps) => {
     title,
     children,
     isMobile,
-    aspectRatio,
     icon,
     heightCardInfoContainer = "auto",
   } = props;
@@ -40,7 +38,6 @@ export const CardInfoContainer = (props: CardInfoContainerProps) => {
       </Stack>
 
       <StyledContainerCardInfo
-        $aspectRatio={aspectRatio}
         $containerHeight={heightCardInfoContainer}
         $isMobile={isMobile}
       >
