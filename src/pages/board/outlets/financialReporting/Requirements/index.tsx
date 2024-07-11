@@ -14,6 +14,8 @@ interface IData {
   id: string;
   titlesRequirements: ITitle[];
   entriesRequirements: IEntries[];
+  actionsRequirements: IAction[];
+  actionsMovile: IAction[];
 }
 
 export interface IRequirementsProps {
@@ -91,6 +93,7 @@ export const Requirements = (props: IRequirementsProps) => {
           title="Requisitos"
           activeButton={dataButton}
           heightFieldset="340px"
+          hasTable
         >
           <div style={{ height: "340px" }}>
             {data.map((item) => (
@@ -100,10 +103,12 @@ export const Requirements = (props: IRequirementsProps) => {
                 titles={item.titlesRequirements}
                 entries={item.entriesRequirements}
                 actions={actionsRequirements}
+                actionMobile={item.actionsMovile}
                 appearanceTable={{
                   widthTd: "310px",
                   efectzebra: true,
                   title: "primary",
+                  isStyleMobile: false,
                 }}
               />
             ))}
