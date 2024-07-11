@@ -6,21 +6,20 @@ import {
   Icon,
   Stack,
   Text,
-  inube,
   useMediaQuery,
 } from "@inube/design-system";
-
-import { StyledContainerContent, StyledModal } from "./styles";
+import { StyledModal, StyledContainerContent } from "./styles";
 
 export interface IListmodalProps {
   title: string;
   portalId?: string;
+  confirmationText?: string;
   content?: JSX.Element | JSX.Element[];
   handleClose: () => void;
 }
 
 export const Listmodal = (props: IListmodalProps) => {
-  const { title, portalId, content, handleClose } = props;
+  const { title, portalId, confirmationText, content, handleClose } = props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -38,7 +37,7 @@ export const Listmodal = (props: IListmodalProps) => {
           <Text type="headline" size="small">
             {title}
           </Text>
-          <Stack gap={inube.spacing.s100}>
+          <Stack gap={8}>
             <Text>Cerrar</Text>
             <Icon
               icon={<MdClear />}
@@ -49,11 +48,14 @@ export const Listmodal = (props: IListmodalProps) => {
             />
           </Stack>
         </Stack>
+        <Stack>
+          <Text>{confirmationText}</Text>
+        </Stack>
         <StyledContainerContent $smallScreen={isMobile}>
           {content}
         </StyledContainerContent>
-        <Stack justifyContent="flex-end" margin="s200 s0">
-          <Button onClick={handleClose}>Cerrar</Button>
+        <Stack justifyContent="flex-end" margin="16px 0">
+          <Button onClick={handleClose}>Enviar</Button>
         </Stack>
       </StyledModal>
     </Blanket>,

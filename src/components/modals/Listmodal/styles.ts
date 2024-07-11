@@ -9,7 +9,6 @@ export const StyledModal = styled.div<IStyledModal>`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: ${({ $smallScreen }) => ($smallScreen ? "280px" : "382px")};
   width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "500px")};
   background-color: ${({ theme }) =>
     theme.color?.surface?.light?.clear || inube.color.surface.light.clear};
@@ -21,23 +20,20 @@ export const StyledModal = styled.div<IStyledModal>`
 `;
 
 export const StyledContainerContent = styled.div<IStyledModal>`
+  flex: 1;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  padding-top: 4px;
-  padding-right: 4px;
-  padding-bottom: 4px;
-  padding-left: 4px;
+  padding: 8px;
 
   ${({ $smallScreen, theme }) =>
     !$smallScreen &&
     `
     &::-webkit-scrollbar {
       width: 16px;
-      height: 75px
       border-radius: 8px;
     }
-      &::-webkit-scrollbar-thumb {
+    &::-webkit-scrollbar-thumb {
       background-color: ${
         theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
       };
