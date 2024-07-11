@@ -24,7 +24,7 @@ export const Requirements = (props: IRequirementsProps) => {
   const { data } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [modalData, setModalData] = useState<{
-    date?: string;
+    date?: Date;
     details?: string;
   }>({});
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
@@ -34,7 +34,10 @@ export const Requirements = (props: IRequirementsProps) => {
   const changeApprove = () => setIsApproved(!isApproved);
 
   const handleToggleSeeDetailsModal = (date?: string, details?: string) => {
-    setModalData({ date, details });
+    setModalData({
+      date: date ? new Date(date) : undefined,
+      details,
+    });
     setShowSeeDetailsModal((prevState) => !prevState);
   };
 
@@ -109,8 +112,8 @@ export const Requirements = (props: IRequirementsProps) => {
       </Stack>
       {showSeeDetailsModal && (
         <SeeDetailsModal
-          date={String(modalData.date)}
-          details={String(modalData.details)}
+          date={modalData.date || new Date()}
+          details={modalData.details || ""}
           onCloseModal={handleToggleSeeDetailsModal}
         />
       )}

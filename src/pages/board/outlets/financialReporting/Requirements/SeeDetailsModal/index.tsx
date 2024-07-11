@@ -6,22 +6,29 @@ import {
   Button,
   inube,
   Textarea,
+  Textfield,
 } from "@inube/design-system";
-import { Datefield } from "@inubekit/datefield";
 import { createPortal } from "react-dom";
-import { MdClear } from "react-icons/md";
+import { MdClear, MdOutlineCalendarMonth } from "react-icons/md";
 
-import { StyledModal } from "./styles";
+import { formatPrimaryDate } from "@utils/formatData/date";
+
+import { StyledModal, StyledTextarea } from "./styles";
 
 export interface SeeDetailsModalProps {
-  date: string;
+  date: Date;
   details: string;
   portalId?: string;
   onCloseModal?: () => void;
 }
 
 export function SeeDetailsModal(props: SeeDetailsModalProps) {
-  const { date = "", details = "", portalId = "portal", onCloseModal } = props;
+  const {
+    date = new Date(),
+    details = "",
+    portalId = "portal",
+    onCloseModal,
+  } = props;
 
   const isMobile = useMediaQuery("(max-width: 700px)");
   const node = document.getElementById(portalId);
@@ -45,16 +52,23 @@ export function SeeDetailsModal(props: SeeDetailsModalProps) {
           </Stack>
         </Stack>
         <Stack direction="column" gap={inube.spacing.s300}>
-          <Datefield
+          <Textfield
             id="date"
             name="date"
             label="Fecha"
-            value={date}
-            size="wide"
-            status="pending"
-            disabled
+            value={formatPrimaryDate(date)}
+            onChange={() => {}}
+            iconBefore={<MdOutlineCalendarMonth />}
           />
-          <Textarea label="Observación" value={details} fullwidth readOnly />
+          <StyledTextarea>
+            <Textarea
+              id="observation"
+              label="Observación"
+              value={details}
+              onChange={() => {}}
+              fullwidth
+            />
+          </StyledTextarea>
         </Stack>
         <Stack justifyContent="flex-end" margin="s200 s0">
           <Button onClick={onCloseModal}>Cerrar</Button>

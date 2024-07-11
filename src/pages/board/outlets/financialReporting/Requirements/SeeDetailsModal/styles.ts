@@ -20,4 +20,10 @@ const StyledModal = styled.div<IStyledModal>`
   border-radius: ${inube.spacing.s100};
 `;
 
-export { StyledModal };
+const StyledTextarea = styled.div`
+  && div div :nth-child(2) {
+    display: none;
+  }
+`;
+
+export { StyledModal, StyledTextarea };
