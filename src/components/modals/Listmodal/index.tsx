@@ -15,11 +15,21 @@ export interface IListmodalProps {
   portalId?: string;
   confirmationText?: string;
   content?: JSX.Element | JSX.Element[];
+  buttonText?: string;
   handleClose: () => void;
+  handleButtonClick?: () => void;
 }
 
 export const Listmodal = (props: IListmodalProps) => {
-  const { title, portalId, confirmationText, content, handleClose } = props;
+  const {
+    title,
+    portalId,
+    confirmationText,
+    content,
+    buttonText = "Enviar",
+    handleClose,
+    handleButtonClick,
+  } = props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -55,7 +65,7 @@ export const Listmodal = (props: IListmodalProps) => {
           {content}
         </StyledContainerContent>
         <Stack justifyContent="flex-end" margin="16px 0">
-          <Button onClick={handleClose}>Enviar</Button>
+          <Button onClick={handleButtonClick || handleClose}>{buttonText}</Button>
         </Stack>
       </StyledModal>
     </Blanket>,

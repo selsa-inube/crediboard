@@ -316,6 +316,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                   <Listmodal
                     title="Ver Adjuntos"
                     content={<Listdata data={configDataAttachments} />}
+                    buttonText="Cerrar"
                     handleClose={() => setAttachDocuments(false)}
                   />
                 )}
