@@ -188,19 +188,13 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
 };
  */
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MdArrowBack, MdMenu, MdOutlineRemoveRedEye } from "react-icons/md";
-import {
-  Button,
-  Icon,
-  Stack,
-  Text,
-  inube,
-  useMediaQuery,
-} from "@inube/design-system";
+import { MdArrowBack, MdMenu, MdOutlineRemoveRedEye, MdThumbUpOffAlt } from "react-icons/md";
+import { Button, Icon, Stack, Text, inube, useMediaQuery } from "@inube/design-system";
 
 import { TextAreaModal } from "@components/modals/TextAreaModal";
+import {RenderMessage} from "@components/feedback/RenderMessage";
 import { configButtons, configDataAttachments } from "./config";
 import { StyledHorizontalDivider, StyledItem } from "./styles";
 import { Listmodal } from "@src/components/modals/Listmodal";
@@ -213,41 +207,55 @@ interface IListdataProps {
   data: { id: string; name: string }[];
 }
 
-const Listdata = (props: IListdataProps) => {
-  const { data } = props;
+const Listdata: React.FC<IListdataProps> = ({ data }) => (
+  <ul
+    style={{
+      paddingInlineStart: "2px",
+      marginBlock: "8px",
+    }}
+  >
+    {data.map((element) => (
+      <StyledItem key={element.id}>
+        <Text>{element.name}</Text>
+        <Icon
+          icon={<MdOutlineRemoveRedEye />}
+          appearance="dark"
+          spacing="none"
+          size="24px"
+          cursorHover
+        />
+      </StyledItem>
+    ))}
+  </ul>
+);
 
-  return (
-    <ul
-      style={{
-        paddingInlineStart: "2px",
-        marginBlock: "8px",
-      }}
-    >
-      {data.map((element) => (
-        <StyledItem key={element.id}>
-          <Text>{element.name}</Text>
-          <Icon
-            icon={<MdOutlineRemoveRedEye />}
-            appearance="dark"
-            spacing="none"
-            size="24px"
-            cursorHover
-          />
-        </StyledItem>
-      ))}
-    </ul>
-  );
-};
-
-export const ContainerSections = (props: IContainerSectionsProps) => {
-  const { children } = props;
-
+export const ContainerSections: React.FC<IContainerSectionsProps> = ({
+  children,
+}) => {
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
+  const [showRenderMessage, setShowRenderMessage] = useState(false);
+  const [isCancellationSuccessful, setIsCancellationSuccessful] = useState(false);
 
   const navigation = useNavigate();
+
+  const handleRejectionModal = () => setShowRejectionModal(!showRejectionModal);
+  const handleCancelModal = () => setShowCancelModal(!showCancelModal);
+
+  const handleConfirmCancel = () => {
+    const isSuccess = true; // Simulación de lógica de éxito o fracaso
+
+    if (isSuccess) {
+      setShowRenderMessage(true);
+      setIsCancellationSuccessful(true);
+      setShowCancelModal(false);
+    } else {
+      setIsCancellationSuccessful(false);
+      setShowCancelModal(false);
+    }
+  };
 
   return (
     <>
@@ -291,12 +299,10 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
               margin={!isMobile ? "s0 s0 s200 s0" : "s0"}
             >
               <Stack gap={inube.spacing.s400}>
-                <Button
-                  onClick={() => setShowRejectionModal(!showRejectionModal)}
-                >
+                <Button onClick={handleRejectionModal}>
                   {configButtons.buttons.buttonOne.label}
                 </Button>
-                <Button onClick={() => setShowCancelModal(!showCancelModal)}>
+                <Button onClick={handleCancelModal}>
                   {configButtons.buttons.buttonTwo.label}
                 </Button>
                 <Button>{configButtons.buttons.buttonTree.label}</Button>
@@ -331,8 +337,8 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           buttonText="Confirmar"
           inputLabel="Motivo del rechazo."
           inputPlaceholder="Describa el motivo del rechazo."
-          onCloseModal={() => setShowRejectionModal(!showRejectionModal)}
-          onSubmit={() => setShowRejectionModal(!showRejectionModal)}
+          onCloseModal={handleRejectionModal}
+          onSubmit={handleRejectionModal}
         />
       )}
       {showCancelModal && (
@@ -341,8 +347,31 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           buttonText="Confirmar"
           inputLabel="Motivo de la anulacion."
           inputPlaceholder="Describa el motivo de la anulacion."
-          onCloseModal={() => setShowCancelModal(!showCancelModal)}
-          onSubmit={() => setShowCancelModal(!showCancelModal)}
+          onCloseModal={handleCancelModal}
+          onSubmit={handleConfirmCancel}
+        />
+      )}
+      {showRenderMessage && (
+        <RenderMessage
+          message={{
+            visible: true,
+            data: {
+              appearance: isCancellationSuccessful ? "success" : "danger", 
+              description: isCancellationSuccessful
+                ? "Se ha anulado correctamente"
+                : "No se pudo anular correctamente",
+              icon: isCancellationSuccessful ? (
+                <Icon icon={<MdThumbUpOffAlt />} appearance="success" />
+              ) : (
+                <Icon icon={<MdThumbUpOffAlt />} appearance="danger" />
+              ),
+              title: isCancellationSuccessful
+                ? "Anulación exitosa"
+                : "Anulación no exitosa",
+            },
+          }}
+          handleCloseMessage={() => setShowRenderMessage(false)}
+          onMessageClosed={() => setShowRenderMessage(false)}
         />
       )}
     </>

@@ -51,9 +51,10 @@ export function TextAreaModal(props: TextAreaModalProps) {
   const node = document.getElementById(portalId);
 
   if (!node) {
-    throw new Error(
-      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
+    console.error(
+      `El nodo del portal "${portalId}" no está definido en el DOM. Asegúrate de que el nodo exista antes de intentar renderizar el modal.`
     );
+    return null; 
   }
 
   return createPortal(
