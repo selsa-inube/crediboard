@@ -14,7 +14,7 @@ const ErrorAlert = (props: ErrorAlertProps) => {
   const { message, onClose, top, left } = props;
 
   return (
-    <AlertContainer $visible={true} $top={top} $left={left}>
+    <AlertContainer  $top={top} $left={left}>
       <Icon appearance="warning" icon={<MdWarningAmber />} size="24px" />
       <Text size="large" padding="0px 70px 0px 10px">
         {message || "Existe un error sin evaluar"}

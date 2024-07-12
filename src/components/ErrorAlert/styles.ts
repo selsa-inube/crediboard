@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { inube } from "@inube/design-system";
 
 interface AlertContainerProps {
-  $visible: boolean;
   $top: string;
   $left: string;
 }
@@ -18,7 +17,6 @@ export const AlertContainer = styled.div<AlertContainerProps>`
   border: 1px solid
     ${({ theme }) =>
       theme?.color?.stroke?.gray?.regular || inube.color.surface.gray.regular};
-  font-weight: 500;
   position: absolute;
   max-width: 328px;
   z-index: 1000;
