@@ -21,6 +21,16 @@ interface FormValues {
   field3: string;
 }
 
+const validationSchema = Yup.object().shape({
+  field1: Yup.string().required("Este campo es obligatorio"),
+  field2: Yup.string()
+    .required("Este campo es obligatorio")
+    .matches(/^[0-9]+$/, "Debe ser un número"),
+  field3: Yup.string()
+    .required("Este campo es obligatorio")
+    .matches(/^[0-9]+$/, "Debe ser un número"),
+});
+
 export interface PromissoryNotesModalProps {
   title: string;
   buttonText: string;
@@ -37,12 +47,6 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
     onSubmit,
     onCloseModal,
   } = props;
-
-  const validationSchema = Yup.object().shape({
-    field1: Yup.string().required("Este campo es obligatorio"),
-    field2: Yup.string().required("Este campo es obligatorio"),
-    field3: Yup.string().required("Este campo es obligatorio"),
-  });
 
   const isMobile = useMediaQuery("(max-width: 700px)");
   const node = document.getElementById(portalId);
@@ -62,7 +66,13 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
           </Text>
           <Stack gap={inube.spacing.s100}>
             <Text>Cerrar</Text>
-            <MdClear size={24} cursor="pointer" onClick={onCloseModal} />
+            <Icon
+              appearance="dark"
+              icon={<MdClear />}
+              size="24px"
+              cursorHover
+              onClick={onCloseModal}
+            />
           </Stack>
         </Stack>
         <Formik
@@ -83,7 +93,9 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                   {({ field }: FieldProps) => (
                     <Textfield
                       id="field1"
-                      {...field}
+                      value={field.value}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                       label="Correo"
                       iconBefore={
                         <Icon
@@ -100,8 +112,6 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                       status={
                         touched.field1 && errors.field1 ? "invalid" : "pending"
                       }
-                      onChange={handleChange}
-                      onBlur={handleBlur}
                       fullwidth
                     />
                   )}
@@ -111,7 +121,9 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                   {({ field }: FieldProps) => (
                     <Textfield
                       id="field2"
-                      {...field}
+                      value={field.value}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                       label="Telefono"
                       iconBefore={
                         <Icon
@@ -128,8 +140,6 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                       status={
                         touched.field2 && errors.field2 ? "invalid" : "pending"
                       }
-                      onChange={handleChange}
-                      onBlur={handleBlur}
                       fullwidth
                     />
                   )}
@@ -139,7 +149,9 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                   {({ field }: FieldProps) => (
                     <Textfield
                       id="field3"
-                      {...field}
+                      value={field.value}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                       label="Whatsapp"
                       iconBefore={
                         <Icon
@@ -156,8 +168,6 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                       status={
                         touched.field3 && errors.field3 ? "invalid" : "pending"
                       }
-                      onChange={handleChange}
-                      onBlur={handleBlur}
                       fullwidth
                     />
                   )}

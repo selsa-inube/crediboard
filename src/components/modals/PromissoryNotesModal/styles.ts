@@ -3,7 +3,6 @@ import { inube } from "@inube/design-system";
 
 interface IStyledModal {
   $smallScreen: boolean;
-  theme?: typeof inube;
 }
 
 const StyledModal = styled.div<IStyledModal>`
