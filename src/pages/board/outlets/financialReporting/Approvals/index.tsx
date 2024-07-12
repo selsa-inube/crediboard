@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
-import { Listmodal } from "@components/modals/Listmodal"; 
+import { Listmodal } from "@components/modals/Listmodal";
 import {
   actionMobileApprovals,
   actionsApprovals,
@@ -13,8 +13,8 @@ import {
 export const Approvals = () => {
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false); 
-  const [selectedData, setSelectedData] = useState<IEntries | null>(null); 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedData, setSelectedData] = useState<IEntries | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -25,12 +25,12 @@ export const Approvals = () => {
   }, []);
 
   const handleNotificationClick = (data: IEntries) => {
-    setSelectedData(data); 
-    setShowModal(true); 
+    setSelectedData(data);
+    setShowModal(true);
   };
 
   const handleCloseModal = () => {
-    setShowModal(false); 
+    setShowModal(false);
   };
 
   const handleSend = () => {
@@ -39,7 +39,7 @@ export const Approvals = () => {
   };
 
   return (
-    <>  
+    <>
       <Fieldset
         title="Aprobaciones"
         heigthFieldset="282px"
@@ -74,11 +74,11 @@ export const Approvals = () => {
       </Fieldset>
       {showModal && selectedData && (
         <Listmodal
-          title="Notificación" 
-          handleClose={handleCloseModal} 
+          title="Notificación"
+          handleClose={handleCloseModal}
           buttonText="Enviar"
           handleButtonClick={handleSend}
-          confirmationText="Esta seguro que desea enviar esta solicitud para aprobación... la necesidad de evaluar esta solicitud."
+          content={`Esta seguro que desea enviar esta solicitud para aprobación... la necesidad de evaluar esta solicitud.`}
         />
       )}
     </>

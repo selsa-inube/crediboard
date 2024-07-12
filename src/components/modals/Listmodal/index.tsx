@@ -13,8 +13,7 @@ import { StyledModal, StyledContainerContent } from "./styles";
 export interface IListmodalProps {
   title: string;
   portalId?: string;
-  confirmationText?: string;
-  content?: JSX.Element | JSX.Element[];
+  content?: JSX.Element | JSX.Element[] | string; 
   buttonText?: string;
   handleClose: () => void;
   handleButtonClick?: () => void;
@@ -24,7 +23,6 @@ export const Listmodal = (props: IListmodalProps) => {
   const {
     title,
     portalId,
-    confirmationText,
     content,
     buttonText = "Enviar",
     handleClose,
@@ -58,12 +56,15 @@ export const Listmodal = (props: IListmodalProps) => {
             />
           </Stack>
         </Stack>
-        <Stack>
-          <Text>{confirmationText}</Text>
-        </Stack>
-        <StyledContainerContent $smallScreen={isMobile}>
-          {content}
-        </StyledContainerContent>
+        {typeof content === "string" ? (
+          <Stack>
+            <Text>{content}</Text>
+          </Stack>
+        ) : (
+          <StyledContainerContent $smallScreen={isMobile}>
+            {content}
+          </StyledContainerContent>
+        )}
         <Stack justifyContent="flex-end" margin="16px 0">
           <Button onClick={handleButtonClick || handleClose}>{buttonText}</Button>
         </Stack>
