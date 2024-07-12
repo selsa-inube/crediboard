@@ -1,17 +1,17 @@
 import { StoryFn } from "@storybook/react";
-import { IRenderMessageProps, RenderMessage } from ".";
+import { IFlagMessageProps, FlagMessage } from ".";
 import { MdThumbUpOffAlt } from "react-icons/md";
 import { EAppearance } from "./types";
 
 
 const story = {
-  component: [RenderMessage],
-  title: "feedback/RenderMessage",
+  component: [FlagMessage],
+  title: "feedback/FlagMessage",
   decorators: [(Story: StoryFn) => <Story />],
 };
 
-export const Default = (args: IRenderMessageProps) => (
-  <RenderMessage {...args} />
+export const Default = (args: IFlagMessageProps) => (
+  <FlagMessage {...args} />
 );
 
 Default.args = {

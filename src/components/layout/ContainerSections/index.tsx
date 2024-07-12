@@ -194,7 +194,7 @@ import { MdArrowBack, MdMenu, MdOutlineRemoveRedEye, MdThumbUpOffAlt } from "rea
 import { Button, Icon, Stack, Text, inube, useMediaQuery } from "@inube/design-system";
 
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import {RenderMessage} from "@components/feedback/RenderMessage";
+import { FlagMessage } from "@src/components/feedback/FlagMessage";
 import { configButtons, configDataAttachments } from "./config";
 import { StyledHorizontalDivider, StyledItem } from "./styles";
 import { Listmodal } from "@src/components/modals/Listmodal";
@@ -236,7 +236,7 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
-  const [showRenderMessage, setShowRenderMessage] = useState(false);
+  const [showFlagMessage, setShowFlagMessage] = useState(false);
   const [isCancellationSuccessful, setIsCancellationSuccessful] = useState(false);
 
   const navigation = useNavigate();
@@ -245,10 +245,10 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
   const handleCancelModal = () => setShowCancelModal(!showCancelModal);
 
   const handleConfirmCancel = () => {
-    const isSuccess = true; // Simulación de lógica de éxito o fracaso
+    const isSuccess = true; 
 
     if (isSuccess) {
-      setShowRenderMessage(true);
+      setShowFlagMessage(true);
       setIsCancellationSuccessful(true);
       setShowCancelModal(false);
     } else {
@@ -351,8 +351,8 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
           onSubmit={handleConfirmCancel}
         />
       )}
-      {showRenderMessage && (
-        <RenderMessage
+      {showFlagMessage && (
+        <FlagMessage
           message={{
             visible: true,
             data: {
@@ -370,8 +370,8 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
                 : "Anulación no exitosa",
             },
           }}
-          handleCloseMessage={() => setShowRenderMessage(false)}
-          onMessageClosed={() => setShowRenderMessage(false)}
+          handleCloseMessage={() => setShowFlagMessage(false)}
+          onMessageClosed={() => setShowFlagMessage(false)}
         />
       )}
     </>

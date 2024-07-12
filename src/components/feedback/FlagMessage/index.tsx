@@ -5,13 +5,13 @@ import { StyledMessageContainer } from "./styles";
 import { IUserMessage } from "./types";
 import { TextAreaModal, TextAreaModalProps } from "@components/modals/TextAreaModal";
 
-interface IRenderMessageProps {
+interface IFlagMessageProps {
   message: IUserMessage;
   handleCloseMessage: () => void;
   onMessageClosed: () => void;
 }
 
-const RenderMessage: React.FC<IRenderMessageProps> = ({
+const FlagMessage: React.FC<IFlagMessageProps> = ({
   message,
   handleCloseMessage,
   onMessageClosed,
@@ -57,5 +57,5 @@ const RenderMessage: React.FC<IRenderMessageProps> = ({
   );
 };
 
-export { RenderMessage };
-export type { IRenderMessageProps };
+export { FlagMessage };
+export type { IFlagMessageProps };
