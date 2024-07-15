@@ -30,7 +30,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   } = props;
 
   const [data, setData] = useState({} as Requests);
-  const [errorVisible, setErrorVisible] = useState(false);
+  const [visibleError, setvisibleError] = useState(false);
   const { id } = useParams();
 
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
@@ -40,20 +40,20 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
       const simulatedRequirement = { ...requirement, hasError: true };
       setData(simulatedRequirement);
       if (simulatedRequirement.hasError) {
-        setErrorVisible(true);
+        setvisibleError(true);
       }
     });
   }, [id]);
 
   const handleCloseErrorAlert = () => {
-    setErrorVisible(false);
+    setvisibleError(false);
   };
 
   return (
     <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"} >
       <ContainerSections>
       <Stack direction="column" margin={ "s300"}>
-        {errorVisible && (
+        {visibleError && (
           <ErrorAlert
             message="Existe un error sin evaluar"
             onClose={handleCloseErrorAlert}
