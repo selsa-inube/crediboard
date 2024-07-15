@@ -1,5 +1,5 @@
 import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { Icon } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
 
 import { IEntries } from "@components/data/TableBoard/types";
 
@@ -45,7 +45,9 @@ export const actionsPostingvouchers = [
     content: (data: IEntries) => (
       <Icon
         appearance="primary"
-        size="24px"
+        size="22px"
+        spacing="none"
+        variant="none"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
         onClick={() => entrySelection(data)}

@@ -1,7 +1,15 @@
 import { isValidElement } from "react";
-import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
-import { Icon, Stack, Tag } from "@inube/design-system";
+import {
+  MdAddCircleOutline,
+  MdCheck,
+  MdClose,
+  MdOutlineCheckCircle,
+  MdRemove,
+} from "react-icons/md";
+import { Stack } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
 
+import { Tag } from "@components/data/Tag";
 import { IEntries } from "@components/data/TableBoard/types";
 
 export const dataButton = {
@@ -72,7 +80,7 @@ export const entriesRequirements: IEntries[][] = [
     {
       id: "cuatro",
       "Validaciones del sistema": "Que tenga más de 30 años",
-      tag: <Tag label="No Cumple" appearance="error" />,
+      tag: <Tag label="No Cumple" appearance="danger" />,
     },
   ],
   [
@@ -101,7 +109,7 @@ export const entriesRequirements: IEntries[][] = [
     {
       id: "nueve",
       "Validaciones humanas": "Proponer un codeudor",
-      tag: <Tag label="No Cumple" appearance="error" />,
+      tag: <Tag label="No Cumple" appearance="danger" />,
     },
   ],
 ];
@@ -116,8 +124,8 @@ export const actionsRequirements = [
             icon={<MdAddCircleOutline />}
             appearance="primary"
             onClick={() => receiveData(data)}
-            spacing="compact"
-            size="24px"
+            spacing="none"
+            size="22px"
             cursorHover
           />
         </Stack>
@@ -130,9 +138,9 @@ export const actionsRequirements = [
           <Icon
             icon={<MdOutlineCheckCircle />}
             appearance="primary"
-            spacing="compact"
+            spacing="none"
             cursorHover
-            size="24px"
+            size="22px"
             onClick={() => receiveData(data)}
             disabled={
               isValidElement(data?.tag) &&
@@ -145,23 +153,105 @@ export const actionsRequirements = [
   ],
 ];
 
+const iconActionsMobile = (tag: string) => {
+  if (tag === "Aprobado") {
+    return <MdCheck />;
+  } else if (tag === "Pendiente") {
+    return <MdRemove />;
+  } else {
+    return <MdClose />;
+  }
+};
+
+interface TagProps {
+  appearance?: string;
+  label?: string;
+}
+
+interface TagElement {
+  props: TagProps;
+}
+
+const isValidTagElement = (element: unknown): element is TagElement => {
+  return isValidElement(element) && element.props !== undefined;
+};
+
+const actionsMobile = [
+  {
+    id: "tags",
+    actionName: "",
+    content: (data: IEntries) => (
+      <Icon
+        icon={
+          isValidElement(data?.tag) &&
+          iconActionsMobile(data?.tag?.props?.label)
+        }
+        appearance={
+          isValidTagElement(data?.tag)
+            ? data?.tag?.props?.appearance
+            : undefined
+        }
+        cursorHover
+        variant="filled"
+        shape="circle"
+      />
+    ),
+  },
+  {
+    id: "agregar",
+    content: (data: IEntries) => (
+      <Stack justifyContent="center">
+        <Icon
+          icon={<MdAddCircleOutline />}
+          appearance="primary"
+          onClick={() => receiveData(data)}
+          spacing="none"
+          size="22px"
+          cursorHover
+        />
+      </Stack>
+    ),
+  },
+  {
+    id: "aprobar",
+    content: (data: IEntries) => (
+      <Stack justifyContent="center">
+        <Icon
+          icon={<MdOutlineCheckCircle />}
+          appearance="primary"
+          spacing="none"
+          cursorHover
+          size="22px"
+          onClick={() => receiveData(data)}
+          disabled={
+            isValidElement(data?.tag) && data?.tag?.props?.label === "No Cumple"
+          }
+        />
+      </Stack>
+    ),
+  },
+];
+
 export const dataRequirements = [
   {
     id: "tabla1",
     titlesRequirements: titlesRequirements[0],
     entriesRequirements: entriesRequirements[0],
     actionsRequirements: actionsRequirements[0],
+    actionsMovile: actionsMobile,
   },
   {
     id: "tabla2",
     titlesRequirements: titlesRequirements[1],
     entriesRequirements: entriesRequirements[1],
     actionsRequirements: actionsRequirements[0],
+    actionsMovile: actionsMobile,
   },
   {
     id: "tabla3",
     titlesRequirements: titlesRequirements[2],
     entriesRequirements: entriesRequirements[2],
     actionsRequirements: actionsRequirements[0],
+    actionsMovile: actionsMobile,
   },
 ];
