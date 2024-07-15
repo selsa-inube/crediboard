@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { isValidElement, ReactElement } from "react";
+import { isValidElement} from "react";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
@@ -23,7 +23,11 @@ export const Approvals = () => {
   }, []);
 
   const handleNotificationClick = (data: IEntries) => {
-    if (isValidElement(data?.tag) && (data?.tag as ReactElement).props?.label === "Aprobado") {
+    const tag = data?.tag;
+    if (
+      isValidElement(tag) &&
+      (tag.props?.label === "Aprobado" || tag.props?.label === "Rechazado")
+    ) {
       setSelectedData(data);
       setShowModal(true);
     }
@@ -76,7 +80,7 @@ export const Approvals = () => {
           handleClose={handleCloseModal}
           buttonText="Enviar"
           handleButtonClick={handleSend}
-          content={`Esta seguro que desea enviar esta solicitud para aprobación... la necesidad de evaluar esta solicitud.`}
+          content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
         />
       )}
     </>

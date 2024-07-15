@@ -6,7 +6,8 @@ import {
   MdRemove,
   MdWarningAmber,
 } from "react-icons/md";
-import { Icon } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
+
 import { IEntries } from "@components/data/TableBoard/types";
 import { Tag } from "@components/data/Tag";
 
@@ -169,7 +170,7 @@ export const actionsApprovals = [
         size="22px"
         onClick={() => handledata(data)}
         disabled={
-          !isValidElement(data?.tag) || data?.tag?.props?.label !== "Aprobado"
+          isValidElement(data?.tag) && data?.tag?.props?.label === "Pendiente"
         }
       />
     ),
@@ -249,7 +250,7 @@ export const actionMobileApprovals = [
         size="20px"
         onClick={() => handledata(data)}
         disabled={
-          !isValidElement(data?.tag) || data?.tag?.props?.label !== "Aprobado"
+          isValidElement(data?.tag) && data?.tag?.props?.label === "Pendiente"
         }
       />
     ),
