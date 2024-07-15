@@ -188,16 +188,20 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
 };
  */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MdArrowBack, MdMenu, MdOutlineRemoveRedEye, MdThumbUpOffAlt } from "react-icons/md";
+import {
+  MdArrowBack,
+  MdMenu,
+  MdOutlineRemoveRedEye,
+} from "react-icons/md";
 import { Button, Icon, Stack, Text, inube, useMediaQuery } from "@inube/design-system";
 
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { FlagMessage } from "@src/components/feedback/FlagMessage";
+import { FlagMessage } from "@components/feedback/FlagMessage";
 import { configButtons, configDataAttachments } from "./config";
 import { StyledHorizontalDivider, StyledItem } from "./styles";
-import { Listmodal } from "@src/components/modals/Listmodal";
+import { Listmodal } from "@components/modals/Listmodal";
 
 interface IContainerSectionsProps {
   children?: JSX.Element | JSX.Element[];
@@ -208,12 +212,7 @@ interface IListdataProps {
 }
 
 const Listdata: React.FC<IListdataProps> = ({ data }) => (
-  <ul
-    style={{
-      paddingInlineStart: "2px",
-      marginBlock: "8px",
-    }}
-  >
+  <ul style={{ paddingInlineStart: "2px", marginBlock: "8px" }}>
     {data.map((element) => (
       <StyledItem key={element.id}>
         <Text>{element.name}</Text>
@@ -237,7 +236,6 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
   const [attachDocuments, setAttachDocuments] = useState(false);
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
   const [showFlagMessage, setShowFlagMessage] = useState(false);
-  const [isCancellationSuccessful, setIsCancellationSuccessful] = useState(false);
 
   const navigation = useNavigate();
 
@@ -245,16 +243,15 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
   const handleCancelModal = () => setShowCancelModal(!showCancelModal);
 
   const handleConfirmCancel = () => {
-    const isSuccess = true; 
+    const isSuccess = true; // Aquí debes implementar la lógica real de cancelación
 
     if (isSuccess) {
       setShowFlagMessage(true);
-      setIsCancellationSuccessful(true);
-      setShowCancelModal(false);
     } else {
-      setIsCancellationSuccessful(false);
-      setShowCancelModal(false);
+      setShowFlagMessage(true);
     }
+
+    setShowCancelModal(false);
   };
 
   return (
@@ -284,20 +281,11 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
               </Stack>
             )}
             {isMobile && (
-              <Icon
-                icon={<MdMenu />}
-                appearance="dark"
-                size="32px"
-                spacing="none"
-              />
+              <Icon icon={<MdMenu />} appearance="dark" size="32px" spacing="none" />
             )}
           </Stack>
           {!isMobile && (
-            <Stack
-              justifyContent="end"
-              gap={inube.spacing.s200}
-              margin={!isMobile ? "s0 s0 s200 s0" : "s0"}
-            >
+            <Stack justifyContent="end" gap={inube.spacing.s200} margin="s0 s0 s200 s0">
               <Stack gap={inube.spacing.s400}>
                 <Button onClick={handleRejectionModal}>
                   {configButtons.buttons.buttonOne.label}
@@ -312,10 +300,7 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
                 <Button variant="outlined">
                   {configButtons.buttonsOutlined.buttonOne.label}
                 </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => setAttachDocuments(true)}
-                >
+                <Button variant="outlined" onClick={() => setAttachDocuments(true)}>
                   {configButtons.buttonsOutlined.buttonTwo.label}
                 </Button>
                 {attachDocuments && (
@@ -345,31 +330,14 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
         <TextAreaModal
           title="Anular"
           buttonText="Confirmar"
-          inputLabel="Motivo de la anulacion."
-          inputPlaceholder="Describa el motivo de la anulacion."
+          inputLabel="Motivo de la anulación."
+          inputPlaceholder="Describa el motivo de la anulación."
           onCloseModal={handleCancelModal}
           onSubmit={handleConfirmCancel}
         />
       )}
       {showFlagMessage && (
         <FlagMessage
-          message={{
-            visible: true,
-            data: {
-              appearance: isCancellationSuccessful ? "success" : "danger", 
-              description: isCancellationSuccessful
-                ? "Se ha anulado correctamente"
-                : "No se pudo anular correctamente",
-              icon: isCancellationSuccessful ? (
-                <Icon icon={<MdThumbUpOffAlt />} appearance="success" />
-              ) : (
-                <Icon icon={<MdThumbUpOffAlt />} appearance="danger" />
-              ),
-              title: isCancellationSuccessful
-                ? "Anulación exitosa"
-                : "Anulación no exitosa",
-            },
-          }}
           handleCloseMessage={() => setShowFlagMessage(false)}
           onMessageClosed={() => setShowFlagMessage(false)}
         />

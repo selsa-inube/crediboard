@@ -1,24 +1,21 @@
 import React, { useState } from "react";
 import { Stack } from "@inubekit/stack";
 import { Flag } from "@inubekit/flag";
+import { MdOutlineThumbUp } from "react-icons/md";
 import { StyledMessageContainer } from "./styles";
-import { IUserMessage } from "./types";
 import { TextAreaModal, TextAreaModalProps } from "@components/modals/TextAreaModal";
 
 interface IFlagMessageProps {
-  message: IUserMessage;
   handleCloseMessage: () => void;
   onMessageClosed: () => void;
 }
 
 const FlagMessage: React.FC<IFlagMessageProps> = ({
-  message,
   handleCloseMessage,
   onMessageClosed,
 }) => {
   const [showModal, setShowModal] = useState(false); 
 
-  if (!message.visible || !message.data) return null;
 
   const closeMessageAndExecuteCallback = () => {
     handleCloseMessage();
@@ -42,12 +39,12 @@ const FlagMessage: React.FC<IFlagMessageProps> = ({
       <StyledMessageContainer>
         <Stack justifyContent="flex-end" width="100%">
           <Flag
-            appearance={message.data.appearance as "dark"}
+            appearance={"success"}
             closeFlag={closeMessageAndExecuteCallback}
-            description={message.data.description}
+            description={"Se a realizado la anulacion"}
             duration={4000}
-            icon={message.data.icon}
-            title={message.data.title}
+            icon={<MdOutlineThumbUp/>}
+            title={"Notificacion"}
             isMessageResponsive={false}
           />
         </Stack>
