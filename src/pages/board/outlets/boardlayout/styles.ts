@@ -35,6 +35,8 @@ const StyledInputsContainer = styled.div<IStyledInputsContainer>`
 `;
 
 const StyledBoardContainer = styled.div<IStyledBoardContainer>`
+  max-width: 1440px;
+  margin: 0 auto;
   display: flex;
   flex-direction: ${({ $orientation }) =>
     $orientation === "horizontal" ? "column" : "row"};
