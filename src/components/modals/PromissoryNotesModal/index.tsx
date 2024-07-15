@@ -22,7 +22,12 @@ interface FormValues {
 }
 
 const validationSchema = Yup.object().shape({
-  field1: Yup.string().required("Este campo es obligatorio"),
+  field1: Yup.string()
+    .required("Este campo es obligatorio")
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      "Debe ser un correo electrónico válido"
+    ),
   field2: Yup.string()
     .required("Este campo es obligatorio")
     .matches(/^[0-9]+$/, "Debe ser un número"),
