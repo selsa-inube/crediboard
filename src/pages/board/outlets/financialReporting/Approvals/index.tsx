@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import { isValidElement} from "react";
+import { useState, useEffect, isValidElement } from "react";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { Listmodal } from "@components/modals/Listmodal";
+import { MdWarningAmber, MdNotificationsNone } from "react-icons/md";
+import { Icon } from "@inubekit/icon";
 import {
   actionMobileApprovals,
-  actionsApprovals,
   handleData,
   titlesApprovals,
 } from "./config";
@@ -24,10 +24,7 @@ export const Approvals = () => {
 
   const handleNotificationClick = (data: IEntries) => {
     const tag = data?.tag;
-    if (
-      isValidElement(tag) &&
-      (tag.props?.label === "Aprobado" || tag.props?.label === "Rechazado")
-    ) {
+    if (isValidElement(tag) && tag.props?.label === "Pendiente") {
       setSelectedData(data);
       setShowModal(true);
     }
@@ -41,6 +38,49 @@ export const Approvals = () => {
     console.log("Sending data...");
     handleCloseModal();
   };
+
+  const handledata = (data: IEntries) => {
+    console.log(data, "function that receives data");
+  };
+
+  const actionsApprovals = [
+    {
+      id: "Error",
+      actionName: "Error",
+      content: (data: IEntries) => (
+        <Icon
+          icon={<MdWarningAmber />}
+          appearance="warning"
+          spacing="none"
+          cursorHover
+          size="22px"
+          onClick={() => handledata(data)}
+          disabled={
+            isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
+          }
+        />
+      ),
+    },
+    {
+      id: "notificaciones",
+      actionName: "Notificar",
+      content: (data: IEntries) => {
+        const tag = data?.tag;
+        const isPending = isValidElement(tag) && tag.props?.label === "Pendiente";
+        return (
+          <Icon
+            icon={<MdNotificationsNone />}
+            appearance="primary"
+            spacing="none"
+            cursorHover
+            size="22px"
+            onClick={() => handleNotificationClick(data)}
+            disabled={!isPending}
+          />
+        );
+      },
+    },
+  ];
 
   return (
     <>
@@ -62,7 +102,7 @@ export const Approvals = () => {
                 onClick={() => {
                   if (action.id === "notificaciones") {
                     handleNotificationClick(data);
-                  } else {
+                  } else if (action.id === "Error") {
                     action.content(data);
                   }
                 }}
