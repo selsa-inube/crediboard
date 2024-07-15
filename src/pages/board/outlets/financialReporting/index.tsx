@@ -50,13 +50,25 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   };
 
   return (
-    <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"}>
+    <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"} >
       <ContainerSections>
+      <Stack direction="column" margin={ "s300"}>
+        {errorVisible && (
+          <ErrorAlert
+            message="Existe un error sin evaluar"
+            onClose={handleCloseErrorAlert}
+            top={!isMobile ? "60px" : "120px"}
+            left="50%"
+          />
+        )}
+      </Stack>
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
             <ComercialManagement
               data={data}
-              children={<DataCommercialManagement dataAccordeon={dataAccordeon} />}
+              children={
+                <DataCommercialManagement dataAccordeon={dataAccordeon} />
+              }
             />
           </Stack>
           <Grid
@@ -75,14 +87,6 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
           </Grid>
         </Stack>
       </ContainerSections>
-      {errorVisible && (
-        <ErrorAlert
-          message="Existe un error sin evaluar"
-          onClose={handleCloseErrorAlert}
-          top="60px"
-          left="50%"
-        />
-      )}
     </Stack>
   );
 };

@@ -9,7 +9,7 @@ interface AlertContainerProps {
 export const AlertContainer = styled.div<AlertContainerProps>`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background-color: ${({ theme }) =>
     theme?.color?.stroke?.gray?.regular || inube.color.surface.warning.clear};
   padding: 8px;
@@ -18,9 +18,23 @@ export const AlertContainer = styled.div<AlertContainerProps>`
     ${({ theme }) =>
       theme?.color?.stroke?.gray?.regular || inube.color.surface.gray.regular};
   position: absolute;
-  max-width: 328px;
-  z-index: 1000;
   top: ${({ $top }) => $top};
   left: ${({ $left }) => $left};
-  transform: translate(-50%, 0);
+  transform: translateX(-50%);
+  z-index: 1000;
+  
+  @media (max-width: 350px) {
+    position: fixed;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 5px;
+  }
+`;
+
+export const AlertText = styled.div`
+  margin: 0 10px;
+  font-family: Roboto;
+  font-size: 14px;
+  margin-right: 85px;
+  white-space: nowrap;
 `;

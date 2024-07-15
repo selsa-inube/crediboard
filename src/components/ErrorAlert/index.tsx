@@ -1,7 +1,6 @@
 import { Icon } from "@inubekit/icon";
-import { Text } from "@inubekit/text";
 import { MdWarningAmber, MdClear } from "react-icons/md";
-import { AlertContainer } from "./styles";
+import { AlertContainer, AlertText } from "./styles";
 
 export interface ErrorAlertProps {
   message?: string;
@@ -14,11 +13,9 @@ const ErrorAlert = (props: ErrorAlertProps) => {
   const { message, onClose, top, left } = props;
 
   return (
-    <AlertContainer  $top={top} $left={left}>
+    <AlertContainer $top={top} $left={left}>
       <Icon appearance="warning" icon={<MdWarningAmber />} size="24px" />
-      <Text size="large" padding="0px 70px 0px 10px">
-        {message || "Existe un error sin evaluar"}
-      </Text>
+      <AlertText>{message || "Existe un error sin evaluar"}</AlertText>
       <Icon
         appearance="dark"
         icon={<MdClear />}
