@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { isValidElement, ReactElement } from "react";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
@@ -12,21 +13,20 @@ import {
 
 export const Approvals = () => {
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
-  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
 
   useEffect(() => {
-    setLoading(true);
     handleData().then((data) => {
       setEntriesApprovals(data as IEntries[]);
-      setLoading(false);
     });
   }, []);
 
   const handleNotificationClick = (data: IEntries) => {
-    setSelectedData(data);
-    setShowModal(true);
+    if (isValidElement(data?.tag) && (data?.tag as ReactElement).props?.label === "Aprobado") {
+      setSelectedData(data);
+      setShowModal(true);
+    }
   };
 
   const handleCloseModal = () => {
@@ -59,7 +59,7 @@ export const Approvals = () => {
                   if (action.id === "notificaciones") {
                     handleNotificationClick(data);
                   } else {
-                    console.log(`Clicked action: ${action.actionName}`);
+                    action.content(data);
                   }
                 }}
               >
@@ -67,9 +67,7 @@ export const Approvals = () => {
               </div>
             ),
           }))}
-          loading={loading}
           actionMobile={actionMobileApprovals}
-          nameTitleTag="decision"
         />
       </Fieldset>
       {showModal && selectedData && (
