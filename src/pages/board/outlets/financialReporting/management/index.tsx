@@ -11,12 +11,19 @@ import { Message } from "@components/data/message";
 import { SubmitButton } from "@components/inputs/SubmitButton";
 
 import { ManagementContainer, ChatContent } from "./styles";
+import { get } from "@mocks/utils/dataMock.service";
+import { traceMock } from "@src/mocks/trace/trace.mock";
 
 interface MessageType {
   id: string;
   type: "sent" | "received";
-  timestamp: number;
+  timestamp: number | string;
   text: string;
+}
+
+interface MessageTypedos {
+  id: string;
+  trace: typeof traceMock.trace;
 }
 
 export const Management = () => {
@@ -25,16 +32,17 @@ export const Management = () => {
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    localforage
-      .getItem<MessageType[]>("messages")
-      .then((savedMessages) => {
-        if (savedMessages) {
-          setMessages(savedMessages);
-        }
-      })
-      .catch((err) => {
-        console.error("Error al cargar mensajes:", err);
-      });
+    get("trace").then((data) => {
+      const trace = (data as MessageTypedos[])[0].trace;
+      const message: MessageType[] = trace.map((trace) => ({
+        id: trace.credit_request_id,
+        type: "sent",
+        timestamp: trace.execution_date,
+        text: trace.justification,
+      }));
+
+      setMessages(message);
+    });
   }, []);
 
   useEffect(() => {
@@ -71,13 +79,23 @@ export const Management = () => {
     <Fieldset title="Gestión" heigthFieldset="340px" aspectRatio="1">
       <ManagementContainer>
         <ChatContent>
-          {filteredMessages.map((msg, index) => (
-            <Message key={index} type={msg.type} timestamp={msg.timestamp} message={msg.text} />
+          {filteredMessages.map((msg) => (
+            <Message
+              key={msg.id}
+              type={msg.type}
+              timestamp={msg.timestamp}
+              message={msg.text}
+            />
           ))}
         </ChatContent>
         <form onSubmit={handleFormSubmit}>
           <Stack alignItems="center" direction="row" gap={inube.spacing.s150}>
-            <Icon appearance="primary" cursorHover size="36px" icon={<LuPaperclip />} />
+            <Icon
+              appearance="primary"
+              cursorHover
+              size="36px"
+              icon={<LuPaperclip />}
+            />
             <Textfield
               id="text"
               placeholder="Ej.: Escriba su mensaje"
