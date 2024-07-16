@@ -8,7 +8,7 @@ function buildData<T>(data: T[]) {
   return dataMock;
 }
 
-export async function intializedData<T>(option: string, data: T[]) {
+export async function intializedData<T = unknown>(option: string, data: T[]) {
   try {
     const dataMock = buildData(data);
     await localforage.setItem(option, dataMock);
@@ -17,16 +17,16 @@ export async function intializedData<T>(option: string, data: T[]) {
   }
 }
 
-export async function get(option: string) {
+export async function get<T>(option: string) {
   await fakeNetwork();
   try {
     const optionsData = await localforage.getItem(option);
 
     if (!optionsData) throw new Error("No found");
 
-    return optionsData;
+    return optionsData as T;
   } catch (error) {
-    return error;
+    throw new Error(error as string);
   }
 }
 
