@@ -1,9 +1,7 @@
-import React, { useState } from "react";
 import { Stack } from "@inubekit/stack";
 import { Flag } from "@inubekit/flag";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { StyledMessageContainer } from "./styles";
-import { TextAreaModal, TextAreaModalProps } from "@components/modals/TextAreaModal";
 
 interface IFlagMessageProps {
   handleCloseMessage: () => void;
@@ -14,7 +12,6 @@ const FlagMessage: React.FC<IFlagMessageProps> = ({
   handleCloseMessage,
   onMessageClosed,
 }) => {
-  const [showModal, setShowModal] = useState(false); 
 
 
   const closeMessageAndExecuteCallback = () => {
@@ -23,16 +20,6 @@ const FlagMessage: React.FC<IFlagMessageProps> = ({
   };
 
 
-  const modalProps: TextAreaModalProps = {
-    title: "Título de la Modal",
-    buttonText: "Confirmar",
-    inputLabel: "Motivo de la anulación.",
-    inputPlaceholder: "Describa el motivo de la anulación.",
-    onCloseModal: () => setShowModal(false),
-    onSubmit: () => {
-      setShowModal(false); 
-    },
-  };
 
   return (
     <>
@@ -49,7 +36,6 @@ const FlagMessage: React.FC<IFlagMessageProps> = ({
           />
         </Stack>
       </StyledMessageContainer>
-      {showModal && <TextAreaModal {...modalProps} />}
     </>
   );
 };
