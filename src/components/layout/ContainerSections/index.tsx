@@ -190,18 +190,20 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { MdArrowBack, MdMenu, MdOutlineRemoveRedEye } from "react-icons/md";
 import {
-  MdArrowBack,
-  MdMenu,
-  MdOutlineRemoveRedEye,
-} from "react-icons/md";
-import { Button, Icon, Stack, Text, inube, useMediaQuery } from "@inube/design-system";
+  Button,
+  Icon,
+  Stack,
+  Text,
+  inube,
+  useMediaQuery,
+} from "@inube/design-system";
 
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { FlagMessage } from "@components/feedback/FlagMessage";
 import { configButtons, configDataAttachments } from "./config";
 import { StyledHorizontalDivider, StyledItem } from "./styles";
-import { Listmodal } from "@components/modals/Listmodal";
+import { Listmodal } from "@src/components/modals/Listmodal";
 
 interface IContainerSectionsProps {
   children?: JSX.Element | JSX.Element[];
@@ -211,56 +213,41 @@ interface IListdataProps {
   data: { id: string; name: string }[];
 }
 
-const Listdata: React.FC<IListdataProps> = ({ data }) => (
-  <ul style={{ paddingInlineStart: "2px", marginBlock: "8px" }}>
-    {data.map((element) => (
-      <StyledItem key={element.id}>
-        <Text>{element.name}</Text>
-        <Icon
-          icon={<MdOutlineRemoveRedEye />}
-          appearance="dark"
-          spacing="none"
-          size="24px"
-          cursorHover
-        />
-      </StyledItem>
-    ))}
-  </ul>
-);
+const Listdata = (props: IListdataProps) => {
+  const { data } = props;
 
-export const ContainerSections: React.FC<IContainerSectionsProps> = ({
-  children,
-}) => {
+  return (
+    <ul
+      style={{
+        paddingInlineStart: "2px",
+        marginBlock: "8px",
+      }}
+    >
+      {data.map((element) => (
+        <StyledItem key={element.id}>
+          <Text>{element.name}</Text>
+          <Icon
+            icon={<MdOutlineRemoveRedEye />}
+            appearance="dark"
+            spacing="none"
+            size="24px"
+            cursorHover
+          />
+        </StyledItem>
+      ))}
+    </ul>
+  );
+};
+
+export const ContainerSections = (props: IContainerSectionsProps) => {
+  const { children } = props;
+
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
-  const [showFlagMessage, setShowFlagMessage] = useState(false);
-  const [flagMessage, setFlagMessage] = useState({ title: '', description: '' });
 
   const navigation = useNavigate();
-
-  const handleRejectionModal = () => setShowRejectionModal(!showRejectionModal);
-  const handleCancelModal = () => setShowCancelModal(!showCancelModal);
-
-  const handleConfirmCancel = () => {
-    const isSuccess = true; 
-
-    if (isSuccess) {
-      setFlagMessage({
-        title: "Anulación",
-        description: "Se ha realizado la anulación exitosamente",
-      });
-    } else {
-      setFlagMessage({
-        title: "Error",
-        description: "No se pudo realizar la anulación",
-      });
-    }
-
-    setShowFlagMessage(true);
-    setShowCancelModal(false);
-  };
 
   return (
     <>
@@ -289,16 +276,27 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
               </Stack>
             )}
             {isMobile && (
-              <Icon icon={<MdMenu />} appearance="dark" size="32px" spacing="none" />
+              <Icon
+                icon={<MdMenu />}
+                appearance="dark"
+                size="32px"
+                spacing="none"
+              />
             )}
           </Stack>
           {!isMobile && (
-            <Stack justifyContent="end" gap={inube.spacing.s200} margin="s0 s0 s200 s0">
+            <Stack
+              justifyContent="end"
+              gap={inube.spacing.s200}
+              margin={!isMobile ? "s0 s0 s200 s0" : "s0"}
+            >
               <Stack gap={inube.spacing.s400}>
-                <Button onClick={handleRejectionModal}>
+                <Button
+                  onClick={() => setShowRejectionModal(!showRejectionModal)}
+                >
                   {configButtons.buttons.buttonOne.label}
                 </Button>
-                <Button onClick={handleCancelModal}>
+                <Button onClick={() => setShowCancelModal(!showCancelModal)}>
                   {configButtons.buttons.buttonTwo.label}
                 </Button>
                 <Button>{configButtons.buttons.buttonTree.label}</Button>
@@ -308,7 +306,10 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
                 <Button variant="outlined">
                   {configButtons.buttonsOutlined.buttonOne.label}
                 </Button>
-                <Button variant="outlined" onClick={() => setAttachDocuments(true)}>
+                <Button
+                  variant="outlined"
+                  onClick={() => setAttachDocuments(true)}
+                >
                   {configButtons.buttonsOutlined.buttonTwo.label}
                 </Button>
                 {attachDocuments && (
@@ -330,24 +331,18 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
           buttonText="Confirmar"
           inputLabel="Motivo del rechazo."
           inputPlaceholder="Describa el motivo del rechazo."
-          onCloseModal={handleRejectionModal}
-          onSubmit={handleRejectionModal}
+          onCloseModal={() => setShowRejectionModal(!showRejectionModal)}
+          onSubmit={() => setShowRejectionModal(!showRejectionModal)}
         />
       )}
       {showCancelModal && (
         <TextAreaModal
           title="Anular"
           buttonText="Confirmar"
-          inputLabel="Motivo de la anulación."
-          inputPlaceholder="Describa el motivo de la anulación."
-          onCloseModal={handleCancelModal}
-          onSubmit={handleConfirmCancel}
-        />
-      )}
-      {showFlagMessage && (
-        <FlagMessage
-          title={flagMessage.title}
-          description={flagMessage.description}
+          inputLabel="Motivo de la anulacion."
+          inputPlaceholder="Describa el motivo de la anulacion."
+          onCloseModal={() => setShowCancelModal(!showCancelModal)}
+          onSubmit={() => setShowCancelModal(!showCancelModal)}
         />
       )}
     </>
