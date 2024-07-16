@@ -8,7 +8,7 @@ import {
 } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 
-
+import { Tag } from "@components/data/Tag";
 import { IEntries } from "@components/data/TableBoard/types";
 
 const entrySelection = (data: IEntries) => {
@@ -44,18 +44,21 @@ export const entriesFinanacialReporting = [
     "No. de Obligación": "1234554545",
     "No. de Documento": "1234567890",
     Tipo: "Pagare",
+    tag: <Tag label="En tramite" appearance="warning" />,
   },
   {
     id: "2",
     "No. de Obligación": "1234567890",
     "No. de Documento": "1234567890",
     Tipo: "Pagare",
+    tag: <Tag label="Firmado" appearance="success" />,
   },
   {
     id: "3",
     "No. de Obligación": "1234564321",
     "No. de Documento": "1234567890",
     Tipo: "Libranza",
+    tag: <Tag label="Con Error" appearance="danger" />,
   },
 ];
 

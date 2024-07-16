@@ -1,5 +1,11 @@
 import { isValidElement } from "react";
-import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
+import {
+  MdAddCircleOutline,
+  MdCheck,
+  MdClose,
+  MdOutlineCheckCircle,
+  MdRemove,
+} from "react-icons/md";
 import { Icon, Stack, Tag } from "@inube/design-system";
 
 import { IAction, IEntries } from "../types";
@@ -30,7 +36,7 @@ export const mockData: IEntries[] = [
     "Validaciones del sistema": "Que este al días con las obligaciones",
     tag: (
       <Stack padding="s0 s100 s0 s0">
-        <Tag label="Sin Validar" appearance="warning" />
+        <Tag label="No Cumple" appearance="warning" />
       </Stack>
     ),
   },
@@ -67,8 +73,8 @@ export const titlesMock = [
   },
 ];
 
-const resiveData = (data: IEntries) => {
-  console.log(data, "function que recibe data");
+const receiveData = (data: IEntries) => {
+  console.log(data);
 };
 
 export const actionsMock: IAction[] = [
@@ -84,7 +90,7 @@ export const actionsMock: IAction[] = [
               ? data?.tag?.props?.children?.props?.label
               : "primary"
           )}
-          onClick={() => resiveData(data)}
+          onClick={() => receiveData(data)}
           spacing="compact"
           size="24px"
           cursorHover
@@ -102,11 +108,92 @@ export const actionsMock: IAction[] = [
         spacing="compact"
         cursorHover
         size="24px"
-        onClick={() => resiveData(data)}
+        onClick={() => receiveData(data)}
         disabled={
           isValidElement(data?.tag) &&
           data?.tag?.props?.children?.props?.label === "Sin Validar"
         }
+      />
+    ),
+  },
+];
+
+const resiveDataMobile = (data: IEntries) => {
+  console.log(data, "function que recibe data");
+};
+
+const iconActionsMobile = (tag: string) => {
+  if (tag === "Cumple") {
+    return <MdCheck />;
+  } else if (tag === "Sin Validar") {
+    return <MdRemove />;
+  } else {
+    return <MdClose />;
+  }
+};
+
+interface TagProps {
+  children?: {
+    props: {
+      label?: string;
+      appearance?: string;
+    };
+  };
+}
+
+interface TagElement {
+  props: TagProps;
+}
+
+const isValidTagElement = (element: unknown): element is TagElement => {
+  return isValidElement(element) && element.props !== undefined;
+};
+
+export const actionMobileMock: IAction[] = [
+  {
+    id: "tags",
+    actionName: "Aprobar",
+    content: (data) => (
+      <Icon
+        icon={
+          isValidTagElement(data?.tag) &&
+          iconActionsMobile(data?.tag?.props?.children?.props?.label)
+        }
+        appearance={
+          isValidTagElement(data?.tag) &&
+          data?.tag?.props?.children?.props?.appearance
+        }
+        spacing="compact"
+        cursorHover
+        variant="filled"
+        shape="circle"
+      />
+    ),
+  },
+  {
+    id: "agregar",
+    actionName: "Agregar",
+    content: (data: IEntries) => (
+      <Icon
+        icon={<MdAddCircleOutline />}
+        appearance="primary"
+        spacing="compact"
+        size="24px"
+        cursorHover
+        onClick={() => resiveDataMobile(data)}
+      />
+    ),
+  },
+  {
+    id: "aprobar",
+    actionName: "Aprobar",
+    content: () => (
+      <Icon
+        icon={<MdOutlineCheckCircle />}
+        appearance="primary"
+        spacing="compact"
+        cursorHover
+        size="24px"
       />
     ),
   },
