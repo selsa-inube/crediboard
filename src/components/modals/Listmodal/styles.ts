@@ -6,7 +6,7 @@ interface IStyledModal {
 }
 
 export const StyledModal = styled.div<IStyledModal>`
-  overflow: hidden;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   max-height: ${({ $smallScreen }) => ($smallScreen ? "280px" : "382px")};
@@ -18,8 +18,6 @@ export const StyledModal = styled.div<IStyledModal>`
   gap: ${({ $smallScreen }) =>
     $smallScreen ? inube.spacing.s200 : inube.spacing.s300};
   border-radius: ${inube.spacing.s100};
-  position: fixed;
-  z-index: 1000000;
 `;
 
 export const StyledContainerContent = styled.div<IStyledModal>`
