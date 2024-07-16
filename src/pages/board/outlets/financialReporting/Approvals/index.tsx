@@ -3,12 +3,11 @@ import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { Listmodal } from "@components/modals/Listmodal";
-import { MdWarningAmber, MdNotificationsNone } from "react-icons/md";
-import { Icon } from "@inubekit/icon";
 import {
   actionMobileApprovals,
   handleData,
   titlesApprovals,
+  actionsApprovals,
 } from "./config";
 
 export const Approvals = () => {
@@ -39,48 +38,41 @@ export const Approvals = () => {
     handleCloseModal();
   };
 
-  const handledata = (data: IEntries) => {
-    console.log(data, "function that receives data");
-  };
-
-  const actionsApprovals = [
-    {
-      id: "Error",
-      actionName: "Error",
-      content: (data: IEntries) => (
-        <Icon
-          icon={<MdWarningAmber />}
-          appearance="warning"
-          spacing="none"
-          cursorHover
-          size="22px"
-          onClick={() => handledata(data)}
-          disabled={
-            isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
+  const desktopActions = actionsApprovals.map((action) => ({
+    ...action,
+    content: (data: IEntries) => (
+      <div
+        className="notification-icon"
+        onClick={() => {
+          if (action.id === "notificaciones") {
+            handleNotificationClick(data);
+          } else if (action.id === "Error") {
+            action.content(data);
           }
-        />
-      ),
-    },
-    {
-      id: "notificaciones",
-      actionName: "Notificar",
-      content: (data: IEntries) => {
-        const tag = data?.tag;
-        const isPending = isValidElement(tag) && tag.props?.label === "Pendiente";
-        return (
-          <Icon
-            icon={<MdNotificationsNone />}
-            appearance="primary"
-            spacing="none"
-            cursorHover
-            size="22px"
-            onClick={() => handleNotificationClick(data)}
-            disabled={!isPending}
-          />
-        );
-      },
-    },
-  ];
+        }}
+      >
+        {action.content(data)}
+      </div>
+    ),
+  }));
+
+  const mobileActions = actionMobileApprovals.map((action) => ({
+    ...action,
+    content: (data: IEntries) => (
+      <div
+        className="notification-icon"
+        onClick={() => {
+          if (action.id === "notificaciones") {
+            handleNotificationClick(data);
+          } else if (action.id === "Error") {
+            action.content(data);
+          }
+        }}
+      >
+        {action.content(data)}
+      </div>
+    ),
+  }));
 
   return (
     <>
@@ -94,24 +86,8 @@ export const Approvals = () => {
           id="usuarios"
           titles={titlesApprovals}
           entries={entriesApprovals}
-          actions={actionsApprovals.map((action) => ({
-            ...action,
-            content: (data: IEntries) => (
-              <div
-                className="notification-icon"
-                onClick={() => {
-                  if (action.id === "notificaciones") {
-                    handleNotificationClick(data);
-                  } else if (action.id === "Error") {
-                    action.content(data);
-                  }
-                }}
-              >
-                {action.content(data)}
-              </div>
-            ),
-          }))}
-          actionMobile={actionMobileApprovals}
+          actions={desktopActions}
+          actionMobile={mobileActions}
         />
       </Fieldset>
       {showModal && selectedData && (

@@ -1,11 +1,5 @@
 import { isValidElement } from "react";
-import {
-  MdCheck,
-  MdClose,
-  MdNotificationsNone,
-  MdRemove,
-  MdWarningAmber,
-} from "react-icons/md";
+import { MdCheck, MdClose, MdNotificationsNone, MdRemove, MdWarningAmber } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 
 import { IEntries } from "@components/data/TableBoard/types";
@@ -170,7 +164,7 @@ export const actionsApprovals = [
         size="22px"
         onClick={() => handledata(data)}
         disabled={
-          isValidElement(data?.tag) && data?.tag?.props?.label === "Pendiente"
+          isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
         }
       />
     ),
@@ -250,7 +244,7 @@ export const actionMobileApprovals = [
         size="20px"
         onClick={() => handledata(data)}
         disabled={
-          isValidElement(data?.tag) && data?.tag?.props?.label === "Pendiente"
+          isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
         }
       />
     ),
