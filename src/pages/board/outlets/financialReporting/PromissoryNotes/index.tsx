@@ -3,21 +3,24 @@ import { Stack } from "@inube/design-system";
 import { Fieldset } from "@src/components/data/Fieldset";
 import { TableBoard } from "@src/components/data/TableBoard";
 import {
+  actionMobile,
   actionsFinanacialReporting,
   entriesFinanacialReporting,
   titlesFinanacialReporting,
 } from "./config";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
+import { IEntries } from "@components/data/TableBoard/types";
 
 export const PromissoryNotes = () => {
   const [showModal, setShowModal] = useState(false);
 
-  const handleSendButtonClick = () => {
-    setShowModal(true);
-  };
-
   const handleCloseModal = () => {
     setShowModal(false);
+  };
+
+  const entrySelection = (data: IEntries) => {
+    console.log(data);
+    setShowModal(true);
   };
 
   return (
@@ -27,10 +30,26 @@ export const PromissoryNotes = () => {
           id="promissoryNotes"
           titles={titlesFinanacialReporting}
           entries={entriesFinanacialReporting}
-          actions={actionsFinanacialReporting(handleSendButtonClick)}
+          actions={actionsFinanacialReporting.map(action => ({
+            ...action,
+            content: (data) => (
+              <div onClick={() => entrySelection(data)}>
+                {action.content(data)}
+              </div>
+            )
+          }))}
+          actionMobile={actionMobile.map(action => ({
+            ...action,
+            content: (data) => (
+              <div onClick={() => entrySelection(data)}>
+                {action.content(data)}
+              </div>
+            )
+          }))}
           appearanceTable={{
             efectzebra: true,
             title: "primary",
+            isStyleMobile: true,
           }}
         />
       </Fieldset>

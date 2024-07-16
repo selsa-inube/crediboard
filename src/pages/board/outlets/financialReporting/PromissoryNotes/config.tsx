@@ -6,7 +6,9 @@ import {
   MdRemove,
   MdClose,
 } from "react-icons/md";
-import { Icon, Tag } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
+
+import { Tag } from "@components/data/Tag";
 import { IEntries } from "@components/data/TableBoard/types";
 
 const entrySelection = (data: IEntries) => {
@@ -30,7 +32,7 @@ export const titlesFinanacialReporting = [
     priority: 3,
   },
   {
-    id: "Estado",
+    id: "tag",
     titleName: "Estado",
     priority: 4,
   },
@@ -42,25 +44,25 @@ export const entriesFinanacialReporting = [
     "No. de Obligación": "1234554545",
     "No. de Documento": "1234567890",
     Tipo: "Pagare",
-    Estado: <Tag label="En tramite" appearance="warning" />,
+    tag: <Tag label="En tramite" appearance="warning" />,
   },
   {
     id: "2",
     "No. de Obligación": "1234567890",
     "No. de Documento": "1234567890",
     Tipo: "Pagare",
-    Estado: <Tag label="Firmado" appearance="success" />,
+    tag: <Tag label="Firmado" appearance="success" />,
   },
   {
     id: "3",
     "No. de Obligación": "1234564321",
     "No. de Documento": "1234567890",
     Tipo: "Libranza",
-    Estado: <Tag label="Con Error" appearance="error" />,
+    tag: <Tag label="Con Error" appearance="danger" />,
   },
 ];
 
-export const actionsFinanacialReporting = (handleSendButtonClick: (entry: IEntries) => void) => [
+export const actionsFinanacialReporting = [
   {
     id: "Reenviar",
     actionName: "Reenviar",
@@ -68,9 +70,11 @@ export const actionsFinanacialReporting = (handleSendButtonClick: (entry: IEntri
       <Icon
         appearance="primary"
         cursorHover
-        size="24px"
+        size="22px"
+        variant="none"
         icon={<MdOutlineSend />}
-        onClick={() => handleSendButtonClick(data)}
+        onClick={() => entrySelection(data)}
+        spacing="none"
       />
     ),
   },
@@ -80,7 +84,9 @@ export const actionsFinanacialReporting = (handleSendButtonClick: (entry: IEntri
     content: (data: IEntries) => (
       <Icon
         appearance="primary"
-        size="24px"
+        size="22px"
+        spacing="none"
+        variant="none"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
         onClick={() => entrySelection(data)}
@@ -112,7 +118,7 @@ const isValidTagElement = (element: unknown): element is TagElement => {
   return isValidElement(element) && element.props !== undefined;
 };
 
-export const actionMobile = (handleSendButtonClick: (entry: IEntries) => void) => [
+export const actionMobile = [
   {
     id: "tags",
     actionName: "",
@@ -144,7 +150,7 @@ export const actionMobile = (handleSendButtonClick: (entry: IEntries) => void) =
         spacing="none"
         cursorHover
         icon={<MdOutlineSend />}
-        onClick={() => handleSendButtonClick(data)}
+        onClick={() => entrySelection(data)}
       />
     ),
   },
@@ -163,3 +169,4 @@ export const actionMobile = (handleSendButtonClick: (entry: IEntries) => void) =
     ),
   },
 ];
+
