@@ -28,10 +28,10 @@ const FlagMessage: React.FC<IFlagMessageProps> = ({
           <Flag
             appearance={"success"}
             closeFlag={closeMessageAndExecuteCallback}
-            description={"Se a realizado la anulacion"}
+            description={"Se a realizado la anulación"}
             duration={4000}
             icon={<MdOutlineThumbUp/>}
-            title={"Notificacion"}
+            title={"anulación"}
             isMessageResponsive={false}
           />
         </Stack>
