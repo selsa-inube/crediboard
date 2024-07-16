@@ -34,7 +34,6 @@ export const Approvals = () => {
   };
 
   const handleSend = () => {
-    console.log("Sending data...");
     handleCloseModal();
   };
 
