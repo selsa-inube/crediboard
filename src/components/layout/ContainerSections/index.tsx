@@ -194,13 +194,14 @@ import {
   MdArrowBack,
   MdMenu,
   MdOutlineRemoveRedEye,
+  MdOutlineThumbUp,
 } from "react-icons/md";
 import { Button, Icon, Stack, Text, inube, useMediaQuery } from "@inube/design-system";
+import { Flag } from "@inubekit/flag";
 
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { FlagMessage } from "@components/feedback/FlagMessage";
 import { configButtons, configDataAttachments } from "./config";
-import { StyledHorizontalDivider, StyledItem } from "./styles";
+import { StyledHorizontalDivider, StyledItem, StyledMessageContainer } from "./styles";
 import { Listmodal } from "@components/modals/Listmodal";
 
 interface IContainerSectionsProps {
@@ -244,7 +245,7 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
   const handleCancelModal = () => setShowCancelModal(!showCancelModal);
 
   const handleConfirmCancel = () => {
-    const isSuccess = true; 
+    const isSuccess = true;
 
     if (isSuccess) {
       setFlagMessage({
@@ -260,6 +261,10 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
 
     setShowFlagMessage(true);
     setShowCancelModal(false);
+  };
+
+  const handleCloseFlagMessage = () => {
+    setShowFlagMessage(false);
   };
 
   return (
@@ -345,12 +350,17 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
         />
       )}
       {showFlagMessage && (
-        <FlagMessage
-          handleCloseMessage={() => setShowFlagMessage(false)}
-          onMessageClosed={() => setShowFlagMessage(false)}
-          title={flagMessage.title}
-          description={flagMessage.description}
-        />
+        <StyledMessageContainer>
+          <Flag
+            appearance="success"
+            closeFlag={handleCloseFlagMessage}
+            description={flagMessage.description}
+            duration={4000}
+            icon={<MdOutlineThumbUp />}
+            title={flagMessage.title}
+            isMessageResponsive={false}
+          />
+        </StyledMessageContainer>
       )}
     </>
   );
