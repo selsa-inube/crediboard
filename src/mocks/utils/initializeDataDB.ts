@@ -5,6 +5,7 @@ import { themes } from "@mocks/design/themes";
 import { mockRequests } from "@mocks/requests/requests.mock";
 import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
 import { mockStaff } from "@mocks/staff/staff.mock";
+import { approval_by_credit_request_Mock } from "@mocks/financialReporting/Approvals";
 
 export function initializeDataDB() {
   localforage.clear();
@@ -16,4 +17,8 @@ export function initializeDataDB() {
     mockRequestsPinned
   );
   intializedData<(typeof mockStaff)[number]>("staff", mockStaff);
+  intializedData<(typeof approval_by_credit_request_Mock)[number]>(
+    "approval",
+    approval_by_credit_request_Mock
+  );
 }
