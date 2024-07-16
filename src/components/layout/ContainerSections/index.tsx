@@ -243,7 +243,7 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
   const handleCancelModal = () => setShowCancelModal(!showCancelModal);
 
   const handleConfirmCancel = () => {
-    const isSuccess = true; // Aquí debes implementar la lógica real de cancelación
+    const isSuccess = true; 
 
     if (isSuccess) {
       setShowFlagMessage(true);
