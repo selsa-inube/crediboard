@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Icon } from "@inubekit/icon";
-import { Stack, inube } from "@inube/design-system";
+import { Stack, inube, useMediaQuery } from "@inube/design-system";
 import { Textfield } from "@inubekit/textfield";
 import { LuPaperclip } from "react-icons/lu";
 import localforage from "localforage";
@@ -10,7 +10,7 @@ import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/message";
 import { SubmitButton } from "@components/inputs/SubmitButton";
 
-import { ManagementContainer, ChatContent } from "./styles";
+import { ChatContent } from "./styles";
 
 interface MessageType {
   id: string;
@@ -67,9 +67,11 @@ export const Management = () => {
 
   const filteredMessages = messages.filter((msg) => msg.id === id);
 
+  const isMobile = useMediaQuery("(max-width: 720px)");
+
   return (
     <Fieldset title="Gestión" heigthFieldset="340px" aspectRatio="1">
-      <ManagementContainer>
+      <Stack direction="column"  height={!isMobile ? "100%" : "292px"}>
         <ChatContent>
           {filteredMessages.map((msg, index) => (
             <Message key={index} type={msg.type} timestamp={msg.timestamp} message={msg.text} />
@@ -88,7 +90,7 @@ export const Management = () => {
             <SubmitButton />
           </Stack>
         </form>
-      </ManagementContainer>
+      </Stack>
     </Fieldset>
   );
 };
