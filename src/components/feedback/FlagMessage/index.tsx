@@ -6,32 +6,32 @@ import { StyledMessageContainer } from "./styles";
 interface IFlagMessageProps {
   handleCloseMessage: () => void;
   onMessageClosed: () => void;
+  title: string;
+  description: string;
 }
 
 const FlagMessage: React.FC<IFlagMessageProps> = ({
   handleCloseMessage,
   onMessageClosed,
+  title,
+  description,
 }) => {
-
-
   const closeMessageAndExecuteCallback = () => {
     handleCloseMessage();
     onMessageClosed();
   };
-
-
 
   return (
     <>
       <StyledMessageContainer>
         <Stack justifyContent="flex-end" width="100%">
           <Flag
-            appearance={"success"}
+            appearance="success"
             closeFlag={closeMessageAndExecuteCallback}
-            description={"Se a realizado la anulación"}
+            description={description}
             duration={4000}
-            icon={<MdOutlineThumbUp/>}
-            title={"anulación"}
+            icon={<MdOutlineThumbUp />}
+            title={title}
             isMessageResponsive={false}
           />
         </Stack>

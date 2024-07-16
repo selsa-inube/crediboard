@@ -236,6 +236,7 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
   const [attachDocuments, setAttachDocuments] = useState(false);
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
   const [showFlagMessage, setShowFlagMessage] = useState(false);
+  const [flagMessage, setFlagMessage] = useState({ title: '', description: '' });
 
   const navigation = useNavigate();
 
@@ -246,11 +247,18 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
     const isSuccess = true; 
 
     if (isSuccess) {
-      setShowFlagMessage(true);
+      setFlagMessage({
+        title: "Anulación",
+        description: "Se ha realizado la anulación exitosamente",
+      });
     } else {
-      setShowFlagMessage(true);
+      setFlagMessage({
+        title: "Error",
+        description: "No se pudo realizar la anulación",
+      });
     }
 
+    setShowFlagMessage(true);
     setShowCancelModal(false);
   };
 
@@ -340,6 +348,8 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
         <FlagMessage
           handleCloseMessage={() => setShowFlagMessage(false)}
           onMessageClosed={() => setShowFlagMessage(false)}
+          title={flagMessage.title}
+          description={flagMessage.description}
         />
       )}
     </>
