@@ -346,8 +346,6 @@ export const ContainerSections: React.FC<IContainerSectionsProps> = ({
       )}
       {showFlagMessage && (
         <FlagMessage
-          handleCloseMessage={() => setShowFlagMessage(false)}
-          onMessageClosed={() => setShowFlagMessage(false)}
           title={flagMessage.title}
           description={flagMessage.description}
         />

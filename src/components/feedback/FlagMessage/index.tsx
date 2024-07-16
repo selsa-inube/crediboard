@@ -4,21 +4,13 @@ import { MdOutlineThumbUp } from "react-icons/md";
 import { StyledMessageContainer } from "./styles";
 
 interface IFlagMessageProps {
-  handleCloseMessage: () => void;
-  onMessageClosed: () => void;
   title: string;
   description: string;
 }
 
-const FlagMessage: React.FC<IFlagMessageProps> = ({
-  handleCloseMessage,
-  onMessageClosed,
-  title,
-  description,
-}) => {
-  const closeMessageAndExecuteCallback = () => {
-    handleCloseMessage();
-    onMessageClosed();
+const FlagMessage: React.FC<IFlagMessageProps> = ({ title, description }) => {
+  const closeSectionMessage = () => {
+    console.log("SectionMessage closed");
   };
 
   return (
@@ -27,7 +19,7 @@ const FlagMessage: React.FC<IFlagMessageProps> = ({
         <Stack justifyContent="flex-end" width="100%">
           <Flag
             appearance="success"
-            closeFlag={closeMessageAndExecuteCallback}
+            closeFlag={closeSectionMessage}
             description={description}
             duration={4000}
             icon={<MdOutlineThumbUp />}
