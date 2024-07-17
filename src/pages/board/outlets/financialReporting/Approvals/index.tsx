@@ -27,7 +27,7 @@ export const Approvals = () => {
   return (
     <Fieldset
       title="Aprobaciones"
-      heigthFieldset="282px"
+      heightFieldset="282px"
       aspectRatio="3/1"
       hasTable
     >

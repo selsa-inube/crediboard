@@ -76,7 +76,7 @@ export const Management = () => {
   const filteredMessages = messages.filter((msg) => msg.id === id);
 
   return (
-    <Fieldset title="Gestión" heigthFieldset="340px" aspectRatio="1">
+    <Fieldset title="Gestión" heightFieldset="340px" aspectRatio="1">
       <ManagementContainer>
         <ChatContent>
           {filteredMessages.map((msg) => (
