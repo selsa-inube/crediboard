@@ -44,7 +44,7 @@ export const Listmodal = (props: IListmodalProps) => {
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
-        <Stack alignItems="center" justifyContent="space-between">
+        <Stack justifyContent="space-between">
           <Text type="headline" size="small">
             {title}
           </Text>

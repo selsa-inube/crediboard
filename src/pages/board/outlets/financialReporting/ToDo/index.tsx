@@ -85,8 +85,8 @@ export const ToDo = (props: ToDoProps) => {
       <Fieldset
         title="Por hacer"
         descriptionTitle="Juan Sebastian Moralez García"
-        heigthFieldset={isMobile ? "inherit" : "284px"}
-        isMobile={isMobile}
+        heightFieldset={isMobile ? "inherit" : "284px"}
+        hasOverflow
       >
         <Stack
           direction="column"
