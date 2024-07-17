@@ -50,18 +50,19 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   };
 
   return (
-    <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"} >
+    <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"}>
       <ContainerSections>
-      <Stack direction="column" margin={ "s300"}>
-        {visibleError && (
-          <ErrorAlert
-            message="Existe un error sin evaluar"
-            onClose={handleCloseErrorAlert}
-            top={!isMobile ? "60px" : "120px"}
-            left="50%"
-          />
-        )}
-      </Stack>
+      <Stack direction="column" margin={isMobile ? "s300" : "0"}>
+          {visibleError && (
+            <ErrorAlert
+              message="Existe un error sin evaluar"
+              onClose={handleCloseErrorAlert}
+              top={!isMobile ? "58px" : "110px"}
+              left="50%"
+              showError={visibleError}
+            />
+          )}
+        </Stack>
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
             <ComercialManagement

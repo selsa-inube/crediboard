@@ -9,10 +9,9 @@ interface AlertContainerProps {
 export const AlertContainer = styled.div<AlertContainerProps>`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   background-color: ${({ theme }) =>
     theme?.color?.stroke?.gray?.regular || inube.color.surface.warning.clear};
-  padding: 8px;
+  padding: 7px;
   border-radius: 4px;
   border: 1px solid
     ${({ theme }) =>
@@ -21,7 +20,6 @@ export const AlertContainer = styled.div<AlertContainerProps>`
   top: ${({ $top }) => $top};
   left: ${({ $left }) => $left};
   transform: translateX(-50%);
-  z-index: 1000;
   
   @media (max-width: 350px) {
     position: fixed;
