@@ -18,7 +18,7 @@ function BoardRoutes() {
       <Route path="/" element={<Board />}>
         <Route path="/" element={<BoardLayout />} />
         <Route
-          path="solicitud/:id"
+          path="extended-card/:id"
           element={
             <FinancialReporting
               requirements={<Requirements data={dataRequirements} />}
@@ -30,7 +30,7 @@ function BoardRoutes() {
           }
         />
         <Route
-          path="solicitud/:id/perfil-crediticio"
+          path="extended-card/:id/credit-profile"
           element={<CreditProfileInfo />}
         />
       </Route>
