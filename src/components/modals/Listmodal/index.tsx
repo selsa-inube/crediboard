@@ -10,7 +10,11 @@ import {
   useMediaQuery,
 } from "@inube/design-system";
 
-import { StyledContainerContent, StyledModal } from "./styles";
+import {
+  StyledContainerClose,
+  StyledContainerContent,
+  StyledModal,
+} from "./styles";
 import React from "react";
 
 export interface IOptionButtons {
@@ -44,7 +48,7 @@ export const Listmodal = (props: IListmodalProps) => {
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
-        <Stack justifyContent="space-between">
+        <StyledContainerClose onClick={handleClose}>
           <Text type="headline" size="small">
             {title}
           </Text>
@@ -58,7 +62,7 @@ export const Listmodal = (props: IListmodalProps) => {
               onClick={handleClose}
             />
           </Stack>
-        </Stack>
+        </StyledContainerClose>
         <StyledContainerContent $smallScreen={isMobile}>
           {content}
         </StyledContainerContent>
