@@ -48,7 +48,7 @@ export const Listmodal = (props: IListmodalProps) => {
           <Text type="headline" size="small">
             {title}
           </Text>
-          <Stack gap={inube.spacing.s100}>
+          <Stack alignItems="center" gap={inube.spacing.s100}>
             <Text>Cerrar</Text>
             <Icon
               icon={<MdClear />}
