@@ -9,8 +9,8 @@ export const traceMock = {
       execution_date: "01/jun/2023",
       justification: "Initial request submitted",
       decision_taken_by_user: "submitted",
-      trace_type: true,
-      read_novelty: "new",
+      trace_type: "executed_task",
+      read_novelty: "Y",
     },
     {
       trace_id: "2b5d1f8a-2345-4d6c-9877-3e8e8a8b8a8b",
@@ -21,8 +21,8 @@ export const traceMock = {
       execution_date: "06/ene/2023",
       justification: "Reviewed by manager",
       decision_taken_by_user: "approved",
-      trace_type: true,
-      read_novelty: "new",
+      trace_type: "novelty",
+      read_novelty: "Y",
     },
     {
       trace_id: "3c6e2f9b-3456-4e7d-9878-3e8e8a8b8a8b",
@@ -33,8 +33,8 @@ export const traceMock = {
       execution_date: "18/sep/2023",
       justification: "Documents verified",
       decision_taken_by_user: "verified",
-      trace_type: true,
-      read_novelty: "new",
+      trace_type: "novelty_document",
+      read_novelty: "N",
     },
     {
       trace_id: "4d7f3f0c-4567-4f8e-9879-3e8e8a8b8a8b",
@@ -45,8 +45,8 @@ export const traceMock = {
       execution_date: "23/dic/2023",
       justification: "Final approval given",
       decision_taken_by_user: "approved",
-      trace_type: true,
-      read_novelty: "new",
+      trace_type: "document",
+      read_novelty: "N",
     },
   ],
 };
