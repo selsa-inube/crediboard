@@ -111,7 +111,7 @@ function BoardSection(props: BoardSectionProps) {
               destination={request.k_Desdin}
               value={request.v_Monto}
               toDo={request.n_Descr_Tarea}
-              path={`solicitud/${request.k_Prospe}`}
+              path={`extended-card/${request.k_Prospe}`}
               isPinned={isRequestPinned(request.k_Prospe, pinnedRequests)}
               hasMessage
               onPinChange={() => {
