@@ -23,7 +23,7 @@ export const Approvals = () => {
 
   const handleNotificationClick = (data: IEntries) => {
     const tag = data?.tag;
-    if (isValidElement(tag) && tag.props?.label === "Pendiente") {
+    if (isValidElement(tag) && (tag.props?.label === "Aprobado" || tag.props?.label === "Rechazado")) {
       setSelectedData(data);
       setShowModal(true);
     }
@@ -37,41 +37,47 @@ export const Approvals = () => {
     handleCloseModal();
   };
 
-  const desktopActions = actionsApprovals.map((action) => ({
-    ...action,
-    content: (data: IEntries) => (
-      <div
-        className="notification-icon"
-        onClick={() => {
-          if (action.id === "notificaciones") {
-            handleNotificationClick(data);
-          } else if (action.id === "Error") {
-            action.content(data);
-          }
-        }}
-      >
-        {action.content(data)}
-      </div>
-    ),
-  }));
+  const desktopActions = actionsApprovals.map((action) => {
+    return {
+      id: action.id,
+      actionName: action.actionName,
+      content: (data: IEntries) => (
+        <div
+          className="notification-icon"
+          onClick={() => {
+            if (action.id === "notificaciones") {
+              handleNotificationClick(data);
+            } else if (action.id === "Error") {
+              action.content(data);
+            }
+          }}
+        >
+          {action.content(data)}
+        </div>
+      ),
+    };
+  });
 
-  const mobileActions = actionMobileApprovals.map((action) => ({
-    ...action,
-    content: (data: IEntries) => (
-      <div
-        className="notification-icon"
-        onClick={() => {
-          if (action.id === "notificaciones") {
-            handleNotificationClick(data);
-          } else if (action.id === "Error") {
-            action.content(data);
-          }
-        }}
-      >
-        {action.content(data)}
-      </div>
-    ),
-  }));
+  const mobileActions = actionMobileApprovals.map((action) => {
+    return {
+      id: action.id,
+      actionName: action.actionName,
+      content: (data: IEntries) => (
+        <div
+          className="notification-icon"
+          onClick={() => {
+            if (action.id === "notificaciones") {
+              handleNotificationClick(data);
+            } else if (action.id === "Error") {
+              action.content(data);
+            }
+          }}
+        >
+          {action.content(data)}
+        </div>
+      ),
+    };
+  });
 
   return (
     <>
