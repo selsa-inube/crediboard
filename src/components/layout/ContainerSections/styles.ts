@@ -20,3 +20,10 @@ export const StyledItem = styled.li`
       theme.color?.stroke?.divider?.regular ||
       inube.color.stroke.divider.regular};
 `;
+
+export const StyledContainerToCenter = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 calc(100%-1192px);
+  align-items: center;
+`;

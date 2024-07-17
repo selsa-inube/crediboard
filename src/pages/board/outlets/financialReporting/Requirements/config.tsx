@@ -13,7 +13,7 @@ import { Tag } from "@components/data/Tag";
 import { IEntries } from "@components/data/TableBoard/types";
 
 export const dataButton = {
-  title: "Agregar Requesito",
+  title: "Agregar Requisito",
   onClick: () => console.log("Agregar"),
 };
 
