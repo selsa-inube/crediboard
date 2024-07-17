@@ -8,7 +8,7 @@ function buildData<T>(data: T[]) {
   return dataMock;
 }
 
-export async function intializedData<T = unknown>(option: string, data: T[]) {
+export async function intializedData<T>(option: string, data: T[]) {
   try {
     const dataMock = buildData(data);
     await localforage.setItem(option, dataMock);
@@ -17,7 +17,7 @@ export async function intializedData<T = unknown>(option: string, data: T[]) {
   }
 }
 
-export async function get<T>(option: string) {
+export async function get<T = unknown>(option: string) {
   await fakeNetwork();
   try {
     const optionsData = await localforage.getItem(option);
