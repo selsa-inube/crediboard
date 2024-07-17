@@ -68,16 +68,26 @@ export const Management = () => {
   const filteredMessages = messages.filter((msg) => msg.id === id);
 
   return (
-    <Fieldset title="Gestión" heigthFieldset="340px" aspectRatio="1">
+    <Fieldset title="Gestión" heightFieldset="340px" aspectRatio="1">
       <ManagementContainer>
         <ChatContent>
           {filteredMessages.map((msg, index) => (
-            <Message key={index} type={msg.type} timestamp={msg.timestamp} message={msg.text} />
+            <Message
+              key={index}
+              type={msg.type}
+              timestamp={msg.timestamp}
+              message={msg.text}
+            />
           ))}
         </ChatContent>
         <form onSubmit={handleFormSubmit}>
           <Stack alignItems="center" direction="row" gap={inube.spacing.s150}>
-            <Icon appearance="primary" cursorHover size="36px" icon={<LuPaperclip />} />
+            <Icon
+              appearance="primary"
+              cursorHover
+              size="36px"
+              icon={<LuPaperclip />}
+            />
             <Textfield
               id="text"
               placeholder="Ej.: Escriba su mensaje"
