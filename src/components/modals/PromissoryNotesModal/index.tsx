@@ -6,9 +6,6 @@ import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Textfield } from "@inubekit/textfield";
 import { StyledModal } from "./styles";
-import { stroke } from "@mocks/design/themes/cooservunal/color/stroke"; 
-
-const darkColor = stroke.dark.regular;
 
 interface FormValues {
   field1: string;
@@ -64,7 +61,7 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
             <Text>Cerrar</Text>
             <Icon
               appearance="dark"
-              icon={<MdClear color={darkColor} />}
+              icon={<MdClear/>}
               size="24px"
               cursorHover
               onClick={onCloseModal}
@@ -93,7 +90,7 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       label="Correo"
-                      iconBefore={<MdOutlineEmail color={darkColor} />}
+                      iconBefore={<MdOutlineEmail color={inube.color.stroke.dark.regular} />}
                       placeholder="usuario@inube.com"
                       message={
                         touched.field1 && errors.field1 ? errors.field1 : ""
@@ -114,7 +111,7 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       label="Teléfono"
-                      iconBefore={<MdOutlinePhone color={darkColor} />}
+                      iconBefore={<MdOutlinePhone color={inube.color.stroke.dark.regular}/>}
                       placeholder="3122638128"
                       message={
                         touched.field2 && errors.field2 ? errors.field2 : ""
@@ -135,7 +132,7 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       label="Whatsapp"
-                      iconBefore={<MdOutlinePhone color={darkColor} />}
+                      iconBefore={<MdOutlinePhone color={inube.color.stroke.dark.regular} />}
                       placeholder="3122638128"
                       message={
                         touched.field3 && errors.field3 ? errors.field3 : ""
