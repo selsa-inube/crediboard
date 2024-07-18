@@ -1,14 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdArrowBack, MdMenu, MdOutlineRemoveRedEye } from "react-icons/md";
-import {
-  Button,
-  Icon,
-  Stack,
-  Text,
-  inube,
-  useMediaQuery,
-} from "@inube/design-system";
+import { Button, Icon, Stack, Text, inube, useMediaQuery } from "@inube/design-system";
 
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { Listmodal } from "@components/modals/Listmodal";
@@ -18,6 +11,10 @@ import {
   StyledHorizontalDivider,
   StyledItem,
   StyledContainerToCenter,
+  StyledMenu,
+  StyledMenuItem,
+  StyledMenuHeader,
+  StyledCloseIcon
 } from "./styles";
 
 interface IContainerSectionsProps {
@@ -60,9 +57,14 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
 
   const navigation = useNavigate();
+
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <>
@@ -100,6 +102,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                   appearance="dark"
                   size="32px"
                   spacing="none"
+                  onClick={handleMenuToggle}
                 />
               )}
             </Stack>
@@ -145,6 +148,38 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           <Stack direction="column">{children}</Stack>
         </Stack>
       </StyledContainerToCenter>
+      {isMobile && isMenuOpen && (
+        <StyledMenu>
+          <StyledMenuHeader>
+            <Text>Menú</Text>
+            <StyledCloseIcon onClick={handleMenuToggle}>
+              &#x2716;
+            </StyledCloseIcon>
+          </StyledMenuHeader>
+          <StyledMenuItem onClick={() => setShowRejectionModal(!showRejectionModal)}>
+            Rechazar
+          </StyledMenuItem>
+          <StyledMenuItem onClick={() => setShowCancelModal(!showCancelModal)}>
+            Anular
+          </StyledMenuItem>
+          <StyledMenuItem>
+            Imprimir
+          </StyledMenuItem>
+          <StyledMenuItem>
+            Adjuntar
+          </StyledMenuItem>
+          <StyledMenuItem onClick={() => setAttachDocuments(true)}>
+            Ver Adjuntos
+          </StyledMenuItem>
+        </StyledMenu>
+      )}
+      {attachDocuments && (
+        <Listmodal
+          title="Ver Adjuntos"
+          content={<Listdata data={configDataAttachments} />}
+          handleClose={() => setAttachDocuments(false)}
+        />
+      )}
       {showRejectionModal && (
         <TextAreaModal
           title="Rechazar"
