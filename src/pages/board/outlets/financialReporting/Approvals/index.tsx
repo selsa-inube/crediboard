@@ -1,4 +1,4 @@
-import { useState, useEffect, isValidElement } from "react";
+import { useState, useEffect } from "react";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
@@ -8,25 +8,26 @@ import {
   handleData,
   titlesApprovals,
   actionsApprovals,
+  handleNotificationClick,
+  desktopActions
 } from "./config";
 
 export const Approvals = () => {
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
+  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
 
   useEffect(() => {
+    setLoading(true);
     handleData().then((data) => {
       setEntriesApprovals(data as IEntries[]);
+      setLoading(false);
     });
   }, []);
 
-  const handleNotificationClick = (data: IEntries) => {
-    const tag = data?.tag;
-    if (isValidElement(tag) && (tag.props?.label === "Aprobado" || tag.props?.label === "Rechazado")) {
-      setSelectedData(data);
-      setShowModal(true);
-    }
+  const handleNotificationClickBound = (data: IEntries) => {
+    handleNotificationClick(data, setSelectedData, setShowModal);
   };
 
   const handleCloseModal = () => {
@@ -37,26 +38,7 @@ export const Approvals = () => {
     handleCloseModal();
   };
 
-  const desktopActions = actionsApprovals.map((action) => {
-    return {
-      id: action.id,
-      actionName: action.actionName,
-      content: (data: IEntries) => (
-        <div
-          className="notification-icon"
-          onClick={() => {
-            if (action.id === "notificaciones") {
-              handleNotificationClick(data);
-            } else if (action.id === "Error") {
-              action.content(data);
-            }
-          }}
-        >
-          {action.content(data)}
-        </div>
-      ),
-    };
-  });
+  const desktopActionsConfig = desktopActions(actionsApprovals, handleNotificationClickBound);
 
   const mobileActions = actionMobileApprovals.map((action) => {
     return {
@@ -67,7 +49,7 @@ export const Approvals = () => {
           className="notification-icon"
           onClick={() => {
             if (action.id === "notificaciones") {
-              handleNotificationClick(data);
+              handleNotificationClickBound(data);
             } else if (action.id === "Error") {
               action.content(data);
             }
@@ -91,8 +73,10 @@ export const Approvals = () => {
           id="usuarios"
           titles={titlesApprovals}
           entries={entriesApprovals}
-          actions={desktopActions}
+          actions={desktopActionsConfig}
           actionMobile={mobileActions}
+          loading={loading}
+          nameTitleTag="decision"
         />
       </Fieldset>
       {showModal && selectedData && (
