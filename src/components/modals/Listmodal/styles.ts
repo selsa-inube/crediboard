@@ -45,3 +45,11 @@ export const StyledContainerContent = styled.div<IStyledModal>`
     }
   `}
 `;
+
+export const StyledContainerClose = styled.div`
+  display: flex;
+  margin: 0px;
+  padding: 0px;
+  justify-content: space-between;
+  cursor: pointer;
+`;
