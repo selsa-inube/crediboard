@@ -130,7 +130,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   )}
               </Text>
               <Stack gap={inube.spacing.s200}>
-                <Button type="link" path={`/solicitud/${id}/perfil-crediticio`}>
+                <Button
+                  type="link"
+                  path={`/extended-card/${id}/credit-profile`}
+                >
                   Ver perfil créditicio
                 </Button>
                 <StyledIcon>

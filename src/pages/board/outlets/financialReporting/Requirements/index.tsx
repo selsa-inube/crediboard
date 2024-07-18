@@ -7,6 +7,7 @@ import { TableBoard } from "@components/data/TableBoard";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 
 import { dataButton } from "./config";
+import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
 
 interface IData {
@@ -23,51 +24,66 @@ export interface IRequirementsProps {
 
 export const Requirements = (props: IRequirementsProps) => {
   const { data } = props;
-
+  const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
+  const [modalData, setModalData] = useState<{
+    date?: Date;
+    details?: string;
+  }>({});
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
 
   const toggleAprovalsModal = () => setShowAprovalsModal(!showAprovalsModal);
   const changeApprove = () => setIsApproved(!isApproved);
 
+  const handleToggleSeeDetailsModal = (date?: string, details?: string) => {
+    setModalData({
+      date: date ? new Date(date) : undefined,
+      details,
+    });
+    setShowSeeDetailsModal((prevState) => !prevState);
+  };
+
+  const renderAddIcon = (entry: IEntries) => {
+    const date = typeof entry.date === "string" ? entry.date : undefined;
+    const details =
+      typeof entry.details === "string" ? entry.details : undefined;
+
+    return (
+      <Stack justifyContent="center">
+        <Icon
+          icon={<MdAddCircleOutline />}
+          appearance="primary"
+          onClick={() => handleToggleSeeDetailsModal(date, details)}
+          spacing="compact"
+          size="24px"
+          cursorHover
+        />
+      </Stack>
+    );
+  };
+
+  const renderCheckIcon = (entry: IEntries) => (
+    <Stack justifyContent="center">
+      <Icon
+        icon={<MdOutlineCheckCircle />}
+        appearance="primary"
+        spacing="compact"
+        cursorHover
+        size="24px"
+        onClick={() => {
+          setIsApproved(false);
+          toggleAprovalsModal();
+        }}
+        disabled={
+          isValidElement(entry?.tag) && entry?.tag?.props?.label === "No Cumple"
+        }
+      />
+    </Stack>
+  );
+
   const actionsRequirements: IAction[] = [
-    {
-      id: "agregar",
-      content: () => (
-        <Stack justifyContent="center">
-          <Icon
-            icon={<MdAddCircleOutline />}
-            appearance="primary"
-            onClick={() => {}}
-            spacing="compact"
-            size="24px"
-            cursorHover
-          />
-        </Stack>
-      ),
-    },
-    {
-      id: "aprobar",
-      content: (data: IEntries) => (
-        <Stack justifyContent="center">
-          <Icon
-            icon={<MdOutlineCheckCircle />}
-            appearance="primary"
-            spacing="compact"
-            cursorHover
-            size="24px"
-            onClick={() => {
-              setIsApproved(false);
-              toggleAprovalsModal();
-            }}
-            disabled={
-              isValidElement(data?.tag) &&
-              data?.tag?.props?.label === "No Cumple"
-            }
-          />
-        </Stack>
-      ),
-    },
+    { id: "agregar", content: renderAddIcon },
+    { id: "aprobar", content: renderCheckIcon },
   ];
 
   return (
@@ -76,7 +92,7 @@ export const Requirements = (props: IRequirementsProps) => {
         <Fieldset
           title="Requisitos"
           activeButton={dataButton}
-          heigthFieldset="340px"
+          heightFieldset="340px"
           hasTable
         >
           <div style={{ height: "340px" }}>
@@ -99,6 +115,13 @@ export const Requirements = (props: IRequirementsProps) => {
           </div>
         </Fieldset>
       </Stack>
+      {showSeeDetailsModal && (
+        <SeeDetailsModal
+          date={modalData.date || new Date()}
+          details={modalData.details || ""}
+          onCloseModal={handleToggleSeeDetailsModal}
+        />
+      )}
       {showAprovalsModal && (
         <AprovalsModal
           title="Aprobaciones"
