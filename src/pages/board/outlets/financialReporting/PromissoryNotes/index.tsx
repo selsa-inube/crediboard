@@ -3,8 +3,8 @@ import { Stack } from "@inube/design-system";
 import { Fieldset } from "@src/components/data/Fieldset";
 import { TableBoard } from "@src/components/data/TableBoard";
 import {
-  actionMobile,
-  actionsFinanacialReporting,
+  getTableBoardActions,
+  getTableBoardActionMobile,
   entriesFinanacialReporting,
   titlesFinanacialReporting,
 } from "./config";
@@ -23,28 +23,8 @@ export const PromissoryNotes = () => {
     setShowModal(true);
   };
 
-
-  const tableBoardActions = actionsFinanacialReporting.map((action) => ({
-    id: action.id,
-    actionName: action.actionName,
-    label: "Action Label", 
-    content: (data: IEntries) => (
-      <div onClick={() => entrySelection(data)}>
-        {action.content(data)}
-      </div>
-    ),
-  }));
-
-  const tableBoardActionMobile = actionMobile.map((action) => ({
-    id: action.id,
-    actionName: action.actionName,
-    label: "Mobile Action Label",
-    content: (data: IEntries) => (
-      <div onClick={() => entrySelection(data)}>
-        {action.content(data)}
-      </div>
-    ),
-  }));
+  const tableBoardActions = getTableBoardActions(entrySelection);
+  const tableBoardActionMobile = getTableBoardActionMobile(entrySelection);
 
   return (
     <Stack direction="column">
