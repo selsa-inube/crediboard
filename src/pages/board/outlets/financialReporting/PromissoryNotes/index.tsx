@@ -23,29 +23,38 @@ export const PromissoryNotes = () => {
     setShowModal(true);
   };
 
+
+  const tableBoardActions = actionsFinanacialReporting.map((action) => ({
+    id: action.id,
+    actionName: action.actionName,
+    label: "Action Label", 
+    content: (data: IEntries) => (
+      <div onClick={() => entrySelection(data)}>
+        {action.content(data)}
+      </div>
+    ),
+  }));
+
+  const tableBoardActionMobile = actionMobile.map((action) => ({
+    id: action.id,
+    actionName: action.actionName,
+    label: "Mobile Action Label",
+    content: (data: IEntries) => (
+      <div onClick={() => entrySelection(data)}>
+        {action.content(data)}
+      </div>
+    ),
+  }));
+
   return (
     <Stack direction="column">
-      <Fieldset title="Pagarés y Libranzas">
+      <Fieldset title="Pagarés y Libranzas" heightFieldset="163px" hasTable>
         <TableBoard
           id="promissoryNotes"
           titles={titlesFinanacialReporting}
           entries={entriesFinanacialReporting}
-          actions={actionsFinanacialReporting.map(action => ({
-            ...action,
-            content: (data) => (
-              <div onClick={() => entrySelection(data)}>
-                {action.content(data)}
-              </div>
-            )
-          }))}
-          actionMobile={actionMobile.map(action => ({
-            ...action,
-            content: (data) => (
-              <div onClick={() => entrySelection(data)}>
-                {action.content(data)}
-              </div>
-            )
-          }))}
+          actions={tableBoardActions}
+          actionMobile={tableBoardActionMobile}
           appearanceTable={{
             efectzebra: true,
             title: "primary",

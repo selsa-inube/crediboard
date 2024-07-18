@@ -13,7 +13,7 @@ export const Postingvouchers = () => {
     <Stack direction="column">
       <Fieldset
         title="Comprobantes de Contabilización"
-        heigthFieldset="163px"
+        heightFieldset="163px"
         hasTable
       >
         <TableBoard

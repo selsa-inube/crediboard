@@ -1,19 +1,14 @@
-import {
-  Stack,
-  useMediaQuery,
-  Blanket,
-  Text,
-  Button,
-  inube,
-} from "@inube/design-system";
+import { Stack, useMediaQuery, Blanket, Text, Button, inube } from "@inube/design-system";
 import { createPortal } from "react-dom";
-import { MdClear } from "react-icons/md";
+import { MdClear, MdOutlineEmail, MdOutlinePhone} from "react-icons/md";
 import { Icon } from "@inubekit/icon";
-import { MdOutlineEmail, MdOutlinePhone } from "react-icons/md";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Textfield } from "@inubekit/textfield";
 import { StyledModal } from "./styles";
+
+
+const dark = "#091e42";
 
 interface FormValues {
   field1: string;
@@ -23,17 +18,14 @@ interface FormValues {
 
 const validationSchema = Yup.object().shape({
   field1: Yup.string()
+    .email("Este campo es obligatorio")
+    .required("Este campo es obligatorio"),
+  field2: Yup.number()
     .required("Este campo es obligatorio")
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      "Debe ser un correo electrónico válido"
-    ),
-  field2: Yup.string()
+    .typeError("Número inválido"),
+  field3: Yup.number()
     .required("Este campo es obligatorio")
-    .matches(/^[0-9]+$/, "Debe ser un número"),
-  field3: Yup.string()
-    .required("Este campo es obligatorio")
-    .matches(/^[0-9]+$/, "Debe ser un número"),
+    .typeError("Número inválido"),
 });
 
 export interface PromissoryNotesModalProps {
@@ -53,14 +45,13 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
     onCloseModal,
   } = props;
 
-  const isMobile = useMediaQuery("(max-width: 700px)");
   const node = document.getElementById(portalId);
-
   if (!node) {
     throw new Error(
       "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
     );
   }
+  const isMobile = useMediaQuery("(max-width: 700px)");
 
   return createPortal(
     <Blanket>
@@ -73,7 +64,7 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
             <Text>Cerrar</Text>
             <Icon
               appearance="dark"
-              icon={<MdClear />}
+              icon={<MdClear color={dark} />}
               size="24px"
               cursorHover
               onClick={onCloseModal}
@@ -102,14 +93,7 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       label="Correo"
-                      iconBefore={
-                        <Icon
-                          appearance="dark"
-                          icon={<MdOutlineEmail />}
-                          size="24px"
-                          spacing="wide"
-                        />
-                      }
+                      iconBefore={<MdOutlineEmail color={dark} />}
                       placeholder="usuario@inube.com"
                       message={
                         touched.field1 && errors.field1 ? errors.field1 : ""
@@ -129,15 +113,8 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                       value={field.value}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      label="Telefono"
-                      iconBefore={
-                        <Icon
-                          appearance="dark"
-                          icon={<MdOutlinePhone />}
-                          size="24px"
-                          spacing="wide"
-                        />
-                      }
+                      label="Teléfono"
+                      iconBefore={<MdOutlinePhone color={dark} />}
                       placeholder="3122638128"
                       message={
                         touched.field2 && errors.field2 ? errors.field2 : ""
@@ -158,14 +135,7 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       label="Whatsapp"
-                      iconBefore={
-                        <Icon
-                          appearance="dark"
-                          icon={<MdOutlinePhone />}
-                          size="24px"
-                          spacing="wide"
-                        />
-                      }
+                      iconBefore={<MdOutlinePhone color={dark} />}
                       placeholder="3122638128"
                       message={
                         touched.field3 && errors.field3 ? errors.field3 : ""
