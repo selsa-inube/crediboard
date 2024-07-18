@@ -115,7 +115,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   type="link"
                   path={`/extended-card/${id}/credit-profile`}
                 >
-                  Ver perfil créditicio
+                  Ver perfil crediticio
                 </Button>
                 <StyledIcon>
                   <Icon
