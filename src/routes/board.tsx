@@ -10,6 +10,7 @@ import { PromissoryNotes } from "@pages/board/outlets/financialReporting/Promiss
 import { Postingvouchers } from "@pages/board/outlets/financialReporting/Postingvouchers";
 import { Approvals } from "@pages/board/outlets/financialReporting/Approvals";
 import { CreditProfileInfo } from "@pages/board/outlets/creditProfileInfo";
+import { Management } from "@pages/board/outlets/financialReporting/management";
 
 function BoardRoutes() {
   return (
@@ -17,18 +18,19 @@ function BoardRoutes() {
       <Route path="/" element={<Board />}>
         <Route path="/" element={<BoardLayout />} />
         <Route
-          path="solicitud/:id"
+          path="extended-card/:id"
           element={
             <FinancialReporting
               requirements={<Requirements data={dataRequirements} />}
               promissoryNotes={<PromissoryNotes />}
               postingVouchers={<Postingvouchers />}
               approvals={<Approvals />}
+              management={<Management />}
             />
           }
         />
         <Route
-          path="solicitud/:id/perfil-crediticio"
+          path="extended-card/:id/credit-profile"
           element={<CreditProfileInfo />}
         />
       </Route>
