@@ -35,7 +35,7 @@ export const Management = () => {
     get("trace").then((data) => {
       const trace = (data as MessageTypedos[])[0].trace;
       const message: MessageType[] = trace.map((trace) => ({
-        id: trace.credit_request_id,
+        id: trace.trace_id,
         type: "sent",
         timestamp: trace.execution_date,
         text: trace.justification,
