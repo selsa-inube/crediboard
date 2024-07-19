@@ -1,42 +1,44 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  MdAddCircleOutline,
   MdArrowBack,
+  MdDeleteOutline,
   MdMenu,
   MdOutlineRemoveRedEye,
-  MdOutlineThumbUp,
 } from "react-icons/md";
-import {
-  Button,
-  Icon,
-  Stack,
-  Text,
-  inube,
-  useMediaQuery,
-} from "@inube/design-system";
-import { Flag } from "@inubekit/flag";
+import { Button, Icon, Stack, Text, inube } from "@inube/design-system";
 
+import { IOptionButtons, Listmodal } from "@components/modals/Listmodal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { Listmodal } from "@components/modals/Listmodal";
 
 import { configButtons, configDataAttachments } from "./config";
 import {
+  StyledContainerToCenter,
   StyledHorizontalDivider,
   StyledItem,
-  StyledContainerToCenter,
-  StyledMessageContainer,
 } from "./styles";
 
 interface IContainerSectionsProps {
   children?: JSX.Element | JSX.Element[];
+  isMobile?: boolean;
 }
 
 interface IListdataProps {
   data: { id: string; name: string }[];
+  icon?: React.ReactNode;
 }
 
+const optionButtons: IOptionButtons = {
+  label: "Adjuntar archivo",
+  variant: "none",
+  icon: <MdAddCircleOutline />,
+  fullwidth: false,
+  onClick: () => console.log("Adjuntar archivo"),
+};
+
 const Listdata = (props: IListdataProps) => {
-  const { data } = props;
+  const { data, icon } = props;
 
   return (
     <ul
@@ -49,7 +51,7 @@ const Listdata = (props: IListdataProps) => {
         <StyledItem key={element.id}>
           <Text>{element.name}</Text>
           <Icon
-            icon={<MdOutlineRemoveRedEye />}
+            icon={icon}
             appearance="dark"
             spacing="none"
             size="24px"
@@ -61,57 +63,15 @@ const Listdata = (props: IListdataProps) => {
   );
 };
 
-type FlagAppearance = "success" | "danger";
-
-interface IFlagMessage {
-  title: string;
-  description: string;
-  appearance: FlagAppearance;
-}
-
 export const ContainerSections = (props: IContainerSectionsProps) => {
-  const { children } = props;
+  const { children, isMobile } = props;
 
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
-  const isMobile: boolean = useMediaQuery("(max-width: 720px)");
-  const [showFlagMessage, setShowFlagMessage] = useState(false);
-  const [flagMessage, setFlagMessage] = useState<IFlagMessage>({
-    title: "",
-    description: "",
-    appearance: "success",
-  });
+  const [showAttachments, setShowAttachments] = useState(false);
 
   const navigation = useNavigate();
-
-  const handleRejectionModal = () => setShowRejectionModal(!showRejectionModal);
-  const handleCancelModal = () => setShowCancelModal(!showCancelModal);
-
-  const handleConfirmCancel = () => {
-    const isSuccess = Math.random() > 0.5; 
-
-    if (isSuccess) {
-      setFlagMessage({
-        title: "Anulación",
-        description: "Se ha realizado la anulación exitosamente",
-        appearance: "success",
-      });
-    } else {
-      setFlagMessage({
-        title: "Error",
-        description: "No se pudo realizar la anulación",
-        appearance: "danger",
-      });
-    }
-
-    setShowFlagMessage(true);
-    setShowCancelModal(false);
-  };
-
-  const handleCloseFlagMessage = () => {
-    setShowFlagMessage(false);
-  };
 
   return (
     <>
@@ -164,6 +124,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                   >
                     {configButtons.buttons.buttonOne.label}
                   </Button>
+
                   <Button onClick={() => setShowCancelModal(!showCancelModal)}>
                     {configButtons.buttons.buttonTwo.label}
                   </Button>
@@ -171,9 +132,25 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                 </Stack>
                 <StyledHorizontalDivider />
                 <Stack gap={inube.spacing.s200}>
-                  <Button variant="outlined">
+                  <Button
+                    variant="outlined"
+                    onClick={() => setShowAttachments(true)}
+                  >
                     {configButtons.buttonsOutlined.buttonOne.label}
                   </Button>
+                  {showAttachments && (
+                    <Listmodal
+                      title="Adjuntar"
+                      content={
+                        <Listdata
+                          data={configDataAttachments}
+                          icon={<MdDeleteOutline />}
+                        />
+                      }
+                      handleClose={() => setShowAttachments(false)}
+                      optionButtons={optionButtons}
+                    />
+                  )}
                   <Button
                     variant="outlined"
                     onClick={() => setAttachDocuments(true)}
@@ -183,7 +160,12 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                   {attachDocuments && (
                     <Listmodal
                       title="Ver Adjuntos"
-                      content={<Listdata data={configDataAttachments} />}
+                      content={
+                        <Listdata
+                          data={configDataAttachments}
+                          icon={<MdOutlineRemoveRedEye />}
+                        />
+                      }
                       handleClose={() => setAttachDocuments(false)}
                     />
                   )}
@@ -200,8 +182,8 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           buttonText="Confirmar"
           inputLabel="Motivo del rechazo."
           inputPlaceholder="Describa el motivo del rechazo."
-          onCloseModal={handleRejectionModal}
-          onSubmit={handleRejectionModal}
+          onCloseModal={() => setShowRejectionModal(!showRejectionModal)}
+          onSubmit={() => setShowRejectionModal(!showRejectionModal)}
         />
       )}
       {showCancelModal && (
@@ -210,22 +192,9 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           buttonText="Confirmar"
           inputLabel="Motivo de la anulacion."
           inputPlaceholder="Describa el motivo de la anulacion."
-          onCloseModal={handleCancelModal}
-          onSubmit={handleConfirmCancel}
+          onCloseModal={() => setShowCancelModal(!showCancelModal)}
+          onSubmit={() => setShowCancelModal(!showCancelModal)}
         />
-      )}
-      {showFlagMessage && (
-        <StyledMessageContainer>
-          <Flag
-            appearance={flagMessage.appearance}
-            closeFlag={handleCloseFlagMessage}
-            description={flagMessage.description}
-            duration={4000}
-            icon={<MdOutlineThumbUp />}
-            title={flagMessage.title}
-            isMessageResponsive={false}
-          />
-        </StyledMessageContainer>
       )}
     </>
   );

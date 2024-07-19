@@ -5,6 +5,7 @@ import { themes } from "@mocks/design/themes";
 import { mockRequests } from "@mocks/requests/requests.mock";
 import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
 import { mockStaff } from "@mocks/staff/staff.mock";
+import { traceMock } from "@mocks/trace/trace.mock";
 
 export function initializeDataDB() {
   localforage.clear();
@@ -16,4 +17,5 @@ export function initializeDataDB() {
     mockRequestsPinned
   );
   intializedData<(typeof mockStaff)[number]>("staff", mockStaff);
+  intializedData<typeof traceMock>("trace", [traceMock]);
 }
