@@ -9,7 +9,8 @@ import {
   titlesApprovals,
   actionsApprovals,
   handleNotificationClick,
-  desktopActions
+  desktopActions,
+  getMobileActionsConfig
 } from "./config";
 
 export const Approvals = () => {
@@ -30,36 +31,9 @@ export const Approvals = () => {
     handleNotificationClick(data, setSelectedData, setShowModal);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleSend = () => {
-    handleCloseModal();
-  };
-
   const desktopActionsConfig = desktopActions(actionsApprovals, handleNotificationClickBound);
 
-  const mobileActions = actionMobileApprovals.map((action) => {
-    return {
-      id: action.id,
-      actionName: action.actionName,
-      content: (data: IEntries) => (
-        <div
-          className="notification-icon"
-          onClick={() => {
-            if (action.id === "notificaciones") {
-              handleNotificationClickBound(data);
-            } else if (action.id === "Error") {
-              action.content(data);
-            }
-          }}
-        >
-          {action.content(data)}
-        </div>
-      ),
-    };
-  });
+  const mobileActions = getMobileActionsConfig(actionMobileApprovals, handleNotificationClickBound);
 
   return (
     <>
@@ -82,9 +56,9 @@ export const Approvals = () => {
       {showModal && selectedData && (
         <Listmodal
           title="Notificación"
-          handleClose={handleCloseModal}
+          handleClose={() => setShowModal(false)}
           buttonText="Enviar"
-          handleButtonClick={handleSend}
+          handleButtonClick={() => setShowModal(false)}
           content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
         />
       )}

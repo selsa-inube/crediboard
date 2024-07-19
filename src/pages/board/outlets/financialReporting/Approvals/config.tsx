@@ -305,3 +305,28 @@ export const desktopActions = (
     };
   });
 };
+
+
+export const getMobileActionsConfig = (
+  actionMobileApprovals: Action[],
+  handleNotificationClickBound: (data: IEntries) => void
+) => {
+  return actionMobileApprovals.map((action) => {
+    return {
+      id: action.id,
+      content: (data: IEntries) => (
+        <div
+          onClick={() => {
+            if (action.id === "notificaciones") {
+              handleNotificationClickBound(data);
+            } else if (action.id === "Error") {
+              action.content(data);
+            }
+          }}
+        >
+          {action.content(data)}
+        </div>
+      ),
+    };
+  });
+};

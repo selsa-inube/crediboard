@@ -45,7 +45,7 @@ export const Listmodal = (props: IListmodalProps) => {
           <Text type="headline" size="small">
             {title}
           </Text>
-          <Stack gap={8}>
+          <Stack gap="8px">
             <Text>Cerrar</Text>
             <Icon
               icon={<MdClear />}
