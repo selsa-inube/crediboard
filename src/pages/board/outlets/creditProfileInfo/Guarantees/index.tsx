@@ -18,7 +18,6 @@ export function Guarantees(props: GuaranteesProps) {
     <CardInfoContainer
       title="Garantías"
       icon={<PiSealCheckBold />}
-      heightCardInfoContainer={isMobile ? "196px" : "246px"}
       isMobile={isMobile}
     >
       <Stack

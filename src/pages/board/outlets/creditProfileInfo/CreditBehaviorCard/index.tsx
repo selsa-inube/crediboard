@@ -25,7 +25,6 @@ export function CreditBehavior(props: CreditBehaviorProps) {
     <CardInfoContainer
       title="Comportamiento crediticio"
       icon={<MdTrendingUp />}
-      heightCardInfoContainer={isMobile ? "126px" : "246px"}
       isMobile={isMobile}
     >
       <Stack

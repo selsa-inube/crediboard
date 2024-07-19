@@ -11,6 +11,7 @@ export const StyledContainerCardInfo = styled.div<IStyledContainerCardInfo>`
   border-radius: 8px;
   border-width: 2px;
   border-style: solid;
+  height: ${({ $containerHeight }) => $containerHeight};
   border-color: ${({ theme }) =>
     theme?.color?.stroke?.primary?.regular ||
     inube.color.stroke.primary.regular};

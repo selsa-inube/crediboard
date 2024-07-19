@@ -25,7 +25,6 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
     <CardInfoContainer
       title="Capacidad de pago"
       icon={<MdOutlinePaid />}
-      heightCardInfoContainer={isMobile ? "126px" : "182px"}
       isMobile={isMobile}
     >
       <Stack

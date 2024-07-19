@@ -18,7 +18,6 @@ export function OpenWallet(props: OpenWalletProps) {
     <CardInfoContainer
       title="Cartera descubierta"
       icon={<MdOutlineRequestQuote />}
-      heightCardInfoContainer={isMobile ? "126px" : "182px"}
       isMobile={isMobile}
     >
       <Stack

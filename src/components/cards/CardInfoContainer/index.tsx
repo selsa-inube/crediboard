@@ -16,7 +16,7 @@ export const CardInfoContainer = (props: CardInfoContainerProps) => {
     children,
     isMobile,
     icon,
-    heightCardInfoContainer = "auto",
+    heightCardInfoContainer = "100%",
   } = props;
 
   return (

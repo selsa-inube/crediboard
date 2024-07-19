@@ -19,7 +19,6 @@ export function JobStabilityCard(props: JobStabilityCardProps) {
     <CardInfoContainer
       title="Estabilidad Laboral"
       icon={<MdOutlineBusinessCenter />}
-      heightCardInfoContainer={isMobile ? "126px" : "182px"}
       isMobile={isMobile}
     >
       <Stack

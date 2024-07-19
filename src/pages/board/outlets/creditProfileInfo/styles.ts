@@ -15,4 +15,11 @@ const StyledDivider = styled.hr`
     inube.color.stroke.divider.regular};
 `;
 
-export { StyledDivider };
+const StyledContainerToCenter = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 1520px;
+  margin: auto;
+`;
+
+export { StyledDivider, StyledContainerToCenter };

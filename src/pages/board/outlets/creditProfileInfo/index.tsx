@@ -25,7 +25,7 @@ import { OpenWallet } from "./OpenWallet";
 import { CreditBehavior } from "./CreditBehaviorCard";
 import { RiskScoring } from "./RiskScoring";
 import { Guarantees } from "./Guarantees";
-import { StyledDivider } from "./styles";
+import { StyledDivider, StyledContainerToCenter } from "./styles";
 
 export const CreditProfileInfo = () => {
   const navigate = useNavigate();
@@ -152,11 +152,10 @@ export const CreditProfileInfo = () => {
   };
 
   return (
-    <Stack direction="column">
+    <StyledContainerToCenter>
       <Stack direction="column">
         <Stack
           justifyContent="space-between"
-          alignItems="center"
           margin={isTablet ? "s100 s200" : "s250 s500"}
         >
           <Button
@@ -230,10 +229,14 @@ export const CreditProfileInfo = () => {
         )}
       </Stack>
       <Grid
-        templateColumns="repeat(auto-fit, minmax(330px, 1fr))"
+        templateColumns={
+          isTablet
+            ? "repeat(auto-fit, minmax(320px, 1fr))"
+            : "repeat(auto-fit, minmax(350px, 1fr))"
+        }
         gap="s250"
-        autoRows="auto"
-        margin={isTablet ? "s250 s200 s0 s200" : "s250 s500"}
+        autoRows="minmax(auto, max-content)"
+        margin={isTablet ? "s250" : "s250 s500"}
       >
         <JobStabilityCard
           companySeniority={5}
@@ -254,13 +257,6 @@ export const CreditProfileInfo = () => {
           reciprocity={5}
           isMobile={isMobile}
         />
-      </Grid>
-      <Grid
-        templateColumns="repeat(auto-fit, minmax(330px, 1fr))"
-        gap="s250"
-        autoRows="auto"
-        margin={isTablet ? "s250 s200 s500 s200" : "s250 s500"}
-      >
         <RiskScoring
           totalScore={456}
           minimumScore={500}
@@ -285,6 +281,6 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
         />
       </Grid>
-    </Stack>
+    </StyledContainerToCenter>
   );
 };

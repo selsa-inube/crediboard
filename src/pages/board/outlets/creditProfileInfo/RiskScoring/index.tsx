@@ -30,7 +30,6 @@ export function RiskScoring(props: RiskScoringProps) {
     <CardInfoContainer
       title="Scoring de riesgo"
       icon={<MdQueryStats />}
-      heightCardInfoContainer={isMobile ? "196px" : "246px"}
       isMobile={isMobile}
     >
       <Stack
