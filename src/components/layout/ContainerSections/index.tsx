@@ -4,19 +4,22 @@ import {
   MdAddCircleOutline,
   MdArrowBack,
   MdDeleteOutline,
+  MdOutlineThumbUp,
   MdMenu,
   MdOutlineRemoveRedEye,
 } from "react-icons/md";
 import { Button, Icon, Stack, Text, inube } from "@inube/design-system";
+import { Flag } from "@inubekit/flag";
 
-import { IOptionButtons, Listmodal } from "@components/modals/Listmodal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
+import { IOptionButtons, Listmodal } from "@components/modals/Listmodal";
 
 import { configButtons, configDataAttachments } from "./config";
 import {
-  StyledContainerToCenter,
   StyledHorizontalDivider,
   StyledItem,
+  StyledContainerToCenter,
+  StyledMessageContainer,
 } from "./styles";
 
 interface IContainerSectionsProps {
@@ -63,6 +66,14 @@ const Listdata = (props: IListdataProps) => {
   );
 };
 
+type FlagAppearance = "success" | "danger";
+
+interface IFlagMessage {
+  title: string;
+  description: string;
+  appearance: FlagAppearance;
+}
+
 export const ContainerSections = (props: IContainerSectionsProps) => {
   const { children, isMobile } = props;
 
@@ -70,8 +81,42 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
   const [showAttachments, setShowAttachments] = useState(false);
+  const [showFlagMessage, setShowFlagMessage] = useState(false);
+  const [flagMessage, setFlagMessage] = useState<IFlagMessage>({
+    title: "",
+    description: "",
+    appearance: "success",
+  });
 
   const navigation = useNavigate();
+
+  const handleRejectionModal = () => setShowRejectionModal(!showRejectionModal);
+  const handleCancelModal = () => setShowCancelModal(!showCancelModal);
+
+  const handleConfirmCancel = () => {
+    const isSuccess = Math.random() > 0.5;
+
+    if (isSuccess) {
+      setFlagMessage({
+        title: "Anulación",
+        description: "Se ha realizado la anulación exitosamente",
+        appearance: "success",
+      });
+    } else {
+      setFlagMessage({
+        title: "Error",
+        description: "No se pudo realizar la anulación",
+        appearance: "danger",
+      });
+    }
+
+    setShowFlagMessage(true);
+    setShowCancelModal(false);
+  };
+
+  const handleCloseFlagMessage = () => {
+    setShowFlagMessage(false);
+  };
 
   return (
     <>
@@ -124,7 +169,6 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                   >
                     {configButtons.buttons.buttonOne.label}
                   </Button>
-
                   <Button onClick={() => setShowCancelModal(!showCancelModal)}>
                     {configButtons.buttons.buttonTwo.label}
                   </Button>
@@ -132,11 +176,14 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                 </Stack>
                 <StyledHorizontalDivider />
                 <Stack gap={inube.spacing.s200}>
+                  <Button variant="outlined">
+                    {configButtons.buttonsOutlined.buttonOne.label}
+                  </Button>
                   <Button
                     variant="outlined"
-                    onClick={() => setShowAttachments(true)}
+                    onClick={() => setAttachDocuments(true)}
                   >
-                    {configButtons.buttonsOutlined.buttonOne.label}
+                    {configButtons.buttonsOutlined.buttonTwo.label}
                   </Button>
                   {showAttachments && (
                     <Listmodal
@@ -182,8 +229,8 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           buttonText="Confirmar"
           inputLabel="Motivo del rechazo."
           inputPlaceholder="Describa el motivo del rechazo."
-          onCloseModal={() => setShowRejectionModal(!showRejectionModal)}
-          onSubmit={() => setShowRejectionModal(!showRejectionModal)}
+          onCloseModal={handleRejectionModal}
+          onSubmit={handleRejectionModal}
         />
       )}
       {showCancelModal && (
@@ -192,9 +239,22 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           buttonText="Confirmar"
           inputLabel="Motivo de la anulacion."
           inputPlaceholder="Describa el motivo de la anulacion."
-          onCloseModal={() => setShowCancelModal(!showCancelModal)}
-          onSubmit={() => setShowCancelModal(!showCancelModal)}
+          onCloseModal={handleCancelModal}
+          onSubmit={handleConfirmCancel}
         />
+      )}
+      {showFlagMessage && (
+        <StyledMessageContainer>
+          <Flag
+            appearance={flagMessage.appearance}
+            closeFlag={handleCloseFlagMessage}
+            description={flagMessage.description}
+            duration={4000}
+            icon={<MdOutlineThumbUp />}
+            title={flagMessage.title}
+            isMessageResponsive={false}
+          />
+        </StyledMessageContainer>
       )}
     </>
   );
