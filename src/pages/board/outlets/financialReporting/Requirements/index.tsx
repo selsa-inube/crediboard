@@ -107,7 +107,7 @@ export const Requirements = (props: IRequirementsProps) => {
                 actions={actionsRequirements}
                 actionMobile={item.actionsMovile}
                 appearanceTable={{
-                  widthTd: !isMobile ? "100" : "60%",
+                  widthTd: !isMobile ? "310px" : "60%",
                   efectzebra: true,
                   title: "primary",
                   isStyleMobile: false,
