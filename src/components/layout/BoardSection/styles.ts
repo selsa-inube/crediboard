@@ -30,6 +30,13 @@ const StyledBoardSection = styled.div<IStyledBoardSection>`
       ? theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
       : theme?.color?.surface?.light?.regular ||
         inube.color.surface.light.regular};
+
+  @media screen and (max-width: 1024px) {
+    & > div:nth-child(1) {
+      justify-content: space-between;
+      margin-right: 20px;
+    }
+  }
 `;
 
 const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
