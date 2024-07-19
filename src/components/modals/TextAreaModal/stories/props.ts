@@ -1,4 +1,7 @@
-const props = {
+import { ArgTypes } from "@storybook/react";
+import { TextAreaModalProps } from "..";
+
+const props: Partial<ArgTypes<TextAreaModalProps>> = {
   title: {
     control: "text",
     description: "Title of the modal",

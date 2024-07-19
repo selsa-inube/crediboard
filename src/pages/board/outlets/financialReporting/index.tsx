@@ -43,7 +43,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
 
   return (
     <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"}>
-      <ContainerSections>
+      <ContainerSections isMobile={isMobile}>
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
             <Stack direction="column">

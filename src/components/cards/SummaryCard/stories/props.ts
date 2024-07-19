@@ -1,4 +1,7 @@
-const props = {
+import { ArgTypes } from "@storybook/react";
+import { SummaryCardProps } from "..";
+
+const props: Partial<ArgTypes<SummaryCardProps>> = {
   rad: {
     control: "number",
     description: "Reference number of the summary",
