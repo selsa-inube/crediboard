@@ -24,25 +24,50 @@ import {
   capitalizeFirstLetter,
   capitalizeFirstLetterEachWord,
 } from "@utils/formatData/text";
-import { generatePDF } from "@utils/pdf/generetePDF";
+//import { generatePDF } from "@utils/pdf/generetePDF";
 import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { Requests } from "@services/types";
 
 import { StyledCollapseIcon, StyledIcon, StyledDivider } from "./styles";
-import { DataCommercialManagement } from "./TableCommercialManagement";
-import { dataAccordeon } from "./config/config";
 
 interface ComercialManagementProps {
   data: Requests;
   children?: JSX.Element;
+  prueba: () => void;
 }
 
+/* export const DocumentFrame = ({ ifremeRef }) => {
+  useEffect(() => {
+    if (iframeRef.current && content) {
+      const iframeDoc = iframeRef.current.contentWindow.document;
+      iframeDoc.open();
+      iframeDoc.write(content);
+      iframeDoc.close();
+
+      // Añadir el estilo de impresión al documento del iframe
+      const printStyle = `
+        @media print {
+          body {
+            -webkit-print-color-adjust: exact;
+             print-color-adjust: exact;
+          }
+        }
+      `;
+      const printStyleElement = iframeDoc.createElement("style");
+      printStyleElement.innerHTML = printStyle;
+      iframeDoc.head.appendChild(printStyleElement);
+    }
+  }, [content]); 
+
+  return <iframe style={{ display: "none" }} ref={ifremeRef} />;
+};
+ */
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { data, children } = props;
+  const { data, children, prueba } = props;
   const [collapse, setCollapse] = useState(false);
 
-  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const [isGeneratingPdf] = useState(false);
 
   const { id } = useParams();
 
@@ -50,19 +75,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
 
   const handleCollapse = () => {
     setCollapse(!collapse);
-  };
-
-  const handleGeneratePDF = async () => {
-    try {
-      setIsGeneratingPdf(true);
-      await generatePDF(
-        <DataCommercialManagement dataAccordeon={dataAccordeon} />
-      );
-      setIsGeneratingPdf(false);
-    } catch (error) {
-      console.error("Error al generar PDF:", error);
-      setIsGeneratingPdf(false);
-    }
   };
 
   return (
@@ -176,7 +188,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     size="18px"
                     disabled={isGeneratingPdf}
                     cursorHover
-                    onClick={handleGeneratePDF}
+                    onClick={prueba}
                   />
                 </StyledIcon>
                 <StyledIcon>

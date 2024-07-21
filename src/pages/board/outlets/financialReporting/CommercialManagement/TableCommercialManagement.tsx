@@ -10,12 +10,13 @@ import {
 
 interface IDataCommercialManagement {
   dataAccordeon: IAccordionProps[];
+  dataRef: React.RefObject<HTMLDivElement>;
 }
 
 export const DataCommercialManagement = (props: IDataCommercialManagement) => {
-  const { dataAccordeon } = props;
+  const { dataAccordeon, dataRef } = props;
   return (
-    <>
+    <div ref={dataRef}>
       <TableBoard
         id="commercialManagement"
         titles={titlesCommercialManagement}
@@ -30,6 +31,6 @@ export const DataCommercialManagement = (props: IDataCommercialManagement) => {
           content={accordeon.content}
         />
       ))}
-    </>
+    </div>
   );
 };
