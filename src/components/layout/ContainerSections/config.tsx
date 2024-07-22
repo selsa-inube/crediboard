@@ -1,20 +1,20 @@
 export const configButtons = {
   buttons: {
-    buttonOne: {
+    buttonReject: {
       label: "Rechazar",
     },
-    buttonTwo: {
+    buttonCancel: {
       label: "Anular",
     },
-    buttonTree: {
+    buttonPrint: {
       label: "Imprimir",
     },
   },
   buttonsOutlined: {
-    buttonOne: {
+    buttonAttach: {
       label: "Adjuntar",
     },
-    buttonTwo: {
+    buttonViewAttachments: {
       label: "Ver Adjuntos",
     },
   },
