@@ -7,6 +7,7 @@ interface IStyledBoardSection {
   theme?: typeof inube;
   $sectionBackground?: SectionBackground;
   $orientation?: SectionOrientation;
+  $isTablet: boolean;
 }
 
 interface IStyledCollapseIcon {
@@ -31,11 +32,9 @@ const StyledBoardSection = styled.div<IStyledBoardSection>`
       : theme?.color?.surface?.light?.regular ||
         inube.color.surface.light.regular};
 
-  @media screen and (max-width: 1024px) {
-    & > div:nth-child(1) {
-      justify-content: space-between;
-      margin-right: 20px;
-    }
+  & > div:nth-child(1) {
+    justify-content: ${({ $isTablet }) => ($isTablet ? "space-between" : "flex-start")};
+    margin-right: ${({ $isTablet }) => ($isTablet ? "20px" : "0px")};
   }
 `;
 
