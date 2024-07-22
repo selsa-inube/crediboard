@@ -9,22 +9,12 @@ import {
   titlesFinanacialReporting,
 } from "./config";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
-import { IEntries } from "@components/data/TableBoard/types";
 
 export const PromissoryNotes = () => {
   const [showModal, setShowModal] = useState(false);
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const entrySelection = (data: IEntries) => {
-    console.log(data);
-    setShowModal(true);
-  };
-
-  const tableBoardActions = getTableBoardActions(entrySelection);
-  const tableBoardActionMobile = getTableBoardActionMobile(entrySelection);
+  const tableBoardActions = getTableBoardActions(() => setShowModal(true));
+  const tableBoardActionMobile = getTableBoardActionMobile(() => setShowModal(true));
 
   return (
     <Stack direction="column">
@@ -46,10 +36,10 @@ export const PromissoryNotes = () => {
         <PromissoryNotesModal
           title="Gestor Comercial y Analista"
           buttonText="Aceptar"
-          onCloseModal={handleCloseModal}
+          onCloseModal={() => setShowModal(false)}
           onSubmit={(values) => {
             console.log("Form submitted with values:", values);
-            handleCloseModal();
+            setShowModal(false);
           }}
         />
       )}
