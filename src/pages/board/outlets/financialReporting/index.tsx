@@ -5,17 +5,16 @@ import { Stack, Text, inube, Grid, useMediaQuery } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
-import { configDataAttachments } from "@components/layout/ContainerSections/config";
 import { Listmodal } from "@components/modals/Listmodal";
-import { getById } from "@mocks/utils/dataMock.service";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
+import { getById } from "@mocks/utils/dataMock.service";
 import { Requests } from "@services/types";
 
 import { ToDo } from "./ToDo";
 import { infoIcon } from "./ToDo/config";
-import { optionButtons } from "./config";
+import { configDataAttachments, optionButtons } from "./config";
 import { StyledItem } from "./styles";
 
 export interface IFinancialReportingProps {
