@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { MdOutlineThumbUp } from "react-icons/md";
 import { Stack, inube, Grid, useMediaQuery } from "@inube/design-system";
+import { Flag } from "@inubekit/flag";
+
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { getById } from "@mocks/utils/dataMock.service";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
@@ -8,11 +11,11 @@ import { dataAccordeon } from "@pages/board/outlets/financialReporting/Commercia
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { Requests } from "@services/types";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { Flag } from "@inubekit/flag";
-import { MdOutlineThumbUp } from "react-icons/md";
+
 import { ToDo } from "./ToDo";
 import { infoIcon } from "./ToDo/config";
 import { StyledMessageContainer } from "./styles";
+import { handleConfirmCancel } from "./config"; 
 
 export interface IFinancialReportingProps {
   requirements?: JSX.Element | JSX.Element[];
@@ -49,29 +52,11 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
     });
   }, [id]);
 
-  const handleCancelModal = () => {
-    setShowCancelModal(!showCancelModal);
-  };
-
-  const handleConfirmCancel = (values: { textarea: string }) => {
-    const text = values.textarea;
-    if (text) {
-      setFlagMessage({
-        title: "Anulación Confirmada",
-        description: "la anulacion se a realizado correctamente",
-        appearance: "success",
-      });
-    }
-    console.log("Flag Message:", flagMessage);
-    setShowFlagMessage(true);
-    handleCancelModal();
-  };
-
   return (
     <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"}>
       <ContainerSections
         isMobile={isMobile}
-        onOpenCancelModal={handleCancelModal}
+        onOpenCancelModal={() => setShowCancelModal(true)}
       >
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
@@ -106,8 +91,13 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
           buttonText="Confirmar"
           inputLabel="Motivo de la anulación."
           inputPlaceholder="Describa el motivo de la anulación."
-          onCloseModal={handleCancelModal}
-          onSubmit={handleConfirmCancel}
+          onCloseModal={() => setShowCancelModal(false)}
+          onSubmit={(values) => handleConfirmCancel(
+            values,
+            setFlagMessage,
+            setShowFlagMessage,
+            setShowCancelModal
+          )}
         />
       )}
       {showFlagMessage && (

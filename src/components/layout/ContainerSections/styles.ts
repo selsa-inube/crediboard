@@ -27,9 +27,3 @@ export const StyledContainerToCenter = styled.div`
   margin: 0 calc(100%-1192px);
   align-items: center;
 `;
-
-export const StyledMessageContainer = styled.div`
-  position: fixed;
-  bottom: 18px;
-  right: 75px;
-`;
