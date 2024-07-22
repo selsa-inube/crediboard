@@ -44,14 +44,12 @@ const StyledDivider = styled.hr<IStyledDivider>`
     inube.color.stroke.divider.regular};
 `;
 
-export const StyledDocumentFrame = styled.iframe`
+export const StyledPrintContainer = styled.div`
   display: none;
 
   @media print {
-    body {
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 `;
 
