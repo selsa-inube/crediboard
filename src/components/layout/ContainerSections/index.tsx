@@ -39,7 +39,10 @@ const optionButtons: IOptionButtons = {
   onClick: () => console.log("Adjuntar archivo"),
 };
 
-const Listdata: React.FC<IListdataProps> = ({ data, icon }) => {
+
+const Listdata = (props: IListdataProps) => {
+  const { data, icon } = props;
+  
   return (
     <ul style={{ paddingInlineStart: "2px", marginBlock: "8px" }}>
       {data.map((element) => (

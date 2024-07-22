@@ -32,10 +32,7 @@ export const StyledCloseIcon = styled.div`
 export const StyledMenuItem = styled.div`
   padding: 12px 0; 
   cursor: pointer;
-  font-size: 16px; 
-  &:hover {
-    background-color: ${inube.color.surface.hover};
-  }
+  font-size: 14px; 
   &:not(:last-child) {
     border-bottom: none; 
   }
