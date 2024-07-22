@@ -7,6 +7,7 @@ import {
   entriesCommercialManagement,
   titlesCommercialManagement,
 } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
+import { StyledPrintContainer } from "./styles";
 
 interface IDataCommercialManagement {
   dataAccordeon: IAccordionProps[];
@@ -16,7 +17,7 @@ interface IDataCommercialManagement {
 export const DataCommercialManagement = (props: IDataCommercialManagement) => {
   const { dataAccordeon, dataRef } = props;
   return (
-    <div ref={dataRef}>
+    <StyledPrintContainer ref={dataRef}>
       <TableBoard
         id="commercialManagement"
         titles={titlesCommercialManagement}
@@ -31,6 +32,6 @@ export const DataCommercialManagement = (props: IDataCommercialManagement) => {
           content={accordeon.content}
         />
       ))}
-    </div>
+    </StyledPrintContainer>
   );
 };

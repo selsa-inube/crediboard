@@ -11,7 +11,6 @@ import { Requests } from "@services/types";
 
 import { ToDo } from "./ToDo";
 import { infoIcon } from "./ToDo/config";
-import { StyledDocumentFrame } from "./CommercialManagement/styles";
 
 export interface IFinancialReportingProps {
   requirements?: JSX.Element | JSX.Element[];
@@ -112,6 +111,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
             const styleElement = iframeDoc.createElement("style");
             styleElement.innerHTML = style.innerHTML;
             iframeHead.appendChild(styleElement);
+            console.log("document.head", style);
           }
         );
 
@@ -159,10 +159,10 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
                 data={data}
                 children={
                   <>
-                    <StyledDocumentFrame
-                      style={{ display: "none" }}
+                    <iframe
+                      /*   style={{ display: "none" }} */
                       ref={iframeRef}
-                    ></StyledDocumentFrame>
+                    ></iframe>
                     <DataCommercialManagement
                       dataAccordeon={dataAccordeon}
                       dataRef={dataCommercialManagementRef}
