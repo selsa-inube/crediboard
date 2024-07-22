@@ -259,8 +259,8 @@ export const actionMobileApprovals = [
 
 export const handleNotificationClick = (
   data: IEntries,
-  setSelectedData: React.Dispatch<React.SetStateAction<IEntries | null>>,
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  setSelectedData: (data: IEntries) => void,
+  setShowModal: (SHOWMGGAN: boolean) => void
 ) => {
   const tag = data?.tag;
   if (
@@ -280,9 +280,7 @@ interface Action {
 
 export const desktopActions = (
   actionsApprovals: Action[],
-  handleNotificationClick: (
-    data: IEntries
-  ) => void
+  handleNotificationClick: (data: IEntries) => void
 ) => {
   return actionsApprovals.map((action) => {
     return {
@@ -290,7 +288,6 @@ export const desktopActions = (
       actionName: action.actionName,
       content: (data: IEntries) => (
         <div
-          className="notification-icon"
           onClick={() => {
             if (action.id === "notificaciones") {
               handleNotificationClick(data);
@@ -305,7 +302,6 @@ export const desktopActions = (
     };
   });
 };
-
 
 export const getMobileActionsConfig = (
   actionMobileApprovals: Action[],
