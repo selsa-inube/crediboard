@@ -45,8 +45,6 @@ const StyledDivider = styled.hr<IStyledDivider>`
 `;
 
 export const StyledPrintContainer = styled.div`
-  display: none;
-
   @media print {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
