@@ -17,7 +17,6 @@
     "@inube/design-system": "^5.15.0",
     "@inubekit/flag": "^4.6.0",
     "@inubekit/icon": "^1.8.0",
-    "@inubekit/sectionmessage": "^5.0.0",
     "@inubekit/stack": "^2.4.0",
     "@inubekit/textfield": "^2.7.0",
     "@types/yup": "^0.32.0",
