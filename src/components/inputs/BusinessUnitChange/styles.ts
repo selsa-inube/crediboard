@@ -10,6 +10,10 @@ export const StyledBusiness = styled.div`
     position: absolute;
     z-index: 1;
 
+    ul{
+        margin: 0;
+    }
+
     li{
         list-style: none;
         display: flex;
@@ -23,6 +27,8 @@ export const StyledBusiness = styled.div`
         right: 20px;
         padding-right: 20px;
         padding-bottom: 5px;
+        padding-top: 5px;
+        object-fit: contain;
     }
 
     hr{
@@ -30,4 +36,6 @@ export const StyledBusiness = styled.div`
         right: 20px;
         width: 115%;
     }
+
+
 `
