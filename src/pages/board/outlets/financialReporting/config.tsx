@@ -4,13 +4,19 @@ type FlagMessage = {
   appearance: "success" | "danger";
 };
 
+type StateUpdater<T> = React.Dispatch<React.SetStateAction<T>>;
+
+type FlagMessageUpdater = StateUpdater<FlagMessage>;
+type BooleanUpdater = StateUpdater<boolean>;
+
 export const handleConfirmCancel = (
   values: { textarea: string },
-  setFlagMessage: React.Dispatch<React.SetStateAction<FlagMessage>>,
-  setShowFlagMessage: React.Dispatch<React.SetStateAction<boolean>>,
-  setShowCancelModal: React.Dispatch<React.SetStateAction<boolean>>,
+  setFlagMessage: FlagMessageUpdater,
+  setShowFlagMessage: BooleanUpdater,
+  setShowCancelModal: BooleanUpdater
 ) => {
   const text = values.textarea;
+
   if (text) {
     setFlagMessage({
       title: "Anulación Confirmada",
@@ -18,6 +24,7 @@ export const handleConfirmCancel = (
       appearance: "success",
     });
   }
+
   setShowFlagMessage(true);
   setShowCancelModal(false);
 };
