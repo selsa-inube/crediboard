@@ -17,8 +17,8 @@ export const Accordion = (props: IAccordionProps) => {
 
   return (
     <Stack width="100%">
-      <StyledDetails name={name} onClick={() => setCollapse(!collapse)}>
-        <StyledSummary>
+      <StyledDetails name={name}>
+        <StyledSummary onClick={() => setCollapse(!collapse)}>
           <StyledCollapseIcon
             onClick={() => setCollapse(!collapse)}
             $collapse={collapse}
