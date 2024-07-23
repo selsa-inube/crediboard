@@ -1,17 +1,8 @@
-type FlagMessage = {
-  title: string;
-  description: string;
-  appearance: "success" | "danger";
-};
-
-type SetFlagMessage = (message: FlagMessage) => void;
-type SetBoolean = (value: boolean) => void;
-
 export const handleConfirmCancel = (
   values: { textarea: string },
-  setFlagMessage: SetFlagMessage,
-  setShowFlagMessage: SetBoolean,
-  setShowCancelModal: SetBoolean
+  setFlagMessage: (message: { title: string; description: string; appearance: "success" | "danger" }) => void,
+  setShowFlagMessage: (value: boolean) => void,
+  setShowCancelModal: (value: boolean) => void
 ) => {
   const text = values.textarea;
 
