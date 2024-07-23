@@ -1,12 +1,13 @@
 import { useContext, useState, useRef, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { Header, Grid } from "@inube/design-system";
-import { MdLogout } from "react-icons/md";
+import { Header, Grid, Icon, useMediaQuery } from "@inube/design-system";
+import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
 
 import { AppContext } from "@context/AppContext";
 import { MenuSection } from "@components/navigation/MenuSection";
 import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
+import { BusinessUnitChange } from "@components/inputs/BusinessUnitChange";
 
 import { navigationConfig, logoutConfig } from "./config/apps.config";
 import {
@@ -16,6 +17,8 @@ import {
   StyledLogo,
   StyledMain,
   StyledMenuContainer,
+  StyledCollapseIcon,
+  StyledDivider
 } from "./styles";
 
 const renderLogo = (imgUrl: string) => {
@@ -30,7 +33,12 @@ function AppPage() {
   const { user } = useContext(AppContext);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [collapse, setCollapse] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
+
+  const handleCollapse = () => {
+    setCollapse(!collapse);
+  };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (event.target instanceof HTMLElement) {
@@ -39,6 +47,8 @@ function AppPage() {
       }
     }
   };
+
+  const isTablet: boolean = useMediaQuery("(max-width: 1024px)");
 
   useEffect(() => {
     const selectUser = document.querySelector("header div div:nth-child(2)");
@@ -81,6 +91,15 @@ function AppPage() {
           userName={user.username}
           client={user.company}
         />
+        <StyledCollapseIcon $collapse={collapse} onClick={handleCollapse} $isTablet={isTablet}>
+            <Icon
+              icon={<MdOutlineChevronRight />}
+              appearance="primary"
+              size="20px"
+              cursorHover
+            />
+          </StyledCollapseIcon>
+        {collapse && <StyledDivider /> && <BusinessUnitChange/>}
         <StyledContainer>
           {showUserMenu && (
             <StyledMenuContainer ref={userMenuRef}>
