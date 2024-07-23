@@ -7,8 +7,8 @@ import { getById } from "@mocks/utils/dataMock.service";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
+import { ErrorAlert } from "@components/ErrorAlert";
 import { Requests } from "@services/types";
-
 import { ToDo } from "./ToDo";
 import { infoIcon } from "./ToDo/config";
 
@@ -30,30 +30,47 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   } = props;
 
   const [data, setData] = useState({} as Requests);
-
+  const [visibleError, setvisibleError] = useState(false);
   const { id } = useParams();
 
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
 
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
-      setData(requirement);
+      const simulatedRequirement = { ...requirement, hasError: true };
+      setData(simulatedRequirement);
+      if (simulatedRequirement.hasError) {
+        setvisibleError(true);
+      }
     });
   }, [id]);
 
+  const handleCloseErrorAlert = () => {
+    setvisibleError(false);
+  };
+
   return (
     <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"}>
-      <ContainerSections isMobile={isMobile}>
+      <ContainerSections>
+      <Stack direction="column" margin={isMobile ? "s300" : "0"}>
+          {visibleError && (
+            <ErrorAlert
+              message="Existe un error sin evaluar"
+              onClose={handleCloseErrorAlert}
+              top={!isMobile ? "58px" : "110px"}
+              left="50%"
+              showError={visibleError}
+            />
+          )}
+        </Stack>
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
-            <Stack direction="column">
-              <ComercialManagement
-                data={data}
-                children={
-                  <DataCommercialManagement dataAccordeon={dataAccordeon} />
-                }
-              />
-            </Stack>
+            <ComercialManagement
+              data={data}
+              children={
+                <DataCommercialManagement dataAccordeon={dataAccordeon} />
+              }
+            />
           </Stack>
           <Grid
             templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
