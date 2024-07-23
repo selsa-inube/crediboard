@@ -4,16 +4,14 @@ type FlagMessage = {
   appearance: "success" | "danger";
 };
 
-type StateUpdater<T> = React.Dispatch<React.SetStateAction<T>>;
-
-type FlagMessageUpdater = StateUpdater<FlagMessage>;
-type BooleanUpdater = StateUpdater<boolean>;
+type SetFlagMessage = (message: FlagMessage) => void;
+type SetBoolean = (value: boolean) => void;
 
 export const handleConfirmCancel = (
   values: { textarea: string },
-  setFlagMessage: FlagMessageUpdater,
-  setShowFlagMessage: BooleanUpdater,
-  setShowCancelModal: BooleanUpdater
+  setFlagMessage: SetFlagMessage,
+  setShowFlagMessage: SetBoolean,
+  setShowCancelModal: SetBoolean
 ) => {
   const text = values.textarea;
 
