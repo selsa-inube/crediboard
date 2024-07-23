@@ -1,6 +1,10 @@
 export const handleConfirmCancel = (
   values: { textarea: string },
-  setFlagMessage: (message: { title: string; description: string; appearance: "success" | "danger" }) => void,
+  setFlagMessage: (message: {
+    title: string;
+    description: string;
+    appearance: "success" | "danger";
+  }) => void,
   setShowFlagMessage: (value: boolean) => void,
   setShowCancelModal: (value: boolean) => void
 ) => {
