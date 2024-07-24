@@ -3,19 +3,18 @@ import { MdClear } from "react-icons/md";
 import {
   Blanket,
   Button,
-  Icon,
   Stack,
   Text,
   inube,
   useMediaQuery,
 } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
 
 import {
   StyledContainerClose,
   StyledContainerContent,
   StyledModal,
 } from "./styles";
-import React from "react";
 
 export interface IOptionButtons {
   label: string;
