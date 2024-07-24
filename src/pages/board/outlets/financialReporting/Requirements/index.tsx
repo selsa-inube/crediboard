@@ -85,7 +85,7 @@ export const Requirements = (props: IRequirementsProps) => {
     { id: "agregar", content: renderAddIcon },
     { id: "aprobar", content: renderCheckIcon },
   ];
-
+  
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   return (
@@ -107,7 +107,7 @@ export const Requirements = (props: IRequirementsProps) => {
                 actions={actionsRequirements}
                 actionMobile={item.actionsMovile}
                 appearanceTable={{
-                  widthTd: !isMobile ? "310px" : "60%",
+                  widthTd: !isMobile ? "310px" : "70%",
                   efectzebra: true,
                   title: "primary",
                   isStyleMobile: false,
