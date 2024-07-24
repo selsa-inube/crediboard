@@ -37,32 +37,6 @@ interface ComercialManagementProps {
   prueba: () => void;
 }
 
-/* export const DocumentFrame = ({ ifremeRef }) => {
-  useEffect(() => {
-    if (iframeRef.current && content) {
-      const iframeDoc = iframeRef.current.contentWindow.document;
-      iframeDoc.open();
-      iframeDoc.write(content);
-      iframeDoc.close();
-
-      // Añadir el estilo de impresión al documento del iframe
-      const printStyle = `
-        @media print {
-          body {
-            -webkit-print-color-adjust: exact;
-             print-color-adjust: exact;
-          }
-        }
-      `;
-      const printStyleElement = iframeDoc.createElement("style");
-      printStyleElement.innerHTML = printStyle;
-      iframeDoc.head.appendChild(printStyleElement);
-    }
-  }, [content]); 
-
-  return <iframe style={{ display: "none" }} ref={ifremeRef} />;
-};
- */
 export const ComercialManagement = (props: ComercialManagementProps) => {
   const { data, children, prueba } = props;
   const [collapse, setCollapse] = useState(false);
@@ -184,7 +158,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                 <StyledIcon>
                   <Icon
                     icon={<MdOutlinePictureAsPdf />}
-                    appearance="danger"
+                    appearance="primary"
                     size="18px"
                     disabled={isGeneratingPdf}
                     cursorHover
