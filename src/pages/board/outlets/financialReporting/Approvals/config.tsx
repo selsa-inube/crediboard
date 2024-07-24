@@ -256,3 +256,73 @@ export const actionMobileApprovals = [
     ),
   },
 ];
+
+export const handleNotificationClick = (
+  data: IEntries,
+  setSelectedData: (data: IEntries) => void,
+  setShowModal: (SHOWMGGAN: boolean) => void
+) => {
+  const tag = data?.tag;
+  if (
+    isValidElement(tag) &&
+    (tag.props?.label === "Aprobado" || tag.props?.label === "Rechazado")
+  ) {
+    setSelectedData(data);
+    setShowModal(true);
+  }
+};
+
+interface Action {
+  id: string;
+  actionName: string;
+  content: (data: IEntries) => JSX.Element;
+}
+
+export const desktopActions = (
+  actionsApprovals: Action[],
+  handleNotificationClick: (data: IEntries) => void
+) => {
+  return actionsApprovals.map((action) => {
+    return {
+      id: action.id,
+      actionName: action.actionName,
+      content: (data: IEntries) => (
+        <div
+          onClick={() => {
+            if (action.id === "notificaciones") {
+              handleNotificationClick(data);
+            } else if (action.id === "Error") {
+              action.content(data);
+            }
+          }}
+        >
+          {action.content(data)}
+        </div>
+      ),
+    };
+  });
+};
+
+export const getMobileActionsConfig = (
+  actionMobileApprovals: Action[],
+  handleNotificationClickBound: (data: IEntries) => void
+) => {
+  return actionMobileApprovals.map((action) => {
+    return {
+      id: action.id,
+      content: (data: IEntries) => (
+        <div
+          onClick={() => {
+            if (action.id === "notificaciones") {
+              handleNotificationClickBound(data);
+            } else if (action.id === "Error") {
+              action.content(data);
+            }
+          }}
+        >
+          {action.content(data)}
+        </div>
+      ),
+    };
+  });
+};

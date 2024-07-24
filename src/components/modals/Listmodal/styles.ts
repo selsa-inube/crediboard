@@ -6,10 +6,10 @@ interface IStyledModal {
 }
 
 export const StyledModal = styled.div<IStyledModal>`
-  overflow: hidden;
+  overflow: auto;
   display: flex;
   flex-direction: column;
-  height: ${({ $smallScreen }) => ($smallScreen ? "280px" : "382px")};
+  max-height: ${({ $smallScreen }) => ($smallScreen ? "280px" : "382px")};
   width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "500px")};
   background-color: ${({ theme }) =>
     theme.color?.surface?.light?.clear || inube.color.surface.light.clear};
@@ -34,22 +34,14 @@ export const StyledContainerContent = styled.div<IStyledModal>`
     `
     &::-webkit-scrollbar {
       width: 16px;
-      height: 75px
+      height: 75px;
       border-radius: 8px;
     }
-      &::-webkit-scrollbar-thumb {
+    &::-webkit-scrollbar-thumb {
       background-color: ${
         theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
       };
       border-radius: 8px;
     }
   `}
-`;
-
-export const StyledContainerClose = styled.div`
-  display: flex;
-  margin: 0px;
-  padding: 0px;
-  justify-content: space-between;
-  cursor: pointer;
 `;

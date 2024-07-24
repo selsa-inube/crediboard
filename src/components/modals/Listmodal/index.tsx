@@ -6,35 +6,28 @@ import {
   Icon,
   Stack,
   Text,
-  inube,
   useMediaQuery,
 } from "@inube/design-system";
-
-import {
-  StyledContainerClose,
-  StyledContainerContent,
-  StyledModal,
-} from "./styles";
-import React from "react";
-
-export interface IOptionButtons {
-  label: string;
-  variant: "filled" | "outlined" | "none";
-  icon?: React.ReactNode;
-  fullwidth?: boolean;
-  onClick?: () => void;
-}
+import { StyledModal, StyledContainerContent } from "./styles";
 
 export interface IListmodalProps {
   title: string;
   portalId?: string;
-  content?: JSX.Element | JSX.Element[];
-  optionButtons?: IOptionButtons;
+  content?: JSX.Element | JSX.Element[] | string; 
+  buttonText?: string;
   handleClose: () => void;
+  handleButtonClick?: () => void;
 }
 
 export const Listmodal = (props: IListmodalProps) => {
-  const { title, portalId, content, optionButtons, handleClose } = props;
+  const {
+    title,
+    portalId,
+    content,
+    buttonText = "Enviar",
+    handleClose,
+    handleButtonClick,
+  } = props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -48,11 +41,11 @@ export const Listmodal = (props: IListmodalProps) => {
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
-        <StyledContainerClose onClick={handleClose}>
+        <Stack alignItems="center" justifyContent="space-between">
           <Text type="headline" size="small">
             {title}
           </Text>
-          <Stack alignItems="center" gap={inube.spacing.s100}>
+          <Stack gap="8px">
             <Text>Cerrar</Text>
             <Icon
               icon={<MdClear />}
@@ -62,24 +55,18 @@ export const Listmodal = (props: IListmodalProps) => {
               onClick={handleClose}
             />
           </Stack>
-        </StyledContainerClose>
-        <StyledContainerContent $smallScreen={isMobile}>
-          {content}
-        </StyledContainerContent>
-        {optionButtons && (
-          <Button
-            spacing="compact"
-            iconBefore={optionButtons?.icon}
-            variant={optionButtons?.variant}
-            onClick={optionButtons?.onClick}
-            fullwidth={optionButtons?.fullwidth}
-            cursorHover
-          >
-            {optionButtons?.label}
-          </Button>
+        </Stack>
+        {typeof content === "string" ? (
+          <Stack>
+            <Text>{content}</Text>
+          </Stack>
+        ) : (
+          <StyledContainerContent $smallScreen={isMobile}>
+            {content}
+          </StyledContainerContent>
         )}
-        <Stack justifyContent="flex-end" margin="s200 s0">
-          <Button onClick={handleClose}>Cerrar</Button>
+        <Stack justifyContent="flex-end" margin="16px 0">
+          <Button onClick={handleButtonClick || handleClose}>{buttonText}</Button>
         </Stack>
       </StyledModal>
     </Blanket>,

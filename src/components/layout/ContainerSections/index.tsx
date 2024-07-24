@@ -1,44 +1,35 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { MdArrowBack, MdMenu, MdOutlineRemoveRedEye } from "react-icons/md";
 import {
-  MdAddCircleOutline,
-  MdArrowBack,
-  MdDeleteOutline,
-  MdMenu,
-  MdOutlineRemoveRedEye,
-} from "react-icons/md";
-import { Button, Icon, Stack, Text, inube } from "@inube/design-system";
+  Button,
+  Icon,
+  Stack,
+  Text,
+  inube,
+  useMediaQuery,
+} from "@inube/design-system";
 
-import { IOptionButtons, Listmodal } from "@components/modals/Listmodal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
+import { Listmodal } from "@components/modals/Listmodal";
 
 import { configButtons, configDataAttachments } from "./config";
 import {
-  StyledContainerToCenter,
   StyledHorizontalDivider,
   StyledItem,
+  StyledContainerToCenter,
 } from "./styles";
 
 interface IContainerSectionsProps {
   children?: JSX.Element | JSX.Element[];
-  isMobile?: boolean;
 }
 
 interface IListdataProps {
   data: { id: string; name: string }[];
-  icon?: React.ReactNode;
 }
 
-const optionButtons: IOptionButtons = {
-  label: "Adjuntar archivo",
-  variant: "none",
-  icon: <MdAddCircleOutline />,
-  fullwidth: false,
-  onClick: () => console.log("Adjuntar archivo"),
-};
-
 const Listdata = (props: IListdataProps) => {
-  const { data, icon } = props;
+  const { data } = props;
 
   return (
     <ul
@@ -51,7 +42,7 @@ const Listdata = (props: IListdataProps) => {
         <StyledItem key={element.id}>
           <Text>{element.name}</Text>
           <Icon
-            icon={icon}
+            icon={<MdOutlineRemoveRedEye />}
             appearance="dark"
             spacing="none"
             size="24px"
@@ -64,12 +55,12 @@ const Listdata = (props: IListdataProps) => {
 };
 
 export const ContainerSections = (props: IContainerSectionsProps) => {
-  const { children, isMobile } = props;
+  const { children } = props;
 
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
-  const [showAttachments, setShowAttachments] = useState(false);
+  const isMobile: boolean = useMediaQuery("(max-width: 720px)");
 
   const navigation = useNavigate();
 
@@ -124,7 +115,6 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                   >
                     {configButtons.buttons.buttonOne.label}
                   </Button>
-
                   <Button onClick={() => setShowCancelModal(!showCancelModal)}>
                     {configButtons.buttons.buttonTwo.label}
                   </Button>
@@ -132,25 +122,9 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                 </Stack>
                 <StyledHorizontalDivider />
                 <Stack gap={inube.spacing.s200}>
-                  <Button
-                    variant="outlined"
-                    onClick={() => setShowAttachments(true)}
-                  >
+                  <Button variant="outlined">
                     {configButtons.buttonsOutlined.buttonOne.label}
                   </Button>
-                  {showAttachments && (
-                    <Listmodal
-                      title="Adjuntar"
-                      content={
-                        <Listdata
-                          data={configDataAttachments}
-                          icon={<MdDeleteOutline />}
-                        />
-                      }
-                      handleClose={() => setShowAttachments(false)}
-                      optionButtons={optionButtons}
-                    />
-                  )}
                   <Button
                     variant="outlined"
                     onClick={() => setAttachDocuments(true)}
@@ -160,13 +134,9 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                   {attachDocuments && (
                     <Listmodal
                       title="Ver Adjuntos"
-                      content={
-                        <Listdata
-                          data={configDataAttachments}
-                          icon={<MdOutlineRemoveRedEye />}
-                        />
-                      }
-                      handleClose={() => setAttachDocuments(false)}
+                      content={<Listdata data={configDataAttachments} />}
+                      buttonText="Cerrar"
+                    handleClose={() => setAttachDocuments(false)}
                     />
                   )}
                 </Stack>
