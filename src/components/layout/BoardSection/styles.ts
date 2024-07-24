@@ -33,7 +33,7 @@ const StyledBoardSection = styled.div<IStyledBoardSection>`
         inube.color.surface.light.regular};
 
   & > div:nth-child(1) {
-    justify-content: ${({ $isTablet }) => ($isTablet ? "space-between" : "flex-start")};
+    justify-content: space-between;
     margin-right: ${({ $isTablet }) => ($isTablet ? "20px" : "0px")};
   }
 `;
