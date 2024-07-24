@@ -86,7 +86,15 @@ export const Requirements = (props: IRequirementsProps) => {
     { id: "aprobar", content: renderCheckIcon },
   ];
 
-  const isMobile = useMediaQuery("(max-width: 720px)");
+  const isMobile = useMediaQuery("(max-width: 420px)");
+  const isTablet = useMediaQuery("(min-width: 421px) and (max-width: 720px)");
+
+  let containerHeight = "400px";
+  if (isTablet) {
+    containerHeight = "350px";
+  } else if (isMobile) {
+    containerHeight = "400px";
+  }
 
   return (
     <>
@@ -97,7 +105,7 @@ export const Requirements = (props: IRequirementsProps) => {
           heightFieldset="340px"
           hasTable
         >
-          <div style={{ height: "400px" }}>
+          <div style={{ height: containerHeight }}>
             {data.map((item) => (
               <TableBoard
                 key={item.id}
