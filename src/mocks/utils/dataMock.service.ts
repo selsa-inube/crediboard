@@ -8,9 +8,14 @@ function buildData<T>(data: T[]) {
   return dataMock;
 }
 
-export async function intializedData<T>(option: string, data: T[]) {
+export async function intializedData<T>(option: string, data: T | T[]) {
   try {
-    const dataMock = buildData(data);
+    let dataMock;
+    if (Array.isArray(data)) {
+      dataMock = buildData(data);
+    } else {
+      dataMock = data;
+    }
     await localforage.setItem(option, dataMock);
   } catch (error) {
     return error;
