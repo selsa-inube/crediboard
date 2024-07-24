@@ -85,16 +85,8 @@ export const Requirements = (props: IRequirementsProps) => {
     { id: "agregar", content: renderAddIcon },
     { id: "aprobar", content: renderCheckIcon },
   ];
-
-  const isMobile = useMediaQuery("(max-width: 420px)");
-  const isTablet = useMediaQuery("(min-width: 421px) and (max-width: 720px)");
-
-  let containerHeight = "400px";
-  if (isTablet) {
-    containerHeight = "350px";
-  } else if (isMobile) {
-    containerHeight = "400px";
-  }
+  
+  const isMobile = useMediaQuery("(max-width: 720px)");
 
   return (
     <>
@@ -105,7 +97,7 @@ export const Requirements = (props: IRequirementsProps) => {
           heightFieldset="340px"
           hasTable
         >
-          <div style={{ height: containerHeight }}>
+         <div style={{ height: isMobile ? "auto" : "340px", overflowX: "auto" }}>
             {data.map((item) => (
               <TableBoard
                 key={item.id}
@@ -115,7 +107,7 @@ export const Requirements = (props: IRequirementsProps) => {
                 actions={actionsRequirements}
                 actionMobile={item.actionsMovile}
                 appearanceTable={{
-                  widthTd: !isMobile ? "310px" : "65%",
+                  widthTd: !isMobile ? "310px" : "70%",
                   efectzebra: true,
                   title: "primary",
                   isStyleMobile: false,

@@ -43,7 +43,7 @@ export const Approvals = () => {
         actionMobile={actionMobileApprovals}
         nameTitleTag="decision"
         appearanceTable={{
-          widthTd: !isMobile ? "100" : "65%",
+          widthTd: !isMobile ? "100" : "70%",
           efectzebra: true,
           title: "primary",
           isStyleMobile: false,
