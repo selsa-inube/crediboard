@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { MdOutlineThumbUp } from "react-icons/md";
 import { Stack, inube, Grid, useMediaQuery } from "@inube/design-system";
+import { Flag } from "@inubekit/flag";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { getById } from "@mocks/utils/dataMock.service";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
-import { ErrorAlert } from "@components/ErrorAlert";
 import { Requests } from "@services/types";
+import { TextAreaModal } from "@components/modals/TextAreaModal";
+
 import { ToDo } from "./ToDo";
 import { infoIcon } from "./ToDo/config";
+import { StyledMessageContainer } from "./styles";
+import { handleConfirmCancel } from "./config"; 
 
 export interface IFinancialReportingProps {
   requirements?: JSX.Element | JSX.Element[];
@@ -30,47 +35,39 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   } = props;
 
   const [data, setData] = useState({} as Requests);
-  const [visibleError, setvisibleError] = useState(false);
-  const { id } = useParams();
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showFlagMessage, setShowFlagMessage] = useState(false);
+  const [flagMessage, setFlagMessage] = useState({
+    title: "",
+    description: "",
+    appearance: "success" as "success" | "danger",
+  });
 
+  const { id } = useParams();
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
 
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
-      const simulatedRequirement = { ...requirement, hasError: true };
-      setData(simulatedRequirement);
-      if (simulatedRequirement.hasError) {
-        setvisibleError(true);
-      }
+      setData(requirement);
     });
   }, [id]);
 
-  const handleCloseErrorAlert = () => {
-    setvisibleError(false);
-  };
-
   return (
     <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"}>
-      <ContainerSections>
-      <Stack direction="column" margin={isMobile ? "s300" : "0"}>
-          {visibleError && (
-            <ErrorAlert
-              message="Existe un error sin evaluar"
-              onClose={handleCloseErrorAlert}
-              top={!isMobile ? "58px" : "110px"}
-              left="50%"
-              showError={visibleError}
-            />
-          )}
-        </Stack>
+      <ContainerSections
+        isMobile={isMobile}
+        onOpenCancelModal={() => setShowCancelModal(true)}
+      >
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">
-            <ComercialManagement
-              data={data}
-              children={
-                <DataCommercialManagement dataAccordeon={dataAccordeon} />
-              }
-            />
+            <Stack direction="column">
+              <ComercialManagement
+                data={data}
+                children={
+                  <DataCommercialManagement dataAccordeon={dataAccordeon} />
+                }
+              />
+            </Stack>
           </Stack>
           <Grid
             templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
@@ -88,6 +85,34 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
           </Grid>
         </Stack>
       </ContainerSections>
+      {showCancelModal && (
+        <TextAreaModal
+          title="Anular"
+          buttonText="Confirmar"
+          inputLabel="Motivo de la anulación."
+          inputPlaceholder="Describa el motivo de la anulación."
+          onCloseModal={() => setShowCancelModal(false)}
+          onSubmit={(values) => handleConfirmCancel(
+            values,
+            setFlagMessage,
+            setShowFlagMessage,
+            setShowCancelModal
+          )}
+        />
+      )}
+      {showFlagMessage && (
+        <StyledMessageContainer>
+          <Flag
+            title={flagMessage.title}
+            description={flagMessage.description}
+            appearance={flagMessage.appearance}
+            icon={<MdOutlineThumbUp />}
+            duration={5000}
+            isMessageResponsive={false}
+            closeFlag={() => setShowFlagMessage(false)}
+          />
+        </StyledMessageContainer>
+      )}
     </Stack>
   );
 };

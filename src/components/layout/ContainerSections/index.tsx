@@ -11,7 +11,6 @@ import { Button, Icon, Stack, Text, inube } from "@inube/design-system";
 
 import { IOptionButtons, Listmodal } from "@components/modals/Listmodal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-
 import { configButtons, configDataAttachments } from "./config";
 import {
   StyledContainerToCenter,
@@ -22,6 +21,7 @@ import {
 interface IContainerSectionsProps {
   children?: JSX.Element | JSX.Element[];
   isMobile?: boolean;
+  onOpenCancelModal?: () => void;
 }
 
 interface IListdataProps {
@@ -64,10 +64,9 @@ const Listdata = (props: IListdataProps) => {
 };
 
 export const ContainerSections = (props: IContainerSectionsProps) => {
-  const { children, isMobile } = props;
+  const { children, isMobile, onOpenCancelModal } = props; 
 
   const [showRejectionModal, setShowRejectionModal] = useState(false);
-  const [showCancelModal, setShowCancelModal] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
   const [showAttachments, setShowAttachments] = useState(false);
 
@@ -125,7 +124,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                     {configButtons.buttons.buttonOne.label}
                   </Button>
 
-                  <Button onClick={() => setShowCancelModal(!showCancelModal)}>
+                  <Button onClick={onOpenCancelModal}>
                     {configButtons.buttons.buttonTwo.label}
                   </Button>
                   <Button>{configButtons.buttons.buttonTree.label}</Button>
@@ -184,16 +183,6 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           inputPlaceholder="Describa el motivo del rechazo."
           onCloseModal={() => setShowRejectionModal(!showRejectionModal)}
           onSubmit={() => setShowRejectionModal(!showRejectionModal)}
-        />
-      )}
-      {showCancelModal && (
-        <TextAreaModal
-          title="Anular"
-          buttonText="Confirmar"
-          inputLabel="Motivo de la anulacion."
-          inputPlaceholder="Describa el motivo de la anulacion."
-          onCloseModal={() => setShowCancelModal(!showCancelModal)}
-          onSubmit={() => setShowCancelModal(!showCancelModal)}
         />
       )}
     </>
