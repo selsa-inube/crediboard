@@ -44,7 +44,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   });
 
   const { id } = useParams();
-  const isMobile: boolean = useMediaQuery("(max-width: 720px)");
+  const isMobile: boolean = useMediaQuery("(max-width: 820px)");
 
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
@@ -56,7 +56,6 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
     <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"}>
       <ContainerSections
         isMobile={isMobile}
-        onOpenCancelModal={() => setShowCancelModal(true)}
       >
         <Stack direction="column" gap={inube.spacing.s250}>
           <Stack direction="column">

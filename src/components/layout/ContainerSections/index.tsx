@@ -11,17 +11,20 @@ import { Button, Icon, Stack, Text, inube } from "@inube/design-system";
 
 import { IOptionButtons, Listmodal } from "@components/modals/Listmodal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
+
 import { configButtons, configDataAttachments } from "./config";
 import {
   StyledContainerToCenter,
   StyledHorizontalDivider,
   StyledItem,
+  StyledList,
 } from "./styles";
+
+import MenuComponent from '@src/components/modals/MenuComponent/MobileMenu';
 
 interface IContainerSectionsProps {
   children?: JSX.Element | JSX.Element[];
   isMobile?: boolean;
-  onOpenCancelModal?: () => void;
 }
 
 interface IListdataProps {
@@ -39,38 +42,31 @@ const optionButtons: IOptionButtons = {
 
 const Listdata = (props: IListdataProps) => {
   const { data, icon } = props;
-
+  
   return (
-    <ul
-      style={{
-        paddingInlineStart: "2px",
-        marginBlock: "8px",
-      }}
-    >
+    <StyledList>
       {data.map((element) => (
         <StyledItem key={element.id}>
           <Text>{element.name}</Text>
-          <Icon
-            icon={icon}
-            appearance="dark"
-            spacing="none"
-            size="24px"
-            cursorHover
-          />
+          <Icon icon={icon} appearance="dark" spacing="none" size="24px" cursorHover />
         </StyledItem>
       ))}
-    </ul>
+    </StyledList>
   );
 };
 
-export const ContainerSections = (props: IContainerSectionsProps) => {
-  const { children, isMobile, onOpenCancelModal } = props; 
-
+export const ContainerSections: React.FC<IContainerSectionsProps> = ({ children, isMobile }) => {
   const [showRejectionModal, setShowRejectionModal] = useState(false);
-  const [attachDocuments, setAttachDocuments] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
   const [showAttachments, setShowAttachments] = useState(false);
+  const [attachDocuments, setAttachDocuments] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navigation = useNavigate();
+
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <>
@@ -108,6 +104,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                   appearance="dark"
                   size="32px"
                   spacing="none"
+                  onClick={handleMenuToggle}
                 />
               )}
             </Stack>
@@ -118,56 +115,23 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                 margin={!isMobile ? "s0 s0 s200 s0" : "s0"}
               >
                 <Stack gap={inube.spacing.s400}>
-                  <Button
-                    onClick={() => setShowRejectionModal(!showRejectionModal)}
-                  >
+                  <Button onClick={() => setShowRejectionModal(true)}>
                     {configButtons.buttons.buttonOne.label}
                   </Button>
 
-                  <Button onClick={onOpenCancelModal}>
+                  <Button onClick={() => setShowCancelModal(true)}>
                     {configButtons.buttons.buttonTwo.label}
                   </Button>
                   <Button>{configButtons.buttons.buttonTree.label}</Button>
                 </Stack>
                 <StyledHorizontalDivider />
                 <Stack gap={inube.spacing.s200}>
-                  <Button
-                    variant="outlined"
-                    onClick={() => setShowAttachments(true)}
-                  >
+                  <Button variant="outlined" onClick={() => setAttachDocuments(true)}>
                     {configButtons.buttonsOutlined.buttonOne.label}
                   </Button>
-                  {showAttachments && (
-                    <Listmodal
-                      title="Adjuntar"
-                      content={
-                        <Listdata
-                          data={configDataAttachments}
-                          icon={<MdDeleteOutline />}
-                        />
-                      }
-                      handleClose={() => setShowAttachments(false)}
-                      optionButtons={optionButtons}
-                    />
-                  )}
-                  <Button
-                    variant="outlined"
-                    onClick={() => setAttachDocuments(true)}
-                  >
+                  <Button variant="outlined" onClick={() => setShowAttachments(true)}>
                     {configButtons.buttonsOutlined.buttonTwo.label}
                   </Button>
-                  {attachDocuments && (
-                    <Listmodal
-                      title="Ver Adjuntos"
-                      content={
-                        <Listdata
-                          data={configDataAttachments}
-                          icon={<MdOutlineRemoveRedEye />}
-                        />
-                      }
-                      handleClose={() => setAttachDocuments(false)}
-                    />
-                  )}
                 </Stack>
               </Stack>
             )}
@@ -175,14 +139,48 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           <Stack direction="column">{children}</Stack>
         </Stack>
       </StyledContainerToCenter>
+      {isMobile && isMenuOpen && (
+        <MenuComponent
+          onClose={handleMenuToggle}
+          onReject={() => setShowRejectionModal(true)}
+          onCancel={() => setShowCancelModal(true)}
+          onAttach={() => setAttachDocuments(true)}
+          onViewAttachments={() => setShowAttachments(true)}
+        />
+      )}
+      {showAttachments && (
+        <Listmodal
+          title="Ver Adjuntos"
+          content={<Listdata data={configDataAttachments} icon={<MdOutlineRemoveRedEye />} />}
+          handleClose={() => setShowAttachments(false)}
+        />
+      )}
+      {attachDocuments && (
+        <Listmodal
+          title="Adjuntar"
+          content={<Listdata data={configDataAttachments} icon={<MdDeleteOutline />} />}
+          handleClose={() => setAttachDocuments(false)}
+          optionButtons={optionButtons}
+        />
+      )}
       {showRejectionModal && (
         <TextAreaModal
           title="Rechazar"
           buttonText="Confirmar"
           inputLabel="Motivo del rechazo."
           inputPlaceholder="Describa el motivo del rechazo."
-          onCloseModal={() => setShowRejectionModal(!showRejectionModal)}
-          onSubmit={() => setShowRejectionModal(!showRejectionModal)}
+          onCloseModal={() => setShowRejectionModal(false)}
+          onSubmit={() => setShowRejectionModal(false)}
+        />
+      )}
+      {showCancelModal && (
+        <TextAreaModal
+          title="Anular"
+          buttonText="Confirmar"
+          inputLabel="Motivo de la anulación."
+          inputPlaceholder="Describa el motivo de la anulación."
+          onCloseModal={() => setShowCancelModal(false)}
+          onSubmit={() => setShowCancelModal(false)}
         />
       )}
     </>
