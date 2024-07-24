@@ -184,7 +184,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                 <StyledIcon>
                   <Icon
                     icon={<MdOutlinePictureAsPdf />}
-                    appearance="primary"
+                    appearance="danger"
                     size="18px"
                     disabled={isGeneratingPdf}
                     cursorHover
@@ -199,6 +199,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     cursorHover
                   />
                 </StyledIcon>
+                sss
                 <StyledIcon>
                   <Icon
                     icon={<MdOutlineEdit />}
