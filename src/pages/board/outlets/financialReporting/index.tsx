@@ -22,6 +22,7 @@ import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
 import {
   configDataAttachments,
+  handleConfirmReject,
   handleConfirmCancel,
   optionButtons,
 } from "./config";
@@ -80,6 +81,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   const [showAttachments, setShowAttachments] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
 
+  const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showFlagMessage, setShowFlagMessage] = useState(false);
   const [flagMessage, setFlagMessage] = useState({
@@ -101,7 +103,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   const handleAction = {
     buttons: {
       buttonReject: {
-        OnClick: () => {},
+        OnClick: () => setShowRejectModal(true),
       },
       buttonCancel: {
         OnClick: () => setShowCancelModal(true),
@@ -177,6 +179,23 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
           )}
         </>
       </ContainerSections>
+      {showRejectModal && (
+        <TextAreaModal
+        title="Rechazar"
+        buttonText="Confirmar"
+        inputLabel="Motivo del Recahzo."
+        inputPlaceholder="Describa el motivo del Recahzo."
+        onCloseModal={() => setShowRejectModal(false)}
+        onSubmit={(values) =>
+          handleConfirmReject(
+            values,
+            setFlagMessage,
+            setShowFlagMessage,
+            setShowRejectModal
+          )
+        }
+      />
+      )}
       {showCancelModal && (
         <TextAreaModal
           title="Anular"
