@@ -42,7 +42,6 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
   const { children, isMobile, actionButtons } = props;
 
   const [showRejectionModal, setShowRejectionModal] = useState(false);
-  const [showCancelModal, setShowCancelModal] = useState(false);
 
   const navigation = useNavigate();
 
@@ -142,16 +141,6 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           inputPlaceholder="Describa el motivo del rechazo."
           onCloseModal={() => setShowRejectionModal(!showRejectionModal)}
           onSubmit={() => setShowRejectionModal(!showRejectionModal)}
-        />
-      )}
-      {showCancelModal && (
-        <TextAreaModal
-          title="Anular"
-          buttonText="Confirmar"
-          inputLabel="Motivo de la anulacion."
-          inputPlaceholder="Describa el motivo de la anulacion."
-          onCloseModal={() => setShowCancelModal(!showCancelModal)}
-          onSubmit={() => setShowCancelModal(!showCancelModal)}
         />
       )}
     </>

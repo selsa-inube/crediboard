@@ -1,4 +1,4 @@
-import { Stack, Icon } from "@inube/design-system";
+import { Stack, Icon, useMediaQuery } from "@inube/design-system";
 import { useState, isValidElement } from "react";
 import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
 
@@ -86,6 +86,8 @@ export const Requirements = (props: IRequirementsProps) => {
     { id: "aprobar", content: renderCheckIcon },
   ];
 
+  const isMobile = useMediaQuery("(max-width: 720px)");
+
   return (
     <>
       <Stack>
@@ -105,7 +107,7 @@ export const Requirements = (props: IRequirementsProps) => {
                 actions={actionsRequirements}
                 actionMobile={item.actionsMovile}
                 appearanceTable={{
-                  widthTd: "310px",
+                  widthTd: !isMobile ? "310px" : "60%",
                   efectzebra: true,
                   title: "primary",
                   isStyleMobile: false,

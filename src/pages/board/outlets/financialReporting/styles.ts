@@ -11,3 +11,8 @@ export const StyledItem = styled.li`
       theme.color?.stroke?.divider?.regular ||
       inube.color.stroke.divider.regular};
 `;
+export const StyledMessageContainer = styled.div`
+  position: fixed;
+  bottom: 18px;
+  right: 75px;
+`;

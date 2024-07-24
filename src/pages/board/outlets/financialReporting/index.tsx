@@ -1,21 +1,31 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
+import {
+  MdDeleteOutline,
+  MdOutlineRemoveRedEye,
+  MdOutlineThumbUp,
+} from "react-icons/md";
 import { Stack, Text, inube, Grid, useMediaQuery } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
+import { Flag } from "@inubekit/flag";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { Listmodal } from "@components/modals/Listmodal";
+import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
 import { Requests } from "@services/types";
 
-import { ToDo } from "./ToDo";
 import { infoIcon } from "./ToDo/config";
-import { configDataAttachments, optionButtons } from "./config";
-import { StyledItem } from "./styles";
+import { ToDo } from "./ToDo";
+import {
+  configDataAttachments,
+  handleConfirmCancel,
+  optionButtons,
+} from "./config";
+import { StyledItem, StyledMessageContainer } from "./styles";
 
 export interface IFinancialReportingProps {
   requirements?: JSX.Element | JSX.Element[];
@@ -70,6 +80,14 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   const [showAttachments, setShowAttachments] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
 
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showFlagMessage, setShowFlagMessage] = useState(false);
+  const [flagMessage, setFlagMessage] = useState({
+    title: "",
+    description: "",
+    appearance: "success" as "success" | "danger",
+  });
+
   const { id } = useParams();
 
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
@@ -86,7 +104,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
         OnClick: () => {},
       },
       buttonCancel: {
-        OnClick: () => {},
+        OnClick: () => setShowCancelModal(true),
       },
       buttonPrint: {
         OnClick: () => {},
@@ -159,6 +177,36 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
           )}
         </>
       </ContainerSections>
+      {showCancelModal && (
+        <TextAreaModal
+          title="Anular"
+          buttonText="Confirmar"
+          inputLabel="Motivo de la anulación."
+          inputPlaceholder="Describa el motivo de la anulación."
+          onCloseModal={() => setShowCancelModal(false)}
+          onSubmit={(values) =>
+            handleConfirmCancel(
+              values,
+              setFlagMessage,
+              setShowFlagMessage,
+              setShowCancelModal
+            )
+          }
+        />
+      )}
+      {showFlagMessage && (
+        <StyledMessageContainer>
+          <Flag
+            title={flagMessage.title}
+            description={flagMessage.description}
+            appearance={flagMessage.appearance}
+            icon={<MdOutlineThumbUp />}
+            duration={5000}
+            isMessageResponsive={false}
+            closeFlag={() => setShowFlagMessage(false)}
+          />
+        </StyledMessageContainer>
+      )}
     </Stack>
   );
 };
