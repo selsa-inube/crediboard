@@ -97,7 +97,7 @@ export const Requirements = (props: IRequirementsProps) => {
           heightFieldset="340px"
           hasTable
         >
-          <div style={{ height: "340px" }}>
+          <div style={{ height: "400px" }}>
             {data.map((item) => (
               <TableBoard
                 key={item.id}
