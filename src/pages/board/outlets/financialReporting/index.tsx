@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   MdDeleteOutline,
   MdOutlineRemoveRedEye,
   MdOutlineThumbUp,
 } from "react-icons/md";
 import { Stack, Text, inube, Grid, useMediaQuery } from "@inube/design-system";
-import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
+import { Icon } from "@inubekit/icon";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
+import { Stocktray } from "@components/layout/ContainerSections/Stocktray";
 import { Listmodal } from "@components/modals/Listmodal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
@@ -22,6 +23,7 @@ import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
 import {
   configDataAttachments,
+  configHandleactions,
   handleConfirmCancel,
   optionButtons,
 } from "./config";
@@ -89,6 +91,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   });
 
   const { id } = useParams();
+  const navigation = useNavigate();
 
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
 
@@ -98,31 +101,26 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
     });
   }, [id]);
 
-  const handleAction = {
-    buttons: {
-      buttonReject: {
-        OnClick: () => {},
-      },
-      buttonCancel: {
-        OnClick: () => setShowCancelModal(true),
-      },
-      buttonPrint: {
-        OnClick: () => {},
-      },
-    },
-    buttonsOutlined: {
-      buttonAttach: {
-        OnClick: () => setShowAttachments(true),
-      },
-      buttonViewAttachments: {
-        OnClick: () => setAttachDocuments(true),
-      },
-    },
-  };
+  const handleActions = configHandleactions({
+    buttonReject: () => {},
+    buttonCancel: () => setShowCancelModal(true),
+    buttonPrint: () => {},
+    buttonAttach: () => setShowAttachments(true),
+    buttonViewAttachments: () => setAttachDocuments(true),
+  });
 
   return (
     <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"}>
-      <ContainerSections isMobile={isMobile} actionButtons={handleAction}>
+      <ContainerSections
+        isMobile={isMobile}
+        stocktray={
+          <Stocktray
+            isMobile={isMobile}
+            actionButtons={handleActions}
+            navigation={() => navigation(-1)}
+          />
+        }
+      >
         <>
           <Stack direction="column" gap={inube.spacing.s250}>
             <Stack direction="column">

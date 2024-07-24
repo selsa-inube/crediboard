@@ -104,3 +104,41 @@ export const configDataAttachments = [
     name: "Certificado de antecedentes de fiscalía",
   },
 ];
+
+type ConfigHandleactions = {
+  buttonReject: () => void;
+  buttonCancel: () => void;
+  buttonPrint: () => void;
+  buttonAttach: () => void;
+  buttonViewAttachments: () => void;
+};
+
+export const configHandleactions = ({
+  buttonReject = () => {},
+  buttonCancel = () => {},
+  buttonPrint = () => {},
+  buttonAttach = () => {},
+  buttonViewAttachments = () => {},
+}: ConfigHandleactions) => {
+  return {
+    buttons: {
+      buttonReject: {
+        OnClick: buttonReject,
+      },
+      buttonCancel: {
+        OnClick: buttonCancel,
+      },
+      buttonPrint: {
+        OnClick: buttonPrint,
+      },
+    },
+    buttonsOutlined: {
+      buttonAttach: {
+        OnClick: buttonAttach,
+      },
+      buttonViewAttachments: {
+        OnClick: buttonViewAttachments,
+      },
+    },
+  };
+};
