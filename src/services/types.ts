@@ -25,6 +25,14 @@ interface PinnedRequest {
   requestId: number;
   isPinned: "Y" | "N";
 }
+
+interface IToDo {
+  credit_request_state_id: string;
+  task_to_be_done: string;
+  account_manager_name: string;
+  analyst_name: string;
+  decisions: string;
+}
 type DmEtapasPrs =
   | "CUMPLIMIENTO_REQUISITOS"
   | "FORMALIZACION_GARANTIAS"
@@ -73,6 +81,7 @@ type DmDecisions =
 export type {
   Requests,
   IStaff,
+  IToDo,
   DmEtapasPrs,
   DmTareasPrs,
   DmConceptos,

@@ -11,7 +11,7 @@ import {
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
-import { IStaff, Requests } from "@services/types";
+import { IStaff, IToDo } from "@services/types";
 import { get } from "@mocks/utils/dataMock.service";
 
 import { optionSelectDecision } from "./config";
@@ -33,23 +33,58 @@ interface ToDoProps {
   icon?: IICon;
   button?: IButton;
   isMobile?: boolean;
-  data: Requests;
 }
 
-export const ToDo = (props: ToDoProps) => {
-  const { icon, button, isMobile, data } = props;
-  const { label, onClick, disabled, loading } = button || {};
+function ToDo(props: ToDoProps) {
+  const { icon, button, isMobile } = props;
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
+  const [toDo, setToDo] = useState<IToDo | null>(null);
   const [assignedStaff, setAssignedStaff] = useState({
-    commercialManager: "Jorge Enrique Díaz Vargas",
-    analyst: "Ana Patricia García Herrera",
+    commercialManager: "",
+    analyst: "",
   });
   const [tempStaff, setTempStaff] = useState(assignedStaff);
   const [changeDecision, setChangeDecision] = useState({ decision: "" });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const staffData = await get("staff");
+        if (staffData && Array.isArray(staffData)) {
+          setStaff(staffData);
+        }
+        const toDoData = await get("to-do");
+        if (toDoData) {
+          setToDo(toDoData as IToDo);
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error("Error fetching data:", error.message);
+        } else {
+          console.error("Unknown error:", error);
+        }
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (toDo) {
+      const { account_manager_name = "", analyst_name = "" } = toDo;
+      setAssignedStaff({
+        commercialManager: account_manager_name,
+        analyst: analyst_name,
+      });
+      setTempStaff({
+        commercialManager: account_manager_name,
+        analyst: analyst_name,
+      });
+    }
+  }, [toDo]);
+
   const handleToggleStaffModal = () => {
-    setShowStaffModal(!showStaffModal);
+    setShowStaffModal((prev) => !prev);
   };
 
   const handleSelectOfficial =
@@ -68,17 +103,7 @@ export const ToDo = (props: ToDoProps) => {
     handleToggleStaffModal();
   };
 
-  useEffect(() => {
-    get("staff")
-      .then((data) => {
-        if (data && Array.isArray(data)) {
-          setStaff(data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching staff data:", error.message);
-      });
-  }, []);
+  const { label, onClick, disabled, loading } = button || {};
 
   return (
     <>
@@ -99,7 +124,7 @@ export const ToDo = (props: ToDoProps) => {
               </Text>
             )}
             <Text size={isMobile ? "medium" : "large"}>
-              {data?.n_Descr_Tarea}
+              {toDo?.task_to_be_done}
             </Text>
           </Stack>
           <Stack
@@ -189,8 +214,8 @@ export const ToDo = (props: ToDoProps) => {
       </Fieldset>
       {showStaffModal && (
         <StaffModal
-          commercialManager={tempStaff.commercialManager}
-          analyst={tempStaff.analyst}
+          commercialManager={tempStaff.commercialManager || ""}
+          analyst={tempStaff.analyst || ""}
           staff={staff}
           onChange={handleSelectOfficial}
           onSubmit={handleSubmit}
@@ -199,4 +224,6 @@ export const ToDo = (props: ToDoProps) => {
       )}
     </>
   );
-};
+}
+
+export { ToDo };
