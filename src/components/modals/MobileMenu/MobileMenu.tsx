@@ -3,12 +3,9 @@ import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
 import { MdClose } from "react-icons/md";
 
-import {
-  StyledMenu,
-  StyledMenuItem,
-} from "./styles";
+import { StyledMenu, StyledMenuItem } from "./styles";
 
-interface MenuComponentProps {
+interface MobileMenuProps {
   onClose: () => void;
   onReject: () => void;
   onCancel: () => void;
@@ -16,21 +13,23 @@ interface MenuComponentProps {
   onViewAttachments: () => void;
 }
 
-function MenuComponent(props: MenuComponentProps) {
+function MobileMenu(props: MobileMenuProps) {
+  const { onClose, onReject, onCancel, onAttach, onViewAttachments } = props;
+
   return (
     <StyledMenu>
       <Stack justifyContent="space-between" alignItems="center">
         <Text appearance="dark" size="small" type="headline">
           Menú
         </Text>
-          <Icon icon={<MdClose />} appearance="dark" size="24px" onClick={props.onClose}/>
+        <Icon icon={<MdClose />} appearance="dark" size="24px" onClick={onClose} />
       </Stack>
-      <StyledMenuItem onClick={props.onReject}>
-        <Text appearance="dark" size="medium" type="body" >
+      <StyledMenuItem onClick={onReject}>
+        <Text appearance="dark" size="medium" type="body">
           Rechazar
         </Text>
       </StyledMenuItem>
-      <StyledMenuItem onClick={props.onCancel}>
+      <StyledMenuItem onClick={onCancel}>
         <Text appearance="dark" size="medium" type="body">
           Anular
         </Text>
@@ -40,12 +39,12 @@ function MenuComponent(props: MenuComponentProps) {
           Imprimir
         </Text>
       </StyledMenuItem>
-      <StyledMenuItem onClick={props.onAttach}>
+      <StyledMenuItem onClick={onAttach}>
         <Text appearance="dark" size="medium" type="body">
           Adjuntar
         </Text>
       </StyledMenuItem>
-      <StyledMenuItem onClick={props.onViewAttachments}>
+      <StyledMenuItem onClick={onViewAttachments}>
         <Text appearance="dark" size="medium" type="body">
           Ver Adjuntos
         </Text>
@@ -54,4 +53,5 @@ function MenuComponent(props: MenuComponentProps) {
   );
 }
 
-export default MenuComponent;
+export { MobileMenu };
+export type { MobileMenuProps };

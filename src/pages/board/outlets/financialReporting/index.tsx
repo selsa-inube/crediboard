@@ -24,9 +24,8 @@ import {
   configDataAttachments,
   handleConfirmCancel,
   optionButtons,
-} from "./config";
+} from "./config";  
 import { StyledItem, StyledMessageContainer } from "./styles";
-import MenuComponent from "@components/modals/MenuComponent/MobileMenu";
 
 export interface IFinancialReportingProps {
   requirements?: JSX.Element | JSX.Element[];
@@ -77,10 +76,8 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   } = props;
 
   const [data, setData] = useState({} as Requests);
-
   const [showAttachments, setShowAttachments] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
-
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showFlagMessage, setShowFlagMessage] = useState(false);
   const [flagMessage, setFlagMessage] = useState({
@@ -88,8 +85,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
     description: "",
     appearance: "success" as "success" | "danger",
   });
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+ 
 
   const { id } = useParams();
   const isMobile: boolean = useMediaQuery("(max-width: 820px)");
@@ -100,22 +96,16 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
     });
   }, [id]);
 
-  const handleMenuClose = () => setIsMenuOpen(false);
   const handleReject = () => {
-    // Lógica para rechazar
-    setIsMenuOpen(false);
   };
   const handleCancel = () => {
     setShowCancelModal(true);
-    setIsMenuOpen(false);
   };
   const handleAttach = () => {
     setShowAttachments(true);
-    setIsMenuOpen(false);
   };
   const handleViewAttachments = () => {
     setAttachDocuments(true);
-    setIsMenuOpen(false);
   };
 
   const handleAction = {
@@ -226,15 +216,6 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
             closeFlag={() => setShowFlagMessage(false)}
           />
         </StyledMessageContainer>
-      )}
-      {isMenuOpen && (
-        <MenuComponent
-          onClose={handleMenuClose}
-          onReject={handleReject}
-          onCancel={handleCancel}
-          onAttach={handleAttach}
-          onViewAttachments={handleViewAttachments}
-        />
       )}
     </Stack>
   );

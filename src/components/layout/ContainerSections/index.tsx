@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdArrowBack, MdMenu } from "react-icons/md";
-import { Button, Text, inube } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 
+import { Button, Text, inube } from "@inube/design-system";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import MenuComponent from "@components/modals/MenuComponent/MobileMenu"; 
+import { MobileMenu } from "@src/components/modals/MobileMenu/MobileMenu"; 
+
 import { configButtons } from "./config";
 import { StyledContainerToCenter, StyledHorizontalDivider } from "./styles";
 
@@ -167,7 +168,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
         />
       )}
       {showMenu && (
-        <MenuComponent
+        <MobileMenu
           onClose={() => setShowMenu(false)}
           onReject={handleReject}
           onCancel={handleCancel}
