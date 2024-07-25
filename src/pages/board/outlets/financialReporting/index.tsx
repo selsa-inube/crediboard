@@ -5,9 +5,10 @@ import {
   MdOutlineRemoveRedEye,
   MdOutlineThumbUp,
 } from "react-icons/md";
-import { Stack, Text, inube, Grid, useMediaQuery } from "@inube/design-system";
+import { Text, inube, Grid, useMediaQuery } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
+import { Stack } from "@inubekit/stack";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { Listmodal } from "@components/modals/Listmodal";
@@ -17,6 +18,7 @@ import { dataAccordeon } from "@pages/board/outlets/financialReporting/Commercia
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
 import { Requests } from "@services/types";
+import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -93,116 +95,24 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
 
   const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
       setData(requirement);
     });
   }, [id]);
-  /* 
-  const handlePrint = () => {
-    if (dataCommercialManagementRef.current && iframeRef.current) {
-      const iframeDoc = iframeRef.current.contentDocument;
-      console.log("ifame.cuirrent", iframeRef.current);
 
-      if (iframeDoc) {
-        iframeDoc.open();
-        iframeDoc.write(dataCommercialManagementRef?.current?.innerHTML);
-        iframeDoc.close();
+  const [isPrint, setIsPrint] = useState(false);
 
-        const iframeHead = iframeDoc.head;
-        Array.from(document.head.getElementsByTagName("style")).forEach(
-          (style) => {
-            const styleElement = iframeDoc.createElement("style");
-            styleElement.innerHTML = style.innerHTML;
-
-            iframeHead.appendChild(styleElement);
-          }
-        );
-
-        Array.from(document.head.getElementsByTagName("link")).forEach(
-          (link) => {
-            // if (link.rel === "stylesheet") {
-            const linkElement = iframeDoc.createElement("link");
-            linkElement.rel = "stylesheet";
-            linkElement.href = link.href;
-            iframeHead.appendChild(linkElement);
-            // }
-          }
-        );
-
-        const printStyle = `
-        @media print {
-          body {
-            -webkit-print-color-adjust: exact;
-          }
-        }
-      `;
-        const printStyleElement = iframeDoc.createElement("style");
-        printStyleElement.innerHTML = printStyle;
-        iframeHead.appendChild(printStyleElement);
-        setTimeout(() => {
-          iframeRef?.current?.contentWindow?.print();
-        }, 1000);
-      }
-      
-    }
-  };
-
- */
-
-  const handlePrint = () => {
-    if (dataCommercialManagementRef.current && iframeRef.current) {
-      const iframeDoc = iframeRef.current.contentDocument;
-
-      if (iframeDoc) {
-        iframeDoc.open();
-        iframeDoc.write(dataCommercialManagementRef.current.innerHTML);
-        iframeDoc.close();
-
-        const iframeHead = iframeDoc.head;
-
-        Array.from(document.head.getElementsByTagName("style")).forEach(
-          (style) => {
-            const styleElement = iframeDoc.createElement("style");
-            styleElement.innerHTML = style.innerHTML;
-            iframeHead.appendChild(styleElement);
-            console.log("document.head", style);
-          }
-        );
-
-        Array.from(document.head.getElementsByTagName("link")).forEach(
-          (link) => {
-            if (link.rel === "stylesheet") {
-              const linkElement = iframeDoc.createElement("link");
-              linkElement.rel = "stylesheet";
-              linkElement.type = "text/css";
-              linkElement.media = "all";
-
-              linkElement.href = link.href;
-              iframeHead.appendChild(linkElement);
-            }
-          }
-        );
-
-        const printStyle = `
-        @media print {
-          body {
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact
-          }
-        }
-      `;
-        const printStyleElement = iframeDoc.createElement("style");
-        printStyleElement.innerHTML = printStyle;
-        iframeHead.appendChild(printStyleElement);
-
-        setTimeout(() => {
-          iframeRef?.current?.contentWindow?.print();
-        }, 2000);
-      }
-    }
+  const handleGeneratePDF = () => {
+    setIsPrint(true);
+    setTimeout(() => {
+      generatePDF(
+        dataCommercialManagementRef,
+        "Gestión Comercial",
+        "Gestión Comercial"
+      );
+    }, 1000);
   };
 
   const handleAction = {
@@ -235,19 +145,16 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
             <Stack direction="column">
               <Stack direction="column">
                 <ComercialManagement
-                  prueba={handlePrint}
+                  print={handleGeneratePDF}
                   data={data}
                   children={
                     <DataCommercialManagement
                       dataAccordeon={dataAccordeon}
+                      isOpen={isPrint}
                       dataRef={dataCommercialManagementRef}
                     />
                   }
                 />
-                <iframe
-                  /*   style={{ display: "none" }} */
-                  ref={iframeRef}
-                ></iframe>
               </Stack>
             </Stack>
             <Grid
