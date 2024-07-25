@@ -8,16 +8,17 @@ export interface IAccordionProps {
   name: string;
   title: React.ReactNode;
   content?: React.ReactNode;
+  isOpen?: boolean;
 }
 
 export const Accordion = (props: IAccordionProps) => {
-  const { name, title, content } = props;
+  const { name, title, content, isOpen } = props;
 
   const [collapse, setCollapse] = useState(false);
 
   return (
     <Stack width="100%">
-      <StyledDetails name={name}>
+      <StyledDetails name={name} open={isOpen}>
         <StyledSummary onClick={() => setCollapse(!collapse)}>
           <StyledCollapseIcon
             onClick={() => setCollapse(!collapse)}
