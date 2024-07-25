@@ -44,11 +44,4 @@ const StyledDivider = styled.hr<IStyledDivider>`
     inube.color.stroke.divider.regular};
 `;
 
-export const StyledPrintContainer = styled.div`
-  @media print {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-`;
-
 export { StyledCollapseIcon, StyledIcon, StyledDivider };
