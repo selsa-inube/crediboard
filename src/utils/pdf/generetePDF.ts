@@ -1,50 +1,48 @@
-import { createRoot } from "react-dom/client";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-export const generatePDF = async (
-  content: JSX.Element,
-  titleSave = "document"
+export const generatePDF = (
+  elementPrint: React.RefObject<HTMLDivElement>,
+  customTitle = "",
+  titlePDF = "document"
 ) => {
-  const containerPDF = document.createElement("div");
-  containerPDF.style.height = "100vh";
+  if (elementPrint.current === null) return;
 
-  document.body.appendChild(containerPDF);
+  const pdf = new jsPDF({ orientation: "portrait", format: "" });
+  const margin = 10;
+  const titleFontSize = 16;
+  const scale = 1.5;
 
-  const root = createRoot(containerPDF);
-  root.render(content);
-
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  const canvas = await html2canvas(containerPDF);
-
-  const imgData = canvas.toDataURL("image/png");
-  const pdf = new jsPDF("l", "mm", "a4");
-
-  const imgProps = pdf.getImageProperties(imgData);
-  const pdfWidth = pdf.internal.pageSize.getWidth();
-  const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-  const margins = {
-    top: 20,
-    bottom: 20,
-    left: 15.4,
-    right: 15.4,
+  const options = {
+    scale,
+    useCORS: true,
   };
 
-  const contentWidth = pdfWidth - margins.left - margins.right;
-  const contentHeight = pdfHeight - margins.top - margins.bottom;
+  html2canvas(elementPrint.current, options)
+    .then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pageWidth - margin * 2;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = margin + titleFontSize + 10;
 
-  pdf.addImage(
-    imgData,
-    "PNG",
-    margins.left,
-    margins.top,
-    contentWidth,
-    contentHeight
-  );
+      pdf.setFontSize(titleFontSize);
+      pdf.text(customTitle, margin, margin + titleFontSize);
 
-  pdf.save(titleSave);
+      while (heightLeft >= 0) {
+        pdf.addImage(imgData, "PNG", margin, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight - position;
+        if (heightLeft >= 0) {
+          pdf.addPage();
+          position = margin;
+        }
+      }
 
-  document.body.removeChild(containerPDF);
+      pdf.save(titlePDF);
+    })
+    .catch((error) => {
+      console.error("Error al generar el PDF:", error);
+    });
 };
