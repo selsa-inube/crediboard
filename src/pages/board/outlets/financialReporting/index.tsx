@@ -183,8 +183,8 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
         <TextAreaModal
         title="Rechazar"
         buttonText="Confirmar"
-        inputLabel="Motivo del Recahzo."
-        inputPlaceholder="Describa el motivo del Recahzo."
+        inputLabel="Motivo del Rechazo."
+        inputPlaceholder="Describa el motivo del Rechazo."
         onCloseModal={() => setShowRejectModal(false)}
         onSubmit={(values) =>
           handleConfirmReject(
