@@ -122,7 +122,7 @@ interface IStyledTdbodyContainer {
 
 export const StyledTr = styled.tr<IStyledTdbodyContainer>`
   vertical-align: middle;
-  white-space: nowrap;
+  white-space: normal;
   box-sizing: border-box;
   border-bottom: ${({ theme, $borderTable }) =>
     $borderTable &&
