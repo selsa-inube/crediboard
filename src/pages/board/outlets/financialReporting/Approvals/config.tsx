@@ -7,9 +7,10 @@ import {
   MdWarningAmber,
 } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
+import { Tag } from "@inubekit/tag";
 
 import { IEntries } from "@components/data/TableBoard/types";
-import { Tag } from "@components/data/Tag";
+
 
 const handledata = (data: IEntries) => {
   console.log(data, "function that receives data");
@@ -22,37 +23,37 @@ export async function handleData() {
         {
           id: "uno",
           usuarios: "Pedro Pablo Iregui Gerrero",
-          tag: <Tag label="Aprobado" appearance="success" />,
+          tag: <Tag label="Aprobado" appearance="success" weight="strong" />,
         },
         {
           id: "dos",
           usuarios: "Carlos Alberto Combita",
-          tag: <Tag label="Rechazado" appearance="danger" />,
+          tag: <Tag label="Rechazado" appearance="danger" weight="strong" />,
         },
         {
           id: "tres",
           usuarios: "Jaime Alberto Linares Guacaneme",
-          tag: <Tag label="Aprobado" appearance="success" />,
+          tag: <Tag label="Aprobado" appearance="success" weight="strong" />,
         },
         {
           id: "cuatro",
           usuarios: "Miguel Angel Fuentes",
-          tag: <Tag label="Pendiente" appearance="warning" />,
+          tag: <Tag label="Pendiente" appearance="warning" weight="strong"/>,
         },
         {
           id: "cinco",
           usuarios: "Cesar Augusto Corredor",
-          tag: <Tag label="Aprobado" appearance="success" />,
+          tag: <Tag label="Aprobado" appearance="success" weight="strong" />,
         },
         {
           id: "seis",
           usuarios: "Paula Andrea Betancurt",
-          tag: <Tag label="Rechazado" appearance="danger" />,
+          tag: <Tag label="Rechazado" appearance="danger" weight="strong" />,
         },
         {
           id: "siete",
           usuarios: "Jaime Alejandro Vargas",
-          tag: <Tag label="Pendiente" appearance="warning" />,
+          tag: <Tag label="Pendiente" appearance="warning" weight="strong"/>,
         },
       ];
       resolve(entriesApprovals);
@@ -77,13 +78,13 @@ export const entriesApprovals = [
   {
     id: "uno",
     usuarios: "Pedro Pablo Iregui Gerrero",
-    decision: <Tag label="Aprobado" appearance="success" />,
+    decision: <Tag label="Aprobado" appearance="success" weight="strong" />,
     error: "",
   },
   {
     id: "dos",
     usuarios: "Carlos Alberto Combita",
-    decision: <Tag label="Rechazado" appearance="danger" />,
+    decision: <Tag label="Rechazado" appearance="danger" weight="strong" />,
     error: (
       <Icon
         icon={<MdWarningAmber />}
@@ -97,7 +98,7 @@ export const entriesApprovals = [
   {
     id: "tres",
     usuarios: "Jaime Alberto Linares Guacaneme",
-    decision: <Tag label="Aprobado" appearance="success" />,
+    decision: <Tag label="Aprobado" appearance="success" weight="strong" />,
     erro: "",
   },
   {
@@ -109,13 +110,13 @@ export const entriesApprovals = [
   {
     id: "cinco",
     usuarios: "Cesar Augusto Corredor",
-    decision: <Tag label="Aprobado" appearance="success" />,
+    decision: <Tag label="Aprobado" appearance="success" weight="strong" />,
     error: "",
   },
   {
     id: "seis",
     usuarios: "Paula Andrea Betancurt",
-    decision: <Tag label="Rechazado" appearance="danger" />,
+    decision: <Tag label="Rechazado" appearance="danger" weight="strong" />,
     error: (
       <Icon
         icon={<MdWarningAmber />}
@@ -129,13 +130,13 @@ export const entriesApprovals = [
   {
     id: "siete",
     usuarios: "Jaime Alejandro Vargas",
-    decision: <Tag label="Pendiente" appearance="warning" />,
+    decision: <Tag label="Pendiente" appearance="warning" weight="strong"/>,
     error: "",
   },
   {
     id: "ocho",
     usuarios: "Viviana Amador Tejada",
-    decision: <Tag label="Aprobado" appearance="success" />,
+    decision: <Tag label="Aprobado" appearance="success" weight="strong" />,
     error: "",
   },
 ];
