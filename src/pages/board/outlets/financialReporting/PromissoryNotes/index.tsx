@@ -26,7 +26,7 @@ export const PromissoryNotes = () => {
           actions={actionsFinanacialReporting}
           actionMobile={actionMobile}
           appearanceTable={{
-            widthTd: !isMobile ? "100" : "23%",
+            widthTd: !isMobile ? "100" : "20%",
             efectzebra: true,
             title: "primary",
             isStyleMobile: true,
