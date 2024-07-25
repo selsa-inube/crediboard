@@ -34,14 +34,13 @@ import { StyledCollapseIcon, StyledIcon, StyledDivider } from "./styles";
 interface ComercialManagementProps {
   data: Requests;
   children?: JSX.Element;
-  prueba: () => void;
+  print: () => void;
+  isPrint?: boolean;
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { data, children, prueba } = props;
+  const { data, children, print, isPrint } = props;
   const [collapse, setCollapse] = useState(false);
-
-  const [isGeneratingPdf] = useState(false);
 
   const { id } = useParams();
 
@@ -160,9 +159,9 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     icon={<MdOutlinePictureAsPdf />}
                     appearance="primary"
                     size="18px"
-                    disabled={isGeneratingPdf}
+                    disabled={isPrint}
                     cursorHover
-                    onClick={prueba}
+                    onClick={print}
                   />
                 </StyledIcon>
                 <StyledIcon>
@@ -173,7 +172,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     cursorHover
                   />
                 </StyledIcon>
-                sss
+
                 <StyledIcon>
                   <Icon
                     icon={<MdOutlineEdit />}
