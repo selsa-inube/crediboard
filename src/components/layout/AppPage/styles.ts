@@ -7,10 +7,6 @@ interface IStyledCollapseIcon {
   $isTablet: boolean;
 }
 
-interface IStyledDivider {
-  theme?: typeof inube;
-}
-
 const StyledAppPage = styled.div`
   display: inherit;
   box-sizing: border-box;
@@ -42,10 +38,10 @@ const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   top: 15px;
   transform: ${({ $collapse }) =>
     $collapse ? "rotate(-90deg)" : "rotate(90deg)"};
-  left: ${({ $isTablet }) => ($isTablet ? "160px" : "130px")};
+  left: ${({ $isTablet }) => ($isTablet ? "180px" : "130px")};
 `;
 
-const StyledDivider = styled.hr<IStyledDivider>`
+const StyledDivider = styled.hr`
   margin: ${inube.spacing.s0};
   width: 100%;
   border: none;

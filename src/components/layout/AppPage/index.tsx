@@ -8,6 +8,7 @@ import { MenuSection } from "@components/navigation/MenuSection";
 import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
 import { BusinessUnitChange } from "@components/inputs/BusinessUnitChange";
+import { clientsDataMock } from "@src/mocks/login/clients.mock";
 
 import { navigationConfig, logoutConfig } from "./config/apps.config";
 import {
@@ -20,6 +21,7 @@ import {
   StyledCollapseIcon,
   StyledDivider
 } from "./styles";
+
 
 const renderLogo = (imgUrl: string) => {
   return (
@@ -35,10 +37,6 @@ function AppPage() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [collapse, setCollapse] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
-
-  const handleCollapse = () => {
-    setCollapse(!collapse);
-  };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (event.target instanceof HTMLElement) {
@@ -91,7 +89,7 @@ function AppPage() {
           userName={user.username}
           client={user.company}
         />
-        <StyledCollapseIcon $collapse={collapse} onClick={handleCollapse} $isTablet={isTablet}>
+        <StyledCollapseIcon $collapse={collapse} onClick={() =>  setCollapse(!collapse)} $isTablet={isTablet}>
             <Icon
               icon={<MdOutlineChevronRight />}
               appearance="primary"
@@ -99,7 +97,7 @@ function AppPage() {
               cursorHover
             />
           </StyledCollapseIcon>
-        {collapse && <StyledDivider /> && <BusinessUnitChange/>}
+        {collapse && <StyledDivider /> && <BusinessUnitChange clients={clientsDataMock}/>}
         <StyledContainer>
           {showUserMenu && (
             <StyledMenuContainer ref={userMenuRef}>

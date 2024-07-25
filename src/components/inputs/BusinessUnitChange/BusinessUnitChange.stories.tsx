@@ -1,5 +1,6 @@
 import { Meta } from "@storybook/react";
 import { BusinessUnitChange } from "@components/inputs/BusinessUnitChange"
+import { clientsDataMock } from "@src/mocks/login/clients.mock";
 
 
 const meta: Meta<typeof BusinessUnitChange> =  {
@@ -9,7 +10,7 @@ const meta: Meta<typeof BusinessUnitChange> =  {
 
 const Default = () => {
     return(
-        <BusinessUnitChange/>
+        <BusinessUnitChange clients={clientsDataMock}/>
     )
     
 }
