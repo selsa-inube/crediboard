@@ -6,7 +6,8 @@ import {
   MdOutlineCheckCircle,
   MdRemove,
 } from "react-icons/md";
-import { Icon, Stack, Tag } from "@inube/design-system";
+import { Icon, Stack } from "@inube/design-system";
+import {Tag} from "@inubekit/tag";
 
 import { IAction, IEntries } from "../types";
 
@@ -45,7 +46,7 @@ export const mockData: IEntries[] = [
     "Validaciones del sistema": "Que tenga mas de 30 años",
     tag: (
       <Stack padding="s0 s100 s0 s0">
-        <Tag label="Sin Validar" appearance="error" />
+        <Tag label="Sin Validar" appearance="danger" />
       </Stack>
     ),
   },
