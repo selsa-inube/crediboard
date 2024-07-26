@@ -8,6 +8,8 @@ import {
 import { Stack, Text, inube, Grid, useMediaQuery } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { Listmodal } from "@components/modals/Listmodal";
@@ -17,6 +19,7 @@ import { dataAccordeon } from "@pages/board/outlets/financialReporting/Commercia
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
 import { Requests } from "@services/types";
+import { SelectModal } from "@components/modals/SelectModal";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -25,6 +28,7 @@ import {
   handleConfirmReject,
   handleConfirmCancel,
   optionButtons,
+  optionsPrintFormat,
 } from "./config";
 import { StyledItem, StyledMessageContainer } from "./styles";
 
@@ -83,6 +87,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
 
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showPrintModal, setShowPrintModal] = useState(false);
   const [showFlagMessage, setShowFlagMessage] = useState(false);
   const [flagMessage, setFlagMessage] = useState({
     title: "",
@@ -109,7 +114,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
         OnClick: () => setShowCancelModal(true),
       },
       buttonPrint: {
-        OnClick: () => {},
+        OnClick: () => setShowPrintModal(true),
       },
     },
     buttonsOutlined: {
@@ -120,6 +125,50 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
         OnClick: () => setAttachDocuments(true),
       },
     },
+  };
+
+  const generatePDF = async () => {
+    const pdfContainer = document.getElementById("pdfFinancialReporting");
+
+    if (!pdfContainer) {
+      return;
+    }
+
+    const canvas = await html2canvas(pdfContainer);
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("l", "mm", "a4");
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+    const margins = {
+      top: 20,
+      bottom: 0,
+      left: 10,
+      right: 10,
+    };
+
+    const contentWidth = pdfWidth - margins.left - margins.right;
+    const contentHeight = pdfHeight - margins.top - margins.bottom;
+
+    pdf.addImage(
+      imgData,
+      "PNG",
+      margins.left,
+      margins.top,
+      contentWidth,
+      contentHeight
+    );
+
+    pdf.save("financial-reporting.pdf");
+  };
+
+  const handleSubmitSelectedFormat = (value: string) => {
+    setShowPrintModal(false);
+
+    if (value === "Pdf") {
+      generatePDF();
+    }
   };
 
   return (
@@ -137,20 +186,22 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
                 />
               </Stack>
             </Stack>
-            <Grid
-              templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
-              gap="s200"
-              autoRows="auto"
-            >
-              <Stack direction="column">
-                {<ToDo icon={infoIcon} data={data} isMobile={isMobile} />}
-              </Stack>
-              <Stack direction="column">{approvals}</Stack>
-              <Stack direction="column">{requirements}</Stack>
-              <Stack direction="column">{management}</Stack>
-              <Stack direction="column">{promissoryNotes}</Stack>
-              <Stack direction="column">{postingVouchers}</Stack>
-            </Grid>
+            <div id="pdfFinancialReporting">
+              <Grid
+                templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
+                gap="s200"
+                autoRows="auto"
+              >
+                <Stack direction="column">
+                  {<ToDo icon={infoIcon} data={data} isMobile={isMobile} />}
+                </Stack>
+                <Stack direction="column">{approvals}</Stack>
+                <Stack direction="column">{requirements}</Stack>
+                <Stack direction="column">{management}</Stack>
+                <Stack direction="column">{promissoryNotes}</Stack>
+                <Stack direction="column">{postingVouchers}</Stack>
+              </Grid>
+            </div>
           </Stack>
           {showAttachments && (
             <Listmodal
@@ -181,20 +232,20 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
       </ContainerSections>
       {showRejectModal && (
         <TextAreaModal
-        title="Rechazar"
-        buttonText="Confirmar"
-        inputLabel="Motivo del Rechazo."
-        inputPlaceholder="Describa el motivo del Rechazo."
-        onCloseModal={() => setShowRejectModal(false)}
-        onSubmit={(values) =>
-          handleConfirmReject(
-            values,
-            setFlagMessage,
-            setShowFlagMessage,
-            setShowRejectModal
-          )
-        }
-      />
+          title="Rechazar"
+          buttonText="Confirmar"
+          inputLabel="Motivo del Rechazo."
+          inputPlaceholder="Describa el motivo del Rechazo."
+          onCloseModal={() => setShowRejectModal(false)}
+          onSubmit={(values) =>
+            handleConfirmReject(
+              values,
+              setFlagMessage,
+              setShowFlagMessage,
+              setShowRejectModal
+            )
+          }
+        />
       )}
       {showCancelModal && (
         <TextAreaModal
@@ -225,6 +276,17 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
             closeFlag={() => setShowFlagMessage(false)}
           />
         </StyledMessageContainer>
+      )}
+      {showPrintModal && (
+        <SelectModal
+          title="Imprimir"
+          buttonText="Imprimir"
+          inputLabel="Seleccionar Formato"
+          inputPlaceholder="Seleccione una opción"
+          options={optionsPrintFormat}
+          onSubmit={handleSubmitSelectedFormat}
+          onCloseModal={() => setShowPrintModal(false)}
+        />
       )}
     </Stack>
   );
