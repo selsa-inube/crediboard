@@ -2,24 +2,24 @@ import { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { Button, Text } from "@inube/design-system";
 
-import { IListmodalProps, Listmodal } from "..";
+import { IPascalCaseProps, PascalCase } from "..";
 import { parameters, props } from "./props";
 
-const meta: Meta<typeof Listmodal> = {
-  title: "components/modals/Listmodal",
-  component: Listmodal,
+const meta: Meta<typeof PascalCase> = {
+  title: "components/modals/PascalCase",
+  component: PascalCase,
   parameters,
   argTypes: props,
 };
 
-type Story = StoryObj<typeof Listmodal>;
-export const Default: Story = (args: IListmodalProps) => {
+type Story = StoryObj<typeof PascalCase>;
+export const Default: Story = (args: IPascalCaseProps) => {
   const [showModal, setShowModal] = useState(false);
   return (
     <>
       <Button onClick={() => setShowModal(true)}>Modal List</Button>
       {showModal && (
-        <Listmodal {...args} handleClose={() => setShowModal(false)} />
+        <PascalCase {...args} handleClose={() => setShowModal(false)} />
       )}
     </>
   );

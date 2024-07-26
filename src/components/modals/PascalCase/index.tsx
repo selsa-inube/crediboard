@@ -24,7 +24,7 @@ export interface IOptionButtons {
   onClick?: () => void;
 }
 
-export interface IListmodalProps {
+export interface IPascalCaseProps {
   title: string;
   portalId?: string;
   content?: JSX.Element | JSX.Element[] | string;
@@ -32,7 +32,7 @@ export interface IListmodalProps {
   handleClose: () => void;
 }
 
-export const Listmodal = (props: IListmodalProps) => {
+export const PascalCase = (props: IPascalCaseProps) => {
   const { title, portalId, content, optionButtons, handleClose } = props;
 
   const node = document.getElementById(portalId ?? "portal");

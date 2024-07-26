@@ -10,7 +10,7 @@ import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
-import { Listmodal } from "@src/components/modals/PascalCase";
+import { PascalCase } from "@src/components/modals/PascalCase";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
@@ -151,7 +151,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
             </Grid>
           </Stack>
           {showAttachments && (
-            <Listmodal
+            <PascalCase
               title="Adjuntar"
               content={
                 <Listdata
@@ -164,7 +164,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
             />
           )}
           {attachDocuments && (
-            <Listmodal
+            <PascalCase
               title="Ver Adjuntos"
               content={
                 <Listdata
