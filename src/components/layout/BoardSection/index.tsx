@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Stack, Text, Icon, useMediaQuery, inube } from "@inube/design-system";
+import { Stack, Text, Icon, useMediaQueries, inube } from "@inube/design-system";
 import { MdOutlineChevronRight } from "react-icons/md";
 
 import { SummaryCard } from "@components/cards/SummaryCard";
@@ -28,7 +28,8 @@ function BoardSection(props: BoardSectionProps) {
   } = props;
   const disabledCollapse = sectionInformation.length === 0;
 
-  const smallScreen = useMediaQuery("(max-width: 595px)");
+  const { "(max-width: 1024px)": isTablet, "(max-width: 595px)": isMobile } =
+    useMediaQueries(["(max-width: 1024px)", "(max-width: 595px)"]);
 
   const [collapse, setCollapse] = useState(false);
 
@@ -50,6 +51,7 @@ function BoardSection(props: BoardSectionProps) {
     <StyledBoardSection
       $sectionBackground={sectionBackground}
       $orientation={orientation}
+      $isTablet={isTablet}
     >
       <Stack
         justifyContent={
@@ -81,10 +83,10 @@ function BoardSection(props: BoardSectionProps) {
           )}
           <Text
             type={
-              orientation === "vertical" || smallScreen ? "title" : "headline"
+              orientation === "vertical" || isMobile ? "title" : "headline"
             }
             size={
-              orientation === "vertical" || smallScreen ? "large" : "medium"
+              orientation === "vertical" || isMobile ? "large" : "medium"
             }
           >
             {sectionTitle}
@@ -99,7 +101,7 @@ function BoardSection(props: BoardSectionProps) {
           wrap="wrap"
           alignItems="center"
           direction={orientation === "vertical" ? "column" : "row"}
-          justifyContent={smallScreen ? "center" : "flex-start"}
+          justifyContent={isMobile ? "center" : "flex-start"}
           gap={inube.spacing.s250}
         >
           {sectionInformation.map((request, index) => (
@@ -111,7 +113,7 @@ function BoardSection(props: BoardSectionProps) {
               destination={request.k_Desdin}
               value={request.v_Monto}
               toDo={request.n_Descr_Tarea}
-              path={`solicitud/${request.k_Prospe}`}
+              path={`extended-card/${request.k_Prospe}`}
               isPinned={isRequestPinned(request.k_Prospe, pinnedRequests)}
               hasMessage
               onPinChange={() => {

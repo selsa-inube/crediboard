@@ -31,7 +31,7 @@ const StyledInputsContainer = styled.div<IStyledInputsContainer>`
       ? theme?.spacing?.s200 || inube.spacing.s200
       : theme?.spacing?.s500 || inube.spacing.s500};
   gap: ${inube.spacing.s500};
-  box-shadow: ${({ $isMobile }) => !$isMobile && "0px 1px 3px 0px #00000040"};
+  box-shadow: ${({ $isMobile }) => !$isMobile && "0px 6px 3px -5px #00000040"};
 `;
 
 const StyledBoardContainer = styled.div<IStyledBoardContainer>`
@@ -52,6 +52,13 @@ const StyledBoardContainer = styled.div<IStyledBoardContainer>`
       ? theme?.spacing?.s200 || inube.spacing.s200
       : theme?.spacing?.s500 || inube.spacing.s500};
   overflow: auto;
+`;
+
+export const StyledContainerToCenter = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 calc(100%-1192px);
+  align-items: center;
 `;
 
 export { StyledInputsContainer, StyledBoardContainer };

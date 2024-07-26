@@ -6,6 +6,7 @@ import { mockRequests } from "@mocks/requests/requests.mock";
 import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
 import { mockStaff } from "@mocks/staff/staff.mock";
 import { approval_by_credit_request_Mock } from "@mocks/financialReporting/Approvals";
+import { traceMock } from "@mocks/trace/trace.mock";
 
 export function initializeDataDB() {
   localforage.clear();
@@ -21,4 +22,5 @@ export function initializeDataDB() {
     "approval",
     approval_by_credit_request_Mock
   );
+  intializedData<typeof traceMock>("trace", [traceMock]);
 }

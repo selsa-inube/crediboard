@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "@inube/design-system";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
@@ -47,10 +48,12 @@ export const Approvals = () => {
     });
   }, []);
 
+  const isMobile = useMediaQuery("(max-width: 720px)");
+
   return (
     <Fieldset
       title="Aprobaciones"
-      heigthFieldset="282px"
+      heightFieldset="282px"
       aspectRatio="3/1"
       hasTable
     >
@@ -62,6 +65,12 @@ export const Approvals = () => {
         loading={loading}
         actionMobile={actionMobileApprovals}
         nameTitleTag="decision"
+        appearanceTable={{
+          widthTd: !isMobile ? "100" : "60%",
+          efectzebra: true,
+          title: "primary",
+          isStyleMobile: false,
+        }}
       />
     </Fieldset>
   );

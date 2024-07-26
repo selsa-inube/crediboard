@@ -1,3 +1,6 @@
+import { ArgTypes } from "@storybook/react";
+import { IOptionItemCheckedProps } from "..";
+
 export const parameters = {
   docs: {
     description: {
@@ -6,7 +9,7 @@ export const parameters = {
   },
 };
 
-export const props = {
+export const props: Partial<ArgTypes<IOptionItemCheckedProps>> = {
   id: {
     description: "uniquely identifies the **OptionItem Component**",
   },
@@ -16,7 +19,7 @@ export const props = {
   checked: {
     description: "sets the field as to appear checked",
     table: {
-      defaultValue: { summary: false },
+      defaultValue: { summary: "false" },
     },
   },
   onchange: {

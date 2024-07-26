@@ -10,6 +10,7 @@ interface CreditBehaviorProps {
   centralScoreDate: string;
   numberInternalBlackberries: number;
   maximumNumberInstallmentsArrears: number;
+  isMobile?: boolean;
 }
 
 export function CreditBehavior(props: CreditBehaviorProps) {
@@ -18,45 +19,67 @@ export function CreditBehavior(props: CreditBehaviorProps) {
     centralScoreDate,
     numberInternalBlackberries,
     maximumNumberInstallmentsArrears,
+    isMobile,
   } = props;
   return (
     <CardInfoContainer
       title="Comportamiento crediticio"
       icon={<MdTrendingUp />}
-      heightCardInfoContainer="246px"
+      isMobile={isMobile}
     >
-      <Stack direction="column" gap={inube.spacing.s200}>
+      <Stack
+        direction="column"
+        gap={isMobile ? inube.spacing.s075 : inube.spacing.s200}
+      >
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="170px">
-            <Text size="medium">Score central de riesgo</Text>
+          <Stack width={isMobile ? "120px" : "170px"}>
+            <Text size={isMobile ? "small" : "medium"}>
+              Score central de riesgo
+            </Text>
           </Stack>
           <Stack alignItems="center" gap={inube.spacing.s100}>
-            <Text appearance="primary" type="headline" size="medium">
+            <Text
+              appearance="primary"
+              type="headline"
+              size={isMobile ? "small" : "medium"}
+            >
               {centralScoreRisky}
             </Text>
-            <Text size="medium">
+            <Text size={isMobile ? "small" : "medium"}>
               / {formatDateWithFullYear(centralScoreDate)}
             </Text>
           </Stack>
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="170px">
-            <Text size="medium">Número de moras internas</Text>
+          <Stack width={isMobile ? "120px" : "170px"}>
+            <Text size={isMobile ? "small" : "medium"}>
+              Número de moras internas
+            </Text>
           </Stack>
           <Stack>
-            <Text appearance="primary" type="headline" size="medium">
+            <Text
+              appearance="primary"
+              type="headline"
+              size={isMobile ? "small" : "medium"}
+            >
               {numberInternalBlackberries}
             </Text>
           </Stack>
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="170px">
-            <Text size="medium">Máximo de número de cuotas en mora</Text>
+          <Stack width={isMobile ? "120px" : "170px"}>
+            <Text size={isMobile ? "small" : "medium"}>
+              Máximo de número de cuotas en mora
+            </Text>
           </Stack>
           <Stack>
-            <Text appearance="primary" type="headline" size="medium">
+            <Text
+              appearance="primary"
+              type="headline"
+              size={isMobile ? "small" : "medium"}
+            >
               {maximumNumberInstallmentsArrears}
             </Text>
           </Stack>

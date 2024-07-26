@@ -10,13 +10,9 @@ export const StyledHorizontalDivider = styled.hr`
     inube.color.stroke.divider.regular};
 `;
 
-export const StyledItem = styled.li`
+export const StyledContainerToCenter = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  margin: 0 calc(100%-1192px);
   align-items: center;
-  padding: 8px;
-  border-bottom: 1px solid
-    ${({ theme }) =>
-      theme.color?.stroke?.divider?.regular ||
-      inube.color.stroke.divider.regular};
 `;
