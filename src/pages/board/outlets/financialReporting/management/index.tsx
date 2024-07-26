@@ -11,12 +11,19 @@ import { Message } from "@components/data/message";
 import { SubmitButton } from "@components/inputs/SubmitButton";
 
 import { ManagementContainer, ChatContent } from "./styles";
+import { get } from "@mocks/utils/dataMock.service";
+import { traceMock } from "@src/mocks/trace/trace.mock";
 
 interface MessageType {
   id: string;
   type: "sent" | "received";
-  timestamp: number;
+  timestamp: number | string;
   text: string;
+}
+
+interface MessageTypedos {
+  id: string;
+  trace: typeof traceMock.trace;
 }
 
 export const Management = () => {
@@ -25,16 +32,17 @@ export const Management = () => {
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    localforage
-      .getItem<MessageType[]>("messages")
-      .then((savedMessages) => {
-        if (savedMessages) {
-          setMessages(savedMessages);
-        }
-      })
-      .catch((err) => {
-        console.error("Error al cargar mensajes:", err);
-      });
+    get("trace").then((data) => {
+      const trace = (data as MessageTypedos[])[0].trace;
+      const message: MessageType[] = trace.map((trace) => ({
+        id: trace.trace_id,
+        type: "sent",
+        timestamp: trace.execution_date,
+        text: trace.justification,
+      }));
+
+      setMessages(message);
+    });
   }, []);
 
   useEffect(() => {
@@ -71,9 +79,9 @@ export const Management = () => {
     <Fieldset title="Gestión" heightFieldset="340px" aspectRatio="1">
       <ManagementContainer>
         <ChatContent>
-          {filteredMessages.map((msg, index) => (
+          {filteredMessages.map((msg) => (
             <Message
-              key={index}
+              key={msg.id}
               type={msg.type}
               timestamp={msg.timestamp}
               message={msg.text}

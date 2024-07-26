@@ -1,4 +1,7 @@
-export const props = {
+import { ArgTypes } from "@storybook/react";
+import { ITableBoardProps } from "..";
+
+export const props: Partial<ArgTypes<ITableBoardProps>> = {
   id: {
     control: "text",
     description: "Component identifier in the DOM",

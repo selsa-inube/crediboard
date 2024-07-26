@@ -1,4 +1,7 @@
-const props = {
+import { ArgTypes } from "@storybook/react";
+import { BoardSectionProps } from "..";
+
+const props: Partial<ArgTypes<BoardSectionProps>> = {
   sectionTitle: {
     control: "text",
     description: "Section title",
@@ -18,12 +21,7 @@ const props = {
     description: "Section orientation",
   },
   sectionInformation: {
-    control: "array",
     description: "information about section summary cards",
-  },
-  showPinnedOnly: {
-    control: "boolean",
-    description: "functionality to show pinned section information",
   },
 };
 

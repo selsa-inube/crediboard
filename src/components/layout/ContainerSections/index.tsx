@@ -11,7 +11,7 @@ import {
 } from "@inube/design-system";
 
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { Listmodal } from "@components/modals/Listmodal";
+import { Listmodal } from "@src/components/modals/ PascalCase";
 
 import { configButtons, configDataAttachments } from "./config";
 import {

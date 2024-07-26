@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
-import { Listmodal } from "@components/modals/Listmodal";
+import { Listmodal } from "@src/components/modals/ PascalCase";
 import {
   actionMobileApprovals,
   handleData,

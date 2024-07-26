@@ -3,14 +3,15 @@ import { inube } from "@inube/design-system";
 
 interface IStyledContainerCardInfo {
   $containerHeight?: string;
-  $isMobile: boolean;
+  $isMobile?: boolean;
 }
 
 export const StyledContainerCardInfo = styled.div<IStyledContainerCardInfo>`
-  overflow-y: auto;
+  overflow-y: ${({ $isMobile }) => ($isMobile ? "hidden" : "auto")};
   border-radius: 8px;
   border-width: 2px;
   border-style: solid;
+  height: ${({ $containerHeight }) => $containerHeight};
   border-color: ${({ theme }) =>
     theme?.color?.stroke?.primary?.regular ||
     inube.color.stroke.primary.regular};
@@ -18,7 +19,10 @@ export const StyledContainerCardInfo = styled.div<IStyledContainerCardInfo>`
     ${({ theme }) =>
       theme?.color?.stroke?.divider?.regular ||
       inube.color.stroke.divider.regular};
-  padding: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
+  padding: ${({ theme, $isMobile }) =>
+    $isMobile
+      ? theme?.spacing?.s100 || inube.spacing.s100
+      : theme?.spacing?.s200 || inube.spacing.s200};
 
   ${({ $isMobile, theme }) =>
     !$isMobile &&

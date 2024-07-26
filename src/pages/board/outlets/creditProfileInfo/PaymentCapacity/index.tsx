@@ -10,39 +10,56 @@ interface PaymentCapacityProps {
   availablePercentage: number;
   incomeB: number;
   percentageUsed: number;
+  isMobile?: boolean;
 }
 
 export function PaymentCapacity(props: PaymentCapacityProps) {
-  const { availableValue, availablePercentage, incomeB, percentageUsed } =
-    props;
+  const {
+    availableValue,
+    availablePercentage,
+    incomeB,
+    percentageUsed,
+    isMobile,
+  } = props;
   return (
     <CardInfoContainer
       title="Capacidad de pago"
       icon={<MdOutlinePaid />}
-      heightCardInfoContainer="182px"
+      isMobile={isMobile}
     >
-      <Stack direction="column" gap={inube.spacing.s200}>
+      <Stack
+        direction="column"
+        gap={isMobile ? inube.spacing.s075 : inube.spacing.s200}
+      >
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="100px">
-            <Text size="medium">Valor disponible</Text>
+          <Stack width="110px">
+            <Text size={isMobile ? "small" : "medium"}>Valor disponible</Text>
           </Stack>
           <Stack>
-            <Text appearance="primary" type="headline" size="medium">
+            <Text
+              appearance="primary"
+              type="headline"
+              size={isMobile ? "small" : "medium"}
+            >
               {availableValue === 0 ? "$ 0" : currencyFormat(availableValue)}
             </Text>
           </Stack>
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="100px">
-            <Text size="medium">% Disponible</Text>
+          <Stack width="120px">
+            <Text size={isMobile ? "small" : "medium"}>% Disponible</Text>
           </Stack>
           <Stack>
             <Stack alignItems="center" gap={inube.spacing.s100}>
-              <Text appearance="primary" type="headline" size="medium">
+              <Text
+                appearance="primary"
+                type="headline"
+                size={isMobile ? "small" : "medium"}
+              >
                 {availablePercentage}%
               </Text>
-              <Text size="medium">
+              <Text size={isMobile ? "small" : "medium"}>
                 / Ingreso B. {incomeB === 0 ? "$ 0" : currencyFormat(incomeB)}
               </Text>
             </Stack>
@@ -50,11 +67,15 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="100px">
-            <Text size="medium">% Usado</Text>
+          <Stack width="110px">
+            <Text size={isMobile ? "small" : "medium"}>% Usado</Text>
           </Stack>
           <Stack>
-            <Text appearance="primary" type="headline" size="medium">
+            <Text
+              appearance="primary"
+              type="headline"
+              size={isMobile ? "small" : "medium"}
+            >
               {percentageUsed} %
             </Text>
           </Stack>
