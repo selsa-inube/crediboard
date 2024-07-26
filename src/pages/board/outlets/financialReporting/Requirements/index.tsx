@@ -97,7 +97,7 @@ export const Requirements = (props: IRequirementsProps) => {
           heightFieldset="340px"
           hasTable
         >
-         <div style={{ height: isMobile ? "auto" : "340px", overflowX: "auto" }}>
+         <div style={{ height: isMobile ? "auto" : "340px", }}>
             {data.map((item) => (
               <TableBoard
                 key={item.id}
