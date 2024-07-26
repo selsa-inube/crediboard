@@ -5,7 +5,7 @@ import { themes } from "@mocks/design/themes";
 import { mockRequests } from "@mocks/requests/requests.mock";
 import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
 import { mockStaff } from "@mocks/staff/staff.mock";
-import { approval_by_credit_request_Mock } from "@mocks/financialReporting/Approvals";
+import { approval_by_credit_request_Mock } from "@src/mocks/financialReporting/Approvals.mock";
 import { traceMock } from "@mocks/trace/trace.mock";
 
 export function initializeDataDB() {
