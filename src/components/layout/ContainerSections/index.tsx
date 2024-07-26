@@ -1,66 +1,47 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MdArrowBack, MdMenu, MdOutlineRemoveRedEye } from "react-icons/md";
-import {
-  Button,
-  Icon,
-  Stack,
-  Text,
-  inube,
-  useMediaQuery,
-} from "@inube/design-system";
+import { MdArrowBack, MdMenu } from "react-icons/md";
+import { Button, Text, inube } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
+import { Stack } from "@inubekit/stack";
 
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { Listmodal } from "@src/components/modals/ PascalCase";
 
-import { configButtons, configDataAttachments } from "./config";
-import {
-  StyledHorizontalDivider,
-  StyledItem,
-  StyledContainerToCenter,
-} from "./styles";
+import { configButtons } from "./config";
+import { StyledContainerToCenter, StyledHorizontalDivider } from "./styles";
+
+interface IActionButtons {
+  buttons: {
+    buttonReject: {
+      OnClick: () => void;
+    };
+    buttonCancel: {
+      OnClick: () => void;
+    };
+    buttonPrint: {
+      OnClick: () => void;
+    };
+  };
+  buttonsOutlined: {
+    buttonAttach: {
+      OnClick: () => void;
+    };
+    buttonViewAttachments: {
+      OnClick: () => void;
+    };
+  };
+}
 
 interface IContainerSectionsProps {
   children?: JSX.Element | JSX.Element[];
+  isMobile?: boolean;
+  actionButtons?: IActionButtons;
 }
-
-interface IListdataProps {
-  data: { id: string; name: string }[];
-}
-
-const Listdata = (props: IListdataProps) => {
-  const { data } = props;
-
-  return (
-    <ul
-      style={{
-        paddingInlineStart: "2px",
-        marginBlock: "8px",
-      }}
-    >
-      {data.map((element) => (
-        <StyledItem key={element.id}>
-          <Text>{element.name}</Text>
-          <Icon
-            icon={<MdOutlineRemoveRedEye />}
-            appearance="dark"
-            spacing="none"
-            size="24px"
-            cursorHover
-          />
-        </StyledItem>
-      ))}
-    </ul>
-  );
-};
 
 export const ContainerSections = (props: IContainerSectionsProps) => {
-  const { children } = props;
+  const { children, isMobile, actionButtons } = props;
 
   const [showRejectionModal, setShowRejectionModal] = useState(false);
-  const [showCancelModal, setShowCancelModal] = useState(false);
-  const [attachDocuments, setAttachDocuments] = useState(false);
-  const isMobile: boolean = useMediaQuery("(max-width: 720px)");
 
   const navigation = useNavigate();
 
@@ -111,34 +92,40 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
               >
                 <Stack gap={inube.spacing.s400}>
                   <Button
-                    onClick={() => setShowRejectionModal(!showRejectionModal)}
+                    onClick={actionButtons?.buttons?.buttonReject?.OnClick}
                   >
-                    {configButtons.buttons.buttonOne.label}
+                    {configButtons.buttons.buttonReject.label}
                   </Button>
-                  <Button onClick={() => setShowCancelModal(!showCancelModal)}>
-                    {configButtons.buttons.buttonTwo.label}
+
+                  <Button
+                    onClick={actionButtons?.buttons?.buttonCancel.OnClick}
+                  >
+                    {configButtons.buttons.buttonCancel.label}
                   </Button>
-                  <Button>{configButtons.buttons.buttonTree.label}</Button>
+                  <Button onClick={actionButtons?.buttons.buttonPrint.OnClick}>
+                    {configButtons.buttons.buttonPrint.label}
+                  </Button>
                 </Stack>
                 <StyledHorizontalDivider />
                 <Stack gap={inube.spacing.s200}>
-                  <Button variant="outlined">
-                    {configButtons.buttonsOutlined.buttonOne.label}
-                  </Button>
                   <Button
                     variant="outlined"
-                    onClick={() => setAttachDocuments(true)}
+                    onClick={
+                      actionButtons?.buttonsOutlined?.buttonAttach.OnClick
+                    }
                   >
-                    {configButtons.buttonsOutlined.buttonTwo.label}
+                    {configButtons.buttonsOutlined.buttonAttach.label}
                   </Button>
-                  {attachDocuments && (
-                    <Listmodal
-                      title="Ver Adjuntos"
-                      content={<Listdata data={configDataAttachments} />}
-                      buttonText="Cerrar"
-                    handleClose={() => setAttachDocuments(false)}
-                    />
-                  )}
+
+                  <Button
+                    variant="outlined"
+                    onClick={
+                      actionButtons?.buttonsOutlined.buttonViewAttachments
+                        .OnClick
+                    }
+                  >
+                    {configButtons.buttonsOutlined.buttonViewAttachments.label}
+                  </Button>
                 </Stack>
               </Stack>
             )}
@@ -154,16 +141,6 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           inputPlaceholder="Describa el motivo del rechazo."
           onCloseModal={() => setShowRejectionModal(!showRejectionModal)}
           onSubmit={() => setShowRejectionModal(!showRejectionModal)}
-        />
-      )}
-      {showCancelModal && (
-        <TextAreaModal
-          title="Anular"
-          buttonText="Confirmar"
-          inputLabel="Motivo de la anulacion."
-          inputPlaceholder="Describa el motivo de la anulacion."
-          onCloseModal={() => setShowCancelModal(!showCancelModal)}
-          onSubmit={() => setShowCancelModal(!showCancelModal)}
         />
       )}
     </>

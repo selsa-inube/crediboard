@@ -260,7 +260,7 @@ export const actionMobileApprovals = [
 export const handleNotificationClick = (
   data: IEntries,
   setSelectedData: (data: IEntries) => void,
-  setShowModal: (SHOWMGGAN: boolean) => void
+  setShowModal: (shownggan: boolean) => void
 ) => {
   const tag = data?.tag;
   if (
