@@ -6,9 +6,10 @@ import {
   MdRemove,
   MdClose,
 } from "react-icons/md";
-import { Icon } from "@inubekit/icon";
 
+import { Icon } from "@inubekit/icon";
 import { Tag } from "@inubekit/tag";
+
 import { IEntries } from "@components/data/TableBoard/types";
 
 const entrySelection = (data: IEntries) => {
