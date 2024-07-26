@@ -15,7 +15,7 @@ import { PinnedRequest, Requests } from "@services/types";
 import { Selectcheck } from "@components/inputs/SelectCheck";
 import { IOptionItemCheckedProps } from "@components/inputs/SelectCheck/OptionItem";
 
-import { StyledInputsContainer, StyledBoardContainer } from "./styles";
+import { StyledInputsContainer, StyledBoardContainer, StyledContainerToCenter } from "./styles";
 import { boardColumns } from "./config/board";
 
 interface BoardLayoutProps {
@@ -50,7 +50,8 @@ function BoardLayoutUI(props: BoardLayoutProps) {
   } = props;
 
   return (
-    <Stack direction="column">
+    <StyledContainerToCenter>
+    <Stack direction="column" width={isMobile ? "-webkit-fill-available" : "min(100%,1500px)"}>
       <StyledInputsContainer $isMobile={isMobile}>
         {!isMobile && (
           <Stack width="480px">
@@ -146,6 +147,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
         })}
       </StyledBoardContainer>
     </Stack>
+    </StyledContainerToCenter>
   );
 }
 

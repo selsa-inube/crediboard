@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Icon } from "@inubekit/icon";
-import { Stack, inube } from "@inube/design-system";
+import { Stack, inube, useMediaQuery } from "@inube/design-system";
 import { Textfield } from "@inubekit/textfield";
 import { LuPaperclip } from "react-icons/lu";
 import localforage from "localforage";
@@ -10,13 +10,20 @@ import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/message";
 import { SubmitButton } from "@components/inputs/SubmitButton";
 
-import { ManagementContainer, ChatContent } from "./styles";
+import { ChatContent } from "./styles";
+import { get } from "@mocks/utils/dataMock.service";
+import { traceMock } from "@src/mocks/trace/trace.mock";
 
 interface MessageType {
   id: string;
   type: "sent" | "received";
-  timestamp: number;
+  timestamp: number | string;
   text: string;
+}
+
+interface MessageTypedos {
+  id: string;
+  trace: typeof traceMock.trace;
 }
 
 export const Management = () => {
@@ -25,16 +32,17 @@ export const Management = () => {
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    localforage
-      .getItem<MessageType[]>("messages")
-      .then((savedMessages) => {
-        if (savedMessages) {
-          setMessages(savedMessages);
-        }
-      })
-      .catch((err) => {
-        console.error("Error al cargar mensajes:", err);
-      });
+    get("trace").then((data) => {
+      const trace = (data as MessageTypedos[])[0].trace;
+      const message: MessageType[] = trace.map((trace) => ({
+        id: trace.trace_id,
+        type: "sent",
+        timestamp: trace.execution_date,
+        text: trace.justification,
+      }));
+
+      setMessages(message);
+    });
   }, []);
 
   useEffect(() => {
@@ -67,13 +75,15 @@ export const Management = () => {
 
   const filteredMessages = messages.filter((msg) => msg.id === id);
 
+  const isMobile = useMediaQuery("(max-width: 720px)");
+
   return (
     <Fieldset title="Gestión" heightFieldset="340px" aspectRatio="1">
-      <ManagementContainer>
+      <Stack direction="column"  height={!isMobile ? "100%" : "292px"}>
         <ChatContent>
-          {filteredMessages.map((msg, index) => (
+          {filteredMessages.map((msg) => (
             <Message
-              key={index}
+              key={msg.id}
               type={msg.type}
               timestamp={msg.timestamp}
               message={msg.text}
@@ -98,7 +108,7 @@ export const Management = () => {
             <SubmitButton />
           </Stack>
         </form>
-      </ManagementContainer>
+      </Stack>
     </Fieldset>
   );
 };

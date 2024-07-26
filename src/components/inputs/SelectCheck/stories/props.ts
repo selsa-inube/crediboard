@@ -1,4 +1,6 @@
 import { sizes } from "../types";
+import { ArgTypes } from "@storybook/react";
+import { ISelectcheckProps } from "..";
 
 export const parameters = {
   docs: {
@@ -12,7 +14,7 @@ export const parameters = {
   },
 };
 
-export const props = {
+export const props: Partial<ArgTypes<ISelectcheckProps>> = {
   label: {
     description: "prompts the user what value to enter",
   },
@@ -30,7 +32,7 @@ export const props = {
     description:
       "sets the field as to appear disabled, users will not be able to interact with the text field",
     table: {
-      defaultValue: { summary: false },
+      defaultValue: { summary: "false" },
     },
   },
   value: {
@@ -43,7 +45,7 @@ export const props = {
   required: {
     description: "defines if the field is required or not",
     table: {
-      defaultValue: { summary: false },
+      defaultValue: { summary: "false" },
     },
   },
   status: {
@@ -54,11 +56,9 @@ export const props = {
       defaultValue: { summary: "pending" },
     },
   },
-  errorMessage: {
-    description: "show when the field is validated and there is an error",
-  },
-  validMessage: {
-    description: "show when the field is validated without errors",
+  message: {
+    description:
+      "show when the field is validated or invalid and there is a message",
   },
   size: {
     options: sizes,
@@ -68,7 +68,7 @@ export const props = {
   fullwidth: {
     description: "option to fit field width to its parent width",
     table: {
-      defaultValue: { summary: false },
+      defaultValue: { summary: "false" },
     },
   },
   onFocus: {
