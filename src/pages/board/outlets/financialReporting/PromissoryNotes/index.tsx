@@ -16,6 +16,12 @@ export const PromissoryNotes = () => {
   const tableBoardActions = getTableBoardActions(() => setShowModal(true));
   const tableBoardActionMobile = getTableBoardActionMobile(() => setShowModal(true));
 
+  const formValues = {
+    field1: "usuario@inube.com",
+    field2: "3122638128",
+    field3: "3122638128"
+  };
+
   return (
     <Stack direction="column">
       <Fieldset title="Pagarés y Libranzas" heightFieldset="163px" hasTable>
@@ -34,13 +40,11 @@ export const PromissoryNotes = () => {
       </Fieldset>
       {showModal && (
         <PromissoryNotesModal
-          title="Gestor Comercial y Analista"
+          title="Confirma los datos del usuario"
           buttonText="Aceptar"
+          formValues={formValues}
           onCloseModal={() => setShowModal(false)}
-          onSubmit={(values) => {
-            console.log("Form submitted with values:", values);
-            setShowModal(false);
-          }}
+          handleClose={() => setShowModal(false)}
         />
       )}
     </Stack>

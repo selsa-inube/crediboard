@@ -19,4 +19,13 @@ const StyledModal = styled.div<IStyledModal>`
   border-radius: ${inube.spacing.s100};
 `;
 
+export const StyledContainerClose = styled.div`
+  display: flex;
+  margin: 0px;
+  padding: 0px;
+  justify-content: space-between;
+  cursor: pointer;
+`;
+
+
 export { StyledModal };
