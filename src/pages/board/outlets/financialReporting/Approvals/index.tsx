@@ -12,7 +12,7 @@ import {
   titlesApprovals,
 } from "./config";
 import { get } from "@mocks/utils/dataMock.service";
-import { approval_by_credit_request_Mock } from "@mocks/financialReporting/Approvals";
+import { approval_by_credit_request_Mock } from "./types";
 
 const appearanceTag = (label: string) => {
   if (label === "Pendiente") {
@@ -24,29 +24,38 @@ const appearanceTag = (label: string) => {
   return "danger";
 };
 
-export const Approvals = () => {
+interface IApprovalsProps {
+  user: string;
+}
+
+export const Approvals = (props: IApprovalsProps) => {
+  const { user } = props;
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
+
+  console.log("user", user);
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    get<typeof approval_by_credit_request_Mock>("approval").then((data) => {
+    get<approval_by_credit_request_Mock[]>("approval").then((data) => {
       setLoading(true);
-      const entries = data.map((entry) => ({
-        id: entry.approval_id.toString(),
-        usuarios: entry.approver_name,
-        error: entry.error,
-        tag: (
-          <Tag
-            label={entry.concept}
-            appearance={appearanceTag(entry.concept)}
-          />
-        ),
-      }));
+      const entries = data
+        .filter((client) => client.credit_request_id === user)
+        .map((entry) => ({
+          id: entry.approval_id.toString(),
+          usuarios: entry.approver_name,
+          error: entry.error,
+          tag: (
+            <Tag
+              label={entry.concept}
+              appearance={appearanceTag(entry.concept)}
+            />
+          ),
+        }));
       setEntriesApprovals(entries);
       setLoading(false);
     });
-  }, []);
+  }, [user]);
 
   const isMobile = useMediaQuery("(max-width: 720px)");
 
