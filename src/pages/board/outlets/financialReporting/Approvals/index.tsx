@@ -58,7 +58,8 @@ export const Approvals = () => {
         title="Notificación"
         handleClose={() => setShowModal(false)}
         content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
-         />
+         buttonLabel="Enviar"
+        />
       )}
     </>
   );

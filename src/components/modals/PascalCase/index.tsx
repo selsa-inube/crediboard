@@ -30,10 +30,11 @@ export interface IPascalCaseProps {
   content?: JSX.Element | JSX.Element[] | string;
   optionButtons?: IOptionButtons;
   handleClose: () => void;
+  buttonLabel?: string; // New optional prop for button label
 }
 
 export const PascalCase = (props: IPascalCaseProps) => {
-  const { title, portalId, content, optionButtons, handleClose } = props;
+  const { title, portalId, content, optionButtons, handleClose, buttonLabel = "Cerrar" } = props; // Default buttonLabel to "Cerrar"
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -63,15 +64,15 @@ export const PascalCase = (props: IPascalCaseProps) => {
           </Stack>
         </StyledContainerClose>
         <StyledContainerContent $smallScreen={isMobile}>
-        {typeof content === "string" ? (
-          <Stack>
-            <Text>{content}</Text>
-          </Stack>
-        ) : (
-          <StyledContainerContent $smallScreen={isMobile}>
-            {content}
-          </StyledContainerContent>
-        )}
+          {typeof content === "string" ? (
+            <Stack>
+              <Text>{content}</Text>
+            </Stack>
+          ) : (
+            <StyledContainerContent $smallScreen={isMobile}>
+              {content}
+            </StyledContainerContent>
+          )}
         </StyledContainerContent>
         {optionButtons && (
           <Button
@@ -86,7 +87,7 @@ export const PascalCase = (props: IPascalCaseProps) => {
           </Button>
         )}
         <Stack justifyContent="flex-end" margin="s200 s0">
-          <Button onClick={handleClose}>Cerrar</Button>
+          <Button onClick={handleClose}>{buttonLabel}</Button> {/* Use buttonLabel */}
         </Stack>
       </StyledModal>
     </Blanket>,
