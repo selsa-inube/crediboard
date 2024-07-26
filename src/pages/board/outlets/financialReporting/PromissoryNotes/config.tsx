@@ -7,7 +7,7 @@ import {
   MdClose,
 } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
-import { Tag } from "@inubekit/tag";
+import { Tag } from "@components/data/Tag";
 
 import { IEntries } from "@components/data/TableBoard/types";
 
