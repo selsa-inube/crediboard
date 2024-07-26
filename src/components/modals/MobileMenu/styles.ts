@@ -22,7 +22,6 @@ export const StyledMenu = styled.div`
 export const StyledMenuItem = styled.div`
   padding: 12px 0; 
   cursor: pointer;
-  font-size: 14px; 
   &:not(:last-child) {
     border-bottom: none; 
   }
