@@ -6,7 +6,6 @@ import {
   MdOutlineCheckCircle,
   MdRemove,
 } from "react-icons/md";
-
 import { Icon, Stack} from "@inube/design-system";
 import {Tag} from "@inubekit/tag";
 

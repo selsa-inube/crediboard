@@ -6,7 +6,6 @@ import {
   MdRemove,
   MdClose,
 } from "react-icons/md";
-
 import { Icon } from "@inubekit/icon";
 import { Tag } from "@inubekit/tag";
 
