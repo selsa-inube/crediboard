@@ -47,7 +47,6 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
 
   const navigation = useNavigate();
 
-
   const handleReject = () => {
     actionButtons?.buttons?.buttonReject.OnClick();
     setShowMenu(false); 

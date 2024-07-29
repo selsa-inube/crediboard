@@ -22,9 +22,10 @@ import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
 import {
   configDataAttachments,
+  handleConfirmReject,
   handleConfirmCancel,
   optionButtons,
-} from "./config";  
+} from "./config";
 import { StyledItem, StyledMessageContainer } from "./styles";
 
 export interface IFinancialReportingProps {
@@ -78,6 +79,8 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   const [data, setData] = useState({} as Requests);
   const [showAttachments, setShowAttachments] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
+
+  const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showFlagMessage, setShowFlagMessage] = useState(false);
   const [flagMessage, setFlagMessage] = useState({
@@ -85,7 +88,6 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
     description: "",
     appearance: "success" as "success" | "danger",
   });
- 
 
   const { id } = useParams();
   const isMobile: boolean = useMediaQuery("(max-width: 820px)");
@@ -97,13 +99,17 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   }, [id]);
 
   const handleReject = () => {
+    setShowRejectModal(true);
   };
+
   const handleCancel = () => {
     setShowCancelModal(true);
   };
+
   const handleAttach = () => {
     setShowAttachments(true);
   };
+
   const handleViewAttachments = () => {
     setAttachDocuments(true);
   };
@@ -187,6 +193,23 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
           )}
         </>
       </ContainerSections>
+      {showRejectModal && (
+        <TextAreaModal
+          title="Rechazar"
+          buttonText="Confirmar"
+          inputLabel="Motivo del Rechazo."
+          inputPlaceholder="Describa el motivo del Rechazo."
+          onCloseModal={() => setShowRejectModal(false)}
+          onSubmit={(values) =>
+            handleConfirmReject(
+              values,
+              setFlagMessage,
+              setShowFlagMessage,
+              setShowRejectModal
+            )
+          }
+        />
+      )}
       {showCancelModal && (
         <TextAreaModal
           title="Anular"
