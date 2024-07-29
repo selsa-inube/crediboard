@@ -77,6 +77,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   } = props;
 
   const [data, setData] = useState({} as Requests);
+
   const [showAttachments, setShowAttachments] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
 
@@ -90,7 +91,8 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
   });
 
   const { id } = useParams();
-  const isMobile: boolean = useMediaQuery("(max-width: 820px)");
+
+  const isMobile: boolean = useMediaQuery("(max-width: 720px)");
 
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
@@ -98,29 +100,13 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
     });
   }, [id]);
 
-  const handleReject = () => {
-    setShowRejectModal(true);
-  };
-
-  const handleCancel = () => {
-    setShowCancelModal(true);
-  };
-
-  const handleAttach = () => {
-    setShowAttachments(true);
-  };
-
-  const handleViewAttachments = () => {
-    setAttachDocuments(true);
-  };
-
   const handleAction = {
     buttons: {
       buttonReject: {
-        OnClick: handleReject,
+        OnClick: () => setShowRejectModal(true),
       },
       buttonCancel: {
-        OnClick: handleCancel,
+        OnClick: () => setShowCancelModal(true),
       },
       buttonPrint: {
         OnClick: () => {},
@@ -128,10 +114,10 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
     },
     buttonsOutlined: {
       buttonAttach: {
-        OnClick: handleAttach,
+        OnClick: () => setShowAttachments(true),
       },
       buttonViewAttachments: {
-        OnClick: handleViewAttachments,
+        OnClick: () => setAttachDocuments(true),
       },
     },
   };
@@ -195,20 +181,20 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
       </ContainerSections>
       {showRejectModal && (
         <TextAreaModal
-          title="Rechazar"
-          buttonText="Confirmar"
-          inputLabel="Motivo del Rechazo."
-          inputPlaceholder="Describa el motivo del Rechazo."
-          onCloseModal={() => setShowRejectModal(false)}
-          onSubmit={(values) =>
-            handleConfirmReject(
-              values,
-              setFlagMessage,
-              setShowFlagMessage,
-              setShowRejectModal
-            )
-          }
-        />
+        title="Rechazar"
+        buttonText="Confirmar"
+        inputLabel="Motivo del Rechazo."
+        inputPlaceholder="Describa el motivo del Rechazo."
+        onCloseModal={() => setShowRejectModal(false)}
+        onSubmit={(values) =>
+          handleConfirmReject(
+            values,
+            setFlagMessage,
+            setShowFlagMessage,
+            setShowRejectModal
+          )
+        }
+      />
       )}
       {showCancelModal && (
         <TextAreaModal
