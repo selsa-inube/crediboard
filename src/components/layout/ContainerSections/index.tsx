@@ -5,7 +5,7 @@ import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { Button, Text, inube } from "@inube/design-system";
 
-import { TextAreaModal } from "@components/modals/TextAreaModal";
+
 import { MobileMenu } from "@components/modals/MobileMenu/index"; 
 
 import { configButtons } from "./config";
@@ -42,7 +42,7 @@ interface IContainerSectionsProps {
 export const ContainerSections = (props: IContainerSectionsProps) => {
   const { children, isMobile, actionButtons } = props;
 
-  const [showRejectionModal, setShowRejectionModal] = useState(false);
+
   const [showMenu, setShowMenu] = useState(false); 
 
   const navigation = useNavigate();
@@ -156,16 +156,6 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           <Stack direction="column">{children}</Stack>
         </Stack>
       </StyledContainerToCenter>
-      {showRejectionModal && (
-        <TextAreaModal
-          title="Rechazar"
-          buttonText="Confirmar"
-          inputLabel="Motivo del rechazo."
-          inputPlaceholder="Describa el motivo del rechazo."
-          onCloseModal={() => setShowRejectionModal(!showRejectionModal)}
-          onSubmit={() => setShowRejectionModal(!showRejectionModal)}
-        />
-      )}
       {showMenu && (
         <MobileMenu
           onClose={() => setShowMenu(false)}
