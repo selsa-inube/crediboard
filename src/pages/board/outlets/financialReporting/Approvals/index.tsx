@@ -11,6 +11,7 @@ import {
   handleData,
   titlesApprovals,
 } from "./config";
+import { MdCheck, MdClose, MdNotificationsNone, MdRemove, MdWarningAmber } from "react-icons/md";
 
 export const Approvals = () => {
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
@@ -27,6 +28,14 @@ export const Approvals = () => {
 
   const isMobile = useMediaQuery("(max-width: 720px)");
 
+  const infoItems = [
+    { icon: <MdCheck />, text: "Cumple", appearance: "success", size: "20px", shape: "circle", variant: "filled" },
+    { icon: <MdClose />, text: "No Cumple", appearance: "danger", size: "20px", shape: "circle", variant: "filled" },
+    { icon: <MdRemove />, text: "Sin Evaluar", appearance: "warning", size: "20px", shape: "circle", variant: "filled" },
+    { icon: <MdWarningAmber />, text: "Error", appearance: "danger", size: "28px"},
+    { icon: <MdNotificationsNone />, text: "Notificaciones", appearance: "help", size: "28px"},
+  ];
+  
   return (
     <Fieldset
       title="Aprobaciones"
@@ -46,8 +55,10 @@ export const Approvals = () => {
           widthTd: !isMobile ? "100" : "60%",
           efectzebra: true,
           title: "primary",
-          isStyleMobile: false,
+          isStyleMobile: true,
         }}
+        isFirstTable={true}
+        infoItems={infoItems}
       />
     </Fieldset>
   );

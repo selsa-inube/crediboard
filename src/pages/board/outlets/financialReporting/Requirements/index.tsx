@@ -1,6 +1,6 @@
 import { Stack, Icon, useMediaQuery } from "@inube/design-system";
 import { useState, isValidElement } from "react";
-import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
+import { MdAddCircleOutline, MdCheck, MdClose, MdOutlineCheckCircle, MdRemove } from "react-icons/md";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
@@ -88,6 +88,14 @@ export const Requirements = (props: IRequirementsProps) => {
 
   const isMobile = useMediaQuery("(max-width: 720px)");
 
+  const infoItems = [
+    { icon: <MdCheck />, text: "Cumple", appearance: "success", size: "20px", shape: "circle", variant: "filled" },
+    { icon: <MdClose />, text: "No Cumple", appearance: "danger", size: "20px", shape: "circle", variant: "filled" },
+    { icon: <MdRemove />, text: "Sin Evaluar", appearance: "warning", size: "20px", shape: "circle", variant: "filled" },
+    { icon: <MdAddCircleOutline />, text: "Adjuntar", appearance: "help", size: "28px"},
+    { icon: <MdOutlineCheckCircle />, text: "Forzar Aprobación", appearance: "help", size: "28px"},
+  ];
+  
   return (
     <>
       <Stack>
@@ -98,7 +106,7 @@ export const Requirements = (props: IRequirementsProps) => {
           hasTable
         >
           <div style={{ height: "340px" }}>
-            {data.map((item) => (
+            {data.map((item, index) => (
               <TableBoard
                 key={item.id}
                 id={item.id}
@@ -110,8 +118,10 @@ export const Requirements = (props: IRequirementsProps) => {
                   widthTd: !isMobile ? "310px" : "60%",
                   efectzebra: true,
                   title: "primary",
-                  isStyleMobile: false,
+                  isStyleMobile: true,
                 }}
+                isFirstTable={index === 0}
+                infoItems={infoItems}
               />
             ))}
           </div>
