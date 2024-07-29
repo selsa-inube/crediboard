@@ -30,11 +30,11 @@ export interface IPascalCaseProps {
   content?: JSX.Element | JSX.Element[] | string;
   optionButtons?: IOptionButtons;
   handleClose: () => void;
-  buttonLabel?: string; // New optional prop for button label
+  buttonLabel?: string;
 }
 
 export const PascalCase = (props: IPascalCaseProps) => {
-  const { title, portalId, content, optionButtons, handleClose, buttonLabel = "Cerrar" } = props; // Default buttonLabel to "Cerrar"
+  const { title, portalId, content, optionButtons, handleClose, buttonLabel = "Cerrar" } = props; 
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -87,7 +87,7 @@ export const PascalCase = (props: IPascalCaseProps) => {
           </Button>
         )}
         <Stack justifyContent="flex-end" margin="s200 s0">
-          <Button onClick={handleClose}>{buttonLabel}</Button> {/* Use buttonLabel */}
+          <Button onClick={handleClose}>{buttonLabel}</Button> 
         </Stack>
       </StyledModal>
     </Blanket>,
