@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { inube } from "@inube/design-system";
 
 interface StyledClientsListProps {
-  scroll?: boolean;
+  $scroll?: boolean;
 }
 
 interface IStyledClientsUI {
@@ -34,7 +34,7 @@ const StyledClientsList = styled.div<StyledClientsListProps>`
     min-height: 300px;
     max-height: 430px;
     width: inherit;
-    overflow-y: ${({ scroll }) => (scroll ? "scroll" : "visible")};
+    overflow-y: ${({ $scroll }) => ($scroll ? "scroll" : "visible")};
     @media screen and (max-height: 1000px) {
       min-height: 200px;
     }

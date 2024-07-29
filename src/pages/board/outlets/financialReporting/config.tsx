@@ -2,6 +2,30 @@ import { MdAddCircleOutline } from "react-icons/md";
 
 import { IOptionButtons } from "@src/components/modals/PascalCase";
 
+export const handleConfirmReject = (
+  values: { textarea: string },
+  setFlagMessage: (message: {
+    title: string;
+    description: string;
+    appearance: "success" | "danger";
+  }) => void,
+  setShowFlagMessage: (state: boolean) => void,
+  setShowRejectModal: (state: boolean) => void
+) => {
+  const text = values.textarea;
+
+  if (text) {
+    setFlagMessage({
+      title: "Rechazo Confirmado",
+      description: "El rechazo se ha realizado correctamente",
+      appearance: "success",
+    });
+  }
+
+  setShowFlagMessage(true);
+  setShowRejectModal(false);
+};
+
 export const handleConfirmCancel = (
   values: { textarea: string },
   setFlagMessage: (message: {
