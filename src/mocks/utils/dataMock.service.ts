@@ -51,6 +51,18 @@ export async function getById(
   }
 }
 
+export const getDataById = async <T>(bd: string, key: string, id: string) => {
+  try {
+    const data = await get(bd);
+    if (Array.isArray(data)) {
+      console.log(id, "id");
+      return data.filter((dataFilter) => dataFilter[key] === id) as T;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 interface functionActiveById {
   key: string;
   nameDB: string;
