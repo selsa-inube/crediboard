@@ -1,5 +1,4 @@
-// src/components/modals/MobileMenu/stories/props.ts
-import { MobileMenuProps } from "../MobileMenu";
+import { MobileMenuProps } from "..";
 
 export const defaultMobileMenuProps: MobileMenuProps = {
   onClose: () => alert("Cerrar menú"),

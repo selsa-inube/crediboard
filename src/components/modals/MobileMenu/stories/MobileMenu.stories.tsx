@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@inube/design-system";
-import { MobileMenu, MobileMenuProps } from "../MobileMenu";
+import { MobileMenu, MobileMenuProps } from "..";
 import { defaultMobileMenuProps } from "./props";
 
 const meta: Meta<typeof MobileMenu> = {
