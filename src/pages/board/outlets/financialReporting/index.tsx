@@ -203,20 +203,20 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
       </ContainerSections>
       {showRejectModal && (
         <TextAreaModal
-        title="Rechazar"
-        buttonText="Confirmar"
-        inputLabel="Motivo del Rechazo."
-        inputPlaceholder="Describa el motivo del Rechazo."
-        onCloseModal={() => setShowRejectModal(false)}
-        onSubmit={(values) =>
-          handleConfirmReject(
-            values,
-            setFlagMessage,
-            setShowFlagMessage,
-            setShowRejectModal
-          )
-        }
-      />
+          title="Rechazar"
+          buttonText="Confirmar"
+          inputLabel="Motivo del Rechazo."
+          inputPlaceholder="Describa el motivo del Rechazo."
+          onCloseModal={() => setShowRejectModal(false)}
+          onSubmit={(values) =>
+            handleConfirmReject(
+              values,
+              setFlagMessage,
+              setShowFlagMessage,
+              setShowRejectModal
+            )
+          }
+        />
       )}
       {showCancelModal && (
         <TextAreaModal
