@@ -92,7 +92,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
 
   const { id } = useParams();
 
-  const isMobile: boolean = useMediaQuery("(max-width: 720px)");
+  const isMobile: boolean = useMediaQuery("(max-width: 880px)");
 
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
