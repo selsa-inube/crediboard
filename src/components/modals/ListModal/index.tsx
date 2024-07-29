@@ -14,6 +14,7 @@ import {
   StyledContainerClose,
   StyledContainerContent,
   StyledModal,
+  StyledContainerTitle,
 } from "./styles";
 
 export interface IOptionButtons {
@@ -24,17 +25,17 @@ export interface IOptionButtons {
   onClick?: () => void;
 }
 
-export interface IPascalCaseProps {
+export interface IListModalProps {
   title: string;
+  handleClose: () => void;
+  buttonLabel: string;
   portalId?: string;
   content?: JSX.Element | JSX.Element[] | string;
   optionButtons?: IOptionButtons;
-  handleClose: () => void;
-  buttonLabel?: string;
 }
 
-export const PascalCase = (props: IPascalCaseProps) => {
-  const { title, portalId, content, optionButtons, handleClose, buttonLabel = "Cerrar" } = props; 
+export const ListModal = (props: IListModalProps) => {
+  const { title, portalId, content, optionButtons, handleClose, buttonLabel } = props; 
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -48,21 +49,22 @@ export const PascalCase = (props: IPascalCaseProps) => {
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
-        <StyledContainerClose onClick={handleClose}>
+        <StyledContainerTitle>
           <Text type="headline" size="small">
             {title}
           </Text>
-          <Stack alignItems="center" gap={inube.spacing.s100}>
+          <StyledContainerClose  onClick={handleClose}>
+          <Stack alignItems="center" gap={inube.spacing.s100} >
             <Text>Cerrar</Text>
             <Icon
               icon={<MdClear />}
               size="24px"
               cursorHover
               appearance="dark"
-              onClick={handleClose}
             />
           </Stack>
-        </StyledContainerClose>
+          </StyledContainerClose>
+        </StyledContainerTitle>
         <StyledContainerContent $smallScreen={isMobile}>
           {typeof content === "string" ? (
             <Stack>

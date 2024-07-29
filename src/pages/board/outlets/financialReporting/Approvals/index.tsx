@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
-import { PascalCase } from "@src/components/modals/PascalCase";
+import { ListModal } from "@src/components/modals/ListModal";
 import {
   actionMobileApprovals,
   handleData,
@@ -54,11 +54,11 @@ export const Approvals = () => {
         />
       </Fieldset>
       {showModal && selectedData && (
-        <PascalCase
+        <ListModal
         title="Notificación"
         handleClose={() => setShowModal(false)}
         content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
-         buttonLabel="Enviar"
+        buttonLabel="Enviar"
         />
       )}
     </>
