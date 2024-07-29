@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@inube/design-system";
-
-import { MobileMenu, MobileMenuProps } from "../index";
-
+import { MobileMenu, MobileMenuProps } from "..";
+import { defaultMobileMenuProps } from "./props";
 
 const meta: Meta<typeof MobileMenu> = {
   title: "Components/modals/MobileMenu",
   component: MobileMenu,
+  argTypes: {
+    onClose: { action: "Cerrar menú" },
+    onReject: { action: "Rechazar" },
+    onCancel: { action: "Anular" },
+    onAttach: { action: "Adjuntar" },
+    onViewAttachments: { action: "Ver Adjuntos" },
+  },
 };
 
 type Story = StoryObj<typeof MobileMenu>;
@@ -28,12 +34,6 @@ export const Default: Story = (args: MobileMenuProps) => {
   );
 };
 
-Default.args = {
-  onClose: () => alert("Cerrar menú"),
-  onReject: () => alert("Rechazar"),
-  onCancel: () => alert("Anular"),
-  onAttach: () => alert("Adjuntar"),
-  onViewAttachments: () => alert("Ver Adjuntos"),
-};
+Default.args = defaultMobileMenuProps;
 
 export default meta;
