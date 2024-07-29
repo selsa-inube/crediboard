@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   MdDeleteOutline,
   MdOutlineRemoveRedEye,
   MdOutlineThumbUp,
 } from "react-icons/md";
-import { Stack, Text, inube, Grid, useMediaQuery } from "@inube/design-system";
+import { Text, inube, Grid, useMediaQuery } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
+import { Stack } from "@inubekit/stack";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { Listmodal } from "@components/modals/Listmodal";
@@ -17,6 +18,7 @@ import { dataAccordeon } from "@pages/board/outlets/financialReporting/Commercia
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
 import { Requests } from "@services/types";
+import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -94,11 +96,26 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
 
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
 
+  const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
       setData(requirement);
     });
   }, [id]);
+
+  const [isPrint, setIsPrint] = useState(false);
+
+  const handleGeneratePDF = () => {
+    setIsPrint(true);
+    setTimeout(() => {
+      generatePDF(
+        dataCommercialManagementRef,
+        "Gestión Comercial",
+        "Gestión Comercial"
+      );
+    }, 1000);
+  };
 
   const handleAction = {
     buttons: {
@@ -130,9 +147,14 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
             <Stack direction="column">
               <Stack direction="column">
                 <ComercialManagement
+                  print={handleGeneratePDF}
                   data={data}
                   children={
-                    <DataCommercialManagement dataAccordeon={dataAccordeon} />
+                    <DataCommercialManagement
+                      dataAccordeon={dataAccordeon}
+                      isOpen={isPrint}
+                      dataRef={dataCommercialManagementRef}
+                    />
                   }
                 />
               </Stack>
@@ -181,20 +203,20 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
       </ContainerSections>
       {showRejectModal && (
         <TextAreaModal
-        title="Rechazar"
-        buttonText="Confirmar"
-        inputLabel="Motivo del Rechazo."
-        inputPlaceholder="Describa el motivo del Rechazo."
-        onCloseModal={() => setShowRejectModal(false)}
-        onSubmit={(values) =>
-          handleConfirmReject(
-            values,
-            setFlagMessage,
-            setShowFlagMessage,
-            setShowRejectModal
-          )
-        }
-      />
+          title="Rechazar"
+          buttonText="Confirmar"
+          inputLabel="Motivo del Rechazo."
+          inputPlaceholder="Describa el motivo del Rechazo."
+          onCloseModal={() => setShowRejectModal(false)}
+          onSubmit={(values) =>
+            handleConfirmReject(
+              values,
+              setFlagMessage,
+              setShowFlagMessage,
+              setShowRejectModal
+            )
+          }
+        />
       )}
       {showCancelModal && (
         <TextAreaModal
