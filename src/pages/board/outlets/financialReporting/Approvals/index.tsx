@@ -11,7 +11,7 @@ import {
   actionsApprovals,
   titlesApprovals,
 } from "./config";
-import { get } from "@mocks/utils/dataMock.service";
+import { getDataById } from "@mocks/utils/dataMock.service";
 import { approval_by_credit_request_Mock } from "@services/types";
 
 const appearanceTag = (label: string) => {
@@ -35,21 +35,23 @@ export const Approvals = (props: IApprovalsProps) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    get<approval_by_credit_request_Mock[]>("approval").then((data) => {
+    getDataById<approval_by_credit_request_Mock[]>(
+      "approval",
+      "credit_request_id",
+      user
+    ).then((data) => {
       setLoading(true);
-      const entries = data
-        .filter((client) => client.credit_request_id === user)
-        .map((entry) => ({
-          id: entry.approval_id.toString(),
-          usuarios: entry.approver_name,
-          error: entry.error,
-          tag: (
-            <Tag
-              label={entry.concept}
-              appearance={appearanceTag(entry.concept)}
-            />
-          ),
-        }));
+      const entries = data!.map((entry) => ({
+        id: entry.approval_id.toString(),
+        usuarios: entry.approver_name,
+        error: entry.error,
+        tag: (
+          <Tag
+            label={entry.concept}
+            appearance={appearanceTag(entry.concept)}
+          />
+        ),
+      }));
       setEntriesApprovals(entries);
       setLoading(false);
     });
