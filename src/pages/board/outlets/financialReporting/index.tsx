@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   MdDeleteOutline,
   MdOutlineRemoveRedEye,
   MdOutlineThumbUp,
 } from "react-icons/md";
-import { Stack, Text, inube, Grid, useMediaQuery } from "@inube/design-system";
+import { Text, inube, Grid, useMediaQuery } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
+import { Stack } from "@inubekit/stack";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { Listmodal } from "@components/modals/Listmodal";
@@ -17,23 +18,23 @@ import { dataAccordeon } from "@pages/board/outlets/financialReporting/Commercia
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
 import { Requests } from "@services/types";
+import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
 import {
   configDataAttachments,
+  handleConfirmReject,
   handleConfirmCancel,
   optionButtons,
 } from "./config";
 import { StyledItem, StyledMessageContainer } from "./styles";
-
-export interface IFinancialReportingProps {
-  requirements?: JSX.Element | JSX.Element[];
-  promissoryNotes?: JSX.Element | JSX.Element[];
-  approvals?: JSX.Element | JSX.Element[];
-  management?: JSX.Element | JSX.Element[];
-  postingVouchers?: JSX.Element | JSX.Element[];
-}
+import { Approvals } from "./Approvals";
+import { Requirements } from "./Requirements";
+import { dataRequirements } from "./Requirements/config";
+import { Management } from "./management";
+import { PromissoryNotes } from "./PromissoryNotes";
+import { Postingvouchers } from "./Postingvouchers";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -66,20 +67,13 @@ const Listdata = (props: IListdataProps) => {
   );
 };
 
-export const FinancialReporting = (props: IFinancialReportingProps) => {
-  const {
-    requirements,
-    promissoryNotes,
-    approvals,
-    management,
-    postingVouchers,
-  } = props;
-
+export const FinancialReporting = () => {
   const [data, setData] = useState({} as Requests);
 
   const [showAttachments, setShowAttachments] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
 
+  const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showFlagMessage, setShowFlagMessage] = useState(false);
   const [flagMessage, setFlagMessage] = useState({
@@ -92,16 +86,31 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
 
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
 
+  const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
       setData(requirement);
     });
   }, [id]);
 
+  const [isPrint, setIsPrint] = useState(false);
+
+  const handleGeneratePDF = () => {
+    setIsPrint(true);
+    setTimeout(() => {
+      generatePDF(
+        dataCommercialManagementRef,
+        "Gestión Comercial",
+        "Gestión Comercial"
+      );
+    }, 1000);
+  };
+
   const handleAction = {
     buttons: {
       buttonReject: {
-        OnClick: () => {},
+        OnClick: () => setShowRejectModal(true),
       },
       buttonCancel: {
         OnClick: () => setShowCancelModal(true),
@@ -128,9 +137,14 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
             <Stack direction="column">
               <Stack direction="column">
                 <ComercialManagement
+                  print={handleGeneratePDF}
                   data={data}
                   children={
-                    <DataCommercialManagement dataAccordeon={dataAccordeon} />
+                    <DataCommercialManagement
+                      dataAccordeon={dataAccordeon}
+                      isOpen={isPrint}
+                      dataRef={dataCommercialManagementRef}
+                    />
                   }
                 />
               </Stack>
@@ -143,11 +157,13 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
               <Stack direction="column">
                 {<ToDo icon={infoIcon} isMobile={isMobile} />}
               </Stack>
-              <Stack direction="column">{approvals}</Stack>
-              <Stack direction="column">{requirements}</Stack>
-              <Stack direction="column">{management}</Stack>
-              <Stack direction="column">{promissoryNotes}</Stack>
-              <Stack direction="column">{postingVouchers}</Stack>
+              <Stack direction="column">{<Approvals user={id!} />}</Stack>
+              <Stack direction="column">
+                {<Requirements data={dataRequirements} />}
+              </Stack>
+              <Stack direction="column">{<Management />}</Stack>
+              <Stack direction="column">{<PromissoryNotes />}</Stack>
+              <Stack direction="column">{<Postingvouchers />}</Stack>
             </Grid>
           </Stack>
           {showAttachments && (
@@ -177,6 +193,23 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
           )}
         </>
       </ContainerSections>
+      {showRejectModal && (
+        <TextAreaModal
+          title="Rechazar"
+          buttonText="Confirmar"
+          inputLabel="Motivo del Rechazo."
+          inputPlaceholder="Describa el motivo del Rechazo."
+          onCloseModal={() => setShowRejectModal(false)}
+          onSubmit={(values) =>
+            handleConfirmReject(
+              values,
+              setFlagMessage,
+              setShowFlagMessage,
+              setShowRejectModal
+            )
+          }
+        />
+      )}
       {showCancelModal && (
         <TextAreaModal
           title="Anular"
