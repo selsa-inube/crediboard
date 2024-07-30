@@ -8,9 +8,10 @@ import {
   MdOutlineSend,
   MdOutlineEdit,
 } from "react-icons/md";
+
+import { Icon } from "@inubekit/icon";
 import {
   Stack,
-  Icon,
   Text,
   Button,
   inube,
@@ -32,10 +33,12 @@ import { StyledCollapseIcon, StyledIcon, StyledDivider } from "./styles";
 interface ComercialManagementProps {
   data: Requests;
   children?: JSX.Element;
+  print: () => void;
+  isPrint?: boolean;
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { data, children } = props;
+  const { data, children, print, isPrint } = props;
   const [collapse, setCollapse] = useState(false);
 
   const { id } = useParams();
@@ -155,7 +158,9 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     icon={<MdOutlinePictureAsPdf />}
                     appearance="primary"
                     size="18px"
+                    disabled={isPrint}
                     cursorHover
+                    onClick={print}
                   />
                 </StyledIcon>
                 <StyledIcon>
@@ -166,6 +171,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     cursorHover
                   />
                 </StyledIcon>
+
                 <StyledIcon>
                   <Icon
                     icon={<MdOutlineEdit />}
