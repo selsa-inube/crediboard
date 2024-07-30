@@ -37,30 +37,6 @@ export const titlesFinanacialReporting = [
   },
 ];
 
-/* export const entriesFinanacialReporting = [
-  {
-    id: "1",
-    "No. de Obligación": "1234554545",
-    "No. de Documento": "1234567890",
-    Tipo: "Pagare",
-    tag: <Tag label="En tramite" appearance="warning" />,
-  },
-  {
-    id: "2",
-    "No. de Obligación": "1234567890",
-    "No. de Documento": "1234567890",
-    Tipo: "Pagare",
-    tag: <Tag label="Firmado" appearance="success" />,
-  },
-  {
-    id: "3",
-    "No. de Obligación": "1234564321",
-    "No. de Documento": "1234567890",
-    Tipo: "Libranza",
-    tag: <Tag label="Con Error" appearance="danger" />,
-  },
-]; */
-
 export const actionsFinanacialReporting = [
   {
     id: "Reenviar",
