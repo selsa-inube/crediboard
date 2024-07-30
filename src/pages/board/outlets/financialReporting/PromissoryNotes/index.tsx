@@ -41,7 +41,7 @@ export const PromissoryNotes = () => {
       {showModal && (
         <PromissoryNotesModal
           title="Confirma los datos del usuario"
-          buttonText="Aceptar"
+          buttonText="Enviar"
           formValues={formValues}
           onCloseModal={() => setShowModal(false)}
           handleClose={() => setShowModal(false)}
