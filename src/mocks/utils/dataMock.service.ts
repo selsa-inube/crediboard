@@ -22,16 +22,16 @@ export async function intializedData<T>(option: string, data: T | T[]) {
   }
 }
 
-export async function get(option: string) {
+export async function get<T = unknown>(option: string) {
   await fakeNetwork();
   try {
     const optionsData = await localforage.getItem(option);
 
     if (!optionsData) throw new Error("No found");
 
-    return optionsData;
+    return optionsData as T;
   } catch (error) {
-    return error;
+    throw new Error(error as string);
   }
 }
 
