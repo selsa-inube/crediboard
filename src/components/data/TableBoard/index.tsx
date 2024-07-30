@@ -1,5 +1,4 @@
 import { useMediaQuery } from "@inube/design-system";
-
 import { IAction, IEntries, ITitle, IAppearances } from "./types";
 import { TableBoardUI } from "./interface";
 
@@ -14,6 +13,8 @@ export interface ITableBoardProps {
   portalId?: string;
   appearanceTable?: IAppearances;
   nameTitleTag?: string;
+  isFirstTable?: boolean;
+  infoItems?: { icon: JSX.Element; text: string }[];
 }
 
 export const TableBoard = (props: ITableBoardProps) => {
@@ -34,6 +35,8 @@ export const TableBoard = (props: ITableBoardProps) => {
       isStyleMobile: true,
     },
     nameTitleTag,
+    isFirstTable,
+    infoItems, 
   } = props;
 
   const isTablet = useMediaQuery("(max-width: 720px)");
@@ -51,6 +54,8 @@ export const TableBoard = (props: ITableBoardProps) => {
       appearanceTable={appearanceTable}
       isTablet={isTablet}
       nameTitleTag={nameTitleTag}
+      isFirstTable={isFirstTable}
+      infoItems={infoItems} 
     />
   );
 };
