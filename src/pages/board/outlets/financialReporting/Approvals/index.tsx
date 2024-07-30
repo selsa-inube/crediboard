@@ -12,7 +12,7 @@ import {
   titlesApprovals,
 } from "./config";
 import { get } from "@mocks/utils/dataMock.service";
-import { approval_by_credit_request_Mock } from "./types";
+import { approval_by_credit_request_Mock } from "@services/types";
 
 const appearanceTag = (label: string) => {
   if (label === "Pendiente") {
