@@ -20,7 +20,9 @@ const StyledModal = styled.div<IStyledModal>`
 `;
 
 export const StyledContainerClose = styled.div`
+  display: flex;
   cursor: pointer;
+  
 `;
 
 
