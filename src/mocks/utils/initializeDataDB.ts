@@ -5,7 +5,8 @@ import { themes } from "@mocks/design/themes";
 import { mockRequests } from "@mocks/requests/requests.mock";
 import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
 import { mockStaff } from "@mocks/staff/staff.mock";
-import { traceMock } from "@mocks/trace/trace.mock";
+import { approval_by_credit_request_Mock } from "@mocks/financialReporting/Approvals.mock";
+import { traceMock } from "@mocks/financialReporting/trace.mock";
 
 export function initializeDataDB() {
   localforage.clear();
@@ -14,5 +15,9 @@ export function initializeDataDB() {
   intializedData<(typeof mockRequests)[number]>("requests", mockRequests);
   intializedData<(typeof mockRequestsPinned)[number]>("requests-pinned", mockRequestsPinned);
   intializedData<(typeof mockStaff)[number]>("staff", mockStaff);
+  intializedData<(typeof approval_by_credit_request_Mock)[number]>(
+    "approval",
+    approval_by_credit_request_Mock
+  );
   intializedData<(typeof traceMock)[number]>("trace", traceMock);
 }

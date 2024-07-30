@@ -11,7 +11,7 @@ import { SubmitButton } from "@components/inputs/SubmitButton";
 
 import { ChatContent } from "./styles";
 import { get, updateActive } from "@mocks/utils/dataMock.service";
-import { traceMock } from "@src/mocks/trace/trace.mock";
+import { traceMock } from "@mocks/financialReporting/trace.mock";
 
 interface MessageType {
   id: string;
