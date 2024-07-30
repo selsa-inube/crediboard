@@ -29,14 +29,12 @@ import {
   optionButtons,
 } from "./config";
 import { StyledItem, StyledMessageContainer } from "./styles";
-
-export interface IFinancialReportingProps {
-  requirements?: JSX.Element | JSX.Element[];
-  promissoryNotes?: JSX.Element | JSX.Element[];
-  approvals?: JSX.Element | JSX.Element[];
-  management?: JSX.Element | JSX.Element[];
-  postingVouchers?: JSX.Element | JSX.Element[];
-}
+import { Approvals } from "./Approvals";
+import { Requirements } from "./Requirements";
+import { dataRequirements } from "./Requirements/config";
+import { Management } from "./management";
+import { PromissoryNotes } from "./PromissoryNotes";
+import { Postingvouchers } from "./Postingvouchers";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -69,15 +67,7 @@ const Listdata = (props: IListdataProps) => {
   );
 };
 
-export const FinancialReporting = (props: IFinancialReportingProps) => {
-  const {
-    requirements,
-    promissoryNotes,
-    approvals,
-    management,
-    postingVouchers,
-  } = props;
-
+export const FinancialReporting = () => {
   const [data, setData] = useState({} as Requests);
 
   const [showAttachments, setShowAttachments] = useState(false);
@@ -167,11 +157,13 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
               <Stack direction="column">
                 {<ToDo icon={infoIcon} data={data} isMobile={isMobile} />}
               </Stack>
-              <Stack direction="column">{approvals}</Stack>
-              <Stack direction="column">{requirements}</Stack>
-              <Stack direction="column">{management}</Stack>
-              <Stack direction="column">{promissoryNotes}</Stack>
-              <Stack direction="column">{postingVouchers}</Stack>
+              <Stack direction="column">{<Approvals user={id!} />}</Stack>
+              <Stack direction="column">
+                {<Requirements data={dataRequirements} />}
+              </Stack>
+              <Stack direction="column">{<Management />}</Stack>
+              <Stack direction="column">{<PromissoryNotes />}</Stack>
+              <Stack direction="column">{<Postingvouchers />}</Stack>
             </Grid>
           </Stack>
           {showAttachments && (
