@@ -39,7 +39,7 @@ function ToDo(props: ToDoProps) {
   const { icon, button, isMobile } = props;
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
-  const [toDo, setToDo] = useState<IToDo | null>(null);
+  const [toDo, setToDo] = useState<IToDo[] | null>(null);
   const [assignedStaff, setAssignedStaff] = useState({
     commercialManager: "",
     analyst: "",
@@ -48,30 +48,23 @@ function ToDo(props: ToDoProps) {
   const [changeDecision, setChangeDecision] = useState({ decision: "" });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const staffData = await get("staff");
-        if (staffData && Array.isArray(staffData)) {
-          setStaff(staffData);
+    const fetchData = () => {
+      Promise.allSettled([get("staff"), get("to-do")]).then((results) => {
+        const [staffData, toDoData] = results;
+        if (staffData.status === "fulfilled") {
+          setStaff(staffData.value as IStaff[]);
         }
-        const toDoData = await get("to-do");
-        if (toDoData) {
-          setToDo(toDoData as IToDo);
+        if (toDoData.status === "fulfilled") {
+          setToDo(toDoData.value as IToDo[]);
         }
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error("Error fetching data:", error.message);
-        } else {
-          console.error("Unknown error:", error);
-        }
-      }
+      });
     };
     fetchData();
   }, []);
 
   useEffect(() => {
     if (toDo) {
-      const { account_manager_name = "", analyst_name = "" } = toDo;
+      const { account_manager_name = "", analyst_name = "" } = toDo[0];
       setAssignedStaff({
         commercialManager: account_manager_name,
         analyst: analyst_name,
@@ -124,7 +117,7 @@ function ToDo(props: ToDoProps) {
               </Text>
             )}
             <Text size={isMobile ? "medium" : "large"}>
-              {toDo?.task_to_be_done}
+              {toDo && toDo[0].task_to_be_done}
             </Text>
           </Stack>
           <Stack
@@ -214,8 +207,8 @@ function ToDo(props: ToDoProps) {
       </Fieldset>
       {showStaffModal && (
         <StaffModal
-          commercialManager={tempStaff.commercialManager || ""}
-          analyst={tempStaff.analyst || ""}
+          commercialManager={tempStaff.commercialManager}
+          analyst={tempStaff.analyst}
           staff={staff}
           onChange={handleSelectOfficial}
           onSubmit={handleSubmit}

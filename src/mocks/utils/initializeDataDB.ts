@@ -19,5 +19,5 @@ export function initializeDataDB() {
   );
   intializedData<(typeof mockStaff)[number]>("staff", mockStaff);
   intializedData<typeof traceMock>("trace", [traceMock]);
-  intializedData<typeof mockToDo>("to-do", mockToDo);
+  intializedData<(typeof mockToDo)[number]>("to-do", mockToDo);
 }
