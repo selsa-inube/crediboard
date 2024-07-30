@@ -162,7 +162,7 @@ export const FinancialReporting = () => {
                 {<Requirements data={dataRequirements} />}
               </Stack>
               <Stack direction="column">{<Management />}</Stack>
-              <Stack direction="column">{<PromissoryNotes />}</Stack>
+              <Stack direction="column">{<PromissoryNotes user={id!} />}</Stack>
               <Stack direction="column">{<Postingvouchers />}</Stack>
             </Grid>
           </Stack>

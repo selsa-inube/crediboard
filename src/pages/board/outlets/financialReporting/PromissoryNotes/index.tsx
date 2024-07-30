@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { Stack, useMediaQuery } from "@inube/design-system";
 
 import { Fieldset } from "@components/data/Fieldset";
@@ -19,8 +18,12 @@ import {
   titlesFinanacialReporting,
 } from "./config";
 
-export const PromissoryNotes = () => {
-  const { id } = useParams();
+interface IPromissoryNotesProps {
+  user: string;
+}
+
+export const PromissoryNotes = (props: IPromissoryNotesProps) => {
+  const { user } = props;
 
   const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
     []
@@ -31,12 +34,12 @@ export const PromissoryNotes = () => {
       getDataById<payroll_discount_authorization[]>(
         "payroll_discount_authorization",
         "credit_request_id",
-        id!
+        user!
       ),
       getDataById<promissory_note[]>(
         "promissory_note",
         "credit_request_id",
-        id!
+        user!
       ),
     ]).then((results) => {
       const dataPrommisseNotes = results
@@ -57,11 +60,9 @@ export const PromissoryNotes = () => {
         }));
       setDataPromissoryNotes(dataPrommisseNotes);
     });
-  }, [id]);
+  }, [user]);
 
   const isMobile = useMediaQuery("(max-width: 720px)");
-
-  console.log("dataPromissoryNotes", dataPromissoryNotes);
 
   return (
     <Stack direction="column">
