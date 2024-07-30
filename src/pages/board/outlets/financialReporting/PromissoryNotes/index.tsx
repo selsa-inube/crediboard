@@ -6,6 +6,8 @@ import { TableBoard } from "@components/data/TableBoard";
 import {
   actionMobile,
   actionsFinanacialReporting,
+  appearanceTag,
+  firstWord,
   titlesFinanacialReporting,
 } from "./config";
 import { payroll_discount_authorization, promissory_note } from "./types";
@@ -34,21 +36,23 @@ export const PromissoryNotes = () => {
         id!
       ),
     ]).then((results) => {
-      const data = results
-        .flatMap((client): payroll_discount_authorization[] => {
-          if (client.status === "fulfilled") {
-            return client.value as payroll_discount_authorization[];
+      const dataPrommisseNotes = results
+        .flatMap((prommiseNote): payroll_discount_authorization[] => {
+          if (prommiseNote.status === "fulfilled") {
+            return prommiseNote.value as payroll_discount_authorization[];
           }
           return [];
         })
-        .map((p) => ({
-          id: p.credit_product_id,
-          "No. de Obligación": p.obligation_unique_code,
-          "No. de Documento": p.document_unique_code,
-          Tipo: p.state,
-          tag: <Tag label={p.state} appearance="success" />,
+        .map((entry) => ({
+          id: entry.credit_product_id,
+          "No. de Obligación": entry.obligation_unique_code,
+          "No. de Documento": entry.document_unique_code,
+          Tipo: firstWord(entry.abbreviated_name),
+          tag: (
+            <Tag label={entry.state} appearance={appearanceTag(entry.state)} />
+          ),
         }));
-      setDataPromissoryNotes(data);
+      setDataPromissoryNotes(dataPrommisseNotes);
     });
   }, [id]);
 

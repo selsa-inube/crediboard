@@ -8,7 +8,6 @@ import {
 } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 
-import { Tag } from "@components/data/Tag";
 import { IEntries } from "@components/data/TableBoard/types";
 
 const entrySelection = (data: IEntries) => {
@@ -38,7 +37,7 @@ export const titlesFinanacialReporting = [
   },
 ];
 
-export const entriesFinanacialReporting = [
+/* export const entriesFinanacialReporting = [
   {
     id: "1",
     "No. de Obligación": "1234554545",
@@ -60,7 +59,7 @@ export const entriesFinanacialReporting = [
     Tipo: "Libranza",
     tag: <Tag label="Con Error" appearance="danger" />,
   },
-];
+]; */
 
 export const actionsFinanacialReporting = [
   {
@@ -169,3 +168,15 @@ export const actionMobile = [
     ),
   },
 ];
+
+const appearance: { [key: string]: string } = {
+  Firmado: "success",
+  "En tramite": "warning",
+  "Con error": "danger",
+};
+
+export const appearanceTag = (tag: string) => {
+  return appearance[tag] as "success" | "warning" | "danger";
+};
+
+export const firstWord = (text: string) => text.split(" ")[0];
