@@ -24,5 +24,8 @@ export function initializeDataDB() {
     approval_by_credit_request_Mock
   );
   intializedData<typeof traceMock>("trace", [traceMock]);
-  intializedData<typeof mockRiskScoring>("risk-scoring", mockRiskScoring);
+  intializedData<(typeof mockRiskScoring)[number]>(
+    "risk-scoring",
+    mockRiskScoring
+  );
 }
