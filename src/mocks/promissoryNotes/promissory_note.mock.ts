@@ -2,8 +2,9 @@ export const promissory_note = [
   {
     credit_request_id: "999990",
     promissory_note_id: "123e4567-e89b-12d3-a456-426614174001",
-    description_use: "Loan Agreement",
-    abbreviated_name: "LoanAgrmt",
+    description_use:
+      "Es un tipo de pagaré que puede ser cedido a un tercero que adquiere el derecho de cobro",
+    abbreviated_name: "Pagaré indefinido ",
     credit_product_id: "123e4567-e89b-12d3-a456-426614174002",
     state: "Firmado",
     obligation_unique_code: "OBL123456",
@@ -11,10 +12,11 @@ export const promissory_note = [
     image_unique_code: "IMG123456",
   },
   {
-    credit_request_id: "999990",
+    credit_request_id: "999991",
     promissory_note_id: "223e4567-e89b-12d3-a456-426614174004",
-    description_use: "Mortgage",
-    abbreviated_name: "Mortg",
+    description_use:
+      "Son similares a los pagarés transferibles, pero sin el nombre del beneficiario escrito. También pueden ser cedidos a terceros",
+    abbreviated_name: "Pagaré nominativo",
     credit_product_id: "223e4567-e89b-12d3-a456-426614174005",
     state: "En tramite",
     obligation_unique_code: "OBL223456",
@@ -22,10 +24,11 @@ export const promissory_note = [
     image_unique_code: "IMG223456",
   },
   {
-    credit_request_id: "999990",
+    credit_request_id: "999992",
     promissory_note_id: "323e4567-e89b-12d3-a456-426614174007",
-    description_use: "Car Loan",
-    abbreviated_name: "CarLoan",
+    description_use:
+      "Se agrega un período de tiempo durante el cual se calculará la fecha de vencimiento después de su emisión",
+    abbreviated_name: "Pagaré a plazo variable",
     credit_product_id: "323e4567-e89b-12d3-a456-426614174008",
     state: "Con error",
     obligation_unique_code: "OBL323456",
@@ -33,10 +36,11 @@ export const promissory_note = [
     image_unique_code: "IMG323456",
   },
   {
-    credit_request_id: "999991",
+    credit_request_id: "999993",
     promissory_note_id: "423e4567-e89b-12d3-a456-426614174010",
-    description_use: "Personal Loan",
-    abbreviated_name: "PersLoan",
+    description_use:
+      "En el pagaré se establece la fecha precisa de vencimiento del documento",
+    abbreviated_name: "Pagaré con fecha fija",
     credit_product_id: "423e4567-e89b-12d3-a456-426614174011",
     state: "Con Error",
     obligation_unique_code: "OBL423456",
@@ -44,10 +48,11 @@ export const promissory_note = [
     image_unique_code: "IMG423456",
   },
   {
-    credit_request_id: "999991",
+    credit_request_id: "999994",
     promissory_note_id: "523e4567-e89b-12d3-a456-426614174013",
-    description_use: "Credit Card",
-    abbreviated_name: "CredCard",
+    description_use:
+      "Se liquidan en el instante en que se presentan para el cobro",
+    abbreviated_name: "Pagaré al momento",
     credit_product_id: "523e4567-e89b-12d3-a456-426614174014",
     state: "Firmado",
     obligation_unique_code: "OBL523456",
@@ -55,10 +60,11 @@ export const promissory_note = [
     image_unique_code: "IMG523456",
   },
   {
-    credit_request_id: "999991",
+    credit_request_id: "999995",
     promissory_note_id: "623e4567-e89b-12d3-a456-426614174016",
-    description_use: "Business Loan",
-    abbreviated_name: "BusLoan",
+    description_use:
+      " El cruzamiento en un pagaré indica que el cobro debe efectuarse mediante depósito en una cuenta bancaria y no en efectivo",
+    abbreviated_name: "Pagaré con cruzamiento",
     credit_product_id: "623e4567-e89b-12d3-a456-426614174017",
     state: "En tramite",
     obligation_unique_code: "OBL623456",
@@ -66,10 +72,11 @@ export const promissory_note = [
     image_unique_code: "IMG623456",
   },
   {
-    credit_request_id: "999991",
+    credit_request_id: "999996",
     promissory_note_id: "723e4567-e89b-12d3-a456-426614174019",
-    description_use: "Student Loan",
-    abbreviated_name: "StudLoan",
+    description_use:
+      "una empresa emite el pagaré y establece requisitos que el receptor debe cumplir para poder beneficiarse del pago",
+    abbreviated_name: "Pagaré corporativo",
     credit_product_id: "723e4567-e89b-12d3-a456-426614174020",
     state: "Firmado",
     obligation_unique_code: "OBL723456",
