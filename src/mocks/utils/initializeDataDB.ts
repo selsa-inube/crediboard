@@ -6,7 +6,7 @@ import { mockRequests } from "@mocks/requests/requests.mock";
 import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
 import { mockStaff } from "@mocks/staff/staff.mock";
 import { traceMock } from "@mocks/trace/trace.mock";
-import { promissory_note } from "@src/mocks/promissoryNotes/promissory_note.mock";
+import { promissory_note } from "@mocks/promissoryNotes/promissory_note.mock";
 import { payroll_discount_authorization } from "@mocks/promissoryNotes/payroll_discount_authorization.mock";
 
 export function initializeDataDB() {

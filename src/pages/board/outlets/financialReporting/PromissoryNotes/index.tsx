@@ -10,11 +10,15 @@ import {
   firstWord,
   titlesFinanacialReporting,
 } from "./config";
-import { payroll_discount_authorization, promissory_note } from "./types";
+
 import { getDataById } from "@mocks/utils/dataMock.service";
 import { useParams } from "react-router-dom";
 import { Tag } from "@components/data/Tag";
 import { IEntries } from "@components/data/TableBoard/types";
+import {
+  payroll_discount_authorization,
+  promissory_note,
+} from "@services/types";
 
 export const PromissoryNotes = () => {
   const { id } = useParams();
