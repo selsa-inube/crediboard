@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Stack, useMediaQuery } from "@inube/design-system";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
+import { IEntries } from "@components/data/TableBoard/types";
+import { Tag } from "@components/data/Tag";
+import { getDataById } from "@mocks/utils/dataMock.service";
+import {
+  payroll_discount_authorization,
+  promissory_note,
+} from "@services/types";
 import {
   actionMobile,
   actionsFinanacialReporting,
@@ -10,15 +18,6 @@ import {
   firstWord,
   titlesFinanacialReporting,
 } from "./config";
-
-import { getDataById } from "@mocks/utils/dataMock.service";
-import { useParams } from "react-router-dom";
-import { Tag } from "@components/data/Tag";
-import { IEntries } from "@components/data/TableBoard/types";
-import {
-  payroll_discount_authorization,
-  promissory_note,
-} from "@services/types";
 
 export const PromissoryNotes = () => {
   const { id } = useParams();
