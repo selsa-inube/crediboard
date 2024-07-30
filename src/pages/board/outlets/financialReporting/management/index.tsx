@@ -3,7 +3,6 @@ import { Icon } from "@inubekit/icon";
 import { Stack, inube, useMediaQuery } from "@inube/design-system";
 import { Textfield } from "@inubekit/textfield";
 import { LuPaperclip } from "react-icons/lu";
-import localforage from "localforage";
 import { useParams } from "react-router-dom";
 
 import { Fieldset } from "@components/data/Fieldset";
@@ -11,7 +10,7 @@ import { Message } from "@components/data/message";
 import { SubmitButton } from "@components/inputs/SubmitButton";
 
 import { ChatContent } from "./styles";
-import { get } from "@mocks/utils/dataMock.service";
+import { get, updateActive } from "@mocks/utils/dataMock.service";
 import { traceMock } from "@src/mocks/trace/trace.mock";
 
 interface MessageType {
@@ -21,9 +20,20 @@ interface MessageType {
   text: string;
 }
 
-interface MessageTypedos {
+interface TraceType {
+  trace_id: string;
+  trace_value: string;
+  credit_request_id: string;
+  use_case: string;
   id: string;
-  trace: typeof traceMock.trace;
+  user_id: string;
+  execution_date: string;
+  justification: string;
+  decision_taken_by_user: string;
+  trace: typeof traceMock;
+  trace_type: string;
+  read_novelty: string;
+  messages?: MessageType[];
 }
 
 export const Management = () => {
@@ -33,38 +43,48 @@ export const Management = () => {
 
   useEffect(() => {
     get("trace").then((data) => {
-      const trace = (data as MessageTypedos[])[0].trace;
-      const message: MessageType[] = trace.map((trace) => ({
-        id: trace.trace_id,
-        type: "sent",
-        timestamp: trace.execution_date,
-        text: trace.justification,
-      }));
-
-      setMessages(message);
+      if (Array.isArray(data)) {
+        const trace = data.find(
+          (trace: TraceType) => trace.credit_request_id === id
+        );
+        const message: MessageType[] = trace ? trace.messages || [] : [];
+        setMessages(message);
+      }
     });
-  }, []);
-
-  useEffect(() => {
-    localforage.setItem("messages", messages).catch((err) => {
-      console.error("Error al guardar mensajes:", err);
-    });
-  }, [messages]);
+  }, [id]);
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     sendMessage();
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (newMessage.trim() !== "") {
       const newMsg: MessageType = {
-        id: id ?? "default",
+        id: crypto.randomUUID(),
         type: "sent",
         timestamp: Date.now(),
         text: newMessage,
       };
-      setMessages([...messages, newMsg]);
+      setMessages((prevMessages) => [...prevMessages, newMsg]);
+
+      const traceData = await get("trace");
+      if (Array.isArray(traceData)) {
+        const traceIndex = traceData.findIndex(
+          (trace: TraceType) => trace.credit_request_id === id
+        );
+        if (traceIndex !== -1) {
+          const updatedTrace = traceData[traceIndex];
+          updatedTrace.messages = [...(updatedTrace.messages || []), newMsg];
+          await updateActive({
+            key: "trace_id",
+            nameDB: "trace",
+            identifier: updatedTrace.trace_id,
+            editData: updatedTrace,
+          });
+        }
+      }
+
       setNewMessage("");
     }
   };
@@ -73,15 +93,13 @@ export const Management = () => {
     setNewMessage(e.target.value);
   };
 
-  const filteredMessages = messages.filter((msg) => msg.id === id);
-
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   return (
     <Fieldset title="Gestión" heightFieldset="340px" aspectRatio="1">
-      <Stack direction="column"  height={!isMobile ? "100%" : "292px"}>
+      <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
         <ChatContent>
-          {filteredMessages.map((msg) => (
+          {messages.map((msg) => (
             <Message
               key={msg.id}
               type={msg.type}

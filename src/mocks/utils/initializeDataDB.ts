@@ -12,10 +12,7 @@ export function initializeDataDB() {
 
   intializedData<(typeof themes)[number]>("themes", themes);
   intializedData<(typeof mockRequests)[number]>("requests", mockRequests);
-  intializedData<(typeof mockRequestsPinned)[number]>(
-    "requests-pinned",
-    mockRequestsPinned
-  );
+  intializedData<(typeof mockRequestsPinned)[number]>("requests-pinned", mockRequestsPinned);
   intializedData<(typeof mockStaff)[number]>("staff", mockStaff);
-  intializedData<typeof traceMock>("trace", [traceMock]);
+  intializedData<(typeof traceMock)[number]>("trace", traceMock);
 }
