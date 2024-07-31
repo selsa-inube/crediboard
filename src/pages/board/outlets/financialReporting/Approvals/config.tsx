@@ -170,7 +170,7 @@ export const actionsApprovals = [
         size="22px"
         onClick={() => handledata(data)}
         disabled={
-          isValidElement(data?.tag) && data?.tag?.props?.label === "Pendiente"
+          isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
         }
       />
     ),
@@ -250,7 +250,7 @@ export const actionMobileApprovals = [
         size="20px"
         onClick={() => handledata(data)}
         disabled={
-          isValidElement(data?.tag) && data?.tag?.props?.label === "Pendiente"
+          isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
         }
       />
     ),
@@ -260,13 +260,10 @@ export const actionMobileApprovals = [
 export const handleNotificationClick = (
   data: IEntries,
   setSelectedData: (data: IEntries) => void,
-  setShowModal: (setShowModal: boolean) => void
+  setShowModal: (showModal: boolean) => void
 ) => {
   const tag = data?.tag;
-  if (
-    isValidElement(tag) &&
-    (tag.props?.label === "Aprobado" || tag.props?.label === "Rechazado")
-  ) {
+  if (isValidElement(tag) && tag.props?.label === "Pendiente") {
     setSelectedData(data);
     setShowModal(true);
   }

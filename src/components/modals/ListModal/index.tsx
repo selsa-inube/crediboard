@@ -35,7 +35,8 @@ export interface IListModalProps {
 }
 
 export const ListModal = (props: IListModalProps) => {
-  const { title, portalId, content, optionButtons, handleClose, buttonLabel } = props; 
+  const { title, portalId, content, optionButtons, handleClose, buttonLabel } =
+    props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -53,16 +54,16 @@ export const ListModal = (props: IListModalProps) => {
           <Text type="headline" size="small">
             {title}
           </Text>
-          <StyledContainerClose  onClick={handleClose}>
-          <Stack alignItems="center" gap={inube.spacing.s100} >
-            <Text>Cerrar</Text>
-            <Icon
-              icon={<MdClear />}
-              size="24px"
-              cursorHover
-              appearance="dark"
-            />
-          </Stack>
+          <StyledContainerClose onClick={handleClose}>
+            <Stack alignItems="center" gap={inube.spacing.s100}>
+              <Text>Cerrar</Text>
+              <Icon
+                icon={<MdClear />}
+                size="24px"
+                cursorHover
+                appearance="dark"
+              />
+            </Stack>
           </StyledContainerClose>
         </StyledContainerTitle>
         <StyledContainerContent $smallScreen={isMobile}>
@@ -89,7 +90,7 @@ export const ListModal = (props: IListModalProps) => {
           </Button>
         )}
         <Stack justifyContent="flex-end" margin="s200 s0">
-          <Button onClick={handleClose}>{buttonLabel}</Button> 
+          <Button onClick={handleClose}>{buttonLabel}</Button>
         </Stack>
       </StyledModal>
     </Blanket>,

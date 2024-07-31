@@ -10,7 +10,7 @@ import {
   actionsApprovals,
   handleNotificationClick,
   desktopActions,
-  getMobileActionsConfig
+  getMobileActionsConfig,
 } from "./config";
 
 export const Approvals = () => {
@@ -31,9 +31,15 @@ export const Approvals = () => {
     handleNotificationClick(data, setSelectedData, setShowModal);
   };
 
-  const desktopActionsConfig = desktopActions(actionsApprovals, handleNotificationClickBound);
+  const desktopActionsConfig = desktopActions(
+    actionsApprovals,
+    handleNotificationClickBound
+  );
 
-  const mobileActions = getMobileActionsConfig(actionMobileApprovals, handleNotificationClickBound);
+  const mobileActions = getMobileActionsConfig(
+    actionMobileApprovals,
+    handleNotificationClickBound
+  );
 
   return (
     <>
@@ -55,10 +61,10 @@ export const Approvals = () => {
       </Fieldset>
       {showModal && selectedData && (
         <ListModal
-        title="Notificación"
-        handleClose={() => setShowModal(false)}
-        content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
-        buttonLabel="Enviar"
+          title="Notificación"
+          handleClose={() => setShowModal(false)}
+          content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
+          buttonLabel="Enviar"
         />
       )}
     </>
