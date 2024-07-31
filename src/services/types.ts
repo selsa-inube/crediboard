@@ -79,6 +79,7 @@ export type {
   DmDecisions,
   PinnedRequest,
 };
+
 export interface approval_by_credit_request_Mock {
   approval_id: string;
   credit_request_id: string;
@@ -86,4 +87,11 @@ export interface approval_by_credit_request_Mock {
   approver_name: string;
   concept: string;
   error: boolean;
+}
+
+export interface Idocument {
+  credit_request_id: string;
+  document_id: string;
+  document_managment_unique_reference: string;
+  abbreviated_name: string;
 }

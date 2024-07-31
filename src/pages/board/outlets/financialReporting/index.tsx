@@ -16,14 +16,13 @@ import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
-import { getById } from "@mocks/utils/dataMock.service";
-import { Requests } from "@services/types";
+import { get, getById } from "@mocks/utils/dataMock.service";
+import { Idocument, Requests } from "@services/types";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
 import {
-  configDataAttachments,
   handleConfirmReject,
   handleConfirmCancel,
   optionButtons,
@@ -82,6 +81,8 @@ export const FinancialReporting = () => {
     appearance: "success" as "success" | "danger",
   });
 
+  const [document, setDocument] = useState<IListdataProps["data"]>([]);
+
   const { id } = useParams();
 
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
@@ -89,8 +90,22 @@ export const FinancialReporting = () => {
   const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getById("k_Prospe", "requests", id!).then((requirement) => {
-      setData(requirement);
+    Promise.allSettled([
+      getById("k_Prospe", "requests", id!),
+      get<Idocument[]>("document"),
+    ]).then(([requirement, documents]) => {
+      if (requirement.status === "fulfilled") {
+        setData(requirement.value as Requests);
+      }
+      if (documents.status === "fulfilled") {
+        const documentsUser = documents.value
+          .filter((doc) => doc.credit_request_id === id)
+          .map((dataListDocument) => ({
+            id: dataListDocument.document_id,
+            name: dataListDocument.abbreviated_name,
+          }));
+        setDocument(documentsUser);
+      }
     });
   }, [id]);
 
@@ -169,12 +184,7 @@ export const FinancialReporting = () => {
           {showAttachments && (
             <Listmodal
               title="Adjuntar"
-              content={
-                <Listdata
-                  data={configDataAttachments}
-                  icon={<MdDeleteOutline />}
-                />
-              }
+              content={<Listdata data={document} icon={<MdDeleteOutline />} />}
               handleClose={() => setShowAttachments(false)}
               optionButtons={optionButtons}
             />
@@ -183,10 +193,7 @@ export const FinancialReporting = () => {
             <Listmodal
               title="Ver Adjuntos"
               content={
-                <Listdata
-                  data={configDataAttachments}
-                  icon={<MdOutlineRemoveRedEye />}
-                />
+                <Listdata data={document} icon={<MdOutlineRemoveRedEye />} />
               }
               handleClose={() => setAttachDocuments(false)}
             />
