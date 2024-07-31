@@ -84,7 +84,7 @@ export const FinancialReporting = () => {
 
   const { id } = useParams();
 
-  const isMobile: boolean = useMediaQuery("(max-width: 720px)");
+  const isMobile: boolean = useMediaQuery("(max-width: 880px)");
 
   const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
 
