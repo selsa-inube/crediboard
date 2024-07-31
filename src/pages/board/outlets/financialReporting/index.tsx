@@ -11,7 +11,7 @@ import { Flag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
-import { Listmodal } from "@components/modals/Listmodal";
+import { ListModal } from "@src/components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
@@ -167,7 +167,7 @@ export const FinancialReporting = () => {
             </Grid>
           </Stack>
           {showAttachments && (
-            <Listmodal
+            <ListModal
               title="Adjuntar"
               content={
                 <Listdata
@@ -177,10 +177,11 @@ export const FinancialReporting = () => {
               }
               handleClose={() => setShowAttachments(false)}
               optionButtons={optionButtons}
+              buttonLabel="Cerrar"
             />
           )}
           {attachDocuments && (
-            <Listmodal
+            <ListModal
               title="Ver Adjuntos"
               content={
                 <Listdata
@@ -189,6 +190,7 @@ export const FinancialReporting = () => {
                 />
               }
               handleClose={() => setAttachDocuments(false)}
+              buttonLabel="Cerrar"
             />
           )}
         </>

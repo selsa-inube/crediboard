@@ -14,6 +14,7 @@ import {
   StyledContainerClose,
   StyledContainerContent,
   StyledModal,
+  StyledContainerTitle,
 } from "./styles";
 
 export interface IOptionButtons {
@@ -24,16 +25,18 @@ export interface IOptionButtons {
   onClick?: () => void;
 }
 
-export interface IListmodalProps {
+export interface IListModalProps {
   title: string;
-  portalId?: string;
-  content?: JSX.Element | JSX.Element[];
-  optionButtons?: IOptionButtons;
   handleClose: () => void;
+  buttonLabel: string;
+  portalId?: string;
+  content?: JSX.Element | JSX.Element[] | string;
+  optionButtons?: IOptionButtons;
 }
 
-export const Listmodal = (props: IListmodalProps) => {
-  const { title, portalId, content, optionButtons, handleClose } = props;
+export const ListModal = (props: IListModalProps) => {
+  const { title, portalId, content, optionButtons, handleClose, buttonLabel } =
+    props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -47,23 +50,32 @@ export const Listmodal = (props: IListmodalProps) => {
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
-        <StyledContainerClose onClick={handleClose}>
+        <StyledContainerTitle>
           <Text type="headline" size="small">
             {title}
           </Text>
-          <Stack alignItems="center" gap={inube.spacing.s100}>
-            <Text>Cerrar</Text>
-            <Icon
-              icon={<MdClear />}
-              size="24px"
-              cursorHover
-              appearance="dark"
-              onClick={handleClose}
-            />
-          </Stack>
-        </StyledContainerClose>
+          <StyledContainerClose onClick={handleClose}>
+            <Stack alignItems="center" gap={inube.spacing.s100}>
+              <Text>Cerrar</Text>
+              <Icon
+                icon={<MdClear />}
+                size="24px"
+                cursorHover
+                appearance="dark"
+              />
+            </Stack>
+          </StyledContainerClose>
+        </StyledContainerTitle>
         <StyledContainerContent $smallScreen={isMobile}>
-          {content}
+          {typeof content === "string" ? (
+            <Stack>
+              <Text>{content}</Text>
+            </Stack>
+          ) : (
+            <StyledContainerContent $smallScreen={isMobile}>
+              {content}
+            </StyledContainerContent>
+          )}
         </StyledContainerContent>
         {optionButtons && (
           <Button
@@ -78,7 +90,7 @@ export const Listmodal = (props: IListmodalProps) => {
           </Button>
         )}
         <Stack justifyContent="flex-end" margin="s200 s0">
-          <Button onClick={handleClose}>Cerrar</Button>
+          <Button onClick={handleClose}>{buttonLabel}</Button>
         </Stack>
       </StyledModal>
     </Blanket>,
