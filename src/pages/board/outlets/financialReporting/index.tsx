@@ -84,7 +84,7 @@ export const FinancialReporting = () => {
 
   const { id } = useParams();
 
-  const isMobile: boolean = useMediaQuery("(max-width: 720px)");
+  const isMobile: boolean = useMediaQuery("(max-width: 880px)");
 
   const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
 
@@ -130,7 +130,7 @@ export const FinancialReporting = () => {
   };
 
   return (
-    <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"}>
+    <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
       <ContainerSections isMobile={isMobile} actionButtons={handleAction}>
         <>
           <Stack direction="column" gap={inube.spacing.s250}>

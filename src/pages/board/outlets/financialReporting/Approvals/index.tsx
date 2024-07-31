@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
-import { ListModal } from "@src/components/modals/ListModal";import { Tag } from "@components/data/Tag";
+import { ListModal } from "@src/components/modals/ListModal";
+import { Tag } from "@inubekit/tag";
 
 import {
   actionMobileApprovals,
@@ -51,6 +52,7 @@ export const Approvals = (props: IApprovalsProps) => {
             <Tag
               label={entry.concept}
               appearance={appearanceTag(entry.concept)}
+              weight="strong"
             />
           ),
         }));
