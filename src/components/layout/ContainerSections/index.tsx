@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdArrowBack, MdMenu } from "react-icons/md";
-import { Button, Text, inube } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
+import { Button, Text, inube } from "@inube/design-system";
 
-import { TextAreaModal } from "@components/modals/TextAreaModal";
+
+import { MobileMenu } from "@components/modals/MobileMenu/index"; 
 
 import { configButtons } from "./config";
 import { StyledContainerToCenter, StyledHorizontalDivider } from "./styles";
@@ -41,9 +42,30 @@ interface IContainerSectionsProps {
 export const ContainerSections = (props: IContainerSectionsProps) => {
   const { children, isMobile, actionButtons } = props;
 
-  const [showRejectionModal, setShowRejectionModal] = useState(false);
+
+  const [showMenu, setShowMenu] = useState(false); 
 
   const navigation = useNavigate();
+
+  const handleReject = () => {
+    actionButtons?.buttons?.buttonReject.OnClick();
+    setShowMenu(false); 
+  };
+
+  const handleCancel = () => {
+    actionButtons?.buttons?.buttonCancel.OnClick();
+    setShowMenu(false);
+  };
+
+  const handleAttach = () => {
+    actionButtons?.buttonsOutlined?.buttonAttach.OnClick();
+    setShowMenu(false); 
+  };
+
+  const handleViewAttachments = () => {
+    actionButtons?.buttonsOutlined?.buttonViewAttachments.OnClick();
+    setShowMenu(false); 
+  };
 
   return (
     <>
@@ -81,6 +103,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                   appearance="dark"
                   size="32px"
                   spacing="none"
+                  onClick={() => setShowMenu(!showMenu)} 
                 />
               )}
             </Stack>
@@ -98,11 +121,11 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                   </Button>
 
                   <Button
-                    onClick={actionButtons?.buttons?.buttonCancel.OnClick}
+                    onClick={actionButtons?.buttons?.buttonCancel?.OnClick}
                   >
                     {configButtons.buttons.buttonCancel.label}
                   </Button>
-                  <Button onClick={actionButtons?.buttons.buttonPrint.OnClick}>
+                  <Button onClick={actionButtons?.buttons?.buttonPrint?.OnClick}>
                     {configButtons.buttons.buttonPrint.label}
                   </Button>
                 </Stack>
@@ -111,7 +134,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                   <Button
                     variant="outlined"
                     onClick={
-                      actionButtons?.buttonsOutlined?.buttonAttach.OnClick
+                      actionButtons?.buttonsOutlined?.buttonAttach?.OnClick
                     }
                   >
                     {configButtons.buttonsOutlined.buttonAttach.label}
@@ -120,8 +143,8 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
                   <Button
                     variant="outlined"
                     onClick={
-                      actionButtons?.buttonsOutlined.buttonViewAttachments
-                        .OnClick
+                      actionButtons?.buttonsOutlined?.buttonViewAttachments
+                        ?.OnClick
                     }
                   >
                     {configButtons.buttonsOutlined.buttonViewAttachments.label}
@@ -133,14 +156,13 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
           <Stack direction="column">{children}</Stack>
         </Stack>
       </StyledContainerToCenter>
-      {showRejectionModal && (
-        <TextAreaModal
-          title="Rechazar"
-          buttonText="Confirmar"
-          inputLabel="Motivo del rechazo."
-          inputPlaceholder="Describa el motivo del rechazo."
-          onCloseModal={() => setShowRejectionModal(!showRejectionModal)}
-          onSubmit={() => setShowRejectionModal(!showRejectionModal)}
+      {showMenu && (
+        <MobileMenu
+          onClose={() => setShowMenu(false)}
+          onReject={handleReject}
+          onCancel={handleCancel}
+          onAttach={handleAttach}
+          onViewAttachments={handleViewAttachments}
         />
       )}
     </>

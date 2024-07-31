@@ -12,7 +12,7 @@ import { SubmitButton } from "@components/inputs/SubmitButton";
 
 import { ChatContent } from "./styles";
 import { get } from "@mocks/utils/dataMock.service";
-import { traceMock } from "@src/mocks/trace/trace.mock";
+import { traceMock } from "@src/mocks/financialReporting/trace.mock";
 
 interface MessageType {
   id: string;
@@ -79,7 +79,7 @@ export const Management = () => {
 
   return (
     <Fieldset title="Gestión" heightFieldset="340px" aspectRatio="1">
-      <Stack direction="column"  height={!isMobile ? "100%" : "292px"}>
+      <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
         <ChatContent>
           {filteredMessages.map((msg) => (
             <Message
