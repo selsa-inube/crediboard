@@ -29,7 +29,7 @@ export interface TextAreaModalProps {
   onCloseModal?: () => void;
   readOnly?: boolean;
   hideCharCount?: boolean;
-  disableTextarea?: boolean; // Propiedad para deshabilitar el campo de texto
+  disableTextarea?: boolean;
 }
 
 export function TextAreaModal(props: TextAreaModalProps) {
@@ -44,7 +44,7 @@ export function TextAreaModal(props: TextAreaModalProps) {
     onCloseModal,
     readOnly = false,
     hideCharCount = false,
-    disableTextarea = false, // Inicializa la propiedad
+    disableTextarea = false, 
   } = props;
 
   const validationSchema = Yup.object().shape({
