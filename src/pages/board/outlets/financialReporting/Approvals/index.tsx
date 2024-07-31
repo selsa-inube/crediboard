@@ -112,10 +112,9 @@ export const Approvals = (props: IApprovalsProps) => {
         <TextAreaModal
           title="Error"
           buttonText="Cerrar"
-          inputLabel="Detalles del error"
-          inputPlaceholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nec mollis felis. Donec eget sapien viverra, tincidunt ex ut, omare nisi. Nulla eget fermentum velit )"
+          inputLabel="Descripción del error"
+          inputPlaceholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nec mollis felis. Donec eget sapien viverra, tincidunt ex ut, ornare nisi. Nulla eget fermentum velit."
           readOnly
-          hideCharCount
           onCloseModal={() => setShowErrorModal(false)}
         />
       )}

@@ -42,7 +42,6 @@ export function TextAreaModal(props: TextAreaModalProps) {
     onSubmit,
     onCloseModal,
     readOnly = false,
-    hideCharCount = false,
   } = props;
 
   const validationSchema = Yup.object().shape({
@@ -95,6 +94,7 @@ export function TextAreaModal(props: TextAreaModalProps) {
                     label={inputLabel}
                     placeholder={inputPlaceholder}
                     maxLength={maxLength}
+                    disabled = {true}
                     status={
                       touched.textarea && errors.textarea
                         ? "invalid"
@@ -105,7 +105,6 @@ export function TextAreaModal(props: TextAreaModalProps) {
                     }
                     fullwidth
                     readOnly={readOnly}
-                    hideCharCount={hideCharCount}
                     onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
                       setFieldTouched("textarea");
                       field.onBlur(e);
