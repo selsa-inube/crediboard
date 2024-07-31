@@ -3,6 +3,7 @@ import { Icon } from "@inubekit/icon";
 import { Stack, inube, useMediaQuery } from "@inube/design-system";
 import { Textfield } from "@inubekit/textfield";
 import { LuPaperclip } from "react-icons/lu";
+import localforage from "localforage";
 import { useParams } from "react-router-dom";
 
 import { Fieldset } from "@components/data/Fieldset";
@@ -11,47 +12,30 @@ import { SubmitButton } from "@components/inputs/SubmitButton";
 
 import { ChatContent } from "./styles";
 import { get, updateActive } from "@mocks/utils/dataMock.service";
-import { traceMock } from "@mocks/financialReporting/trace.mock";
-
-interface MessageType {
-  id: string;
-  type: "sent" | "received";
-  timestamp: number | string;
-  text: string;
-}
 
 interface TraceType {
   trace_id: string;
   trace_value: string;
   credit_request_id: string;
   use_case: string;
-  id: string;
   user_id: string;
-  execution_date: string;
-  justification: string;
-  decision_taken_by_user: string;
-  trace: typeof traceMock;
-  trace_type: string;
-  read_novelty: string;
-  messages?: MessageType[];
+  execution_date: string | number;
+  justification?: string;
+  decision_taken_by_user?: string;
+  trace_type?: string;
+  read_novelty?: string;
 }
 
 export const Management = () => {
-  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [traces, setTraces] = useState<TraceType[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    get("trace").then((data) => {
-      if (Array.isArray(data)) {
-        const trace = data.find(
-          (trace: TraceType) => trace.credit_request_id === id
-        );
-        const message: MessageType[] = trace ? trace.messages || [] : [];
-        setMessages(message);
-      }
+    get<TraceType[]>("trace").then((data) => {
+      setTraces(data);
     });
-  }, [id]);
+  }, []);
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,32 +44,41 @@ export const Management = () => {
 
   const sendMessage = async () => {
     if (newMessage.trim() !== "") {
-      const newMsg: MessageType = {
-        id: crypto.randomUUID(),
-        type: "sent",
-        timestamp: Date.now(),
-        text: newMessage,
+      const newTrace: TraceType = {
+        trace_id: crypto.randomUUID(),
+        trace_value: newMessage,
+        credit_request_id: id ?? "default",
+        use_case: "message",
+        user_id: "user_001",
+        execution_date: new Date().toISOString(),
       };
-      setMessages((prevMessages) => [...prevMessages, newMsg]);
 
-      const traceData = await get("trace");
-      if (Array.isArray(traceData)) {
-        const traceIndex = traceData.findIndex(
-          (trace: TraceType) => trace.credit_request_id === id
-        );
-        if (traceIndex !== -1) {
-          const updatedTrace = traceData[traceIndex];
-          updatedTrace.messages = [...(updatedTrace.messages || []), newMsg];
-          await updateActive({
-            key: "trace_id",
-            nameDB: "trace",
-            identifier: updatedTrace.trace_id,
-            editData: updatedTrace,
-          });
-        }
+      const updatedTraces = [...traces, newTrace];
+      setTraces(updatedTraces);
+
+      try {
+        await localforage.setItem("trace", updatedTraces);
+        await updateActive({
+          key: "trace_id",
+          nameDB: "trace",
+          identifier: newTrace.trace_id,
+          editData:{
+            trace_id: newTrace.trace_id,
+            trace_value: newTrace.trace_value,
+            credit_request_id: newTrace.credit_request_id,
+            use_case: newTrace.use_case,
+            user_id: newTrace.user_id,
+            execution_date: newTrace.execution_date as string,
+            justification: newTrace.justification ?? '',
+            decision_taken_by_user: newTrace.decision_taken_by_user ?? '',
+            trace_type: newTrace.trace_type ?? '',
+            read_novelty: newTrace.read_novelty ?? '',
+          },
+        });
+        setNewMessage("");
+      } catch (err) {
+        console.error("Error al guardar el mensaje:", err);
       }
-
-      setNewMessage("");
     }
   };
 
@@ -93,18 +86,20 @@ export const Management = () => {
     setNewMessage(e.target.value);
   };
 
+  const filteredTraces = traces.filter((trace) => trace.credit_request_id === id);
+
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   return (
     <Fieldset title="Gestión" heightFieldset="340px" aspectRatio="1">
       <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
         <ChatContent>
-          {messages.map((msg) => (
+          {filteredTraces.map((trace) => (
             <Message
-              key={msg.id}
-              type={msg.type}
-              timestamp={msg.timestamp}
-              message={msg.text}
+              key={trace.trace_id}
+              type="sent"
+              timestamp={trace.execution_date}
+              message={trace.trace_value}
             />
           ))}
         </ChatContent>
