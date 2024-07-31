@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useMediaQuery } from "@inube/design-system";
 import { Tag } from "@inubekit/tag";
 
 import { Fieldset } from "@components/data/Fieldset";
@@ -82,6 +83,7 @@ export const Approvals = (props: IApprovalsProps) => {
     handleNotificationClickBound,
     handleErrorClickBound
   );
+  const isMobile = useMediaQuery("(max-width: 720px)");
 
   return (
     <>
@@ -99,6 +101,12 @@ export const Approvals = (props: IApprovalsProps) => {
           actionMobile={mobileActions}
           loading={loading}
           nameTitleTag="decision"
+          appearanceTable={{
+            widthTd: !isMobile ? "100" : "61%",
+            efectzebra: true,
+            title: "primary",
+            isStyleMobile: false,
+          }}
         />
       </Fieldset>
       {showNotificationModal && selectedData && (
