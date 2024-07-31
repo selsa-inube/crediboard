@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 
 import { ISelectcheckProps } from ".";
 
@@ -54,28 +54,28 @@ export const StyledInputContainer = styled.div<IStyledInputContainer>`
   border-style: solid;
   background-color: ${({ theme, $readonly }) =>
     $readonly &&
-    (theme?.color?.surface?.light?.clear || inube.color.surface.light.clear)};
+    (theme?.color?.surface?.light?.clear || inube.palette.neutral.N0)};
   border-color: ${({ theme, disabled, $readonly, $status, $focused }) => {
     if (disabled) {
       return (
-        (theme?.color?.text?.dark?.disabled || inube.color.text.dark.disabled) +
+        (theme?.text?.dark?.content?.color?.disabled ||
+          inube.text.dark.content.color.disabled) +
         "; pointer-events: none; opacity: 0.5;"
       );
     }
     if ($focused && !$readonly) {
       return (
-        theme?.color?.text?.primary?.hover || inube.color.text.primary.hover
+        theme?.text?.primary?.content?.color?.hover ||
+        inube.text.primary.content.color.hover
       );
     }
     if ($status === "invalid" && !$readonly) {
       return (
-        theme?.color?.text?.error?.regular || inube.color.text.error.regular
+        theme?.text?.danger?.content?.color?.regular ||
+        inube.text.danger.content.color.regular
       );
     }
-    return (
-      theme?.color?.stroke?.divider?.regular ||
-      inube.color.stroke.divider.regular
-    );
+    return theme?.divider?.stroke?.color || inube.divider.stroke.color;
   }};
 
   opacity: ${({ disabled }) => (disabled ? "0.5" : "none")};
@@ -85,38 +85,41 @@ export const StyledInputContainer = styled.div<IStyledInputContainer>`
 export const StyledInput = styled.input<IStyledInput>`
   outline: none;
   border-radius: 8px;
-  padding-right: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
-  padding-left: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
+  padding-right: 12px;
+  padding-left: 16px;
   border-style: none;
   font-family: ${({ theme }) =>
     theme?.typography?.body?.large?.font || inube.typography.body.large.font};
   font-size: ${({ theme }) =>
     theme?.typography?.body?.large?.font || inube.typography.body.large.size};
-  font-weight: ${({ theme }) =>
-    theme?.typography?.body?.large?.font || inube.typography.body.large.weight};
   line-height: ${({ theme }) =>
     theme?.typography?.body?.large?.font ||
     inube.typography.body.large.lineHeight};
   letter-spacing: ${({ theme }) =>
-    theme?.typography?.body?.large?.font ||
-    inube.typography.body.large.tracking};
+    theme?.typography?.body?.large?.tracking ||
+    inube.typography.display.large.tracking};
   color: ${({ theme, disabled }) => {
     if (disabled) {
       return (
-        theme?.color?.text?.dark?.disabled || inube.color.text.dark.disabled
+        theme?.text?.dark?.content?.color?.disabled ||
+        inube.text.dark.content.color.disabled
       );
     }
-    return theme?.color?.text?.dark?.regular || inube.color.text.dark.regular;
+    return (
+      theme?.text?.dark?.content?.color?.regular ||
+      inube.text.dark.content.color.regular
+    );
   }};
   background-color: ${({ theme }) =>
-    theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
+    theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 
   ${({ $size }) => sizeOptions[$size!]};
 
   ::placeholder {
     color: ${({ theme }) =>
-      theme?.color?.text?.dark?.disabled || inube.color.text.dark.disabled};
+      theme?.text?.dark?.content?.color?.disabled ||
+      inube.text.dark.content.color.disabled};
   }
 
   &:focus {

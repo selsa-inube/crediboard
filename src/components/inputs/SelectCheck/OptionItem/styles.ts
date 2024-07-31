@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 
 export const StyledOptionItemChecked = styled.li`
   display: flex;
@@ -7,32 +7,31 @@ export const StyledOptionItemChecked = styled.li`
   align-self: stretch;
   cursor: pointer;
   min-height: 40px;
+  padding-top: 4px;
+  padding-right: 16px;
+  padding-bottom: 4px;
+  padding-left: 12px;
   border-left-style: solid;
   border-left-width: 2px;
   border-left-color: ${({ theme }) =>
-    theme?.color?.stroke?.light?.regular || inube.color.stroke.light.regular};
-  padding-top: ${({ theme }) => theme?.spacing?.s050 || inube.spacing.s050};
-  padding-right: ${({ theme }) => theme?.spacing?.s200 || inube.spacing.s200};
-  padding-bottom: ${({ theme }) => theme?.spacing?.s050 || inube.spacing.s050};
-  padding-left: ${({ theme }) => theme?.spacing?.s150 || inube.spacing.s150};
+    theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
 
   p {
     color: ${({ theme }) =>
-      theme?.color?.text?.dark?.regular || inube.color.text.dark.regular};
+      theme?.palette?.neutral?.N900 || inube.palette.neutral.N900};
   }
 
   &:hover {
     border-left-color: ${({ theme }) =>
-      theme?.color?.stroke?.primary?.regular ||
-      inube.color.stroke.primary.regular};
+      theme?.palette?.blue?.B400 || inube.palette.blue.B400};
 
     background-color: ${({ theme }) =>
-      theme?.color?.surface?.gray?.hover || inube.color.surface.gray.hover};
+      theme?.palette?.neutral?.N200 || inube.palette.neutral.N200};
 
     p {
       color: ${({ theme }) =>
-        theme?.color?.text?.primary?.regular ||
-        inube.color.text.primary.regular};
+        theme?.text?.primary?.content?.color?.regular ||
+        inube.text.primary.content.color.regular};
     }
   }
 `;

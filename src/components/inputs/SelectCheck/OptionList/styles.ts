@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 
 interface IStyledOptionList {
   onClick?: React.ChangeEventHandler<HTMLInputElement>;
@@ -14,9 +14,7 @@ export const StyledOptionList = styled.ul<IStyledOptionList>`
   z-index: 1;
   border-radius: 4px;
   background: ${({ theme }) => {
-    return (
-      theme?.color?.surface?.light?.clear || inube.color.surface.light.clear
-    );
+    return theme?.palette?.neutral?.N0 || inube.palette.neutral.N0;
   }};
   box-shadow:
     0px 1px 2px rgba(0, 0, 0, 0.3),
