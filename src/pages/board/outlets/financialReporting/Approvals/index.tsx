@@ -76,7 +76,7 @@ export const Approvals = (props: IApprovalsProps) => {
         actionMobile={actionMobileApprovals}
         nameTitleTag="decision"
         appearanceTable={{
-          widthTd: !isMobile ? "100" : "60%",
+          widthTd: !isMobile ? "100" : "61%",
           efectzebra: true,
           title: "primary",
           isStyleMobile: false,
