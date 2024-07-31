@@ -29,6 +29,7 @@ export interface TextAreaModalProps {
   onCloseModal?: () => void;
   readOnly?: boolean;
   hideCharCount?: boolean;
+  disableTextarea?: boolean; // Propiedad para deshabilitar el campo de texto
 }
 
 export function TextAreaModal(props: TextAreaModalProps) {
@@ -42,6 +43,8 @@ export function TextAreaModal(props: TextAreaModalProps) {
     onSubmit,
     onCloseModal,
     readOnly = false,
+    hideCharCount = false,
+    disableTextarea = false, // Inicializa la propiedad
   } = props;
 
   const validationSchema = Yup.object().shape({
@@ -94,7 +97,6 @@ export function TextAreaModal(props: TextAreaModalProps) {
                     label={inputLabel}
                     placeholder={inputPlaceholder}
                     maxLength={maxLength}
-                    disabled = {true}
                     status={
                       touched.textarea && errors.textarea
                         ? "invalid"
@@ -105,7 +107,9 @@ export function TextAreaModal(props: TextAreaModalProps) {
                     }
                     fullwidth
                     readOnly={readOnly}
-                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+                    hideCharCount={hideCharCount}
+                    disabled={disableTextarea} 
+                    onBlur={(e: React.FocusEvent<HTMLTextAreaElement>) => {
                       setFieldTouched("textarea");
                       field.onBlur(e);
                     }}

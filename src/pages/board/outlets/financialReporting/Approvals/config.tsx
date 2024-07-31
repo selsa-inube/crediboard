@@ -138,7 +138,7 @@ export const actionMobileApprovals = [
         size="20px"
         onClick={() => handledata(data)}
         disabled={
-          isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
+          isValidElement(data?.tag) && data?.tag?.props?.label === "Pendiente"
         }
       />
     ),

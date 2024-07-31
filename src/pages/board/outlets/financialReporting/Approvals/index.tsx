@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
+import { Tag } from "@inubekit/tag";
+
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
-import { ListModal } from "@src/components/modals/ListModal";
-import { TextAreaModal } from "@src/components/modals/TextAreaModal";
-import { Tag } from "@inubekit/tag";
+import { ListModal } from "@components/modals/ListModal";
+import { TextAreaModal } from "@components/modals/TextAreaModal";
 
 import {
   actionMobileApprovals,
@@ -115,6 +116,7 @@ export const Approvals = (props: IApprovalsProps) => {
           inputLabel="Descripción del error"
           inputPlaceholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nec mollis felis. Donec eget sapien viverra, tincidunt ex ut, ornare nisi. Nulla eget fermentum velit."
           readOnly
+          disableTextarea={true}
           onCloseModal={() => setShowErrorModal(false)}
         />
       )}
