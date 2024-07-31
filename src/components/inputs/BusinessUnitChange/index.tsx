@@ -1,12 +1,11 @@
 import { useState, useContext } from "react";
 import { Stack } from "@inubekit/stack";
-import { Divider } from "@inubekit/divider";
 import { Icon } from "@inube/design-system";
 import { AppContext } from "@context/AppContext";
 import { IClient } from "@context/AppContext/types";
 import { MdCheck } from "react-icons/md";
 
-import { StyledBusiness } from "./styles";
+import { StyledContainer, StyledUl, StyledImg, StyledHr} from "./styles";
 
 interface BusinessUnitChangeProps {
   clients: IClient[];
@@ -22,13 +21,13 @@ export const BusinessUnitChange = ({ clients }: BusinessUnitChangeProps) => {
   };
 
   return (
-    <StyledBusiness>
+    <StyledContainer>
       <Stack width="220px">
-        <ul>
+        <StyledUl>
           {clients.map((client, index) => (
             <a key={client.id} href="" onClick={() => handleLogoClick(client)}>
               <li>
-                <img src={client.logo} alt={client.name} />
+                <StyledImg src={client.logo} alt={client.name} />
                 <Icon
                   icon={<MdCheck />}
                   appearance={
@@ -38,11 +37,11 @@ export const BusinessUnitChange = ({ clients }: BusinessUnitChangeProps) => {
                   cursorHover
                 />
               </li>
-              {index !== clients.length - 1 && <Divider />}
+              {index !== clients.length - 1 && <StyledHr />}
             </a>
           ))}
-        </ul>
+        </StyledUl>
       </Stack>
-    </StyledBusiness>
+    </StyledContainer>
   );
 };

@@ -1,14 +1,15 @@
 import { useContext, useState, useRef, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { Header, Grid, Icon, useMediaQuery } from "@inube/design-system";
+import { Header, Grid, useMediaQuery } from "@inube/design-system";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
+import { Icon } from "@inubekit/icon"
 
 import { AppContext } from "@context/AppContext";
 import { MenuSection } from "@components/navigation/MenuSection";
 import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
 import { BusinessUnitChange } from "@components/inputs/BusinessUnitChange";
-import { clientsDataMock } from "@src/mocks/login/clients.mock";
+import { clientsDataMock } from "@mocks/login/clients.mock";
 
 import { navigationConfig, logoutConfig } from "./config/apps.config";
 import {
