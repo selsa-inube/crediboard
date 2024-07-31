@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "@inube/design-system";
+import { Tag } from "@inubekit/tag";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
-import { Tag } from "@components/data/Tag";
 
 import {
   actionMobileApprovals,
@@ -49,6 +49,7 @@ export const Approvals = (props: IApprovalsProps) => {
             <Tag
               label={entry.concept}
               appearance={appearanceTag(entry.concept)}
+              weight="strong"
             />
           ),
         }));
