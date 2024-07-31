@@ -1,4 +1,7 @@
-import { Stack, Text, Icon, inube } from "@inube/design-system";
+import { inube } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 import { MdOutlineMessage, MdOutlinePushPin, MdPushPin } from "react-icons/md";
 
 import {

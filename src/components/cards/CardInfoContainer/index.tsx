@@ -1,4 +1,7 @@
-import { Icon, Stack, Text, inube } from "@inube/design-system";
+import { inube } from "@inube/design-system";
+import { Text } from "@inubekit/text";
+import { Icon } from "@inubekit/icon";
+import { Stack } from "@inubekit/stack";
 
 import { StyledContainerCardInfo } from "./styles";
 

@@ -1,6 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { Button, Stack, Text, inube } from "@inube/design-system";
+import { inube } from "@inube/design-system";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 import { MdAndroid } from "react-icons/md";
+import { Button } from "@inubekit/button";
 
 import { CardInfoContainer } from ".";
 

@@ -1,4 +1,7 @@
-import { Text, Grid, useMediaQueries } from "@inube/design-system";
+import { useMediaQueries } from "@inube/design-system";
+import { Grid } from "@inubekit/grid";
+import { Text } from "@inubekit/text";
+
 import { StyledRadioClient, StyledRadio, StyledImage } from "./styles";
 
 interface RadioClientProps {
