@@ -9,22 +9,11 @@ import { useParams } from "react-router-dom";
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/message";
 import { SubmitButton } from "@components/inputs/SubmitButton";
+import { TraceType } from "@services/types";
 
 import { ChatContent } from "./styles";
 import { get, updateActive } from "@mocks/utils/dataMock.service";
 
-interface TraceType {
-  trace_id: string;
-  trace_value: string;
-  credit_request_id: string;
-  use_case: string;
-  user_id: string;
-  execution_date: string | number;
-  justification?: string;
-  decision_taken_by_user?: string;
-  trace_type?: string;
-  read_novelty?: string;
-}
 
 export const Management = () => {
   const [traces, setTraces] = useState<TraceType[]>([]);
