@@ -2,7 +2,11 @@ import { useMediaQuery } from "@inube/design-system";
 import { IAction, IEntries, ITitle, IAppearances } from "./types";
 import { TableBoardUI } from "./interface";
 
-export interface ITableBoardProps {
+export interface IInfoItems{
+  isFirstTable?: boolean;
+  infoItems?: { icon: JSX.Element; text: string }[];
+}
+export interface ITableBoardProps extends IInfoItems{
   id: string;
   entries: IEntries[];
   titles: ITitle[];
@@ -13,8 +17,6 @@ export interface ITableBoardProps {
   portalId?: string;
   appearanceTable?: IAppearances;
   nameTitleTag?: string;
-  isFirstTable?: boolean;
-  infoItems?: { icon: JSX.Element; text: string }[];
 }
 
 export const TableBoard = (props: ITableBoardProps) => {

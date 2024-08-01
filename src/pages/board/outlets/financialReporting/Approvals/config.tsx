@@ -196,6 +196,14 @@ interface TagElement {
   props: TagProps;
 }
 
+export const infoItems = [
+  { icon: <MdCheck />, text: "Cumple", appearance: "success", size: "20px", shape: "circle", variant: "filled" },
+  { icon: <MdClose />, text: "No Cumple", appearance: "danger", size: "20px", shape: "circle", variant: "filled" },
+  { icon: <MdRemove />, text: "Sin Evaluar", appearance: "warning", size: "20px", shape: "circle", variant: "filled" },
+  { icon: <MdWarningAmber />, text: "Error", appearance: "danger", size: "28px"},
+  { icon: <MdNotificationsNone />, text: "Notificaciones", appearance: "help", size: "28px"},
+];
+
 const isValidTagElement = (element: unknown): element is TagElement => {
   return isValidElement(element) && element.props !== undefined;
 };

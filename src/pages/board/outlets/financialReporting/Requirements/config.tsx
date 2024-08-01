@@ -132,6 +132,14 @@ export const entriesRequirements: IEntries[][] = [
   ],
 ];
 
+export const infoItems = [
+  { icon: <MdCheck />, text: "Cumple", appearance: "success", size: "20px", shape: "circle", variant: "filled" },
+  { icon: <MdClose />, text: "No Cumple", appearance: "danger", size: "20px", shape: "circle", variant: "filled" },
+  { icon: <MdRemove />, text: "Sin Evaluar", appearance: "warning", size: "20px", shape: "circle", variant: "filled" },
+  { icon: <MdAddCircleOutline />, text: "Adjuntar", appearance: "help", size: "28px"},
+  { icon: <MdOutlineCheckCircle />, text: "Forzar Aprobación", appearance: "help", size: "28px"},
+];
+
 export const actionsRequirements = [
   [
     {

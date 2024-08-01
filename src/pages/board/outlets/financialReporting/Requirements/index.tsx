@@ -1,6 +1,6 @@
 import { Stack, Icon, useMediaQuery } from "@inube/design-system";
 import { useState, isValidElement } from "react";
-import { MdAddCircleOutline, MdCheck, MdClose, MdOutlineCheckCircle, MdRemove } from "react-icons/md";
+import { MdAddCircleOutline, MdOutlineCheckCircle} from "react-icons/md";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
@@ -9,6 +9,7 @@ import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 import { dataButton } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
+import { infoItems } from "./config";
 
 interface IData {
   id: string;
@@ -88,13 +89,7 @@ export const Requirements = (props: IRequirementsProps) => {
 
   const isMobile = useMediaQuery("(max-width: 720px)");
 
-  const infoItems = [
-    { icon: <MdCheck />, text: "Cumple", appearance: "success", size: "20px", shape: "circle", variant: "filled" },
-    { icon: <MdClose />, text: "No Cumple", appearance: "danger", size: "20px", shape: "circle", variant: "filled" },
-    { icon: <MdRemove />, text: "Sin Evaluar", appearance: "warning", size: "20px", shape: "circle", variant: "filled" },
-    { icon: <MdAddCircleOutline />, text: "Adjuntar", appearance: "help", size: "28px"},
-    { icon: <MdOutlineCheckCircle />, text: "Forzar Aprobación", appearance: "help", size: "28px"},
-  ];
+
   
   return (
     <>

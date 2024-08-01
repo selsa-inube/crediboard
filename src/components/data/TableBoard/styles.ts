@@ -28,6 +28,7 @@ export const StyledContainer = styled.div<IStyledContainer>`
   border: ${({ theme, $borderTable }) =>
     $borderTable &&
     `2px solid ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}`};
+  overflow: visible;
 `;
 
 interface IStyledThactions {

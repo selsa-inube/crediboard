@@ -2,7 +2,8 @@ import { useState } from "react";
 import { MdOutlineInfo } from "react-icons/md";
 
 import { InfoModal } from "@components/modals/InfoModal"
-import { Icon, Text, SkeletonLine } from "@inube/design-system";
+import { Text, SkeletonLine } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
 
 import { IAction, IEntries, ITitle, appearances } from "./types";
 import {
@@ -144,14 +145,6 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleInfoClick = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <StyledContainer
       id={id}
@@ -189,7 +182,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                 appearance={appearanceTable!.title!}
                 isTablet={isTablet}
                 isStyleMobile={appearanceTable!.isStyleMobile!}
-                onInfoClick={handleInfoClick}
+                onInfoClick={() => setIsModalOpen(true)}
                 isFirstTable={isFirstTable ?? false}
               />
             )}
@@ -238,7 +231,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
           )}
         </StyledTbody>
       </StyledTable>
-      {isModalOpen && <InfoModal onClose={handleCloseModal} items={infoItems || []}/>}
+      {isModalOpen && <InfoModal onClose={() => setIsModalOpen(false)} items={infoItems || []}/>}
     </StyledContainer>
   );
 };
