@@ -78,7 +78,7 @@ export const StyledInputContainer = styled.div<IStyledInputContainer>`
     );
   }};
 
-  opacity: ${({ disabled }) => (disabled ? "0.5" : "none")};
+  opacity: ${({ disabled }) => disabled && "0.75"};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 `;
 
