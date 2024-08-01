@@ -5,33 +5,31 @@ export const StyledOptionItemChecked = styled.li`
   display: flex;
   align-items: center;
   align-self: stretch;
-  cursor: pointer;
   min-height: 40px;
-  padding-top: 4px;
-  padding-right: 16px;
-  padding-bottom: 4px;
-  padding-left: 12px;
+  border-left: 4px solid transparent;
+  padding: 4px 16px 4px 12px;
+  cursor: pointer;
+  border-left-width: 4px;
   border-left-style: solid;
-  border-left-width: 2px;
-  border-left-color: ${({ theme }) =>
-    theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
 
   p {
     color: ${({ theme }) =>
-      theme?.palette?.neutral?.N900 || inube.palette.neutral.N900};
+      theme?.input?.content?.color?.regular ||
+      inube.input.content.color.regular};
   }
 
   &:hover {
     border-left-color: ${({ theme }) =>
-      theme?.palette?.blue?.B400 || inube.palette.blue.B400};
+      theme?.input?.border?.color?.focus || inube.input.border.color.focus};
 
     background-color: ${({ theme }) =>
-      theme?.palette?.neutral?.N200 || inube.palette.neutral.N200};
+      theme?.input?.background?.color?.regular ||
+      inube.input.background.color.regular};
 
     p {
       color: ${({ theme }) =>
-        theme?.text?.primary?.content?.color?.regular ||
-        inube.text.primary.content.color.regular};
+        theme?.input?.content?.color?.regular ||
+        inube.input.content.color.regular};
     }
   }
 `;

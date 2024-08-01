@@ -54,28 +54,28 @@ export const StyledInputContainer = styled.div<IStyledInputContainer>`
   border-style: solid;
   background-color: ${({ theme, $readonly }) =>
     $readonly &&
-    (theme?.color?.surface?.light?.clear || inube.palette.neutral.N0)};
+    (theme?.input?.border?.color?.regular || inube.input.border.color.regular)};
   border-color: ${({ theme, disabled, $readonly, $status, $focused }) => {
     if (disabled) {
       return (
-        (theme?.text?.dark?.content?.color?.disabled ||
-          inube.text.dark.content.color.disabled) +
+        (theme?.input?.border?.color?.disabled ||
+          inube.input.border.color.disabled) +
         "; pointer-events: none; opacity: 0.5;"
       );
     }
     if ($focused && !$readonly) {
       return (
-        theme?.text?.primary?.content?.color?.hover ||
-        inube.text.primary.content.color.hover
+        theme?.input?.border?.color?.focus || inube.input.border.color.focus
       );
     }
     if ($status === "invalid" && !$readonly) {
       return (
-        theme?.text?.danger?.content?.color?.regular ||
-        inube.text.danger.content.color.regular
+        theme?.input?.border?.color?.invalid || inube.input.border.color.invalid
       );
     }
-    return theme?.divider?.stroke?.color || inube.divider.stroke.color;
+    return (
+      theme?.input?.border?.color?.regular || inube.input.border.color.regular
+    );
   }};
 
   opacity: ${({ disabled }) => (disabled ? "0.5" : "none")};
