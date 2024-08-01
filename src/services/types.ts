@@ -31,7 +31,7 @@ interface IToDo {
   task_to_be_done: string;
   account_manager_name: string;
   analyst_name: string;
-  decisions: string;
+  decisions: { id: string; label: string }[];
 }
 type DmEtapasPrs =
   | "CUMPLIMIENTO_REQUISITOS"

@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
+import { useParams } from "react-router-dom";
 import {
   Button,
   Icon,
@@ -14,17 +15,16 @@ import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo } from "@services/types";
 import { get } from "@mocks/utils/dataMock.service";
 
-import { optionSelectDecision } from "./config";
 import { StaffModal } from "./StaffModal";
 
 interface IICon {
   icon: JSX.Element;
-  onClick?: (e?: React.ChangeEvent) => void;
+  onClick?: (e?: ChangeEvent) => void;
 }
 
 interface IButton {
   label: string;
-  onClick: (e?: React.ChangeEvent) => void;
+  onClick: (e?: ChangeEvent) => void;
   disabled: boolean;
   loading?: boolean;
 }
@@ -37,58 +37,62 @@ interface ToDoProps {
 
 function ToDo(props: ToDoProps) {
   const { icon, button, isMobile } = props;
+  const { id } = useParams();
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
-  const [toDo, setToDo] = useState<IToDo[] | null>(null);
+  const [toDo, setToDo] = useState<IToDo | null>(null);
   const [assignedStaff, setAssignedStaff] = useState({
     commercialManager: "",
     analyst: "",
   });
   const [tempStaff, setTempStaff] = useState(assignedStaff);
-  const [changeDecision, setChangeDecision] = useState({ decision: "" });
+  const [decision, setDecision] = useState("");
 
   useEffect(() => {
-    const fetchData = () => {
-      Promise.allSettled([get("staff"), get("to-do")]).then((results) => {
-        const [staffData, toDoData] = results;
-        if (staffData.status === "fulfilled") {
-          setStaff(staffData.value as IStaff[]);
-        }
-        if (toDoData.status === "fulfilled") {
-          setToDo(toDoData.value as IToDo[]);
-        }
-      });
+    const fetchData = async () => {
+      const [staffResult, toDoResult] = await Promise.allSettled([
+        get("staff"),
+        get("to-do"),
+      ]);
+
+      if (staffResult.status === "fulfilled") {
+        setStaff(staffResult.value as IStaff[]);
+      }
+
+      if (toDoResult.status === "fulfilled") {
+        const toDoList = toDoResult.value as IToDo[];
+        const filteredToDo = toDoList.find(
+          (item) => item.credit_request_state_id === id
+        );
+        setToDo(filteredToDo || null);
+      }
     };
+
     fetchData();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (toDo) {
-      const { account_manager_name = "", analyst_name = "" } = toDo[0];
-      setAssignedStaff({
-        commercialManager: account_manager_name,
-        analyst: analyst_name,
-      });
-      setTempStaff({
-        commercialManager: account_manager_name,
-        analyst: analyst_name,
-      });
+      const { account_manager_name = "", analyst_name = "" } = toDo;
+      const commercialManager =
+        account_manager_name || "Jorge Enrique Díaz Vargas";
+
+      setAssignedStaff({ commercialManager, analyst: analyst_name });
+      setTempStaff({ commercialManager, analyst: analyst_name });
     }
   }, [toDo]);
 
-  const handleToggleStaffModal = () => {
-    setShowStaffModal((prev) => !prev);
-  };
+  const handleToggleStaffModal = () => setShowStaffModal((prev) => !prev);
 
   const handleSelectOfficial =
-    (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    (key: string) => (e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.innerText;
       setTempStaff((prev) => ({ ...prev, [key]: value }));
     };
 
-  const onChangeDecision = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeDecision = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.innerText;
-    setChangeDecision({ decision: value });
+    setDecision(value);
   };
 
   const handleSubmit = () => {
@@ -102,7 +106,7 @@ function ToDo(props: ToDoProps) {
     <>
       <Fieldset
         title="Por hacer"
-        descriptionTitle="Juan Sebastian Moralez García"
+        descriptionTitle={assignedStaff.commercialManager}
         heightFieldset={isMobile ? "inherit" : "284px"}
         hasOverflow
       >
@@ -117,7 +121,7 @@ function ToDo(props: ToDoProps) {
               </Text>
             )}
             <Text size={isMobile ? "medium" : "large"}>
-              {toDo && toDo[0].task_to_be_done}
+              {toDo?.task_to_be_done}
             </Text>
           </Stack>
           <Stack
@@ -131,15 +135,14 @@ function ToDo(props: ToDoProps) {
                 id="toDo"
                 name="decision"
                 label="Decisión"
-                value={changeDecision.decision}
+                value={decision}
                 placeholder="Seleccione una opción"
                 size="compact"
                 fullwidth
-                options={optionSelectDecision}
+                options={toDo?.decisions}
                 onChange={onChangeDecision}
               />
             </Stack>
-
             <Stack padding="s200 s0 s0 s0" width={isMobile ? "100%" : "auto"}>
               <Button
                 onClick={onClick}
@@ -180,7 +183,6 @@ function ToDo(props: ToDoProps) {
                 readOnly
               />
             </Stack>
-
             <Textfield
               id="analista"
               name="analista"
@@ -190,7 +192,6 @@ function ToDo(props: ToDoProps) {
               fullwidth
               readOnly
             />
-
             {icon && !isMobile && (
               <Stack width="100px" height="70px" alignItems="end">
                 <Icon
