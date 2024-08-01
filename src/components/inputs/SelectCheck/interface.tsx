@@ -81,13 +81,13 @@ export const SelectcheckUI = forwardRef<HTMLDivElement, ISelectcheckUIProps>(
 
     return (
       <StyledContainer $fullwidth={fullwidth} disabled={disabled} ref={ref}>
-        <Stack
-          alignItems="center"
-          margin="0px 0px 4px 0px"
-          padding="0px 0px 0px 16px"
-          gap="4px"
-        >
-          {label && (
+        {(required || label) && (
+          <Stack
+            alignItems="center"
+            margin="0px 0px 4px 0px"
+            padding="0px 0px 0px 16px"
+            gap="4px"
+          >
             <Label
               htmlFor={id}
               disabled={disabled}
@@ -98,14 +98,14 @@ export const SelectcheckUI = forwardRef<HTMLDivElement, ISelectcheckUIProps>(
             >
               {label}
             </Label>
-          )}
 
-          {required && !disabled && (
-            <Text type="body" size="small" appearance="dark">
-              (Requerido)
-            </Text>
-          )}
-        </Stack>
+            {!disabled && (
+              <Text type="body" size="small" appearance="dark">
+                (Requerido)
+              </Text>
+            )}
+          </Stack>
+        )}
 
         <StyledInputContainer
           disabled={disabled}
