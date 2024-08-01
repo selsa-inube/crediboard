@@ -32,6 +32,8 @@ export const Approvals = (props: IApprovalsProps) => {
   const { user } = props;
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
 
+  console.log("user", user);
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
