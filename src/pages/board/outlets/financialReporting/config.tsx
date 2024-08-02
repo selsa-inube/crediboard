@@ -136,8 +136,13 @@ export const optionsPrintFormat = [
     disabled: false,
   },
   {
-    id: "image",
-    label: "Imagen",
+    id: "xlsx",
+    label: "Excel",
+    disabled: false,
+  },
+  {
+    id: "html",
+    label: "Html",
     disabled: false,
   },
 ];

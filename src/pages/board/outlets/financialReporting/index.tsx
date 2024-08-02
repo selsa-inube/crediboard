@@ -18,7 +18,8 @@ import { dataAccordeon } from "@pages/board/outlets/financialReporting/Commercia
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
 import { Requests } from "@services/types";
-import { generatePDF } from "@utils/pdf/generetePDF";
+import { generatePDF, generatePDF2 } from "@utils/pdf/generetePDF";
+import { SelectModal } from "@components/modals/SelectModal";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -27,6 +28,7 @@ import {
   handleConfirmReject,
   handleConfirmCancel,
   optionButtons,
+  optionsPrintFormat,
 } from "./config";
 import { StyledItem, StyledMessageContainer } from "./styles";
 import { Approvals } from "./Approvals";
@@ -75,6 +77,7 @@ export const FinancialReporting = () => {
 
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showPrintModal, setShowPrintModal] = useState(false);
   const [showFlagMessage, setShowFlagMessage] = useState(false);
   const [flagMessage, setFlagMessage] = useState({
     title: "",
@@ -87,6 +90,7 @@ export const FinancialReporting = () => {
   const isMobile: boolean = useMediaQuery("(max-width: 880px)");
 
   const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
+  const dataFinancialReportingRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
@@ -116,7 +120,7 @@ export const FinancialReporting = () => {
         OnClick: () => setShowCancelModal(true),
       },
       buttonPrint: {
-        OnClick: () => {},
+        OnClick: () => setShowPrintModal(true),
       },
     },
     buttonsOutlined: {
@@ -129,43 +133,61 @@ export const FinancialReporting = () => {
     },
   };
 
+  const handleGenerateFinancialReportingPDF = () => {
+    setIsPrint(true);
+    setTimeout(() => {
+      generatePDF2(dataFinancialReportingRef, "Reporte financiero");
+    }, 1000);
+  };
+
+  const handleSubmitSelectedFormat = (value: string) => {
+    setShowPrintModal(false);
+
+    if (value === "Pdf") {
+      handleGenerateFinancialReportingPDF();
+    }
+  };
+
   return (
     <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
       <ContainerSections isMobile={isMobile} actionButtons={handleAction}>
         <>
-          <Stack direction="column" gap={inube.spacing.s250}>
-            <Stack direction="column">
+          <div ref={dataFinancialReportingRef}>
+            <Stack direction="column" gap={inube.spacing.s250}>
               <Stack direction="column">
-                <ComercialManagement
-                  print={handleGeneratePDF}
-                  data={data}
-                  children={
-                    <DataCommercialManagement
-                      dataAccordeon={dataAccordeon}
-                      isOpen={isPrint}
-                      dataRef={dataCommercialManagementRef}
-                    />
-                  }
-                />
+                <Stack direction="column">
+                  <ComercialManagement
+                    print={handleGeneratePDF}
+                    data={data}
+                    children={
+                      <DataCommercialManagement
+                        dataAccordeon={dataAccordeon}
+                        isOpen={isPrint}
+                        dataRef={dataCommercialManagementRef}
+                      />
+                    }
+                  />
+                </Stack>
               </Stack>
+
+              <Grid
+                templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
+                gap="s200"
+                autoRows="auto"
+              >
+                <Stack direction="column">
+                  {<ToDo icon={infoIcon} data={data} isMobile={isMobile} />}
+                </Stack>
+                <Stack direction="column">{<Approvals user={id!} />}</Stack>
+                <Stack direction="column">
+                  {<Requirements data={dataRequirements} />}
+                </Stack>
+                <Stack direction="column">{<Management />}</Stack>
+                <Stack direction="column">{<PromissoryNotes />}</Stack>
+                <Stack direction="column">{<Postingvouchers />}</Stack>
+              </Grid>
             </Stack>
-            <Grid
-              templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
-              gap="s200"
-              autoRows="auto"
-            >
-              <Stack direction="column">
-                {<ToDo icon={infoIcon} data={data} isMobile={isMobile} />}
-              </Stack>
-              <Stack direction="column">{<Approvals user={id!} />}</Stack>
-              <Stack direction="column">
-                {<Requirements data={dataRequirements} />}
-              </Stack>
-              <Stack direction="column">{<Management />}</Stack>
-              <Stack direction="column">{<PromissoryNotes />}</Stack>
-              <Stack direction="column">{<Postingvouchers />}</Stack>
-            </Grid>
-          </Stack>
+          </div>
           {showAttachments && (
             <ListModal
               title="Adjuntar"
@@ -241,6 +263,17 @@ export const FinancialReporting = () => {
             closeFlag={() => setShowFlagMessage(false)}
           />
         </StyledMessageContainer>
+      )}
+      {showPrintModal && (
+        <SelectModal
+          title="Imprimir"
+          buttonText="Imprimir"
+          inputLabel="Seleccionar Formato"
+          inputPlaceholder="Seleccione una opción"
+          options={optionsPrintFormat}
+          onSubmit={handleSubmitSelectedFormat}
+          onCloseModal={() => setShowPrintModal(false)}
+        />
       )}
     </Stack>
   );

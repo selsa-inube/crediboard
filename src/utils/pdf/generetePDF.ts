@@ -29,3 +29,26 @@ export const generatePDF = (
       console.error("Error al generar el PDF:", error);
     });
 };
+
+export const generatePDF2 = async (
+  elementPrint: React.RefObject<HTMLDivElement>,
+  titlePDF = "document"
+) => {
+  if (elementPrint.current === null) return;
+
+  const pdf = new jsPDF("l", "mm", "a4");
+  const margins = {
+    top: 25.4,
+    bottom: 25.4,
+    left: 25.4,
+    right: 25.4,
+  };
+
+  html2canvas(elementPrint.current).then((canvas) => {
+    const imgData = canvas.toDataURL("image/png");
+
+    pdf.addImage(imgData, "PNG", margins.left, margins.top, 245, 160);
+
+    pdf.save(titlePDF);
+  });
+};
