@@ -128,3 +128,21 @@ export const configDataAttachments = [
     name: "Certificado de antecedentes de fiscalía",
   },
 ];
+
+export const optionsPrintFormat = [
+  {
+    id: "pdf",
+    label: "Pdf",
+    disabled: false,
+  },
+  {
+    id: "xlsx",
+    label: "Excel",
+    disabled: false,
+  },
+  {
+    id: "html",
+    label: "Html",
+    disabled: false,
+  },
+];
