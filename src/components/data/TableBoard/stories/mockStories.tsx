@@ -6,7 +6,8 @@ import {
   MdOutlineCheckCircle,
   MdRemove,
 } from "react-icons/md";
-import { Icon, Stack, Tag } from "@inube/design-system";
+import { Icon, Stack} from "@inube/design-system";
+import {Tag} from "@inubekit/tag";
 
 import { IAction, IEntries } from "../types";
 
@@ -27,7 +28,7 @@ export const mockData: IEntries[] = [
       "Que el asociado sea activo y tiene mas de 5 años de antiguedad",
     tag: (
       <Stack padding="s0 s100 s0 s0">
-        <Tag label="Cumple" appearance="success" />
+        <Tag label="Cumple" appearance="success"  weight="strong"/>
       </Stack>
     ),
   },
@@ -36,7 +37,7 @@ export const mockData: IEntries[] = [
     "Validaciones del sistema": "Que este al días con las obligaciones",
     tag: (
       <Stack padding="s0 s100 s0 s0">
-        <Tag label="No Cumple" appearance="warning" />
+        <Tag label="No Cumple" appearance="warning"  weight="strong"/>
       </Stack>
     ),
   },
@@ -45,7 +46,7 @@ export const mockData: IEntries[] = [
     "Validaciones del sistema": "Que tenga mas de 30 años",
     tag: (
       <Stack padding="s0 s100 s0 s0">
-        <Tag label="Sin Validar" appearance="error" />
+        <Tag label="Sin Validar" appearance="danger"  weight="strong"/>
       </Stack>
     ),
   },
@@ -54,7 +55,7 @@ export const mockData: IEntries[] = [
     "Validaciones del sistema": "Que tenga mas de 30 años",
     tag: (
       <Stack padding="s0 s100 s0 s0">
-        <Tag label="Cumple" appearance="success" />
+        <Tag label="Cumple" appearance="success"  weight="strong"/>
       </Stack>
     ),
   },

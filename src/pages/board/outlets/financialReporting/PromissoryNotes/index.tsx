@@ -1,22 +1,24 @@
 import { useEffect, useState } from "react";
-import { Stack, useMediaQuery } from "@inube/design-system";
+import { Stack } from "@inube/design-system";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
-import { Tag } from "@components/data/Tag";
+
 import { getDataById } from "@mocks/utils/dataMock.service";
 import {
   payroll_discount_authorization,
   promissory_note,
 } from "@services/types";
 import {
-  actionMobile,
-  actionsFinanacialReporting,
   appearanceTag,
   firstWord,
+  getTableBoardActionMobile,
+  getTableBoardActions,
   titlesFinanacialReporting,
 } from "./config";
+import { Tag } from "@inubekit/tag";
+import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 
 interface IPromissoryNotesProps {
   user: string;
@@ -25,6 +27,7 @@ interface IPromissoryNotesProps {
 export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const { user } = props;
 
+  const [showModal, setShowModal] = useState(false);
   const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
     []
   );
@@ -62,7 +65,16 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     });
   }, [user]);
 
-  const isMobile = useMediaQuery("(max-width: 720px)");
+  const tableBoardActions = getTableBoardActions(() => setShowModal(true));
+  const tableBoardActionMobile = getTableBoardActionMobile(() =>
+    setShowModal(true)
+  );
+
+  const formValues = {
+    field1: "usuario@inube.com",
+    field2: "3122638128",
+    field3: "3122638128",
+  };
 
   return (
     <Stack direction="column">
@@ -71,16 +83,24 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           id="promissoryNotes"
           titles={titlesFinanacialReporting}
           entries={dataPromissoryNotes}
-          actions={actionsFinanacialReporting}
-          actionMobile={actionMobile}
+          actions={tableBoardActions}
+          actionMobile={tableBoardActionMobile}
           appearanceTable={{
-            widthTd: !isMobile ? "100" : "20%",
             efectzebra: true,
             title: "primary",
             isStyleMobile: true,
           }}
         />
       </Fieldset>
+      {showModal && (
+        <PromissoryNotesModal
+          title="Confirma los datos del usuario"
+          buttonText="Enviar"
+          formValues={formValues}
+          onCloseModal={() => setShowModal(false)}
+          handleClose={() => setShowModal(false)}
+        />
+      )}
     </Stack>
   );
 };

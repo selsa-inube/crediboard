@@ -9,6 +9,7 @@ import { promissory_note } from "@mocks/promissoryNotes/promissory_note.mock";
 import { payroll_discount_authorization } from "@mocks/promissoryNotes/payroll_discount_authorization.mock";
 import { approval_by_credit_request_Mock } from "@src/mocks/financialReporting/Approvals.mock";
 import { traceMock } from "@mocks/financialReporting/trace.mock";
+import { error_issued } from "@mocks/financialReporting/error.mock";
 
 export function initializeDataDB() {
   localforage.clear();
@@ -33,4 +34,5 @@ export function initializeDataDB() {
     "payroll_discount_authorization",
     payroll_discount_authorization
   );
+  intializedData("error_issued", error_issued);
 }

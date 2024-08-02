@@ -37,7 +37,7 @@ interface IStyledThactions {
 export const StyledThactions = styled.th<IStyledThactions>`
   ${({ $isTablet, $isFirst, theme }) =>
     $isTablet &&
-    `position: sticky; z-index: 22; background-color: white; text-align: end; ${
+    `position: sticky; z-index: 1; background-color: white; text-align: end; ${
       $isFirst &&
       `&::before { content: ""; position: absolute; top: 0; left: -2px; width: 2px; height: 100%;  box-shadow: 0px 1px 3px 1px #DFE1E6; background-color: ${theme?.color?.stroke?.gray?.regular || inube.color.stroke.gray.regular}; }`
     }`}
@@ -53,7 +53,7 @@ export const StyledTdactions = styled.td<IStyledTdactions>`
   text-align: center;
   ${({ $isTablet, $isFirst, theme }) =>
     $isTablet &&
-    `position: sticky; z-index: 22; ${
+    `position: sticky; z-index: 1; ${
       $isFirst &&
       `&::before { content: ""; position: absolute; top: 0; left: -2px; width: 2px; height: 100%; box-shadow: 0px 1px 3px 1px #DFE1E6; background-color: ${theme?.color?.stroke?.gray?.regular || inube.color.stroke.gray.regular}; }`
     }`}

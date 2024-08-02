@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
-import { useMediaQuery } from "@inube/design-system";
-
+import { useState, useEffect } from "react";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
-import { Tag } from "@components/data/Tag";
+import { ListModal } from "@src/components/modals/ListModal";
+import { Tag } from "@inubekit/tag";
 
 import {
   actionMobileApprovals,
-  actionsApprovals,
   titlesApprovals,
+  actionsApprovals,
+  handleNotificationClick,
+  desktopActions,
+  getMobileActionsConfig,
 } from "./config";
 import { getDataById } from "@mocks/utils/dataMock.service";
 import { approval_by_credit_request_Mock } from "@services/types";
@@ -33,6 +35,8 @@ export const Approvals = (props: IApprovalsProps) => {
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
 
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedData, setSelectedData] = useState<IEntries | null>(null);
 
   useEffect(() => {
     getDataById<approval_by_credit_request_Mock[]>(
@@ -57,30 +61,46 @@ export const Approvals = (props: IApprovalsProps) => {
     });
   }, [user]);
 
-  const isMobile = useMediaQuery("(max-width: 720px)");
+  const handleNotificationClickBound = (data: IEntries) => {
+    handleNotificationClick(data, setSelectedData, setShowModal);
+  };
+
+  const desktopActionsConfig = desktopActions(
+    actionsApprovals,
+    handleNotificationClickBound
+  );
+
+  const mobileActions = getMobileActionsConfig(
+    actionMobileApprovals,
+    handleNotificationClickBound
+  );
 
   return (
-    <Fieldset
-      title="Aprobaciones"
-      heightFieldset="282px"
-      aspectRatio="3/1"
-      hasTable
-    >
-      <TableBoard
-        id="usuarios"
-        titles={titlesApprovals}
-        entries={entriesApprovals}
-        actions={actionsApprovals}
-        loading={loading}
-        actionMobile={actionMobileApprovals}
-        nameTitleTag="decision"
-        appearanceTable={{
-          widthTd: !isMobile ? "100" : "60%",
-          efectzebra: true,
-          title: "primary",
-          isStyleMobile: false,
-        }}
-      />
-    </Fieldset>
+    <>
+      <Fieldset
+        title="Aprobaciones"
+        heightFieldset="282px"
+        aspectRatio="3/1"
+        hasTable
+      >
+        <TableBoard
+          id="usuarios"
+          titles={titlesApprovals}
+          entries={entriesApprovals}
+          actions={desktopActionsConfig}
+          actionMobile={mobileActions}
+          loading={loading}
+          nameTitleTag="decision"
+        />
+      </Fieldset>
+      {showModal && selectedData && (
+        <ListModal
+          title="Notificación"
+          handleClose={() => setShowModal(false)}
+          content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
+          buttonLabel="Enviar"
+        />
+      )}
+    </>
   );
 };
