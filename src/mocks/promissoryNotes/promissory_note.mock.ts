@@ -2,9 +2,8 @@ export const promissory_note = [
   {
     credit_request_id: "999990",
     promissory_note_id: "123e4567-e89b-12d3-a456-426614174001",
-    description_use:
-      "Es un tipo de pagaré que puede ser cedido a un tercero que adquiere el derecho de cobro",
-    abbreviated_name: "Pagaré indefinido ",
+    description_use: "Pagaré indefinido para la obligación OBL123456",
+    abbreviated_name: "Pagaré OBL123456",
     credit_product_id: "123e4567-e89b-12d3-a456-426614174002",
     state: "Firmado",
     obligation_unique_code: "OBL123456",
@@ -14,11 +13,10 @@ export const promissory_note = [
   {
     credit_request_id: "999991",
     promissory_note_id: "223e4567-e89b-12d3-a456-426614174004",
-    description_use:
-      "Son similares a los pagarés transferibles, pero sin el nombre del beneficiario escrito. También pueden ser cedidos a terceros",
-    abbreviated_name: "Pagaré nominativo",
+    description_use: "Pagaré nominativo para la obligación OBL223456",
+    abbreviated_name: "Pagaré OBL223456",
     credit_product_id: "223e4567-e89b-12d3-a456-426614174005",
-    state: "En tramite",
+    state: "En trámite",
     obligation_unique_code: "OBL223456",
     document_unique_code: "DOC223456",
     image_unique_code: "IMG223456",
@@ -27,8 +25,8 @@ export const promissory_note = [
     credit_request_id: "999992",
     promissory_note_id: "323e4567-e89b-12d3-a456-426614174007",
     description_use:
-      "Se agrega un período de tiempo durante el cual se calculará la fecha de vencimiento después de su emisión",
-    abbreviated_name: "Pagaré a plazo variable",
+      "Pagaré nominativo para la obligación OBL323456. Queda  a nombre de todos los tomadores del crédito.",
+    abbreviated_name: "Pagaré OBL323456",
     credit_product_id: "323e4567-e89b-12d3-a456-426614174008",
     state: "Con error",
     obligation_unique_code: "OBL323456",
@@ -38,11 +36,10 @@ export const promissory_note = [
   {
     credit_request_id: "999993",
     promissory_note_id: "423e4567-e89b-12d3-a456-426614174010",
-    description_use:
-      "En el pagaré se establece la fecha precisa de vencimiento del documento",
-    abbreviated_name: "Pagaré con fecha fija",
+    description_use: "Pagaré para la obligación OBL423456.",
+    abbreviated_name: "Pagaré OBL423456",
     credit_product_id: "423e4567-e89b-12d3-a456-426614174011",
-    state: "Con Error",
+    state: "Con error",
     obligation_unique_code: "OBL423456",
     document_unique_code: "DOC423456",
     image_unique_code: "IMG423456",
@@ -50,9 +47,8 @@ export const promissory_note = [
   {
     credit_request_id: "999994",
     promissory_note_id: "523e4567-e89b-12d3-a456-426614174013",
-    description_use:
-      "Se liquidan en el instante en que se presentan para el cobro",
-    abbreviated_name: "Pagaré al momento",
+    description_use: "Pagaré para la obligación OBL523456.",
+    abbreviated_name: "Pagaré OBL523456",
     credit_product_id: "523e4567-e89b-12d3-a456-426614174014",
     state: "Firmado",
     obligation_unique_code: "OBL523456",
@@ -62,11 +58,10 @@ export const promissory_note = [
   {
     credit_request_id: "999995",
     promissory_note_id: "623e4567-e89b-12d3-a456-426614174016",
-    description_use:
-      " El cruzamiento en un pagaré indica que el cobro debe efectuarse mediante depósito en una cuenta bancaria y no en efectivo",
-    abbreviated_name: "Pagaré con cruzamiento",
+    description_use: "Pagaré para la obligación OBL623456.",
+    abbreviated_name: "Pagaré OBL623456",
     credit_product_id: "623e4567-e89b-12d3-a456-426614174017",
-    state: "En tramite",
+    state: "En trámite",
     obligation_unique_code: "OBL623456",
     document_unique_code: "DOC623456",
     image_unique_code: "IMG623456",
@@ -74,9 +69,8 @@ export const promissory_note = [
   {
     credit_request_id: "999996",
     promissory_note_id: "723e4567-e89b-12d3-a456-426614174019",
-    description_use:
-      "una empresa emite el pagaré y establece requisitos que el receptor debe cumplir para poder beneficiarse del pago",
-    abbreviated_name: "Pagaré corporativo",
+    description_use: "Pagaré OBL723456",
+    abbreviated_name: "Pagaré OBL723456",
     credit_product_id: "723e4567-e89b-12d3-a456-426614174020",
     state: "Firmado",
     obligation_unique_code: "OBL723456",
