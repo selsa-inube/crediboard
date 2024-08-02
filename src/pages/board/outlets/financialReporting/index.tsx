@@ -11,7 +11,8 @@ import { Flag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
-import { ListModal } from "@src/components/modals/ListModal";
+import { ErrorAlert } from "@components/ErrorAlert";
+import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
@@ -146,6 +147,9 @@ export const FinancialReporting = () => {
 
   return (
     <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
+      <Stack justifyContent="center">
+        <ErrorAlert message="esto es un apruna de mensage" />
+      </Stack>
       <ContainerSections isMobile={isMobile} actionButtons={handleAction}>
         <>
           <Stack direction="column" gap={inube.spacing.s250}>
