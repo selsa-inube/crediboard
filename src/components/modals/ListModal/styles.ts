@@ -9,7 +9,7 @@ export const StyledModal = styled.div<IStyledModal>`
   overflow: auto;
   display: flex;
   flex-direction: column;
-  max-height: 382px; 
+  max-height: ${({ $smallScreen }) => ($smallScreen ? "398px" : "382px")};
   width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "493px")};
   background-color: ${({ theme }) =>
     theme.color?.surface?.light?.clear || inube.color.surface.light.clear};
@@ -19,7 +19,6 @@ export const StyledModal = styled.div<IStyledModal>`
     $smallScreen ? inube.spacing.s200 : inube.spacing.s300};
   border-radius: ${inube.spacing.s100};
 `;
-
 export const StyledContainerContent = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
@@ -49,7 +48,6 @@ export const StyledContainerContent = styled.div<IStyledModal>`
 export const StyledContainerClose = styled.div`
   cursor: pointer;
 `;
-
 
 export const StyledContainerTitle = styled.div`
   display: flex;
