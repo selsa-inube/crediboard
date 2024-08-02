@@ -186,7 +186,7 @@ export const dataAccordeon = [
     title: (
       <Stack width="100%">
         <div style={{ flex: "1" }}>
-          <Text type="label">Créditos Recogidos",</Text>
+          <Text type="label">Créditos Recogidos</Text>
         </div>
         <div style={{ flex: "1 1 3.5%" }}>
           <Text size="medium">$49.500.000</Text>

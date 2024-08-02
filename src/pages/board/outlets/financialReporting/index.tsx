@@ -1,25 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   MdDeleteOutline,
   MdOutlineRemoveRedEye,
   MdOutlineThumbUp,
 } from "react-icons/md";
-import { Stack, Text, inube, Grid, useMediaQuery } from "@inube/design-system";
+import { Text, inube, Grid, useMediaQuery } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import { Stack } from "@inubekit/stack";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
-import { Listmodal } from "@components/modals/Listmodal";
+import { ListModal } from "@src/components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
 import { Requests } from "@services/types";
-import { SelectModal } from "@components/modals/SelectModal";
+import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -28,17 +27,14 @@ import {
   handleConfirmReject,
   handleConfirmCancel,
   optionButtons,
-  optionsPrintFormat,
 } from "./config";
 import { StyledItem, StyledMessageContainer } from "./styles";
-
-export interface IFinancialReportingProps {
-  requirements?: JSX.Element | JSX.Element[];
-  promissoryNotes?: JSX.Element | JSX.Element[];
-  approvals?: JSX.Element | JSX.Element[];
-  management?: JSX.Element | JSX.Element[];
-  postingVouchers?: JSX.Element | JSX.Element[];
-}
+import { Approvals } from "./Approvals";
+import { Requirements } from "./Requirements";
+import { dataRequirements } from "./Requirements/config";
+import { Management } from "./management";
+import { PromissoryNotes } from "./PromissoryNotes";
+import { Postingvouchers } from "./Postingvouchers";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -71,15 +67,7 @@ const Listdata = (props: IListdataProps) => {
   );
 };
 
-export const FinancialReporting = (props: IFinancialReportingProps) => {
-  const {
-    requirements,
-    promissoryNotes,
-    approvals,
-    management,
-    postingVouchers,
-  } = props;
-
+export const FinancialReporting = () => {
   const [data, setData] = useState({} as Requests);
 
   const [showAttachments, setShowAttachments] = useState(false);
@@ -87,7 +75,6 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
 
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
-  const [showPrintModal, setShowPrintModal] = useState(false);
   const [showFlagMessage, setShowFlagMessage] = useState(false);
   const [flagMessage, setFlagMessage] = useState({
     title: "",
@@ -97,13 +84,28 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
 
   const { id } = useParams();
 
-  const isMobile: boolean = useMediaQuery("(max-width: 720px)");
+  const isMobile: boolean = useMediaQuery("(max-width: 880px)");
+
+  const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     getById("k_Prospe", "requests", id!).then((requirement) => {
       setData(requirement);
     });
   }, [id]);
+
+  const [isPrint, setIsPrint] = useState(false);
+
+  const handleGeneratePDF = () => {
+    setIsPrint(true);
+    setTimeout(() => {
+      generatePDF(
+        dataCommercialManagementRef,
+        "Gestión Comercial",
+        "Gestión Comercial"
+      );
+    }, 1000);
+  };
 
   const handleAction = {
     buttons: {
@@ -114,7 +116,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
         OnClick: () => setShowCancelModal(true),
       },
       buttonPrint: {
-        OnClick: () => setShowPrintModal(true),
+        OnClick: () => {},
       },
     },
     buttonsOutlined: {
@@ -127,84 +129,45 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
     },
   };
 
-  const generatePDF = async () => {
-    const pdfContainer = document.getElementById("pdfFinancialReporting");
-
-    if (!pdfContainer) {
-      return;
-    }
-
-    const canvas = await html2canvas(pdfContainer);
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("l", "mm", "a4");
-    const imgProps = pdf.getImageProperties(imgData);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-    const margins = {
-      top: 20,
-      bottom: 0,
-      left: 10,
-      right: 10,
-    };
-
-    const contentWidth = pdfWidth - margins.left - margins.right;
-    const contentHeight = pdfHeight - margins.top - margins.bottom;
-
-    pdf.addImage(
-      imgData,
-      "PNG",
-      margins.left,
-      margins.top,
-      contentWidth,
-      contentHeight
-    );
-
-    pdf.save("financial-reporting.pdf");
-  };
-
-  const handleSubmitSelectedFormat = (value: string) => {
-    setShowPrintModal(false);
-
-    if (value === "Pdf") {
-      generatePDF();
-    }
-  };
-
   return (
-    <Stack direction="column" margin={!isMobile ? "s250 s500" : "s250"}>
+    <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
       <ContainerSections isMobile={isMobile} actionButtons={handleAction}>
         <>
           <Stack direction="column" gap={inube.spacing.s250}>
             <Stack direction="column">
               <Stack direction="column">
                 <ComercialManagement
+                  print={handleGeneratePDF}
                   data={data}
                   children={
-                    <DataCommercialManagement dataAccordeon={dataAccordeon} />
+                    <DataCommercialManagement
+                      dataAccordeon={dataAccordeon}
+                      isOpen={isPrint}
+                      dataRef={dataCommercialManagementRef}
+                    />
                   }
                 />
               </Stack>
             </Stack>
-            <div id="pdfFinancialReporting">
-              <Grid
-                templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
-                gap="s200"
-                autoRows="auto"
-              >
-                <Stack direction="column">
-                  {<ToDo icon={infoIcon} data={data} isMobile={isMobile} />}
-                </Stack>
-                <Stack direction="column">{approvals}</Stack>
-                <Stack direction="column">{requirements}</Stack>
-                <Stack direction="column">{management}</Stack>
-                <Stack direction="column">{promissoryNotes}</Stack>
-                <Stack direction="column">{postingVouchers}</Stack>
-              </Grid>
-            </div>
+            <Grid
+              templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
+              gap="s200"
+              autoRows="auto"
+            >
+              <Stack direction="column">
+                {<ToDo icon={infoIcon} data={data} isMobile={isMobile} />}
+              </Stack>
+              <Stack direction="column">{<Approvals user={id!} />}</Stack>
+              <Stack direction="column">
+                {<Requirements data={dataRequirements} />}
+              </Stack>
+              <Stack direction="column">{<Management />}</Stack>
+              <Stack direction="column">{<PromissoryNotes />}</Stack>
+              <Stack direction="column">{<Postingvouchers />}</Stack>
+            </Grid>
           </Stack>
           {showAttachments && (
-            <Listmodal
+            <ListModal
               title="Adjuntar"
               content={
                 <Listdata
@@ -214,10 +177,11 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
               }
               handleClose={() => setShowAttachments(false)}
               optionButtons={optionButtons}
+              buttonLabel="Cerrar"
             />
           )}
           {attachDocuments && (
-            <Listmodal
+            <ListModal
               title="Ver Adjuntos"
               content={
                 <Listdata
@@ -226,6 +190,7 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
                 />
               }
               handleClose={() => setAttachDocuments(false)}
+              buttonLabel="Cerrar"
             />
           )}
         </>
@@ -276,17 +241,6 @@ export const FinancialReporting = (props: IFinancialReportingProps) => {
             closeFlag={() => setShowFlagMessage(false)}
           />
         </StyledMessageContainer>
-      )}
-      {showPrintModal && (
-        <SelectModal
-          title="Imprimir"
-          buttonText="Imprimir"
-          inputLabel="Seleccionar Formato"
-          inputPlaceholder="Seleccione una opción"
-          options={optionsPrintFormat}
-          onSubmit={handleSubmitSelectedFormat}
-          onCloseModal={() => setShowPrintModal(false)}
-        />
       )}
     </Stack>
   );
