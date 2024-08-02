@@ -1,9 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { Button } from "@inubekit/button";
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
+import { Button, Stack, Text } from "@inube/design-system";
 
-import { Fieldset } from "./index";
+import { Fieldset } from ".";
 
 type Story = StoryObj<typeof Fieldset>;
 
@@ -37,7 +35,7 @@ const Example = () => (
       dolores, asperiores maxime. Beatae possimus quo voluptatem doloribus
       cumque!
     </Text>
-    <Button children="Click me"/> 
+    <Button>Click me</Button>
   </Stack>
 );
 
