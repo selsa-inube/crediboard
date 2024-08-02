@@ -11,13 +11,14 @@ import { traceMock } from "@mocks/financialReporting/trace.mock";
 export function initializeDataDB() {
   localforage.clear();
 
-  intializedData<(typeof themes)[number]>("themes", themes);
-  intializedData<(typeof mockRequests)[number]>("requests", mockRequests);
-  intializedData<(typeof mockRequestsPinned)[number]>("requests-pinned", mockRequestsPinned);
-  intializedData<(typeof mockStaff)[number]>("staff", mockStaff);
+  intializedData<(typeof themes)[number]>("themes", themes, true);
+  intializedData<(typeof mockRequests)[number]>("requests", mockRequests, true);
+  intializedData<(typeof mockRequestsPinned)[number]>("requests-pinned", mockRequestsPinned, true);
+  intializedData<(typeof mockStaff)[number]>("staff", mockStaff, true);
   intializedData<(typeof approval_by_credit_request_Mock)[number]>(
     "approval",
-    approval_by_credit_request_Mock
+    approval_by_credit_request_Mock,
+    true
   );
-  intializedData<(typeof traceMock)[number]>("trace", traceMock);
+  intializedData<(typeof traceMock)[number]>("trace", traceMock, false);
 }
