@@ -1,20 +1,26 @@
-import { Stack, useMediaQuery} from "@inube/design-system";
-
-
+import { useState } from "react";
+import { Stack } from "@inube/design-system";
 import { Fieldset } from "@src/components/data/Fieldset";
 import { TableBoard } from "@src/components/data/TableBoard";
 import {
-  actionMobile,
-  actionsFinanacialReporting,
+  getTableBoardActions,
+  getTableBoardActionMobile,
   entriesFinanacialReporting,
   titlesFinanacialReporting,
 } from "./config";
-
-
+import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 
 export const PromissoryNotes = () => {
+  const [showModal, setShowModal] = useState(false);
 
-  const isMobile = useMediaQuery("(max-width: 720px)");
+  const tableBoardActions = getTableBoardActions(() => setShowModal(true));
+  const tableBoardActionMobile = getTableBoardActionMobile(() => setShowModal(true));
+
+  const formValues = {
+    field1: "usuario@inube.com",
+    field2: "3122638128",
+    field3: "3122638128"
+  };
 
   return (
     <Stack direction="column">
@@ -23,16 +29,24 @@ export const PromissoryNotes = () => {
           id="promissoryNotes"
           titles={titlesFinanacialReporting}
           entries={entriesFinanacialReporting}
-          actions={actionsFinanacialReporting}
-          actionMobile={actionMobile}
+          actions={tableBoardActions}
+          actionMobile={tableBoardActionMobile}
           appearanceTable={{
-            widthTd: !isMobile ? "100" : "20%",
             efectzebra: true,
             title: "primary",
             isStyleMobile: true,
           }}
         />
       </Fieldset>
+      {showModal && (
+        <PromissoryNotesModal
+          title="Confirma los datos del usuario"
+          buttonText="Enviar"
+          formValues={formValues}
+          onCloseModal={() => setShowModal(false)}
+          handleClose={() => setShowModal(false)}
+        />
+      )}
     </Stack>
   );
 };
