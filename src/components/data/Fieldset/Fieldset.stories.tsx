@@ -3,7 +3,7 @@ import { Button } from "@inubekit/button";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 
-import { Fieldset } from ".";
+import { Fieldset } from "./index";
 
 type Story = StoryObj<typeof Fieldset>;
 
@@ -37,7 +37,7 @@ const Example = () => (
       dolores, asperiores maxime. Beatae possimus quo voluptatem doloribus
       cumque!
     </Text>
-    <Button children="Click me" />
+    <Button children="Click me"/> 
   </Stack>
 );
 
