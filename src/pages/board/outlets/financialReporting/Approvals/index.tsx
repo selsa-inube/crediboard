@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
+import { useMediaQuery } from "@inube/design-system";
+import { Tag } from "@inubekit/tag";
+
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
-import { ListModal } from "@src/components/modals/ListModal";
-import { Tag } from "@inubekit/tag";
+import { ListModal } from "@components/modals/ListModal";
+import { TextAreaModal } from "@components/modals/TextAreaModal";
 
 import {
   actionMobileApprovals,
   titlesApprovals,
   actionsApprovals,
   handleNotificationClick,
+  handleErrorClick,
   desktopActions,
   getMobileActionsConfig,
 } from "./config";
@@ -33,15 +37,14 @@ interface IApprovalsProps {
 export const Approvals = (props: IApprovalsProps) => {
   const { user } = props;
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
-
-  console.log("user", user);
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showNotificationModal, setShowNotificationModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
 
   useEffect(() => {
+    setLoading(true);
     get<approval_by_credit_request_Mock[]>("approval").then((data) => {
-      setLoading(true);
       const entries = data
         .filter((client) => client.credit_request_id === user)
         .map((entry) => ({
@@ -62,18 +65,25 @@ export const Approvals = (props: IApprovalsProps) => {
   }, [user]);
 
   const handleNotificationClickBound = (data: IEntries) => {
-    handleNotificationClick(data, setSelectedData, setShowModal);
+    handleNotificationClick(data, setSelectedData, setShowNotificationModal);
+  };
+
+  const handleErrorClickBound = (data: IEntries) => {
+    handleErrorClick(data, setSelectedData, setShowErrorModal);
   };
 
   const desktopActionsConfig = desktopActions(
     actionsApprovals,
-    handleNotificationClickBound
+    handleNotificationClickBound,
+    handleErrorClickBound
   );
 
   const mobileActions = getMobileActionsConfig(
     actionMobileApprovals,
-    handleNotificationClickBound
+    handleNotificationClickBound,
+    handleErrorClickBound
   );
+  const isMobile = useMediaQuery("(max-width: 720px)");
 
   return (
     <>
@@ -91,14 +101,31 @@ export const Approvals = (props: IApprovalsProps) => {
           actionMobile={mobileActions}
           loading={loading}
           nameTitleTag="decision"
+          appearanceTable={{
+            widthTd: !isMobile ? "100" : "61%",
+            efectzebra: true,
+            title: "primary",
+            isStyleMobile: false,
+          }}
         />
       </Fieldset>
-      {showModal && selectedData && (
+      {showNotificationModal && selectedData && (
         <ListModal
           title="Notificación"
-          handleClose={() => setShowModal(false)}
+          handleClose={() => setShowNotificationModal(false)}
           content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
           buttonLabel="Enviar"
+        />
+      )}
+      {showErrorModal && selectedData && (
+        <TextAreaModal
+          title="Error"
+          buttonText="Cerrar"
+          inputLabel="Descripción del error"
+          inputPlaceholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nec mollis felis. Donec eget sapien viverra, tincidunt ex ut, ornare nisi. Nulla eget fermentum velit."
+          readOnly
+          disableTextarea={true}
+          onCloseModal={() => setShowErrorModal(false)}
         />
       )}
     </>
