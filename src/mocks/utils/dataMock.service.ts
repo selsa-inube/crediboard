@@ -1,16 +1,18 @@
 import localforage from "localforage";
 
-function buildData<T>(data: T[]) {
+function buildData<T>(data: T[], includeId: boolean) {
   const dataMock = data.map((optionData) => {
-    const newObj = Object.assign({ id: crypto.randomUUID() }, optionData);
+    const newObj = includeId
+      ? Object.assign({ id: crypto.randomUUID() }, optionData)
+      : optionData;
     return newObj;
   });
   return dataMock;
 }
 
-export async function intializedData<T>(option: string, data: T[]) {
+export async function intializedData<T>(option: string, data: T[], includeId: boolean) {
   try {
-    const dataMock = buildData(data);
+    const dataMock = buildData(data, includeId);
     await localforage.setItem(option, dataMock);
   } catch (error) {
     return error;
