@@ -8,11 +8,11 @@ import { useParams } from "react-router-dom";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/message";
-import { SubmitButton } from "@components/inputs/SubmitButton";
 
 import { ChatContent } from "./styles";
 import { get } from "@mocks/utils/dataMock.service";
 import { traceMock } from "@src/mocks/financialReporting/trace.mock";
+import { MdOutlineSend } from "react-icons/md";
 
 interface MessageType {
   id: string;
@@ -51,7 +51,7 @@ export const Management = () => {
     });
   }, [messages]);
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
     sendMessage();
   };
@@ -90,7 +90,7 @@ export const Management = () => {
             />
           ))}
         </ChatContent>
-        <form onSubmit={handleFormSubmit}>
+        <form>
           <Stack alignItems="center" direction="row" gap={inube.spacing.s150}>
             <Icon
               appearance="primary"
@@ -105,7 +105,15 @@ export const Management = () => {
               value={newMessage}
               onChange={handleInputChange}
             />
-            <SubmitButton />
+            <Stack>
+              <Icon
+                appearance="primary"
+                cursorHover
+                size="36px"
+                icon={<MdOutlineSend />}
+                onClick={handleFormSubmit}
+              />
+            </Stack>
           </Stack>
         </form>
       </Stack>
