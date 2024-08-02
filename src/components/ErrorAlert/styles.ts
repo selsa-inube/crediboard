@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { inube } from "@inube/design-system";
 
-interface AlertContainerProps {
+/* interface AlertContainerProps {
   $top: string;
   $left: string;
-}
+} */
 
-export const AlertContainer = styled.div<AlertContainerProps>`
+export const AlertContainer = styled.div`
   display: flex;
   align-items: center;
   background-color: ${({ theme }) =>
@@ -17,13 +17,12 @@ export const AlertContainer = styled.div<AlertContainerProps>`
     ${({ theme }) =>
       theme?.color?.stroke?.gray?.regular || inube.color.surface.gray.regular};
   position: absolute;
-  top: ${({ $top }) => $top};
-  left: ${({ $left }) => $left};
-  transform: translateX(-50%);
-  
+
+  z-index: 1;
+
   @media (max-width: 350px) {
     position: fixed;
-    flex-direction: column;
+    //flex-direction: column;
     align-items: flex-start;
     padding: 8px 5px;
   }
@@ -33,6 +32,6 @@ export const AlertText = styled.div`
   margin: 0 10px;
   font-family: Roboto;
   font-size: 14px;
-  margin-right: 85px;
+  // margin-right: 85px;
   white-space: nowrap;
 `;

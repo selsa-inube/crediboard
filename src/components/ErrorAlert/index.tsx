@@ -6,21 +6,14 @@ import { messages } from "./config"; // Adjust the import path as needed
 
 export interface ErrorAlertProps {
   message?: string;
-  onClose: () => void;
-  top: string;
-  left: string;
-  showError: boolean;
+  onClose?: () => void;
 }
 
 const ErrorAlert = (props: ErrorAlertProps) => {
-  const { message, onClose, top, left, showError } = props;
-
-  if (!showError) {
-    return null;
-  }
+  const { message, onClose } = props;
 
   return (
-    <AlertContainer $top={top} $left={left}>
+    <AlertContainer>
       <Icon appearance="warning" icon={<MdWarningAmber />} size="24px" />
       <AlertText>{message || messages.defaultError}</AlertText>
       <Icon
