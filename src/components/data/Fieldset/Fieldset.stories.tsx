@@ -37,7 +37,7 @@ const Example = () => (
       dolores, asperiores maxime. Beatae possimus quo voluptatem doloribus
       cumque!
     </Text>
-    <Button>Click me</Button>
+    <Button children="Click me" />
   </Stack>
 );
 
