@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
+import { useParams } from "react-router-dom";
 import {
   Button,
   Icon,
@@ -11,20 +12,19 @@ import {
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
-import { IStaff, Requests } from "@services/types";
+import { IStaff, IToDo } from "@services/types";
 import { get } from "@mocks/utils/dataMock.service";
 
-import { optionSelectDecision } from "./config";
 import { StaffModal } from "./StaffModal";
 
 interface IICon {
   icon: JSX.Element;
-  onClick?: (e?: React.ChangeEvent) => void;
+  onClick?: (e?: ChangeEvent) => void;
 }
 
 interface IButton {
   label: string;
-  onClick: (e?: React.ChangeEvent) => void;
+  onClick: (e?: ChangeEvent) => void;
   disabled: boolean;
   loading?: boolean;
 }
@@ -33,34 +33,66 @@ interface ToDoProps {
   icon?: IICon;
   button?: IButton;
   isMobile?: boolean;
-  data: Requests;
 }
 
-export const ToDo = (props: ToDoProps) => {
-  const { icon, button, isMobile, data } = props;
-  const { label, onClick, disabled, loading } = button || {};
+function ToDo(props: ToDoProps) {
+  const { icon, button, isMobile } = props;
+  const { id } = useParams();
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
+  const [toDo, setToDo] = useState<IToDo | null>(null);
   const [assignedStaff, setAssignedStaff] = useState({
-    commercialManager: "Jorge Enrique Díaz Vargas",
-    analyst: "Ana Patricia García Herrera",
+    commercialManager: "",
+    analyst: "",
   });
   const [tempStaff, setTempStaff] = useState(assignedStaff);
-  const [changeDecision, setChangeDecision] = useState({ decision: "" });
+  const [decision, setDecision] = useState("");
 
-  const handleToggleStaffModal = () => {
-    setShowStaffModal(!showStaffModal);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const [staffResult, toDoResult] = await Promise.allSettled([
+        get("staff"),
+        get("to-do"),
+      ]);
+
+      if (staffResult.status === "fulfilled") {
+        setStaff(staffResult.value as IStaff[]);
+      }
+
+      if (toDoResult.status === "fulfilled") {
+        const toDoList = toDoResult.value as IToDo[];
+        const filteredToDo = toDoList.find(
+          (item) => item.credit_request_state_id === id
+        );
+        setToDo(filteredToDo || null);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    if (toDo) {
+      const { account_manager_name = "", analyst_name = "" } = toDo;
+      const commercialManager =
+        account_manager_name || "Jorge Enrique Díaz Vargas";
+
+      setAssignedStaff({ commercialManager, analyst: analyst_name });
+      setTempStaff({ commercialManager, analyst: analyst_name });
+    }
+  }, [toDo]);
+
+  const handleToggleStaffModal = () => setShowStaffModal((prev) => !prev);
 
   const handleSelectOfficial =
-    (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    (key: string) => (e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.innerText;
       setTempStaff((prev) => ({ ...prev, [key]: value }));
     };
 
-  const onChangeDecision = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeDecision = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.innerText;
-    setChangeDecision({ decision: value });
+    setDecision(value);
   };
 
   const handleSubmit = () => {
@@ -68,23 +100,13 @@ export const ToDo = (props: ToDoProps) => {
     handleToggleStaffModal();
   };
 
-  useEffect(() => {
-    get("staff")
-      .then((data) => {
-        if (data && Array.isArray(data)) {
-          setStaff(data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching staff data:", error.message);
-      });
-  }, []);
+  const { label, onClick, disabled, loading } = button || {};
 
   return (
     <>
       <Fieldset
         title="Por hacer"
-        descriptionTitle="Juan Sebastian Moralez García"
+        descriptionTitle={assignedStaff.commercialManager}
         heightFieldset={isMobile ? "inherit" : "284px"}
         hasOverflow
       >
@@ -99,7 +121,7 @@ export const ToDo = (props: ToDoProps) => {
               </Text>
             )}
             <Text size={isMobile ? "medium" : "large"}>
-              {data?.n_Descr_Tarea}
+              {toDo?.task_to_be_done}
             </Text>
           </Stack>
           <Stack
@@ -113,15 +135,14 @@ export const ToDo = (props: ToDoProps) => {
                 id="toDo"
                 name="decision"
                 label="Decisión"
-                value={changeDecision.decision}
+                value={decision}
                 placeholder="Seleccione una opción"
                 size="compact"
                 fullwidth
-                options={optionSelectDecision}
+                options={toDo?.decisions}
                 onChange={onChangeDecision}
               />
             </Stack>
-
             <Stack padding="s200 s0 s0 s0" width={isMobile ? "100%" : "auto"}>
               <Button
                 onClick={onClick}
@@ -162,7 +183,6 @@ export const ToDo = (props: ToDoProps) => {
                 readOnly
               />
             </Stack>
-
             <Textfield
               id="analista"
               name="analista"
@@ -172,7 +192,6 @@ export const ToDo = (props: ToDoProps) => {
               fullwidth
               readOnly
             />
-
             {icon && !isMobile && (
               <Stack width="100px" height="70px" alignItems="end">
                 <Icon
@@ -199,4 +218,6 @@ export const ToDo = (props: ToDoProps) => {
       )}
     </>
   );
-};
+}
+
+export { ToDo };
