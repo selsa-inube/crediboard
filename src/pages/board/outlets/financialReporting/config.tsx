@@ -1,6 +1,6 @@
 import { MdAddCircleOutline } from "react-icons/md";
 
-import { IOptionButtons } from "@components/modals/Listmodal";
+import { IOptionButtons } from "@src/components/modals/ListModal";
 
 export const handleConfirmReject = (
   values: { textarea: string },
