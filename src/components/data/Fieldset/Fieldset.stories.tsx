@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
+import { Text } from "@inube/design-system";
 import { Button } from "@inubekit/button";
-import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 
 import { Fieldset } from ".";

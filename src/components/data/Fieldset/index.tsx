@@ -1,10 +1,9 @@
 import { MdAdd } from "react-icons/md";
 import {
+  Text ,
   useMediaQuery,
 } from "@inube/design-system";
-
 import { Button } from "@inubekit/button";
-import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 import { StyledContainerFieldset } from "./styles";
 
