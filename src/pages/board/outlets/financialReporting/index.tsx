@@ -17,8 +17,8 @@ import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
-import { get, getById } from "@mocks/utils/dataMock.service";
-import { Idocument, Requests } from "@services/types";
+import { getById, getDataById } from "@mocks/utils/dataMock.service";
+import { Idocument, Ierror_issued, Requests } from "@services/types";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
@@ -83,6 +83,7 @@ export const FinancialReporting = () => {
   });
 
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
+  const [errors, setError] = useState<Ierror_issued[]>([]);
 
   const { id } = useParams();
 
@@ -93,19 +94,21 @@ export const FinancialReporting = () => {
   useEffect(() => {
     Promise.allSettled([
       getById("k_Prospe", "requests", id!),
-      get<Idocument[]>("document"),
-    ]).then(([requirement, documents]) => {
+      getDataById<Idocument[]>("document", "credit_request_id", id!),
+      getDataById<Ierror_issued[]>("error_issued", "credit_request_id", id!),
+    ]).then(([requirement, documents, error_issue]) => {
       if (requirement.status === "fulfilled") {
         setData(requirement.value as Requests);
       }
-      if (documents.status === "fulfilled") {
-        const documentsUser = documents.value
-          .filter((doc) => doc.credit_request_id === id)
-          .map((dataListDocument) => ({
-            id: dataListDocument.document_id,
-            name: dataListDocument.abbreviated_name,
-          }));
+      if (documents.status === "fulfilled" && documents.value) {
+        const documentsUser = documents.value.map((dataListDocument) => ({
+          id: dataListDocument.document_id,
+          name: dataListDocument.abbreviated_name,
+        }));
         setDocument(documentsUser);
+      }
+      if (error_issue.status === "fulfilled") {
+        setError(error_issue.value!);
       }
     });
   }, [id]);
@@ -145,11 +148,19 @@ export const FinancialReporting = () => {
     },
   };
 
+  console.log("error", errors.length);
+
   return (
     <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
-      <Stack justifyContent="center">
-        <ErrorAlert message="esto es un apruna de mensage" />
-      </Stack>
+      {errors.length > 0 &&
+        errors.map((error, index) => (
+          <Stack
+            justifyContent={index === 0 ? "center" : "flex-start"}
+            key={error.error_issued_id}
+          >
+            <ErrorAlert message={error.error_description} />
+          </Stack>
+        ))}
       <ContainerSections isMobile={isMobile} actionButtons={handleAction}>
         <>
           <Stack direction="column" gap={inube.spacing.s250}>
