@@ -1,31 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import { inube } from "@inube/design-system";
 
-/* interface AlertContainerProps {
-  $top: string;
-  $left: string;
-} */
-
-/* export const AlertContainer = styled.div`
-  display: flex;
-  align-items: center;
-  background-color: ${({ theme }) =>
-    theme?.color?.stroke?.gray?.regular || inube.color.surface.warning.clear};
-  padding: 7px;
-  border-radius: 4px;
-  border: 1px solid
-    ${({ theme }) =>
-      theme?.color?.stroke?.gray?.regular || inube.color.surface.gray.regular};
-  position: absolute;
-  min-width: 250px;
-  z-index: 1;
-`;
- */
-
-interface IAlertContainer {
-  $top: number;
-}
-
 const slideDown = keyframes`
  
 	0% {
@@ -72,7 +47,7 @@ const slideDown = keyframes`
 
 `;
 
-export const AlertContainer = styled.div<IAlertContainer>`
+export const AlertContainer = styled.div`
   display: flex;
   align-items: center;
   background-color: ${({ theme }) =>
@@ -85,10 +60,5 @@ export const AlertContainer = styled.div<IAlertContainer>`
   min-width: 250px;
   justify-content: center;
   animation: ${slideDown} 2s ease-in-out;
-  position: relative; // Add position: relative
-  //transform: translateY(10px); // Lower the hovered alert
-
-  &:hover {
-    transition: transform 0.3s ease-in-out; // Smooth transition
-  }
+  position: relative;
 `;

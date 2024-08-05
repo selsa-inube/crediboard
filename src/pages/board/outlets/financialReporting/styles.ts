@@ -24,4 +24,10 @@ export const StyledToast = styled.div`
   z-index: 2;
   position: absolute;
   gap: 4px;
+  opacity: 0.8;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
 `;

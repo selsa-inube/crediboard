@@ -148,18 +148,24 @@ export const FinancialReporting = () => {
     },
   };
 
+  const handleClose = (errorId: string) => {
+    setError(errors.filter((error) => error.error_issued_id !== errorId));
+  };
+
   return (
     <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
       {errors.length > 0 && (
-        <StyledToast>
-          {errors.map((error, index) => (
-            <ErrorAlert
-              message={error.error_description}
-              top={index * 10}
-              key={error.error_issued_id}
-            />
-          ))}
-        </StyledToast>
+        <Stack justifyContent="center" alignContent="center">
+          <StyledToast>
+            {errors.map((error) => (
+              <ErrorAlert
+                message={error.error_description}
+                onClose={() => handleClose(error.error_issued_id)}
+                key={error.error_issued_id}
+              />
+            ))}
+          </StyledToast>
+        </Stack>
       )}
 
       <ContainerSections isMobile={isMobile} actionButtons={handleAction}>

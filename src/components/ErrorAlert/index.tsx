@@ -9,14 +9,13 @@ import { Stack } from "@inubekit/stack";
 export interface ErrorAlertProps {
   message?: string;
   onClose?: () => void;
-  top?: number;
 }
 
 const ErrorAlert = (props: ErrorAlertProps) => {
-  const { message, onClose, top } = props;
+  const { message, onClose } = props;
 
   return (
-    <AlertContainer $top={top!}>
+    <AlertContainer>
       <Icon appearance="warning" icon={<MdWarningAmber />} size="24px" />
       <Stack>
         <Text>{message || messages.defaultError}</Text>
