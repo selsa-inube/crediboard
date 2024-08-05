@@ -147,12 +147,12 @@ export const actionMobile = [
 
 const appearance: { [key: string]: string } = {
   Firmado: "success",
-  "En tramite": "warning",
+  "En trámite": "warning",
   "Con error": "danger",
 };
 
 export const appearanceTag = (tag: string) => {
-  return appearance[tag] as "success" | "warning" | "danger";
+  return appearance?.[tag] as "success" | "warning" | "danger";
 };
 
 export const firstWord = (text: string) => text.split(" ")[0];
