@@ -1,4 +1,3 @@
-import { inube } from "@inube/design-system";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
@@ -24,7 +23,7 @@ export const CardInfoContainer = (props: CardInfoContainerProps) => {
 
   return (
     <Stack direction="column" width="-webkit-fill-available">
-      <Stack gap={inube.spacing.s100} alignItems="center">
+      <Stack gap="8px" alignItems="center">
         <Icon
           icon={icon}
           appearance="primary"

@@ -1,4 +1,3 @@
-import { inube } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
@@ -49,7 +48,7 @@ function SummaryCardUI(props: SummaryCardProps) {
         <Text type="label">
           {capitalizeFirstLetter(truncateTextToMaxLength(destination, 60))}
         </Text>
-        <Stack gap={inube.spacing.s100}>
+        <Stack gap="8px">
           <Text size="medium" appearance="gray">
             Valor:
           </Text>
@@ -67,7 +66,7 @@ function SummaryCardUI(props: SummaryCardProps) {
       <Stack direction="column" padding="s0 s100">
         <StyledDivider />
         <Stack
-          gap={inube.spacing.s100}
+          gap="8px"
           justifyContent="flex-end"
           padding="s100 s0"
         >
