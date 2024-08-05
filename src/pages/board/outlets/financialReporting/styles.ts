@@ -16,3 +16,12 @@ export const StyledMessageContainer = styled.div`
   bottom: 18px;
   right: 75px;
 `;
+
+export const StyledToast = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 2;
+  position: absolute;
+  gap: 4px;
+`;
