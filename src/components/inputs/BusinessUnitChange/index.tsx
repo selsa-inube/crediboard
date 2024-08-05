@@ -5,7 +5,7 @@ import { AppContext } from "@context/AppContext";
 import { IClient } from "@context/AppContext/types";
 import { MdCheck } from "react-icons/md";
 
-import { StyledContainer, StyledUl, StyledImg, StyledHr} from "./styles";
+import { StyledContainer, StyledUl, StyledItem, StyledImg, StyledHr} from "./styles";
 
 interface BusinessUnitChangeProps {
   clients: IClient[];
@@ -26,7 +26,7 @@ export const BusinessUnitChange = ({ clients }: BusinessUnitChangeProps) => {
         <StyledUl>
           {clients.map((client, index) => (
             <a key={client.id} href="" onClick={() => handleLogoClick(client)}>
-              <li>
+              <StyledItem>
                 <StyledImg src={client.logo} alt={client.name} />
                 <Icon
                   icon={<MdCheck />}
@@ -36,7 +36,7 @@ export const BusinessUnitChange = ({ clients }: BusinessUnitChangeProps) => {
                   size="20px"
                   cursorHover
                 />
-              </li>
+              </StyledItem>
               {index !== clients.length - 1 && <StyledHr />}
             </a>
           ))}

@@ -41,16 +41,6 @@ const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   left: ${({ $isTablet }) => ($isTablet ? "180px" : "130px")};
 `;
 
-const StyledDivider = styled.hr`
-  margin: ${inube.spacing.s0};
-  width: 100%;
-  border: none;
-  border-top: 2px solid;
-  border-top-color: ${({ theme }) =>
-    theme?.color?.stroke?.divider?.regular ||
-    inube.color.stroke.divider.regular};
-`;
-
 const StyledMenuContainer = styled.div`
   position: absolute;
   top: 48px;
@@ -73,5 +63,4 @@ export {
   StyledMain,
   StyledMenuContainer,
   StyledCollapseIcon,
-  StyledDivider
 };

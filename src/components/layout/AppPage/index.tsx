@@ -20,7 +20,6 @@ import {
   StyledMain,
   StyledMenuContainer,
   StyledCollapseIcon,
-  StyledDivider
 } from "./styles";
 
 
@@ -98,7 +97,7 @@ function AppPage() {
               cursorHover
             />
           </StyledCollapseIcon>
-        {collapse && <StyledDivider /> && <BusinessUnitChange clients={clientsDataMock}/>}
+        {collapse && <BusinessUnitChange clients={clientsDataMock}/>}
         <StyledContainer>
           {showUserMenu && (
             <StyledMenuContainer ref={userMenuRef}>

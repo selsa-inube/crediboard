@@ -13,13 +13,13 @@ export const StyledContainer = styled.div`
 
 export const StyledUl = styled.ul`
   margin: 0;
+`;
 
-  li {
+export const StyledItem = styled.li`
     list-style: none;
     display: flex;
     align-items: center;
-  }
-`;
+`
 
 export const StyledImg = styled.img`
   position: relative;
