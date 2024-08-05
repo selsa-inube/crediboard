@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useMediaQuery } from "@inube/design-system";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
@@ -75,6 +76,8 @@ export const Approvals = (props: IApprovalsProps) => {
     handleNotificationClickBound
   );
 
+  const isMobile = useMediaQuery("(max-width: 720px)");
+
   return (
     <>
       <Fieldset
@@ -90,6 +93,12 @@ export const Approvals = (props: IApprovalsProps) => {
           actions={desktopActionsConfig}
           actionMobile={mobileActions}
           loading={loading}
+          appearanceTable={{
+            widthTd: !isMobile ? "310px" : "70%",
+            efectzebra: true,
+            title: "primary",
+            isStyleMobile: false,
+          }}
           nameTitleTag="decision"
         />
       </Fieldset>
