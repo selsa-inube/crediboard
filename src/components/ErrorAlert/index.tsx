@@ -1,21 +1,26 @@
-import { Icon } from "@inubekit/icon";
 import { MdWarningAmber, MdClear } from "react-icons/md";
-import { AlertContainer, AlertText } from "./styles";
+import { Icon } from "@inubekit/icon";
+import { Text } from "@inube/design-system";
 
-import { messages } from "./config"; // Adjust the import path as needed
+import { AlertContainer } from "./styles";
+import { messages } from "./config";
+import { Stack } from "@inubekit/stack";
 
 export interface ErrorAlertProps {
   message?: string;
   onClose?: () => void;
+  top?: number;
 }
 
 const ErrorAlert = (props: ErrorAlertProps) => {
-  const { message, onClose } = props;
+  const { message, onClose, top } = props;
 
   return (
-    <AlertContainer>
+    <AlertContainer $top={top!}>
       <Icon appearance="warning" icon={<MdWarningAmber />} size="24px" />
-      <AlertText>{message || messages.defaultError}</AlertText>
+      <Stack>
+        <Text>{message || messages.defaultError}</Text>
+      </Stack>
       <Icon
         appearance="dark"
         icon={<MdClear />}
