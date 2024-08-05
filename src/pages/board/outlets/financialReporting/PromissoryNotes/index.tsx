@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Stack } from "@inube/design-system";
+import { useEffect, useState} from "react";
+import { Stack,useMediaQuery } from "@inube/design-system";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
@@ -76,6 +76,8 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     field3: "3122638128",
   };
 
+  const isMobile = useMediaQuery("(max-width: 720px)");
+
   return (
     <Stack direction="column">
       <Fieldset title="Pagarés y Libranzas" heightFieldset="163px" hasTable>
@@ -86,6 +88,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           actions={tableBoardActions}
           actionMobile={tableBoardActionMobile}
           appearanceTable={{
+            widthTd: !isMobile ? "100" : "23%",
             efectzebra: true,
             title: "primary",
             isStyleMobile: true,
