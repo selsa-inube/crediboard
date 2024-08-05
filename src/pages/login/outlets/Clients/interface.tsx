@@ -1,6 +1,9 @@
 import React from "react";
 import { MdSearch } from "react-icons/md";
-import { Button, Text, Textfield, Stack, inube } from "@inube/design-system";
+import { Button, inube } from "@inube/design-system";
+import { Textfield } from "@inubekit/textfield";
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
 import { RadioClient } from "@components/cards/RadioClient";
 import { IClientState } from "./types";
 import { IClient } from "@context/AppContext/types";

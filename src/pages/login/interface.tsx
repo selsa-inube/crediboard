@@ -1,5 +1,8 @@
 import { Outlet } from "react-router-dom";
-import { Grid, Stack, Text, useMediaQueries } from "@inube/design-system";
+import { useMediaQueries } from "@inube/design-system";
+import { Grid } from "@inubekit/grid";
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
 
 import { StyledWelcomeContainer, StyledOutletContainer } from "./styles";
 
@@ -35,7 +38,7 @@ function LoginUI() {
           alignItems="center"
           justifyContent="center"
           height={screenMobile ? "70vh" : "-webkit-fill-available"}
-          padding="s400 s200"
+          padding="32px 16px"
         >
           <Outlet />
         </Stack>
