@@ -1,6 +1,6 @@
 import React from "react";
 import { MdSearch } from "react-icons/md";
-import { Button, inube } from "@inube/design-system";
+import { Button} from "@inube/design-system";
 import { Textfield } from "@inubekit/textfield";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -74,7 +74,7 @@ function ClientsUI({
               direction="column"
               padding="s0 s100"
               alignItems="center"
-              gap={inube.spacing.s100}
+              gap="8px"
             >
               {filteredClients.map((client) => (
                 <StyledClientsItem key={client.id}>
