@@ -1,6 +1,6 @@
 import React from "react";
 import { MdSearch } from "react-icons/md";
-import { Button} from "@inube/design-system";
+import { Button } from "@inube/design-system";
 import { Textfield } from "@inubekit/textfield";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -72,7 +72,7 @@ function ClientsUI({
           <StyledClientsList $scroll={clients.length > 5}>
             <Stack
               direction="column"
-              padding="s0 s100"
+              padding="0px 8px"
               alignItems="center"
               gap="8px"
             >
