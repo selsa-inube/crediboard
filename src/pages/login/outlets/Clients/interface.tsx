@@ -1,6 +1,6 @@
 import React from "react";
 import { MdSearch } from "react-icons/md";
-import { Button } from "@inube/design-system";
+import { Button } from "@inubekit/button";
 import { Textfield } from "@inubekit/textfield";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -21,7 +21,7 @@ interface ClientsUIProps {
   handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleClientChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   filterClients: (clients: IClient[], search: string) => IClient[];
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: (event?: Event) => void;
 }
 
 function NoResultsMessage({ search }: { search: string }) {
@@ -90,9 +90,7 @@ function ClientsUI({
               ))}
             </Stack>
           </StyledClientsList>
-          <Button type="button" disabled={client.value} onClick={handleSubmit}>
-            Continuar
-          </Button>
+          <Button type="button" children="Continuar" disabled={client.value} onClick={handleSubmit}/>
         </Stack>
       </form>
     </StyledClients>
