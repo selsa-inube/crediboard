@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Stack, useMediaQuery  } from "@inube/design-system";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Stack } from "@inubekit/stack";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
