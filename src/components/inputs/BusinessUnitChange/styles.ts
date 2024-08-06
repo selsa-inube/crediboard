@@ -2,9 +2,13 @@ import styled from "styled-components";
 import { inube } from "@inube/design-system";
 
 export const StyledContainer = styled.div`
-  box-shadow: 2px 2px 3px 2px #00000040;
+  box-shadow: 2px 2px 3px 2px
+    ${({ theme }) =>
+      theme?.color?.stroke?.divider?.regular ||
+      inube.color.stroke.divider.regular};
   border-radius: 8px;
-  background-color: white;
+  background-color: ${({ theme }) =>
+    theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
   margin-left: 1%;
   margin-top: 60px;
   position: absolute;
@@ -16,10 +20,10 @@ export const StyledUl = styled.ul`
 `;
 
 export const StyledItem = styled.li`
-    list-style: none;
-    display: flex;
-    align-items: center;
-`
+  list-style: none;
+  display: flex;
+  align-items: center;
+`;
 
 export const StyledImg = styled.img`
   position: relative;

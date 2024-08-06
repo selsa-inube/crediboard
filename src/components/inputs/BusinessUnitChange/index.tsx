@@ -1,9 +1,11 @@
 import { useState, useContext } from "react";
+import { Link } from "react-router-dom";
+import { MdCheck } from "react-icons/md";
+
 import { Stack } from "@inubekit/stack";
-import { Icon } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
 import { AppContext } from "@context/AppContext";
 import { IClient } from "@context/AppContext/types";
-import { MdCheck } from "react-icons/md";
 
 import { StyledContainer, StyledUl, StyledItem, StyledImg, StyledHr} from "./styles";
 
@@ -25,7 +27,7 @@ export const BusinessUnitChange = ({ clients }: BusinessUnitChangeProps) => {
       <Stack width="220px">
         <StyledUl>
           {clients.map((client, index) => (
-            <a key={client.id} href="" onClick={() => handleLogoClick(client)}>
+            <Link key={client.id} to="#" onClick={() => handleLogoClick(client)}>
               <StyledItem>
                 <StyledImg src={client.logo} alt={client.name} />
                 <Icon
@@ -38,7 +40,7 @@ export const BusinessUnitChange = ({ clients }: BusinessUnitChangeProps) => {
                 />
               </StyledItem>
               {index !== clients.length - 1 && <StyledHr />}
-            </a>
+            </Link>
           ))}
         </StyledUl>
       </Stack>
