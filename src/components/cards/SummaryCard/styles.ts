@@ -8,7 +8,7 @@ const StyledLink = styled(Link)`
   display: flex;
   text-decoration: none;
   flex-direction: column;
-  padding: ${({ theme }) => (theme ? "8px" : "16px")};
+  padding: 8px;
   justify-content: space-between;
   height: 100%;
 `;

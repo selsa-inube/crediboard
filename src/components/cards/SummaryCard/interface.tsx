@@ -63,12 +63,12 @@ function SummaryCardUI(props: SummaryCardProps) {
           {capitalizeFirstLetter(truncateTextToMaxLength(toDo, 60))}
         </Text>
       </StyledLink>
-      <Stack direction="column" padding="s0 s100">
+      <Stack direction="column" padding="0px 8px">
         <StyledDivider />
         <Stack
           gap="8px"
           justifyContent="flex-end"
-          padding="s100 s0"
+          padding="8px 0px"
         >
           {hasMessage && (
             <Icon
