@@ -4,9 +4,11 @@ import { Button } from "@inubekit/button";
 import { Textfield } from "@inubekit/textfield";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
+
 import { RadioClient } from "@components/cards/RadioClient";
-import { IClientState } from "./types";
 import { IClient } from "@context/AppContext/types";
+
+import { IClientState } from "./types";
 import {
   StyledClients,
   StyledClientsList,
