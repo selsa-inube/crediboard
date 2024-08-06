@@ -156,7 +156,7 @@ export const FinancialReporting = () => {
     <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
       {errors.length > 0 && (
         <Stack justifyContent="center" alignContent="center">
-          <StyledToast>
+          <StyledToast $isMobile={isMobile}>
             {errors.map((error) => (
               <ErrorAlert
                 message={error.error_description}
