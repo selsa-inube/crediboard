@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Stack } from "@inube/design-system";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Stack } from "@inubekit/stack";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
@@ -80,9 +81,16 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     field3: "3122638128",
   };
 
+  const isMobile = useMediaQuery("(max-width: 720px)");
+
   return (
-    <Stack direction="column">
-      <Fieldset title="Pagarés y Libranzas" heightFieldset="163px" hasTable>
+    <Fieldset
+      title="Pagarés y Libranzas"
+      heightFieldset="163px"
+      aspectRatio="1"
+      hasTable
+    >
+      <Stack direction="column" height={!isMobile ? "100%" : "138px"}>
         <TableBoard
           id="promissoryNotes"
           titles={titlesFinanacialReporting}
@@ -95,16 +103,17 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             isStyleMobile: true,
           }}
         />
-      </Fieldset>
-      {showModal && (
-        <PromissoryNotesModal
-          title="Confirma los datos del usuario"
-          buttonText="Enviar"
-          formValues={formValues}
-          onCloseModal={() => setShowModal(false)}
-          handleClose={() => setShowModal(false)}
-        />
-      )}
-    </Stack>
+
+        {showModal && (
+          <PromissoryNotesModal
+            title="Confirma los datos del usuario"
+            buttonText="Enviar"
+            formValues={formValues}
+            onCloseModal={() => setShowModal(false)}
+            handleClose={() => setShowModal(false)}
+          />
+        )}
+      </Stack>
+    </Fieldset>
   );
 };
