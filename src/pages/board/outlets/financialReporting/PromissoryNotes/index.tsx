@@ -58,7 +58,11 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           "No. de Documento": entry.document_unique_code,
           Tipo: firstWord(entry.abbreviated_name),
           tag: (
-            <Tag label={entry.state} appearance={appearanceTag(entry.state)} />
+            <Tag
+              label={entry.state}
+              appearance={appearanceTag(entry.state)}
+              weight="strong"
+            />
           ),
         }));
       setDataPromissoryNotes(dataPrommisseNotes);
