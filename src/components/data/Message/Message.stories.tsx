@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { Message, MessageProps } from "@src/components/data/Message";
+import { Message, MessageProps } from "@components/data/Message";
 import { BrowserRouter } from "react-router-dom";
 
 const story: Meta<typeof Message> = {

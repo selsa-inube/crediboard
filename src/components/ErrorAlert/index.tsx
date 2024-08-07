@@ -1,10 +1,10 @@
 import { MdWarningAmber, MdClear } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
+import { Stack } from "@inubekit/stack";
 import { Text } from "@inube/design-system";
 
 import { AlertContainer } from "./styles";
 import { messages } from "./config";
-import { Stack } from "@inubekit/stack";
 
 export interface ErrorAlertProps {
   message?: string;
