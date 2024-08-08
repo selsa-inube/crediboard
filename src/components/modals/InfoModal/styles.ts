@@ -1,7 +1,11 @@
 import styled from "styled-components";
+import { inube } from "@inube/design-system";
 
 export const StyledContainer = styled.div`
-  box-shadow: 2px 2px 8px 1px #00000040;
+    box-shadow: 8px 2px 8px
+    ${({ theme }) =>
+      theme?.color?.stroke?.divider?.regular ||
+      inube.color.stroke.divider.regular};
   background-color: white;
   border-radius: 4px;
   position: absolute;
