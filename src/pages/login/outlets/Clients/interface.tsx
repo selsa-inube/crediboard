@@ -1,9 +1,14 @@
 import React from "react";
 import { MdSearch } from "react-icons/md";
-import { Button, Text, Textfield, Stack, inube } from "@inube/design-system";
+import { Button } from "@inubekit/button";
+import { Textfield } from "@inubekit/textfield";
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
+
 import { RadioClient } from "@components/cards/RadioClient";
-import { IClientState } from "./types";
 import { IClient } from "@context/AppContext/types";
+
+import { IClientState } from "./types";
 import {
   StyledClients,
   StyledClientsList,
@@ -18,7 +23,7 @@ interface ClientsUIProps {
   handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleClientChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   filterClients: (clients: IClient[], search: string) => IClient[];
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: (event?: Event) => void;
 }
 
 function NoResultsMessage({ search }: { search: string }) {
@@ -69,9 +74,9 @@ function ClientsUI({
           <StyledClientsList $scroll={clients.length > 5}>
             <Stack
               direction="column"
-              padding="s0 s100"
+              padding="0px 8px"
               alignItems="center"
-              gap={inube.spacing.s100}
+              gap="8px"
             >
               {filteredClients.map((client) => (
                 <StyledClientsItem key={client.id}>
@@ -87,9 +92,7 @@ function ClientsUI({
               ))}
             </Stack>
           </StyledClientsList>
-          <Button type="button" disabled={client.value} onClick={handleSubmit}>
-            Continuar
-          </Button>
+          <Button type="button" children="Continuar" disabled={client.value} onClick={handleSubmit}/>
         </Stack>
       </form>
     </StyledClients>
