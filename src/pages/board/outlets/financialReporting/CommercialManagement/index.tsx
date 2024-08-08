@@ -98,16 +98,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                 {data.v_Monto === 0 ? "$ 0" : currencyFormat(data.v_Monto)}
               </Text>
             </Stack>
-
-            {isMobile && (
-                <Button
-                  type="link"
-                  path={`/extended-card/${id}/credit-profile`}
-                  fullwidth
-                >
-                  Ver perfil créditicio
-                </Button>
-            )}
           </Stack>
 
           {!isMobile && (
@@ -153,6 +143,15 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             />
           </StyledCollapseIcon>
         </Stack>
+        {isMobile && (
+                <Button
+                  type="link"
+                  path={`/extended-card/${id}/credit-profile`}
+                  fullwidth
+                >
+                  Ver perfil créditicio
+                </Button>
+            )}
         {collapse && <StyledDivider />}
         {collapse && (
           <Stack direction="column" gap="10px">
