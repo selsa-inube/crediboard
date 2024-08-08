@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
+
 import { InfoModal, InfoItem } from "@components/modals/InfoModal";
 import { MdClose, MdOutlineSend, MdOutlineRemoveRedEye } from "react-icons/md";
 
@@ -11,9 +12,9 @@ const Default: StoryObj<{ items: InfoItem[] }> = {
   render: (args) => <InfoModal {...args} />,
   args: {
     items: [
-      { icon: <MdClose />, text: "No Cumple", appearance: "danger", size: "20px", shape: "circle", variant: "filled" },
-      { icon: <MdOutlineSend />, text: "Reenviar", appearance: "primary", size: "24px" },
-      { icon: <MdOutlineRemoveRedEye />, text: "Ver Imagen", appearance: "primary", size: "24px" },
+      { icon: <MdClose />, text: "No Cumple", appearance: "danger", shape: "circle"},
+      { icon: <MdOutlineSend />, text: "Reenviar", appearance: "primary" },
+      { icon: <MdOutlineRemoveRedEye />, text: "Ver Imagen", appearance: "primary" },
     ],
   },
 };

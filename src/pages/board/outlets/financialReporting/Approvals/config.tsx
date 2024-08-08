@@ -197,11 +197,11 @@ interface TagElement {
 }
 
 export const infoItems = [
-  { icon: <MdCheck />, text: "Cumple", appearance: "success", size: "20px", shape: "circle", variant: "filled" },
-  { icon: <MdClose />, text: "No Cumple", appearance: "danger", size: "20px", shape: "circle", variant: "filled" },
-  { icon: <MdRemove />, text: "Sin Evaluar", appearance: "warning", size: "20px", shape: "circle", variant: "filled" },
-  { icon: <MdWarningAmber />, text: "Error", appearance: "danger", size: "28px"},
-  { icon: <MdNotificationsNone />, text: "Notificaciones", appearance: "help", size: "28px"},
+  { icon: <MdCheck />, text: "Cumple", appearance: "success", shape: "circle"},
+  { icon: <MdClose />, text: "No Cumple", appearance: "danger", shape: "circle"},
+  { icon: <MdRemove />, text: "Sin Evaluar", appearance: "warning", shape: "circle"},
+  { icon: <MdWarningAmber />, text: "Error", appearance: "danger"},
+  { icon: <MdNotificationsNone />, text: "Notificaciones", appearance: "help"}, 
 ];
 
 const isValidTagElement = (element: unknown): element is TagElement => {
