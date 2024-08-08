@@ -40,9 +40,13 @@ export default function AppContextProvider(props: AppContextProviderProps) {
       JSON.parse(localStorage.getItem("showPinnedOnly")!) || false,
   });
 
+  const initialClientLogo = localStorage.getItem("clientLogo") || linparLogo;
+  const[clientLogo, setClientLogo] = useState<string>(initialClientLogo);
+
   function handleClientChange(client: IClient) {
-    const { sigla } = client;
+    const { sigla, logo } = client;
     setClientSigla(sigla);
+    setClientLogo(logo);
   }
 
   function updatePreferences(newPreferences: Partial<IPreferences>) {
@@ -51,7 +55,8 @@ export default function AppContextProvider(props: AppContextProviderProps) {
 
   useEffect(() => {
     localStorage.setItem("clientSigla", clientSigla);
-  }, [clientSigla]);
+    localStorage.setItem("clientLogo", clientLogo);
+  }, [clientSigla, clientLogo]);
 
   useEffect(() => {
     localStorage.setItem("boardOrientation", preferences.boardOrientation);
@@ -70,7 +75,7 @@ export default function AppContextProvider(props: AppContextProviderProps) {
       company: company,
       operator: {
         name: "Linpar",
-        logo: linparLogo,
+        logo: clientLogo,
       },
       preferences,
     },
