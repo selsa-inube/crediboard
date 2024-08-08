@@ -53,6 +53,7 @@ export const Approvals = (props: IApprovalsProps) => {
           <Tag
             label={entry.concept}
             appearance={appearanceTag(entry.concept)}
+            weight="strong"
           />
         ),
       }));

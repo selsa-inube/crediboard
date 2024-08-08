@@ -7,7 +7,7 @@ import localforage from "localforage";
 import { useParams } from "react-router-dom";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { Message } from "@components/data/message";
+import { Message } from "@components/data/Message";
 import { SubmitButton } from "@components/inputs/SubmitButton";
 
 import { ChatContent } from "./styles";
