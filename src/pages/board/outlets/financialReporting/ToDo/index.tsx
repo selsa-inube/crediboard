@@ -73,10 +73,6 @@ export const ToDo = (props: ToDoProps) => {
 
     setFlagMessage(flagMessages.changeSuccess);
     setShowFlagMessage(true);
-
-    setTimeout(() => {
-      setShowFlagMessage(false);
-    }, 5000);
   };
 
 
@@ -99,10 +95,6 @@ export const ToDo = (props: ToDoProps) => {
     }
 
     setShowFlagMessage(true);
-
-    setTimeout(() => {
-      setShowFlagMessage(false);
-    }, 5000);
   };
 
   useEffect(() => {
