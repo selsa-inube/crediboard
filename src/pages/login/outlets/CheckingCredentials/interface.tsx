@@ -14,7 +14,7 @@ function CheckingCredentialsUI() {
         </Text>
       </Stack>
       <Stack alignItems="center" direction="column">
-        <Spinner size="large" appearance="primary" transparent={false} />;
+        <Spinner size="large" appearance="primary" transparent={false} />
       </Stack>
     </Stack>
   );
