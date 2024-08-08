@@ -1,4 +1,7 @@
-import { Text, Grid, useMediaQueries } from "@inube/design-system";
+import { useMediaQueries } from "@inubekit/hooks";
+import { Grid } from "@inubekit/grid";
+import { Text } from "@inubekit/text";
+
 import { StyledRadioClient, StyledRadio, StyledImage } from "./styles";
 
 interface RadioClientProps {
@@ -25,7 +28,7 @@ function RadioClient(props: RadioClientProps) {
         height={matches["(max-width: 532px)"] ? "auto" : "72px"}
         alignItems="center"
         alignContent="center"
-        gap="s200"
+        gap="16px"
         width="100%"
       >
         <StyledRadio

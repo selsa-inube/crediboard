@@ -1,16 +1,14 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 import { Link } from "react-router-dom";
 
-interface IStyledSummaryCard {
-  theme?: typeof inube;
-}
+
 
 const StyledLink = styled(Link)`
   display: flex;
   text-decoration: none;
   flex-direction: column;
-  padding: ${({ theme }) => theme?.spacing?.s100 || inube.spacing.s100};
+  padding: 8px;
   justify-content: space-between;
   height: 100%;
 `;
@@ -23,21 +21,20 @@ const StyledSummaryCard = styled.div`
   height: 270px;
   border-radius: 8px;
   outline: 1px solid
-    ${({ theme }: IStyledSummaryCard) =>
-      theme?.color?.stroke?.gray?.regular || inube.color.stroke.gray.regular};
-  background-color: ${({ theme }: IStyledSummaryCard) =>
-    theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
+    ${({ theme }) =>
+      theme?.palette?.neutral?.N200 || inube.palette.neutral.N200};
+  background-color: ${({ theme }) =>
+    theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);
 `;
 
 const StyledDivider = styled.hr`
-  margin: ${inube.spacing.s0};
+  margin: 0;
   width: 100%;
   border: none;
   border-top: 2px solid;
-  border-top-color: ${({ theme }: IStyledSummaryCard) =>
-    theme?.color?.stroke?.divider?.regular ||
-    inube.color.stroke.divider.regular};
+  border-top-color: ${({ theme }) =>
+    theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
 export { StyledLink, StyledSummaryCard, StyledDivider };
