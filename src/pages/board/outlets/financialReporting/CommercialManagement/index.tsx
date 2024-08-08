@@ -10,13 +10,8 @@ import {
 } from "react-icons/md";
 
 import { Icon } from "@inubekit/icon";
-import {
-  Stack,
-  Text,
-  Button,
-  inube,
-  useMediaQuery,
-} from "@inube/design-system";
+import { Stack, Text, inube, useMediaQuery } from "@inube/design-system";
+import { Button } from "@inubekit/button";
 
 import { Fieldset } from "@components/data/Fieldset";
 import {
@@ -103,6 +98,16 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                 {data.v_Monto === 0 ? "$ 0" : currencyFormat(data.v_Monto)}
               </Text>
             </Stack>
+
+            {isMobile && (
+                <Button
+                  type="link"
+                  path={`/extended-card/${id}/credit-profile`}
+                  fullwidth
+                >
+                  Ver perfil créditicio
+                </Button>
+            )}
           </Stack>
 
           {!isMobile && (
