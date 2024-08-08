@@ -36,8 +36,8 @@ export const flagMessages: Record<string, FlagMessage> = {
     appearance: "success",
   },
   error: {
-    title: "Rechazar",
-    description: "los datos se han rechazado correctamente",
+    title: "Rechazo Confirmado ",
+    description: "El rechazo se ha realizado correctamente",
     appearance: "success",
   },
   pending: {
