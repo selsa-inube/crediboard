@@ -11,6 +11,7 @@ import { approval_by_credit_request_Mock } from "@src/mocks/financialReporting/A
 import { documents } from "@mocks/financialReporting/documents.mock";
 import { traceMock } from "@mocks/financialReporting/trace.mock";
 import { error_issued } from "@mocks/financialReporting/error.mock";
+import { job_stability } from "@mocks/financialReporting/jobStability.mock";
 
 export function initializeDataDB() {
   localforage.clear();
@@ -37,4 +38,5 @@ export function initializeDataDB() {
     payroll_discount_authorization
   );
   intializedData("error_issued", error_issued);
+  intializedData("job_stability", job_stability);
 }
