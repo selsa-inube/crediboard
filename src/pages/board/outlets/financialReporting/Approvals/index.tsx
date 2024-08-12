@@ -94,7 +94,7 @@ export const Approvals = (props: IApprovalsProps) => {
           actionMobile={mobileActions}
           loading={loading}
           appearanceTable={{
-            widthTd: !isMobile ? "70" : "70%",
+            widthTd: isMobile ? "70%" : undefined,
             efectzebra: true,
             title: "primary",
             isStyleMobile: false,
