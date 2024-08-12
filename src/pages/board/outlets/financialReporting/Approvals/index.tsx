@@ -86,7 +86,6 @@ export const Approvals = (props: IApprovalsProps) => {
           actions={desktopActionsConfig}
           actionMobile={mobileActions}
           loading={loading}
-          nameTitleTag="decision"
         />
       </Fieldset>
       {showModal && selectedData && (

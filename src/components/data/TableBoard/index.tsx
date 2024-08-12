@@ -13,7 +13,6 @@ export interface ITableBoardProps {
   loading?: boolean;
   portalId?: string;
   appearanceTable?: IAppearances;
-  nameTitleTag?: string;
 }
 
 export const TableBoard = (props: ITableBoardProps) => {
@@ -33,7 +32,6 @@ export const TableBoard = (props: ITableBoardProps) => {
       background: false,
       isStyleMobile: true,
     },
-    nameTitleTag,
   } = props;
 
   const isTablet = useMediaQuery("(max-width: 720px)");
@@ -50,7 +48,6 @@ export const TableBoard = (props: ITableBoardProps) => {
       titles={titles}
       appearanceTable={appearanceTable}
       isTablet={isTablet}
-      nameTitleTag={nameTitleTag}
     />
   );
 };

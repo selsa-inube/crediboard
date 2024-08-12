@@ -1,5 +1,6 @@
 import { MdOutlineInfo } from "react-icons/md";
-import { Icon, Text, SkeletonLine } from "@inube/design-system";
+import { Text, SkeletonLine } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
 
 import { IAction, IEntries, ITitle, appearances } from "./types";
 import {
