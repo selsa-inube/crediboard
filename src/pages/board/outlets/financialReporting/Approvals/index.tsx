@@ -78,7 +78,7 @@ export const Approvals = (props: IApprovalsProps) => {
 
   return (
     <>
-      <Fieldset title="Aprobaciones" heightFieldset="282px" hasTable>
+      <Fieldset title="Aprobaciones" heightFieldset="284px" hasTable>
         <TableBoard
           id="usuarios"
           titles={titlesApprovals}
