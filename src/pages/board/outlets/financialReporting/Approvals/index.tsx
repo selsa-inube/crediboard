@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { MdOutlineThumbUp } from "react-icons/md";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { ListModal } from "@src/components/modals/ListModal";
 import { Tag } from "@inubekit/tag";
+import { Flag } from "@inubekit/flag";
 
 import {
   actionMobileApprovals,
@@ -15,6 +17,8 @@ import {
 } from "./config";
 import { getDataById } from "@mocks/utils/dataMock.service";
 import { approval_by_credit_request_Mock } from "@services/types";
+
+import { StyledMessageContainer } from "../styles";
 
 const appearanceTag = (label: string) => {
   if (label === "Pendiente") {
@@ -37,6 +41,7 @@ export const Approvals = (props: IApprovalsProps) => {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
+  const [showFlag, setShowFlag] = useState(false);
 
   useEffect(() => {
     getDataById<approval_by_credit_request_Mock[]>(
@@ -76,6 +81,11 @@ export const Approvals = (props: IApprovalsProps) => {
     handleNotificationClickBound
   );
 
+  const handleSubmit = () => {
+    setShowFlag(true);
+    setShowModal(false);
+  };
+
   return (
     <>
       <Fieldset
@@ -97,10 +107,23 @@ export const Approvals = (props: IApprovalsProps) => {
       {showModal && selectedData && (
         <ListModal
           title="Notificación"
-          handleClose={() => setShowModal(false)}
           content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
           buttonLabel="Enviar"
+          handleClose={handleSubmit}
         />
+      )}
+      {showFlag && (
+        <StyledMessageContainer>
+          <Flag
+            title="Solicitud enviada"
+            description="La solicitud ha sido enviada exitosamente para su aprobación."
+            appearance="success"
+            duration={5000}
+            icon={<MdOutlineThumbUp />}
+            isMessageResponsive
+            closeFlag={() => setShowFlag(false)} 
+          />
+        </StyledMessageContainer>
       )}
     </>
   );
