@@ -1,4 +1,4 @@
-import { Stack, Icon, useMediaQuery } from "@inube/design-system";
+import { Stack, Icon, } from "@inube/design-system";
 import { useState, isValidElement } from "react";
 import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
 
@@ -20,10 +20,11 @@ interface IData {
 
 export interface IRequirementsProps {
   data: IData[];
+  isMobile: boolean;
 }
 
 export const Requirements = (props: IRequirementsProps) => {
-  const { data } = props;
+  const { data, isMobile } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [modalData, setModalData] = useState<{
     date?: Date;
@@ -86,7 +87,6 @@ export const Requirements = (props: IRequirementsProps) => {
     { id: "aprobar", content: renderCheckIcon },
   ];
 
-  const isMobile = useMediaQuery("(max-width: 720px)");
 
   return (
     <>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useMediaQuery } from "@inubekit/hooks";
 import { Stack } from "@inubekit/stack";
 
 import { Fieldset } from "@components/data/Fieldset";
@@ -23,10 +22,11 @@ import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 
 interface IPromissoryNotesProps {
   user: string;
+  isMobile: boolean;
 }
 
 export const PromissoryNotes = (props: IPromissoryNotesProps) => {
-  const { user } = props;
+  const { user, isMobile } = props;
 
   const [showModal, setShowModal] = useState(false);
   const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
@@ -81,7 +81,6 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     field3: "3122638128",
   };
 
-  const isMobile = useMediaQuery("(max-width: 720px)");
 
   return (
     <Fieldset

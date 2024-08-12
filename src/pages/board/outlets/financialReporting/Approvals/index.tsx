@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useMediaQuery } from "@inube/design-system";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
@@ -29,10 +28,11 @@ const appearanceTag = (label: string) => {
 
 interface IApprovalsProps {
   user: string;
+  isMobile: boolean;
 }
 
 export const Approvals = (props: IApprovalsProps) => {
-  const { user } = props;
+  const { user, isMobile } = props;
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
 
   const [loading, setLoading] = useState(false);
@@ -77,7 +77,6 @@ export const Approvals = (props: IApprovalsProps) => {
     handleNotificationClickBound
   );
 
-  const isMobile = useMediaQuery("(max-width: 720px)");
 
   return (
     <>
