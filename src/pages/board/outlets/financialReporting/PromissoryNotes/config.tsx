@@ -115,9 +115,6 @@ interface TagElement {
 }
 
 export const infoItems = [
-  { icon: <MdCheck />, text: "Cumple", appearance: "success", shape: "circle"},
-  { icon: <MdClose />, text: "No Cumple", appearance: "danger", shape: "circle"},
-  { icon: <MdRemove />, text: "Sin Evaluar", appearance: "warning", shape: "circle"},
   { icon: <MdOutlineSend />, text: "Reenviar", appearance: "primary" },
   { icon: <MdOutlineRemoveRedEye />, text: "Ver Imagen", appearance: "primary" },
 ];
