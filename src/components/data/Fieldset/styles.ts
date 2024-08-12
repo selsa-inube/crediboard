@@ -29,19 +29,15 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   padding-left: ${({ theme, $hasTable }) =>
     !$hasTable && (theme?.spacing?.s100 || inube.spacing.s100)};
 
-  ${({ $isMobile, theme }) =>
-    !$isMobile &&
-    `
-    &::-webkit-scrollbar {
-      width: 8px; 
-      border-radius: 8px;
-    }
+  &::-webkit-scrollbar {
+    border-radius: 8px;
+    width: 16px;
+  }
 
-    &::-webkit-scrollbar-thumb {
-      background-color: ${
-        theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
-      };
-      border-radius: 8px;
-    }
-  `}
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) =>
+      theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
+    border-radius: 8px;
+  }
+
 `;

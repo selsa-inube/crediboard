@@ -120,3 +120,14 @@ export interface Idocument {
   document_managment_unique_reference: string;
   abbreviated_name: string;
 }
+
+export interface Ierror_issued {
+  credit_request_id: string;
+  error_issued_id: string;
+  action_id: string;
+  error_date: string;
+  error_description: string;
+  user_id: string;
+  user_name: string;
+  read: string;
+}

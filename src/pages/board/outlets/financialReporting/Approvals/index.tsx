@@ -54,6 +54,7 @@ export const Approvals = (props: IApprovalsProps) => {
           <Tag
             label={entry.concept}
             appearance={appearanceTag(entry.concept)}
+            weight="strong"
           />
         ),
       }));
@@ -94,7 +95,7 @@ export const Approvals = (props: IApprovalsProps) => {
           actionMobile={mobileActions}
           loading={loading}
           appearanceTable={{
-            widthTd: !isMobile ? "310px" : "70%",
+            widthTd: !isMobile ? "70" : "70%",
             efectzebra: true,
             title: "primary",
             isStyleMobile: false,
