@@ -9,7 +9,7 @@ interface IStyledContainerFieldset {
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
-  overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "none" : "auto")};
+  overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "hidden" : "auto")};
   border-radius: 8px;
   border-width: 2px;
   border-style: solid;
@@ -39,5 +39,4 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
       theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
     border-radius: 8px;
   }
-
 `;

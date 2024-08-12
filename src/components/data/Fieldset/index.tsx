@@ -37,7 +37,7 @@ export const Fieldset = (props: IFieldsetProps) => {
     hasOverflow,
   } = props;
 
-  const isMobile = useMediaQuery("(max-width: 720px)");
+  const isMobile = useMediaQuery("(max-width:880px)");
 
   return (
     <Stack
@@ -55,9 +55,11 @@ export const Fieldset = (props: IFieldsetProps) => {
           >
             {`${title} `}
           </Text>
-          <Text type="title" ellipsis size={isMobile ? "medium" : "large"}>
-            {descriptionTitle}
-          </Text>
+          {descriptionTitle && (
+            <Text type="title" ellipsis size={isMobile ? "medium" : "large"}>
+              {descriptionTitle}
+            </Text>
+          )}
         </Stack>
         {activeButton && (
           <Stack>
