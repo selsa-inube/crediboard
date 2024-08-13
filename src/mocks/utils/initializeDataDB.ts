@@ -11,7 +11,7 @@ import { approval_by_credit_request_Mock } from "@src/mocks/financialReporting/A
 import { documents } from "@mocks/financialReporting/documents.mock";
 import { traceMock } from "@mocks/financialReporting/trace.mock";
 import { error_issued } from "@mocks/financialReporting/error.mock";
-import { credit_profileInfo } from "@src/mocks/creditProfileInfo/paymentCapacity.mock";
+import { payment_capacityInfo } from "@src/mocks/creditProfileInfo/paymentCapacity.mock";
 
 export function initializeDataDB() {
   localforage.clear();
@@ -38,5 +38,5 @@ export function initializeDataDB() {
     payroll_discount_authorization
   );
   intializedData("error_issued", error_issued);
-  intializedData("credit_profileInfo", credit_profileInfo);
+  intializedData("payment_capacityInfo", payment_capacityInfo);
 }
