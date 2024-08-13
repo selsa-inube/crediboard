@@ -164,7 +164,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                 ) : null
               )}
 
-            {actions && (
+            {actions && actionMobile && (
               <RenderActionsTitles
                 actions={actions}
                 appearance={appearanceTable!.title!}
