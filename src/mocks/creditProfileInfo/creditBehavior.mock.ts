@@ -1,4 +1,4 @@
-export const Credit_behaviorInfo = [
+export const credit_behaviorInfo = [
   {
     credit_request_id: "999990",
     Credit_behavior: {
