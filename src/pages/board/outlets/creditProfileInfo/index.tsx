@@ -118,32 +118,35 @@ export const CreditProfileInfo = () => {
         autoRows="auto"
       >
         <RiskScoring
-          totalScore={riskScoring ? riskScoring[0].totalScore : 0}
-          minimumScore={riskScoring ? riskScoring[0].minimumScore : 0}
-          yearsOldScore={riskScoring ? riskScoring[0].yearsOldScore : 0}
-          riskCenter={riskScoring ? riskScoring[0].riskCenter : 0}
-          riskCenterScore={riskScoring ? riskScoring[0].riskCenterScore : 0}
-          jobStabilityIndex={riskScoring ? riskScoring[0].jobStabilityIndex : 0}
+          totalScore={riskScoring ? riskScoring[0].total_score : 0}
+          minimumScore={riskScoring ? riskScoring[0].minimum_score : 0}
+          seniority={riskScoring ? riskScoring[0].seniority : 0}
+          seniorityScore={riskScoring ? riskScoring[0].seniority_score : 0}
+          riskCenter={riskScoring ? riskScoring[0].risk_center : 0}
+          riskCenterScore={riskScoring ? riskScoring[0].risk_center_score : 0}
+          jobStabilityIndex={
+            riskScoring ? riskScoring[0].job_stability_index : 0
+          }
           jobStabilityIndexScore={
-            riskScoring ? riskScoring[0].jobStabilityIndexScore : 0
+            riskScoring ? riskScoring[0].job_stability_index_score : 0
           }
           maritalStatusScore={
-            riskScoring ? riskScoring[0].maritalStatusScore : 0
+            riskScoring ? riskScoring[0].marital_status_score : 0
           }
           economicActivityScore={
-            riskScoring ? riskScoring[0].economicActivityScore : 0
+            riskScoring ? riskScoring[0].economic_activity_score : 0
           }
           maritalStatus={
             riskScoring
               ? getMaritalStatusInSpanish(
-                  riskScoring[0].maritalStatus as MaritalStatus
+                  riskScoring[0].marital_status as MaritalStatus
                 )
               : ""
           }
           economicActivity={
             riskScoring
               ? getEconomicActivityInSpanish(
-                  riskScoring[0].economicActivity as EconomicActivity
+                  riskScoring[0].economic_activity as EconomicActivity
                 )
               : ""
           }
@@ -311,32 +314,35 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
         />
         <RiskScoring
-          totalScore={riskScoring ? riskScoring[0].totalScore : 0}
-          minimumScore={riskScoring ? riskScoring[0].minimumScore : 0}
-          yearsOldScore={riskScoring ? riskScoring[0].yearsOldScore : 0}
-          riskCenter={riskScoring ? riskScoring[0].riskCenter : 0}
-          riskCenterScore={riskScoring ? riskScoring[0].riskCenterScore : 0}
-          jobStabilityIndex={riskScoring ? riskScoring[0].jobStabilityIndex : 0}
+          totalScore={riskScoring ? riskScoring[0].total_score : 0}
+          minimumScore={riskScoring ? riskScoring[0].minimum_score : 0}
+          seniority={riskScoring ? riskScoring[0].seniority : 0}
+          seniorityScore={riskScoring ? riskScoring[0].seniority_score : 0}
+          riskCenter={riskScoring ? riskScoring[0].risk_center : 0}
+          riskCenterScore={riskScoring ? riskScoring[0].risk_center_score : 0}
+          jobStabilityIndex={
+            riskScoring ? riskScoring[0].job_stability_index : 0
+          }
           jobStabilityIndexScore={
-            riskScoring ? riskScoring[0].jobStabilityIndexScore : 0
+            riskScoring ? riskScoring[0].job_stability_index_score : 0
           }
           maritalStatusScore={
-            riskScoring ? riskScoring[0].maritalStatusScore : 0
+            riskScoring ? riskScoring[0].marital_status_score : 0
           }
           economicActivityScore={
-            riskScoring ? riskScoring[0].economicActivityScore : 0
+            riskScoring ? riskScoring[0].economic_activity_score : 0
           }
           maritalStatus={
             riskScoring
               ? getMaritalStatusInSpanish(
-                  riskScoring[0].maritalStatus as MaritalStatus
+                  riskScoring[0].marital_status as MaritalStatus
                 )
               : ""
           }
           economicActivity={
             riskScoring
               ? getEconomicActivityInSpanish(
-                  riskScoring[0].economicActivity as EconomicActivity
+                  riskScoring[0].economic_activity as EconomicActivity
                 )
               : ""
           }

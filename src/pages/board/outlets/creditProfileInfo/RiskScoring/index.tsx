@@ -7,7 +7,8 @@ import { StyledDivider } from "@components/cards/SummaryCard/styles";
 interface RiskScoringProps {
   totalScore: number;
   minimumScore: number;
-  yearsOldScore: number;
+  seniority: number;
+  seniorityScore: number;
   riskCenter: number;
   riskCenterScore: number;
   jobStabilityIndex: number;
@@ -24,7 +25,8 @@ export function RiskScoring(props: RiskScoringProps) {
   const {
     totalScore,
     minimumScore,
-    yearsOldScore,
+    seniority,
+    seniorityScore,
     riskCenter,
     riskCenterScore,
     jobStabilityIndex,
@@ -97,7 +99,7 @@ export function RiskScoring(props: RiskScoringProps) {
                 <SkeletonLine animated width="100%" />
               ) : (
                 <Text size={isMobile ? "small" : "medium"}>
-                  Antigüedad de 10 años
+                  Antigüedad de {seniority} años
                 </Text>
               )}
             </Stack>
@@ -106,7 +108,7 @@ export function RiskScoring(props: RiskScoringProps) {
                 <SkeletonLine animated width="60px" />
               ) : (
                 <Text appearance="primary" type="title" size="large">
-                  {yearsOldScore}
+                  {seniorityScore}
                 </Text>
               )}
             </Stack>
