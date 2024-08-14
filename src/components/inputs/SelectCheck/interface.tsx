@@ -4,7 +4,10 @@ import {
   MdCheckCircle,
   MdOutlineArrowDropDown,
 } from "react-icons/md";
-import { Text, Icon, Label, Stack, inube } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
+import { Label } from "@inubekit/label";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 
 import { OptionItemChecked } from "./OptionItem";
 import { OptionList } from "./OptionList";
@@ -33,7 +36,7 @@ const Message = (
     status !== "pending" && (
       <Stack alignItems="center" gap="4px" margin="s050 s0 s0 s200">
         <Icon
-          appearance={status === "invalid" ? "error" : "success"}
+          appearance={status === "invalid" ? "danger" : "success"}
           disabled={disabled}
           icon={status === "invalid" ? <MdOutlineError /> : <MdCheckCircle />}
           size="14px"
@@ -41,7 +44,7 @@ const Message = (
         <Text
           type="body"
           size="small"
-          appearance={status === "invalid" ? "error" : "success"}
+          appearance={status === "invalid" ? "danger" : "success"}
           disabled={disabled}
         >
           {message && `${message}`}
@@ -78,13 +81,13 @@ export const SelectcheckUI = forwardRef<HTMLDivElement, ISelectcheckUIProps>(
 
     return (
       <StyledContainer $fullwidth={fullwidth} disabled={disabled} ref={ref}>
-        <Stack
-          alignItems="center"
-          margin="s0 s0 s050 s0"
-          padding="s0 s0 s0 s200"
-          gap={inube.spacing.s050}
-        >
-          {label && (
+        {(required || label) && (
+          <Stack
+            alignItems="center"
+            margin="0px 0px 4px 0px"
+            padding="0px 0px 0px 16px"
+            gap="4px"
+          >
             <Label
               htmlFor={id}
               disabled={disabled}
@@ -95,14 +98,14 @@ export const SelectcheckUI = forwardRef<HTMLDivElement, ISelectcheckUIProps>(
             >
               {label}
             </Label>
-          )}
 
-          {required && !disabled && (
-            <Text type="body" size="small" appearance="dark">
-              (Requerido)
-            </Text>
-          )}
-        </Stack>
+            {!disabled && (
+              <Text type="body" size="small" appearance="dark">
+                (Requerido)
+              </Text>
+            )}
+          </Stack>
+        )}
 
         <StyledInputContainer
           disabled={disabled}

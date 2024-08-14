@@ -11,24 +11,24 @@ import { Flag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
-import { ListModal } from "@src/components/modals/ListModal";
+import { ErrorAlert } from "@components/ErrorAlert";
+import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
-import { getById } from "@mocks/utils/dataMock.service";
-import { Requests } from "@services/types";
+import { getById, getDataById } from "@mocks/utils/dataMock.service";
+import { Idocument, Ierror_issued, Requests } from "@services/types";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
 import {
-  configDataAttachments,
   handleConfirmReject,
   handleConfirmCancel,
   optionButtons,
 } from "./config";
-import { StyledItem, StyledMessageContainer } from "./styles";
+import { StyledItem, StyledMessageContainer, StyledToast } from "./styles";
 import { Approvals } from "./Approvals";
 import { Requirements } from "./Requirements";
 import { dataRequirements } from "./Requirements/config";
@@ -82,6 +82,9 @@ export const FinancialReporting = () => {
     appearance: "success" as "success" | "danger",
   });
 
+  const [document, setDocument] = useState<IListdataProps["data"]>([]);
+  const [errors, setError] = useState<Ierror_issued[]>([]);
+
   const { id } = useParams();
 
   const isMobile: boolean = useMediaQuery("(max-width: 880px)");
@@ -89,8 +92,24 @@ export const FinancialReporting = () => {
   const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getById("k_Prospe", "requests", id!).then((requirement) => {
-      setData(requirement);
+    Promise.allSettled([
+      getById("k_Prospe", "requests", id!),
+      getDataById<Idocument[]>("document", "credit_request_id", id!),
+      getDataById<Ierror_issued[]>("error_issued", "credit_request_id", id!),
+    ]).then(([requirement, documents, error_issue]) => {
+      if (requirement.status === "fulfilled") {
+        setData(requirement.value as Requests);
+      }
+      if (documents.status === "fulfilled" && documents.value) {
+        const documentsUser = documents.value.map((dataListDocument) => ({
+          id: dataListDocument.document_id,
+          name: dataListDocument.abbreviated_name,
+        }));
+        setDocument(documentsUser);
+      }
+      if (error_issue.status === "fulfilled") {
+        setError(error_issue.value!);
+      }
     });
   }, [id]);
 
@@ -129,8 +148,26 @@ export const FinancialReporting = () => {
     },
   };
 
+  const handleClose = (errorId: string) => {
+    setError(errors.filter((error) => error.error_issued_id !== errorId));
+  };
+
   return (
     <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
+      {errors.length > 0 && (
+        <Stack justifyContent="center" alignContent="center">
+          <StyledToast $isMobile={isMobile}>
+            {errors.map((error) => (
+              <ErrorAlert
+                message={error.error_description}
+                onClose={() => handleClose(error.error_issued_id)}
+                key={error.error_issued_id}
+              />
+            ))}
+          </StyledToast>
+        </Stack>
+      )}
+
       <ContainerSections isMobile={isMobile} actionButtons={handleAction}>
         <>
           <Stack direction="column" gap={inube.spacing.s250}>
@@ -155,26 +192,21 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                {<ToDo icon={infoIcon} data={data} isMobile={isMobile} />}
+                {<ToDo icon={infoIcon} isMobile={isMobile} />}
               </Stack>
               <Stack direction="column">{<Approvals user={id!} />}</Stack>
               <Stack direction="column">
                 {<Requirements data={dataRequirements} />}
               </Stack>
               <Stack direction="column">{<Management />}</Stack>
-              <Stack direction="column">{<PromissoryNotes />}</Stack>
+              <Stack direction="column">{<PromissoryNotes user={id!} />}</Stack>
               <Stack direction="column">{<Postingvouchers />}</Stack>
             </Grid>
           </Stack>
           {showAttachments && (
             <ListModal
               title="Adjuntar"
-              content={
-                <Listdata
-                  data={configDataAttachments}
-                  icon={<MdDeleteOutline />}
-                />
-              }
+              content={<Listdata data={document} icon={<MdDeleteOutline />} />}
               handleClose={() => setShowAttachments(false)}
               optionButtons={optionButtons}
               buttonLabel="Cerrar"
@@ -184,10 +216,7 @@ export const FinancialReporting = () => {
             <ListModal
               title="Ver Adjuntos"
               content={
-                <Listdata
-                  data={configDataAttachments}
-                  icon={<MdOutlineRemoveRedEye />}
-                />
+                <Listdata data={document} icon={<MdOutlineRemoveRedEye />} />
               }
               handleClose={() => setAttachDocuments(false)}
               buttonLabel="Cerrar"

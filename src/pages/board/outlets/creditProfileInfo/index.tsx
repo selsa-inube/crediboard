@@ -14,10 +14,16 @@ import ReactDOM from "react-dom";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-import { Requests } from "@services/types";
+import { Requests, IRiskScoring } from "@services/types";
 import { getById } from "@mocks/utils/dataMock.service";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
+import { get } from "@mocks/utils/dataMock.service";
+import {
+  getMaritalStatusInSpanish,
+  getEconomicActivityInSpanish,
+} from "@utils/mappingData/mappings";
+import { MaritalStatus, EconomicActivity } from "@services/enums";
 
 import { JobStabilityCard } from "./JobStabilityCard";
 import { PaymentCapacity } from "./PaymentCapacity";
@@ -32,17 +38,40 @@ export const CreditProfileInfo = () => {
   const { id } = useParams();
   const [data, setData] = useState({} as Requests);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const [riskScoring, setRiskScoring] = useState<IRiskScoring[] | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const { "(max-width: 1200px)": isTablet, "(max-width: 751px)": isMobile } =
     useMediaQueries(["(max-width: 1200px)", "(max-width: 751px)"]);
 
   useEffect(() => {
     if (id) {
-      getById("k_Prospe", "requests", id).then((requirement) => {
-        setData(requirement);
-      });
+      setLoading(true);
+      getById("k_Prospe", "requests", id)
+        .then((requirement) => {
+          setData(requirement);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   }, [id]);
+
+  useEffect(() => {
+    setLoading(true);
+    get("risk-scoring")
+      .then((data) => {
+        if (data) {
+          setRiskScoring(data as IRiskScoring[]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching risk scoring data:", error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   const renderPDFContent = () => (
     <Stack direction="column" gap={inube.spacing.s500}>
@@ -89,13 +118,40 @@ export const CreditProfileInfo = () => {
         autoRows="auto"
       >
         <RiskScoring
-          totalScore={456}
-          minimumScore={500}
-          yearsOldScore={120}
-          riskCenterScore={-100}
-          jobStabilityIndexScore={300}
-          maritalStatusScore={50}
-          economicActivityScore={106}
+          totalScore={riskScoring ? riskScoring[0].total_score : 0}
+          minimumScore={riskScoring ? riskScoring[0].minimum_score : 0}
+          seniority={riskScoring ? riskScoring[0].seniority : 0}
+          seniorityScore={riskScoring ? riskScoring[0].seniority_score : 0}
+          riskCenter={riskScoring ? riskScoring[0].risk_center : 0}
+          riskCenterScore={riskScoring ? riskScoring[0].risk_center_score : 0}
+          jobStabilityIndex={
+            riskScoring ? riskScoring[0].job_stability_index : 0
+          }
+          jobStabilityIndexScore={
+            riskScoring ? riskScoring[0].job_stability_index_score : 0
+          }
+          maritalStatusScore={
+            riskScoring ? riskScoring[0].marital_status_score : 0
+          }
+          economicActivityScore={
+            riskScoring ? riskScoring[0].economic_activity_score : 0
+          }
+          maritalStatus={
+            riskScoring
+              ? getMaritalStatusInSpanish(
+                  riskScoring[0].marital_status as MaritalStatus
+                )
+              : ""
+          }
+          economicActivity={
+            riskScoring
+              ? getEconomicActivityInSpanish(
+                  riskScoring[0].economic_activity as EconomicActivity
+                )
+              : ""
+          }
+          isLoading={loading}
+          isMobile={isMobile}
         />
         <Guarantees
           guaranteesRequired="Ninguna garantía real, o fianza o codeudor."
@@ -258,13 +314,39 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
         />
         <RiskScoring
-          totalScore={456}
-          minimumScore={500}
-          yearsOldScore={120}
-          riskCenterScore={-100}
-          jobStabilityIndexScore={300}
-          maritalStatusScore={50}
-          economicActivityScore={106}
+          totalScore={riskScoring ? riskScoring[0].total_score : 0}
+          minimumScore={riskScoring ? riskScoring[0].minimum_score : 0}
+          seniority={riskScoring ? riskScoring[0].seniority : 0}
+          seniorityScore={riskScoring ? riskScoring[0].seniority_score : 0}
+          riskCenter={riskScoring ? riskScoring[0].risk_center : 0}
+          riskCenterScore={riskScoring ? riskScoring[0].risk_center_score : 0}
+          jobStabilityIndex={
+            riskScoring ? riskScoring[0].job_stability_index : 0
+          }
+          jobStabilityIndexScore={
+            riskScoring ? riskScoring[0].job_stability_index_score : 0
+          }
+          maritalStatusScore={
+            riskScoring ? riskScoring[0].marital_status_score : 0
+          }
+          economicActivityScore={
+            riskScoring ? riskScoring[0].economic_activity_score : 0
+          }
+          maritalStatus={
+            riskScoring
+              ? getMaritalStatusInSpanish(
+                  riskScoring[0].marital_status as MaritalStatus
+                )
+              : ""
+          }
+          economicActivity={
+            riskScoring
+              ? getEconomicActivityInSpanish(
+                  riskScoring[0].economic_activity as EconomicActivity
+                )
+              : ""
+          }
+          isLoading={loading}
           isMobile={isMobile}
         />
         <Guarantees

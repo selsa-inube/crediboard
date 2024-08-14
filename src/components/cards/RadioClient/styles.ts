@@ -1,22 +1,17 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 
-interface IStyledRadioClient {
-  theme?: typeof inube;
-}
 
 const StyledRadioClient = styled.label`
   & div {
     box-sizing: border-box;
     min-height: 58px;
     box-shadow: 1px 2px 2px 1px
-      ${({ theme }: IStyledRadioClient) =>
-        theme?.color?.surface?.gray?.regular ||
-        inube.color.surface.gray.regular};
+      ${({ theme }) =>
+        theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
     border: 1px solid
-      ${({ theme }: IStyledRadioClient) =>
-        theme?.color?.surface?.gray?.regular ||
-        inube.color.surface.gray.regular};
+      ${({ theme }) =>
+        theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
     cursor: pointer;
   }
 `;
