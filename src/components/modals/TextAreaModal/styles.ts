@@ -11,7 +11,9 @@ const StyledModal = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) =>
-    theme.color?.surface?.light?.clear || inube.color.surface.light.clear};
+    theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
+  max-height: 382px;
+  height: ${({ $smallScreen }) => ($smallScreen ? "326px" : "310px")};  
   width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "500px")};
   padding: ${({ $smallScreen }) =>
     $smallScreen ? inube.spacing.s200 : inube.spacing.s300};

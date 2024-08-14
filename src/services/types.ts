@@ -96,6 +96,32 @@ export type {
   DmDecisions,
   PinnedRequest,
 };
+
+export interface payroll_discount_authorization {
+  credit_request_id: string;
+  payroll_discount_authorization_id: string;
+  description_use: string;
+  abbreviated_name: string;
+  credit_product_id: string;
+  borrower_id: string;
+  state: string;
+  obligation_unique_code: string;
+  document_unique_code: string;
+  image_unique_code: string;
+}
+
+export interface promissory_note {
+  credit_request_id: string;
+  promissory_note_id: string;
+  description_use: string;
+  abbreviated_name: string;
+  credit_product_id: string;
+  state: string;
+  obligation_unique_code: string;
+  document_unique_code: string;
+  image_unique_code: string;
+}
+
 export interface approval_by_credit_request_Mock {
   approval_id: string;
   credit_request_id: string;
@@ -103,4 +129,22 @@ export interface approval_by_credit_request_Mock {
   approver_name: string;
   concept: string;
   error: boolean;
+}
+
+export interface Idocument {
+  credit_request_id: string;
+  document_id: string;
+  document_managment_unique_reference: string;
+  abbreviated_name: string;
+}
+
+export interface Ierror_issued {
+  credit_request_id: string;
+  error_issued_id: string;
+  action_id: string;
+  error_date: string;
+  error_description: string;
+  user_id: string;
+  user_name: string;
+  read: string;
 }
