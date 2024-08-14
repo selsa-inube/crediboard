@@ -1,12 +1,53 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { inube } from "@inube/design-system";
 
-interface AlertContainerProps {
-  $top: string;
-  $left: string;
-}
+const slideDown = keyframes`
+ 
+	0% {
+		animation-timing-function: ease-in;
+		opacity: 0;
+		transform: translateY(-250px);
+	}
 
-export const AlertContainer = styled.div<AlertContainerProps>`
+	38% {
+		animation-timing-function: ease-out;
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	55% {
+		animation-timing-function: ease-in;
+		transform: translateY(-65px);
+	}
+
+	72% {
+		animation-timing-function: ease-out;
+		transform: translateY(0);
+	}
+
+	81% {
+		animation-timing-function: ease-in;
+		transform: translateY(-28px);
+	}
+
+	90% {
+		animation-timing-function: ease-out;
+		transform: translateY(0);
+	}
+
+	95% {
+		animation-timing-function: ease-in;
+		transform: translateY(-8px);
+	}
+
+	100% {
+		animation-timing-function: ease-out;
+		transform: translateY(0);
+	}
+
+`;
+
+export const AlertContainer = styled.div`
   display: flex;
   align-items: center;
   background-color: ${({ theme }) =>
@@ -16,23 +57,8 @@ export const AlertContainer = styled.div<AlertContainerProps>`
   border: 1px solid
     ${({ theme }) =>
       theme?.color?.stroke?.gray?.regular || inube.color.surface.gray.regular};
-  position: absolute;
-  top: ${({ $top }) => $top};
-  left: ${({ $left }) => $left};
-  transform: translateX(-50%);
-  
-  @media (max-width: 350px) {
-    position: fixed;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 8px 5px;
-  }
-`;
-
-export const AlertText = styled.div`
-  margin: 0 10px;
-  font-family: Roboto;
-  font-size: 14px;
-  margin-right: 85px;
-  white-space: nowrap;
+  min-width: 250px;
+  justify-content: center;
+  animation: ${slideDown} 2s ease-in-out;
+  position: relative;
 `;

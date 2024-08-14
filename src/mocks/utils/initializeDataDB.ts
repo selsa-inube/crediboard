@@ -5,9 +5,15 @@ import { themes } from "@mocks/design/themes";
 import { mockRequests } from "@mocks/requests/requests.mock";
 import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
 import { mockStaff } from "@mocks/staff/staff.mock";
-import { approval_by_credit_request_Mock } from "@mocks/financialReporting/Approvals.mock";
+import { mockToDo } from "@mocks/financial-reporting/to-do/toDo.mock";
+import { mockRiskScoring } from "@mocks/credit-profile/risk-scoring/riskScoring.mock";
+import { promissory_note } from "@mocks/promissoryNotes/promissory_note.mock";
+import { payroll_discount_authorization } from "@mocks/promissoryNotes/payroll_discount_authorization.mock";
+import { approval_by_credit_request_Mock } from "@src/mocks/financialReporting/Approvals.mock";
+import { documents } from "@mocks/financialReporting/documents.mock";
 import { traceMock } from "@mocks/financialReporting/trace.mock";
 import { error_issued } from "@mocks/financialReporting/error.mock";
+import { credit_profileInfo } from "@src/mocks/creditProfileInfo/creditProfileInfo.mock";
 
 export function initializeDataDB() {
   localforage.clear();
@@ -22,5 +28,23 @@ export function initializeDataDB() {
     true
   );
   intializedData<(typeof traceMock)[number]>("trace", traceMock, false);
+  intializedData<(typeof mockToDo)[number]>("to-do", mockToDo, true);
+  intializedData<(typeof mockRiskScoring)[number]>(
+    "risk-scoring",
+    mockRiskScoring,
+    true
+  );
+  intializedData("document", documents, true);
+  intializedData<(typeof promissory_note)[number]>(
+    "promissory_note",
+    promissory_note,
+    true
+  );
+  intializedData(
+    "payroll_discount_authorization",
+    payroll_discount_authorization,
+    true
+  );
   intializedData("error_issued", error_issued, true);
+  intializedData("credit_profileInfo", credit_profileInfo, true);
 }

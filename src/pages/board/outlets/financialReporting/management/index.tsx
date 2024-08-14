@@ -5,14 +5,15 @@ import { Textfield } from "@inubekit/textfield";
 import { LuPaperclip } from "react-icons/lu";
 import localforage from "localforage";
 import { useParams } from "react-router-dom";
+import { MdOutlineSend } from "react-icons/md";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { Message } from "@components/data/message";
-import { SubmitButton } from "@components/inputs/SubmitButton";
+import { Message } from "@components/data/Message";
+import { get, updateActive } from "@mocks/utils/dataMock.service";
 import { TraceType } from "@services/types";
 
 import { ChatContent } from "./styles";
-import { get, updateActive } from "@mocks/utils/dataMock.service";
+
 
 
 export const Management = () => {
@@ -26,7 +27,7 @@ export const Management = () => {
     });
   }, []);
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
     sendMessage();
   };
@@ -92,7 +93,7 @@ export const Management = () => {
             />
           ))}
         </ChatContent>
-        <form onSubmit={handleFormSubmit}>
+        <form>
           <Stack alignItems="center" direction="row" gap={inube.spacing.s150}>
             <Icon
               appearance="primary"
@@ -107,7 +108,15 @@ export const Management = () => {
               value={newMessage}
               onChange={handleInputChange}
             />
-            <SubmitButton />
+            <Stack>
+              <Icon
+                appearance="primary"
+                cursorHover
+                size="36px"
+                icon={<MdOutlineSend />}
+                onClick={handleFormSubmit}
+              />
+            </Stack>
           </Stack>
         </form>
       </Stack>
