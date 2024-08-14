@@ -5,24 +5,6 @@ export const infoIcon = {
   onClick: () => console.log("info"),
 };
 
-export const optionSelectDecision = [
-  {
-    id: "aceptar",
-    label: "Aceptar",
-    disabled: false,
-  },
-  {
-    id: "rechazar",
-    label: "Rechazar",
-    disabled: false,
-  },
-  {
-    id: "pendiente",
-    label: "Pendiente",
-    disabled: false,
-  },
-];
-
 export interface FlagMessage {
   title: string;
   description: string;

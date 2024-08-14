@@ -44,6 +44,10 @@ interface IListdataProps {
 const Listdata = (props: IListdataProps) => {
   const { data, icon } = props;
 
+  if (data.length === 0) {
+    return <Text>No hay documentos adjuntos.</Text>;
+  }
+
   return (
     <ul
       style={{
@@ -192,7 +196,7 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                {<ToDo icon={infoIcon} data={data} isMobile={isMobile} />}
+                {<ToDo icon={infoIcon} isMobile={isMobile} />}
               </Stack>
               <Stack direction="column">{<Approvals user={id!} />}</Stack>
               <Stack direction="column">

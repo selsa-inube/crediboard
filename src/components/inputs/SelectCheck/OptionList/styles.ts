@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 
 interface IStyledOptionList {
   onClick?: React.ChangeEventHandler<HTMLInputElement>;
@@ -8,6 +8,7 @@ interface IStyledOptionList {
 export const StyledOptionList = styled.ul<IStyledOptionList>`
   display: flex;
   flex-direction: column;
+  width: -moz-available;
   width: -webkit-fill-available;
   padding: 4px 0px;
   position: absolute;
@@ -15,10 +16,19 @@ export const StyledOptionList = styled.ul<IStyledOptionList>`
   border-radius: 4px;
   background: ${({ theme }) => {
     return (
-      theme?.color?.surface?.light?.clear || inube.color.surface.light.clear
+      theme?.input?.optionList?.background?.expanded ||
+      inube.input.optionList.background.expanded
     );
   }};
   box-shadow:
     0px 1px 2px rgba(0, 0, 0, 0.3),
     0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+  & > li:hover {
+    background: ${({ theme }) => {
+      return (
+        theme?.input?.optionList?.background?.selected ||
+        inube.input.optionList.background.selected
+      );
+    }};
+  }
 `;
