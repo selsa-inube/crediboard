@@ -28,13 +28,13 @@ interface IActionButtons {
   menuIcon: () => void;
 }
 
-interface IStocktrayProps {
+interface IStockTrayProps {
   isMobile?: boolean;
   actionButtons?: IActionButtons;
   navigation: () => void;
 }
 
-export const StockTray = (props: IStocktrayProps) => {
+export const StockTray = (props: IStockTrayProps) => {
   const { isMobile, actionButtons, navigation } = props;
 
   return (

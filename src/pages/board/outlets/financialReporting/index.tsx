@@ -13,7 +13,7 @@ import { Stack } from "@inubekit/stack";
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { ErrorAlert } from "@components/ErrorAlert";
 import { ListModal } from "@components/modals/ListModal";
-import { StockTray } from "@components/layout/ContainerSections/Stocktray";
+import { StockTray } from "@src/components/layout/ContainerSections/StockTray";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
@@ -186,7 +186,7 @@ export const FinancialReporting = () => {
 
       <ContainerSections
         isMobile={isMobile}
-        stocktray={
+        stockTray={
           <StockTray
             isMobile={isMobile}
             actionButtons={handleActions}

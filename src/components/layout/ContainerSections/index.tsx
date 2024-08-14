@@ -26,12 +26,12 @@ interface IActionButtons {
  */
 interface IContainerSectionsProps {
   children?: JSX.Element | JSX.Element[];
-  stocktray: JSX.Element;
+  stockTray: JSX.Element;
   isMobile?: boolean;
 }
 
 export const ContainerSections = (props: IContainerSectionsProps) => {
-  const { children, stocktray, isMobile } = props;
+  const { children, stockTray, isMobile } = props;
 
   return (
     <StyledContainerToCenter>
@@ -39,7 +39,7 @@ export const ContainerSections = (props: IContainerSectionsProps) => {
         width={isMobile ? "-webkit-fill-available" : "min(100%,1440px)"}
         direction="column"
       >
-        {stocktray}
+        {stockTray}
         <Stack direction="column">{children}</Stack>
       </Stack>
     </StyledContainerToCenter>
