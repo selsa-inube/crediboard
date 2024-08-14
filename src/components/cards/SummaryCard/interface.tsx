@@ -1,4 +1,6 @@
-import { Stack, Text, Icon, inube } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 import { MdOutlineMessage, MdOutlinePushPin, MdPushPin } from "react-icons/md";
 
 import {
@@ -46,7 +48,7 @@ function SummaryCardUI(props: SummaryCardProps) {
         <Text type="label">
           {capitalizeFirstLetter(truncateTextToMaxLength(destination, 60))}
         </Text>
-        <Stack gap={inube.spacing.s100}>
+        <Stack gap="8px">
           <Text size="medium" appearance="gray">
             Valor:
           </Text>
@@ -61,12 +63,12 @@ function SummaryCardUI(props: SummaryCardProps) {
           {capitalizeFirstLetter(truncateTextToMaxLength(toDo, 60))}
         </Text>
       </StyledLink>
-      <Stack direction="column" padding="s0 s100">
+      <Stack direction="column" padding="0px 8px">
         <StyledDivider />
         <Stack
-          gap={inube.spacing.s100}
+          gap="8px"
           justifyContent="flex-end"
-          padding="s100 s0"
+          padding="8px 0px"
         >
           {hasMessage && (
             <Icon

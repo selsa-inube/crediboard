@@ -8,7 +8,6 @@ import {
 } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 
-import { Tag } from "@components/data/Tag";
 import { IEntries } from "@components/data/TableBoard/types";
 
 const entrySelection = (data: IEntries) => {
@@ -35,30 +34,6 @@ export const titlesFinanacialReporting = [
     id: "tag",
     titleName: "Estado",
     priority: 4,
-  },
-];
-
-export const entriesFinanacialReporting = [
-  {
-    id: "1",
-    "No. de Obligación": "1234554545",
-    "No. de Documento": "1234567890",
-    Tipo: "Pagare",
-    tag: <Tag label="En tramite" appearance="warning" />,
-  },
-  {
-    id: "2",
-    "No. de Obligación": "1234567890",
-    "No. de Documento": "1234567890",
-    Tipo: "Pagare",
-    tag: <Tag label="Firmado" appearance="success" />,
-  },
-  {
-    id: "3",
-    "No. de Obligación": "1234564321",
-    "No. de Documento": "1234567890",
-    Tipo: "Libranza",
-    tag: <Tag label="Con Error" appearance="danger" />,
   },
 ];
 
@@ -169,3 +144,38 @@ export const actionMobile = [
     ),
   },
 ];
+
+const appearance: { [key: string]: string } = {
+  Firmado: "success",
+  "En trámite": "warning",
+  "Con error": "danger",
+};
+
+export const appearanceTag = (tag: string) => {
+  return appearance?.[tag] as "success" | "warning" | "danger";
+};
+
+export const firstWord = (text: string) => text.split(" ")[0];
+export const getTableBoardActions = (
+  entrySelection: (data: IEntries) => void
+) =>
+  actionsFinanacialReporting.map((action) => ({
+    id: action.id,
+    actionName: action.actionName,
+    label: "Action Label",
+    content: (data: IEntries) => (
+      <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
+    ),
+  }));
+
+export const getTableBoardActionMobile = (
+  entrySelection: (data: IEntries) => void
+) =>
+  actionMobile.map((action) => ({
+    id: action.id,
+    actionName: action.actionName,
+    label: "Mobile Action Label",
+    content: (data: IEntries) => (
+      <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
+    ),
+  }));

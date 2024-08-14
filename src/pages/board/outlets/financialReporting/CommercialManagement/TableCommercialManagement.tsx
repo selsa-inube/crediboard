@@ -10,12 +10,14 @@ import {
 
 interface IDataCommercialManagement {
   dataAccordeon: IAccordionProps[];
+  dataRef: React.RefObject<HTMLDivElement>;
+  isOpen?: boolean;
 }
 
 export const DataCommercialManagement = (props: IDataCommercialManagement) => {
-  const { dataAccordeon } = props;
+  const { dataAccordeon, dataRef, isOpen = false } = props;
   return (
-    <>
+    <div ref={dataRef}>
       <TableBoard
         id="commercialManagement"
         titles={titlesCommercialManagement}
@@ -28,8 +30,9 @@ export const DataCommercialManagement = (props: IDataCommercialManagement) => {
           name={accordeon.name}
           title={accordeon.title}
           content={accordeon.content}
+          isOpen={isOpen}
         />
       ))}
-    </>
+    </div>
   );
 };

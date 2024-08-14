@@ -25,6 +25,7 @@ interface IActionButtons {
       OnClick: () => void;
     };
   };
+  menuIcon: () => void;
 }
 
 interface IStocktrayProps {
@@ -66,6 +67,7 @@ export const Stocktray = (props: IStocktrayProps) => {
             appearance="dark"
             size="32px"
             spacing="none"
+            onClick={actionButtons?.menuIcon}
           />
         )}
       </Stack>
