@@ -12,6 +12,7 @@ const StyledModal = styled.div<IStyledModal>`
   background-color: ${({ theme }) =>
     theme.color?.surface?.light?.clear || inube.color.surface.light.clear};
   width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "443px")};
+  height: ${({ $smallScreen }) => ($smallScreen ? "452px" : "420px")};
   padding: ${({ $smallScreen }) =>
     $smallScreen ? inube.spacing.s200 : inube.spacing.s400};
   gap: ${({ $smallScreen }) =>
