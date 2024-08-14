@@ -2,13 +2,13 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { useParams } from "react-router-dom";
 import {
   Button,
-  Icon,
   Stack,
   Select,
   Text,
   Textfield,
   inube,
 } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
 import { MdOutlineThumbUp } from "react-icons/md";
 
