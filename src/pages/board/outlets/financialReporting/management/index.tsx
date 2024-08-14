@@ -5,14 +5,14 @@ import { Textfield } from "@inubekit/textfield";
 import { LuPaperclip } from "react-icons/lu";
 import localforage from "localforage";
 import { useParams } from "react-router-dom";
+import { MdOutlineSend } from "react-icons/md";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { Message } from "@components/data/message";
+import { Message } from "@components/data/Message";
+import { get } from "@mocks/utils/dataMock.service";
+import { traceMock } from "@mocks/financialReporting/trace.mock";
 
 import { ChatContent } from "./styles";
-import { get } from "@mocks/utils/dataMock.service";
-import { traceMock } from "@src/mocks/financialReporting/trace.mock";
-import { MdOutlineSend } from "react-icons/md";
 
 interface MessageType {
   id: string;
