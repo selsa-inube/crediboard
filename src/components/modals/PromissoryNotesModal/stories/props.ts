@@ -1,4 +1,7 @@
-export const props = {
+import { ArgTypes } from "@storybook/react";
+import { PromissoryNotesModalProps } from "..";
+
+export const props:ArgTypes<PromissoryNotesModalProps> = {
     title: {
       control: {
         type: 'text',
