@@ -25,6 +25,29 @@ interface PinnedRequest {
   requestId: number;
   isPinned: "Y" | "N";
 }
+
+interface IToDo {
+  credit_request_state_id: string;
+  task_to_be_done: string;
+  account_manager_name: string;
+  analyst_name: string;
+  decisions: { id: string; label: string }[];
+}
+interface IRiskScoring {
+  total_score: number;
+  minimum_score: number;
+  seniority: number;
+  seniority_score: number;
+  risk_center: number;
+  risk_center_score: number;
+  job_stability_index: number;
+  job_stability_index_score: number;
+  marital_status: string;
+  marital_status_score: number;
+  economic_activity: string;
+  economic_activity_score: number;
+}
+
 type DmEtapasPrs =
   | "CUMPLIMIENTO_REQUISITOS"
   | "FORMALIZACION_GARANTIAS"
@@ -70,14 +93,31 @@ type DmDecisions =
   | "CREAR_OBLIGACIONES_DE_CARTERA"
   | "DECLINAR_OBLIGACIONES_DE_CARTERA";
 
+  interface TraceType {
+    trace_id: string;
+    trace_value: string;
+    credit_request_id: string;
+    use_case: string;
+    user_id: string;
+    execution_date: string | number;
+    justification?: string;
+    decision_taken_by_user?: string;
+    trace_type?: string;
+    read_novelty?: string;
+  }
+  
+
 export type {
   Requests,
   IStaff,
+  IToDo,
+  IRiskScoring,
   DmEtapasPrs,
   DmTareasPrs,
   DmConceptos,
   DmDecisions,
   PinnedRequest,
+  TraceType
 };
 
 export interface payroll_discount_authorization {
@@ -119,4 +159,15 @@ export interface Idocument {
   document_id: string;
   document_managment_unique_reference: string;
   abbreviated_name: string;
+}
+
+export interface Ierror_issued {
+  credit_request_id: string;
+  error_issued_id: string;
+  action_id: string;
+  error_date: string;
+  error_description: string;
+  user_id: string;
+  user_name: string;
+  read: string;
 }
