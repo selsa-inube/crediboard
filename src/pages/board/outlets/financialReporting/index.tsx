@@ -44,6 +44,10 @@ interface IListdataProps {
 const Listdata = (props: IListdataProps) => {
   const { data, icon } = props;
 
+  if (data.length === 0) {
+    return <Text>No hay documentos adjuntos.</Text>;
+  }
+
   return (
     <ul
       style={{
