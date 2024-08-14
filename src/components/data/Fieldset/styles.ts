@@ -17,17 +17,11 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   border-color: ${({ theme }) =>
     theme?.palette?.neutral?.N200 || inube.palette.neutral.N200};
   box-shadow: 0px 2px 6px
-    ${({ theme }) =>
-      theme?.palette?.neutral?.N40 ||
-      inube.palette.neutral.N40};
-  padding-top: ${({ theme, $hasTable }) =>
-    !$hasTable && (theme? "16px" : "16px" )};
-  padding-bottom: ${({ theme, $hasTable }) =>
-    !$hasTable && (theme? "16px" : "16px" )};
-  padding-right: ${({ theme, $hasTable }) =>
-    !$hasTable && (theme? "8px" : "8px" )};
-  padding-left: ${({ theme, $hasTable }) =>
-    !$hasTable && (theme? "8px" : "8px" )};
+    ${({ theme }) => theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
+  padding-top: ${({ $hasTable }) => !$hasTable && "16px"};
+  padding-bottom: ${({ $hasTable }) => !$hasTable && "16px"};
+  padding-right: ${({ $hasTable }) => !$hasTable && "8px"};
+  padding-left: ${({ $hasTable }) => !$hasTable && "8px"};
 
   ${({ $isMobile, theme }) =>
     !$isMobile &&
