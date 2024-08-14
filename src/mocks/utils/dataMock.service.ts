@@ -10,7 +10,11 @@ function buildData<T>(data: T[], includeId: boolean) {
   return dataMock;
 }
 
-export async function intializedData<T>(option: string, data: T[], includeId: boolean) {
+export async function intializedData<T>(
+  option: string,
+  data: T[],
+  includeId: boolean
+) {
   try {
     const dataMock = buildData(data, includeId);
     await localforage.setItem(option, dataMock);
@@ -96,4 +100,23 @@ async function fakeNetwork() {
   return new Promise((res) => {
     setTimeout(res, 0);
   });
+}
+
+export async function addItem<T>(nameDB: string, newItem: T) {
+  try {
+    const data = await localforage.getItem(nameDB);
+
+    let updatedData;
+    if (Array.isArray(data)) {
+      updatedData = [...data, newItem];
+    } else {
+      updatedData = [newItem];
+    }
+
+    await localforage.setItem(nameDB, updatedData);
+
+    console.log("Item added successfully");
+  } catch (error) {
+    console.error("Failed to add item:", error);
+  }
 }

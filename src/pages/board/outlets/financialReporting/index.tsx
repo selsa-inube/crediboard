@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+
 import { useNavigate, useParams } from "react-router-dom";
 import {
   MdDeleteOutline,
@@ -94,6 +96,8 @@ export const FinancialReporting = () => {
   const [errors, setError] = useState<Ierror_issued[]>([]);
 
   const { id } = useParams();
+  const { user } = useAuth0();
+
   const navigation = useNavigate();
 
   const isMobile: boolean = useMediaQuery("(max-width: 880px)");
@@ -258,6 +262,8 @@ export const FinancialReporting = () => {
           onCloseModal={() => setShowRejectModal(false)}
           onSubmit={(values) =>
             handleConfirmReject(
+              id!,
+              user!.nickname!,
               values,
               setFlagMessage,
               setShowFlagMessage,
