@@ -11,13 +11,14 @@ import { Flag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
 import { ContainerSections } from "@components/layout/ContainerSections";
+import { ErrorAlert } from "@components/ErrorAlert";
 import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
-import { get, getById } from "@mocks/utils/dataMock.service";
-import { Idocument, Requests } from "@services/types";
+import { getById, getDataById } from "@mocks/utils/dataMock.service";
+import { Idocument, Ierror_issued, Requests } from "@services/types";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
@@ -27,7 +28,7 @@ import {
   handleConfirmCancel,
   optionButtons,
 } from "./config";
-import { StyledItem, StyledMessageContainer } from "./styles";
+import { StyledItem, StyledMessageContainer, StyledToast } from "./styles";
 import { Approvals } from "./Approvals";
 import { Requirements } from "./Requirements";
 import { dataRequirements } from "./Requirements/config";
@@ -43,8 +44,8 @@ interface IListdataProps {
 const Listdata = (props: IListdataProps) => {
   const { data, icon } = props;
 
-  if (data.length === 0){
-    return <Text>No hay documentos adjuntos.</Text>
+  if (data.length === 0) {
+    return <Text>No hay documentos adjuntos.</Text>;
   }
 
   return (
@@ -86,6 +87,7 @@ export const FinancialReporting = () => {
   });
 
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
+  const [errors, setError] = useState<Ierror_issued[]>([]);
 
   const { id } = useParams();
 
@@ -96,19 +98,21 @@ export const FinancialReporting = () => {
   useEffect(() => {
     Promise.allSettled([
       getById("k_Prospe", "requests", id!),
-      get<Idocument[]>("document"),
-    ]).then(([requirement, documents]) => {
+      getDataById<Idocument[]>("document", "credit_request_id", id!),
+      getDataById<Ierror_issued[]>("error_issued", "credit_request_id", id!),
+    ]).then(([requirement, documents, error_issue]) => {
       if (requirement.status === "fulfilled") {
         setData(requirement.value as Requests);
       }
-      if (documents.status === "fulfilled") {
-        const documentsUser = documents.value
-          .filter((doc) => doc.credit_request_id === id)
-          .map((dataListDocument) => ({
-            id: dataListDocument.document_id,
-            name: dataListDocument.abbreviated_name,
-          }));
+      if (documents.status === "fulfilled" && documents.value) {
+        const documentsUser = documents.value.map((dataListDocument) => ({
+          id: dataListDocument.document_id,
+          name: dataListDocument.abbreviated_name,
+        }));
         setDocument(documentsUser);
+      }
+      if (error_issue.status === "fulfilled") {
+        setError(error_issue.value!);
       }
     });
   }, [id]);
@@ -148,8 +152,26 @@ export const FinancialReporting = () => {
     },
   };
 
+  const handleClose = (errorId: string) => {
+    setError(errors.filter((error) => error.error_issued_id !== errorId));
+  };
+
   return (
     <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
+      {errors.length > 0 && (
+        <Stack justifyContent="center" alignContent="center">
+          <StyledToast $isMobile={isMobile}>
+            {errors.map((error) => (
+              <ErrorAlert
+                message={error.error_description}
+                onClose={() => handleClose(error.error_issued_id)}
+                key={error.error_issued_id}
+              />
+            ))}
+          </StyledToast>
+        </Stack>
+      )}
+
       <ContainerSections isMobile={isMobile} actionButtons={handleAction}>
         <>
           <Stack direction="column" gap={inube.spacing.s250}>
@@ -174,7 +196,7 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                {<ToDo icon={infoIcon} data={data} isMobile={isMobile} />}
+                {<ToDo icon={infoIcon} isMobile={isMobile} />}
               </Stack>
               <Stack direction="column">{<Approvals user={id!} />}</Stack>
               <Stack direction="column">
