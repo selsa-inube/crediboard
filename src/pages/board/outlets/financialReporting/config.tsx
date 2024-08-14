@@ -57,3 +57,44 @@ export const optionButtons: IOptionButtons = {
   fullwidth: false,
   onClick: () => console.log("Adjuntar archivo"),
 };
+
+type ConfigHandleactions = {
+  buttonReject: () => void;
+  buttonCancel: () => void;
+  buttonPrint: () => void;
+  buttonAttach: () => void;
+  buttonViewAttachments: () => void;
+  menuIcon: () => void;
+};
+
+export const configHandleactions = ({
+  buttonReject = () => {},
+  buttonCancel = () => {},
+  buttonPrint = () => {},
+  buttonAttach = () => {},
+  buttonViewAttachments = () => {},
+  menuIcon = () => {},
+}: ConfigHandleactions) => {
+  return {
+    buttons: {
+      buttonReject: {
+        OnClick: buttonReject,
+      },
+      buttonCancel: {
+        OnClick: buttonCancel,
+      },
+      buttonPrint: {
+        OnClick: buttonPrint,
+      },
+    },
+    buttonsOutlined: {
+      buttonAttach: {
+        OnClick: buttonAttach,
+      },
+      buttonViewAttachments: {
+        OnClick: buttonViewAttachments,
+      },
+    },
+    menuIcon: menuIcon,
+  };
+};
