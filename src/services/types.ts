@@ -25,6 +25,22 @@ interface PinnedRequest {
   requestId: number;
   isPinned: "Y" | "N";
 }
+
+interface IRiskScoring {
+  total_score: number;
+  minimum_score: number;
+  seniority: number;
+  seniority_score: number;
+  risk_center: number;
+  risk_center_score: number;
+  job_stability_index: number;
+  job_stability_index_score: number;
+  marital_status: string;
+  marital_status_score: number;
+  economic_activity: string;
+  economic_activity_score: number;
+}
+
 type DmEtapasPrs =
   | "CUMPLIMIENTO_REQUISITOS"
   | "FORMALIZACION_GARANTIAS"
@@ -73,6 +89,7 @@ type DmDecisions =
 export type {
   Requests,
   IStaff,
+  IRiskScoring,
   DmEtapasPrs,
   DmTareasPrs,
   DmConceptos,
