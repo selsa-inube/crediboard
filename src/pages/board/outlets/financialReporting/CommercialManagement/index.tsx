@@ -113,7 +113,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   type="link"
                   path={`/extended-card/${id}/credit-profile`}
                 >
-                  Ver perfil créditicio
+                  Ver perfil crediticio
                 </Button>
                 <StyledIcon>
                   <Icon
@@ -149,7 +149,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   path={`/extended-card/${id}/credit-profile`}
                   fullwidth
                 >
-                  Ver perfil créditicio
+                  Ver perfil crediticio
                 </Button>
             )}
         {collapse && <StyledDivider />}
