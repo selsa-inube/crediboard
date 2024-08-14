@@ -157,6 +157,15 @@ export const handleNotificationClick = (
   }
 };
 
+export const handleErrorClick = (
+  data: IEntries,
+  setSelectedData: (data: IEntries) => void,
+  setShowModal: (showModal: boolean) => void
+) => {
+  setSelectedData(data);
+  setShowModal(true);
+};
+
 interface Action {
   id: string;
   actionName: string;
@@ -165,49 +174,47 @@ interface Action {
 
 export const desktopActions = (
   actionsApprovals: Action[],
-  handleNotificationClick: (data: IEntries) => void
+  handleNotificationClick: (data: IEntries) => void,
+  handleErrorClick: (data: IEntries) => void
 ) => {
-  return actionsApprovals.map((action) => {
-    return {
-      id: action.id,
-      actionName: action.actionName,
-      content: (data: IEntries) => (
-        <div
-          onClick={() => {
-            if (action.id === "notificaciones") {
-              handleNotificationClick(data);
-            } else if (action.id === "Error") {
-              action.content(data);
-            }
-          }}
-        >
-          {action.content(data)}
-        </div>
-      ),
-    };
-  });
+  return actionsApprovals.map((action) => ({
+    id: action.id,
+    actionName: action.actionName,
+    content: (data: IEntries) => (
+      <div
+        onClick={() => {
+          if (action.id === "notificaciones") {
+            handleNotificationClick(data);
+          } else if (action.id === "Error") {
+            handleErrorClick(data);
+          }
+        }}
+      >
+        {action.content(data)}
+      </div>
+    ),
+  }));
 };
 
 export const getMobileActionsConfig = (
   actionMobileApprovals: Action[],
-  handleNotificationClickBound: (data: IEntries) => void
+  handleNotificationClickBound: (data: IEntries) => void,
+  handleErrorClickBound: (data: IEntries) => void
 ) => {
-  return actionMobileApprovals.map((action) => {
-    return {
-      id: action.id,
-      content: (data: IEntries) => (
-        <div
-          onClick={() => {
-            if (action.id === "notificaciones") {
-              handleNotificationClickBound(data);
-            } else if (action.id === "Error") {
-              action.content(data);
-            }
-          }}
-        >
-          {action.content(data)}
-        </div>
-      ),
-    };
-  });
+  return actionMobileApprovals.map((action) => ({
+    id: action.id,
+    content: (data: IEntries) => (
+      <div
+        onClick={() => {
+          if (action.id === "notificaciones") {
+            handleNotificationClickBound(data);
+          } else if (action.id === "Error") {
+            handleErrorClickBound(data);
+          }
+        }}
+      >
+        {action.content(data)}
+      </div>
+    ),
+  }));
 };
