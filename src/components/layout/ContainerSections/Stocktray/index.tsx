@@ -34,7 +34,7 @@ interface IStocktrayProps {
   navigation: () => void;
 }
 
-export const Stocktray = (props: IStocktrayProps) => {
+export const StockTray = (props: IStocktrayProps) => {
   const { isMobile, actionButtons, navigation } = props;
 
   return (
