@@ -7,10 +7,7 @@ interface StyledClientsListProps {
 const StyledClients = styled.div`
   & form {
     & > div {
-      margin: ${({ theme }) =>
-        `${theme? "48px" : "48px"} auto ${
-          theme? "0px" : "0px"
-        }`};
+      margin: 48px auto 0px;
       width: 500px;
       @media screen and (max-width: 532px) {
         width: auto;
@@ -19,8 +16,7 @@ const StyledClients = styled.div`
   }
 
   & button {
-    margin-top: ${({ theme }) =>
-      `${theme? "24px" : "24px"}`};
+    margin-top: 24px;
   }
 `;
 
@@ -38,10 +34,7 @@ const StyledClientsList = styled.div<StyledClientsListProps>`
 `;
 
 const StyledNoResults = styled.div`
-  margin: ${({ theme }) =>
-    `${theme? "16px" : "16px"} ${
-      theme? "0px" : "0px"
-    }`};
+  margin: 16px 0px;
 `;
 
 const StyledClientsItem = styled.li`
