@@ -15,9 +15,9 @@
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
     "@inube/design-system": "^5.15.0",
-    "@inubekit/avatar": "^2.3.0",
-    "@inubekit/divider": "^0.4.0",
+    "@inubekit/avatar": "^2.9.1",
     "@inubekit/button": "^4.5.0",
+    "@inubekit/divider": "^0.4.1",
     "@inubekit/flag": "^4.6.0",
     "@inubekit/foundations": "^5.2.0",
     "@inubekit/grid": "^2.5.0",
