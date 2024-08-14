@@ -1,20 +1,13 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
 
 interface StyledClientsListProps {
   $scroll?: boolean;
 }
 
-interface IStyledClientsUI {
-  theme?: typeof inube;
-}
 const StyledClients = styled.div`
   & form {
     & > div {
-      margin: ${({ theme }: IStyledClientsUI) =>
-        `${theme?.spacing?.s600 || inube.spacing.s600} auto ${
-          theme?.spacing?.s0 || inube.spacing.s0
-        }`};
+      margin: 48px auto 0px;
       width: 500px;
       @media screen and (max-width: 532px) {
         width: auto;
@@ -23,8 +16,7 @@ const StyledClients = styled.div`
   }
 
   & button {
-    margin-top: ${({ theme }: IStyledClientsUI) =>
-      `${theme?.spacing?.s300 || inube.spacing.s300}`};
+    margin-top: 24px;
   }
 `;
 
@@ -42,10 +34,7 @@ const StyledClientsList = styled.div<StyledClientsListProps>`
 `;
 
 const StyledNoResults = styled.div`
-  margin: ${({ theme }: IStyledClientsUI) =>
-    `${theme?.spacing?.s200 || inube.spacing.s200} ${
-      theme?.spacing?.s0 || inube.spacing.s0
-    }`};
+  margin: 16px 0px;
 `;
 
 const StyledClientsItem = styled.li`
