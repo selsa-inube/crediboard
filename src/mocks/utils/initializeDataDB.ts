@@ -13,6 +13,7 @@ import { traceMock } from "@mocks/financialReporting/trace.mock";
 import { error_issued } from "@mocks/financialReporting/error.mock";
 import { payment_capacityInfo } from "@mocks/creditProfileInfo/paymentCapacity.mock";
 import { credit_behaviorInfo } from "@mocks/creditProfileInfo/creditBehavior.mock"
+import { uncovered_walletInfo } from "@mocks/creditProfileInfo/uncoveredWallet.mock"
 
 export function initializeDataDB() {
   localforage.clear();
@@ -41,4 +42,5 @@ export function initializeDataDB() {
   intializedData("error_issued", error_issued);
   intializedData("payment_capacityInfo", payment_capacityInfo);
   intializedData("credit_behaviorInfo", credit_behaviorInfo);
+  intializedData("uncovered_walletInfo", uncovered_walletInfo)
 }
