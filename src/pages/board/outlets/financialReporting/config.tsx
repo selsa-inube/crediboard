@@ -1,6 +1,6 @@
 import { MdAddCircleOutline } from "react-icons/md";
 
-import { IOptionButtons } from "@src/components/modals/ListModal";
+import { IOptionButtons } from "@components/modals/ListModal";
 
 export const handleConfirmReject = (
   values: { textarea: string },
@@ -56,4 +56,45 @@ export const optionButtons: IOptionButtons = {
   icon: <MdAddCircleOutline />,
   fullwidth: false,
   onClick: () => console.log("Adjuntar archivo"),
+};
+
+type ConfigHandleactions = {
+  buttonReject: () => void;
+  buttonCancel: () => void;
+  buttonPrint: () => void;
+  buttonAttach: () => void;
+  buttonViewAttachments: () => void;
+  menuIcon: () => void;
+};
+
+export const configHandleactions = ({
+  buttonReject = () => {},
+  buttonCancel = () => {},
+  buttonPrint = () => {},
+  buttonAttach = () => {},
+  buttonViewAttachments = () => {},
+  menuIcon = () => {},
+}: ConfigHandleactions) => {
+  return {
+    buttons: {
+      buttonReject: {
+        OnClick: buttonReject,
+      },
+      buttonCancel: {
+        OnClick: buttonCancel,
+      },
+      buttonPrint: {
+        OnClick: buttonPrint,
+      },
+    },
+    buttonsOutlined: {
+      buttonAttach: {
+        OnClick: buttonAttach,
+      },
+      buttonViewAttachments: {
+        OnClick: buttonViewAttachments,
+      },
+    },
+    menuIcon: menuIcon,
+  };
 };
