@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   MdDeleteOutline,
   MdOutlineRemoveRedEye,
@@ -13,6 +13,7 @@ import { Stack } from "@inubekit/stack";
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { ErrorAlert } from "@components/ErrorAlert";
 import { ListModal } from "@components/modals/ListModal";
+import { StockTray } from "@src/components/layout/ContainerSections/StockTray";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
@@ -24,6 +25,7 @@ import { generatePDF } from "@utils/pdf/generetePDF";
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
 import {
+  configHandleactions,
   handleConfirmReject,
   handleConfirmCancel,
   optionButtons,
@@ -35,6 +37,7 @@ import { dataRequirements } from "./Requirements/config";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
+import { MobileMenu } from "@src/components/modals/MobileMenu";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -43,6 +46,10 @@ interface IListdataProps {
 
 const Listdata = (props: IListdataProps) => {
   const { data, icon } = props;
+
+  if (data.length === 0) {
+    return <Text>No hay documentos adjuntos.</Text>;
+  }
 
   return (
     <ul
@@ -72,6 +79,7 @@ export const FinancialReporting = () => {
 
   const [showAttachments, setShowAttachments] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -86,6 +94,7 @@ export const FinancialReporting = () => {
   const [errors, setError] = useState<Ierror_issued[]>([]);
 
   const { id } = useParams();
+  const navigation = useNavigate();
 
   const isMobile: boolean = useMediaQuery("(max-width: 880px)");
 
@@ -126,30 +135,37 @@ export const FinancialReporting = () => {
     }, 1000);
   };
 
-  const handleAction = {
-    buttons: {
-      buttonReject: {
-        OnClick: () => setShowRejectModal(true),
-      },
-      buttonCancel: {
-        OnClick: () => setShowCancelModal(true),
-      },
-      buttonPrint: {
-        OnClick: () => {},
-      },
-    },
-    buttonsOutlined: {
-      buttonAttach: {
-        OnClick: () => setShowAttachments(true),
-      },
-      buttonViewAttachments: {
-        OnClick: () => setAttachDocuments(true),
-      },
-    },
-  };
+  const handleActions = configHandleactions({
+    buttonReject: () => setShowRejectModal(true),
+    buttonCancel: () => setShowCancelModal(true),
+    buttonPrint: () => {},
+    buttonAttach: () => setShowAttachments(true),
+    buttonViewAttachments: () => setAttachDocuments(true),
+    menuIcon: () => setShowMenu(true),
+  });
 
   const handleClose = (errorId: string) => {
     setError(errors.filter((error) => error.error_issued_id !== errorId));
+  };
+
+  const handleOnCancel = () => {
+    setShowCancelModal(true);
+    setShowMenu(false);
+  };
+
+  const hanleOnReject = () => {
+    setShowRejectModal(true);
+    setShowMenu(false);
+  };
+
+  const handleOnAttach = () => {
+    setShowAttachments(true);
+    setShowMenu(false);
+  };
+
+  const handleOnViewAttachments = () => {
+    setAttachDocuments(true);
+    setShowMenu(false);
   };
 
   return (
@@ -168,7 +184,16 @@ export const FinancialReporting = () => {
         </Stack>
       )}
 
-      <ContainerSections isMobile={isMobile} actionButtons={handleAction}>
+      <ContainerSections
+        isMobile={isMobile}
+        stockTray={
+          <StockTray
+            isMobile={isMobile}
+            actionButtons={handleActions}
+            navigation={() => navigation(-1)}
+          />
+        }
+      >
         <>
           <Stack direction="column" gap={inube.spacing.s250}>
             <Stack direction="column">
@@ -192,7 +217,7 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                {<ToDo icon={infoIcon} data={data} isMobile={isMobile} />}
+                {<ToDo icon={infoIcon} isMobile={isMobile} />}
               </Stack>
               <Stack direction="column">{<Approvals user={id!} isMobile={isMobile}/>}</Stack>
               <Stack direction="column">
@@ -270,6 +295,15 @@ export const FinancialReporting = () => {
             closeFlag={() => setShowFlagMessage(false)}
           />
         </StyledMessageContainer>
+      )}
+      {showMenu && isMobile && (
+        <MobileMenu
+          onClose={() => setShowMenu(false)}
+          onReject={hanleOnReject}
+          onCancel={handleOnCancel}
+          onAttach={handleOnAttach}
+          onViewAttachments={handleOnViewAttachments}
+        />
       )}
     </Stack>
   );

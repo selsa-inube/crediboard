@@ -5,67 +5,70 @@ import { Textfield } from "@inubekit/textfield";
 import { LuPaperclip } from "react-icons/lu";
 import localforage from "localforage";
 import { useParams } from "react-router-dom";
+import { MdOutlineSend } from "react-icons/md";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
-import { SubmitButton } from "@components/inputs/SubmitButton";
+import { get, updateActive } from "@mocks/utils/dataMock.service";
+import { TraceType } from "@services/types";
 
 import { ChatContent } from "./styles";
-import { get } from "@mocks/utils/dataMock.service";
-import { traceMock } from "@src/mocks/financialReporting/trace.mock";
 
-interface MessageType {
-  id: string;
-  type: "sent" | "received";
-  timestamp: number | string;
-  text: string;
-}
 
-interface MessageTypedos {
-  id: string;
-  trace: typeof traceMock.trace;
-}
 
 export const Management = () => {
-  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [traces, setTraces] = useState<TraceType[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    get("trace").then((data) => {
-      const trace = (data as MessageTypedos[])[0].trace;
-      const message: MessageType[] = trace.map((trace) => ({
-        id: trace.trace_id,
-        type: "sent",
-        timestamp: trace.execution_date,
-        text: trace.justification,
-      }));
-
-      setMessages(message);
+    get<TraceType[]>("trace").then((data) => {
+      setTraces(data);
     });
   }, []);
 
-  useEffect(() => {
-    localforage.setItem("messages", messages).catch((err) => {
-      console.error("Error al guardar mensajes:", err);
-    });
-  }, [messages]);
-
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
     sendMessage();
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (newMessage.trim() !== "") {
-      const newMsg: MessageType = {
-        id: id ?? "default",
-        type: "sent",
-        timestamp: Date.now(),
-        text: newMessage,
+      const newTrace: TraceType = {
+        trace_id: crypto.randomUUID(),
+        trace_value: newMessage,
+        credit_request_id: id ?? "default",
+        use_case: "message",
+        user_id: "user_001",
+        execution_date: new Date().toISOString(),
       };
-      setMessages([...messages, newMsg]);
-      setNewMessage("");
+
+      const updatedTraces = [...traces, newTrace];
+      setTraces(updatedTraces);
+
+      try {
+        await localforage.setItem("trace", updatedTraces);
+        await updateActive({
+          key: "trace_id",
+          nameDB: "trace",
+          identifier: newTrace.trace_id,
+          editData:{
+            trace_id: newTrace.trace_id,
+            trace_value: newTrace.trace_value,
+            credit_request_id: newTrace.credit_request_id,
+            use_case: newTrace.use_case,
+            user_id: newTrace.user_id,
+            execution_date: newTrace.execution_date as string,
+            justification: newTrace.justification ?? '',
+            decision_taken_by_user: newTrace.decision_taken_by_user ?? '',
+            trace_type: newTrace.trace_type ?? '',
+            read_novelty: newTrace.read_novelty ?? '',
+          },
+        });
+        setNewMessage("");
+      } catch (err) {
+        console.error("Error al guardar el mensaje:", err);
+      }
     }
   };
 
@@ -73,7 +76,7 @@ export const Management = () => {
     setNewMessage(e.target.value);
   };
 
-  const filteredMessages = messages.filter((msg) => msg.id === id);
+  const filteredTraces = traces.filter((trace) => trace.credit_request_id === id);
 
   const isMobile = useMediaQuery("(max-width: 720px)");
 
@@ -81,16 +84,16 @@ export const Management = () => {
     <Fieldset title="Gestión" heightFieldset="340px" aspectRatio="1">
       <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
         <ChatContent>
-          {filteredMessages.map((msg) => (
+          {filteredTraces.map((trace) => (
             <Message
-              key={msg.id}
-              type={msg.type}
-              timestamp={msg.timestamp}
-              message={msg.text}
+              key={trace.trace_id}
+              type="sent"
+              timestamp={trace.execution_date}
+              message={trace.trace_value}
             />
           ))}
         </ChatContent>
-        <form onSubmit={handleFormSubmit}>
+        <form>
           <Stack alignItems="center" direction="row" gap={inube.spacing.s150}>
             <Icon
               appearance="primary"
@@ -105,7 +108,15 @@ export const Management = () => {
               value={newMessage}
               onChange={handleInputChange}
             />
-            <SubmitButton />
+            <Stack>
+              <Icon
+                appearance="primary"
+                cursorHover
+                size="36px"
+                icon={<MdOutlineSend />}
+                onClick={handleFormSubmit}
+              />
+            </Stack>
           </Stack>
         </form>
       </Stack>

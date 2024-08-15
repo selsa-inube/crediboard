@@ -6,8 +6,9 @@ import {
   MdOutlineCheckCircle,
   MdRemove,
 } from "react-icons/md";
-import { Icon, Stack} from "@inube/design-system";
-import {Tag} from "@inubekit/tag";
+import { Icon } from "@inubekit/icon";
+import { Stack } from "@inubekit/stack";
+import { Tag } from "@inubekit/tag";
 
 import { IAction, IEntries } from "../types";
 
@@ -17,7 +18,7 @@ const appearanceIcon = (tag: string) => {
   } else if (tag === "Sin Validar") {
     return "warning";
   } else {
-    return "error";
+    return "danger";
   }
 };
 

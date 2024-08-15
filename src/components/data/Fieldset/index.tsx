@@ -1,12 +1,8 @@
 import { MdAdd } from "react-icons/md";
-import {
-  Button,
-  Stack,
-  Text,
-  inube,
-  useMediaQuery,
-} from "@inube/design-system";
-
+import { useMediaQuery } from "@inubekit/hooks";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
+import { Button } from "@inubekit/button";
 import { StyledContainerFieldset } from "./styles";
 
 interface IPtionsButton {
@@ -42,12 +38,12 @@ export const Fieldset = (props: IFieldsetProps) => {
   return (
     <Stack
       direction="column"
-      gap={inube.spacing.s100}
+      gap="8px"
       width="-webkit-fill-available"
       height={!isMobile ? heightFieldset : "auto"}
     >
       <Stack justifyContent={activeButton && "space-between"}>
-        <Stack gap={isMobile ? inube.spacing.s150 : inube.spacing.s100}>
+        <Stack gap={isMobile ? "12px" : "8px"}>
           <Text
             type="title"
             appearance="gray"
