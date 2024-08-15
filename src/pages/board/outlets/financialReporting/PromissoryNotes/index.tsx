@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
+import { MdOutlineThumbUp } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Stack } from "@inubekit/stack";
+import { Flag } from "@inubekit/flag";
+import { Tag } from "@inubekit/tag";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
+import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 
 import { getDataById } from "@mocks/utils/dataMock.service";
 import {
@@ -18,8 +22,7 @@ import {
   getTableBoardActions,
   titlesFinanacialReporting,
 } from "./config";
-import { Tag } from "@inubekit/tag";
-import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
+import { StyledMessageContainer } from "../styles";
 
 interface IPromissoryNotesProps {
   user: string;
@@ -32,6 +35,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
     []
   );
+  const [showFlag, setShowFlag] = useState(false);
 
   useEffect(() => {
     Promise.allSettled([
@@ -83,6 +87,11 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
 
   const isMobile = useMediaQuery("(max-width: 720px)");
 
+  const handleSubmit = () => {
+    setShowFlag(true);
+    setShowModal(false);
+  };
+
   return (
     <Fieldset
       title="Pagarés y Libranzas"
@@ -110,8 +119,21 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             buttonText="Enviar"
             formValues={formValues}
             onCloseModal={() => setShowModal(false)}
-            handleClose={() => setShowModal(false)}
+            handleClose={handleSubmit}
           />
+        )}
+        {showFlag && (
+          <StyledMessageContainer>
+            <Flag
+              title="Datos enviados"
+              description="Los datos del usuario han sido enviados exitosamente."
+              appearance="success"
+              duration={5000}
+              icon={<MdOutlineThumbUp />}
+              isMessageResponsive
+              closeFlag={() => setShowFlag(false)}
+            />
+          </StyledMessageContainer>
         )}
       </Stack>
     </Fieldset>
