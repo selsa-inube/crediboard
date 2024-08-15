@@ -15,12 +15,6 @@ interface IStyledDivider {
 interface IStyledFieldset {
   theme?: typeof inube;
 }
-
-
-const StyledFieldset = styled.div<IStyledFieldset>`
-  padding: 4px;
-`
-
 const StyledIcon = styled.div<IStyledIcon>`
   display: flex;
   align-items: center;
@@ -50,6 +44,10 @@ const StyledDivider = styled.hr<IStyledDivider>`
   border-top-color: ${({ theme }) =>
     theme?.color?.stroke?.divider?.regular ||
     inube.color.stroke.divider.regular};
+`;
+
+const StyledFieldset = styled.div<IStyledFieldset>`
+  padding: 4px;
 `;
 
 export { StyledCollapseIcon, StyledIcon, StyledDivider,StyledFieldset };
