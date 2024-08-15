@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 
 interface IStyledContainer {
   $borderTable: boolean;
@@ -12,22 +12,15 @@ export const StyledContainer = styled.div<IStyledContainer>`
   max-width: 100%;
   position: relative;
   box-shadow: ${({ $isTablet, $actionsMobile }) =>
-    $isTablet && $actionsMobile && "1px 1px 3px 1px #DFE1E6"};
+    $isTablet && $actionsMobile ? "1px 1px 3px 1px #DFE1E6" : "none"};
   overflow-x: ${({ $isTablet }) => ($isTablet ? "auto" : "hidden")};
-  padding-top: ${({ theme, $isTablet }) =>
-    $isTablet
-      ? theme?.spacing?.s075 || inube.spacing.s075
-      : theme?.spacing?.s075 || inube.spacing.s075};
-  padding-bottom: ${({ theme, $isTablet }) =>
-    $isTablet
-      ? theme?.spacing?.s075 || inube.spacing.s075
-      : theme?.spacing?.s075 || inube.spacing.s075};
-  padding-left: ${({ theme }) => theme?.spacing?.s075 || inube.spacing.s075};
-  padding-right: ${({ theme, $isTablet }) =>
-    ($isTablet ? "0px" : theme?.spacing?.s075) || inube.spacing.s075};
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 6px;
+  padding-right: ${({ $isTablet }) => ($isTablet ? "0px" : "6px")};
   border: ${({ theme, $borderTable }) =>
     $borderTable &&
-    `2px solid ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}`};
+    `2px solid ${theme?.palette?.neutral?.N40 || inube.palette.neutral.N40}`};
 `;
 
 interface IStyledThactions {
@@ -39,7 +32,7 @@ export const StyledThactions = styled.th<IStyledThactions>`
     $isTablet &&
     `position: sticky; z-index: 1; background-color: white; text-align: end; ${
       $isFirst &&
-      `&::before { content: ""; position: absolute; top: 0; left: -2px; width: 2px; height: 100%;  box-shadow: 0px 1px 3px 1px #DFE1E6; background-color: ${theme?.color?.stroke?.gray?.regular || inube.color.stroke.gray.regular}; }`
+      `&::before { content: ""; position: absolute; top: 0; left: -2px; width: 2px; height: 100%;  box-shadow: 0px 1px 3px 1px #DFE1E6; background-color: ${theme?.palette?.neutral?.N200 || inube.palette.neutral.N200}; }`
     }`}
 `;
 
@@ -55,7 +48,7 @@ export const StyledTdactions = styled.td<IStyledTdactions>`
     $isTablet &&
     `position: sticky; z-index: 1; ${
       $isFirst &&
-      `&::before { content: ""; position: absolute; top: 0; left: -2px; width: 2px; height: 100%; box-shadow: 0px 1px 3px 1px #DFE1E6; background-color: ${theme?.color?.stroke?.gray?.regular || inube.color.stroke.gray.regular}; }`
+      `&::before { content: ""; position: absolute; top: 0; left: -2px; width: 2px; height: 100%; box-shadow: 0px 1px 3px 1px #DFE1E6; background-color: ${theme?.palette?.neutral?.N200 || inube.palette.neutral.N200}; }`
     }`}
 `;
 
@@ -73,29 +66,28 @@ export const StyledTable = styled.table<IStyledTable>`
   tbody tr {
     background-color: ${({ theme, $background }) =>
       $background
-        ? theme?.color?.surface?.gray?.regular ||
-          inube.color.surface.gray.regular
-        : theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
+        ? theme?.palette?.neutral?.N30 || inube.palette.neutral.N30
+        : theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
   }
 
   thead th {
     background-color: ${({ theme }) =>
-      theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
+      theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
   }
 
   ${({ $zebraEffect, theme, $background }) =>
     $zebraEffect &&
     !$background &&
-    `tbody tr:nth-child(even) {background-color: ${theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};}; tbody tr:nth-child(odd) {background-color: ${theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};}`}
+    `tbody tr:nth-child(even) {background-color: ${theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};}; tbody tr:nth-child(odd) {background-color: ${theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};}`}
 
   ${({ $isTablet, theme }) =>
     $isTablet &&
     `tbody tr {
       &:nth-child(even) ${StyledTdactions} {
-        background-color: ${theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
+        background-color: ${theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};};
       }
       &:nth-child(odd) ${StyledTdactions} {
-        background-color: ${theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
+        background-color: ${theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
       }
       
     }`}
@@ -103,17 +95,17 @@ export const StyledTable = styled.table<IStyledTable>`
 
 export const StyledTbody = styled.tbody`
   background-color: ${({ theme }) =>
-    theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
+    theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
 `;
 
 export const StyledThead = styled.thead`
   background-color: ${({ theme }) =>
-    theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
+    theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
 `;
 
 export const StyledTh = styled.th`
   background-color: ${({ theme }) =>
-    theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
+    theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
 `;
 
 interface IStyledTdbodyContainer {
@@ -126,7 +118,7 @@ export const StyledTr = styled.tr<IStyledTdbodyContainer>`
   box-sizing: border-box;
   border-bottom: ${({ theme, $borderTable }) =>
     $borderTable &&
-    `1px solid ${theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular}`};
+    `1px solid ${theme?.palette?.neutral?.N40 || inube.palette.neutral.N40}`};
 `;
 
 interface IStyledTd {
