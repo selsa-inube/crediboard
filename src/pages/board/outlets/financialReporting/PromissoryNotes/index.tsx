@@ -85,7 +85,6 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     field3: "3122638128",
   };
 
-
   const handleSubmit = () => {
     setShowFlag(true);
     setShowModal(false);

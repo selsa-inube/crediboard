@@ -8,7 +8,6 @@ import { IEntries } from "@components/data/TableBoard/types";
 import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { Flag } from "@inubekit/flag";
-
 import {
   actionMobileApprovals,
   titlesApprovals,
@@ -96,7 +95,6 @@ export const Approvals = (props: IApprovalsProps) => {
     setShowNotificationModal(false);
   };
 
-
   return (
     <>
       <Fieldset
@@ -137,7 +135,7 @@ export const Approvals = (props: IApprovalsProps) => {
             duration={5000}
             icon={<MdOutlineThumbUp />}
             isMessageResponsive
-            closeFlag={() => setShowFlag(false)} 
+            closeFlag={() => setShowFlag(false)}
           />
         </StyledMessageContainer>
       )}

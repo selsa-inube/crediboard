@@ -1,10 +1,12 @@
 import { Stack, Icon, } from "@inube/design-system";
 import { useState, isValidElement } from "react";
 import { MdAddCircleOutline, MdOutlineCheckCircle, MdOutlineThumbUp } from "react-icons/md";
+import { Flag } from "@inubekit/flag";
+
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
-import { Flag } from "@inubekit/flag";
+
 import { dataButton } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
@@ -88,7 +90,7 @@ export const Requirements = (props: IRequirementsProps) => {
     { id: "agregar", content: renderAddIcon },
     { id: "aprobar", content: renderCheckIcon },
   ];
-
+  
 
   return (
     <>
