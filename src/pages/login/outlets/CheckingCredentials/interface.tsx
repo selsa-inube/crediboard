@@ -1,4 +1,6 @@
-import { Stack, Text, Spinner } from "@inube/design-system";
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
+import { Spinner } from "@inubekit/spinner";
 
 function CheckingCredentialsUI() {
   return (
@@ -12,7 +14,7 @@ function CheckingCredentialsUI() {
         </Text>
       </Stack>
       <Stack alignItems="center" direction="column">
-        <Spinner size="large" />
+        <Spinner size="large" appearance="primary" transparent={false} />
       </Stack>
     </Stack>
   );
