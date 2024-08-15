@@ -28,8 +28,6 @@ export const Approvals = () => {
 
   const isMobile = useMediaQuery("(max-width: 720px)");
 
-
-  
   return (
     <Fieldset
       title="Aprobaciones"

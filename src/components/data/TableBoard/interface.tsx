@@ -56,7 +56,7 @@ const RenderActionsTitles = (props: IRenderActionsTitles) => {
         isFirstTable && (
           <StyledThactions $isTablet={isTablet} colSpan={3} $isFirst>
             {isStyleMobile && (
-              <Icon icon={<MdOutlineInfo />} appearance="primary" size="32px" onClick={onInfoClick} />
+              <Icon icon={<MdOutlineInfo />} appearance="primary" size="28px" onClick={onInfoClick} />
             )}
           </StyledThactions>
         )

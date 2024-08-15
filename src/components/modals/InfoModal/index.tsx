@@ -1,8 +1,8 @@
 import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
-import { Text } from "@inube/design-system";
-import { MdCheck, MdClose, MdRemove} from "react-icons/md";
-import { StyledContainer, StyledUl, StyledLi } from "./styles";
+import { MdCheck, MdClose, MdRemove } from "react-icons/md";
+import { StyledContainer, StyledUl } from "./styles";
+import { InfoItemComponent } from './interface';
 
 export interface InfoItem {
   icon: JSX.Element;
@@ -16,41 +16,32 @@ interface InfoModalProps {
   items?: InfoItem[];
 }
 
-export const InfoModal = ({ onClose, items = [] }: InfoModalProps) => {
-  const defaultItems: InfoItem[] = [
-    { icon: <MdCheck />, text: "Cumple", appearance: "success", shape: "circle" },
-    { icon: <MdClose />, text: "No Cumple", appearance: "danger", shape: "circle" },
-    { icon: <MdRemove />, text: "Sin Evaluar", appearance: "warning", shape: "circle" },
-  ];
+const defaultItems: InfoItem[] = [
+  { icon: <MdCheck />, text: "Cumple", appearance: "success", shape: "circle" },
+  { icon: <MdClose />, text: "No Cumple", appearance: "danger", shape: "circle" },
+  { icon: <MdRemove />, text: "Sin Evaluar", appearance: "warning", shape: "circle" },
+];
 
+const mergeItems = (defaultItems: InfoItem[], customItems: InfoItem[]): InfoItem[] => {
   const mergedItems = defaultItems.map((defaultItem) => {
-    const customItem = items.find(item => item.icon.type === defaultItem.icon.type);
+    const customItem = customItems.find(item => item.icon.type === defaultItem.icon.type);
     return customItem ? { ...defaultItem, ...customItem } : defaultItem;
-  }).concat(items.filter(item => !defaultItems.some(defaultItem => defaultItem.icon.type === item.icon.type)));
+  }).concat(customItems.filter(item => !defaultItems.some(defaultItem => defaultItem.icon.type === item.icon.type)));
+  
+  return mergedItems;
+};
+
+export const InfoModal = ({ onClose, items = [] }: InfoModalProps) => {
+  const mergedItems = mergeItems(defaultItems, items);
 
   return (
     <StyledContainer>
       <Stack padding="10px 20px">
         <Icon icon={<MdClose />} appearance="dark" size="24px" onClick={onClose} />
         <StyledUl>
-          {mergedItems.map((item, index) => {
-            const size = item.shape === "circle" ? "20px" : "28px";
-            const variant = item.shape === "circle" ? "filled" : "none";
-
-            return (
-              <StyledLi key={index}>
-                <Icon
-                  icon={item.icon}
-                  appearance={item.appearance || "primary"}
-                  size={size}
-                  shape={item.shape}
-                  variant={variant}
-                  spacing="none"
-                />
-                <Text>{item.text}</Text>
-              </StyledLi>
-            );
-          })}
+          {mergedItems.map(item => (
+            <InfoItemComponent key={item.text} item={item} />
+          ))}
         </StyledUl>
       </Stack>
     </StyledContainer>

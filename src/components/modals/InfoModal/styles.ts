@@ -24,14 +24,13 @@ export const StyledContainer = styled.div`
 `;
 
 export const StyledUl = styled.ul`
-    margin: 0px;
+    margin: 0px 30px 0px 0px;
     padding: 0px;
-    margin-right: 30px;
 `
 
 export const StyledLi = styled.li`
     list-style: none;
     display: flex;
     align-items: center;
-    margin: 4px 0px;
+    padding: 6px 0px;
 `
