@@ -227,7 +227,9 @@ export const FinancialReporting = () => {
               <Stack direction="column">
                 {<Requirements data={dataRequirements} />}
               </Stack>
-              <Stack direction="column">{<Management />}</Stack>
+              <Stack direction="column">
+                {<Management id={id!} isMobile={isMobile} />}
+              </Stack>
               <Stack direction="column">{<PromissoryNotes user={id!} />}</Stack>
               <Stack direction="column">{<Postingvouchers />}</Stack>
             </Grid>
