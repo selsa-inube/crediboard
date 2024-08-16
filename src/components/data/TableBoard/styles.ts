@@ -21,6 +21,7 @@ export const StyledContainer = styled.div<IStyledContainer>`
   border: ${({ theme, $borderTable }) =>
     $borderTable &&
     `2px solid ${theme?.palette?.neutral?.N40 || inube.palette.neutral.N40}`};
+  overflow: visible;
 `;
 
 interface IStyledThactions {

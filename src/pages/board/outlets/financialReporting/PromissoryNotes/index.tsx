@@ -21,8 +21,10 @@ import {
   getTableBoardActionMobile,
   getTableBoardActions,
   titlesFinanacialReporting,
+  infoItems
 } from "./config";
 import { StyledMessageContainer } from "../styles";
+import { StyledContainer } from "./styles"
 
 interface IPromissoryNotesProps {
   user: string;
@@ -93,6 +95,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   };
 
   return (
+    <StyledContainer>
     <Fieldset
       title="Pagarés y Libranzas"
       heightFieldset="163px"
@@ -111,6 +114,8 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             title: "primary",
             isStyleMobile: true,
           }}
+          isFirstTable={true}
+          infoItems={infoItems}
         />
 
         {showModal && (
@@ -137,5 +142,6 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
         )}
       </Stack>
     </Fieldset>
+    </StyledContainer>
   );
 };

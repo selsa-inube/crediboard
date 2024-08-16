@@ -84,6 +84,14 @@ interface TagElement {
   props: TagProps;
 }
 
+export const infoItems = [
+  { icon: <MdCheck />, text: "Aprobado" },
+  { icon: <MdClose />, text: "Rechazado"},
+  { icon: <MdRemove />, text: "Pendiente"},
+  { icon: <MdWarningAmber />, text: "Error", appearance: "danger"},
+  { icon: <MdNotificationsNone />, text: "Notificaciones", appearance: "help"}, 
+];
+
 const isValidTagElement = (element: unknown): element is TagElement => {
   return isValidElement(element) && element.props !== undefined;
 };

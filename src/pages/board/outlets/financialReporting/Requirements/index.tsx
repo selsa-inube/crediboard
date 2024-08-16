@@ -5,7 +5,7 @@ import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 import { Flag } from "@inubekit/flag";
-import { dataButton } from "./config";
+import { dataButton, infoItems } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
 import { StyledMessageContainer } from "../styles";
@@ -100,7 +100,7 @@ export const Requirements = (props: IRequirementsProps) => {
           hasTable
         >
           <div style={{ height: isMobile ? "auto" : "340px" }}>
-            {data.map((item) => (
+            {data.map((item, index) => (
               <TableBoard
                 key={item.id}
                 id={item.id}
@@ -112,8 +112,10 @@ export const Requirements = (props: IRequirementsProps) => {
                   widthTd: !isMobile ? "310px" : "61%",
                   efectzebra: true,
                   title: "primary",
-                  isStyleMobile: false,
+                  isStyleMobile: true,
                 }}
+                isFirstTable={index === 0}
+                infoItems={infoItems}
               />
             ))}
           </div>
