@@ -18,33 +18,32 @@ import { credit_profileInfo } from "@src/mocks/creditProfileInfo/creditProfileIn
 export function initializeDataDB() {
   localforage.clear();
 
-  intializedData<(typeof themes)[number]>("themes", themes, true);
-  intializedData<(typeof mockRequests)[number]>("requests", mockRequests, true);
-  intializedData<(typeof mockRequestsPinned)[number]>("requests-pinned", mockRequestsPinned, true);
-  intializedData<(typeof mockStaff)[number]>("staff", mockStaff, true);
+  intializedData<(typeof themes)[number]>("themes", themes);
+  intializedData<(typeof mockRequests)[number]>("requests", mockRequests);
+  intializedData<(typeof mockRequestsPinned)[number]>(
+    "requests-pinned",
+    mockRequestsPinned
+  );
+  intializedData<(typeof mockStaff)[number]>("staff", mockStaff);
   intializedData<(typeof approval_by_credit_request_Mock)[number]>(
     "approval",
-    approval_by_credit_request_Mock,
-    true
+    approval_by_credit_request_Mock
   );
-  intializedData<(typeof traceMock)[number]>("trace", traceMock, false);
-  intializedData<(typeof mockToDo)[number]>("to-do", mockToDo, true);
+  intializedData<(typeof traceMock)[number]>("trace", traceMock);
+  intializedData<(typeof mockToDo)[number]>("to-do", mockToDo);
   intializedData<(typeof mockRiskScoring)[number]>(
     "risk-scoring",
-    mockRiskScoring,
-    true
+    mockRiskScoring
   );
-  intializedData("document", documents, true);
+  intializedData("document", documents);
   intializedData<(typeof promissory_note)[number]>(
     "promissory_note",
-    promissory_note,
-    true
+    promissory_note
   );
   intializedData(
     "payroll_discount_authorization",
-    payroll_discount_authorization,
-    true
+    payroll_discount_authorization
   );
-  intializedData("error_issued", error_issued, true);
-  intializedData("credit_profileInfo", credit_profileInfo, true);
+  intializedData("error_issued", error_issued);
+  intializedData("credit_profileInfo", credit_profileInfo);
 }

@@ -100,12 +100,7 @@ export const Approvals = (props: IApprovalsProps) => {
 
   return (
     <>
-      <Fieldset
-        title="Aprobaciones"
-        heightFieldset="282px"
-        aspectRatio="3/1"
-        hasTable
-      >
+      <Fieldset title="Aprobaciones" heightFieldset="284px" hasTable>
         <TableBoard
           id="usuarios"
           titles={titlesApprovals}
@@ -113,7 +108,6 @@ export const Approvals = (props: IApprovalsProps) => {
           actions={desktopActionsConfig}
           actionMobile={mobileActions}
           loading={loading}
-          nameTitleTag="decision"
           appearanceTable={{
             widthTd: !isMobile ? "100" : "61%",
             efectzebra: true,
