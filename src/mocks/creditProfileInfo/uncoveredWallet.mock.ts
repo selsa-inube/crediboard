@@ -1,4 +1,4 @@
-export const uncovered_walletInfo = [
+export const uncovered_wallet = [
   {
     credit_request_id: "999990",
     uncovered_wallet: {
