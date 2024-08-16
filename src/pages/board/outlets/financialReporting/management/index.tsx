@@ -16,10 +16,11 @@ import { ChatContent } from "./styles";
 interface IManagementProps {
   id: string;
   isMobile: boolean;
+  updateData: boolean;
 }
 
 export const Management = (props: IManagementProps) => {
-  const { id, isMobile } = props;
+  const { id, isMobile, updateData } = props;
 
   const [traces, setTraces] = useState<TraceType[]>([]);
   const [newMessage, setNewMessage] = useState("");
@@ -28,7 +29,7 @@ export const Management = (props: IManagementProps) => {
     getDataById<TraceType[]>("trace", "credit_request_id", id!).then((data) => {
       if (data) setTraces(data);
     });
-  }, [id]);
+  }, [updateData, id]);
 
   const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();

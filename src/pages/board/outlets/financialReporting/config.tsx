@@ -13,24 +13,24 @@ export const handleConfirmReject = async (
     appearance: "success" | "danger";
   }) => void,
   setShowFlagMessage: (state: boolean) => void,
-  setShowRejectModal: (state: boolean) => void
+  setShowRejectModal: (state: boolean) => void,
+  handleUpdateData: (state: boolean) => void
 ) => {
+  handleUpdateData(false);
   const justificationText = formData.textarea;
-
-  console.log("user:", user);
 
   if (justificationText && id) {
     const trace = {
-      traceId: crypto.randomUUID(),
-      traceValue: "Document uploaded",
-      creditRequestId: id,
-      useCase: "document_upload",
-      userId: user,
-      executionDate: new Date().toLocaleDateString(),
+      trace_id: crypto.randomUUID(),
+      trace_value: "Document uploaded",
+      credit_request_id: id,
+      use_case: "document_upload",
+      user_id: user,
+      execution_date: new Date().toLocaleDateString(),
       justification: justificationText,
-      decisionTakenByUser: "rejected",
-      traceType: "novelty_document",
-      readNovelty: "N",
+      decision_taken_by_user: "rejected",
+      trace_type: "novelty_document",
+      read_novelty: "N",
     };
 
     const handleSuccess = () => {
@@ -41,6 +41,7 @@ export const handleConfirmReject = async (
       });
       setShowFlagMessage(true);
       setShowRejectModal(false);
+      handleUpdateData(true);
     };
 
     const handleError = (error: Error) => {
