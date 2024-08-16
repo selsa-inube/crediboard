@@ -3,7 +3,7 @@ export const credit_behaviorInfo = [
     credit_request_id: "999990",
     credit_behavior: {
         core_risk_score: 250 ,
-        central_risk_scor_date: "ago/31/2023",
+        central_risk_score_date: "ago/31/2023",
         number_of_internal_arrears: 9,
         maximum_number_of_installments_in_arrears: 3,
     }

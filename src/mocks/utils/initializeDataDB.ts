@@ -17,6 +17,7 @@ import { credit_profileInfo } from "@src/mocks/creditProfileInfo/creditProfileIn
 import { payment_capacityInfo } from "@mocks/creditProfileInfo/paymentCapacity.mock";
 import { credit_behaviorInfo } from "@mocks/creditProfileInfo/creditBehavior.mock"
 
+
 export function initializeDataDB() {
   localforage.clear();
 
