@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { MdOutlineChevronRight } from "react-icons/md";
-import { Icon, Stack, Text } from "@inube/design-system";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
+import { Icon } from "@inubekit/icon";
 
 import { StyledDetails, StyledSummary, StyledCollapseIcon } from "./styles";
 
@@ -8,17 +10,18 @@ export interface IAccordionProps {
   name: string;
   title: React.ReactNode;
   content?: React.ReactNode;
+  isOpen?: boolean;
 }
 
 export const Accordion = (props: IAccordionProps) => {
-  const { name, title, content } = props;
+  const { name, title, content, isOpen } = props;
 
   const [collapse, setCollapse] = useState(false);
 
   return (
     <Stack width="100%">
-      <StyledDetails name={name} onClick={() => setCollapse(!collapse)}>
-        <StyledSummary>
+      <StyledDetails name={name} open={isOpen}>
+        <StyledSummary onClick={() => setCollapse(!collapse)}>
           <StyledCollapseIcon
             onClick={() => setCollapse(!collapse)}
             $collapse={collapse}

@@ -1,15 +1,14 @@
 import { Stack, Icon, useMediaQuery } from "@inube/design-system";
 import { useState, isValidElement } from "react";
-import { MdAddCircleOutline, MdOutlineCheckCircle} from "react-icons/md";
-
+import { MdAddCircleOutline, MdOutlineCheckCircle, MdOutlineThumbUp } from "react-icons/md";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
-
-import { dataButton } from "./config";
+import { Flag } from "@inubekit/flag";
+import { dataButton, infoItems } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
-import { infoItems } from "./config";
+import { StyledMessageContainer } from "../styles";
 
 interface IData {
   id: string;
@@ -26,12 +25,10 @@ export interface IRequirementsProps {
 export const Requirements = (props: IRequirementsProps) => {
   const { data } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
-  const [modalData, setModalData] = useState<{
-    date?: Date;
-    details?: string;
-  }>({});
+  const [modalData, setModalData] = useState<{ date?: Date; details?: string }>({});
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
+  const [showFlagMessage, setShowFlagMessage] = useState(false);
 
   const toggleAprovalsModal = () => setShowAprovalsModal(!showAprovalsModal);
   const changeApprove = () => setIsApproved(!isApproved);
@@ -44,10 +41,14 @@ export const Requirements = (props: IRequirementsProps) => {
     setShowSeeDetailsModal((prevState) => !prevState);
   };
 
+  const handleSubmitAprovals = () => {
+    toggleAprovalsModal();
+    setShowFlagMessage(true);
+  };
+
   const renderAddIcon = (entry: IEntries) => {
     const date = typeof entry.date === "string" ? entry.date : undefined;
-    const details =
-      typeof entry.details === "string" ? entry.details : undefined;
+    const details = typeof entry.details === "string" ? entry.details : undefined;
 
     return (
       <Stack justifyContent="center">
@@ -89,8 +90,6 @@ export const Requirements = (props: IRequirementsProps) => {
 
   const isMobile = useMediaQuery("(max-width: 720px)");
 
-
-  
   return (
     <>
       <Stack>
@@ -100,7 +99,7 @@ export const Requirements = (props: IRequirementsProps) => {
           heightFieldset="340px"
           hasTable
         >
-          <div style={{ height: "340px" }}>
+          <div style={{ height: isMobile ? "auto" : "340px" }}>
             {data.map((item, index) => (
               <TableBoard
                 key={item.id}
@@ -110,7 +109,7 @@ export const Requirements = (props: IRequirementsProps) => {
                 actions={actionsRequirements}
                 actionMobile={item.actionsMovile}
                 appearanceTable={{
-                  widthTd: !isMobile ? "310px" : "60%",
+                  widthTd: !isMobile ? "310px" : "61%",
                   efectzebra: true,
                   title: "primary",
                   isStyleMobile: true,
@@ -122,6 +121,7 @@ export const Requirements = (props: IRequirementsProps) => {
           </div>
         </Fieldset>
       </Stack>
+
       {showSeeDetailsModal && (
         <SeeDetailsModal
           date={modalData.date || new Date()}
@@ -129,6 +129,7 @@ export const Requirements = (props: IRequirementsProps) => {
           onCloseModal={handleToggleSeeDetailsModal}
         />
       )}
+
       {showAprovalsModal && (
         <AprovalsModal
           title="Aprobaciones"
@@ -137,9 +138,22 @@ export const Requirements = (props: IRequirementsProps) => {
           inputPlaceholder="Observaciones para la aprobación o rechazo."
           isApproved={isApproved}
           onCloseModal={toggleAprovalsModal}
-          onSubmit={toggleAprovalsModal}
+          onSubmit={handleSubmitAprovals} 
           onChangeApprove={changeApprove}
         />
+      )}
+      {showFlagMessage && (
+        <StyledMessageContainer>
+          <Flag
+            title="Éxito"
+            description="La aprobación se ha completado correctamente."
+            appearance="success"
+            icon={<MdOutlineThumbUp />}
+            duration={5000}
+            isMessageResponsive={false}
+            closeFlag={() => setShowFlagMessage(false)}
+          />
+        </StyledMessageContainer>
       )}
     </>
   );

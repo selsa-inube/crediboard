@@ -15,4 +15,24 @@ export const StyledMessageContainer = styled.div`
   position: fixed;
   bottom: 18px;
   right: 75px;
+  z-index: 2;
+`;
+
+interface IStyledToast {
+  $isMobile: boolean;
+}
+
+export const StyledToast = styled.div<IStyledToast>`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 2;
+  position: absolute;
+  gap: 4px;
+  opacity: ${({ $isMobile }) => ($isMobile ? "1" : "0.8")};
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
 `;

@@ -2,7 +2,8 @@ import { useState } from "react";
 import { MdOutlineInfo } from "react-icons/md";
 
 import { InfoModal } from "@components/modals/InfoModal"
-import { Text, SkeletonLine } from "@inube/design-system";
+import { Text } from "@inubekit/text";
+import { SkeletonLine } from "@inubekit/skeleton";
 import { Icon } from "@inubekit/icon";
 
 import { IAction, IEntries, ITitle, appearances } from "./types";

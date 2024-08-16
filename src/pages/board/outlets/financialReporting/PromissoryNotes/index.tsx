@@ -1,39 +1,147 @@
-import { Stack, useMediaQuery } from "@inube/design-system";
-import { Fieldset } from "@src/components/data/Fieldset";
-import { TableBoard } from "@src/components/data/TableBoard";
+import { useEffect, useState } from "react";
+import { MdOutlineThumbUp } from "react-icons/md";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Stack } from "@inubekit/stack";
+import { Flag } from "@inubekit/flag";
+import { Tag } from "@inubekit/tag";
+
+import { Fieldset } from "@components/data/Fieldset";
+import { TableBoard } from "@components/data/TableBoard";
+import { IEntries } from "@components/data/TableBoard/types";
+import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
+
+import { getDataById } from "@mocks/utils/dataMock.service";
 import {
-  actionMobile,
-  actionsFinanacialReporting,
-  entriesFinanacialReporting,
+  payroll_discount_authorization,
+  promissory_note,
+} from "@services/types";
+import {
+  appearanceTag,
+  firstWord,
+  getTableBoardActionMobile,
+  getTableBoardActions,
   titlesFinanacialReporting,
+  infoItems
 } from "./config";
-import { infoItems } from "./config";
+import { StyledMessageContainer } from "../styles";
 import { StyledContainer } from "./styles"
 
-export const PromissoryNotes = () => {
+interface IPromissoryNotesProps {
+  user: string;
+}
+
+export const PromissoryNotes = (props: IPromissoryNotesProps) => {
+  const { user } = props;
+
+  const [showModal, setShowModal] = useState(false);
+  const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
+    []
+  );
+  const [showFlag, setShowFlag] = useState(false);
+
+  useEffect(() => {
+    Promise.allSettled([
+      getDataById<payroll_discount_authorization[]>(
+        "payroll_discount_authorization",
+        "credit_request_id",
+        user!
+      ),
+      getDataById<promissory_note[]>(
+        "promissory_note",
+        "credit_request_id",
+        user!
+      ),
+    ]).then((results) => {
+      const dataPrommisseNotes = results
+        .flatMap((prommiseNote): payroll_discount_authorization[] => {
+          if (prommiseNote.status === "fulfilled") {
+            return prommiseNote.value as payroll_discount_authorization[];
+          }
+          return [];
+        })
+        .map((entry) => ({
+          id: entry.credit_product_id,
+          "No. de Obligación": entry.obligation_unique_code,
+          "No. de Documento": entry.document_unique_code,
+          Tipo: firstWord(entry.abbreviated_name),
+          tag: (
+            <Tag
+              label={entry.state}
+              appearance={appearanceTag(entry.state)}
+              weight="strong"
+            />
+          ),
+        }));
+      setDataPromissoryNotes(dataPrommisseNotes);
+    });
+  }, [user]);
+
+  const tableBoardActions = getTableBoardActions(() => setShowModal(true));
+  const tableBoardActionMobile = getTableBoardActionMobile(() =>
+    setShowModal(true)
+  );
+
+  const formValues = {
+    field1: "usuario@inube.com",
+    field2: "3122638128",
+    field3: "3122638128",
+  };
+
   const isMobile = useMediaQuery("(max-width: 720px)");
 
+  const handleSubmit = () => {
+    setShowFlag(true);
+    setShowModal(false);
+  };
+
   return (
-    <Stack direction="column">
-      <StyledContainer>
-      <Fieldset title="Pagarés y Libranzas" heightFieldset="163px" hasTable>
+    <StyledContainer>
+    <Fieldset
+      title="Pagarés y Libranzas"
+      heightFieldset="163px"
+      aspectRatio="1"
+      hasTable
+    >
+      <Stack direction="column" height={!isMobile ? "100%" : "138px"}>
         <TableBoard
           id="promissoryNotes"
           titles={titlesFinanacialReporting}
-          entries={entriesFinanacialReporting}
-          actions={actionsFinanacialReporting}
-          actionMobile={actionMobile}
+          entries={dataPromissoryNotes}
+          actions={tableBoardActions}
+          actionMobile={tableBoardActionMobile}
           appearanceTable={{
-            widthTd: !isMobile ? "100" : "20%",
             efectzebra: true,
             title: "primary",
             isStyleMobile: true,
           }}
           isFirstTable={true}
-          infoItems={infoItems} 
+          infoItems={infoItems}
         />
-      </Fieldset>
-      </StyledContainer>
-    </Stack>
+
+        {showModal && (
+          <PromissoryNotesModal
+            title="Confirma los datos del usuario"
+            buttonText="Enviar"
+            formValues={formValues}
+            onCloseModal={() => setShowModal(false)}
+            handleClose={handleSubmit}
+          />
+        )}
+        {showFlag && (
+          <StyledMessageContainer>
+            <Flag
+              title="Datos enviados"
+              description="Los datos del usuario han sido enviados exitosamente."
+              appearance="success"
+              duration={5000}
+              icon={<MdOutlineThumbUp />}
+              isMessageResponsive
+              closeFlag={() => setShowFlag(false)}
+            />
+          </StyledMessageContainer>
+        )}
+      </Stack>
+    </Fieldset>
+    </StyledContainer>
   );
 };

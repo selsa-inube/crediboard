@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 
 interface IStyledContainerFieldset {
   $aspectRatio?: string;
@@ -15,19 +15,13 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   border-style: solid;
   aspect-ratio: ${({ $aspectRatio, $isMobile }) => !$isMobile && $aspectRatio};
   border-color: ${({ theme }) =>
-    theme?.color?.stroke?.gray?.regular || inube.color.stroke.gray.regular};
+    theme?.palette?.neutral?.N200 || inube.palette.neutral.N200};
   box-shadow: 0px 2px 6px
-    ${({ theme }) =>
-      theme?.color?.stroke?.divider?.regular ||
-      inube.color.stroke.divider.regular};
-  padding-top: ${({ theme, $hasTable }) =>
-    !$hasTable && (theme?.spacing?.s200 || inube.spacing.s200)};
-  padding-bottom: ${({ theme, $hasTable }) =>
-    !$hasTable && (theme?.spacing?.s200 || inube.spacing.s200)};
-  padding-right: ${({ theme, $hasTable }) =>
-    !$hasTable && (theme?.spacing?.s100 || inube.spacing.s100)};
-  padding-left: ${({ theme, $hasTable }) =>
-    !$hasTable && (theme?.spacing?.s100 || inube.spacing.s100)};
+    ${({ theme }) => theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
+  padding-top: ${({ $hasTable }) => !$hasTable && "16px"};
+  padding-bottom: ${({ $hasTable }) => !$hasTable && "16px"};
+  padding-right: ${({ $hasTable }) => !$hasTable && "8px"};
+  padding-left: ${({ $hasTable }) => !$hasTable && "8px"};
 
   ${({ $isMobile, theme }) =>
     !$isMobile &&
@@ -39,7 +33,7 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
 
     &::-webkit-scrollbar-thumb {
       background-color: ${
-        theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
+        theme?.palette?.neutral?.N30 || inube.palette.neutral.N30
       };
       border-radius: 8px;
     }
