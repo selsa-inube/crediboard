@@ -80,8 +80,6 @@ export const Management = (props: IManagementProps) => {
     setNewMessage(e.target.value);
   };
 
-  console.log("traces", traces);
-
   return (
     <Fieldset title="Gestión" heightFieldset="340px" aspectRatio="1">
       <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
