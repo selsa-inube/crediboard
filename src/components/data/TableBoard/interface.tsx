@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MdOutlineInfo } from "react-icons/md";
 
-import { InfoModal } from "@components/modals/InfoModal"
+import { InfoModal } from "@components/modals/InfoModal";
 import { Text } from "@inubekit/text";
 import { SkeletonLine } from "@inubekit/skeleton";
 import { Icon } from "@inubekit/icon";
@@ -35,37 +35,46 @@ interface IRenderActionsTitles {
 }
 
 const RenderActionsTitles = (props: IRenderActionsTitles) => {
-  const { actions, appearance, isTablet, isStyleMobile, onInfoClick, isFirstTable } = props;
+  const {
+    actions,
+    appearance,
+    isTablet,
+    isStyleMobile,
+    onInfoClick,
+    isFirstTable,
+  } = props;
 
   return (
     <>
-      {!isTablet ? (
-        actions.map((actionTitle) => (
-          <StyledThactions key={actionTitle.id}>
-            <Text
-              appearance={appearance}
-              type="title"
-              size="medium"
-              padding="0px 4px"
-              textAlign="center"
-            >
-              {actionTitle.actionName}
-            </Text>
-          </StyledThactions>
-        ))
-      ) : (
-        isFirstTable && (
-          <StyledThactions $isTablet={isTablet} colSpan={3} $isFirst>
-            {isStyleMobile && (
-              <Icon icon={<MdOutlineInfo />} appearance="primary" size="28px" onClick={onInfoClick} />
-            )}
-          </StyledThactions>
-        )
-      )}
+      {!isTablet
+        ? actions.map((actionTitle) => (
+            <StyledThactions key={actionTitle.id}>
+              <Text
+                appearance={appearance}
+                type="title"
+                size="medium"
+                padding="0px 4px"
+                textAlign="center"
+              >
+                {actionTitle.actionName}
+              </Text>
+            </StyledThactions>
+          ))
+        : isFirstTable && (
+            <StyledThactions $isTablet={isTablet} colSpan={3} $isFirst>
+              {isStyleMobile && (
+                <Icon
+                  icon={<MdOutlineInfo />}
+                  appearance="primary"
+                  size="28px"
+                  onClick={onInfoClick}
+                />
+              )}
+            </StyledThactions>
+          )}
     </>
   );
 };
-
 
 const actionsLoading = (numberActions: number) => {
   const cellsOfActionsLoading = [];
@@ -141,7 +150,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
     isTablet,
     actionMobile,
     isFirstTable,
-    infoItems
+    infoItems,
   } = props;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -177,7 +186,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                 ) : null
               )}
 
-            {actions && (
+            {actions && actionMobile && (
               <RenderActionsTitles
                 actions={actions}
                 appearance={appearanceTable!.title!}
@@ -232,7 +241,12 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
           )}
         </StyledTbody>
       </StyledTable>
-      {isModalOpen && <InfoModal onClose={() => setIsModalOpen(false)} items={infoItems || []}/>}
+      {isModalOpen && (
+        <InfoModal
+          onClose={() => setIsModalOpen(false)}
+          items={infoItems || []}
+        />
+      )}
     </StyledContainer>
   );
 };
