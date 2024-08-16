@@ -2,13 +2,15 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { useParams } from "react-router-dom";
 import {
   Button,
-  Icon,
   Stack,
   Select,
   Text,
   Textfield,
   inube,
 } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
+import { Flag } from "@inubekit/flag";
+import { MdOutlineThumbUp } from "react-icons/md";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
@@ -16,6 +18,8 @@ import { IStaff, IToDo } from "@services/types";
 import { get } from "@mocks/utils/dataMock.service";
 
 import { StaffModal } from "./StaffModal";
+import { flagMessages } from "./config";
+import { StyledMessageContainer } from "../styles";
 
 interface IICon {
   icon: JSX.Element;
@@ -47,6 +51,8 @@ function ToDo(props: ToDoProps) {
   });
   const [tempStaff, setTempStaff] = useState(assignedStaff);
   const [decision, setDecision] = useState("");
+  const [showFlagMessage, setShowFlagMessage] = useState(false);
+  const [flagMessage, setFlagMessage] = useState(flagMessages.success);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,9 +104,31 @@ function ToDo(props: ToDoProps) {
   const handleSubmit = () => {
     setAssignedStaff(tempStaff);
     handleToggleStaffModal();
+
+    setFlagMessage(flagMessages.changeSuccess);
+    setShowFlagMessage(true);
   };
 
-  const { label, onClick, disabled, loading } = button || {};
+  const handleSend = () => {
+    if (button?.onClick) button.onClick();
+
+    switch (decision) {
+      case "Aceptar":
+        setFlagMessage(flagMessages.success);
+        break;
+      case "Rechazar":
+        setFlagMessage(flagMessages.error);
+        break;
+      case "Pendiente":
+        setFlagMessage(flagMessages.pending);
+        break;
+      default:
+        setFlagMessage(flagMessages.default);
+        break;
+    }
+
+    setShowFlagMessage(true);
+  };
 
   return (
     <>
@@ -145,14 +173,14 @@ function ToDo(props: ToDoProps) {
             </Stack>
             <Stack padding="s200 s0 s0 s0" width={isMobile ? "100%" : "auto"}>
               <Button
-                onClick={onClick}
+                onClick={handleSend}
                 cursorHover
-                disabled={disabled || false}
-                loading={loading || false}
+                disabled={button?.disabled || false}
+                loading={button?.loading || false}
                 type="submit"
                 fullwidth={isMobile}
               >
-                {label || "Enviar"}
+                {button?.label || "Enviar"}
               </Button>
             </Stack>
           </Stack>
@@ -215,6 +243,19 @@ function ToDo(props: ToDoProps) {
           onSubmit={handleSubmit}
           onCloseModal={handleToggleStaffModal}
         />
+      )}
+      {showFlagMessage && (
+        <StyledMessageContainer>
+        <Flag
+          title={flagMessage.title}
+          description={flagMessage.description}
+          appearance={flagMessage.appearance}
+          icon={<MdOutlineThumbUp />}
+          duration={5000}
+          isMessageResponsive={false}
+          closeFlag={() => setShowFlagMessage(false)}
+        />
+        </StyledMessageContainer>
       )}
     </>
   );

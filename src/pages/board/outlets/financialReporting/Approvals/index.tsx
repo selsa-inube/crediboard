@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { MdOutlineThumbUp } from "react-icons/md";
 import { useMediaQuery } from "@inube/design-system";
 import { Tag } from "@inubekit/tag";
 
@@ -7,6 +8,7 @@ import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
+import { Flag } from "@inubekit/flag";
 
 import {
   actionMobileApprovals,
@@ -16,9 +18,12 @@ import {
   handleErrorClick,
   desktopActions,
   getMobileActionsConfig,
+  infoItems 
 } from "./config";
 import { getDataById } from "@mocks/utils/dataMock.service";
 import { approval_by_credit_request_Mock } from "@services/types";
+
+import { StyledMessageContainer } from "../styles";
 
 const appearanceTag = (label: string) => {
   if (label === "Pendiente") {
@@ -41,6 +46,7 @@ export const Approvals = (props: IApprovalsProps) => {
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
+  const [showFlag, setShowFlag] = useState(false);
 
   useEffect(() => {
     getDataById<approval_by_credit_request_Mock[]>(
@@ -85,6 +91,11 @@ export const Approvals = (props: IApprovalsProps) => {
     handleNotificationClickBound,
     handleErrorClickBound
   );
+
+  const handleSubmit = () => {
+    setShowFlag(true);
+    setShowNotificationModal(false);
+  };
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   return (
@@ -101,17 +112,32 @@ export const Approvals = (props: IApprovalsProps) => {
             widthTd: !isMobile ? "100" : "61%",
             efectzebra: true,
             title: "primary",
-            isStyleMobile: false,
+            isStyleMobile: true,
           }}
+          isFirstTable={true}
+          infoItems={infoItems}
         />
       </Fieldset>
       {showNotificationModal && selectedData && (
         <ListModal
           title="Notificación"
-          handleClose={() => setShowNotificationModal(false)}
           content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
           buttonLabel="Enviar"
+          handleClose={handleSubmit}
         />
+      )}
+      {showFlag && (
+        <StyledMessageContainer>
+          <Flag
+            title="Solicitud enviada"
+            description="La solicitud ha sido enviada exitosamente para su aprobación."
+            appearance="success"
+            duration={5000}
+            icon={<MdOutlineThumbUp />}
+            isMessageResponsive
+            closeFlag={() => setShowFlag(false)} 
+          />
+        </StyledMessageContainer>
       )}
       {showErrorModal && selectedData && (
         <TextAreaModal

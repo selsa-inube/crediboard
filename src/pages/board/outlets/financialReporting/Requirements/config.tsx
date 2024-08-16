@@ -134,6 +134,11 @@ export const entriesRequirements: IEntries[][] = [
   ],
 ];
 
+export const infoItems = [
+  { icon: <MdAddCircleOutline />, text: "Adjuntar", appearance: "help"},
+  { icon: <MdOutlineCheckCircle />, text: "Forzar Aprobación", appearance: "help"},
+];
+
 export const actionsRequirements = [
   [
     {
