@@ -26,7 +26,7 @@ export const handleConfirmReject = async (
       credit_request_id: id,
       use_case: "document_upload",
       user_id: user,
-      execution_date: new Date().toLocaleDateString(),
+      execution_date: new Date().toISOString(),
       justification: justificationText,
       decision_taken_by_user: "rejected",
       trace_type: "novelty_document",
