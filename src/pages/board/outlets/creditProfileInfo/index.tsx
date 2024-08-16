@@ -14,8 +14,8 @@ import ReactDOM from "react-dom";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-import { Requests, IRiskScoring } from "@services/types";
-import { getById } from "@mocks/utils/dataMock.service";
+import { Requests, IRiskScoring, credit } from "@services/types";
+import { getById, getDataById } from "@mocks/utils/dataMock.service";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { get } from "@mocks/utils/dataMock.service";
@@ -38,6 +38,8 @@ export const CreditProfileInfo = () => {
   const { id } = useParams();
   const [data, setData] = useState({} as Requests);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const [credit_profileInfo, setCredit_profileInfo] = useState<credit[]>([]);
+
   const [riskScoring, setRiskScoring] = useState<IRiskScoring[] | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -45,33 +47,28 @@ export const CreditProfileInfo = () => {
     useMediaQueries(["(max-width: 1200px)", "(max-width: 751px)"]);
 
   useEffect(() => {
-    if (id) {
-      setLoading(true);
-      getById("k_Prospe", "requests", id)
-        .then((requirement) => {
-          setData(requirement);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
+    Promise.allSettled([
+      getById("k_Prospe", "requests", id!),
+      get("risk-scoring"),
+      getDataById("credit_profileInfo", "credit_request_id", id!),
+    ]).then((data) => {
+      const [request, riskScoring, credit_profileInfo] = data;
+      if (request.status === "fulfilled") {
+        setData(request.value as Requests);
+      }
+      if (riskScoring.status === "fulfilled") {
+        setRiskScoring(riskScoring.value as IRiskScoring[]);
+      }
+
+      if (credit_profileInfo.status === "fulfilled") {
+        setCredit_profileInfo(credit_profileInfo.value as []);
+      }
+      setLoading(false);
+    });
   }, [id]);
 
-  useEffect(() => {
-    setLoading(true);
-    get("risk-scoring")
-      .then((data) => {
-        if (data) {
-          setRiskScoring(data as IRiskScoring[]);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching risk scoring data:", error.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  const { company_seniority, labor_stability_index, estimated_severance } =
+    credit_profileInfo[0].labor_stability;
 
   const renderPDFContent = () => (
     <Stack direction="column" gap={inube.spacing.s500}>
@@ -87,7 +84,7 @@ export const CreditProfileInfo = () => {
           {data.nnasocia ? capitalizeFirstLetterEachWord(data.nnasocia) : ""}
         </Text>
         <Text type="title" size="small">
-          {`S.C. No. ${data.aanumnit} ${currencyFormat(data.v_Monto)}`}
+          {`S.C. No. ${data.aanumnit} ${currencyFormat(data.v_Monto)}`} aa
         </Text>
       </Stack>
       <Grid
@@ -295,9 +292,9 @@ export const CreditProfileInfo = () => {
         margin={isTablet ? "s250" : "s250 s500"}
       >
         <JobStabilityCard
-          companySeniority={5}
-          stabilityIndex={900}
-          estimatedCompensation={20000000}
+          companySeniority={company_seniority}
+          stabilityIndex={labor_stability_index}
+          estimatedCompensation={estimated_severance}
           isMobile={isMobile}
         />
         <PaymentCapacity
