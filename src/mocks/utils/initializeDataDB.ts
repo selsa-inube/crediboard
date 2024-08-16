@@ -14,7 +14,7 @@ import { documents } from "@mocks/financialReporting/documents.mock";
 import { traceMock } from "@mocks/financialReporting/trace.mock";
 import { error_issued } from "@mocks/financialReporting/error.mock";
 import { credit_profileInfo } from "@src/mocks/creditProfileInfo/creditProfileInfo.mock";
-import { payment_capacityInfo } from "@src/mocks/creditProfileInfo/paymentCapacity.mock";
+import { payment_capacity } from "@src/mocks/creditProfileInfo/paymentCapacity.mock";
 
 export function initializeDataDB() {
   localforage.clear();
@@ -48,5 +48,5 @@ export function initializeDataDB() {
   );
   intializedData("error_issued", error_issued, true);
   intializedData("credit_profileInfo", credit_profileInfo, true);
-  intializedData("payment_capacityInfo", payment_capacityInfo, true);
+  intializedData("payment_capacity", payment_capacity, true);
 }

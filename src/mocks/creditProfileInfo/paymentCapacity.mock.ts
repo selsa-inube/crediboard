@@ -1,4 +1,4 @@
-export const payment_capacityInfo = [
+export const payment_capacity = [
   {
     credit_request_id: "999990",
     payment_capacity: {
