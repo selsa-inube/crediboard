@@ -6,6 +6,7 @@ import {
   actionsPostingvouchers,
   entriesPostingvouchers,
   titlesPostingvouchers,
+  actionMobile 
 } from "./config";
 
 export const Postingvouchers = () => {
@@ -22,10 +23,13 @@ export const Postingvouchers = () => {
           titles={titlesPostingvouchers}
           entries={entriesPostingvouchers}
           actions={actionsPostingvouchers}
+          actionMobile={actionMobile}
           appearanceTable={{
             efectzebra: true,
             title: "primary",
+            isStyleMobile: true,
           }}
+          isFirstTable={true}
         />
       </Fieldset>
     </Stack>
