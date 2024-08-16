@@ -15,7 +15,7 @@ import { traceMock } from "@mocks/financialReporting/trace.mock";
 import { error_issued } from "@mocks/financialReporting/error.mock";
 import { credit_profileInfo } from "@src/mocks/creditProfileInfo/creditProfileInfo.mock";
 import { payment_capacity } from "@mocks/creditProfileInfo/paymentCapacity.mock";
-import { credit_behaviorInfo } from "@mocks/creditProfileInfo/creditBehavior.mock"
+import { credit_behavior } from "@mocks/creditProfileInfo/creditBehavior.mock"
 
 
 export function initializeDataDB() {
@@ -51,5 +51,5 @@ export function initializeDataDB() {
   intializedData("error_issued", error_issued, true);
   intializedData("credit_profileInfo", credit_profileInfo, true);
   intializedData("payment_capacity", payment_capacity, true);
-  intializedData("credit_behaviorInfo", credit_behaviorInfo, true);
+  intializedData("credit_behavior", credit_behavior, true);
 }
