@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { MdOutlineInfo } from "react-icons/md";
-import { Icon } from "@inubekit/icon";
+
+import { InfoModal } from "@components/modals/InfoModal"
 import { Text } from "@inubekit/text";
 import { SkeletonLine } from "@inubekit/skeleton";
+import { Icon } from "@inubekit/icon";
+
 import { IAction, IEntries, ITitle, appearances } from "./types";
 import {
   StyledContainer,
@@ -26,10 +30,12 @@ interface IRenderActionsTitles {
   isTablet: boolean;
   appearance: appearances;
   isStyleMobile: boolean;
+  onInfoClick: () => void;
+  isFirstTable: boolean;
 }
 
 const RenderActionsTitles = (props: IRenderActionsTitles) => {
-  const { actions, appearance, isTablet, isStyleMobile } = props;
+  const { actions, appearance, isTablet, isStyleMobile, onInfoClick, isFirstTable } = props;
 
   return (
     <>
@@ -48,15 +54,18 @@ const RenderActionsTitles = (props: IRenderActionsTitles) => {
           </StyledThactions>
         ))
       ) : (
-        <StyledThactions $isTablet={isTablet} colSpan={3} $isFirst>
-          {isStyleMobile && (
-            <Icon icon={<MdOutlineInfo />} appearance="primary" size="32px" />
-          )}
-        </StyledThactions>
+        isFirstTable && (
+          <StyledThactions $isTablet={isTablet} colSpan={3} $isFirst>
+            {isStyleMobile && (
+              <Icon icon={<MdOutlineInfo />} appearance="primary" size="28px" onClick={onInfoClick} />
+            )}
+          </StyledThactions>
+        )
       )}
     </>
   );
 };
+
 
 const actionsLoading = (numberActions: number) => {
   const cellsOfActionsLoading = [];
@@ -131,7 +140,11 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
     appearanceTable,
     isTablet,
     actionMobile,
+    isFirstTable,
+    infoItems
   } = props;
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <StyledContainer
@@ -170,6 +183,8 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
                 appearance={appearanceTable!.title!}
                 isTablet={isTablet}
                 isStyleMobile={appearanceTable!.isStyleMobile!}
+                onInfoClick={() => setIsModalOpen(true)}
+                isFirstTable={isFirstTable ?? false}
               />
             )}
           </tr>
@@ -217,6 +232,7 @@ export const TableBoardUI = (props: ITableBoardUIProps) => {
           )}
         </StyledTbody>
       </StyledTable>
+      {isModalOpen && <InfoModal onClose={() => setIsModalOpen(false)} items={infoItems || []}/>}
     </StyledContainer>
   );
 };

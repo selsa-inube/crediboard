@@ -18,6 +18,7 @@ import {
   handleErrorClick,
   desktopActions,
   getMobileActionsConfig,
+  infoItems 
 } from "./config";
 import { getDataById } from "@mocks/utils/dataMock.service";
 import { approval_by_credit_request_Mock } from "@services/types";
@@ -117,8 +118,10 @@ export const Approvals = (props: IApprovalsProps) => {
             widthTd: !isMobile ? "100" : "61%",
             efectzebra: true,
             title: "primary",
-            isStyleMobile: false,
+            isStyleMobile: true,
           }}
+          isFirstTable={true}
+          infoItems={infoItems}
         />
       </Fieldset>
       {showNotificationModal && selectedData && (

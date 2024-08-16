@@ -89,6 +89,11 @@ interface TagElement {
   props: TagProps;
 }
 
+export const infoItems = [
+  { icon: <MdOutlineSend />, text: "Reenviar", appearance: "primary" },
+  { icon: <MdOutlineRemoveRedEye />, text: "Ver Imagen", appearance: "primary" },
+];
+
 const isValidTagElement = (element: unknown): element is TagElement => {
   return isValidElement(element) && element.props !== undefined;
 };
