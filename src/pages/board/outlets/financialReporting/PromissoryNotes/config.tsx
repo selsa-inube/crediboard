@@ -161,6 +161,7 @@ export const appearanceTag = (tag: string) => {
 };
 
 export const firstWord = (text: string) => text.split(" ")[0];
+
 export const getTableBoardActions = (
   entrySelection: (data: IEntries) => void
 ) =>
@@ -168,9 +169,12 @@ export const getTableBoardActions = (
     id: action.id,
     actionName: action.actionName,
     label: "Action Label",
-    content: (data: IEntries) => (
-      <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
-    ),
+    content: (data: IEntries) =>
+      action.id === "Reenviar" ? (
+        <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
+      ) : (
+        action.content(data)
+      ),
   }));
 
 export const getTableBoardActionMobile = (
@@ -180,7 +184,10 @@ export const getTableBoardActionMobile = (
     id: action.id,
     actionName: action.actionName,
     label: "Mobile Action Label",
-    content: (data: IEntries) => (
-      <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
-    ),
+    content: (data: IEntries) =>
+      action.id === "Reenviar" ? (
+        <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
+      ) : (
+        action.content(data)
+      ),
   }));

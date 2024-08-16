@@ -21,10 +21,10 @@ import {
   getTableBoardActionMobile,
   getTableBoardActions,
   titlesFinanacialReporting,
-  infoItems
+  infoItems,
 } from "./config";
 import { StyledMessageContainer } from "../styles";
-import { StyledContainer } from "./styles"
+import { StyledContainer } from "./styles";
 
 interface IPromissoryNotesProps {
   user: string;
@@ -94,54 +94,58 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     setShowModal(false);
   };
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <StyledContainer>
-    <Fieldset
-      title="Pagarés y Libranzas"
-      heightFieldset="163px"
-      aspectRatio="1"
-      hasTable
-    >
-      <Stack direction="column" height={!isMobile ? "100%" : "138px"}>
-        <TableBoard
-          id="promissoryNotes"
-          titles={titlesFinanacialReporting}
-          entries={dataPromissoryNotes}
-          actions={tableBoardActions}
-          actionMobile={tableBoardActionMobile}
-          appearanceTable={{
-            efectzebra: true,
-            title: "primary",
-            isStyleMobile: true,
-          }}
-          isFirstTable={true}
-          infoItems={infoItems}
-        />
-
-        {showModal && (
-          <PromissoryNotesModal
-            title="Confirma los datos del usuario"
-            buttonText="Enviar"
-            formValues={formValues}
-            onCloseModal={() => setShowModal(false)}
-            handleClose={handleSubmit}
+      <Fieldset
+        title="Pagarés y Libranzas"
+        heightFieldset="163px"
+        aspectRatio="1"
+        hasTable
+      >
+        <Stack direction="column" height={!isMobile ? "100%" : "138px"}>
+          <TableBoard
+            id="promissoryNotes"
+            titles={titlesFinanacialReporting}
+            entries={dataPromissoryNotes}
+            actions={tableBoardActions}
+            actionMobile={tableBoardActionMobile}
+            appearanceTable={{
+              efectzebra: true,
+              title: "primary",
+              isStyleMobile: true,
+            }}
+            isFirstTable={true}
+            infoItems={infoItems}
           />
-        )}
-        {showFlag && (
-          <StyledMessageContainer>
-            <Flag
-              title="Datos enviados"
-              description="Los datos del usuario han sido enviados exitosamente."
-              appearance="success"
-              duration={5000}
-              icon={<MdOutlineThumbUp />}
-              isMessageResponsive
-              closeFlag={() => setShowFlag(false)}
+
+          {showModal && (
+            <PromissoryNotesModal
+              title="Confirma los datos del usuario"
+              buttonText="Enviar"
+              formValues={formValues}
+              handleClose={handleCloseModal} 
+              onSubmit={handleSubmit}
             />
-          </StyledMessageContainer>
-        )}
-      </Stack>
-    </Fieldset>
+          )}
+          {showFlag && (
+            <StyledMessageContainer>
+              <Flag
+                title="Datos enviados"
+                description="Los datos del usuario han sido enviados exitosamente."
+                appearance="success"
+                duration={5000}
+                icon={<MdOutlineThumbUp />}
+                isMessageResponsive
+                closeFlag={() => setShowFlag(false)}
+              />
+            </StyledMessageContainer>
+          )}
+        </Stack>
+      </Fieldset>
     </StyledContainer>
   );
 };
