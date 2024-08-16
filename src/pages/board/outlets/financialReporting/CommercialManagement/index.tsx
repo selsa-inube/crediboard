@@ -10,13 +10,8 @@ import {
 } from "react-icons/md";
 
 import { Icon } from "@inubekit/icon";
-import {
-  Stack,
-  Text,
-  Button,
-  inube,
-  useMediaQuery,
-} from "@inube/design-system";
+import { Stack, Text, inube, useMediaQuery } from "@inube/design-system";
+import { Button } from "@inubekit/button";
 
 import { Fieldset } from "@components/data/Fieldset";
 import {
@@ -118,7 +113,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   type="link"
                   path={`/extended-card/${id}/credit-profile`}
                 >
-                  Ver perfil créditicio
+                  Ver perfil crediticio
                 </Button>
                 <StyledIcon>
                   <Icon
@@ -148,6 +143,15 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             />
           </StyledCollapseIcon>
         </Stack>
+        {isMobile && (
+                <Button
+                  type="link"
+                  path={`/extended-card/${id}/credit-profile`}
+                  fullwidth
+                >
+                  Ver perfil crediticio
+                </Button>
+            )}
         {collapse && <StyledDivider />}
         {collapse && (
           <Stack direction="column" gap="10px">
