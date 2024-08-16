@@ -28,6 +28,13 @@ import { OpenWallet } from "./OpenWallet";
 import { RiskScoring } from "./RiskScoring";
 import { StyledDivider, StyledContainerToCenter } from "./styles";
 
+const margins = {
+  top: 20,
+  bottom: 0,
+  left: 25.4,
+  right: 25.4,
+};
+
 export const CreditProfileInfo = () => {
   const [requests, setRequests] = useState({} as Requests);
   const [riskScoring, setRiskScoring] = useState<IRiskScoring[] | null>(null);
@@ -77,7 +84,7 @@ export const CreditProfileInfo = () => {
 
   const handlePrint = () => {
     setIsGeneratingPdf(true);
-    generatePDF(dataPrint, "", "Perfil crediticio del cliente");
+    generatePDF(dataPrint, "", "Perfil crediticio del cliente", margins);
     setIsGeneratingPdf(false);
   };
 
@@ -86,7 +93,7 @@ export const CreditProfileInfo = () => {
       <Stack direction="column">
         <Stack
           justifyContent="space-between"
-          margin={isTablet ? "s100 s200" : "s250 s500"}
+          margin={isTablet ? "8px 16px" : "20px 40px"}
         >
           <Button
             spacing="compact"
