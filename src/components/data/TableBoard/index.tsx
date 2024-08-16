@@ -3,11 +3,11 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { IAction, IEntries, ITitle, IAppearances } from "./types";
 import { TableBoardUI } from "./interface";
 
-export interface IInfoItems{
+export interface IInfoItems {
   isFirstTable?: boolean;
   infoItems?: { icon: JSX.Element; text: string }[];
 }
-export interface ITableBoardProps extends IInfoItems{
+export interface ITableBoardProps extends IInfoItems {
   id: string;
   entries: IEntries[];
   titles: ITitle[];
@@ -17,7 +17,6 @@ export interface ITableBoardProps extends IInfoItems{
   loading?: boolean;
   portalId?: string;
   appearanceTable?: IAppearances;
-  nameTitleTag?: string;
 }
 
 export const TableBoard = (props: ITableBoardProps) => {
@@ -37,9 +36,6 @@ export const TableBoard = (props: ITableBoardProps) => {
       background: false,
       isStyleMobile: true,
     },
-    nameTitleTag,
-    isFirstTable,
-    infoItems, 
   } = props;
 
   const isTablet = useMediaQuery("(max-width: 720px)");
@@ -56,9 +52,6 @@ export const TableBoard = (props: ITableBoardProps) => {
       titles={titles}
       appearanceTable={appearanceTable}
       isTablet={isTablet}
-      nameTitleTag={nameTitleTag}
-      isFirstTable={isFirstTable}
-      infoItems={infoItems} 
     />
   );
 };
