@@ -23,7 +23,7 @@ import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { Requests } from "@services/types";
 
-import { StyledCollapseIcon, StyledIcon, StyledDivider } from "./styles";
+import { StyledCollapseIcon, StyledIcon, StyledDivider,StyledFieldset } from "./styles";
 
 interface ComercialManagementProps {
   data: Requests;
@@ -46,6 +46,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
 
   return (
     <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
+      <StyledFieldset>
       <Stack direction="column" gap={inube.spacing.s150}>
         <Stack justifyContent="space-between" alignItems="center">
           <Stack direction="column">
@@ -192,6 +193,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           </Stack>
         )}
       </Stack>
+      </StyledFieldset>
     </Fieldset>
   );
 };

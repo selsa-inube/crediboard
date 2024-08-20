@@ -228,9 +228,9 @@ export const FinancialReporting = () => {
               <Stack direction="column">
                 {<ToDo icon={infoIcon} isMobile={isMobile} />}
               </Stack>
-              <Stack direction="column">{<Approvals user={id!} />}</Stack>
+              <Stack direction="column">{<Approvals user={id!} isMobile={isMobile}/>}</Stack>
               <Stack direction="column">
-                {<Requirements data={dataRequirements} />}
+                {<Requirements data={dataRequirements} isMobile={isMobile}/>}
               </Stack>
               <Stack direction="column">
                 {
@@ -241,7 +241,7 @@ export const FinancialReporting = () => {
                   />
                 }
               </Stack>
-              <Stack direction="column">{<PromissoryNotes user={id!} />}</Stack>
+              <Stack direction="column">{<PromissoryNotes user={id!} isMobile={isMobile}/>}</Stack>
               <Stack direction="column">{<Postingvouchers />}</Stack>
             </Grid>
           </Stack>

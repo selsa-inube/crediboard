@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { MdOutlineThumbUp } from "react-icons/md";
-import { useMediaQuery } from "@inubekit/hooks";
 import { Stack } from "@inubekit/stack";
 import { Flag } from "@inubekit/flag";
 import { Tag } from "@inubekit/tag";
@@ -28,10 +27,11 @@ import { StyledContainer } from "./styles"
 
 interface IPromissoryNotesProps {
   user: string;
+  isMobile: boolean;
 }
 
 export const PromissoryNotes = (props: IPromissoryNotesProps) => {
-  const { user } = props;
+  const { user, isMobile } = props;
 
   const [showModal, setShowModal] = useState(false);
   const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
@@ -87,8 +87,6 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     field3: "3122638128",
   };
 
-  const isMobile = useMediaQuery("(max-width: 720px)");
-
   const handleSubmit = () => {
     setShowFlag(true);
     setShowModal(false);
@@ -110,6 +108,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           actions={tableBoardActions}
           actionMobile={tableBoardActionMobile}
           appearanceTable={{
+            widthTd: !isMobile ? "100" : "23%",
             efectzebra: true,
             title: "primary",
             isStyleMobile: true,

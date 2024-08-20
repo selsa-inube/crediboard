@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { MdOutlineThumbUp } from "react-icons/md";
-import { useMediaQuery } from "@inube/design-system";
 import { Tag } from "@inubekit/tag";
 
 import { Fieldset } from "@components/data/Fieldset";
@@ -9,7 +8,6 @@ import { IEntries } from "@components/data/TableBoard/types";
 import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { Flag } from "@inubekit/flag";
-
 import {
   actionMobileApprovals,
   titlesApprovals,
@@ -37,10 +35,11 @@ const appearanceTag = (label: string) => {
 
 interface IApprovalsProps {
   user: string;
+  isMobile: boolean;
 }
 
 export const Approvals = (props: IApprovalsProps) => {
-  const { user } = props;
+  const { user, isMobile } = props;
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
   const [loading, setLoading] = useState(false);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
@@ -96,7 +95,6 @@ export const Approvals = (props: IApprovalsProps) => {
     setShowFlag(true);
     setShowNotificationModal(false);
   };
-  const isMobile = useMediaQuery("(max-width: 720px)");
 
   return (
     <>
@@ -109,7 +107,7 @@ export const Approvals = (props: IApprovalsProps) => {
           actionMobile={mobileActions}
           loading={loading}
           appearanceTable={{
-            widthTd: !isMobile ? "100" : "61%",
+            widthTd: isMobile ? "70%" : undefined,
             efectzebra: true,
             title: "primary",
             isStyleMobile: true,
@@ -135,7 +133,7 @@ export const Approvals = (props: IApprovalsProps) => {
             duration={5000}
             icon={<MdOutlineThumbUp />}
             isMessageResponsive
-            closeFlag={() => setShowFlag(false)} 
+            closeFlag={() => setShowFlag(false)}
           />
         </StyledMessageContainer>
       )}
