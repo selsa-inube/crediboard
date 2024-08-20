@@ -41,35 +41,54 @@ interface IApprovalsProps {
 export const Approvals = (props: IApprovalsProps) => {
   const { user, isMobile } = props;
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
   const [showFlag, setShowFlag] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      if (loading) {
+        setError("No se pudo cargar la información. Intente nuevamente más tarde.");
+        setLoading(false);
+      }
+    }, 5000);
+
     getDataById<approval_by_credit_request_Mock[]>(
       "approval",
       "credit_request_id",
       user
     ).then((data) => {
-      setLoading(true);
-      const entries = data!.map((entry) => ({
-        id: entry.approval_id.toString(),
-        usuarios: entry.approver_name,
-        error: entry.error,
-        tag: (
-          <Tag
-            label={entry.concept}
-            appearance={appearanceTag(entry.concept)}
-            weight="strong"
-          />
-        ),
-      }));
-      setEntriesApprovals(entries);
+      clearTimeout(timer);
+      if (data) {
+        const entries = data!.map((entry) => ({
+          id: entry.approval_id.toString(),
+          usuarios: entry.approver_name,
+          error: entry.error,
+          tag: (
+            <Tag
+              label={entry.concept}
+              appearance={appearanceTag(entry.concept)}
+              weight="strong"
+            />
+          ),
+        }));
+        setEntriesApprovals(entries);
+        setLoading(false);
+      } else {
+        setError("No se encontraron datos.");
+        setLoading(false);
+      }
+    }).catch(() => {
+      clearTimeout(timer);
+      setError("Error al intentar conectar con el servicio de aprobaciones.");
       setLoading(false);
     });
-  }, [user]);
+
+    return () => clearTimeout(timer);
+  }, [loading,user]);
 
   const handleNotificationClickBound = (data: IEntries) => {
     handleNotificationClick(data, setSelectedData, setShowNotificationModal);
@@ -99,22 +118,28 @@ export const Approvals = (props: IApprovalsProps) => {
   return (
     <>
       <Fieldset title="Aprobaciones" heightFieldset="284px" hasTable>
-        <TableBoard
-          id="usuarios"
-          titles={titlesApprovals}
-          entries={entriesApprovals}
-          actions={desktopActionsConfig}
-          actionMobile={mobileActions}
-          loading={loading}
-          appearanceTable={{
-            widthTd: isMobile ? "70%" : undefined,
-            efectzebra: true,
-            title: "primary",
-            isStyleMobile: true,
-          }}
-          isFirstTable={true}
-          infoItems={infoItems}
-        />
+        {error ? (
+          <div>
+            <p>{error}</p>
+          </div>
+        ) : (
+          <TableBoard
+            id="usuarios"
+            titles={titlesApprovals}
+            entries={entriesApprovals}
+            actions={desktopActionsConfig}
+            actionMobile={mobileActions}
+            loading={loading}
+            appearanceTable={{
+              widthTd: isMobile ? "70%" : undefined,
+              efectzebra: true,
+              title: "primary",
+              isStyleMobile: true,
+            }}
+            isFirstTable={true}
+            infoItems={infoItems}
+          />
+        )}
       </Fieldset>
       {showNotificationModal && selectedData && (
         <ListModal
