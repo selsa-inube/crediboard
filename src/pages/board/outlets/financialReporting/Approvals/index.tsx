@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Tag } from "@inubekit/tag";
+import { Text } from "@inubekit/text";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
@@ -16,7 +17,7 @@ import {
   handleErrorClick,
   desktopActions,
   getMobileActionsConfig,
-  infoItems 
+  infoItems,
 } from "./config";
 import { getDataById } from "@mocks/utils/dataMock.service";
 import { approval_by_credit_request_Mock } from "@services/types";
@@ -51,7 +52,9 @@ export const Approvals = (props: IApprovalsProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (loading) {
-        setError("No se pudo cargar la información. Intente nuevamente más tarde.");
+        setError(
+          "No se pudo cargar la información. Intente nuevamente más tarde."
+        );
         setLoading(false);
       }
     }, 5000);
@@ -60,35 +63,37 @@ export const Approvals = (props: IApprovalsProps) => {
       "approval",
       "credit_request_id",
       user
-    ).then((data) => {
-      clearTimeout(timer);
-      if (data) {
-        const entries = data!.map((entry) => ({
-          id: entry.approval_id.toString(),
-          usuarios: entry.approver_name,
-          error: entry.error,
-          tag: (
-            <Tag
-              label={entry.concept}
-              appearance={appearanceTag(entry.concept)}
-              weight="strong"
-            />
-          ),
-        }));
-        setEntriesApprovals(entries);
+    )
+      .then((data) => {
+        clearTimeout(timer);
+        if (data) {
+          const entries = data!.map((entry) => ({
+            id: entry.approval_id.toString(),
+            usuarios: entry.approver_name,
+            error: entry.error,
+            tag: (
+              <Tag
+                label={entry.concept}
+                appearance={appearanceTag(entry.concept)}
+                weight="strong"
+              />
+            ),
+          }));
+          setEntriesApprovals(entries);
+          setLoading(false);
+        } else {
+          setError("No se encontraron datos.");
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        clearTimeout(timer);
+        setError("Error al intentar conectar con el servicio de aprobaciones.");
         setLoading(false);
-      } else {
-        setError("No se encontraron datos.");
-        setLoading(false);
-      }
-    }).catch(() => {
-      clearTimeout(timer);
-      setError("Error al intentar conectar con el servicio de aprobaciones.");
-      setLoading(false);
-    });
+      });
 
     return () => clearTimeout(timer);
-  }, [loading,user]);
+  }, [loading, user]);
 
   const handleNotificationClickBound = (data: IEntries) => {
     handleNotificationClick(data, setSelectedData, setShowNotificationModal);
@@ -119,9 +124,7 @@ export const Approvals = (props: IApprovalsProps) => {
     <>
       <Fieldset title="Aprobaciones" heightFieldset="284px" hasTable>
         {error ? (
-          <div>
-            <p>{error}</p>
-          </div>
+          <Text>{error}</Text>
         ) : (
           <TableBoard
             id="usuarios"
