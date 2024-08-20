@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+
 import { useNavigate, useParams } from "react-router-dom";
 import {
   MdDeleteOutline,
@@ -92,8 +94,11 @@ export const FinancialReporting = () => {
 
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
   const [errors, setError] = useState<Ierror_issued[]>([]);
+  const [upDateData, setUpDateData] = useState(false);
 
   const { id } = useParams();
+  const { user } = useAuth0();
+
   const navigation = useNavigate();
 
   const isMobile: boolean = useMediaQuery("(max-width: 880px)");
@@ -133,6 +138,10 @@ export const FinancialReporting = () => {
         "Gestión Comercial"
       );
     }, 1000);
+  };
+
+  const handleUpdateData = (state: boolean) => {
+    setUpDateData(state);
   };
 
   const handleActions = configHandleactions({
@@ -219,12 +228,20 @@ export const FinancialReporting = () => {
               <Stack direction="column">
                 {<ToDo icon={infoIcon} isMobile={isMobile} />}
               </Stack>
-              <Stack direction="column">{<Approvals user={id!} />}</Stack>
+              <Stack direction="column">{<Approvals user={id!} isMobile={isMobile}/>}</Stack>
               <Stack direction="column">
-                {<Requirements data={dataRequirements} />}
+                {<Requirements data={dataRequirements} isMobile={isMobile}/>}
               </Stack>
-              <Stack direction="column">{<Management />}</Stack>
-              <Stack direction="column">{<PromissoryNotes user={id!} />}</Stack>
+              <Stack direction="column">
+                {
+                  <Management
+                    id={id!}
+                    isMobile={isMobile}
+                    updateData={upDateData}
+                  />
+                }
+              </Stack>
+              <Stack direction="column">{<PromissoryNotes user={id!} isMobile={isMobile}/>}</Stack>
               <Stack direction="column">{<Postingvouchers />}</Stack>
             </Grid>
           </Stack>
@@ -258,10 +275,13 @@ export const FinancialReporting = () => {
           onCloseModal={() => setShowRejectModal(false)}
           onSubmit={(values) =>
             handleConfirmReject(
+              id!,
+              user!.nickname!,
               values,
               setFlagMessage,
               setShowFlagMessage,
-              setShowRejectModal
+              setShowRejectModal,
+              handleUpdateData
             )
           }
         />

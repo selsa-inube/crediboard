@@ -7,12 +7,13 @@ import {
   inube,
   Select,
 } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
 import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 
-import { StyledModal } from "./styles";
+import { StyledModal, StyledContainerClose } from "./styles";
 import { IStaff } from "@services/types";
 
 interface FormValues {
@@ -67,10 +68,17 @@ export function StaffModal(props: StaffModalProps) {
           <Text type="headline" size="small">
             Gestor Comercial y Analista
           </Text>
-          <Stack gap={inube.spacing.s100}>
-            <Text>Cerrar</Text>
-            <MdClear size={24} cursor="pointer" onClick={onCloseModal} />
-          </Stack>
+          <StyledContainerClose onClick={onCloseModal}>
+            <Stack alignItems="center" gap={inube.spacing.s100}>
+              <Text>Cerrar</Text>
+              <Icon
+                icon={<MdClear />}
+                size="24px"
+                cursorHover
+                appearance="dark"
+              />
+            </Stack>
+          </StyledContainerClose>
         </Stack>
         <Formik
           initialValues={{ commercialManager: "", analyst: "" }}

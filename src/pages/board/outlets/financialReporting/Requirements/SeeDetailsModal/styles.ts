@@ -26,4 +26,8 @@ const StyledTextarea = styled.div`
   }
 `;
 
-export { StyledModal, StyledTextarea };
+const StyledContainerClose = styled.div`
+  cursor: pointer;
+`;
+
+export { StyledModal, StyledTextarea, StyledContainerClose };
