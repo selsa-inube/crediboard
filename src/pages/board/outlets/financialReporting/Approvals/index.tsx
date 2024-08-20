@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
+import userNotFound from "@assets/images/ItemNotFound.png"; 
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Tag } from "@inubekit/tag";
-import { Text } from "@inubekit/text";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
@@ -9,6 +9,8 @@ import { IEntries } from "@components/data/TableBoard/types";
 import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { Flag } from "@inubekit/flag";
+import { ItemNotFound } from "@components/layout/ItemNotFound"; 
+
 import {
   actionMobileApprovals,
   titlesApprovals,
@@ -51,23 +53,15 @@ export const Approvals = (props: IApprovalsProps) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (loading) {
-        setError(
-          "No se pudo cargar la información. Intente nuevamente más tarde."
-        );
-        setLoading(false);
-      }
+      setError("No se pudo cargar la información. Intente nuevamente más tarde.");
+      setLoading(false);
     }, 5000);
 
-    getDataById<approval_by_credit_request_Mock[]>(
-      "approval",
-      "credit_request_id",
-      user
-    )
+    getDataById<approval_by_credit_request_Mock[]>("approval", "credit_request_id", user)
       .then((data) => {
         clearTimeout(timer);
         if (data) {
-          const entries = data!.map((entry) => ({
+          const entries = data.map((entry) => ({
             id: entry.approval_id.toString(),
             usuarios: entry.approver_name,
             error: entry.error,
@@ -93,7 +87,16 @@ export const Approvals = (props: IApprovalsProps) => {
       });
 
     return () => clearTimeout(timer);
-  }, [loading, user]);
+  }, [user]);
+
+  useEffect(() => {
+    if (!loading && !error && entriesApprovals.length > 0) {
+      const modalTimer = setTimeout(() => {
+        setShowNotificationModal(true);
+      }, 5000);
+      return () => clearTimeout(modalTimer);
+    }
+  }, [loading, error, entriesApprovals]);
 
   const handleNotificationClickBound = (data: IEntries) => {
     handleNotificationClick(data, setSelectedData, setShowNotificationModal);
@@ -124,7 +127,13 @@ export const Approvals = (props: IApprovalsProps) => {
     <>
       <Fieldset title="Aprobaciones" heightFieldset="284px" hasTable>
         {error ? (
-          <Text>{error}</Text>
+          <ItemNotFound
+            image={userNotFound}
+            title="Error al cargar datos"
+            description={error}
+            buttonDescription="Volver a intentar"
+            route="/retry-path"
+          />
         ) : (
           <TableBoard
             id="usuarios"
