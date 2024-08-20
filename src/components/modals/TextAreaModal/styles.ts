@@ -23,4 +23,8 @@ const StyledModal = styled.div<IStyledModal>`
   border-radius: ${inube.spacing.s100};
 `;
 
-export { StyledModal };
+const StyledContainerClose = styled.div`
+  cursor: pointer;
+`;
+
+export { StyledModal, StyledContainerClose };

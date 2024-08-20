@@ -1,11 +1,13 @@
-import { Stack, Icon, useMediaQuery } from "@inube/design-system";
+import { Stack, Icon, } from "@inube/design-system";
 import { useState, isValidElement } from "react";
 import { MdAddCircleOutline, MdOutlineCheckCircle, MdOutlineThumbUp } from "react-icons/md";
+import { Flag } from "@inubekit/flag";
+
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
-import { Flag } from "@inubekit/flag";
-import { dataButton } from "./config";
+
+import { dataButton, infoItems } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
 import { StyledMessageContainer } from "../styles";
@@ -20,10 +22,11 @@ interface IData {
 
 export interface IRequirementsProps {
   data: IData[];
+  isMobile: boolean;
 }
 
 export const Requirements = (props: IRequirementsProps) => {
-  const { data } = props;
+  const { data, isMobile } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [modalData, setModalData] = useState<{ date?: Date; details?: string }>({});
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
@@ -87,8 +90,7 @@ export const Requirements = (props: IRequirementsProps) => {
     { id: "agregar", content: renderAddIcon },
     { id: "aprobar", content: renderCheckIcon },
   ];
-
-  const isMobile = useMediaQuery("(max-width: 720px)");
+  
 
   return (
     <>
@@ -99,8 +101,7 @@ export const Requirements = (props: IRequirementsProps) => {
           heightFieldset="340px"
           hasTable
         >
-          <div style={{ height: isMobile ? "auto" : "340px" }}>
-            {data.map((item) => (
+            {data.map((item, index) => (
               <TableBoard
                 key={item.id}
                 id={item.id}
@@ -109,14 +110,15 @@ export const Requirements = (props: IRequirementsProps) => {
                 actions={actionsRequirements}
                 actionMobile={item.actionsMovile}
                 appearanceTable={{
-                  widthTd: !isMobile ? "310px" : "61%",
+                  widthTd: !isMobile ? "75%" : "70%",
                   efectzebra: true,
                   title: "primary",
-                  isStyleMobile: false,
+                  isStyleMobile: true,
                 }}
+                isFirstTable={index === 0}
+                infoItems={infoItems}
               />
             ))}
-          </div>
         </Fieldset>
       </Stack>
 
