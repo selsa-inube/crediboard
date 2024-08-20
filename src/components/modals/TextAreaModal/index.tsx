@@ -7,12 +7,13 @@ import {
   inube,
   Textarea,
 } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 
-import { StyledModal } from "./styles";
+import { StyledModal, StyledContainerClose } from "./styles";
 
 interface FormValues {
   textarea: string;
@@ -71,10 +72,17 @@ export function TextAreaModal(props: TextAreaModalProps) {
           <Text type="headline" size="small">
             {title}
           </Text>
-          <Stack gap={inube.spacing.s100}>
-            <Text>Cerrar</Text>
-            <MdClear size={24} cursor="pointer" onClick={onCloseModal} />
-          </Stack>
+          <StyledContainerClose onClick={onCloseModal}>
+            <Stack alignItems="center" gap={inube.spacing.s100}>
+              <Text>Cerrar</Text>
+              <Icon
+                icon={<MdClear />}
+                size="24px"
+                cursorHover
+                appearance="dark"
+              />
+            </Stack>
+          </StyledContainerClose>
         </Stack>
         <Formik
           initialValues={{ textarea: "" }}
