@@ -4,7 +4,8 @@ export const payment_capacity = [
     payment_capacity: {
       available_value: 955500,
       base_income: 3000000,
-      percentage_used: 50},
+      percentage_used: 50,
+    },
   },
   {
     credit_request_id: "999991",
