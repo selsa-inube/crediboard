@@ -16,7 +16,7 @@ function ItemNotFound(props: ItemNotFoundProps) {
   return (
     <Stack
       direction={smallScreen ? "column-reverse" : "row"}
-      gap={smallScreen ? "24px" : "32px"}
+      gap={smallScreen ? "24px" : "16px"}
       alignItems="center"
       margin="s400"
       justifyContent="center"
@@ -25,8 +25,6 @@ function ItemNotFound(props: ItemNotFoundProps) {
         direction="column"
         gap={smallScreen ? "8px" : "24px"}
         alignItems="center"
-        textAlign="center"
-        flex={smallScreen ? undefined : "1"}
       >
         <Text type="title" size={smallScreen ? "small" : "large"}>
           {title}
@@ -36,6 +34,7 @@ function ItemNotFound(props: ItemNotFoundProps) {
           type={smallScreen ? "body" : "title"}
           size={smallScreen ? "small" : "medium"}
           appearance="gray"
+          textAlign="Center"
         >
           {description}
         </Text>
