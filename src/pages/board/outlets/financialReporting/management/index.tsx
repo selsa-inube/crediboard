@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Icon } from "@inubekit/icon";
 import { Stack, inube } from "@inube/design-system";
 import { Textfield } from "@inubekit/textfield";
@@ -10,6 +10,8 @@ import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
 import { getDataById, updateActive } from "@mocks/utils/dataMock.service";
 import { TraceType } from "@services/types";
+import { ItemNotFound } from "@components/layout/ItemNotFound";
+import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { ChatContent } from "./styles";
 
@@ -24,11 +26,28 @@ export const Management = (props: IManagementProps) => {
 
   const [traces, setTraces] = useState<TraceType[]>([]);
   const [newMessage, setNewMessage] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    getDataById<TraceType[]>("trace", "credit_request_id", id!).then((data) => {
-      if (data) setTraces(data);
-    });
+    const timer = setTimeout(() => {
+      setError("No se pudo cargar la información. Intente nuevamente más tarde.");
+    }, 5000);
+
+    getDataById<TraceType[]>("trace", "credit_request_id", id!)
+      .then((data) => {
+        clearTimeout(timer);
+        if (data) {
+          setTraces(data);
+        } else {
+          setError("No se encontraron datos.");
+        }
+      })
+      .catch(() => {
+        clearTimeout(timer);
+        setError("Error al intentar conectar con el servicio de trazabilidad.");
+      });
+
+    return () => clearTimeout(timer);
   }, [updateData, id]);
 
   const handleFormSubmit = (e: React.MouseEvent) => {
@@ -82,44 +101,54 @@ export const Management = (props: IManagementProps) => {
 
   return (
     <Fieldset title="Gestión" heightFieldset="340px" aspectRatio="1">
-      <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
-        <ChatContent>
-          {traces.map((trace) => (
-            <Message
-              key={trace.trace_id}
-              type="sent"
-              timestamp={trace.execution_date}
-              message={trace.trace_value}
-            />
-          ))}
-        </ChatContent>
-        <form>
-          <Stack alignItems="center" direction="row" gap={inube.spacing.s150}>
-            <Icon
-              appearance="primary"
-              cursorHover
-              size="36px"
-              icon={<LuPaperclip />}
-            />
-            <Textfield
-              id="text"
-              placeholder="Ej.: Escriba su mensaje"
-              fullwidth
-              value={newMessage}
-              onChange={handleInputChange}
-            />
-            <Stack>
+      {error ? (
+        <ItemNotFound
+          image={userNotFound}
+          title="Error al cargar datos"
+          description={error}
+          buttonDescription="Volver a intentar"
+          route="/retry-path"
+        />
+      ) : (
+        <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
+          <ChatContent>
+            {traces.map((trace) => (
+              <Message
+                key={trace.trace_id}
+                type="sent"
+                timestamp={trace.execution_date}
+                message={trace.trace_value}
+              />
+            ))}
+          </ChatContent>
+          <form>
+            <Stack alignItems="center" direction="row" gap={inube.spacing.s150}>
               <Icon
                 appearance="primary"
                 cursorHover
                 size="36px"
-                icon={<MdOutlineSend />}
-                onClick={handleFormSubmit}
+                icon={<LuPaperclip />}
               />
+              <Textfield
+                id="text"
+                placeholder="Ej.: Escriba su mensaje"
+                fullwidth
+                value={newMessage}
+                onChange={handleInputChange}
+              />
+              <Stack>
+                <Icon
+                  appearance="primary"
+                  cursorHover
+                  size="36px"
+                  icon={<MdOutlineSend />}
+                  onClick={handleFormSubmit}
+                />
+              </Stack>
             </Stack>
-          </Stack>
-        </form>
-      </Stack>
+          </form>
+        </Stack>
+      )}
     </Fieldset>
   );
 };
