@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
 import {
@@ -14,8 +15,9 @@ import { BoardSection } from "@components/layout/BoardSection";
 import { PinnedRequest, Requests } from "@services/types";
 import { Selectcheck } from "@components/inputs/SelectCheck";
 import { IOptionItemCheckedProps } from "@components/inputs/SelectCheck/OptionItem";
+import { ErrorAlert } from "@src/components/ErrorAlert";
 
-import { StyledInputsContainer, StyledBoardContainer, StyledContainerToCenter } from "./styles";
+import { StyledInputsContainer, StyledBoardContainer, StyledContainerToCenter, StyledToast } from "./styles";
 import { boardColumns } from "./config/board";
 
 interface BoardLayoutProps {
@@ -49,104 +51,128 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     onOrientationChange,
   } = props;
 
+  const [errorLoadingPins, setErrorLoadingPins] = useState(false);
+
+  useEffect(() => {
+    if (!pinnedRequests || pinnedRequests.length === 0) {
+      setErrorLoadingPins(true);
+    } else {
+      setErrorLoadingPins(false);
+    }
+  }, [pinnedRequests]);
+
   return (
     <StyledContainerToCenter>
-    <Stack direction="column" width={isMobile ? "-webkit-fill-available" : "min(100%,1500px)"}>
-      <StyledInputsContainer $isMobile={isMobile}>
-        {!isMobile && (
-          <Stack width="480px">
-            <Textfield
-              id="SearchCards"
-              name="SearchCards"
-              placeholder="Buscar..."
-              size="compact"
-              iconAfter={<MdSearch />}
-              value={searchRequestValue}
-              onChange={handleSearchRequestsValue}
-              fullwidth
-            />
-          </Stack>
+      <Stack direction="column" width={isMobile ? "-webkit-fill-available" : "min(100%,1500px)"}>
+        <StyledToast $isMobile={isMobile}>
+        {errorLoadingPins && (
+          <ErrorAlert
+            message="Error: No se pudo cargar el estado de los anclados."
+            onClose={() => setErrorLoadingPins(false)}
+          />
         )}
-        <Stack
-          width="100%"
-          justifyContent={isMobile ? "end" : "space-between"}
-          alignItems="center"
-        >
+        </StyledToast>
+        <StyledInputsContainer $isMobile={isMobile}>
           {!isMobile && (
-            <Stack width="500px">
-              <Selectcheck
-                label="Filtrado por"
-                id="FilterRequests"
-                name="FilterRequests"
-                placeholder="Seleccione una opción"
-                options={selectOptions}
-                onChangeCheck={handleSelectCheckChange}
-                value=""
-                onChange={() => {}}
+            <Stack width="480px">
+              <Textfield
+                id="SearchCards"
+                name="SearchCards"
+                placeholder="Buscar..."
+                size="compact"
+                iconAfter={<MdSearch />}
+                value={searchRequestValue}
+                onChange={handleSearchRequestsValue}
                 fullwidth
               />
             </Stack>
           )}
-          <Stack gap={inube.spacing.s200}>
-            <Stack gap={inube.spacing.s100} alignItems="center">
-              <Icon icon={<MdOutlinePushPin />} appearance="dark" size="24px" />
-              {!isMobile && (
-                <Text type="label">Ver unicamente los anclados</Text>
-              )}
-              <Switch
-                id="SeePinned"
-                name="SeePinned"
-                size="large"
-                checked={showPinnedOnly}
-                onChange={handleShowPinnedOnly}
-              />
-            </Stack>
+          <Stack
+            width="100%"
+            justifyContent={isMobile ? "end" : "space-between"}
+            alignItems="center"
+          >
             {!isMobile && (
-              <Stack gap={inube.spacing.s100}>
-                <Icon
-                  icon={<RxDragHandleVertical />}
-                  appearance={boardOrientation === "vertical" ? "dark" : "gray"}
-                  size="24px"
-                  cursorHover
-                  onClick={() => onOrientationChange("vertical")}
-                />
-                <Icon
-                  icon={<RxDragHandleHorizontal />}
-                  appearance={
-                    boardOrientation === "horizontal" ? "dark" : "gray"
-                  }
-                  size="24px"
-                  cursorHover
-                  onClick={() => onOrientationChange("horizontal")}
+              <Stack width="500px">
+                <Selectcheck
+                  label="Filtrado por"
+                  id="FilterRequests"
+                  name="FilterRequests"
+                  placeholder="Seleccione una opción"
+                  options={selectOptions}
+                  onChangeCheck={handleSelectCheckChange}
+                  value=""
+                  onChange={() => {}}
+                  fullwidth
                 />
               </Stack>
             )}
+            <Stack gap={inube.spacing.s200}>
+              <Stack gap={inube.spacing.s100} alignItems="center">
+                <Icon
+                  icon={<MdOutlinePushPin />}
+                  appearance="dark"
+                  size="24px"
+                />
+                {!isMobile && (
+                  <Text type="label">Ver unicamente los anclados</Text>
+                )}
+                <Switch
+                  id="SeePinned"
+                  name="SeePinned"
+                  size="large"
+                  checked={showPinnedOnly}
+                  onChange={handleShowPinnedOnly}
+                />
+              </Stack>
+              {!isMobile && (
+                <Stack gap={inube.spacing.s100}>
+                  <Icon
+                    icon={<RxDragHandleVertical />}
+                    appearance={
+                      boardOrientation === "vertical" ? "dark" : "gray"
+                    }
+                    size="24px"
+                    cursorHover
+                    onClick={() => onOrientationChange("vertical")}
+                  />
+                  <Icon
+                    icon={<RxDragHandleHorizontal />}
+                    appearance={
+                      boardOrientation === "horizontal" ? "dark" : "gray"
+                    }
+                    size="24px"
+                    cursorHover
+                    onClick={() => onOrientationChange("horizontal")}
+                  />
+                </Stack>
+              )}
+            </Stack>
           </Stack>
-        </Stack>
-      </StyledInputsContainer>
-      <StyledBoardContainer
-        $orientation={boardOrientation}
-        $isMobile={isMobile}
-      >
-        {boardColumns.map((column) => {
-          const filteredRequests = BoardRequests.filter(
-            (request) => request.i_Estprs === column.id
-          );
+        </StyledInputsContainer>
+        <StyledBoardContainer
+          $orientation={boardOrientation}
+          $isMobile={isMobile}
+        >
+          {boardColumns.map((column) => {
+            const filteredRequests = BoardRequests.filter(
+              (request) => request.i_Estprs === column.id
+            );
 
-          return (
-            <BoardSection
-              key={column.id}
-              sectionTitle={column.value}
-              sectionBackground={column.sectionBackground}
-              orientation={boardOrientation}
-              sectionInformation={filteredRequests}
-              pinnedRequests={pinnedRequests}
-              handlePinRequest={handlePinRequest}
-            />
-          );
-        })}
-      </StyledBoardContainer>
-    </Stack>
+            return (
+              <BoardSection
+                key={column.id}
+                sectionTitle={column.value}
+                sectionBackground={column.sectionBackground}
+                orientation={boardOrientation}
+                sectionInformation={filteredRequests}
+                pinnedRequests={pinnedRequests}
+                handlePinRequest={handlePinRequest}
+              />
+            );
+          })}
+        </StyledBoardContainer>
+      </Stack>
     </StyledContainerToCenter>
   );
 }

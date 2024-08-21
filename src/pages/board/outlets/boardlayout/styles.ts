@@ -63,4 +63,25 @@ export const StyledContainerToCenter = styled.div`
   align-items: center;
 `;
 
-export { StyledInputsContainer, StyledBoardContainer };
+interface IStyledToast {
+  $isMobile: boolean;
+}
+
+const StyledToast = styled.div<IStyledToast>`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 2;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 4px;
+  opacity: ${({ $isMobile }) => ($isMobile ? "1" : "0.8")};
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+export { StyledInputsContainer, StyledBoardContainer, StyledToast };

@@ -1,3 +1,4 @@
+import { SkeletonIcon } from "@inubekit/skeleton";
 import { Icon } from "@inubekit/icon";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
@@ -11,7 +12,12 @@ import {
 import { currencyFormat } from "@utils/formatData/currency";
 import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 
-import { StyledSummaryCard, StyledDivider, StyledLink } from "./styles";
+import {
+  StyledSummaryCard,
+  StyledDivider,
+  StyledLink,
+  StyledCursor,
+} from "./styles";
 import { SummaryCardProps } from ".";
 
 function SummaryCardUI(props: SummaryCardProps) {
@@ -26,7 +32,26 @@ function SummaryCardUI(props: SummaryCardProps) {
     isPinned,
     hasMessage,
     onPinChange,
+    errorLoadingPins,
   } = props;
+
+  const getIcon = () => {
+    if (errorLoadingPins) {
+      return (
+        <StyledCursor>
+          <SkeletonIcon />
+        </StyledCursor>
+      );
+    }
+    return isPinned ? <MdPushPin /> : <MdOutlinePushPin />;
+  };
+
+  const getAppearance = () => {
+    if (errorLoadingPins) {
+      return "gray";
+    }
+    return isPinned ? "dark" : "gray";
+  };
 
   return (
     <StyledSummaryCard>
@@ -65,11 +90,7 @@ function SummaryCardUI(props: SummaryCardProps) {
       </StyledLink>
       <Stack direction="column" padding="0px 8px">
         <StyledDivider />
-        <Stack
-          gap="8px"
-          justifyContent="flex-end"
-          padding="8px 0px"
-        >
+        <Stack gap="8px" justifyContent="flex-end" padding="8px 0px">
           {hasMessage && (
             <Icon
               icon={<MdOutlineMessage />}
@@ -79,11 +100,11 @@ function SummaryCardUI(props: SummaryCardProps) {
             />
           )}
           <Icon
-            icon={isPinned ? <MdPushPin /> : <MdOutlinePushPin />}
-            appearance={isPinned ? "dark" : "gray"}
+            icon={getIcon()}
+            appearance={getAppearance()}
             size="20px"
-            cursorHover
-            onClick={onPinChange}
+            cursorHover={!errorLoadingPins}
+            onClick={errorLoadingPins ? undefined : onPinChange}
           />
         </Stack>
       </Stack>

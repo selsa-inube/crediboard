@@ -37,4 +37,8 @@ const StyledDivider = styled.hr`
     theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
-export { StyledLink, StyledSummaryCard, StyledDivider };
+const StyledCursor = styled.div`
+  cursor: not-allowed;
+`
+
+export { StyledLink, StyledSummaryCard, StyledDivider, StyledCursor };
