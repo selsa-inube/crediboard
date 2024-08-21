@@ -9,32 +9,29 @@ interface ItemNotFoundProps {
   route: string;
 }
 
-
 function ItemNotFound(props: ItemNotFoundProps) {
   const { image, title, description, buttonDescription, route } = props;
   const smallScreen = useMediaQuery("(max-width: 720px)");
 
   return (
     <Stack
-      direction={smallScreen ? "column" : "row"}
+      direction={smallScreen ? "column-reverse" : "row"}
       gap={smallScreen ? "24px" : "32px"}
-      alignItems={smallScreen ? "center" : "flex-start"}
+      alignItems="center"
       margin="s400"
-      justifyContent={smallScreen ? "center" : "flex-start"}
+      justifyContent="center"
     >
       <Stack
         direction="column"
         gap={smallScreen ? "8px" : "24px"}
-        alignItems={smallScreen ? "center" : "flex-start"}
-        textAlign={smallScreen ? "center" : "left"}
+        alignItems="center"
+        textAlign="center"
         flex={smallScreen ? undefined : "1"}
       >
-        <Text
-          type="title"
-          size={smallScreen ? "small" : "large"}
-        >
+        <Text type="title" size={smallScreen ? "small" : "large"}>
           {title}
         </Text>
+
         <Text
           type={smallScreen ? "body" : "title"}
           size={smallScreen ? "small" : "medium"}
@@ -42,16 +39,8 @@ function ItemNotFound(props: ItemNotFoundProps) {
         >
           {description}
         </Text>
-        
-        <Button
-          type="link"
-          variant="none"
-          spacing="compact"
-          path={route}
-          style={{
-            alignSelf: smallScreen ? "center" : "flex-start"
-          }}
-        >
+
+        <Button type="link" variant="none" spacing="compact" path={route}>
           {buttonDescription}
         </Button>
       </Stack>
