@@ -14,6 +14,7 @@ import { documents } from "@mocks/financialReporting/documents.mock";
 import { traceMock } from "@mocks/financialReporting/trace.mock";
 import { error_issued } from "@mocks/financialReporting/error.mock";
 import { credit_profileInfo } from "@src/mocks/creditProfileInfo/creditProfileInfo.mock";
+import { mockProspectsResponse } from "../prospect/prospect.mock";
 
 export function initializeDataDB() {
   localforage.clear();
@@ -46,4 +47,5 @@ export function initializeDataDB() {
   );
   intializedData("error_issued", error_issued);
   intializedData("credit_profileInfo", credit_profileInfo);
+  intializedData("prospects", mockProspectsResponse);
 }
