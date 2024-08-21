@@ -1,21 +1,19 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Button,
-  Stack,
-  Select,
-  Text,
-  Textfield,
-  inube,
-} from "@inube/design-system";
-import { Icon } from "@inubekit/icon";
-import { Flag } from "@inubekit/flag";
 import { MdOutlineThumbUp } from "react-icons/md";
+import { Select } from "@inubekit/select";
+import { Button } from "@inubekit/button";
+import { Flag } from "@inubekit/flag";
+import { Icon } from "@inubekit/icon";
+import { SkeletonLine } from "@inubekit/skeleton";
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
+import { Textfield } from "@inubekit/textfield";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo } from "@services/types";
-import { get } from "@mocks/utils/dataMock.service";
+import { get, getDataById } from "@mocks/utils/dataMock.service";
 
 import { StaffModal } from "./StaffModal";
 import { flagMessages } from "./config";
@@ -44,34 +42,41 @@ function ToDo(props: ToDoProps) {
   const { id } = useParams();
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
-  const [toDo, setToDo] = useState<IToDo | null>(null);
+  const [toDo, setToDo] = useState<IToDo[]>([]);
   const [assignedStaff, setAssignedStaff] = useState({
     commercialManager: "",
     analyst: "",
   });
   const [tempStaff, setTempStaff] = useState(assignedStaff);
-  const [decision, setDecision] = useState("");
+  const [decision, setDecision] = useState({
+    decision: "",
+  });
   const [showFlagMessage, setShowFlagMessage] = useState(false);
   const [flagMessage, setFlagMessage] = useState(flagMessages.success);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+
       const [staffResult, toDoResult] = await Promise.allSettled([
         get("staff"),
-        get("to-do"),
+        getDataById<IToDo[]>("to-do", "credit_request_state_id", id!),
       ]);
 
       if (staffResult.status === "fulfilled") {
         setStaff(staffResult.value as IStaff[]);
       }
 
-      if (toDoResult.status === "fulfilled") {
-        const toDoList = toDoResult.value as IToDo[];
-        const filteredToDo = toDoList.find(
-          (item) => item.credit_request_state_id === id
-        );
-        setToDo(filteredToDo || null);
+      if (
+        toDoResult.status === "fulfilled" &&
+        !(toDoResult.value instanceof Error)
+      ) {
+        setToDo(toDoResult.value as IToDo[]);
       }
+
+      setLoading(false);
     };
 
     fetchData();
@@ -79,7 +84,7 @@ function ToDo(props: ToDoProps) {
 
   useEffect(() => {
     if (toDo) {
-      const { account_manager_name = "", analyst_name = "" } = toDo;
+      const { account_manager_name = "", analyst_name = "" } = toDo?.[0] ?? {};
       const commercialManager =
         account_manager_name || "Jorge Enrique Díaz Vargas";
 
@@ -96,9 +101,9 @@ function ToDo(props: ToDoProps) {
       setTempStaff((prev) => ({ ...prev, [key]: value }));
     };
 
-  const onChangeDecision = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.innerText;
-    setDecision(value);
+  const onChangeDecision = (name: string, value: string) => {
+    console.log({ name, value });
+    setDecision({ decision: value });
   };
 
   const handleSubmit = () => {
@@ -112,7 +117,7 @@ function ToDo(props: ToDoProps) {
   const handleSend = () => {
     if (button?.onClick) button.onClick();
 
-    switch (decision) {
+    switch (decision.decision) {
       case "Aceptar":
         setFlagMessage(flagMessages.success);
         break;
@@ -138,24 +143,26 @@ function ToDo(props: ToDoProps) {
         heightFieldset={isMobile ? "inherit" : "284px"}
         hasOverflow
       >
-        <Stack
-          direction="column"
-          gap={isMobile ? inube.spacing.s050 : inube.spacing.s075}
-        >
+        <Stack direction="column" gap={isMobile ? "4px" : "6px"}>
           <Stack direction={isMobile ? "column" : "row"}>
             {isMobile && (
               <Text appearance="primary" type="title" size="medium">
                 Tarea
               </Text>
             )}
-            <Text size={isMobile ? "medium" : "large"}>
-              {toDo?.task_to_be_done}
-            </Text>
+
+            {loading ? (
+              <SkeletonLine width="100%" animated />
+            ) : (
+              <Text size={isMobile ? "medium" : "large"}>
+                {toDo?.[0]?.task_to_be_done ?? "Error, sin datos en la tarea"}
+              </Text>
+            )}
           </Stack>
           <Stack
             direction={isMobile ? "column" : "row"}
-            gap={isMobile ? inube.spacing.s025 : inube.spacing.s200}
-            padding="s100 s0"
+            gap={isMobile ? "2px" : "16px"}
+            padding="8px 0px"
             alignItems="center"
           >
             <Stack width={isMobile ? "100%" : "340px"}>
@@ -163,15 +170,19 @@ function ToDo(props: ToDoProps) {
                 id="toDo"
                 name="decision"
                 label="Decisión"
-                value={decision}
+                value={decision.decision}
                 placeholder="Seleccione una opción"
                 size="compact"
                 fullwidth
-                options={toDo?.decisions}
+                options={toDo?.[0]?.decisions ?? []}
                 onChange={onChangeDecision}
+                disabled={toDo === undefined}
               />
             </Stack>
-            <Stack padding="s200 s0 s0 s0" width={isMobile ? "100%" : "auto"}>
+            <Stack
+              padding="16px 0px 0px 0px"
+              width={isMobile ? "100%" : "auto"}
+            >
               <Button
                 onClick={handleSend}
                 cursorHover
@@ -187,9 +198,9 @@ function ToDo(props: ToDoProps) {
           <Divider />
           <Stack
             direction={isMobile ? "column" : "row"}
-            gap={inube.spacing.s200}
+            gap="16px"
             alignItems="center"
-            padding="s100 s0 s0 s0"
+            padding="8px 0px 0px 0px"
           >
             <Stack direction="column" width="100%" alignItems="end">
               {icon && isMobile && (
@@ -208,7 +219,7 @@ function ToDo(props: ToDoProps) {
                 placeholder="Gestor Comercial"
                 value={assignedStaff.commercialManager}
                 fullwidth
-                readOnly
+                disabled
               />
             </Stack>
             <Textfield
@@ -218,7 +229,7 @@ function ToDo(props: ToDoProps) {
               placeholder="Analista"
               value={assignedStaff.analyst}
               fullwidth
-              readOnly
+              disabled
             />
             {icon && !isMobile && (
               <Stack width="100px" height="70px" alignItems="end">
@@ -246,15 +257,15 @@ function ToDo(props: ToDoProps) {
       )}
       {showFlagMessage && (
         <StyledMessageContainer>
-        <Flag
-          title={flagMessage.title}
-          description={flagMessage.description}
-          appearance={flagMessage.appearance}
-          icon={<MdOutlineThumbUp />}
-          duration={5000}
-          isMessageResponsive={false}
-          closeFlag={() => setShowFlagMessage(false)}
-        />
+          <Flag
+            title={flagMessage.title}
+            description={flagMessage.description}
+            appearance={flagMessage.appearance}
+            icon={<MdOutlineThumbUp />}
+            duration={5000}
+            isMessageResponsive={false}
+            closeFlag={() => setShowFlagMessage(false)}
+          />
         </StyledMessageContainer>
       )}
     </>

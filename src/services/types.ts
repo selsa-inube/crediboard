@@ -31,7 +31,7 @@ interface IToDo {
   task_to_be_done: string;
   account_manager_name: string;
   analyst_name: string;
-  decisions: { id: string; label: string }[];
+  decisions: { id: string; label: string; value: string }[];
 }
 interface IRiskScoring {
   total_score: number;
@@ -93,19 +93,18 @@ type DmDecisions =
   | "CREAR_OBLIGACIONES_DE_CARTERA"
   | "DECLINAR_OBLIGACIONES_DE_CARTERA";
 
-  interface TraceType {
-    trace_id: string;
-    trace_value: string;
-    credit_request_id: string;
-    use_case: string;
-    user_id: string;
-    execution_date: string | number;
-    justification?: string;
-    decision_taken_by_user?: string;
-    trace_type?: string;
-    read_novelty?: string;
-  }
-  
+interface TraceType {
+  trace_id: string;
+  trace_value: string;
+  credit_request_id: string;
+  use_case: string;
+  user_id: string;
+  execution_date: string | number;
+  justification?: string;
+  decision_taken_by_user?: string;
+  trace_type?: string;
+  read_novelty?: string;
+}
 
 export type {
   Requests,
@@ -117,7 +116,7 @@ export type {
   DmConceptos,
   DmDecisions,
   PinnedRequest,
-  TraceType
+  TraceType,
 };
 
 export interface payroll_discount_authorization {
