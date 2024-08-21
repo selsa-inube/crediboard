@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
-import userNotFound from "@assets/images/ItemNotFound.png"; 
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Tag } from "@inubekit/tag";
+import { Flag } from "@inubekit/flag";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { Flag } from "@inubekit/flag";
 import { ItemNotFound } from "@components/layout/ItemNotFound"; 
 
 import {
@@ -23,6 +22,7 @@ import {
 } from "./config";
 import { getDataById } from "@mocks/utils/dataMock.service";
 import { approval_by_credit_request_Mock } from "@services/types";
+import userNotFound from "@assets/images/ItemNotFound.png"; 
 
 import { StyledMessageContainer } from "../styles";
 
