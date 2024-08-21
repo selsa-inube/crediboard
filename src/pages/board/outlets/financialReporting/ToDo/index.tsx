@@ -65,7 +65,10 @@ function ToDo(props: ToDoProps) {
         getDataById<IToDo[]>("to-do", "credit_request_state_id", id!),
       ]);
 
-      if (staffResult.status === "fulfilled") {
+      if (
+        staffResult.status === "fulfilled" &&
+        !(staffResult.value instanceof Error)
+      ) {
         setStaff(staffResult.value as IStaff[]);
       }
 
@@ -102,8 +105,7 @@ function ToDo(props: ToDoProps) {
     };
 
   const onChangeDecision = (name: string, value: string) => {
-    console.log({ name, value });
-    setDecision({ decision: value });
+    setDecision((prevStatus) => ({ ...prevStatus, [name]: value }));
   };
 
   const handleSubmit = () => {
@@ -154,8 +156,12 @@ function ToDo(props: ToDoProps) {
             {loading ? (
               <SkeletonLine width="100%" animated />
             ) : (
-              <Text size={isMobile ? "medium" : "large"}>
-                {toDo?.[0]?.task_to_be_done ?? "Error, sin datos en la tarea"}
+              <Text
+                size={isMobile ? "medium" : "large"}
+                appearance={toDo?.[0]?.task_to_be_done ? "dark" : "gray"}
+              >
+                {toDo?.[0]?.task_to_be_done ??
+                  "No se puede cargar la información"}
               </Text>
             )}
           </Stack>
@@ -186,7 +192,7 @@ function ToDo(props: ToDoProps) {
               <Button
                 onClick={handleSend}
                 cursorHover
-                disabled={button?.disabled || false}
+                disabled={toDo === undefined}
                 loading={button?.loading || false}
                 type="submit"
                 fullwidth={isMobile}
@@ -219,7 +225,7 @@ function ToDo(props: ToDoProps) {
                 placeholder="Gestor Comercial"
                 value={assignedStaff.commercialManager}
                 fullwidth
-                disabled
+                disabled={staff.length === 0}
               />
             </Stack>
             <Textfield
@@ -229,7 +235,7 @@ function ToDo(props: ToDoProps) {
               placeholder="Analista"
               value={assignedStaff.analyst}
               fullwidth
-              disabled
+              disabled={staff.length === 0}
             />
             {icon && !isMobile && (
               <Stack width="100px" height="70px" alignItems="end">
@@ -239,6 +245,7 @@ function ToDo(props: ToDoProps) {
                   size="36px"
                   onClick={handleToggleStaffModal}
                   cursorHover
+                  disabled={staff.length === 0}
                 />
               </Stack>
             )}
