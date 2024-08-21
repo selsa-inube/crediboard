@@ -5,15 +5,13 @@ import { Textfield } from "@inubekit/textfield";
 import { LuPaperclip } from "react-icons/lu";
 import localforage from "localforage";
 import { MdOutlineSend } from "react-icons/md";
-
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
 import { getDataById, updateActive } from "@mocks/utils/dataMock.service";
 import { TraceType } from "@services/types";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import userNotFound from "@assets/images/ItemNotFound.png";
-
-import { ChatContent } from "./styles";
+import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
 
 interface IManagementProps {
   id: string;
@@ -26,11 +24,13 @@ export const Management = (props: IManagementProps) => {
 
   const [traces, setTraces] = useState<TraceType[]>([]);
   const [newMessage, setNewMessage] = useState("");
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setError("No se pudo cargar la información. Intente nuevamente más tarde.");
+      setLoading(false);
     }, 5000);
 
     getDataById<TraceType[]>("trace", "credit_request_id", id!)
@@ -41,10 +41,12 @@ export const Management = (props: IManagementProps) => {
         } else {
           setError("No se encontraron datos.");
         }
+        setLoading(false);
       })
       .catch(() => {
         clearTimeout(timer);
         setError("Error al intentar conectar con el servicio de trazabilidad.");
+        setLoading(false);
       });
 
     return () => clearTimeout(timer);
@@ -112,14 +114,20 @@ export const Management = (props: IManagementProps) => {
       ) : (
         <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
           <ChatContent>
-            {traces.map((trace) => (
-              <Message
-                key={trace.trace_id}
-                type="sent"
-                timestamp={trace.execution_date}
-                message={trace.trace_value}
-              />
-            ))}
+            {loading
+              ? [...Array(5)].map((_, index) => (
+                  <SkeletonContainer key={index} type={index % 2 === 0 ? 'sent' : 'received'}>
+                    <SkeletonLine width="30%"/>
+                  </SkeletonContainer>
+                ))
+              : traces.map((trace) => (
+                  <Message
+                    key={trace.trace_id}
+                    type="sent"
+                    timestamp={trace.execution_date}
+                    message={trace.trace_value}
+                  />
+                ))}
           </ChatContent>
           <form>
             <Stack alignItems="center" direction="row" gap={inube.spacing.s150}>
