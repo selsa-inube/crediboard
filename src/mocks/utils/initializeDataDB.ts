@@ -14,39 +14,60 @@ import { documents as documentsDefault } from "@mocks/financialReporting/documen
 import { traceMock as traceMockDefault } from "@mocks/financialReporting/trace.mock";
 import { error_issued } from "@mocks/financialReporting/error.mock";
 import { credit_profileInfo } from "@src/mocks/creditProfileInfo/creditProfileInfo.mock";
-import { mockRequests, mockStaff, approvalByCreditRequestMock,documents, errorIssued, traceMock } from "./importDataDb";
+import {
+    mockRequests,
+    mockStaff,
+    approvalByCreditRequestMock,
+    documents,
+    errorIssued,
+    traceMock,
+} from "./importDataDb";
 
 export function initializeDataDB(company: string) {
     localforage.clear();
 
-    intializedData<(typeof themes)[number]>("themes", themes, true);
-    intializedData<(typeof mockRequestsDefault)[number]>("requests",mockRequests(company),true);
+    intializedData<(typeof themes)[number]>("themes", themes);
+    intializedData<(typeof mockRequestsDefault)[number]>(
+        "requests",
+        mockRequests(company)
+    );
 
-    intializedData<(typeof mockRequestsPinned)[number]>("requests-pinned",mockRequestsPinned,true);
-    intializedData<(typeof mockStaffDefault)[number]>("staff", mockStaff(company), true);
+    intializedData<(typeof mockRequestsPinned)[number]>(
+        "requests-pinned",
+        mockRequestsPinned
+    );
+    intializedData<(typeof mockStaffDefault)[number]>(
+        "staff",
+        mockStaff(company)
+    );
     intializedData<(typeof approval_by_credit_request_Mock)[number]>(
         "approval",
-        approvalByCreditRequestMock(company),
-        true
+        approvalByCreditRequestMock(company)
     );
-    intializedData<(typeof traceMockDefault)[number]>("trace", traceMock(company), false);
-    intializedData<(typeof mockToDo)[number]>("to-do", mockToDo, true);
+    intializedData<(typeof traceMockDefault)[number]>(
+        "trace",
+        traceMock(company)
+    );
+    intializedData<(typeof mockToDo)[number]>("to-do", mockToDo);
     intializedData<(typeof mockRiskScoring)[number]>(
         "risk-scoring",
-        mockRiskScoring,
-        true
+        mockRiskScoring
     );
-    intializedData<(typeof documentsDefault)[number]>("document", documents(company), true);
+    intializedData<(typeof documentsDefault)[number]>(
+        "document",
+        documents(company)
+    );
     intializedData<(typeof promissory_note)[number]>(
         "promissory_note",
-        promissory_note,
-        true
+        promissory_note
     );
     intializedData(
         "payroll_discount_authorization",
-        payroll_discount_authorization,
-        true
+        payroll_discount_authorization
     );
-    intializedData<(typeof error_issued)[number]>("error_issued", errorIssued(company), true);
-    intializedData("credit_profileInfo", credit_profileInfo, true);
+    intializedData<(typeof error_issued)[number]>(
+        "error_issued",
+        errorIssued(company)
+    );
+    intializedData("credit_profileInfo", credit_profileInfo);
 }
