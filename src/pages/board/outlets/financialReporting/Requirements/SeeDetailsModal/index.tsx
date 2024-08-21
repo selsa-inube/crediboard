@@ -8,12 +8,13 @@ import {
   Textarea,
   Textfield,
 } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
 import { createPortal } from "react-dom";
 import { MdClear, MdOutlineCalendarMonth } from "react-icons/md";
 
 import { formatPrimaryDate } from "@utils/formatData/date";
 
-import { StyledModal, StyledTextarea } from "./styles";
+import { StyledModal, StyledTextarea, StyledContainerClose } from "./styles";
 
 export interface SeeDetailsModalProps {
   date: Date;
@@ -46,10 +47,17 @@ export function SeeDetailsModal(props: SeeDetailsModalProps) {
           <Text type="headline" size="small">
             Más detalles
           </Text>
-          <Stack gap={inube.spacing.s100}>
-            <Text>Cerrar</Text>
-            <MdClear size={24} cursor="pointer" onClick={onCloseModal} />
-          </Stack>
+          <StyledContainerClose onClick={onCloseModal}>
+            <Stack alignItems="center" gap={inube.spacing.s100}>
+              <Text>Cerrar</Text>
+              <Icon
+                icon={<MdClear />}
+                size="24px"
+                cursorHover
+                appearance="dark"
+              />
+            </Stack>
+          </StyledContainerClose>
         </Stack>
         <Stack direction="column" gap={inube.spacing.s300}>
           <Textfield
