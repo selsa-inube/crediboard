@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { inube } from "@inube/design-system";
 import { SkeletonLine as OriginalSkeletonLine } from "@inubekit/skeleton";
 
-// Componente para el contenedor del chat
 export const ChatContent = styled.div`
   flex: 1;
   overflow-y: auto;
@@ -23,7 +22,6 @@ export const ChatContent = styled.div`
   }
 `;
 
-// Estilo específico para los skeletons dentro del ChatContent
 export const SkeletonContainer = styled.div<{ type: 'sent' | 'received' }>`
   display: flex;
   flex-direction: column;
@@ -31,7 +29,7 @@ export const SkeletonContainer = styled.div<{ type: 'sent' | 'received' }>`
   margin: 10px;
 `;
 
-// Usamos el componente original de SkeletonLine
+
 export const SkeletonLine = styled(OriginalSkeletonLine)`
   width: 20%;  
   max-width: 100px;
