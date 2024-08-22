@@ -13,11 +13,9 @@ export async function get<T = unknown>(option: string) {
   try {
     const optionsData = await localforage.getItem(option);
 
-    if (!optionsData) throw new Error("No found");
-
     return optionsData as T;
   } catch (error) {
-    throw new Error(error as string);
+    console.log(error);
   }
 }
 
