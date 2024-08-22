@@ -117,7 +117,7 @@ export const Management = (props: IManagementProps) => {
             {loading
               ? [...Array(5)].map((_, index) => (
                   <SkeletonContainer key={index} type={index % 2 === 0 ? 'sent' : 'received'}>
-                    <SkeletonLine width="30%" animated={true}/>
+                    <SkeletonLine width="30%" animated={true} />
                   </SkeletonContainer>
                 ))
               : traces.map((trace) => (
