@@ -27,7 +27,7 @@ export const Management = (props: IManagementProps) => {
 
   useEffect(() => {
     getDataById<TraceType[]>("trace", "credit_request_id", id!).then((data) => {
-      if (data) setTraces(data);
+      if (data && !(data instanceof Error)) setTraces(data);
     });
   }, [updateData, id]);
 

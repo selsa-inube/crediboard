@@ -15,7 +15,7 @@ export async function get<T = unknown>(option: string) {
 
     return optionsData as T;
   } catch (error) {
-    console.log(error);
+    return error;
   }
 }
 
@@ -46,8 +46,8 @@ export const getDataById = async <T>(bd: string, key: string, id: string) => {
     if (Array.isArray(data)) {
       return data.filter((dataFilter) => dataFilter[key] === id) as T;
     }
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    return error as Error;
   }
 };
 
@@ -100,6 +100,6 @@ export async function addItem<T>(nameDB: string, newItem: T) {
 
     console.log("Item added successfully");
   } catch (error) {
-    console.error("Failed to add item:", error);
+    return "Failed to add item: " + error;
   }
 }

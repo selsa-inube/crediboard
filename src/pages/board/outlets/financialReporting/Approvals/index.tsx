@@ -16,7 +16,7 @@ import {
   handleErrorClick,
   desktopActions,
   getMobileActionsConfig,
-  infoItems 
+  infoItems,
 } from "./config";
 import { getDataById } from "@mocks/utils/dataMock.service";
 import { approval_by_credit_request_Mock } from "@services/types";
@@ -48,26 +48,29 @@ export const Approvals = (props: IApprovalsProps) => {
   const [showFlag, setShowFlag] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     getDataById<approval_by_credit_request_Mock[]>(
       "approval",
       "credit_request_id",
       user
     ).then((data) => {
-      setLoading(true);
-      const entries = data!.map((entry) => ({
-        id: entry.approval_id.toString(),
-        usuarios: entry.approver_name,
-        error: entry.error,
-        tag: (
-          <Tag
-            label={entry.concept}
-            appearance={appearanceTag(entry.concept)}
-            weight="strong"
-          />
-        ),
-      }));
-      setEntriesApprovals(entries);
-      setLoading(false);
+      if (data && !(data instanceof Error)) {
+        console.log("data", data);
+        const entries = data.map((entry) => ({
+          id: entry.approval_id.toString(),
+          usuarios: entry.approver_name,
+          error: entry.error,
+          tag: (
+            <Tag
+              label={entry.concept}
+              appearance={appearanceTag(entry.concept)}
+              weight="strong"
+            />
+          ),
+        }));
+        setEntriesApprovals(entries);
+        setLoading(false);
+      }
     });
   }, [user]);
 
