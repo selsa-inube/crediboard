@@ -9,7 +9,7 @@ interface IStyledContainerFieldset {
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
-  overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "hidden" : "auto")};
+  overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
   border-radius: 8px;
   border-width: 2px;
   border-style: solid;
@@ -22,7 +22,7 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   padding-bottom: ${({ $hasTable }) => !$hasTable && "16px"};
   padding-right: ${({ $hasTable }) => !$hasTable && "8px"};
   padding-left: ${({ $hasTable }) => !$hasTable && "8px"};
-  
+
   ${({ $isMobile, theme }) =>
     !$isMobile &&
     `

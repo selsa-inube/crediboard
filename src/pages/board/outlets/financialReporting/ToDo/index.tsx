@@ -105,7 +105,6 @@ function ToDo(props: ToDoProps) {
     };
 
   const onChangeDecision = (name: string, newValue: string) => {
-    console.log(name, newValue);
     setDecision({ ...decision, [name]: newValue });
   };
 
@@ -138,8 +137,6 @@ function ToDo(props: ToDoProps) {
     setShowFlagMessage(true);
   };
 
-  console.log("andres", toDo?.[0]?.decisions);
-
   return (
     <>
       <Fieldset
@@ -164,7 +161,7 @@ function ToDo(props: ToDoProps) {
                 appearance={toDo?.[0]?.task_to_be_done ? "dark" : "gray"}
               >
                 {toDo?.[0]?.task_to_be_done ??
-                  "No se puede cargar la información"}
+                  "Ups, algo salió mal. No se puede cargar la información. Intente nuevamente más tarde."}
               </Text>
             )}
           </Stack>
@@ -228,7 +225,7 @@ function ToDo(props: ToDoProps) {
                 placeholder="Gestor Comercial"
                 value={assignedStaff.commercialManager}
                 fullwidth
-                disabled={staff.length === 0}
+                disabled={staff === null}
               />
             </Stack>
             <Textfield
@@ -238,7 +235,7 @@ function ToDo(props: ToDoProps) {
               placeholder="Analista"
               value={assignedStaff.analyst}
               fullwidth
-              disabled={staff.length === 0}
+              disabled={staff === null}
             />
             {icon && !isMobile && (
               <Stack width="100px" height="70px" alignItems="end">
@@ -248,7 +245,7 @@ function ToDo(props: ToDoProps) {
                   size="36px"
                   onClick={handleToggleStaffModal}
                   cursorHover
-                  disabled={staff.length === 0}
+                  disabled={staff === null}
                 />
               </Stack>
             )}
