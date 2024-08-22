@@ -104,8 +104,9 @@ function ToDo(props: ToDoProps) {
       setTempStaff((prev) => ({ ...prev, [key]: value }));
     };
 
-  const onChangeDecision = (name: string, value: string) => {
-    setDecision((prevStatus) => ({ ...prevStatus, [name]: value }));
+  const onChangeDecision = (name: string, newValue: string) => {
+    console.log(name, newValue);
+    setDecision({ ...decision, [name]: newValue });
   };
 
   const handleSubmit = () => {
@@ -136,6 +137,8 @@ function ToDo(props: ToDoProps) {
 
     setShowFlagMessage(true);
   };
+
+  console.log("andres", toDo?.[0]?.decisions);
 
   return (
     <>
@@ -176,7 +179,7 @@ function ToDo(props: ToDoProps) {
                 id="toDo"
                 name="decision"
                 label="Decisión"
-                value={decision.decision}
+                value={decision["decision"]}
                 placeholder="Seleccione una opción"
                 size="compact"
                 fullwidth
