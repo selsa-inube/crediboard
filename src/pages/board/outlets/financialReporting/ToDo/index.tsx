@@ -48,7 +48,7 @@ function ToDo(props: ToDoProps) {
     analyst: "",
   });
   const [tempStaff, setTempStaff] = useState(assignedStaff);
-  const [decision, setDecision] = useState({
+  const [decisionValue, setDecisionValue] = useState({
     decision: "",
   });
   const [showFlagMessage, setShowFlagMessage] = useState(false);
@@ -105,7 +105,7 @@ function ToDo(props: ToDoProps) {
     };
 
   const onChangeDecision = (name: string, newValue: string) => {
-    setDecision({ ...decision, [name]: newValue });
+    setDecisionValue({ ...decisionValue, [name]: newValue });
   };
 
   const handleSubmit = () => {
@@ -119,7 +119,7 @@ function ToDo(props: ToDoProps) {
   const handleSend = () => {
     if (button?.onClick) button.onClick();
 
-    switch (decision.decision) {
+    switch (decisionValue.decision) {
       case "Aceptar":
         setFlagMessage(flagMessages.success);
         break;
@@ -176,7 +176,7 @@ function ToDo(props: ToDoProps) {
                 id="toDo"
                 name="decision"
                 label="Decisión"
-                value={decision["decision"]}
+                value={decisionValue.decision}
                 placeholder="Seleccione una opción"
                 size="compact"
                 fullwidth
