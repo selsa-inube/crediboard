@@ -1,4 +1,3 @@
-import React from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
@@ -10,11 +9,11 @@ interface ObligationCardProps {
   amount: string;
 }
 
-const ObligationCard: React.FC<ObligationCardProps> = ({ title, amount }) => {
+function ObligationCard({ title, amount }: ObligationCardProps) {
   return (
     <Container>
       <Stack direction="column" margin="4px" padding="0px 10px">
-        <Text size="small" padding="0px 0px 3px" >
+        <Text size="small" padding="0px 0px 3px">
           {title}
         </Text>
         <Text size="large" appearance="dark">
@@ -25,12 +24,12 @@ const ObligationCard: React.FC<ObligationCardProps> = ({ title, amount }) => {
         <Icon
           appearance="primary"
           icon={<MdOutlineEdit />}
-          cursorHover={true}
+          cursorHover
           size="24px"
         />
       </IconWrapper>
     </Container>
   );
-};
+}
 
 export default ObligationCard;
