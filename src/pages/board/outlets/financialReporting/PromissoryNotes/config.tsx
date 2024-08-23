@@ -1,4 +1,5 @@
 import { isValidElement } from "react";
+import React from "react";
 import {
   MdOutlineSend,
   MdOutlineRemoveRedEye,
@@ -15,26 +16,10 @@ const entrySelection = (data: IEntries) => {
 };
 
 export const titlesFinanacialReporting = [
-  {
-    id: "No. de Obligación",
-    titleName: "No. de Obligación",
-    priority: 1,
-  },
-  {
-    id: "No. de Documento",
-    titleName: "No. de Documento",
-    priority: 2,
-  },
-  {
-    id: "Tipo",
-    titleName: "Tipo",
-    priority: 3,
-  },
-  {
-    id: "tag",
-    titleName: "Estado",
-    priority: 4,
-  },
+  { id: "No. de Obligación", titleName: "No. de Obligación", priority: 1 },
+  { id: "No. de Documento", titleName: "No. de Documento", priority: 2 },
+  { id: "Tipo", titleName: "Tipo", priority: 3 },
+  { id: "tag", titleName: "Estado", priority: 4 },
 ];
 
 export const actionsFinanacialReporting = [
@@ -71,13 +56,9 @@ export const actionsFinanacialReporting = [
 ];
 
 const iconActionsMobile = (tag: string) => {
-  if (tag === "Aprobado") {
-    return <MdCheck />;
-  } else if (tag === "Pendiente") {
-    return <MdRemove />;
-  } else {
-    return <MdClose />;
-  }
+  if (tag === "Aprobado") return <MdCheck />;
+  if (tag === "Pendiente") return <MdRemove />;
+  return <MdClose />;
 };
 
 interface TagProps {
@@ -169,12 +150,14 @@ export const getTableBoardActions = (
     id: action.id,
     actionName: action.actionName,
     label: "Action Label",
-    content: (data: IEntries) =>
-      action.id === "Reenviar" ? (
-        <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
-      ) : (
-        action.content(data)
-      ),
+    content: (data: IEntries) => {
+      const handleClick = () => {
+        if (action.id === "Reenviar") {
+          entrySelection(data);
+        }
+      };
+      return React.cloneElement(action.content(data), { onClick: handleClick });
+    },
   }));
 
 export const getTableBoardActionMobile = (
@@ -184,10 +167,12 @@ export const getTableBoardActionMobile = (
     id: action.id,
     actionName: action.actionName,
     label: "Mobile Action Label",
-    content: (data: IEntries) =>
-      action.id === "Reenviar" ? (
-        <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
-      ) : (
-        action.content(data)
-      ),
+    content: (data: IEntries) => {
+      const handleClick = () => {
+        if (action.id === "Reenviar") {
+          entrySelection(data);
+        }
+      };
+      return React.cloneElement(action.content(data), { onClick: handleClick });
+    },
   }));
