@@ -12,7 +12,6 @@ const StyledCreditProductCard = styled.div`
     ${({ theme }) => theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
-  box-shadow: 0px 1px 3px 0px rgba(9, 30, 66, 0.13);
   box-shadow: 0px 4px 8px 3px rgba(9, 30, 66, 0.13);
 `;
 
