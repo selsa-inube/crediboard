@@ -1,4 +1,5 @@
 import { isValidElement } from "react";
+import React from "react";
 import {
   MdCheck,
   MdClose,
@@ -40,7 +41,6 @@ export const actionsApprovals = [
           spacing="none"
           cursorHover
           size="22px"
-          onClick={() => handledata(data)}
           disabled={!error}
         />
       );
@@ -56,7 +56,6 @@ export const actionsApprovals = [
         spacing="none"
         cursorHover
         size="22px"
-        onClick={() => handledata(data)}
         disabled={
           isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
         }
@@ -191,19 +190,16 @@ export const desktopActions = (
   return actionsApprovals.map((action) => ({
     id: action.id,
     actionName: action.actionName,
-    content: (data: IEntries) => (
-      <div
-        onClick={() => {
-          if (action.id === "notificaciones") {
-            handleNotificationClick(data);
-          } else if (action.id === "Error") {
-            handleErrorClick(data);
-          }
-        }}
-      >
-        {action.content(data)}
-      </div>
-    ),
+    content: (data: IEntries) => {
+      const handleClick = () => {
+        if (action.id === "notificaciones") {
+          handleNotificationClick(data);
+        } else if (action.id === "Error") {
+          handleErrorClick(data);
+        }
+      };
+      return React.cloneElement(action.content(data), { onClick: handleClick });
+    },
   }));
 };
 
@@ -214,18 +210,15 @@ export const getMobileActionsConfig = (
 ) => {
   return actionMobileApprovals.map((action) => ({
     id: action.id,
-    content: (data: IEntries) => (
-      <div
-        onClick={() => {
-          if (action.id === "notificaciones") {
-            handleNotificationClickBound(data);
-          } else if (action.id === "Error") {
-            handleErrorClickBound(data);
-          }
-        }}
-      >
-        {action.content(data)}
-      </div>
-    ),
+    content: (data: IEntries) => {
+      const handleClick = () => {
+        if (action.id === "notificaciones") {
+          handleNotificationClickBound(data);
+        } else if (action.id === "Error") {
+          handleErrorClickBound(data);
+        }
+      };
+      return React.cloneElement(action.content(data), { onClick: handleClick });
+    },
   }));
 };
