@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 interface ImageProps {
-  smallScreen: boolean;
+  $smallScreen: boolean;
 }
 
-const shouldForwardProp = (prop: string) => !['smallScreen'].includes(prop);
-
-export const StyledImage = styled.img.withConfig({ shouldForwardProp })<ImageProps>`
-  max-width: ${(props) => (props.smallScreen ? "100%" : "200px")};
+const StyledImage = styled.img<ImageProps>`
+  max-width: ${({ $smallScreen }) => ($smallScreen ? "100%" : "200px")};
   height: auto;
   flex-shrink: 0;
-  display: block; 
+  display: block;
 `;
+
+export { StyledImage };
