@@ -47,7 +47,7 @@ function ItemNotFound(props: ItemNotFoundProps) {
       <StyledImage
         src={image}
         alt="ItemNotFoundAlt"
-        smallScreen={smallScreen}
+        $smallScreen={smallScreen}
       />
     </Stack>
   );
