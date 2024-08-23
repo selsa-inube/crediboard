@@ -295,10 +295,13 @@ export const FinancialReporting = () => {
           onCloseModal={() => setShowCancelModal(false)}
           onSubmit={(values) =>
             handleConfirmCancel(
+              id!,
+              user!.nickname!,
               values,
               setFlagMessage,
               setShowFlagMessage,
-              setShowCancelModal
+              setShowCancelModal,
+              handleUpdateData
             )
           }
         />
