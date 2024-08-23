@@ -9,7 +9,7 @@ import { mockToDo } from "@mocks/financial-reporting/to-do/toDo.mock";
 import { mockRiskScoring } from "@mocks/credit-profile/risk-scoring/riskScoring.mock";
 import { promissory_note } from "@mocks/promissoryNotes/promissory_note.mock";
 import { payroll_discount_authorization } from "@mocks/promissoryNotes/payroll_discount_authorization.mock";
-import { approval_by_credit_request_Mock } from "@src/mocks/financialReporting/Approvals.mock";
+import { approval_by_credit_request_Mock } from "@mocks/financialReporting/Approvals.mock";
 import { documents as documentsDefault } from "@mocks/financialReporting/documents.mock";
 import { traceMock as traceMockDefault } from "@mocks/financialReporting/trace.mock";
 import { error_issued } from "@mocks/financialReporting/error.mock";
