@@ -16,7 +16,7 @@ function ObligationCard({ title, amount }: ObligationCardProps) {
         <Text size="small" padding="0px 0px 3px">
           {title}
         </Text>
-        <Text size="large" appearance="dark">
+        <Text size="large" weight="bold" appearance="dark">
           {amount}
         </Text>
       </Stack>
