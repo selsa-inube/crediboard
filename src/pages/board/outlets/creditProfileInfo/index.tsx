@@ -85,7 +85,6 @@ export const CreditProfileInfo = () => {
         }));
       }
       if (payment_capacity.status === "fulfilled" && payment_capacity.value){       
-        console.log (payment_capacity.status);
         setPayment_capacity((prevState) => ({
           ...prevState,
           ...payment_capacity.value?.[0]?.payment_capacity 
@@ -96,8 +95,6 @@ export const CreditProfileInfo = () => {
       setLoading(false);
     });
   }, [id]);
-
-  console.log (payment_capacity);
 
   const handlePrint = () => {
     setIsGeneratingPdf(true);
