@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Tag } from "@inubekit/tag";
 import { Flag } from "@inubekit/flag";
-
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
@@ -50,16 +49,14 @@ export const Approvals = (props: IApprovalsProps) => {
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
   const [showFlag, setShowFlag] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [retryTimer, setRetryTimer] = useState<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setError("No se pudo cargar la información. Intente nuevamente más tarde.");
-      setLoading(false);
-    }, 5000);
+  const fetchApprovals = useCallback(() => {
+    setLoading(true);
+    setError(null);
 
     getDataById<approval_by_credit_request_Mock[]>("approval", "credit_request_id", user)
       .then((data) => {
-        clearTimeout(timer);
         if (data) {
           const entries = data.map((entry) => ({
             id: entry.approval_id.toString(),
@@ -81,13 +78,23 @@ export const Approvals = (props: IApprovalsProps) => {
         }
       })
       .catch(() => {
-        clearTimeout(timer);
         setError("Error al intentar conectar con el servicio de aprobaciones.");
         setLoading(false);
       });
-
-    return () => clearTimeout(timer);
   }, [user]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setError("No se pudo cargar la información. Intente nuevamente más tarde.");
+      setLoading(false);
+    }, 5000);
+
+    fetchApprovals();
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [fetchApprovals]); 
 
   useEffect(() => {
     if (!loading && !error && entriesApprovals.length > 0) {
@@ -97,6 +104,19 @@ export const Approvals = (props: IApprovalsProps) => {
       return () => clearTimeout(modalTimer);
     }
   }, [loading, error, entriesApprovals]);
+
+  useEffect(() => {
+    if (error) {
+      if (retryTimer) clearTimeout(retryTimer);
+      const newRetryTimer = setTimeout(() => {
+        setError("No se pudo cargar la información. Intente nuevamente más tarde.");
+      }, 5000);
+      setRetryTimer(newRetryTimer);
+    }
+    return () => {
+      if (retryTimer) clearTimeout(retryTimer);
+    };
+  }, [error, retryTimer]); 
 
   const handleNotificationClickBound = (data: IEntries) => {
     handleNotificationClick(data, setSelectedData, setShowNotificationModal);
@@ -123,6 +143,10 @@ export const Approvals = (props: IApprovalsProps) => {
     setShowNotificationModal(false);
   };
 
+  const handleRetry = () => {
+    fetchApprovals();
+  };
+
   return (
     <>
       <Fieldset title="Aprobaciones" heightFieldset="284px" hasTable>
@@ -133,6 +157,7 @@ export const Approvals = (props: IApprovalsProps) => {
             description={error}
             buttonDescription="Volver a intentar"
             route="/retry-path"
+            onRetry={handleRetry} 
           />
         ) : (
           <TableBoard
