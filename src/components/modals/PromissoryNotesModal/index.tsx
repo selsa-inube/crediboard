@@ -14,10 +14,10 @@ interface FormValues {
 export interface PromissoryNotesModalProps {
   title: string;
   handleClose: () => void;
+  onSubmit: () => void;
   buttonText: string;
   portalId?: string;
   formValues: FormValues;
-  onCloseModal?: () => void;
 }
 
 export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
@@ -26,7 +26,8 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
     buttonText,
     portalId = "portal",
     formValues,
-    handleClose
+    handleClose,
+    onSubmit,
   } = props;
 
   const node = document.getElementById(portalId);
@@ -62,7 +63,9 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
             id="field1"
             value={formValues.field1}
             label="Correo"
-            iconBefore={<MdOutlineEmail color={inube.color.stroke.dark.regular} />}
+            iconBefore={
+              <MdOutlineEmail color={inube.color.stroke.dark.regular} />
+            }
             placeholder="usuario@inube.com"
             disabled
             fullwidth
@@ -71,7 +74,9 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
             id="field2"
             value={formValues.field2}
             label="Teléfono"
-            iconBefore={<MdOutlinePhone color={inube.color.stroke.dark.regular} />}
+            iconBefore={
+              <MdOutlinePhone color={inube.color.stroke.dark.regular} />
+            }
             placeholder="3122638128"
             disabled
             fullwidth
@@ -80,14 +85,16 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
             id="field3"
             value={formValues.field3}
             label="Whatsapp"
-            iconBefore={<MdOutlinePhone color={inube.color.stroke.dark.regular} />}
+            iconBefore={
+              <MdOutlinePhone color={inube.color.stroke.dark.regular} />
+            }
             placeholder="3122638128"
             disabled
             fullwidth
           />
         </Stack>
         <Stack justifyContent="flex-end" margin="s200 s0">
-          <Button type="button" onClick={handleClose}>
+          <Button type="button" onClick={onSubmit}>
             {buttonText}
           </Button>
         </Stack>

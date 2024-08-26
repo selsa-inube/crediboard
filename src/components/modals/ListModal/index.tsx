@@ -28,6 +28,7 @@ export interface IOptionButtons {
 export interface IListModalProps {
   title: string;
   handleClose: () => void;
+  onSubmit?: () => void; 
   buttonLabel: string;
   portalId?: string;
   content?: JSX.Element | JSX.Element[] | string;
@@ -35,7 +36,7 @@ export interface IListModalProps {
 }
 
 export const ListModal = (props: IListModalProps) => {
-  const { title, portalId, content, optionButtons, handleClose, buttonLabel } =
+  const { title, portalId, content, optionButtons, handleClose, onSubmit, buttonLabel } =
     props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -90,7 +91,7 @@ export const ListModal = (props: IListModalProps) => {
           </Button>
         )}
         <Stack justifyContent="flex-end" margin="s200 s0">
-          <Button onClick={handleClose}>{buttonLabel}</Button>
+          <Button onClick={onSubmit ?? handleClose}>{buttonLabel}</Button>
         </Stack>
       </StyledModal>
     </Blanket>,

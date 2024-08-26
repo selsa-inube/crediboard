@@ -93,19 +93,18 @@ type DmDecisions =
   | "CREAR_OBLIGACIONES_DE_CARTERA"
   | "DECLINAR_OBLIGACIONES_DE_CARTERA";
 
-  interface TraceType {
-    trace_id: string;
-    trace_value: string;
-    credit_request_id: string;
-    use_case: string;
-    user_id: string;
-    execution_date: string | number;
-    justification?: string;
-    decision_taken_by_user?: string;
-    trace_type?: string;
-    read_novelty?: string;
-  }
-  
+interface TraceType {
+  trace_id: string;
+  trace_value: string;
+  credit_request_id: string;
+  use_case: string;
+  user_id: string;
+  execution_date: string;
+  justification?: string;
+  decision_taken_by_user?: string;
+  trace_type?: string;
+  read_novelty?: string;
+}
 
 export type {
   Requests,
@@ -117,7 +116,7 @@ export type {
   DmConceptos,
   DmDecisions,
   PinnedRequest,
-  TraceType
+  TraceType,
 };
 
 export interface payroll_discount_authorization {
@@ -131,6 +130,24 @@ export interface payroll_discount_authorization {
   obligation_unique_code: string;
   document_unique_code: string;
   image_unique_code: string;
+}
+
+export interface Ipayment_capacity {
+  credit_request_id: string;
+  payment_capacity: {
+      available_value: number;
+      base_income: number;
+      percentage_used: number;
+  }
+}
+export interface Icredit_behavior{
+  credit_request_id: string;
+  credit_behavior: {
+      core_risk_score: number;
+      central_risk_score_date: number;
+      number_of_internal_arrears: number;
+      maximum_number_of_installments_in_arrears: number;
+  }
 }
 
 export interface promissory_note {
@@ -170,4 +187,14 @@ export interface Ierror_issued {
   user_id: string;
   user_name: string;
   read: string;
+}
+
+export interface credit {
+  credit_request_id: string;
+  labor_stability: {
+    company_seniority: number;
+    labor_stability_index: number;
+    max_labor_stability_index: number;
+    estimated_severance: number;
+  };
 }
