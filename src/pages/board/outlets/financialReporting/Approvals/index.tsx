@@ -132,7 +132,7 @@ export const Approvals = (props: IApprovalsProps) => {
             title="Error al cargar datos"
             description={error}
             buttonDescription="Volver a intentar"
-            route="/extended-card"
+            route="/retry-path"
           />
         ) : (
           <TableBoard
