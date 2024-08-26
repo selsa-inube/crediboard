@@ -4,30 +4,34 @@ import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
 import { Container, IconWrapper } from "./styles";
 
-interface ObligationCardProps {
-  title: string;
-  amount: string;
+export interface ObligationCardProps {
+  items: { title: string; amount: string }[];
+  showIcon?: boolean;
 }
 
-function ObligationCard({ title, amount }: ObligationCardProps) {
+function ObligationCard({ items, showIcon = true }: ObligationCardProps) {
   return (
     <Container>
-      <Stack direction="column" margin="4px" padding="0px 10px">
-        <Text size="small" padding="0px 0px 3px">
-          {title}
-        </Text>
-        <Text size="large" weight="bold" appearance="dark">
-          {amount}
-        </Text>
-      </Stack>
-      <IconWrapper>
-        <Icon
-          appearance="primary"
-          icon={<MdOutlineEdit />}
-          cursorHover
-          size="24px"
-        />
-      </IconWrapper>
+      {items.map((item, index) => (
+        <Stack key={index} direction="column" margin="4px" padding="0px 10px">
+          <Text size="small" padding="0px 0px 3px">
+            {item.title}
+          </Text>
+          <Text size="large" weight="bold" appearance="dark">
+            {item.amount}
+          </Text>
+        </Stack>
+      ))}
+      {showIcon && (
+        <IconWrapper>
+          <Icon
+            appearance="primary"
+            icon={<MdOutlineEdit />}
+            cursorHover
+            size="24px"
+          />
+        </IconWrapper>
+      )}
     </Container>
   );
 }
