@@ -3,6 +3,26 @@ import { MdAddCircleOutline } from "react-icons/md";
 import { IOptionButtons } from "@components/modals/ListModal";
 import { addItem } from "@src/mocks/utils/dataMock.service";
 
+type Observer<T> = (data?: T) => void;
+
+function createObserver<T>() {
+  let observers: Observer<T>[] = [];
+
+  return {
+    suscribe: (observer: Observer<T>) => {
+      observers.push(observer);
+    },
+    unsubscribe: (observer: Observer<T>) => {
+      observers = observers.filter((obs) => obs !== observer);
+    },
+    notify: () => {
+      observers.forEach((obs) => obs());
+    },
+  };
+}
+
+export const traceObserver = createObserver();
+
 export const handleConfirmReject = async (
   id: string,
   user: string,
@@ -13,10 +33,8 @@ export const handleConfirmReject = async (
     appearance: "success" | "danger";
   }) => void,
   setShowFlagMessage: (state: boolean) => void,
-  setShowRejectModal: (state: boolean) => void,
-  handleUpdateData: (state: boolean) => void
+  setShowRejectModal: (state: boolean) => void
 ) => {
-  handleUpdateData(false);
   const justificationText = formData.textarea;
 
   if (justificationText && id) {
@@ -41,7 +59,6 @@ export const handleConfirmReject = async (
       });
       setShowFlagMessage(true);
       setShowRejectModal(false);
-      handleUpdateData(true);
     };
 
     const handleError = (error: Error) => {
@@ -56,6 +73,7 @@ export const handleConfirmReject = async (
 
     try {
       await addItem("trace", trace);
+      traceObserver.notify();
       handleSuccess();
     } catch (error) {
       handleError(error as Error);
@@ -73,10 +91,8 @@ export const handleConfirmCancel = async (
     appearance: "success" | "danger";
   }) => void,
   setShowFlagMessage: (state: boolean) => void,
-  setShowCancelModal: (state: boolean) => void,
-  handleUpdateData: (state: boolean) => void
+  setShowCancelModal: (state: boolean) => void
 ) => {
-  handleUpdateData(false);
   const justificationText = formData.textarea;
 
   if (justificationText && id) {
@@ -101,7 +117,6 @@ export const handleConfirmCancel = async (
       });
       setShowFlagMessage(true);
       setShowCancelModal(false);
-      handleUpdateData(true);
     };
 
     const handleError = (error: Error) => {
@@ -116,6 +131,7 @@ export const handleConfirmCancel = async (
 
     try {
       await addItem("trace", trace);
+      traceObserver.notify();
       handleSuccess();
     } catch (error) {
       handleError(error as Error);

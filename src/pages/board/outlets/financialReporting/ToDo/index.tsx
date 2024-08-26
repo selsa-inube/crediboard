@@ -15,11 +15,12 @@ import { MdOutlineThumbUp } from "react-icons/md";
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo } from "@services/types";
-import { get } from "@mocks/utils/dataMock.service";
-
+import { get, addItem } from "@mocks/utils/dataMock.service";
 import { StaffModal } from "./StaffModal";
 import { flagMessages } from "./config";
 import { StyledMessageContainer } from "../styles";
+import { traceObserver } from "../config";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface IICon {
   icon: JSX.Element;
@@ -37,6 +38,7 @@ interface ToDoProps {
   icon?: IICon;
   button?: IButton;
   isMobile?: boolean;
+  user?: string;
 }
 
 function ToDo(props: ToDoProps) {
@@ -53,6 +55,7 @@ function ToDo(props: ToDoProps) {
   const [decision, setDecision] = useState("");
   const [showFlagMessage, setShowFlagMessage] = useState(false);
   const [flagMessage, setFlagMessage] = useState(flagMessages.success);
+  const { user } = useAuth0();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,25 +112,50 @@ function ToDo(props: ToDoProps) {
     setShowFlagMessage(true);
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (button?.onClick) button.onClick();
+
+    let trace_value = "";
 
     switch (decision) {
       case "Aceptar":
         setFlagMessage(flagMessages.success);
+        trace_value = "Document accepted";
         break;
       case "Rechazar":
         setFlagMessage(flagMessages.error);
+        trace_value = "Document rejected";
         break;
       case "Pendiente":
         setFlagMessage(flagMessages.pending);
+        trace_value = "Document pending";
         break;
       default:
         setFlagMessage(flagMessages.default);
+        trace_value = "Document decision not specified";
         break;
     }
 
-    setShowFlagMessage(true);
+    const trace = {
+      trace_id: crypto.randomUUID(),
+      trace_value,
+      credit_request_id: id,
+      use_case: "decision_made",
+      user_id: user,
+      execution_date: new Date().toISOString(),
+      justification: decision,
+      decision_taken_by_user: decision,
+      trace_type: "decision_document",
+      read_novelty: "N",
+    };
+
+    try {
+      await addItem("trace", trace);
+      traceObserver.notify();
+      setShowFlagMessage(true);
+    } catch (error) {
+      console.error("Error al enviar la decisión:", error);
+    }
   };
 
   return (
@@ -246,15 +274,15 @@ function ToDo(props: ToDoProps) {
       )}
       {showFlagMessage && (
         <StyledMessageContainer>
-        <Flag
-          title={flagMessage.title}
-          description={flagMessage.description}
-          appearance={flagMessage.appearance}
-          icon={<MdOutlineThumbUp />}
-          duration={5000}
-          isMessageResponsive={false}
-          closeFlag={() => setShowFlagMessage(false)}
-        />
+          <Flag
+            title={flagMessage.title}
+            description={flagMessage.description}
+            appearance={flagMessage.appearance}
+            icon={<MdOutlineThumbUp />}
+            duration={5000}
+            isMessageResponsive={false}
+            closeFlag={() => setShowFlagMessage(false)}
+          />
         </StyledMessageContainer>
       )}
     </>

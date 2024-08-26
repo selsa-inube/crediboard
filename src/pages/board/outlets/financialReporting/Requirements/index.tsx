@@ -1,17 +1,20 @@
-import { useAuth0 } from "@auth0/auth0-react";
-
-import { Stack, Icon, } from "@inube/design-system";
+import { Stack, Icon } from "@inube/design-system";
 import { useState, isValidElement } from "react";
-import { MdAddCircleOutline, MdOutlineCheckCircle, MdOutlineThumbUp } from "react-icons/md";
+import { useAuth0 } from "@auth0/auth0-react";
+import {
+  MdAddCircleOutline,
+  MdOutlineCheckCircle,
+  MdOutlineThumbUp,
+} from "react-icons/md";
 import { Flag } from "@inubekit/flag";
 
 import { useParams } from "react-router-dom";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
-import { Management } from "../management";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 import { addItem } from "@mocks/utils/dataMock.service";
 
+import { traceObserver } from "../config";
 import { dataButton, infoItems } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
@@ -33,7 +36,9 @@ export interface IRequirementsProps {
 export const Requirements = (props: IRequirementsProps) => {
   const { data, isMobile } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
-  const [modalData, setModalData] = useState<{ date?: Date; details?: string }>({});
+  const [modalData, setModalData] = useState<{ date?: Date; details?: string }>(
+    {}
+  );
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [showFlagMessage, setShowFlagMessage] = useState(false);
@@ -42,13 +47,11 @@ export const Requirements = (props: IRequirementsProps) => {
     description: "",
     appearance: "success" as "success" | "danger",
   });
-  const [upDateData, setUpDateData] = useState(false);
+  const { id } = useParams();
+  const { user } = useAuth0();
 
   const toggleAprovalsModal = () => setShowAprovalsModal(!showAprovalsModal);
   const changeApprove = () => setIsApproved(!isApproved);
-
-  const { id } = useParams();
-  const { user } = useAuth0();
 
   const handleToggleSeeDetailsModal = (date?: string, details?: string) => {
     setModalData({
@@ -56,10 +59,6 @@ export const Requirements = (props: IRequirementsProps) => {
       details,
     });
     setShowSeeDetailsModal((prevState) => !prevState);
-  };
-
-  const handleUpdateData = (state: boolean) => {
-    setUpDateData(state);
   };
 
   const handleSubmitAprovals = async (
@@ -72,12 +71,10 @@ export const Requirements = (props: IRequirementsProps) => {
       appearance: "success" | "danger";
     }) => void,
     setShowFlagMessage: (state: boolean) => void,
-    setShowApprovalstModal: (state: boolean) => void,
-    handleUpdateData: (state: boolean) => void
+    setShowApprovalstModal: (state: boolean) => void
   ) => {
-    handleUpdateData(false);
     const justificationText = formData.textarea;
-  
+
     if (justificationText && id) {
       const trace = {
         trace_id: crypto.randomUUID(),
@@ -91,7 +88,7 @@ export const Requirements = (props: IRequirementsProps) => {
         trace_type: "novelty_document",
         read_novelty: "N",
       };
-  
+
       const handleSuccess = () => {
         setFlagMessage({
           title: "Exito",
@@ -100,9 +97,8 @@ export const Requirements = (props: IRequirementsProps) => {
         });
         setShowFlagMessage(true);
         setShowAprovalsModal(false);
-        handleUpdateData(true);
       };
-  
+
       const handleError = (error: Error) => {
         setFlagMessage({
           title: "Aprobación Fallida",
@@ -112,9 +108,10 @@ export const Requirements = (props: IRequirementsProps) => {
         setShowFlagMessage(true);
         setShowApprovalstModal(false);
       };
-  
+
       try {
         await addItem("trace", trace);
+        traceObserver.notify();
         handleSuccess();
       } catch (error) {
         handleError(error as Error);
@@ -124,7 +121,8 @@ export const Requirements = (props: IRequirementsProps) => {
 
   const renderAddIcon = (entry: IEntries) => {
     const date = typeof entry.date === "string" ? entry.date : undefined;
-    const details = typeof entry.details === "string" ? entry.details : undefined;
+    const details =
+      typeof entry.details === "string" ? entry.details : undefined;
 
     return (
       <Stack justifyContent="center">
@@ -163,7 +161,6 @@ export const Requirements = (props: IRequirementsProps) => {
     { id: "agregar", content: renderAddIcon },
     { id: "aprobar", content: renderCheckIcon },
   ];
-  
 
   return (
     <>
@@ -174,28 +171,26 @@ export const Requirements = (props: IRequirementsProps) => {
           heightFieldset="340px"
           hasTable
         >
-            {data.map((item, index) => (
-              <TableBoard
-                key={item.id}
-                id={item.id}
-                titles={item.titlesRequirements}
-                entries={item.entriesRequirements}
-                actions={actionsRequirements}
-                actionMobile={item.actionsMovile}
-                appearanceTable={{
-                  widthTd: !isMobile ? "75%" : "70%",
-                  efectzebra: true,
-                  title: "primary",
-                  isStyleMobile: true,
-                }}
-                isFirstTable={index === 0}
-                infoItems={infoItems}
-              />
-            ))}
+          {data.map((item, index) => (
+            <TableBoard
+              key={item.id}
+              id={item.id}
+              titles={item.titlesRequirements}
+              entries={item.entriesRequirements}
+              actions={actionsRequirements}
+              actionMobile={item.actionsMovile}
+              appearanceTable={{
+                widthTd: !isMobile ? "75%" : "70%",
+                efectzebra: true,
+                title: "primary",
+                isStyleMobile: true,
+              }}
+              isFirstTable={index === 0}
+              infoItems={infoItems}
+            />
+          ))}
         </Fieldset>
       </Stack>
-
-      {false && <Management id={id!} isMobile={isMobile} updateData={upDateData} />}
 
       {showSeeDetailsModal && (
         <SeeDetailsModal
@@ -221,26 +216,24 @@ export const Requirements = (props: IRequirementsProps) => {
               values,
               setFlagMessage,
               setShowFlagMessage,
-              setShowAprovalsModal,
-              handleUpdateData
+              setShowAprovalsModal
             )
           }
         />
       )}
       {showFlagMessage && (
         <StyledMessageContainer>
-        <Flag
-          title={flagMessage.title}
-          description={flagMessage.description}
-          appearance={flagMessage.appearance}
-          icon={<MdOutlineThumbUp />}
-          duration={5000}
-          isMessageResponsive={false}
-          closeFlag={() => setShowFlagMessage(false)}
-        />
-      </StyledMessageContainer>
+          <Flag
+            title={flagMessage.title}
+            description={flagMessage.description}
+            appearance={flagMessage.appearance}
+            icon={<MdOutlineThumbUp />}
+            duration={5000}
+            isMessageResponsive={false}
+            closeFlag={() => setShowFlagMessage(false)}
+          />
+        </StyledMessageContainer>
       )}
     </>
   );
 };
-

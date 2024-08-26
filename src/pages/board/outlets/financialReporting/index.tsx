@@ -94,7 +94,6 @@ export const FinancialReporting = () => {
 
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
   const [errors, setError] = useState<Ierror_issued[]>([]);
-  const [upDateData, setUpDateData] = useState(false);
 
   const { id } = useParams();
   const { user } = useAuth0();
@@ -138,10 +137,6 @@ export const FinancialReporting = () => {
         "Gestión Comercial"
       );
     }, 1000);
-  };
-
-  const handleUpdateData = (state: boolean) => {
-    setUpDateData(state);
   };
 
   const handleActions = configHandleactions({
@@ -237,7 +232,6 @@ export const FinancialReporting = () => {
                   <Management
                     id={id!}
                     isMobile={isMobile}
-                    updateData={upDateData}
                   />
                 }
               </Stack>
@@ -281,7 +275,6 @@ export const FinancialReporting = () => {
               setFlagMessage,
               setShowFlagMessage,
               setShowRejectModal,
-              handleUpdateData
             )
           }
         />
@@ -301,7 +294,6 @@ export const FinancialReporting = () => {
               setFlagMessage,
               setShowFlagMessage,
               setShowCancelModal,
-              handleUpdateData
             )
           }
         />

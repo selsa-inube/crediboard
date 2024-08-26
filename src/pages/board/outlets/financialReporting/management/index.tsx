@@ -10,26 +10,31 @@ import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
 import { getDataById, updateActive } from "@mocks/utils/dataMock.service";
 import { TraceType } from "@services/types";
+import { traceObserver } from "../config";
 
 import { ChatContent } from "./styles";
 
 interface IManagementProps {
   id: string;
   isMobile: boolean;
-  updateData: boolean;
 }
 
 export const Management = (props: IManagementProps) => {
-  const { id, isMobile, updateData } = props;
+  const { id, isMobile} = props;
 
   const [traces, setTraces] = useState<TraceType[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    getDataById<TraceType[]>("trace", "credit_request_id", id!).then((data) => {
-      if (data) setTraces(data);
-    });
-  }, [updateData, id]);
+    const observerTrace = () => {
+      getDataById<TraceType[]>("trace", "credit_request_id", id!).then((data) => {
+        if (data) setTraces(data);
+      });
+    };
+    observerTrace();
+    traceObserver.suscribe(observerTrace);
+    return () => {traceObserver.unsubscribe(observerTrace)}
+  }, [id]);
 
   const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
