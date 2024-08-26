@@ -99,7 +99,7 @@ interface TraceType {
   credit_request_id: string;
   use_case: string;
   user_id: string;
-  execution_date: string | number;
+  execution_date: string;
   justification?: string;
   decision_taken_by_user?: string;
   trace_type?: string;
@@ -169,6 +169,16 @@ export interface Ierror_issued {
   user_id: string;
   user_name: string;
   read: string;
+}
+
+export interface credit {
+  credit_request_id: string;
+  labor_stability: {
+    company_seniority: number;
+    labor_stability_index: number;
+    max_labor_stability_index: number;
+    estimated_severance: number;
+  };
 }
 
 interface Prospect {
