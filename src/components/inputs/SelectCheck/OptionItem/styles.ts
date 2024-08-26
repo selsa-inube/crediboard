@@ -18,6 +18,11 @@ export const StyledOptionItemChecked = styled.li`
       inube.input.content.color.regular};
   }
 
+  label{
+    margin-left: 5px;
+    cursor: pointer;
+  }
+
   &:hover {
     border-left-color: ${({ theme }) =>
       theme?.input?.border?.color?.focus || inube.input.border.color.focus};
