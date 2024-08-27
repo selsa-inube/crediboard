@@ -49,8 +49,8 @@ export const Management = (props: IManagementProps) => {
         }
       } catch (err) {
         errorObserver.notify({
-          id: crypto.randomUUID(),
-          message: "Error, no se puede acceder a los servicios.",
+          id: "Management",
+          message: (err as Error).message.toString(),
         });
       }
     };

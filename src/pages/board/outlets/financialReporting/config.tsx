@@ -23,7 +23,7 @@ function observer<T>() {
 
 export const errorObserver = observer<{
   id: string;
-  message: string | Error;
+  message: string;
 }>();
 
 export const handleConfirmReject = async (
