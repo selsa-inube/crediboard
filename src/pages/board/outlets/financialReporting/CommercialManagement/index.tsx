@@ -5,7 +5,7 @@ import {
   MdOutlinePhone,
   MdOutlineVideoCameraFront,
   MdOutlinePictureAsPdf,
-  MdOutlineSend,
+  MdOutlineShare ,
   MdOutlineEdit,
 } from "react-icons/md";
 
@@ -170,7 +170,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                 </StyledIcon>
                 <StyledIcon>
                   <Icon
-                    icon={<MdOutlineSend />}
+                    icon={<MdOutlineShare  />}
                     appearance="primary"
                     size="18px"
                     cursorHover

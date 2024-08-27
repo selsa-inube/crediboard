@@ -1,6 +1,6 @@
 import { isValidElement } from "react";
 import {
-  MdOutlineSend,
+  MdOutlineShare,
   MdOutlineRemoveRedEye,
   MdCheck,
   MdRemove,
@@ -47,7 +47,7 @@ export const actionsFinanacialReporting = [
         cursorHover
         size="22px"
         variant="none"
-        icon={<MdOutlineSend />}
+        icon={<MdOutlineShare  />}
         onClick={() => entrySelection(data)}
         spacing="none"
       />
@@ -90,7 +90,7 @@ interface TagElement {
 }
 
 export const infoItems = [
-  { icon: <MdOutlineSend />, text: "Reenviar", appearance: "primary" },
+  { icon: <MdOutlineShare  />, text: "Reenviar", appearance: "primary" },
   { icon: <MdOutlineRemoveRedEye />, text: "Ver Imagen", appearance: "primary" },
 ];
 
@@ -129,7 +129,7 @@ export const actionMobile = [
         size="22px"
         spacing="none"
         cursorHover
-        icon={<MdOutlineSend />}
+        icon={<MdOutlineShare  />}
         onClick={() => entrySelection(data)}
       />
     ),
