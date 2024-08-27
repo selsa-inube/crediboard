@@ -14,11 +14,11 @@ import { Requests, IRiskScoring, credit } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
-import {
+/* import {
   getMaritalStatusInSpanish,
   getEconomicActivityInSpanish,
 } from "@utils/mappingData/mappings";
-import { MaritalStatus, EconomicActivity } from "@services/enums";
+import { MaritalStatus, EconomicActivity } from "@services/enums"; */
 
 import { CreditBehavior } from "./CreditBehaviorCard";
 import { Guarantees } from "./Guarantees";
@@ -37,7 +37,20 @@ const margins = {
 
 export const CreditProfileInfo = () => {
   const [requests, setRequests] = useState({} as Requests);
-  const [riskScoring, setRiskScoring] = useState<IRiskScoring[] | null>(null);
+  const [riskScoring, setRiskScoring] = useState<IRiskScoring["risk_scoring"]>({
+    total_score: 0,
+    minimum_score: 0,
+    seniority: 0,
+    seniority_score: 0,
+    risk_center: 0,
+    risk_center_score: 0,
+    job_stability_index: 0,
+    job_stability_index_score: 0,
+    marital_status: "",
+    marital_status_score: 0,
+    economic_activity: "",
+    economic_activity_score: 0,
+  });
   const [credit_profileInfo, setCredit_profileInfo] = useState({
     company_seniority: 0,
     labor_stability_index: 0,
@@ -58,7 +71,7 @@ export const CreditProfileInfo = () => {
   useEffect(() => {
     Promise.allSettled([
       getById("k_Prospe", "requests", id!),
-      get("risk-scoring"),
+      get("risk-scorings"),
       getDataById<credit[]>("credit_profileInfo", "credit_request_id", id!),
     ]).then((data) => {
       const [request, riskScoring, credit_profileInfo] = data;
@@ -68,7 +81,14 @@ export const CreditProfileInfo = () => {
       }
 
       if (riskScoring.status === "fulfilled") {
-        setRiskScoring(riskScoring.value as IRiskScoring[]);
+        console.log(riskScoring.value);
+        const riskScoringData = (riskScoring.value as IRiskScoring[]).find(
+          (risk: IRiskScoring) => risk.credit_request_id === id
+        );
+        setRiskScoring((rpev) => ({
+          ...rpev,
+          ...riskScoringData?.risk_scoring,
+        }));
       }
 
       if (credit_profileInfo.status === "fulfilled") {
@@ -195,39 +215,18 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
         />
         <RiskScoring
-          totalScore={riskScoring ? riskScoring[0].total_score : 0}
-          minimumScore={riskScoring ? riskScoring[0].minimum_score : 0}
-          seniority={riskScoring ? riskScoring[0].seniority : 0}
-          seniorityScore={riskScoring ? riskScoring[0].seniority_score : 0}
-          riskCenter={riskScoring ? riskScoring[0].risk_center : 0}
-          riskCenterScore={riskScoring ? riskScoring[0].risk_center_score : 0}
-          jobStabilityIndex={
-            riskScoring ? riskScoring[0].job_stability_index : 0
-          }
-          jobStabilityIndexScore={
-            riskScoring ? riskScoring[0].job_stability_index_score : 0
-          }
-          maritalStatusScore={
-            riskScoring ? riskScoring[0].marital_status_score : 0
-          }
-          economicActivityScore={
-            riskScoring ? riskScoring[0].economic_activity_score : 0
-          }
-          maritalStatus={
-            riskScoring
-              ? getMaritalStatusInSpanish(
-                  riskScoring[0].marital_status as keyof typeof MaritalStatus
-                )
-              : ""
-          }
-          economicActivity={
-            riskScoring
-              ? getEconomicActivityInSpanish(
-                  riskScoring[0]
-                    .economic_activity as keyof typeof EconomicActivity
-                )
-              : ""
-          }
+          totalScore={riskScoring.total_score}
+          minimumScore={riskScoring.minimum_score}
+          seniority={riskScoring.seniority}
+          seniorityScore={riskScoring.seniority_score}
+          riskCenter={riskScoring.risk_center}
+          riskCenterScore={riskScoring.risk_center_score}
+          jobStabilityIndex={riskScoring.job_stability_index}
+          jobStabilityIndexScore={riskScoring.job_stability_index_score}
+          maritalStatusScore={riskScoring.marital_status_score}
+          economicActivityScore={riskScoring.economic_activity_score}
+          maritalStatus={riskScoring.marital_status}
+          economicActivity={riskScoring.economic_activity}
           isLoading={loading}
           isMobile={isMobile}
         />
