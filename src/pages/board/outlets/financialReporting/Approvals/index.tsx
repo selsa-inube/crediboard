@@ -55,7 +55,6 @@ export const Approvals = (props: IApprovalsProps) => {
       user
     ).then((data) => {
       if (data && !(data instanceof Error)) {
-        console.log("data", data);
         const entries = data.map((entry) => ({
           id: entry.approval_id.toString(),
           usuarios: entry.approver_name,
@@ -93,9 +92,12 @@ export const Approvals = (props: IApprovalsProps) => {
     handleNotificationClickBound,
     handleErrorClickBound
   );
-
   const handleSubmit = () => {
     setShowFlag(true);
+    setShowNotificationModal(false);
+  };
+
+  const handleCloseModal = () => {
     setShowNotificationModal(false);
   };
 
@@ -124,7 +126,8 @@ export const Approvals = (props: IApprovalsProps) => {
           title="Notificación"
           content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
           buttonLabel="Enviar"
-          handleClose={handleSubmit}
+          handleClose={handleCloseModal}
+          onSubmit={handleSubmit}
         />
       )}
       {showFlag && (

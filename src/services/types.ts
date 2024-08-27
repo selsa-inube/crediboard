@@ -170,3 +170,13 @@ export interface Ierror_issued {
   user_name: string;
   read: string;
 }
+
+export interface credit {
+  credit_request_id: string;
+  labor_stability: {
+    company_seniority: number;
+    labor_stability_index: number;
+    max_labor_stability_index: number;
+    estimated_severance: number;
+  };
+}

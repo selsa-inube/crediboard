@@ -170,8 +170,11 @@ export const handleErrorClick = (
   setSelectedData: (data: IEntries) => void,
   setShowModal: (showModal: boolean) => void
 ) => {
-  setSelectedData(data);
-  setShowModal(true);
+  const tag = data?.tag;
+  if (isValidElement(tag) && tag.props?.label === "Pendiente") {
+    setSelectedData(data);
+    setShowModal(true);
+  }
 };
 
 interface Action {
