@@ -12,7 +12,7 @@ function observer<T>() {
     subscribe: (observer: Observer<T>) => {
       observers.push(observer);
     },
-    unsubcribe: (observer: Observer<T>) => {
+    unsubscribe: (observer: Observer<T>) => {
       observers.filter((obs) => obs !== observer);
     },
     notify: (data: T) => {

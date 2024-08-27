@@ -172,7 +172,7 @@ export const FinancialReporting = () => {
     errorObserver.subscribe(handleErrorsService);
 
     return () => {
-      errorObserver.unsubcribe(handleErrorsService);
+      errorObserver.unsubscribe(handleErrorsService);
     };
   }, []);
 
