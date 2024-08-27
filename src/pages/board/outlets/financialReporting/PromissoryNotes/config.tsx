@@ -1,4 +1,4 @@
-import { isValidElement, cloneElement } from "react";
+import React from "react";
 import {
   MdOutlineSend,
   MdOutlineRemoveRedEye,
@@ -82,7 +82,7 @@ export const infoItems = [
 ];
 
 const isValidTagElement = (element: unknown): element is TagElement => {
-  return isValidElement(element) && element.props !== undefined;
+  return React.isValidElement(element) && element.props !== undefined;
 };
 
 export const actionMobile = [
@@ -92,8 +92,8 @@ export const actionMobile = [
     content: (data: IEntries) => (
       <Icon
         icon={
-          isValidElement(data?.tag) &&
-          iconActionsMobile(data?.tag?.props?.label)
+          isValidTagElement(data?.tag) &&
+          iconActionsMobile(data?.tag?.props?.label ?? "")
         }
         appearance={
           isValidTagElement(data?.tag)
@@ -156,14 +156,17 @@ export const getTableBoardActions = (
     id: action.id,
     actionName: action.actionName,
     label: "Action Label",
-    content: (data: IEntries) => {
-      const handleClick = () => {
-        if (action.id === "Reenviar") {
-          entrySelection(data);
-        }
-      };
-      return cloneElement(action.content(data), { onClick: handleClick });
-    },
+    content: (data: IEntries) => (
+      <Icon
+        appearance="primary"
+        cursorHover
+        size="22px"
+        variant="none"
+        icon={action.content(data).props.icon}
+        onClick={() => entrySelection(data)}
+        spacing="none"
+      />
+    ),
   }));
 
 export const getTableBoardActionMobile = (
@@ -173,12 +176,15 @@ export const getTableBoardActionMobile = (
     id: action.id,
     actionName: action.actionName,
     label: "Mobile Action Label",
-    content: (data: IEntries) => {
-      const handleClick = () => {
-        if (action.id === "Reenviar") {
-          entrySelection(data);
-        }
-      };
-      return cloneElement(action.content(data), { onClick: handleClick });
-    },
+    content: (data: IEntries) => (
+      <Icon
+        icon={action.content(data).props.icon}
+        appearance={action.content(data).props.appearance}
+        spacing="none"
+        cursorHover
+        variant="filled"
+        shape="circle"
+        onClick={() => entrySelection(data)}
+      />
+    ),
   }));
