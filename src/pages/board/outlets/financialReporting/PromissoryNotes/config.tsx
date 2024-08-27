@@ -1,29 +1,29 @@
-import { isValidElement, cloneElement } from 'react';
+import { isValidElement, cloneElement } from "react";
 import {
   MdOutlineSend,
   MdOutlineRemoveRedEye,
   MdCheck,
   MdRemove,
   MdClose,
-} from 'react-icons/md';
-import { Icon } from '@inubekit/icon';
-import { IEntries } from '@components/data/TableBoard/types';
+} from "react-icons/md";
+import { Icon } from "@inubekit/icon";
+import { IEntries } from "@components/data/TableBoard/types";
 
 const entrySelection = (data: IEntries) => {
   console.log(data);
 };
 
 export const titlesFinanacialReporting = [
-  { id: 'No. de Obligación', titleName: 'No. de Obligación', priority: 1 },
-  { id: 'No. de Documento', titleName: 'No. de Documento', priority: 2 },
-  { id: 'Tipo', titleName: 'Tipo', priority: 3 },
-  { id: 'tag', titleName: 'Estado', priority: 4 },
+  { id: "No. de Obligación", titleName: "No. de Obligación", priority: 1 },
+  { id: "No. de Documento", titleName: "No. de Documento", priority: 2 },
+  { id: "Tipo", titleName: "Tipo", priority: 3 },
+  { id: "tag", titleName: "Estado", priority: 4 },
 ];
 
 export const actionsFinanacialReporting = [
   {
-    id: 'Reenviar',
-    actionName: 'Reenviar',
+    id: "Reenviar",
+    actionName: "Reenviar",
     content: (data: IEntries) => (
       <Icon
         appearance="primary"
@@ -37,8 +37,8 @@ export const actionsFinanacialReporting = [
     ),
   },
   {
-    id: 'ver imagen',
-    actionName: 'Ver Imagen',
+    id: "ver imagen",
+    actionName: "Ver Imagen",
     content: (data: IEntries) => (
       <Icon
         appearance="primary"
@@ -54,9 +54,9 @@ export const actionsFinanacialReporting = [
 ];
 
 const iconActionsMobile = (tag: string) => {
-  if (tag === 'Aprobado') {
+  if (tag === "Aprobado") {
     return <MdCheck />;
-  } else if (tag === 'Pendiente') {
+  } else if (tag === "Pendiente") {
     return <MdRemove />;
   } else {
     return <MdClose />;
@@ -73,11 +73,11 @@ interface TagElement {
 }
 
 export const infoItems = [
-  { icon: <MdOutlineSend />, text: 'Reenviar', appearance: 'primary' },
+  { icon: <MdOutlineSend />, text: "Reenviar", appearance: "primary" },
   {
     icon: <MdOutlineRemoveRedEye />,
-    text: 'Ver Imagen',
-    appearance: 'primary',
+    text: "Ver Imagen",
+    appearance: "primary",
   },
 ];
 
@@ -87,8 +87,8 @@ const isValidTagElement = (element: unknown): element is TagElement => {
 
 export const actionMobile = [
   {
-    id: 'tags',
-    actionName: '',
+    id: "tags",
+    actionName: "",
     content: (data: IEntries) => (
       <Icon
         icon={
@@ -108,8 +108,8 @@ export const actionMobile = [
     ),
   },
   {
-    id: 'Reenviar',
-    actionName: 'Reenviar',
+    id: "Reenviar",
+    actionName: "Reenviar",
     content: (data: IEntries) => (
       <Icon
         appearance="primary"
@@ -122,8 +122,8 @@ export const actionMobile = [
     ),
   },
   {
-    id: 'ver imagen',
-    actionName: 'Ver Imagen',
+    id: "ver imagen",
+    actionName: "Ver Imagen",
     content: (data: IEntries) => (
       <Icon
         appearance="primary"
@@ -138,16 +138,16 @@ export const actionMobile = [
 ];
 
 const appearance: { [key: string]: string } = {
-  Firmado: 'success',
-  'En trámite': 'warning',
-  'Con error': 'danger',
+  Firmado: "success",
+  "En trámite": "warning",
+  "Con error": "danger",
 };
 
 export const appearanceTag = (tag: string) => {
-  return appearance?.[tag] as 'success' | 'warning' | 'danger';
+  return appearance?.[tag] as "success" | "warning" | "danger";
 };
 
-export const firstWord = (text: string) => text.split(' ')[0];
+export const firstWord = (text: string) => text.split(" ")[0];
 
 export const getTableBoardActions = (
   entrySelection: (data: IEntries) => void
@@ -155,10 +155,10 @@ export const getTableBoardActions = (
   actionsFinanacialReporting.map((action) => ({
     id: action.id,
     actionName: action.actionName,
-    label: 'Action Label',
+    label: "Action Label",
     content: (data: IEntries) => {
       const handleClick = () => {
-        if (action.id === 'Reenviar') {
+        if (action.id === "Reenviar") {
           entrySelection(data);
         }
       };
@@ -172,10 +172,10 @@ export const getTableBoardActionMobile = (
   actionMobile.map((action) => ({
     id: action.id,
     actionName: action.actionName,
-    label: 'Mobile Action Label',
+    label: "Mobile Action Label",
     content: (data: IEntries) => {
       const handleClick = () => {
-        if (action.id === 'Reenviar') {
+        if (action.id === "Reenviar") {
           entrySelection(data);
         }
       };
