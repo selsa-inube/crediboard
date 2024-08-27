@@ -93,7 +93,7 @@ function AppPage() {
             <Icon
               icon={<MdOutlineChevronRight />}
               appearance="primary"
-              size="20px"
+              size="24px"
               cursorHover
             />
           </StyledCollapseIcon>

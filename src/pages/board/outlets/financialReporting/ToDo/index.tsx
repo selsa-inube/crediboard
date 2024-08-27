@@ -196,7 +196,7 @@ function ToDo(props: ToDoProps) {
                 <Icon
                   icon={icon.icon}
                   appearance="primary"
-                  size="32px"
+                  size="24px"
                   onClick={handleToggleStaffModal}
                   cursorHover
                 />
