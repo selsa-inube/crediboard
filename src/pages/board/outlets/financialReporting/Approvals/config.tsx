@@ -1,5 +1,4 @@
-import { isValidElement } from "react";
-import React from "react";
+import { isValidElement, cloneElement } from "react";
 import {
   MdCheck,
   MdClose,
@@ -8,10 +7,9 @@ import {
   MdWarningAmber,
 } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
-
 import { IEntries } from "@components/data/TableBoard/types";
 
-const handledata = (data: IEntries) => {
+const handleData = (data: IEntries) => {
   console.log(data, "function that receives data");
 };
 
@@ -85,10 +83,10 @@ interface TagElement {
 
 export const infoItems = [
   { icon: <MdCheck />, text: "Aprobado" },
-  { icon: <MdClose />, text: "Rechazado"},
-  { icon: <MdRemove />, text: "Pendiente"},
-  { icon: <MdWarningAmber />, text: "Error", appearance: "danger"},
-  { icon: <MdNotificationsNone />, text: "Notificaciones", appearance: "help"}, 
+  { icon: <MdClose />, text: "Rechazado" },
+  { icon: <MdRemove />, text: "Pendiente" },
+  { icon: <MdWarningAmber />, text: "Error", appearance: "danger" },
+  { icon: <MdNotificationsNone />, text: "Notificaciones", appearance: "help" },
 ];
 
 const isValidTagElement = (element: unknown): element is TagElement => {
@@ -126,7 +124,7 @@ export const actionMobileApprovals = [
         spacing="none"
         cursorHover
         size="20px"
-        onClick={() => handledata(data)}
+        onClick={() => handleData(data)}
         disabled={
           isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
         }
@@ -143,7 +141,7 @@ export const actionMobileApprovals = [
         spacing="none"
         cursorHover
         size="20px"
-        onClick={() => handledata(data)}
+        onClick={() => handleData(data)}
         disabled={
           isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
         }
@@ -198,7 +196,7 @@ export const desktopActions = (
           handleErrorClick(data);
         }
       };
-      return React.cloneElement(action.content(data), { onClick: handleClick });
+      return cloneElement(action.content(data), { onClick: handleClick });
     },
   }));
 };
@@ -218,7 +216,7 @@ export const getMobileActionsConfig = (
           handleErrorClickBound(data);
         }
       };
-      return React.cloneElement(action.content(data), { onClick: handleClick });
+      return cloneElement(action.content(data), { onClick: handleClick });
     },
   }));
 };
