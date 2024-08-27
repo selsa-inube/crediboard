@@ -1,63 +1,44 @@
-import { useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
-import { Container, IconWrapper } from "./styles";
-import { ListModal } from "@components/modals/ListModal"; 
+import { Container, IconWrapper, ContentWrapper } from "./styles";
 
-export interface ObligationCardProps {
+export interface SummaryProspectProps {
   items: { title: string; amount: string }[];
   showIcon?: boolean;
+  onIconClick?: () => void;
 }
 
-function ObligationCard({ items, showIcon = true }: ObligationCardProps) {
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  const handleIconClick = () => {
-    setModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
+function SummaryProspect(props: SummaryProspectProps) {
+  const { items, showIcon = true, onIconClick } = props;
 
   return (
-    <>
-      <Container>
+    <Container>
+      <ContentWrapper>
         {items.map((item, index) => (
           <Stack key={index} direction="column" margin="4px" padding="0px 10px">
-            <Text size="small" padding="0px 0px 3px">
+            <Text size="small" weight="bold" type="body" appearance="gray" padding="0px 0px 3px">
               {item.title}
             </Text>
-            <Text size="large" weight="bold" appearance="dark">
+            <Text size="large" weight="bold" appearance="dark" type="body">
               {item.amount}
             </Text>
           </Stack>
         ))}
-        {showIcon && (
-          <IconWrapper>
-            <Icon
-              appearance="primary"
-              icon={<MdOutlineEdit />}
-              cursorHover
-              size="24px"
-              onClick={handleIconClick}
-            />
-          </IconWrapper>
-        )}
-      </Container>
-
-      {isModalOpen && (
-        <ListModal
-          title="Detalles de la obligación"
-          handleClose={handleCloseModal}
-          buttonLabel="Cerrar"
-          content="Aquí puedes ver los detalles adicionales."
-        />
+      </ContentWrapper> 
+      {showIcon && (
+        <IconWrapper onClick={onIconClick}>
+          <Icon
+            appearance="primary"
+            icon={<MdOutlineEdit />}
+            cursorHover
+            size="24px"
+          />
+        </IconWrapper>
       )}
-    </>
+    </Container>
   );
 }
 
-export default ObligationCard;
+export default SummaryProspect;

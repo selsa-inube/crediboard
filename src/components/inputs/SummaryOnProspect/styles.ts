@@ -7,7 +7,7 @@ export const Container = styled.div`
   border-radius: 8px;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
   width: fit-content;
-  border: 1px solid #EBECF0;
+  gap: 5px;
 `;
 
 export const IconWrapper = styled.div`
@@ -17,4 +17,12 @@ export const IconWrapper = styled.div`
   align-items: center;
   padding-top: 4px; 
   padding-bottom: 4px; 
+`;
+
+
+export const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  gap: 30px;
 `;
