@@ -32,7 +32,7 @@ export const Management = (props: IManagementProps) => {
 
       try {
         const data = await getDataById<TraceType[]>(
-          "traces",
+          "trace",
           "credit_request_id",
           id
         );
