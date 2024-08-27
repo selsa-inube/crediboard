@@ -7,6 +7,7 @@ export const Container = styled.div`
   border-radius: 8px;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
   width: fit-content;
+  border: 1px solid #EBECF0;
 `;
 
 export const IconWrapper = styled.div`

@@ -15,9 +15,6 @@ export const Default = {
   args: {
     items: [
       { title: "Obligaciones recogidas", amount: "$5.000.000" },
-      { title: "Obligaciones recogidas", amount: "$5.000.000" },
-      { title: "Obligaciones recogidas", amount: "$5.000.000" },
-      { title: "Otra obligación", amount: "$2.000.000" },
     ],
     showIcon: true,
   },
@@ -28,8 +25,10 @@ export const WithoutIcon = {
   args: {
     items: [
       { title: "Obligaciones recogidas", amount: "$5.000.000" },
+      { title: "Obligaciones recogidas", amount: "$5.000.000" },
+      { title: "Obligaciones recogidas", amount: "$5.000.000" },
       { title: "Otra obligación", amount: "$2.000.000" },
     ],
-    showIcon: false,
+    showIcon: true,
   },
 };
