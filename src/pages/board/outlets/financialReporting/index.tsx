@@ -82,6 +82,13 @@ const Listdata = (props: IListdataProps) => {
   );
 };
 
+const removeErrorByIdServices = (
+  errorsList: IErrorService[],
+  errorId: string
+) => {
+  return errorsList.filter((error) => error.id !== errorId);
+};
+
 export const FinancialReporting = () => {
   const [data, setData] = useState({} as Requests);
 
@@ -142,19 +149,23 @@ export const FinancialReporting = () => {
   }, [id]);
 
   useEffect(() => {
-    const handleErrorsService = (error: IErrorService) => {
-      setErrorsService((prev) => {
-        let copidata = [...prev];
+    const handleErrorsService = (newError: IErrorService) => {
+      setErrorsService((prevErrors) => {
+        let updatedErrors = [...prevErrors];
 
-        const errorExists = copidata.some((i) => i.id === error.id);
+        const errorExists = updatedErrors.some(
+          (error) => error.id === newError.id
+        );
 
         if (!errorExists) {
-          copidata = [...copidata, error];
+          updatedErrors = [...updatedErrors, newError];
         } else {
-          copidata = copidata.map((i) => (i.id === error.id ? error : i));
+          updatedErrors = updatedErrors.map((i) =>
+            i.id === newError.id ? newError : i
+          );
         }
 
-        return copidata;
+        return updatedErrors;
       });
     };
 
@@ -195,6 +206,10 @@ export const FinancialReporting = () => {
     setError(errors.filter((error) => error.error_issued_id !== errorId));
   };
 
+  const handleCloseErrorService = (errorId: string) => {
+    setErrorsService(removeErrorByIdServices(errorsService, errorId));
+  };
+
   const handleOnCancel = () => {
     setShowCancelModal(true);
     setShowMenu(false);
@@ -232,7 +247,7 @@ export const FinancialReporting = () => {
               errorsService.map((errorService) => (
                 <ErrorAlert
                   message={errorService.message.toString()}
-                  onClose={() => handleClose(errorService.id)}
+                  onClose={() => handleCloseErrorService(errorService.id)}
                   key={errorService.id}
                 />
               ))}
