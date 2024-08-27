@@ -142,8 +142,20 @@ export const FinancialReporting = () => {
   }, [id]);
 
   useEffect(() => {
-    const handleErrorsService = async (error: IErrorService) => {
-      setErrorsService([error]);
+    const handleErrorsService = (error: IErrorService) => {
+      setErrorsService((prev) => {
+        let copidata = [...prev];
+
+        const errorExists = copidata.some((i) => i.id === error.id);
+
+        if (!errorExists) {
+          copidata = [...copidata, error];
+        } else {
+          copidata = copidata.map((i) => (i.id === error.id ? error : i));
+        }
+
+        return copidata;
+      });
     };
 
     errorObserver.subscribe(handleErrorsService);
