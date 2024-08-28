@@ -9,8 +9,8 @@ import {
 import { Icon } from "@inubekit/icon";
 import { IEntries } from "@components/data/TableBoard/types";
 
-const entrySelection = (data: IEntries) => {
-  console.log(data);
+const entrySelection = (data: IEntries, actionId: string) => {
+  console.log(data, actionId);
 };
 
 export const titlesFinanacialReporting = [
@@ -24,14 +24,14 @@ export const actionsFinanacialReporting = [
   {
     id: "Reenviar",
     actionName: "Reenviar",
-    content: (data: IEntries) => (
+    content: (data: IEntries, actionId: string) => (
       <Icon
         appearance="primary"
         cursorHover
         size="22px"
         variant="none"
         icon={<MdOutlineSend />}
-        onClick={() => entrySelection(data)}
+        onClick={() => entrySelection(data, actionId)}
         spacing="none"
       />
     ),
@@ -39,7 +39,7 @@ export const actionsFinanacialReporting = [
   {
     id: "ver imagen",
     actionName: "Ver Imagen",
-    content: (data: IEntries) => (
+    content: (data: IEntries, actionId: string) => (
       <Icon
         appearance="primary"
         size="22px"
@@ -47,7 +47,7 @@ export const actionsFinanacialReporting = [
         variant="none"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
-        onClick={() => entrySelection(data)}
+        onClick={() => entrySelection(data, actionId)}
       />
     ),
   },
@@ -117,7 +117,7 @@ export const actionMobile = [
         spacing="none"
         cursorHover
         icon={<MdOutlineSend />}
-        onClick={() => entrySelection(data)}
+        onClick={() => entrySelection(data, "Reenviar")}
       />
     ),
   },
@@ -131,7 +131,7 @@ export const actionMobile = [
         spacing="none"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
-        onClick={() => entrySelection(data)}
+        onClick={() => entrySelection(data, "ver imagen")}
       />
     ),
   },
@@ -150,7 +150,7 @@ export const appearanceTag = (tag: string) => {
 export const firstWord = (text: string) => text.split(" ")[0];
 
 export const getTableBoardActions = (
-  entrySelection: (data: IEntries) => void
+  entrySelection: (data: IEntries, actionId: string) => void 
 ) =>
   actionsFinanacialReporting.map((action) => ({
     id: action.id,
@@ -162,15 +162,16 @@ export const getTableBoardActions = (
         cursorHover
         size="22px"
         variant="none"
-        icon={action.content(data).props.icon}
-        onClick={() => entrySelection(data)}
+        icon={action.content(data, action.id).props.icon} 
+        onClick={() => entrySelection(data, action.id)}
         spacing="none"
       />
     ),
   }));
 
+
 export const getTableBoardActionMobile = (
-  entrySelection: (data: IEntries) => void
+  entrySelection: (data: IEntries, actionId: string) => void 
 ) =>
   actionMobile.map((action) => ({
     id: action.id,
@@ -184,7 +185,7 @@ export const getTableBoardActionMobile = (
         cursorHover
         variant="filled"
         shape="circle"
-        onClick={() => entrySelection(data)}
+        onClick={() => entrySelection(data, action.id)}
       />
     ),
   }));

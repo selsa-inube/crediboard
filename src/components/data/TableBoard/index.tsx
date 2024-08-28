@@ -36,6 +36,8 @@ export const TableBoard = (props: ITableBoardProps) => {
       background: false,
       isStyleMobile: true,
     },
+    isFirstTable,
+    infoItems,
   } = props;
 
   const isTablet = useMediaQuery("(max-width: 720px)");
@@ -52,6 +54,8 @@ export const TableBoard = (props: ITableBoardProps) => {
       titles={titles}
       appearanceTable={appearanceTable}
       isTablet={isTablet}
+      isFirstTable={isFirstTable}
+      infoItems={infoItems}
     />
   );
 };

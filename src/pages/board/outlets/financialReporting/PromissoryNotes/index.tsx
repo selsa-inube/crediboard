@@ -3,12 +3,10 @@ import { MdOutlineThumbUp } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Flag } from "@inubekit/flag";
 import { Tag } from "@inubekit/tag";
-
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
-
 import { getDataById } from "@mocks/utils/dataMock.service";
 import {
   payroll_discount_authorization,
@@ -34,9 +32,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const { user, isMobile } = props;
 
   const [showModal, setShowModal] = useState(false);
-  const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
-    []
-  );
+  const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>([]);
   const [showFlag, setShowFlag] = useState(false);
 
   useEffect(() => {
@@ -76,10 +72,15 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     });
   }, [user]);
 
-  const tableBoardActions = getTableBoardActions(() => setShowModal(true));
-  const tableBoardActionMobile = getTableBoardActionMobile(() =>
-    setShowModal(true)
-  );
+  const entrySelection = (data: IEntries, actionId: string) => {
+    if (actionId === "Reenviar") {
+      console.log(data);
+      setShowModal(true); // Abre el modal solo para el icono de "Reenviar"
+    }
+  };
+
+  const tableBoardActions = getTableBoardActions(entrySelection);
+  const tableBoardActionMobile = getTableBoardActionMobile(entrySelection);
 
   const formValues = {
     field1: "usuario@inube.com",
@@ -112,7 +113,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             actions={tableBoardActions}
             actionMobile={tableBoardActionMobile}
             appearanceTable={{
-            widthTd: !isMobile ? "100" : "23%",
+              widthTd: !isMobile ? "100" : "23%",
               efectzebra: true,
               title: "primary",
               isStyleMobile: true,
