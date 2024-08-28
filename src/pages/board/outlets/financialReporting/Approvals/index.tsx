@@ -16,7 +16,7 @@ import {
   handleErrorClick,
   desktopActions,
   getMobileActionsConfig,
-  infoItems 
+  infoItems,
 } from "./config";
 import { getDataById } from "@mocks/utils/dataMock.service";
 import { approval_by_credit_request_Mock } from "@services/types";
@@ -94,15 +94,19 @@ export const Approvals = (props: IApprovalsProps) => {
     setShowFlag(true);
     setShowNotificationModal(false);
   };
-  
+
   const handleCloseModal = () => {
     setShowNotificationModal(false);
   };
 
-
   return (
     <>
-      <Fieldset title="Aprobaciones" heightFieldset="284px" hasTable>
+      <Fieldset
+        title="Aprobaciones"
+        heightFieldset="277px"
+        hasTable
+        aspectRatio="1"
+      >
         <TableBoard
           id="usuarios"
           titles={titlesApprovals}

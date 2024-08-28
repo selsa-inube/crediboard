@@ -221,11 +221,11 @@ function ToDo(props: ToDoProps) {
               readOnly
             />
             {icon && !isMobile && (
-              <Stack width="100px" height="47px" alignItems="end">
+              <Stack width="100px" height="60px" alignItems="end">
                 <Icon
                   icon={icon.icon}
                   appearance="primary"
-                  size="24px"
+                  size="30px"
                   onClick={handleToggleStaffModal}
                   cursorHover
                 />
