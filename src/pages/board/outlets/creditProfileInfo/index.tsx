@@ -9,16 +9,11 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
-import { get, getById, getDataById } from "@mocks/utils/dataMock.service";
+import { getById, getDataById } from "@mocks/utils/dataMock.service";
 import { Requests, IRiskScoring, credit } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
-/* import {
-  getMaritalStatusInSpanish,
-  getEconomicActivityInSpanish,
-} from "@utils/mappingData/mappings";
-import { MaritalStatus, EconomicActivity } from "@services/enums"; */
 
 import { CreditBehavior } from "./CreditBehaviorCard";
 import { Guarantees } from "./Guarantees";
@@ -62,6 +57,8 @@ export const CreditProfileInfo = () => {
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const dataPrint = useRef<HTMLDivElement>(null);
 
+  const [dataWereObtained, setWataWereObtained] = useState(false);
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -69,37 +66,55 @@ export const CreditProfileInfo = () => {
     useMediaQueries(["(max-width: 1200px)", "(max-width: 751px)"]);
 
   useEffect(() => {
-    Promise.allSettled([
-      getById("k_Prospe", "requests", id!),
-      get("risk-scorings"),
-      getDataById<credit[]>("credit_profileInfo", "credit_request_id", id!),
-    ]).then((data) => {
-      const [request, riskScoring, credit_profileInfo] = data;
+    (async () => {
+      setLoading(true);
 
-      if (request.status === "fulfilled") {
-        setRequests(request.value as Requests);
+      try {
+        const [request, riskScoring, credit_profileInfo] =
+          await Promise.allSettled([
+            getById("k_Prospe", "requests", id!),
+            getDataById<IRiskScoring[]>(
+              "risk-scoring",
+              "credit_request_id",
+              id!
+            ),
+            getDataById<credit[]>(
+              "credit_profileInfo",
+              "credit_request_id",
+              id!
+            ),
+          ]);
+
+        if (request.status === "fulfilled") {
+          setRequests(request.value as Requests);
+        }
+
+        if (riskScoring.status === "fulfilled") {
+          const riskScoringData = riskScoring.value?.[0];
+          setRiskScoring((prev) => ({
+            ...prev,
+            ...riskScoringData?.risk_scoring,
+          }));
+
+          !riskScoringData
+            ? setWataWereObtained(true)
+            : setWataWereObtained(false);
+        } else {
+          setWataWereObtained(false);
+        }
+
+        if (credit_profileInfo.status === "fulfilled") {
+          setCredit_profileInfo((prevState) => ({
+            ...prevState,
+            ...credit_profileInfo?.value?.[0].labor_stability,
+          }));
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
       }
-
-      if (riskScoring.status === "fulfilled") {
-        console.log(riskScoring.value);
-        const riskScoringData = (riskScoring.value as IRiskScoring[]).find(
-          (risk: IRiskScoring) => risk.credit_request_id === id
-        );
-        setRiskScoring((rpev) => ({
-          ...rpev,
-          ...riskScoringData?.risk_scoring,
-        }));
-      }
-
-      if (credit_profileInfo.status === "fulfilled") {
-        setCredit_profileInfo((prevState) => ({
-          ...prevState,
-          ...credit_profileInfo?.value?.[0].labor_stability,
-        }));
-      }
-
-      setLoading(false);
-    });
+    })();
   }, [id]);
 
   const handlePrint = () => {
@@ -229,6 +244,7 @@ export const CreditProfileInfo = () => {
           economicActivity={riskScoring.economic_activity}
           isLoading={loading}
           isMobile={isMobile}
+          dataWereObtained={dataWereObtained}
         />
         <Guarantees
           guaranteesRequired="Ninguna garantía real, o fianza o codeudor."
