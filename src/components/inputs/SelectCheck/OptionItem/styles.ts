@@ -18,7 +18,7 @@ export const StyledOptionItemChecked = styled.li`
       inube.input.content.color.regular};
   }
 
-  label{
+  label {
     margin-left: 5px;
     cursor: pointer;
   }
@@ -28,8 +28,7 @@ export const StyledOptionItemChecked = styled.li`
       theme?.input?.border?.color?.focus || inube.input.border.color.focus};
 
     background-color: ${({ theme }) =>
-      theme?.input?.background?.color?.regular ||
-      inube.input.background.color.regular};
+      theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
 
     p {
       color: ${({ theme }) =>
