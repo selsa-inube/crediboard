@@ -1,4 +1,4 @@
-import React from "react";
+import { isValidElement } from "react";
 import {
   MdOutlineSend,
   MdOutlineRemoveRedEye,
@@ -7,31 +7,48 @@ import {
   MdClose,
 } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
+
 import { IEntries } from "@components/data/TableBoard/types";
 
-const entrySelection = (data: IEntries, actionId: string) => {
-  console.log(data, actionId);
+const entrySelection = (data: IEntries) => {
+  console.log(data);
 };
 
 export const titlesFinanacialReporting = [
-  { id: "No. de Obligación", titleName: "No. de Obligación", priority: 1 },
-  { id: "No. de Documento", titleName: "No. de Documento", priority: 2 },
-  { id: "Tipo", titleName: "Tipo", priority: 3 },
-  { id: "tag", titleName: "Estado", priority: 4 },
+  {
+    id: "No. de Obligación",
+    titleName: "No. de Obligación",
+    priority: 1,
+  },
+  {
+    id: "No. de Documento",
+    titleName: "No. de Documento",
+    priority: 2,
+  },
+  {
+    id: "Tipo",
+    titleName: "Tipo",
+    priority: 3,
+  },
+  {
+    id: "tag",
+    titleName: "Estado",
+    priority: 4,
+  },
 ];
 
 export const actionsFinanacialReporting = [
   {
     id: "Reenviar",
     actionName: "Reenviar",
-    content: (data: IEntries, actionId: string) => (
+    content: (data: IEntries) => (
       <Icon
         appearance="primary"
         cursorHover
         size="22px"
         variant="none"
         icon={<MdOutlineSend />}
-        onClick={() => entrySelection(data, actionId)}
+        onClick={() => entrySelection(data)}
         spacing="none"
       />
     ),
@@ -39,7 +56,7 @@ export const actionsFinanacialReporting = [
   {
     id: "ver imagen",
     actionName: "Ver Imagen",
-    content: (data: IEntries, actionId: string) => (
+    content: (data: IEntries) => (
       <Icon
         appearance="primary"
         size="22px"
@@ -47,7 +64,7 @@ export const actionsFinanacialReporting = [
         variant="none"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
-        onClick={() => entrySelection(data, actionId)}
+        onClick={() => entrySelection(data)}
       />
     ),
   },
@@ -74,15 +91,11 @@ interface TagElement {
 
 export const infoItems = [
   { icon: <MdOutlineSend />, text: "Reenviar", appearance: "primary" },
-  {
-    icon: <MdOutlineRemoveRedEye />,
-    text: "Ver Imagen",
-    appearance: "primary",
-  },
+  { icon: <MdOutlineRemoveRedEye />, text: "Ver Imagen", appearance: "primary" },
 ];
 
 const isValidTagElement = (element: unknown): element is TagElement => {
-  return React.isValidElement(element) && element.props !== undefined;
+  return isValidElement(element) && element.props !== undefined;
 };
 
 export const actionMobile = [
@@ -92,8 +105,8 @@ export const actionMobile = [
     content: (data: IEntries) => (
       <Icon
         icon={
-          isValidTagElement(data?.tag) &&
-          iconActionsMobile(data?.tag?.props?.label ?? "")
+          isValidElement(data?.tag) &&
+          iconActionsMobile(data?.tag?.props?.label)
         }
         appearance={
           isValidTagElement(data?.tag)
@@ -117,7 +130,7 @@ export const actionMobile = [
         spacing="none"
         cursorHover
         icon={<MdOutlineSend />}
-        onClick={() => entrySelection(data, "Reenviar")}
+        onClick={() => entrySelection(data)}
       />
     ),
   },
@@ -131,7 +144,7 @@ export const actionMobile = [
         spacing="none"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
-        onClick={() => entrySelection(data, "ver imagen")}
+        onClick={() => entrySelection(data)}
       />
     ),
   },
@@ -150,42 +163,31 @@ export const appearanceTag = (tag: string) => {
 export const firstWord = (text: string) => text.split(" ")[0];
 
 export const getTableBoardActions = (
-  entrySelection: (data: IEntries, actionId: string) => void 
+  entrySelection: (data: IEntries) => void
 ) =>
   actionsFinanacialReporting.map((action) => ({
     id: action.id,
     actionName: action.actionName,
     label: "Action Label",
-    content: (data: IEntries) => (
-      <Icon
-        appearance="primary"
-        cursorHover
-        size="22px"
-        variant="none"
-        icon={action.content(data, action.id).props.icon} 
-        onClick={() => entrySelection(data, action.id)}
-        spacing="none"
-      />
-    ),
+    content: (data: IEntries) =>
+      action.id === "Reenviar" ? (
+        <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
+      ) : (
+        action.content(data)
+      ),
   }));
 
-
 export const getTableBoardActionMobile = (
-  entrySelection: (data: IEntries, actionId: string) => void 
+  entrySelection: (data: IEntries) => void
 ) =>
   actionMobile.map((action) => ({
     id: action.id,
     actionName: action.actionName,
     label: "Mobile Action Label",
-    content: (data: IEntries) => (
-      <Icon
-        icon={action.content(data).props.icon}
-        appearance={action.content(data).props.appearance}
-        spacing="none"
-        cursorHover
-        variant="filled"
-        shape="circle"
-        onClick={() => entrySelection(data, action.id)}
-      />
-    ),
+    content: (data: IEntries) =>
+      action.id === "Reenviar" ? (
+        <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
+      ) : (
+        action.content(data)
+      ),
   }));
