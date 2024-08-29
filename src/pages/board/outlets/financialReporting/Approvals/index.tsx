@@ -7,7 +7,7 @@ import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { ItemNotFound } from "@components/layout/ItemNotFound"; 
+import { ItemNotFound } from "@components/layout/ItemNotFound";
 
 import {
   actionMobileApprovals,
@@ -21,7 +21,7 @@ import {
 } from "./config";
 import { getDataById } from "@mocks/utils/dataMock.service";
 import { approval_by_credit_request_Mock } from "@services/types";
-import userNotFound from "@assets/images/ItemNotFound.png"; 
+import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StyledMessageContainer } from "../styles";
 
@@ -49,11 +49,12 @@ export const Approvals = (props: IApprovalsProps) => {
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
   const [showFlag, setShowFlag] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [retryTimer, setRetryTimer] = useState<NodeJS.Timeout | null>(null);
+  const [showRetry, setShowRetry] = useState(false); 
 
   const fetchApprovals = useCallback(() => {
     setLoading(true);
     setError(null);
+    setShowRetry(false); 
 
     getDataById<approval_by_credit_request_Mock[]>("approval", "credit_request_id", user)
       .then((data) => {
@@ -72,51 +73,48 @@ export const Approvals = (props: IApprovalsProps) => {
           }));
           setEntriesApprovals(entries);
           setLoading(false);
+          setShowRetry(false); 
         } else {
+          setEntriesApprovals([]);
           setError("No se encontraron datos.");
           setLoading(false);
+          setShowRetry(true); 
         }
       })
       .catch(() => {
+        setEntriesApprovals([]);
         setError("Error al intentar conectar con el servicio de aprobaciones.");
         setLoading(false);
+        setShowRetry(true); 
       });
   }, [user]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setError("No se pudo cargar la información. Intente nuevamente más tarde.");
-      setLoading(false);
-    }, 5000);
+    let retryTimer: NodeJS.Timeout | null = null;
 
+    if (loading) {
+      retryTimer = setTimeout(() => {
+        if (loading) {
+          setShowRetry(true); 
+        }
+      }, 5000); 
+    } else {
+      if (retryTimer) {
+        clearTimeout(retryTimer);
+      }
+      setShowRetry(false);
+    }
+
+    return () => {
+      if (retryTimer) {
+        clearTimeout(retryTimer);
+      }
+    };
+  }, [loading]);
+
+  useEffect(() => {
     fetchApprovals();
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [fetchApprovals]); 
-
-  useEffect(() => {
-    if (!loading && !error && entriesApprovals.length > 0) {
-      const modalTimer = setTimeout(() => {
-        setShowNotificationModal(true);
-      }, 5000);
-      return () => clearTimeout(modalTimer);
-    }
-  }, [loading, error, entriesApprovals]);
-
-  useEffect(() => {
-    if (error) {
-      if (retryTimer) clearTimeout(retryTimer);
-      const newRetryTimer = setTimeout(() => {
-        setError("No se pudo cargar la información. Intente nuevamente más tarde.");
-      }, 5000);
-      setRetryTimer(newRetryTimer);
-    }
-    return () => {
-      if (retryTimer) clearTimeout(retryTimer);
-    };
-  }, [error, retryTimer]); 
+  }, [fetchApprovals]);
 
   const handleNotificationClickBound = (data: IEntries) => {
     handleNotificationClick(data, setSelectedData, setShowNotificationModal);
@@ -137,15 +135,11 @@ export const Approvals = (props: IApprovalsProps) => {
     handleNotificationClickBound,
     handleErrorClickBound
   );
+
   const handleSubmit = () => {
     setShowFlag(true);
     setShowNotificationModal(false);
   };
-  
-  const handleCloseModal = () => {
-    setShowNotificationModal(false);
-  };
-
 
   const handleRetry = () => {
     fetchApprovals();
@@ -154,14 +148,14 @@ export const Approvals = (props: IApprovalsProps) => {
   return (
     <>
       <Fieldset title="Aprobaciones" heightFieldset="284px" hasTable>
-        {error ? (
+        {showRetry ? (
           <ItemNotFound
             image={userNotFound}
             title="Error al cargar datos"
-            description={error}
+            description={error || "No se encontraron datos."}
             buttonDescription="Volver a intentar"
             route="/retry-path"
-            onRetry={handleRetry} 
+            onRetry={handleRetry}
           />
         ) : (
           <TableBoard
@@ -187,8 +181,7 @@ export const Approvals = (props: IApprovalsProps) => {
           title="Notificación"
           content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
           buttonLabel="Enviar"
-          handleClose={handleCloseModal}
-          onSubmit={handleSubmit}
+          handleClose={handleSubmit}
         />
       )}
       {showFlag && (
