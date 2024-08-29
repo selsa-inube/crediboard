@@ -1,39 +1,41 @@
+import { Schedule } from "@services/enums";
+
 import { CreditProductCardUI } from "./interface";
 
 interface CreditProductCardProps {
-  title: string;
+  lineOfCredit: string;
   paymentMethod: string;
   loanAmount: number;
   interestRate: number;
   termMonths: number;
   periodicFee: number;
-  paymentCycle: string;
+  schedule: Schedule;
   onEdit: () => void;
   onDelete: () => void;
 }
 
 function CreditProductCard(props: CreditProductCardProps) {
   const {
-    title,
+    lineOfCredit,
     paymentMethod,
     loanAmount,
     interestRate,
     termMonths,
     periodicFee,
-    paymentCycle,
+    schedule,
     onEdit,
     onDelete,
   } = props;
 
   return (
     <CreditProductCardUI
-      title={title}
+      lineOfCredit={lineOfCredit}
       paymentMethod={paymentMethod}
       loanAmount={loanAmount}
       interestRate={interestRate}
       termMonths={termMonths}
       periodicFee={periodicFee}
-      paymentCycle={paymentCycle}
+      schedule={schedule}
       onEdit={onEdit}
       onDelete={onDelete}
     />

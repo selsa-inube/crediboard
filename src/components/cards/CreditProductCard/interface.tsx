@@ -8,19 +8,21 @@ import {
   capitalizeFirstLetter,
 } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
+import { getScheduleInSpanish } from "@utils/mappingData/mappings";
 
 import { StyledCreditProductCard, StyledDivider } from "./styles";
 import { CreditProductCardProps } from ".";
+import { CREDIT_PRODUCT_TEXTS } from "./config";
 
 function CreditProductCardUI(props: CreditProductCardProps) {
   const {
-    title,
+    lineOfCredit,
     paymentMethod,
     loanAmount,
     interestRate,
     termMonths,
     periodicFee,
-    paymentCycle,
+    schedule,
     onEdit,
     onDelete,
   } = props;
@@ -29,12 +31,12 @@ function CreditProductCardUI(props: CreditProductCardProps) {
     <StyledCreditProductCard>
       <Stack direction="column" height="100%" padding="12px" gap="8px">
         <Text size="large" appearance="gray" weight="bold" margin="0px 0px 8px">
-          {capitalizeFirstLetter(truncateTextToMaxLength(title, 22))}
+          {capitalizeFirstLetter(truncateTextToMaxLength(lineOfCredit, 22))}
         </Text>
 
         <Stack direction="column">
           <Text size="small" appearance="gray" weight="bold">
-            Medio de pago
+            {CREDIT_PRODUCT_TEXTS.paymentMethod}
           </Text>
           <Text>
             {capitalizeFirstLetter(truncateTextToMaxLength(paymentMethod, 40))}
@@ -42,34 +44,36 @@ function CreditProductCardUI(props: CreditProductCardProps) {
         </Stack>
         <Stack direction="column">
           <Text size="small" appearance="gray" weight="bold">
-            Monto del prestamo
+            {CREDIT_PRODUCT_TEXTS.loanAmount}
           </Text>
           <Text>{loanAmount === 0 ? "$ 0" : currencyFormat(loanAmount)}</Text>
         </Stack>
         <Stack direction="column">
           <Text size="small" appearance="gray" weight="bold">
-            Tasa de interés
+            {CREDIT_PRODUCT_TEXTS.interestRate}
           </Text>
           <Text>{interestRate} %</Text>
         </Stack>
         <Stack direction="column">
           <Text size="small" appearance="gray" weight="bold">
-            Plazo en meses
+            {CREDIT_PRODUCT_TEXTS.termMonths}
           </Text>
           <Text>{termMonths}</Text>
         </Stack>
         <Stack direction="column">
           <Text size="small" appearance="gray" weight="bold">
-            Cuota periodica K+I
+            {CREDIT_PRODUCT_TEXTS.periodicFee}
           </Text>
           <Text>{periodicFee === 0 ? "$ 0" : currencyFormat(periodicFee)}</Text>
         </Stack>
         <Stack direction="column">
           <Text size="small" appearance="gray" weight="bold">
-            Ciclo de pagos
+            {CREDIT_PRODUCT_TEXTS.paymentCycle}
           </Text>
           <Text>
-            {capitalizeFirstLetter(truncateTextToMaxLength(paymentCycle, 22))}
+            {capitalizeFirstLetter(
+              truncateTextToMaxLength(getScheduleInSpanish(schedule), 22)
+            )}
           </Text>
         </Stack>
       </Stack>

@@ -2,6 +2,8 @@ import { StoryFn, Meta } from "@storybook/react";
 import { BrowserRouter } from "react-router-dom";
 import { action } from "@storybook/addon-actions";
 
+import { Schedule } from "@services/enums";
+
 import { CreditProductCard, CreditProductCardProps } from "..";
 import { props } from "./props";
 
@@ -23,13 +25,13 @@ export const Default: StoryFn<CreditProductCardProps> = (args) => (
 );
 
 Default.args = {
-  title: "Crédito Vacacional",
+  lineOfCredit: "Crédito Vacacional",
   paymentMethod: "Nómina mensual éxito Bancolombia",
   loanAmount: 10000000,
   interestRate: 6.5,
   termMonths: 48,
   periodicFee: 10000,
-  paymentCycle: "Quincenal",
+  schedule: Schedule.Biweekly,
   onEdit: action("onEdit"),
   onDelete: action("onDelete"),
 };

@@ -2,9 +2,10 @@ import { ArgTypes } from "@storybook/react";
 import { CreditProductCardProps } from "..";
 
 const props: Partial<ArgTypes<CreditProductCardProps>> = {
-  title: {
+  lineOfCredit: {
     control: "text",
-    description: "Title of the credit product card, displayed prominently.",
+    description:
+      "Line of credit of the credit product card, displayed prominently.",
   },
   paymentMethod: {
     control: "text",
@@ -27,7 +28,7 @@ const props: Partial<ArgTypes<CreditProductCardProps>> = {
     control: "number",
     description: "Periodic fee including both principal and interest.",
   },
-  paymentCycle: {
+  schedule: {
     control: "text",
     description: "The cycle of payments (e.g., monthly, bi-weekly).",
   },
