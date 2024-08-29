@@ -1,4 +1,4 @@
-import { isValidElement, cloneElement } from "react";
+import { isValidElement } from "react";
 import {
   MdCheck,
   MdClose,
@@ -196,7 +196,12 @@ export const desktopActions = (
           handleErrorClick(data);
         }
       };
-      return cloneElement(action.content(data), { onClick: handleClick });
+      return (
+        <Icon
+          {...action.content(data).props}
+          onClick={handleClick}
+        />
+      );
     },
   }));
 };
@@ -216,7 +221,12 @@ export const getMobileActionsConfig = (
           handleErrorClickBound(data);
         }
       };
-      return cloneElement(action.content(data), { onClick: handleClick });
+      return (
+        <Icon
+          {...action.content(data).props}
+          onClick={handleClick}
+        />
+      );
     },
   }));
 };
