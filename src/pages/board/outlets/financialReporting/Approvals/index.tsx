@@ -135,11 +135,15 @@ export const Approvals = (props: IApprovalsProps) => {
     handleNotificationClickBound,
     handleErrorClickBound
   );
-
   const handleSubmit = () => {
     setShowFlag(true);
     setShowNotificationModal(false);
   };
+  
+  const handleCloseModal = () => {
+    setShowNotificationModal(false);
+  };
+
 
   const handleRetry = () => {
     fetchApprovals();
@@ -181,7 +185,8 @@ export const Approvals = (props: IApprovalsProps) => {
           title="Notificación"
           content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
           buttonLabel="Enviar"
-          handleClose={handleSubmit}
+          handleClose={handleCloseModal}
+          onSubmit={handleSubmit}
         />
       )}
       {showFlag && (
