@@ -1,4 +1,3 @@
-import { SkeletonIcon } from "@inubekit/skeleton";
 import { Icon } from "@inubekit/icon";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
@@ -12,12 +11,7 @@ import {
 import { currencyFormat } from "@utils/formatData/currency";
 import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 
-import {
-  StyledSummaryCard,
-  StyledDivider,
-  StyledLink,
-  StyledCursor,
-} from "./styles";
+import { StyledSummaryCard, StyledDivider, StyledLink } from "./styles";
 import { SummaryCardProps } from ".";
 
 function SummaryCardUI(props: SummaryCardProps) {
@@ -34,24 +28,6 @@ function SummaryCardUI(props: SummaryCardProps) {
     onPinChange,
     errorLoadingPins,
   } = props;
-
-  const getIcon = () => {
-    if (errorLoadingPins) {
-      return (
-        <StyledCursor>
-          <SkeletonIcon />
-        </StyledCursor>
-      );
-    }
-    return isPinned ? <MdPushPin /> : <MdOutlinePushPin />;
-  };
-
-  const getAppearance = () => {
-    if (errorLoadingPins) {
-      return "gray";
-    }
-    return isPinned ? "dark" : "gray";
-  };
 
   return (
     <StyledSummaryCard>
@@ -100,11 +76,12 @@ function SummaryCardUI(props: SummaryCardProps) {
             />
           )}
           <Icon
-            icon={getIcon()}
-            appearance={getAppearance()}
+            icon={isPinned ? <MdPushPin /> : <MdOutlinePushPin />}
+            appearance={isPinned ? "dark" : "gray"}
             size="20px"
-            cursorHover={!errorLoadingPins}
-            onClick={errorLoadingPins ? undefined : onPinChange}
+            cursorHover
+            onClick={onPinChange}
+            disabled={errorLoadingPins}
           />
         </Stack>
       </Stack>

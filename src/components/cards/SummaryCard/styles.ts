@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
 import { Link } from "react-router-dom";
 
-
-
 const StyledLink = styled(Link)`
   display: flex;
   text-decoration: none;
@@ -37,8 +35,4 @@ const StyledDivider = styled.hr`
     theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
-const StyledCursor = styled.div`
-  cursor: not-allowed;
-`
-
-export { StyledLink, StyledSummaryCard, StyledDivider, StyledCursor };
+export { StyledLink, StyledSummaryCard, StyledDivider };

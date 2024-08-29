@@ -54,11 +54,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
   const [errorLoadingPins, setErrorLoadingPins] = useState(false);
 
   useEffect(() => {
-    if (!pinnedRequests || pinnedRequests.length === 0) {
-      setErrorLoadingPins(true);
-    } else {
-      setErrorLoadingPins(false);
-    }
+    setErrorLoadingPins(!pinnedRequests || pinnedRequests.length === 0);
   }, [pinnedRequests]);
 
   return (

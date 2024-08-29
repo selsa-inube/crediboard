@@ -1,9 +1,16 @@
 import { useState } from "react";
-import { Stack, Text, Icon, useMediaQueries, inube } from "@inube/design-system";
+import {
+  Stack,
+  Text,
+  Icon,
+  useMediaQueries,
+  inube,
+} from "@inube/design-system";
 import { MdOutlineChevronRight } from "react-icons/md";
 
 import { SummaryCard } from "@components/cards/SummaryCard";
 import { PinnedRequest, Requests } from "@services/types";
+import { mockRequestsPinned } from "@src/mocks/requests/requestsPinned.mock";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
@@ -16,6 +23,8 @@ interface BoardSectionProps {
   pinnedRequests: PinnedRequest[];
   handlePinRequest: (requestId: number) => void;
 }
+
+const errorLoadingPins = !mockRequestsPinned || mockRequestsPinned.length === 0;
 
 function BoardSection(props: BoardSectionProps) {
   const {
@@ -82,12 +91,8 @@ function BoardSection(props: BoardSectionProps) {
             </StyledCollapseIcon>
           )}
           <Text
-            type={
-              orientation === "vertical" || isMobile ? "title" : "headline"
-            }
-            size={
-              orientation === "vertical" || isMobile ? "large" : "medium"
-            }
+            type={orientation === "vertical" || isMobile ? "title" : "headline"}
+            size={orientation === "vertical" || isMobile ? "large" : "medium"}
           >
             {sectionTitle}
           </Text>
@@ -119,6 +124,7 @@ function BoardSection(props: BoardSectionProps) {
               onPinChange={() => {
                 handlePinRequest(request.k_Prospe);
               }}
+              errorLoadingPins={errorLoadingPins}
             />
           ))}
         </Stack>

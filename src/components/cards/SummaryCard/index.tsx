@@ -1,5 +1,4 @@
 import { SummaryCardUI } from "./interface";
-import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
 
 interface SummaryCardProps {
   rad: number;
@@ -15,7 +14,7 @@ interface SummaryCardProps {
   errorLoadingPins?: boolean;
 }
 
-function SummaryCard(props: SummaryCardProps) {
+const SummaryCard = (props: SummaryCardProps) => {
   const {
     rad,
     date,
@@ -27,9 +26,8 @@ function SummaryCard(props: SummaryCardProps) {
     isPinned = false,
     hasMessage = false,
     onPinChange,
+    errorLoadingPins,
   } = props;
-
-  const errorLoadingPins = !mockRequestsPinned || mockRequestsPinned.length === 0;
 
   return (
     <SummaryCardUI
@@ -43,10 +41,10 @@ function SummaryCard(props: SummaryCardProps) {
       isPinned={isPinned}
       hasMessage={hasMessage}
       onPinChange={onPinChange}
-      errorLoadingPins={errorLoadingPins} 
+      errorLoadingPins={errorLoadingPins}
     />
   );
-}
+};
 
 export { SummaryCard };
 export type { SummaryCardProps };
