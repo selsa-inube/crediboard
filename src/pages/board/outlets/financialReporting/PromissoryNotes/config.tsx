@@ -63,7 +63,6 @@ export const actionsFinanacialReporting = [
         variant="none"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
-        // Aquí quitamos la llamada a setShowModal
         onClick={() => entrySelection(data)}
       />
     ),
@@ -144,7 +143,6 @@ export const actionMobile = [
         spacing="none"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
-        // Aquí quitamos la llamada a setShowModal
         onClick={() => entrySelection(data)}
       />
     ),
