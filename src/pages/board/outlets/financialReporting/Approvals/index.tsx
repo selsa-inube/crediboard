@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Tag } from "@inubekit/tag";
-
+import { Flag } from "@inubekit/flag";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { Flag } from "@inubekit/flag";
+import { ItemNotFound } from "@components/layout/ItemNotFound"; 
+
 import {
   actionMobileApprovals,
   titlesApprovals,
@@ -16,10 +17,11 @@ import {
   handleErrorClick,
   desktopActions,
   getMobileActionsConfig,
-  infoItems 
+  infoItems,
 } from "./config";
 import { getDataById } from "@mocks/utils/dataMock.service";
 import { approval_by_credit_request_Mock } from "@services/types";
+import userNotFound from "@assets/images/ItemNotFound.png"; 
 
 import { StyledMessageContainer } from "../styles";
 
@@ -41,35 +43,80 @@ interface IApprovalsProps {
 export const Approvals = (props: IApprovalsProps) => {
   const { user, isMobile } = props;
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
   const [showFlag, setShowFlag] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [retryTimer, setRetryTimer] = useState<NodeJS.Timeout | null>(null);
+
+  const fetchApprovals = useCallback(() => {
+    setLoading(true);
+    setError(null);
+
+    getDataById<approval_by_credit_request_Mock[]>("approval", "credit_request_id", user)
+      .then((data) => {
+        if (data) {
+          const entries = data.map((entry) => ({
+            id: entry.approval_id.toString(),
+            usuarios: entry.approver_name,
+            error: entry.error,
+            tag: (
+              <Tag
+                label={entry.concept}
+                appearance={appearanceTag(entry.concept)}
+                weight="strong"
+              />
+            ),
+          }));
+          setEntriesApprovals(entries);
+          setLoading(false);
+        } else {
+          setError("No se encontraron datos.");
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        setError("Error al intentar conectar con el servicio de aprobaciones.");
+        setLoading(false);
+      });
+  }, [user]);
 
   useEffect(() => {
-    getDataById<approval_by_credit_request_Mock[]>(
-      "approval",
-      "credit_request_id",
-      user
-    ).then((data) => {
-      setLoading(true);
-      const entries = data!.map((entry) => ({
-        id: entry.approval_id.toString(),
-        usuarios: entry.approver_name,
-        error: entry.error,
-        tag: (
-          <Tag
-            label={entry.concept}
-            appearance={appearanceTag(entry.concept)}
-            weight="strong"
-          />
-        ),
-      }));
-      setEntriesApprovals(entries);
+    const timer = setTimeout(() => {
+      setError("No se pudo cargar la información. Intente nuevamente más tarde.");
       setLoading(false);
-    });
-  }, [user]);
+    }, 5000);
+
+    fetchApprovals();
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [fetchApprovals]); 
+
+  useEffect(() => {
+    if (!loading && !error && entriesApprovals.length > 0) {
+      const modalTimer = setTimeout(() => {
+        setShowNotificationModal(true);
+      }, 5000);
+      return () => clearTimeout(modalTimer);
+    }
+  }, [loading, error, entriesApprovals]);
+
+  useEffect(() => {
+    if (error) {
+      if (retryTimer) clearTimeout(retryTimer);
+      const newRetryTimer = setTimeout(() => {
+        setError("No se pudo cargar la información. Intente nuevamente más tarde.");
+      }, 5000);
+      setRetryTimer(newRetryTimer);
+    }
+    return () => {
+      if (retryTimer) clearTimeout(retryTimer);
+    };
+  }, [error, retryTimer]); 
 
   const handleNotificationClickBound = (data: IEntries) => {
     handleNotificationClick(data, setSelectedData, setShowNotificationModal);
@@ -100,25 +147,40 @@ export const Approvals = (props: IApprovalsProps) => {
   };
 
 
+  const handleRetry = () => {
+    fetchApprovals();
+  };
+
   return (
     <>
       <Fieldset title="Aprobaciones" heightFieldset="284px" hasTable>
-        <TableBoard
-          id="usuarios"
-          titles={titlesApprovals}
-          entries={entriesApprovals}
-          actions={desktopActionsConfig}
-          actionMobile={mobileActions}
-          loading={loading}
-          appearanceTable={{
-            widthTd: isMobile ? "70%" : undefined,
-            efectzebra: true,
-            title: "primary",
-            isStyleMobile: true,
-          }}
-          isFirstTable={true}
-          infoItems={infoItems}
-        />
+        {error ? (
+          <ItemNotFound
+            image={userNotFound}
+            title="Error al cargar datos"
+            description={error}
+            buttonDescription="Volver a intentar"
+            route="/retry-path"
+            onRetry={handleRetry} 
+          />
+        ) : (
+          <TableBoard
+            id="usuarios"
+            titles={titlesApprovals}
+            entries={entriesApprovals}
+            actions={desktopActionsConfig}
+            actionMobile={mobileActions}
+            loading={loading}
+            appearanceTable={{
+              widthTd: isMobile ? "70%" : undefined,
+              efectzebra: true,
+              title: "primary",
+              isStyleMobile: true,
+            }}
+            isFirstTable={true}
+            infoItems={infoItems}
+          />
+        )}
       </Fieldset>
       {showNotificationModal && selectedData && (
         <ListModal
