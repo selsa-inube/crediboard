@@ -23,7 +23,6 @@ import {
   infoItems,
 } from "./config";
 import { StyledMessageContainer } from "../styles";
-import { StyledContainer } from "./styles";
 
 interface IPromissoryNotesProps {
   user: string;
@@ -34,6 +33,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const { user, isMobile } = props;
 
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
     []
   );
@@ -52,6 +52,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
         user!
       ),
     ]).then((results) => {
+      setLoading(true);
       const dataPrommisseNotes = results
         .flatMap((prommiseNote): payroll_discount_authorization[] => {
           if (prommiseNote.status === "fulfilled") {
@@ -73,6 +74,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           ),
         }));
       setDataPromissoryNotes(dataPrommisseNotes);
+      setLoading(false);
     });
   }, [user]);
 
@@ -97,19 +99,20 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   };
 
   return (
-    <StyledContainer>
       <Fieldset
         title="Pagarés y Libranzas"
         heightFieldset="163px"
         aspectRatio="1"
         hasTable
+        hasOverflow
       >
-        <Stack direction="column" height={!isMobile ? "100%" : "138px"}>
+        <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
           <TableBoard
             id="promissoryNotes"
             titles={titlesFinanacialReporting}
             entries={dataPromissoryNotes}
             actions={tableBoardActions}
+            loading={loading}
             actionMobile={tableBoardActionMobile}
             appearanceTable={{
             widthTd: !isMobile ? "100" : "23%",
@@ -145,6 +148,5 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           )}
         </Stack>
       </Fieldset>
-    </StyledContainer>
   );
 };
