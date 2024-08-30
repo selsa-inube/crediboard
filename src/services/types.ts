@@ -180,3 +180,8 @@ export interface credit {
     estimated_severance: number;
   };
 }
+
+export interface IErrorService {
+  id: string;
+  message: string | Error;
+}

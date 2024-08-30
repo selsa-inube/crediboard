@@ -49,7 +49,7 @@ export const getDataById = async <T>(bd: string, key: string, id: string) => {
       return data.filter((dataFilter) => dataFilter[key] === id) as T;
     }
   } catch (e) {
-    console.error(e);
+    return e as Error;
   }
 };
 
