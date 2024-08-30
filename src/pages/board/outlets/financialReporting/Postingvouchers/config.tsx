@@ -55,3 +55,10 @@ export const actionsPostingvouchers = [
     ),
   },
 ];
+
+export const actionMobile = actionsPostingvouchers.map((action) => ({
+  id: action.id,
+  content: (data: IEntries) => (
+    <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
+  ),
+}));

@@ -7,10 +7,11 @@ interface ItemNotFoundProps {
   description: string;
   buttonDescription: string;
   route: string;
+  onRetry?: () => void; 
 }
 
 function ItemNotFound(props: ItemNotFoundProps) {
-  const { image, title, description, buttonDescription, route } = props;
+  const { image, title, description, buttonDescription, route, onRetry } = props;
   const smallScreen = useMediaQuery("(max-width: 720px)");
 
   return (
@@ -34,14 +35,30 @@ function ItemNotFound(props: ItemNotFoundProps) {
           type={smallScreen ? "body" : "title"}
           size={smallScreen ? "small" : "medium"}
           appearance="gray"
-          textAlign="Center"
+          textAlign="center"
         >
           {description}
         </Text>
 
-        <Button type="link" variant="none" spacing="compact" path={route}>
-          {buttonDescription}
-        </Button>
+        {onRetry ? (
+          <Button
+            type="button"
+            variant="primary"
+            spacing="compact"
+            onClick={onRetry}
+          >
+            {buttonDescription}
+          </Button>
+        ) : (
+          <Button
+            type="link"
+            variant="none"
+            spacing="compact"
+            path={route}
+          >
+            {buttonDescription}
+          </Button>
+        )}
       </Stack>
 
       <StyledImage
