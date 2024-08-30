@@ -7,7 +7,7 @@ interface ItemNotFoundProps {
   description: string;
   buttonDescription: string;
   route: string;
-  onRetry?: () => void; // Agrega la propiedad onRetry
+  onRetry?: () => void; 
 }
 
 function ItemNotFound(props: ItemNotFoundProps) {
@@ -43,9 +43,9 @@ function ItemNotFound(props: ItemNotFoundProps) {
         {onRetry ? (
           <Button
             type="button"
-            variant="primary" // Cambié el tipo de botón
+            variant="primary"
             spacing="compact"
-            onClick={onRetry} // Llama a la función onRetry
+            onClick={onRetry}
           >
             {buttonDescription}
           </Button>
