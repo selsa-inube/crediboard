@@ -7,21 +7,33 @@ import { Icon } from "@inubekit/icon";
 import { AppContext } from "@context/AppContext";
 import { IClient } from "@context/AppContext/types";
 
-import { StyledContainer, StyledUl, StyledItem, StyledImg, StyledHr } from "./styles";
+import {
+  StyledContainer,
+  StyledUl,
+  StyledItem,
+  StyledImg,
+  StyledHr,
+} from "./styles";
 
 interface BusinessUnitChangeProps {
   clients: IClient[];
 }
 
 export const BusinessUnitChange = ({ clients }: BusinessUnitChangeProps) => {
-  const { handleClientChange } = useContext(AppContext);
+  const { user, handleClientChange } = useContext(AppContext);
   const [selectedClient, setSelectedClient] = useState<string>(() => {
-    return localStorage.getItem('selectedClientSigla') || "";
+    return localStorage.getItem("selectedClientSigla") || "";
   });
 
   useEffect(() => {
-    localStorage.setItem('selectedClientSigla', selectedClient)
-  }, [selectedClient])
+    localStorage.setItem("selectedClientSigla", selectedClient);
+  }, [selectedClient]);
+
+  useEffect(() => {
+    if (user.company) {
+      setSelectedClient(user.company);
+    }
+  }, [user.company]);
 
   const handleLogoClick = (client: IClient) => {
     handleClientChange(client);
@@ -33,17 +45,21 @@ export const BusinessUnitChange = ({ clients }: BusinessUnitChangeProps) => {
       <Stack width="220px">
         <StyledUl>
           {clients.map((client, index) => (
-            <Link key={client.id} to="#" onClick={() => handleLogoClick(client)}>
+            <Link
+              key={client.id}
+              to="#"
+              onClick={() => handleLogoClick(client)}
+            >
               <StyledItem>
                 <StyledImg src={client.logo} alt={client.name} />
                 {selectedClient === client.sigla && (
-                <Icon
-                  icon={<MdCheck />}
-                  appearance="primary"
-                  size="20px"
-                  cursorHover
-                />
-              )}
+                  <Icon
+                    icon={<MdCheck />}
+                    appearance="primary"
+                    size="24px"
+                    cursorHover
+                  />
+                )}
               </StyledItem>
               {index !== clients.length - 1 && <StyledHr />}
             </Link>
