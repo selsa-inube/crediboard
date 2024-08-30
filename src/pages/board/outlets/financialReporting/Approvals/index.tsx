@@ -24,6 +24,7 @@ import { approval_by_credit_request_Mock } from "@services/types";
 import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StyledMessageContainer } from "../styles";
+import { errorObserver } from "../config"; 
 
 const appearanceTag = (label: string) => {
   if (label === "Pendiente") {
@@ -58,7 +59,16 @@ export const Approvals = (props: IApprovalsProps) => {
 
     getDataById<approval_by_credit_request_Mock[]>("approval", "credit_request_id", user)
       .then((data) => {
-        if (Array.isArray(data)) {
+        if (data instanceof Error) {
+          errorObserver.notify({
+            id: "Approvals",
+            message: "Error al obtener los datos de aprobaciones.",
+          });
+          setEntriesApprovals([]);
+          setError("Error al obtener los datos de aprobaciones.");
+          setLoading(false);
+          setShowRetry(true); 
+        } else if (Array.isArray(data)) {
           const entries = data.map((entry) => ({
             id: entry.approval_id.toString(),
             usuarios: entry.approver_name,
@@ -82,6 +92,10 @@ export const Approvals = (props: IApprovalsProps) => {
         }
       })
       .catch(() => {
+        errorObserver.notify({
+          id: "Approvals",
+          message: "Error al conectar con el servicio de aprobaciones.",
+        });
         setEntriesApprovals([]);
         setError("Error al intentar conectar con el servicio de aprobaciones.");
         setLoading(false);
