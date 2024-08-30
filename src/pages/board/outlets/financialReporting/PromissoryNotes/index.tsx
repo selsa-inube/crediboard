@@ -8,8 +8,10 @@ import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
+import { ItemNotFound } from "@components/layout/ItemNotFound";
 
 import { getDataById } from "@mocks/utils/dataMock.service";
+import userNotFound from "@assets/images/ItemNotFound.png";
 import {
   payroll_discount_authorization,
   promissory_note,
@@ -38,29 +40,33 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     []
   );
   const [showFlag, setShowFlag] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showRetry, setShowRetry] = useState(false);
 
   useEffect(() => {
-    Promise.allSettled([
-      getDataById<payroll_discount_authorization[]>(
-        "payroll_discount_authorization",
-        "credit_request_id",
-        user!
-      ),
-      getDataById<promissory_note[]>(
-        "promissory_note",
-        "credit_request_id",
-        user!
-      ),
-    ]).then((results) => {
+    const fetchData = async () => {
       setLoading(true);
-      const dataPrommisseNotes = results
-        .flatMap((prommiseNote): payroll_discount_authorization[] => {
-          if (prommiseNote.status === "fulfilled") {
-            return prommiseNote.value as payroll_discount_authorization[];
-          }
-          return [];
-        })
-        .map((entry) => ({
+      setError(null);
+      setShowRetry(false);
+
+      try {
+        const [payrollResult, promissoryResult] = await Promise.all([
+          getDataById<payroll_discount_authorization[]>(
+            "payroll_discount_authorization",
+            "credit_request_id",
+            user!
+          ),
+          getDataById<promissory_note[]>(
+            "promissory_note",
+            "credit_request_id",
+            user!
+          ),
+        ]);
+
+        const data = [
+          ...(payrollResult || []),
+          ...(promissoryResult || []),
+        ].map((entry) => ({
           id: entry.credit_product_id,
           "No. de Obligación": entry.obligation_unique_code,
           "No. de Documento": entry.document_unique_code,
@@ -73,9 +79,24 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             />
           ),
         }));
-      setDataPromissoryNotes(dataPrommisseNotes);
-      setLoading(false);
-    });
+
+        if (data.length > 0) {
+          setDataPromissoryNotes(data);
+        } else {
+          await delayPromise(5000);
+          setError("No se encontraron datos.");
+          setShowRetry(true);
+        }
+      } catch (error) {
+        await delayPromise(5000); 
+        setError("Error al intentar conectar con el servicio.");
+        setShowRetry(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [user]);
 
   const tableBoardActions = getTableBoardActions(() => setShowModal(true));
@@ -98,15 +119,31 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     setShowModal(false);
   };
 
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    setShowRetry(false);
+  };
+
   return (
-      <Fieldset
-        title="Pagarés y Libranzas"
-        heightFieldset="163px"
-        aspectRatio="1"
-        hasTable
-        hasOverflow
-      >
-        <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
+    <Fieldset
+      title="Pagarés y Libranzas"
+      heightFieldset="163px"
+      aspectRatio="1"
+      hasTable
+      hasOverflow
+    >
+      <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
+        {showRetry ? (
+          <ItemNotFound
+            image={userNotFound}
+            title="Error al cargar datos"
+            description={error || "No se encontraron datos."}
+            buttonDescription="Volver a intentar"
+            route="/retry-path"
+            onRetry={handleRetry}
+          />
+        ) : (
           <TableBoard
             id="promissoryNotes"
             titles={titlesFinanacialReporting}
@@ -115,7 +152,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             loading={loading}
             actionMobile={tableBoardActionMobile}
             appearanceTable={{
-            widthTd: !isMobile ? "100" : "23%",
+              widthTd: !isMobile ? "100" : "23%",
               efectzebra: true,
               title: "primary",
               isStyleMobile: true,
@@ -123,30 +160,34 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             isFirstTable={true}
             infoItems={infoItems}
           />
+        )}
 
-          {showModal && (
-            <PromissoryNotesModal
-              title="Confirma los datos del usuario"
-              buttonText="Enviar"
-              formValues={formValues}
-              handleClose={handleCloseModal} 
-              onSubmit={handleSubmit}
+        {showModal && (
+          <PromissoryNotesModal
+            title="Confirma los datos del usuario"
+            buttonText="Enviar"
+            formValues={formValues}
+            handleClose={handleCloseModal}
+            onSubmit={handleSubmit}
+          />
+        )}
+        {showFlag && (
+          <StyledMessageContainer>
+            <Flag
+              title="Datos enviados"
+              description="Los datos del usuario han sido enviados exitosamente."
+              appearance="success"
+              duration={5000}
+              icon={<MdOutlineThumbUp />}
+              isMessageResponsive
+              closeFlag={() => setShowFlag(false)}
             />
-          )}
-          {showFlag && (
-            <StyledMessageContainer>
-              <Flag
-                title="Datos enviados"
-                description="Los datos del usuario han sido enviados exitosamente."
-                appearance="success"
-                duration={5000}
-                icon={<MdOutlineThumbUp />}
-                isMessageResponsive
-                closeFlag={() => setShowFlag(false)}
-              />
-            </StyledMessageContainer>
-          )}
-        </Stack>
-      </Fieldset>
+          </StyledMessageContainer>
+        )}
+      </Stack>
+    </Fieldset>
   );
 };
+
+const delayPromise = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
