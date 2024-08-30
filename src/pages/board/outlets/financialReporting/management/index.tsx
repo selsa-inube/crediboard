@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Icon } from "@inubekit/icon";
 import { Stack, inube } from "@inube/design-system";
 import { Textfield } from "@inubekit/textfield";
@@ -27,7 +27,8 @@ export const Management = (props: IManagementProps) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const fetchData = useCallback(() => {
+    setLoading(true);
     const timer = setTimeout(() => {
       setError("No se pudo cargar la información. Intente nuevamente más tarde.");
       setLoading(false);
@@ -46,11 +47,15 @@ export const Management = (props: IManagementProps) => {
       .catch(() => {
         clearTimeout(timer);
         setError("Error al intentar conectar con el servicio de trazabilidad.");
-        setLoading(false);
+        setLoading(true);
       });
 
     return () => clearTimeout(timer);
-  }, [updateData, id]);
+  }, [id]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData, updateData]);
 
   const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -101,6 +106,11 @@ export const Management = (props: IManagementProps) => {
     setNewMessage(e.target.value);
   };
 
+  const handleRetry = () => {
+    setError(null); 
+    fetchData(); 
+  };
+
   return (
     <Fieldset title="Gestión" heightFieldset="340px" aspectRatio="1">
       {error ? (
@@ -109,7 +119,8 @@ export const Management = (props: IManagementProps) => {
           title="Error al cargar datos"
           description={error}
           buttonDescription="Volver a intentar"
-          route="/retry-path"
+          route="#"
+          onRetry={handleRetry}
         />
       ) : (
         <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
