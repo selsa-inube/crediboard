@@ -58,7 +58,7 @@ export const Approvals = (props: IApprovalsProps) => {
 
     getDataById<approval_by_credit_request_Mock[]>("approval", "credit_request_id", user)
       .then((data) => {
-        if (data) {
+        if (Array.isArray(data)) {
           const entries = data.map((entry) => ({
             id: entry.approval_id.toString(),
             usuarios: entry.approver_name,
