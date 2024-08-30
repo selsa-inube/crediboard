@@ -16,7 +16,7 @@ import { IStaff, IToDo } from "@services/types";
 import { get, getDataById } from "@mocks/utils/dataMock.service";
 
 import { StaffModal } from "./StaffModal";
-import { flagMessages } from "./config";
+import { errorMessagge, FlagMessage, flagMessages } from "./config";
 import { StyledMessageContainer } from "../styles";
 
 interface IICon {
@@ -59,27 +59,30 @@ function ToDo(props: ToDoProps) {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      try {
+        const [staffResult, toDoResult] = await Promise.allSettled([
+          get("staff"),
+          getDataById<IToDo[]>("to-dos", "credit_request_state_id", id!),
+        ]);
 
-      const [staffResult, toDoResult] = await Promise.allSettled([
-        get("staff"),
-        getDataById<IToDo[]>("to-do", "credit_request_state_id", id!),
-      ]);
+        if (
+          staffResult.status === "fulfilled" &&
+          !(staffResult.value instanceof Error)
+        ) {
+          setStaff(staffResult.value as IStaff[]);
+        }
 
-      if (
-        staffResult.status === "fulfilled" &&
-        !(staffResult.value instanceof Error)
-      ) {
-        setStaff(staffResult.value as IStaff[]);
+        if (
+          toDoResult.status === "fulfilled" &&
+          !(toDoResult.value instanceof Error)
+        ) {
+          setToDo(toDoResult.value as IToDo[]);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
       }
-
-      if (
-        toDoResult.status === "fulfilled" &&
-        !(toDoResult.value instanceof Error)
-      ) {
-        setToDo(toDoResult.value as IToDo[]);
-      }
-
-      setLoading(false);
     };
 
     fetchData();
@@ -87,12 +90,16 @@ function ToDo(props: ToDoProps) {
 
   useEffect(() => {
     if (toDo) {
-      const { account_manager_name = "", analyst_name = "" } = toDo?.[0] ?? {};
-      const commercialManager =
-        account_manager_name || "Jorge Enrique Díaz Vargas";
+      const { account_manager_name = "", analyst_name = "" } = toDo[0] ?? {};
 
-      setAssignedStaff({ commercialManager, analyst: analyst_name });
-      setTempStaff({ commercialManager, analyst: analyst_name });
+      setAssignedStaff({
+        commercialManager: account_manager_name,
+        analyst: analyst_name,
+      });
+      setTempStaff({
+        commercialManager: account_manager_name,
+        analyst: analyst_name,
+      });
     }
   }, [toDo]);
 
@@ -119,21 +126,17 @@ function ToDo(props: ToDoProps) {
   const handleSend = () => {
     if (button?.onClick) button.onClick();
 
-    switch (decisionValue.decision) {
-      case "Aceptar":
-        setFlagMessage(flagMessages.success);
-        break;
-      case "Rechazar":
-        setFlagMessage(flagMessages.error);
-        break;
-      case "Pendiente":
-        setFlagMessage(flagMessages.pending);
-        break;
-      default:
-        setFlagMessage(flagMessages.default);
-        break;
-    }
+    const flagMessagesMap: Record<string, FlagMessage> = {
+      Aceptar: flagMessages.success,
+      Rechazar: flagMessages.error,
+      Pendiente: flagMessages.pending,
+      Default: flagMessages.default,
+    };
 
+    const msgFlag =
+      flagMessagesMap[decisionValue.decision] || flagMessagesMap.Default;
+
+    setFlagMessage(msgFlag);
     setShowFlagMessage(true);
   };
 
@@ -160,8 +163,7 @@ function ToDo(props: ToDoProps) {
                 size={isMobile ? "medium" : "large"}
                 appearance={toDo?.[0]?.task_to_be_done ? "dark" : "gray"}
               >
-                {toDo?.[0]?.task_to_be_done ??
-                  "Ups, algo salió mal. No se puede cargar la información. Intente nuevamente más tarde."}
+                {toDo?.[0]?.task_to_be_done ?? errorMessagge}
               </Text>
             )}
           </Stack>
