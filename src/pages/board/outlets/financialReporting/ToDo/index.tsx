@@ -1,5 +1,4 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { useParams } from "react-router-dom";
 import {
   Button,
   Stack,
@@ -20,7 +19,6 @@ import { StaffModal } from "./StaffModal";
 import { flagMessages } from "./config";
 import { StyledMessageContainer } from "../styles";
 import { traceObserver } from "../config";
-import { useAuth0 } from "@auth0/auth0-react";
 
 interface IICon {
   icon: JSX.Element;
@@ -38,12 +36,12 @@ interface ToDoProps {
   icon?: IICon;
   button?: IButton;
   isMobile?: boolean;
-  user?: string;
+  user: string;
+  id: string;
 }
 
 function ToDo(props: ToDoProps) {
-  const { icon, button, isMobile } = props;
-  const { id } = useParams();
+  const { icon, button, isMobile, id, user } = props;
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
   const [toDo, setToDo] = useState<IToDo | null>(null);
@@ -55,7 +53,6 @@ function ToDo(props: ToDoProps) {
   const [decision, setDecision] = useState("");
   const [showFlagMessage, setShowFlagMessage] = useState(false);
   const [flagMessage, setFlagMessage] = useState(flagMessages.success);
-  const { user } = useAuth0();
 
   useEffect(() => {
     const fetchData = async () => {

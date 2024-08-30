@@ -1,6 +1,6 @@
 import { Stack, Icon } from "@inube/design-system";
 import { useState, isValidElement } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+
 import {
   MdAddCircleOutline,
   MdOutlineCheckCircle,
@@ -8,7 +8,6 @@ import {
 } from "react-icons/md";
 import { Flag } from "@inubekit/flag";
 
-import { useParams } from "react-router-dom";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
@@ -31,10 +30,12 @@ interface IData {
 export interface IRequirementsProps {
   data: IData[];
   isMobile: boolean;
+  id: string;
+  user: string;
 }
 
 export const Requirements = (props: IRequirementsProps) => {
-  const { data, isMobile } = props;
+  const { data, isMobile, id, user} = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [modalData, setModalData] = useState<{ date?: Date; details?: string }>(
     {}
@@ -47,8 +48,6 @@ export const Requirements = (props: IRequirementsProps) => {
     description: "",
     appearance: "success" as "success" | "danger",
   });
-  const { id } = useParams();
-  const { user } = useAuth0();
 
   const toggleAprovalsModal = () => setShowAprovalsModal(!showAprovalsModal);
   const changeApprove = () => setIsApproved(!isApproved);
@@ -212,7 +211,7 @@ export const Requirements = (props: IRequirementsProps) => {
           onSubmit={(values) =>
             handleSubmitAprovals(
               id!,
-              user!.nickname!,
+              user,
               values,
               setFlagMessage,
               setShowFlagMessage,

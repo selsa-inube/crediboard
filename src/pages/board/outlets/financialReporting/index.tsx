@@ -221,11 +221,11 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                {<ToDo icon={infoIcon} isMobile={isMobile} />}
+                {<ToDo icon={infoIcon} isMobile={isMobile}  id={id!} user={user!.nickname!}/>}
               </Stack>
               <Stack direction="column">{<Approvals user={id!} isMobile={isMobile}/>}</Stack>
               <Stack direction="column">
-                {<Requirements data={dataRequirements} isMobile={isMobile}/>}
+                {<Requirements data={dataRequirements} isMobile={isMobile} id={id!} user={user!.nickname!}/>}
               </Stack>
               <Stack direction="column">
                 {
