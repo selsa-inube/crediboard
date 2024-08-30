@@ -15,6 +15,7 @@ export const Postingvouchers = () => {
       <Fieldset
         title="Comprobantes de Contabilización"
         heightFieldset="163px"
+        aspectRatio="1"
         hasTable
       >
         <TableBoard

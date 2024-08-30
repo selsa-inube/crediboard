@@ -8,10 +8,9 @@ import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
-import { ItemNotFound } from "@components/layout/ItemNotFound";
+import { UnfoundData } from "@components/layout/UnfoundData";
 
 import { getDataById } from "@mocks/utils/dataMock.service";
-import userNotFound from "@assets/images/ItemNotFound.png";
 import {
   payroll_discount_authorization,
   promissory_note,
@@ -135,8 +134,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     >
       <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
         {showRetry ? (
-          <ItemNotFound
-            image={userNotFound}
+          <UnfoundData
             title="Error al cargar datos"
             description={error || "No se encontraron datos."}
             buttonDescription="Volver a intentar"
