@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Flag } from "@inubekit/flag";
@@ -24,6 +24,7 @@ import {
   infoItems,
 } from "./config";
 import { StyledMessageContainer } from "../styles";
+import { errorObserver } from "../config"; 
 
 interface IPromissoryNotesProps {
   user: string;
@@ -37,36 +38,34 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const [loading, setLoading] = useState(false);
   const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>([]);
   const [showFlag, setShowFlag] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [showRetry, setShowRetry] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      setShowRetry(false);
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setShowRetry(false);
 
-      try {
-        const [payrollResult, promissoryResult] = await Promise.all([
-          getDataById<payroll_discount_authorization[]>(
-            "payroll_discount_authorization",
-            "credit_request_id",
-            user
-          ),
-          getDataById<promissory_note[]>(
-            "promissory_note",
-            "credit_request_id",
-            user
-          ),
-        ]);
+    try {
+      const results = await Promise.allSettled([
+        getDataById<payroll_discount_authorization[]>(
+          "payroll_discount_authorization",
+          "credit_request_id",
+          user!
+        ),
+        getDataById<promissory_note[]>(
+          "promissory_note",
+          "credit_request_id",
+          user!
+        ),
+      ]);
 
-        const payrollData = Array.isArray(payrollResult) ? payrollResult : [];
-        const promissoryData = Array.isArray(promissoryResult) ? promissoryResult : [];
-
-        const data = [
-          ...payrollData,
-          ...promissoryData,
-        ].map((entry) => ({
+      const dataPrommisseNotes = results
+        .flatMap((result) => {
+          if (result.status === "fulfilled") {
+            return result.value as payroll_discount_authorization[];
+          }
+          return [];
+        })
+        .map((entry) => ({
           id: entry.credit_product_id,
           "No. de Obligación": entry.obligation_unique_code,
           "No. de Documento": entry.document_unique_code,
@@ -79,25 +78,26 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             />
           ),
         }));
-
-        if (data.length > 0) {
-          setDataPromissoryNotes(data);
-        } else {
-          await delayPromise(5000);
-          setError("No se encontraron datos.");
-          setShowRetry(true);
-        }
-      } catch (error) {
-        await delayPromise(5000); 
-        setError("Error al intentar conectar con el servicio.");
-        setShowRetry(true);
-      } finally {
-        setLoading(false);
+        
+      if (dataPrommisseNotes.length > 0) {
+        setDataPromissoryNotes(dataPrommisseNotes);
+      } else {
+        throw new Error("No se encontraron datos.");
       }
-    };
-
-    fetchData();
+    } catch (err) {
+      errorObserver.notify({
+        id: "PromissoryNotes",
+        message: "Error al obtener los datos de Pagarés y Libranzas",
+      });
+      setShowRetry(true);
+    } finally {
+      setLoading(false);
+    }
   }, [user]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const tableBoardActions = getTableBoardActions(() => setShowModal(true));
   const tableBoardActionMobile = getTableBoardActionMobile(() =>
@@ -121,72 +121,71 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
 
   const handleRetry = () => {
     setLoading(true);
-    setError(null);
     setShowRetry(false);
+    fetchData(); 
   };
 
   return (
-    <Fieldset
-      title="Pagarés y Libranzas"
-      heightFieldset="163px"
-      aspectRatio="1"
-      hasTable
-      hasOverflow
-    >
-      <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
-        {showRetry ? (
-          <UnfoundData
-            title="Error al cargar datos"
-            description={error || "No se encontraron datos."}
-            buttonDescription="Volver a intentar"
-            route="/retry-path"
-            onRetry={handleRetry}
-          />
-        ) : (
-          <TableBoard
-            id="promissoryNotes"
-            titles={titlesFinanacialReporting}
-            entries={dataPromissoryNotes}
-            actions={tableBoardActions}
-            loading={loading}
-            actionMobile={tableBoardActionMobile}
-            appearanceTable={{
-              widthTd: !isMobile ? "100" : "23%",
-              efectzebra: true,
-              title: "primary",
-              isStyleMobile: true,
-            }}
-            isFirstTable={true}
-            infoItems={infoItems}
-          />
-        )}
-
-        {showModal && (
-          <PromissoryNotesModal
-            title="Confirma los datos del usuario"
-            buttonText="Enviar"
-            formValues={formValues}
-            handleClose={handleCloseModal}
-            onSubmit={handleSubmit}
-          />
-        )}
-        {showFlag && (
-          <StyledMessageContainer>
-            <Flag
-              title="Datos enviados"
-              description="Los datos del usuario han sido enviados exitosamente."
-              appearance="success"
-              duration={5000}
-              icon={<MdOutlineThumbUp />}
-              isMessageResponsive
-              closeFlag={() => setShowFlag(false)}
+    <>
+      <Fieldset
+        title="Pagarés y Libranzas"
+        heightFieldset="163px"
+        aspectRatio="1"
+        hasOverflow
+        hasTable
+      >
+        <Stack direction="column" height={!isMobile ? "100%" : "138px"}>
+          {showRetry ? (
+            <UnfoundData
+              title="Error al cargar datos"
+              description="Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."
+              buttonDescription="Volver a intentar"
+              route="/retry-path"
+              onRetry={handleRetry}
             />
-          </StyledMessageContainer>
-        )}
-      </Stack>
-    </Fieldset>
+          ) : (
+            <TableBoard
+              id="promissoryNotes"
+              titles={titlesFinanacialReporting}
+              entries={dataPromissoryNotes}
+              actions={tableBoardActions}
+              actionMobile={tableBoardActionMobile}
+              loading={loading}
+              appearanceTable={{
+                widthTd: !isMobile ? "100" : "23%",
+                efectzebra: true,
+                title: "primary",
+                isStyleMobile: true,
+              }}
+              isFirstTable={true}
+              infoItems={infoItems}
+            />
+          )}
+
+          {showModal && (
+            <PromissoryNotesModal
+              title="Confirma los datos del usuario"
+              buttonText="Enviar"
+              formValues={formValues}
+              handleClose={handleCloseModal}
+              onSubmit={handleSubmit}
+            />
+          )}
+          {showFlag && (
+            <StyledMessageContainer>
+              <Flag
+                title="Datos enviados"
+                description="Los datos del usuario han sido enviados exitosamente."
+                appearance="success"
+                duration={5000}
+                icon={<MdOutlineThumbUp />}
+                isMessageResponsive
+                closeFlag={() => setShowFlag(false)}
+              />
+            </StyledMessageContainer>
+          )}
+        </Stack>
+      </Fieldset>
+    </>
   );
 };
-
-const delayPromise = (ms: number) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
