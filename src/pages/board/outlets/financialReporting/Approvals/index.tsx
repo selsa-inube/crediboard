@@ -49,16 +49,16 @@ export const Approvals = (props: IApprovalsProps) => {
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
   const [showFlag, setShowFlag] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showRetry, setShowRetry] = useState(false); 
+  const [showRetry, setShowRetry] = useState(false);
 
   const fetchApprovals = useCallback(() => {
     setLoading(true);
     setError(null);
-    setShowRetry(false); 
+    setShowRetry(false);
 
     getDataById<approval_by_credit_request_Mock[]>("approval", "credit_request_id", user)
       .then((data) => {
-        if (data) {
+        if (Array.isArray(data)) {
           const entries = data.map((entry) => ({
             id: entry.approval_id.toString(),
             usuarios: entry.approver_name,
@@ -73,19 +73,19 @@ export const Approvals = (props: IApprovalsProps) => {
           }));
           setEntriesApprovals(entries);
           setLoading(false);
-          setShowRetry(false); 
+          setShowRetry(false);
         } else {
           setEntriesApprovals([]);
           setError("No se encontraron datos.");
           setLoading(false);
-          setShowRetry(true); 
+          setShowRetry(true);
         }
       })
       .catch(() => {
         setEntriesApprovals([]);
         setError("Error al intentar conectar con el servicio de aprobaciones.");
         setLoading(false);
-        setShowRetry(true); 
+        setShowRetry(true);
       });
   }, [user]);
 
@@ -95,9 +95,9 @@ export const Approvals = (props: IApprovalsProps) => {
     if (loading) {
       retryTimer = setTimeout(() => {
         if (loading) {
-          setShowRetry(true); 
+          setShowRetry(true);
         }
-      }, 5000); 
+      }, 5000);
     } else {
       if (retryTimer) {
         clearTimeout(retryTimer);

@@ -35,9 +35,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
 
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
-    []
-  );
+  const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>([]);
   const [showFlag, setShowFlag] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showRetry, setShowRetry] = useState(false);
@@ -53,18 +51,21 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           getDataById<payroll_discount_authorization[]>(
             "payroll_discount_authorization",
             "credit_request_id",
-            user!
+            user
           ),
           getDataById<promissory_note[]>(
             "promissory_note",
             "credit_request_id",
-            user!
+            user
           ),
         ]);
 
+        const payrollData = Array.isArray(payrollResult) ? payrollResult : [];
+        const promissoryData = Array.isArray(promissoryResult) ? promissoryResult : [];
+
         const data = [
-          ...(payrollResult || []),
-          ...(promissoryResult || []),
+          ...payrollData,
+          ...promissoryData,
         ].map((entry) => ({
           id: entry.credit_product_id,
           "No. de Obligación": entry.obligation_unique_code,
