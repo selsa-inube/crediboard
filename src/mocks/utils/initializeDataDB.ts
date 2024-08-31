@@ -15,59 +15,62 @@ import { traceMock as traceMockDefault } from "@mocks/financialReporting/trace.m
 import { error_issued } from "@mocks/financialReporting/error.mock";
 import { credit_profileInfo } from "@src/mocks/creditProfileInfo/creditProfileInfo.mock";
 import {
-    mockRequests,
-    mockStaff,
-    approvalByCreditRequestMock,
-    documents,
-    errorIssued,
-    traceMock,
+  mockRequests,
+  mockStaff,
+  approvalByCreditRequestMock,
+  documents,
+  errorIssued,
+  traceMock,
 } from "./importDataDb";
+import { requirementsMock } from "../financialReporting/Presente/Requirements.mock";
 
 export function initializeDataDB(company: string) {
-    localforage.clear();
+  localforage.clear();
 
-    intializedData<(typeof themes)[number]>("themes", themes);
-    intializedData<(typeof mockRequestsDefault)[number]>(
-        "requests",
-        mockRequests(company)
-    );
+  intializedData<(typeof themes)[number]>("themes", themes);
+  intializedData<(typeof mockRequestsDefault)[number]>(
+    "requests",
+    mockRequests(company)
+  );
 
-    intializedData<(typeof mockRequestsPinned)[number]>(
-        "requests-pinned",
-        mockRequestsPinned
-    );
-    intializedData<(typeof mockStaffDefault)[number]>(
-        "staff",
-        mockStaff(company)
-    );
-    intializedData<(typeof approval_by_credit_request_Mock)[number]>(
-        "approval",
-        approvalByCreditRequestMock(company)
-    );
-    intializedData<(typeof traceMockDefault)[number]>(
-        "trace",
-        traceMock(company)
-    );
-    intializedData<(typeof mockToDo)[number]>("to-do", mockToDo);
-    intializedData<(typeof mockRiskScoring)[number]>(
-        "risk-scoring",
-        mockRiskScoring
-    );
-    intializedData<(typeof documentsDefault)[number]>(
-        "document",
-        documents(company)
-    );
-    intializedData<(typeof promissory_note)[number]>(
-        "promissory_note",
-        promissory_note
-    );
-    intializedData(
-        "payroll_discount_authorization",
-        payroll_discount_authorization
-    );
-    intializedData<(typeof error_issued)[number]>(
-        "error_issued",
-        errorIssued(company)
-    );
-    intializedData("credit_profileInfo", credit_profileInfo);
+  intializedData<(typeof mockRequestsPinned)[number]>(
+    "requests-pinned",
+    mockRequestsPinned
+  );
+  intializedData<(typeof mockStaffDefault)[number]>(
+    "staff",
+    mockStaff(company)
+  );
+  intializedData<(typeof approval_by_credit_request_Mock)[number]>(
+    "approval",
+    approvalByCreditRequestMock(company)
+  );
+  intializedData<(typeof traceMockDefault)[number]>(
+    "trace",
+    traceMock(company)
+  );
+  intializedData<(typeof mockToDo)[number]>("to-do", mockToDo);
+  intializedData<(typeof mockRiskScoring)[number]>(
+    "risk-scoring",
+    mockRiskScoring
+  );
+  intializedData<(typeof documentsDefault)[number]>(
+    "document",
+    documents(company)
+  );
+  intializedData<(typeof promissory_note)[number]>(
+    "promissory_note",
+    promissory_note
+  );
+  intializedData(
+    "payroll_discount_authorization",
+    payroll_discount_authorization
+  );
+  intializedData<(typeof error_issued)[number]>(
+    "error_issued",
+    errorIssued(company)
+  );
+  intializedData("credit_profileInfo", credit_profileInfo);
+
+  intializedData("requirements", requirementsMock);
 }
