@@ -18,8 +18,6 @@ import { ListModal } from "@components/modals/ListModal";
 import { StockTray } from "@src/components/layout/ContainerSections/StockTray";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
-import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
-import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { getById, getDataById } from "@mocks/utils/dataMock.service";
 import { Idocument, Ierror_issued, Requests } from "@services/types";
 import { generatePDF } from "@utils/pdf/generetePDF";
@@ -40,6 +38,7 @@ import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
 import { MobileMenu } from "@src/components/modals/MobileMenu";
+import { CardCommercialManagement } from "./CommercialManagement/CardCommercialManagement";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -127,10 +126,7 @@ export const FinancialReporting = () => {
     });
   }, [id]);
 
-  const [isPrint, setIsPrint] = useState(false);
-
   const handleGeneratePDF = () => {
-    setIsPrint(true);
     setTimeout(() => {
       generatePDF(
         dataCommercialManagementRef,
@@ -211,9 +207,7 @@ export const FinancialReporting = () => {
                   print={handleGeneratePDF}
                   data={data}
                   children={
-                    <DataCommercialManagement
-                      dataAccordeon={dataAccordeon}
-                      isOpen={isPrint}
+                    <CardCommercialManagement
                       dataRef={dataCommercialManagementRef}
                     />
                   }

@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import {
+  MdOutlineAdd,
   MdOutlineChevronRight,
+  MdOutlineMoreVert,
   MdOutlinePhone,
-  MdOutlineVideoCameraFront,
   MdOutlinePictureAsPdf,
-  MdOutlineSend,
-  MdOutlineEdit,
+  MdOutlineShare,
+  MdOutlineVideoCameraFront,
 } from "react-icons/md";
 
 import { Icon } from "@inubekit/icon";
@@ -157,8 +158,19 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {collapse && (
           <Stack direction="column" gap="10px">
             {!isMobile && (
-              <Stack gap={inube.spacing.s200}>
-                <StyledIcon>
+              <Stack gap={inube.spacing.s100} justifyContent="end" alignItems="center">
+                <Button
+                  type="button"
+                  spacing="compact"
+                  iconBefore={<Icon
+                    icon={<MdOutlineAdd />}
+                    appearance="light"
+                    size="18px"
+                    spacing="compact"
+                  />}
+                >
+                  Agregar producto
+                </Button>
                   <Icon
                     icon={<MdOutlinePictureAsPdf />}
                     appearance="primary"
@@ -167,27 +179,21 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     cursorHover
                     onClick={print}
                   />
-                </StyledIcon>
-                <StyledIcon>
                   <Icon
-                    icon={<MdOutlineSend />}
+                    icon={<MdOutlineShare />}
                     appearance="primary"
                     size="18px"
                     cursorHover
                   />
-                </StyledIcon>
-
-                <StyledIcon>
                   <Icon
-                    icon={<MdOutlineEdit />}
+                    icon={<MdOutlineMoreVert />}
                     appearance="primary"
                     size="18px"
                     cursorHover
                   />
-                </StyledIcon>
               </Stack>
             )}
-            <Stack direction="column" width="fit-content">
+            <Stack direction="column" >
               {children}
             </Stack>
           </Stack>
