@@ -110,7 +110,7 @@ export const Requirements = (props: IRequirementsProps) => {
 
       try {
         await addItem("trace", trace);
-        traceObserver.notify();
+        traceObserver.notify(trace);
         handleSuccess();
       } catch (error) {
         handleError(error as Error);

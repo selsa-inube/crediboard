@@ -13,27 +13,55 @@ import { TraceType } from "@services/types";
 import { traceObserver } from "../config";
 
 import { ChatContent } from "./styles";
+import { errorObserver } from "../config";
 
 interface IManagementProps {
   id: string;
   isMobile: boolean;
+  updateData?: boolean;
 }
 
 export const Management = (props: IManagementProps) => {
-  const { id, isMobile} = props;
+  const { id, isMobile } = props;
 
   const [traces, setTraces] = useState<TraceType[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    const observerTrace = () => {
-      getDataById<TraceType[]>("trace", "credit_request_id", id!).then((data) => {
-        if (data) setTraces(data);
-      });
+    const fetchData = async () => {
+      if (!id) return;
+
+      try {
+        const data = await getDataById<TraceType[]>(
+          "trace",
+          "credit_request_id",
+          id
+        );
+
+        if (data instanceof Error) {
+          errorObserver.notify({
+            id: "Management",
+            message: "Error al obtener los datos de gestión.",
+          });
+        }
+
+        if (Array.isArray(data)) {
+          setTraces(data);
+        }
+      } catch (err) {
+        errorObserver.notify({
+          id: "Management",
+          message: (err as Error).message.toString(),
+        });
+      }
     };
-    observerTrace();
-    traceObserver.suscribe(observerTrace);
-    return () => {traceObserver.unsubscribe(observerTrace)}
+
+    fetchData();
+    traceObserver.subscribe(fetchData);
+
+    return () => {
+      traceObserver.unsubscribe(fetchData);
+    };
   }, [id]);
 
   const handleFormSubmit = (e: React.MouseEvent) => {

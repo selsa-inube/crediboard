@@ -148,7 +148,7 @@ function ToDo(props: ToDoProps) {
 
     try {
       await addItem("trace", trace);
-      traceObserver.notify();
+      traceObserver.notify(trace);
       setShowFlagMessage(true);
     } catch (error) {
       console.error("Error al enviar la decisión:", error);

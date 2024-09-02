@@ -3,25 +3,30 @@ import { MdAddCircleOutline } from "react-icons/md";
 import { IOptionButtons } from "@components/modals/ListModal";
 import { addItem } from "@src/mocks/utils/dataMock.service";
 
-type Observer<T> = (data?: T) => void;
+type Observer<T> = (data: T) => void;
 
-function createObserver<T>() {
-  let observers: Observer<T>[] = [];
+function observer<T>() {
+  const observers: Observer<T>[] = [];
 
   return {
-    suscribe: (observer: Observer<T>) => {
+    subscribe: (observer: Observer<T>) => {
       observers.push(observer);
     },
     unsubscribe: (observer: Observer<T>) => {
-      observers = observers.filter((obs) => obs !== observer);
+      observers.filter((obs) => obs !== observer);
     },
-    notify: () => {
-      observers.forEach((obs) => obs());
+    notify: (data: T) => {
+      observers.forEach((observer) => observer(data));
     },
   };
 }
 
-export const traceObserver = createObserver();
+export const traceObserver = observer();
+
+export const errorObserver = observer<{
+  id: string;
+  message: string;
+}>();
 
 export const handleConfirmReject = async (
   id: string,
@@ -73,7 +78,7 @@ export const handleConfirmReject = async (
 
     try {
       await addItem("trace", trace);
-      traceObserver.notify();
+      traceObserver.notify(trace);
       handleSuccess();
     } catch (error) {
       handleError(error as Error);
@@ -131,7 +136,7 @@ export const handleConfirmCancel = async (
 
     try {
       await addItem("trace", trace);
-      traceObserver.notify();
+      traceObserver.notify(trace);
       handleSuccess();
     } catch (error) {
       handleError(error as Error);

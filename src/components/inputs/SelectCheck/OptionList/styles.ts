@@ -16,8 +16,8 @@ export const StyledOptionList = styled.ul<IStyledOptionList>`
   border-radius: 4px;
   background: ${({ theme }) => {
     return (
-      theme?.input?.optionList?.background?.expanded ||
-      inube.input.optionList.background.expanded
+      theme?.input?.option?.background?.regular ||
+      inube.input.option.background.regular
     );
   }};
   box-shadow:
@@ -26,8 +26,8 @@ export const StyledOptionList = styled.ul<IStyledOptionList>`
   & > li:hover {
     background: ${({ theme }) => {
       return (
-        theme?.input?.optionList?.background?.selected ||
-        inube.input.optionList.background.selected
+        theme?.input?.option?.background?.hover ||
+        inube.input.option.background.hover
       );
     }};
   }
