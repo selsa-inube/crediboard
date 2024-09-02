@@ -51,14 +51,18 @@ export const Approvals = (props: IApprovalsProps) => {
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
   const [showFlag, setShowFlag] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showRetry, setShowRetry] = useState(false); 
+  const [showRetry, setShowRetry] = useState(false);
 
   const fetchApprovals = useCallback(() => {
     setLoading(true);
     setError(null);
-    setShowRetry(false); 
+    setShowRetry(false);
 
-    getDataById<approval_by_credit_request_Mock[]>("approval", "credit_request_id", user)
+    getDataById<approval_by_credit_request_Mock[]>(
+      "approval",
+      "credit_request_id",
+      user
+    )
       .then((data) => {
         if (data instanceof Error) {
           errorObserver.notify({
@@ -68,7 +72,7 @@ export const Approvals = (props: IApprovalsProps) => {
           setEntriesApprovals([]);
           setError("Error al obtener los datos de aprobaciones.");
           setLoading(true);
-          setShowRetry(true); 
+          setShowRetry(true);
         } else if (Array.isArray(data)) {
           const entries = data.map((entry) => ({
             id: entry.approval_id.toString(),
@@ -84,12 +88,12 @@ export const Approvals = (props: IApprovalsProps) => {
           }));
           setEntriesApprovals(entries);
           setLoading(false);
-          setShowRetry(false); 
+          setShowRetry(false);
         } else {
           setEntriesApprovals([]);
           setError("No se encontraron datos.");
           setLoading(false);
-          setShowRetry(true); 
+          setShowRetry(true);
         }
       })
       .catch(() => {
@@ -100,21 +104,21 @@ export const Approvals = (props: IApprovalsProps) => {
         setEntriesApprovals([]);
         setError("Error al intentar conectar con el servicio de aprobaciones.");
         setLoading(false);
-        setShowRetry(true); 
+        setShowRetry(true);
       });
   }, [user]);
 
- useEffect(() => {
-  if (loading) {
-    const retryTimer = setTimeout(() => {
-      setShowRetry(true);
-    }, 5000);
+  useEffect(() => {
+    if (loading) {
+      const retryTimer = setTimeout(() => {
+        setShowRetry(true);
+      }, 5000);
 
-    return () => clearTimeout(retryTimer);
-  } else {
-    setShowRetry(false); 
-  }
-}, [loading]);
+      return () => clearTimeout(retryTimer);
+    } else {
+      setShowRetry(false);
+    }
+  }, [loading]);
 
   useEffect(() => {
     fetchApprovals();
