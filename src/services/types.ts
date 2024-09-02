@@ -185,3 +185,27 @@ export interface IErrorService {
   id: string;
   message: string | Error;
 }
+
+interface Prospect {
+  credit_products: CreditProduct[];
+}
+
+interface CreditProduct {
+  loan_amount: number;
+  loan_term: number;
+  insurance_rate: number;
+  insurance_type: string;
+  line_of_credit_id: string;
+  rate_type: string;
+  interest_rate: number;
+  quota: number;
+  payment_channel_for_principal: string;
+  first_payment_cycle_for_principal: string;
+  payment_channel_for_interest: string;
+  first_payment_cycle_for_interest: number;
+}
+
+export interface ProspectsResponse {
+  credit_request_id: string;
+  prospect: Prospect;
+}
