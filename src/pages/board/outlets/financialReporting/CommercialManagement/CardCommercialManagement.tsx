@@ -1,5 +1,5 @@
-import { CreditProductCard } from "@src/components/cards/CreditProductCard";
-import SummaryProspect from "@src/components/inputs/SummaryOnProspect";
+import { CreditProductCard } from "@components/cards/CreditProductCard";
+import SummaryProspect from "@components/inputs/SummaryOnProspect";
 
 import {
   entriesCommercialManagementCard,

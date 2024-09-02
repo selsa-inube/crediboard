@@ -43,7 +43,7 @@ import { dataRequirements } from "./Requirements/config";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
-import { MobileMenu } from "@src/components/modals/MobileMenu";
+import { MobileMenu } from "@components/modals/MobileMenu";
 import { CardCommercialManagement } from "./CommercialManagement/CardCommercialManagement";
 
 interface IListdataProps {

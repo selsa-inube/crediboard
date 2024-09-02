@@ -2,8 +2,8 @@ import { MdOutlineEdit } from "react-icons/md";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
-import { Container, IconWrapper, ContentWrapper } from "./styles";
 import { currencyFormat } from "@utils/formatData/currency";
+import { Container, IconWrapper, ContentWrapper } from "./styles";
 
 export interface SummaryProspectProps {
   items: { title: string; amount: string }[];
