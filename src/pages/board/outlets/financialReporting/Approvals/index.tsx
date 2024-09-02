@@ -67,7 +67,7 @@ export const Approvals = (props: IApprovalsProps) => {
         if (data instanceof Error) {
           errorObserver.notify({
             id: "Approvals",
-            message: "Error al obtener los datos de aprobaciones.",
+            message: "Error al obtener los datos de aprobaciones",
           });
           setEntriesApprovals([]);
           setError("Error al obtener los datos de aprobaciones.");
