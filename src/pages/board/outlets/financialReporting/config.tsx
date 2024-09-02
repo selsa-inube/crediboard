@@ -3,6 +3,29 @@ import { MdAddCircleOutline } from "react-icons/md";
 import { IOptionButtons } from "@components/modals/ListModal";
 import { addItem } from "@src/mocks/utils/dataMock.service";
 
+type Observer<T> = (data: T) => void;
+
+function observer<T>() {
+  const observers: Observer<T>[] = [];
+
+  return {
+    subscribe: (observer: Observer<T>) => {
+      observers.push(observer);
+    },
+    unsubscribe: (observer: Observer<T>) => {
+      observers.filter((obs) => obs !== observer);
+    },
+    notify: (data: T) => {
+      observers.forEach((observer) => observer(data));
+    },
+  };
+}
+
+export const errorObserver = observer<{
+  id: string;
+  message: string;
+}>();
+
 export const handleConfirmReject = async (
   id: string,
   user: string,
