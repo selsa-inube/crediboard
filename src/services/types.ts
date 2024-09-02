@@ -181,6 +181,11 @@ export interface credit {
   };
 }
 
+export interface IErrorService {
+  id: string;
+  message: string | Error;
+}
+
 interface Prospect {
   credit_products: CreditProduct[];
 }
