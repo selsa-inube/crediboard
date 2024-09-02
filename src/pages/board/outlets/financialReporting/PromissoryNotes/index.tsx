@@ -43,7 +43,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const fetchData = useCallback(async () => {
     setLoading(true);
     setShowRetry(false);
-
+  
     try {
       const results = await Promise.allSettled([
         getDataById<payroll_discount_authorization[]>(
@@ -57,7 +57,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           user!
         ),
       ]);
-
+  
       const dataPrommisseNotes = results
         .flatMap((result) => {
           if (result.status === "fulfilled") {
@@ -78,9 +78,10 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             />
           ),
         }));
-        
+  
       if (dataPrommisseNotes.length > 0) {
         setDataPromissoryNotes(dataPrommisseNotes);
+        setLoading(false);
       } else {
         throw new Error("No se encontraron datos.");
       }
@@ -89,11 +90,15 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
         id: "PromissoryNotes",
         message: "Error al obtener los datos de Pagarés y Libranzas",
       });
-      setShowRetry(true);
-    } finally {
-      setLoading(false);
-    }
+      
+      setTimeout(() => {
+        setShowRetry(true);
+        setLoading(false);
+      }, 5000); 
+  
+    } 
   }, [user]);
+  
 
   useEffect(() => {
     fetchData();
