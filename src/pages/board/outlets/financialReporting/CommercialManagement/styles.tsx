@@ -52,41 +52,30 @@ const StyledFieldset = styled.div<IStyledFieldset>`
 
 const StyledCardsCredit = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 30px;
-  padding: 15px 10px;
-  overflow-x: auto;
+  gap: 24px;
+  padding: 4px 8px 16px 8px;
   width: fit-content;
 `;
 
 const StyledSumaryPropect = styled.div`
   display: flex;
-  flex-direction: row;
-  flex: 2;
-  gap: 30px;
+  gap: 24px;
   margin: 35px 0px 8px 0px;
-  padding: 8px 10px;
+  padding: 0px 8px;
 `;
 
 const StyledContainerCardPropect = styled.div`
-  overflow: auto;
-  width: 100%;
+  overflow-x: auto;
 
-  &::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
+  &::-webkit-scrollbar { 
+    height: 8px; 
+    border-radius: 8px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background-color: ${({ theme }) =>
+      theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
+    border-radius: 8px;
   }
 `;
 

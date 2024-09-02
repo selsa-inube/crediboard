@@ -156,12 +156,14 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             )}
         {collapse && <StyledDivider />}
         {collapse && (
-          <Stack direction="column" gap="10px">
+          <Stack direction="column" gap={inube.spacing.s300}>
             {!isMobile && (
-              <Stack gap={inube.spacing.s100} justifyContent="end" alignItems="center">
+              <Stack gap={inube.spacing.s300} justifyContent="end" alignItems="center">
                 <Button
                   type="button"
+                  appearance="primary"
                   spacing="compact"
+                  variant="filled"
                   iconBefore={<Icon
                     icon={<MdOutlineAdd />}
                     appearance="light"
@@ -171,10 +173,11 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                 >
                   Agregar producto
                 </Button>
+                <Stack gap={inube.spacing.s100}>                
                   <Icon
                     icon={<MdOutlinePictureAsPdf />}
                     appearance="primary"
-                    size="18px"
+                    size="24px"
                     disabled={isPrint}
                     cursorHover
                     onClick={print}
@@ -182,15 +185,16 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   <Icon
                     icon={<MdOutlineShare />}
                     appearance="primary"
-                    size="18px"
+                    size="24px"
                     cursorHover
                   />
                   <Icon
                     icon={<MdOutlineMoreVert />}
                     appearance="primary"
-                    size="18px"
+                    size="24px"
                     cursorHover
                   />
+                </Stack>
               </Stack>
             )}
             <Stack direction="column" >

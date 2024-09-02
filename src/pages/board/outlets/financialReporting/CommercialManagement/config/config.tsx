@@ -267,8 +267,8 @@ export const entriesCommercialManagement = [
 
 export const entriesCommercialManagementCard = [
   {
-    lineOfCredit: "Credito Vacacional",
-    paymentMethod: "Nomina mensual exito Bancolombia",
+    lineOfCredit: "Crédito Vacacional",
+    paymentMethod: "Nómina mensual éxito Bancolombia",
     loanAmount: 100000000,
     interestRate: 123456789012,
     termMonths: 48,
@@ -276,8 +276,8 @@ export const entriesCommercialManagementCard = [
     schedule: Schedule.Biweekly,
   },
   {
-    lineOfCredit: "Credito Vacacional",
-    paymentMethod: "Nomina mensual exito Bancolombia",
+    lineOfCredit: "Crédito Vehículo",
+    paymentMethod: "Nómina mensual éxito",
     loanAmount: 100000000,
     interestRate: 123456789012,
     termMonths: 48,
@@ -285,8 +285,8 @@ export const entriesCommercialManagementCard = [
     schedule: Schedule.Biweekly,
   },
   {
-    lineOfCredit: "Credito Vacacional",
-    paymentMethod: "Nomina mensual exito Bancolombia",
+    lineOfCredit: "Crédito Libre Inversión",
+    paymentMethod: "Nómina mensual éxito Bancolombia",
     loanAmount: 100000000,
     interestRate: 123456789012,
     termMonths: 48,
@@ -294,8 +294,8 @@ export const entriesCommercialManagementCard = [
     schedule: Schedule.Biweekly,
   },
   {
-    lineOfCredit: "Credito Vacacional",
-    paymentMethod: "Nomina mensual exito Bancolombia",
+    lineOfCredit: "Crédito Educativo",
+    paymentMethod: "Nómina mensual éxito",
     loanAmount: 100000000,
     interestRate: 123456789012,
     termMonths: 48,
@@ -303,8 +303,8 @@ export const entriesCommercialManagementCard = [
     schedule: Schedule.Biweekly,
   },
   {
-    lineOfCredit: "Credito Vacacional",
-    paymentMethod: "Nomina mensual exito Bancolombia",
+    lineOfCredit: "Crédito Rotativo",
+    paymentMethod: "Nómina mensual éxito Bancolombia",
     loanAmount: 100000000,
     interestRate: 123456789012,
     termMonths: 48,
@@ -312,8 +312,8 @@ export const entriesCommercialManagementCard = [
     schedule: Schedule.Biweekly,
   },
   {
-    lineOfCredit: "Credito Vacacional",
-    paymentMethod: "Nomina mensual exito Bancolombia",
+    lineOfCredit: "Crédito Libre Inversión",
+    paymentMethod: "Nómina mensual éxito",
     loanAmount: 100000000,
     interestRate: 123456789012,
     termMonths: 48,
@@ -321,8 +321,8 @@ export const entriesCommercialManagementCard = [
     schedule: Schedule.Biweekly,
   },
   {
-    lineOfCredit: "Credito Vacacional",
-    paymentMethod: "Nomina mensual exito Bancolombia",
+    lineOfCredit: "Crédito Educativo",
+    paymentMethod: "Nómina mensual éxito Bancolombia",
     loanAmount: 100000000,
     interestRate: 123456789012,
     termMonths: 48,
@@ -330,8 +330,8 @@ export const entriesCommercialManagementCard = [
     schedule: Schedule.Biweekly,
   },
   {
-    lineOfCredit: "Credito Vacacional",
-    paymentMethod: "Nomina mensual exito Bancolombia",
+    lineOfCredit: "Crédito Rotativo",
+    paymentMethod: "Nómina mensual éxito",
     loanAmount: 100000000,
     interestRate: 123456789012,
     termMonths: 48,
