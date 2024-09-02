@@ -13,11 +13,9 @@ export async function get<T = unknown>(option: string) {
   try {
     const optionsData = await localforage.getItem(option);
 
-    if (!optionsData) throw new Error("No found");
-
     return optionsData as T;
   } catch (error) {
-    throw new Error(error as string);
+    return error;
   }
 }
 
@@ -48,8 +46,8 @@ export const getDataById = async <T>(bd: string, key: string, id: string) => {
     if (Array.isArray(data)) {
       return data.filter((dataFilter) => dataFilter[key] === id) as T;
     }
-  } catch (e) {
-    return e as Error;
+  } catch (error) {
+    return error as Error;
   }
 };
 
@@ -102,6 +100,6 @@ export async function addItem<T>(nameDB: string, newItem: T) {
 
     console.log("Item added successfully");
   } catch (error) {
-    console.error("Failed to add item:", error);
+    return "Failed to add item: " + error;
   }
 }
