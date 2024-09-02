@@ -67,7 +67,7 @@ export const Approvals = (props: IApprovalsProps) => {
           });
           setEntriesApprovals([]);
           setError("Error al obtener los datos de aprobaciones.");
-          setLoading(false);
+          setLoading(true);
           setShowRetry(true); 
         } else if (Array.isArray(data)) {
           const entries = data.map((entry) => ({
