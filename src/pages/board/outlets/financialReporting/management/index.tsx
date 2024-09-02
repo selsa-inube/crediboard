@@ -12,6 +12,7 @@ import { getDataById, updateActive } from "@mocks/utils/dataMock.service";
 import { TraceType } from "@services/types";
 
 import { ChatContent } from "./styles";
+import { errorObserver } from "../config";
 
 interface IManagementProps {
   id: string;
@@ -20,16 +21,42 @@ interface IManagementProps {
 }
 
 export const Management = (props: IManagementProps) => {
-  const { id, isMobile, updateData } = props;
+  const { id, isMobile } = props;
 
   const [traces, setTraces] = useState<TraceType[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    getDataById<TraceType[]>("trace", "credit_request_id", id!).then((data) => {
-      if (data && !(data instanceof Error)) setTraces(data);
-    });
-  }, [updateData, id]);
+    const fetchData = async () => {
+      if (!id) return;
+
+      try {
+        const data = await getDataById<TraceType[]>(
+          "trace",
+          "credit_request_id",
+          id
+        );
+
+        if (data instanceof Error) {
+          errorObserver.notify({
+            id: "Management",
+            message: "Error al obtener los datos de gestión.",
+          });
+        }
+
+        if (Array.isArray(data)) {
+          setTraces(data);
+        }
+      } catch (err) {
+        errorObserver.notify({
+          id: "Management",
+          message: (err as Error).message.toString(),
+        });
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
   const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();

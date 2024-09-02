@@ -54,8 +54,10 @@ export const Approvals = (props: IApprovalsProps) => {
       "credit_request_id",
       user
     ).then((data) => {
-      if (data && !(data instanceof Error)) {
-        const entries = data.map((entry) => ({
+      setLoading(true);
+
+      if (!(data instanceof Error)) {
+        const entries = data!.map((entry) => ({
           id: entry.approval_id.toString(),
           usuarios: entry.approver_name,
           error: entry.error,
@@ -124,7 +126,7 @@ export const Approvals = (props: IApprovalsProps) => {
       {showNotificationModal && selectedData && (
         <ListModal
           title="Notificación"
-          content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
+          content="¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud."
           buttonLabel="Enviar"
           handleClose={handleCloseModal}
           onSubmit={handleSubmit}

@@ -72,9 +72,10 @@ export const CreditProfileInfo = () => {
       }
 
       if (credit_profileInfo.status === "fulfilled") {
+        const labor_stability = credit_profileInfo?.value as credit[];
         setCredit_profileInfo((prevState) => ({
           ...prevState,
-          ...(credit_profileInfo?.value as credit[])[0]?.labor_stability,
+          ...labor_stability,
         }));
       }
 

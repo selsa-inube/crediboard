@@ -62,7 +62,7 @@ function ToDo(props: ToDoProps) {
       try {
         const [staffResult, toDoResult] = await Promise.allSettled([
           get("staff"),
-          getDataById<IToDo[]>("to-dos", "credit_request_state_id", id!),
+          getDataById<IToDo[]>("to-do", "credit_request_state_id", id!),
         ]);
 
         if (

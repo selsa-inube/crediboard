@@ -22,7 +22,12 @@ import { ComercialManagement } from "@pages/board/outlets/financialReporting/Com
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { getById, getDataById } from "@mocks/utils/dataMock.service";
-import { Idocument, Ierror_issued, Requests } from "@services/types";
+import {
+  type Idocument,
+  Ierror_issued,
+  IErrorService,
+  Requests,
+} from "@services/types";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
@@ -32,6 +37,7 @@ import {
   handleConfirmReject,
   handleConfirmCancel,
   optionButtons,
+  errorObserver,
 } from "./config";
 import { StyledItem, StyledMessageContainer, StyledToast } from "./styles";
 import { Approvals } from "./Approvals";
@@ -76,6 +82,13 @@ const Listdata = (props: IListdataProps) => {
   );
 };
 
+const removeErrorByIdServices = (
+  errorsList: IErrorService[],
+  errorId: string
+) => {
+  return errorsList.filter((error) => error.id !== errorId);
+};
+
 export const FinancialReporting = () => {
   const [data, setData] = useState({} as Requests);
 
@@ -105,12 +118,14 @@ export const FinancialReporting = () => {
 
   const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
 
+  const [errorsService, setErrorsService] = useState<IErrorService[]>([]);
+
   useEffect(() => {
     try {
       Promise.allSettled([
         getById("k_Prospe", "requests", id!),
-        getDataById<Idocument[]>("documents", "credit_request_id", id!),
-        getDataById<Ierror_issued[]>("error_issueds", "credit_request_id", id!),
+        getDataById<Idocument[]>("document", "credit_request_id", id!),
+        getDataById<Ierror_issued[]>("error_issued", "credit_request_id", id!),
       ]).then(([requirement, documents, error_issue]) => {
         if (requirement.status === "fulfilled") {
           setData(requirement.value as Requests);
@@ -134,6 +149,34 @@ export const FinancialReporting = () => {
       console.log("error", error);
     }
   }, [id]);
+
+  useEffect(() => {
+    const handleErrorsService = (newError: IErrorService) => {
+      setErrorsService((prevErrors) => {
+        let updatedErrors = [...prevErrors];
+
+        const errorExists = updatedErrors.some(
+          (error) => error.id === newError.id
+        );
+
+        if (!errorExists) {
+          updatedErrors = [...updatedErrors, newError];
+        } else {
+          updatedErrors = updatedErrors.map((i) =>
+            i.id === newError.id ? newError : i
+          );
+        }
+
+        return updatedErrors;
+      });
+    };
+
+    errorObserver.subscribe(handleErrorsService);
+
+    return () => {
+      errorObserver.unsubscribe(handleErrorsService);
+    };
+  }, []);
 
   const [isPrint, setIsPrint] = useState(false);
 
@@ -163,6 +206,10 @@ export const FinancialReporting = () => {
 
   const handleClose = (errorId: string) => {
     setError(errors.filter((error) => error.error_issued_id !== errorId));
+  };
+
+  const handleCloseErrorService = (errorId: string) => {
+    setErrorsService(removeErrorByIdServices(errorsService, errorId));
   };
 
   const handleOnCancel = () => {
@@ -197,6 +244,15 @@ export const FinancialReporting = () => {
                 key={error.error_issued_id}
               />
             ))}
+
+            {errorsService.length > 0 &&
+              errorsService.map((errorService) => (
+                <ErrorAlert
+                  message={errorService.message.toString()}
+                  onClose={() => handleCloseErrorService(errorService.id)}
+                  key={errorService.id}
+                />
+              ))}
           </StyledToast>
         </Stack>
       )}
