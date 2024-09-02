@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Tag } from "@inubekit/tag";
 import { Flag } from "@inubekit/flag";
+
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
@@ -24,7 +25,7 @@ import { approval_by_credit_request_Mock } from "@services/types";
 import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StyledMessageContainer } from "../styles";
-import { errorObserver } from "../config"; 
+import { errorObserver } from "../config";
 
 const appearanceTag = (label: string) => {
   if (label === "Pendiente") {
@@ -103,28 +104,17 @@ export const Approvals = (props: IApprovalsProps) => {
       });
   }, [user]);
 
-  useEffect(() => {
-    let retryTimer: NodeJS.Timeout | null = null;
+ useEffect(() => {
+  if (loading) {
+    const retryTimer = setTimeout(() => {
+      setShowRetry(true);
+    }, 5000);
 
-    if (loading) {
-      retryTimer = setTimeout(() => {
-        if (loading) {
-          setShowRetry(true); 
-        }
-      }, 5000); 
-    } else {
-      if (retryTimer) {
-        clearTimeout(retryTimer);
-      }
-      setShowRetry(false);
-    }
-
-    return () => {
-      if (retryTimer) {
-        clearTimeout(retryTimer);
-      }
-    };
-  }, [loading]);
+    return () => clearTimeout(retryTimer);
+  } else {
+    setShowRetry(false); 
+  }
+}, [loading]);
 
   useEffect(() => {
     fetchApprovals();
