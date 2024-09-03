@@ -14,7 +14,7 @@ import { approval_by_credit_request_Mock } from "@mocks/financialReporting/Appro
 import { documents as documentsDefault } from "@mocks/financialReporting/documents.mock";
 import { traceMock as traceMockDefault } from "@mocks/financialReporting/trace.mock";
 import { error_issued } from "@mocks/financialReporting/error.mock";
-import { credit_profileInfo } from "@src/mocks/creditProfileInfo/creditProfileInfo.mock";
+import { credit_profileInfo } from "@mocks/creditProfileInfo/creditProfileInfo.mock";
 
 import {
   mockRequests,

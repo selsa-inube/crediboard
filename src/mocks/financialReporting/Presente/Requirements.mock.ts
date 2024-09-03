@@ -5,11 +5,11 @@ export const requirementsMock = [
       "active partner": "Y",
       obligations_status: "Y",
       is_thirty_plus: "Y",
-      documentary_requirements: {
-        citizenship_card: "Y",
-        payment_receipt: "N",
-        Income_tax_return: "",
-      },
+    },
+    documentary_requirements: {
+      citizenship_card: "Y",
+      payment_receipt: "N",
+      Income_tax_return: "",
     },
     human_validations: {
       employment_references: "Y",
@@ -22,11 +22,11 @@ export const requirementsMock = [
       "active partner": "N",
       obligations_status: "N",
       is_thirty_plus: "N",
-      documentary_requirements: {
-        citizenship_card: "N",
-        payment_receipt: "Y",
-        Income_tax_return: "Y",
-      },
+    },
+    documentary_requirements: {
+      citizenship_card: "N",
+      payment_receipt: "Y",
+      Income_tax_return: "Y",
     },
     human_validations: {
       employment_references: "N",
@@ -39,11 +39,11 @@ export const requirementsMock = [
       "active partner": "Y",
       obligations_status: "N",
       is_thirty_plus: "Y",
-      documentary_requirements: {
-        citizenship_card: "Y",
-        payment_receipt: "",
-        Income_tax_return: "N",
-      },
+    },
+    documentary_requirements: {
+      citizenship_card: "Y",
+      payment_receipt: "",
+      Income_tax_return: "N",
     },
     human_validations: {
       employment_references: "Y",
@@ -56,11 +56,11 @@ export const requirementsMock = [
       "active partner": "N",
       obligations_status: "",
       is_thirty_plus: "N",
-      documentary_requirements: {
-        citizenship_card: "N",
-        payment_receipt: "N",
-        Income_tax_return: "",
-      },
+    },
+    documentary_requirements: {
+      citizenship_card: "N",
+      payment_receipt: "N",
+      Income_tax_return: "",
     },
     human_validations: {
       employment_references: "N",
@@ -73,11 +73,11 @@ export const requirementsMock = [
       "active partner": "Y",
       obligations_status: "Y",
       is_thirty_plus: "",
-      documentary_requirements: {
-        citizenship_card: "Y",
-        payment_receipt: "Y",
-        Income_tax_return: "Y",
-      },
+    },
+    documentary_requirements: {
+      citizenship_card: "Y",
+      payment_receipt: "Y",
+      Income_tax_return: "Y",
     },
     human_validations: {
       employment_references: "Y",
@@ -90,11 +90,11 @@ export const requirementsMock = [
       "active partner": "N",
       obligations_status: "N",
       is_thirty_plus: "Y",
-      documentary_requirements: {
-        citizenship_card: "N",
-        payment_receipt: "",
-        Income_tax_return: "N",
-      },
+    },
+    documentary_requirements: {
+      citizenship_card: "N",
+      payment_receipt: "",
+      Income_tax_return: "N",
     },
     human_validations: {
       employment_references: "",
@@ -107,11 +107,11 @@ export const requirementsMock = [
       "active partner": "Y",
       obligations_status: "N",
       is_thirty_plus: "N",
-      documentary_requirements: {
-        citizenship_card: "Y",
-        payment_receipt: "Y",
-        Income_tax_return: "N",
-      },
+    },
+    documentary_requirements: {
+      citizenship_card: "Y",
+      payment_receipt: "Y",
+      Income_tax_return: "N",
     },
     human_validations: {
       employment_references: "Y",
@@ -124,11 +124,11 @@ export const requirementsMock = [
       "active partner": "N",
       obligations_status: "",
       is_thirty_plus: "Y",
-      documentary_requirements: {
-        citizenship_card: "N",
-        payment_receipt: "Y",
-        Income_tax_return: "",
-      },
+    },
+    documentary_requirements: {
+      citizenship_card: "N",
+      payment_receipt: "Y",
+      Income_tax_return: "",
     },
     human_validations: {
       employment_references: "N",
@@ -141,11 +141,11 @@ export const requirementsMock = [
       "active partner": "Y",
       obligations_status: "Y",
       is_thirty_plus: "N",
-      documentary_requirements: {
-        citizenship_card: "Y",
-        payment_receipt: "N",
-        Income_tax_return: "Y",
-      },
+    },
+    documentary_requirements: {
+      citizenship_card: "Y",
+      payment_receipt: "N",
+      Income_tax_return: "Y",
     },
     human_validations: {
       employment_references: "Y",
@@ -158,11 +158,11 @@ export const requirementsMock = [
       "active partner": "N",
       obligations_status: "N",
       is_thirty_plus: "",
-      documentary_requirements: {
-        citizenship_card: "N",
-        payment_receipt: "Y",
-        Income_tax_return: "Y",
-      },
+    },
+    documentary_requirements: {
+      citizenship_card: "N",
+      payment_receipt: "Y",
+      Income_tax_return: "Y",
     },
     human_validations: {
       employment_references: "",

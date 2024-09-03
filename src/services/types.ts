@@ -209,3 +209,27 @@ export interface ProspectsResponse {
   credit_request_id: string;
   prospect: Prospect;
 }
+
+interface SystemValidations {
+  "active partner": string;
+  obligations_status: string;
+  is_thirty_plus: string;
+}
+
+interface DocumentaryRequirements {
+  citizenship_card: string;
+  payment_receipt: string;
+  Income_tax_return: string;
+}
+
+interface HumanValidations {
+  employment_references: string;
+  propose_cosigner: string;
+}
+
+export interface CreditRequest {
+  credit_request_id: string;
+  system_validations: SystemValidations;
+  documentary_requirements: DocumentaryRequirements;
+  human_validations: HumanValidations;
+}
