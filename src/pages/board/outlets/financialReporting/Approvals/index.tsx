@@ -48,6 +48,7 @@ export const Approvals = (props: IApprovalsProps) => {
   const [showFlag, setShowFlag] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     getDataById<approval_by_credit_request_Mock[]>(
       "approval",
       "credit_request_id",
@@ -125,7 +126,7 @@ export const Approvals = (props: IApprovalsProps) => {
       {showNotificationModal && selectedData && (
         <ListModal
           title="Notificación"
-          content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
+          content="¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud."
           buttonLabel="Enviar"
           handleClose={handleCloseModal}
           onSubmit={handleSubmit}
