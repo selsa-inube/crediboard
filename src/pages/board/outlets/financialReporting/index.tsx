@@ -12,10 +12,11 @@ import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
-import { ContainerSections } from "@components/layout/ContainerSections";
 import { ErrorAlert } from "@components/ErrorAlert";
-import { ListModal } from "@components/modals/ListModal";
+import { ContainerSections } from "@components/layout/ContainerSections";
 import { StockTray } from "@components/layout/ContainerSections/StockTray";
+import { ListModal } from "@components/modals/ListModal";
+import { MobileMenu } from "@components/modals/MobileMenu";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
@@ -45,7 +46,6 @@ import { dataRequirements } from "./Requirements/config";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
-import { MobileMenu } from "@src/components/modals/MobileMenu";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -121,31 +121,33 @@ export const FinancialReporting = () => {
   const [errorsService, setErrorsService] = useState<IErrorService[]>([]);
 
   useEffect(() => {
-    Promise.allSettled([
-      getById("k_Prospe", "requests", id!),
-      getDataById<Idocument[]>("document", "credit_request_id", id!),
-      getDataById<Ierror_issued[]>("error_issued", "credit_request_id", id!),
-    ]).then(([requirement, documents, error_issue]) => {
-      if (requirement.status === "fulfilled") {
-        setData(requirement.value as Requests);
-      }
-      if (
-        documents.status === "fulfilled" &&
-        documents.value instanceof Array
-      ) {
-        const documentsUser = documents.value.map((dataListDocument) => ({
-          id: dataListDocument.document_id,
-          name: dataListDocument.abbreviated_name,
-        }));
-        setDocument(documentsUser);
-      }
-      if (
-        error_issue.status === "fulfilled" &&
-        !(error_issue.value instanceof Error)
-      ) {
-        setError(error_issue.value!);
-      }
-    });
+    try {
+      Promise.allSettled([
+        getById("k_Prospe", "requests", id!),
+        getDataById<Idocument[]>("document", "credit_request_id", id!),
+        getDataById<Ierror_issued[]>("error_issued", "credit_request_id", id!),
+      ]).then(([requirement, documents, error_issue]) => {
+        if (requirement.status === "fulfilled") {
+          setData(requirement.value as Requests);
+        }
+        if (documents.status === "fulfilled" && documents.value) {
+          if (!(documents.value instanceof Error)) {
+            const documentsUser = documents.value.map((dataListDocument) => ({
+              id: dataListDocument.document_id,
+              name: dataListDocument.abbreviated_name,
+            }));
+            setDocument(documentsUser);
+          }
+        }
+        if (error_issue.status === "fulfilled") {
+          if (!(error_issue.value instanceof Error)) {
+            setError(error_issue.value!);
+          }
+        }
+      });
+    } catch (error) {
+      console.log("error", error);
+    }
   }, [id]);
 
   useEffect(() => {
@@ -232,7 +234,7 @@ export const FinancialReporting = () => {
 
   return (
     <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
-      {errors.length > 0 && (
+      {errors && (
         <Stack justifyContent="center" alignContent="center">
           <StyledToast $isMobile={isMobile}>
             {errors.map((error) => (

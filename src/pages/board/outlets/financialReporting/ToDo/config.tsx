@@ -5,10 +5,13 @@ export const infoIcon = {
   onClick: () => console.log("info"),
 };
 
+export const errorMessagge =
+  "Ups, algo salió mal. No se puede cargar la información. Intente nuevamente más tarde.";
+
 export interface FlagMessage {
   title: string;
   description: string;
-  appearance: "success"  | "danger";
+  appearance: "success" | "danger";
 }
 
 export const flagMessages: Record<string, FlagMessage> = {
