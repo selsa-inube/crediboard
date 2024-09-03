@@ -190,7 +190,7 @@ interface Prospect {
   credit_products: CreditProduct[];
 }
 
-interface CreditProduct {
+export interface CreditProduct {
   loan_amount: number;
   loan_term: number;
   insurance_rate: number;

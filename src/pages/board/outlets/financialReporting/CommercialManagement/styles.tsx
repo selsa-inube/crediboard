@@ -51,24 +51,10 @@ const StyledFieldset = styled.div<IStyledFieldset>`
 `;
 
 const StyledCardsCredit = styled.div`
-  display: flex;
-  gap: 24px;
-  padding: 4px 8px 16px 8px;
-  width: fit-content;
-`;
-
-const StyledSumaryPropect = styled.div`
-  display: flex;
-  gap: 24px;
-  margin: 35px 0px 8px 0px;
-  padding: 0px 8px;
-`;
-
-const StyledContainerCardPropect = styled.div`
   overflow-x: auto;
 
-  &::-webkit-scrollbar { 
-    height: 8px; 
+  &::-webkit-scrollbar {
+    height: 8px;
     border-radius: 8px;
   }
 
@@ -79,12 +65,22 @@ const StyledContainerCardPropect = styled.div`
   }
 `;
 
+const StyledVerticalDivider = styled.hr<IStyledDivider>`
+  background-color: ${({ theme }) =>
+    theme?.color?.stroke?.divider?.regular ||
+    inube.color.stroke.divider.regular};
+  border: 1px;
+  border: none;
+  height: 28px;
+  margin: ${inube.spacing.s0};
+  width: 2px;
+`;
+
 export {
   StyledCollapseIcon,
   StyledIcon,
   StyledDivider,
   StyledFieldset,
   StyledCardsCredit,
-  StyledSumaryPropect,
-  StyledContainerCardPropect,
+  StyledVerticalDivider,
 };

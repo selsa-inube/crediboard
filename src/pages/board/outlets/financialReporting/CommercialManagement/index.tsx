@@ -11,8 +11,10 @@ import {
 } from "react-icons/md";
 
 import { Icon } from "@inubekit/icon";
-import { Stack, Text, inube, useMediaQuery } from "@inube/design-system";
+import { inube, useMediaQuery } from "@inube/design-system";
 import { Button } from "@inubekit/button";
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
 
 import { Fieldset } from "@components/data/Fieldset";
 import {
@@ -24,7 +26,7 @@ import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { Requests } from "@services/types";
 
-import { StyledCollapseIcon, StyledIcon, StyledDivider,StyledFieldset } from "./styles";
+import { StyledCollapseIcon, StyledIcon, StyledDivider, StyledFieldset, StyledVerticalDivider } from "./styles";
 
 interface ComercialManagementProps {
   data: Requests;
@@ -173,6 +175,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                 >
                   Agregar producto
                 </Button>
+                <StyledVerticalDivider />
                 <Stack gap={inube.spacing.s100}>                
                   <Icon
                     icon={<MdOutlinePictureAsPdf />}

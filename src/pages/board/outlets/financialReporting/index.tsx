@@ -182,7 +182,8 @@ export const FinancialReporting = () => {
       generatePDF(
         dataCommercialManagementRef,
         "Gestión Comercial",
-        "Gestión Comercial"
+        "Gestión Comercial",
+        { top: 10, bottom: 10, left: 10, right: 10 }
       );
     }, 1000);
   };
@@ -272,6 +273,7 @@ export const FinancialReporting = () => {
                   data={data}
                   children={
                     <CardCommercialManagement
+                      id={id!}
                       dataRef={dataCommercialManagementRef}
                     />
                   }

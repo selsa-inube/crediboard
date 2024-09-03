@@ -1,13 +1,19 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  display: flex;
+interface IStyledCollapseIcon {
+  $showIcon: boolean;
+}
+
+export const Container = styled.div<IStyledCollapseIcon>`
   align-items: center;
-  background-color: #f8f9fa;
+  background-color: #FFFFFF;
   border-radius: 8px;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-  width: fit-content;
-  gap: 5px;
+  display: flex;
+  gap: ${({ $showIcon }) => ($showIcon ? "16px" : "64px")};
+  padding: 8px 12px 12px 12px;
+  border: 1px solid var(--Neutral-color-palette-neutral-N30, #EBECF0);
+  box-shadow: 0px 1px 3px 0px #091E4221;
+
 `;
 
 export const IconWrapper = styled.div`
@@ -24,5 +30,5 @@ export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  gap: 30px;
+  gap: 64px;
 `;
