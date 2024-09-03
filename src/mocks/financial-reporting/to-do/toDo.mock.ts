@@ -11,14 +11,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "pendiente",
       },
     ],
   },
@@ -32,14 +35,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "Aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "pendiente",
       },
     ],
   },
@@ -53,14 +59,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "pendiente",
       },
     ],
   },
@@ -74,14 +83,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "pendiente",
       },
     ],
   },
@@ -95,14 +107,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "Aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "Rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "Pendiente",
       },
     ],
   },
@@ -116,14 +131,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "Aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "Rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "Pendiente",
       },
     ],
   },
@@ -137,14 +155,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "Aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "Rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "Pendiente",
       },
     ],
   },
@@ -158,14 +179,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "Aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "Rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "Pendiente",
       },
     ],
   },
@@ -179,14 +203,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "Aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "Rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "Pendiente",
       },
     ],
   },
@@ -199,14 +226,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "Aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "Rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "Pendiente",
       },
     ],
   },
@@ -219,14 +249,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "Aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "Rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "Pendiente",
       },
     ],
   },
@@ -240,14 +273,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "Aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "Rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "Pendiente",
       },
     ],
   },
@@ -261,14 +297,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "Aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "Rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "Pendiente",
       },
     ],
   },
@@ -282,14 +321,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "Aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "Rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "Pendiente",
       },
     ],
   },
@@ -303,14 +345,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "Aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "Rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "Pendiente",
       },
     ],
   },
@@ -324,14 +369,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "Aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "Rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "Pendiente",
       },
     ],
   },
@@ -345,14 +393,17 @@ export const mockToDo: IToDo[] = [
       {
         id: "accept",
         label: "Aceptar",
+        value: "aceptar",
       },
       {
         id: "decline",
         label: "Rechazar",
+        value: "rechazar",
       },
       {
         id: "pending",
         label: "Pendiente",
+        value: "pendiente",
       },
     ],
   },

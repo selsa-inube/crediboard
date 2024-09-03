@@ -187,7 +187,7 @@ export const Approvals = (props: IApprovalsProps) => {
       {showNotificationModal && selectedData && (
         <ListModal
           title="Notificación"
-          content={`¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud.`}
+          content="¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud."
           buttonLabel="Enviar"
           handleClose={handleSubmit}
         />
