@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Tag } from "@inubekit/tag";
 import { Flag } from "@inubekit/flag";
+
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
@@ -24,6 +25,7 @@ import { approval_by_credit_request_Mock } from "@services/types";
 import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StyledMessageContainer } from "../styles";
+import { errorObserver } from "../config";
 
 const appearanceTag = (label: string) => {
   if (label === "Pendiente") {
@@ -49,16 +51,29 @@ export const Approvals = (props: IApprovalsProps) => {
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
   const [showFlag, setShowFlag] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showRetry, setShowRetry] = useState(false); 
+  const [showRetry, setShowRetry] = useState(false);
 
   const fetchApprovals = useCallback(() => {
     setLoading(true);
     setError(null);
-    setShowRetry(false); 
+    setShowRetry(false);
 
-    getDataById<approval_by_credit_request_Mock[]>("approval", "credit_request_id", user)
+    getDataById<approval_by_credit_request_Mock[]>(
+      "approval",
+      "credit_request_id",
+      user
+    )
       .then((data) => {
-        if (data) {
+        if (data instanceof Error) {
+          errorObserver.notify({
+            id: "Approvals",
+            message: "Error al obtener los datos de aprobaciones",
+          });
+          setEntriesApprovals([]);
+          setError("Error al obtener los datos de aprobaciones.");
+          setLoading(true);
+          setShowRetry(true);
+        } else if (Array.isArray(data)) {
           const entries = data.map((entry) => ({
             id: entry.approval_id.toString(),
             usuarios: entry.approver_name,
@@ -73,43 +88,36 @@ export const Approvals = (props: IApprovalsProps) => {
           }));
           setEntriesApprovals(entries);
           setLoading(false);
-          setShowRetry(false); 
+          setShowRetry(false);
         } else {
           setEntriesApprovals([]);
           setError("No se encontraron datos.");
           setLoading(false);
-          setShowRetry(true); 
+          setShowRetry(true);
         }
       })
       .catch(() => {
+        errorObserver.notify({
+          id: "Approvals",
+          message: "Error al conectar con el servicio de aprobaciones.",
+        });
         setEntriesApprovals([]);
         setError("Error al intentar conectar con el servicio de aprobaciones.");
         setLoading(false);
-        setShowRetry(true); 
+        setShowRetry(true);
       });
   }, [user]);
 
   useEffect(() => {
-    let retryTimer: NodeJS.Timeout | null = null;
-
     if (loading) {
-      retryTimer = setTimeout(() => {
-        if (loading) {
-          setShowRetry(true); 
-        }
-      }, 5000); 
+      const retryTimer = setTimeout(() => {
+        setShowRetry(true);
+      }, 5000);
+
+      return () => clearTimeout(retryTimer);
     } else {
-      if (retryTimer) {
-        clearTimeout(retryTimer);
-      }
       setShowRetry(false);
     }
-
-    return () => {
-      if (retryTimer) {
-        clearTimeout(retryTimer);
-      }
-    };
   }, [loading]);
 
   useEffect(() => {
