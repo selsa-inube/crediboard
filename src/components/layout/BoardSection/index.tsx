@@ -10,7 +10,6 @@ import { MdOutlineChevronRight } from "react-icons/md";
 
 import { SummaryCard } from "@components/cards/SummaryCard";
 import { PinnedRequest, Requests } from "@services/types";
-import { mockRequestsPinned } from "@src/mocks/requests/requestsPinned.mock";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
@@ -22,9 +21,8 @@ interface BoardSectionProps {
   sectionInformation: Requests[];
   pinnedRequests: PinnedRequest[];
   handlePinRequest: (requestId: number) => void;
+  errorLoadingPins: boolean;
 }
-
-const errorLoadingPins = !mockRequestsPinned || mockRequestsPinned.length === 0;
 
 function BoardSection(props: BoardSectionProps) {
   const {
@@ -34,6 +32,7 @@ function BoardSection(props: BoardSectionProps) {
     sectionInformation,
     pinnedRequests,
     handlePinRequest,
+    errorLoadingPins
   } = props;
   const disabledCollapse = sectionInformation.length === 0;
 

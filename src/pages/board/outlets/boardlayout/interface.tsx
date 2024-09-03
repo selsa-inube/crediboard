@@ -164,6 +164,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 sectionInformation={filteredRequests}
                 pinnedRequests={pinnedRequests}
                 handlePinRequest={handlePinRequest}
+                errorLoadingPins={errorLoadingPins}
               />
             );
           })}
