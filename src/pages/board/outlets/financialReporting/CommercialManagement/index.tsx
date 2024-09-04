@@ -65,7 +65,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   type="title"
                   size="small"
                   appearance="gray"
-                  padding="0px 0px 0px 8px"
+                  padding={`${inube.spacing.s0} ${inube.spacing.s0} ${inube.spacing.s0} ${inube.spacing.s100}`}
                 >
                   {capitalizeFirstLetter(
                     formatISODatetoCustomFormat(data.f_Prospe)
@@ -74,7 +74,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               </Stack>
             </Stack>
             {isMobile && (
-              <Stack margin="s050 s0">
+              <Stack margin={ `${inube.spacing.s600} ${inube.spacing.s0}` }>
                 <Text type="title" size={!isMobile ? "large" : "medium"}>
                   {data.nnasocia &&
                     capitalizeFirstLetterEachWord(
