@@ -8,7 +8,7 @@ import { MdOutlineSend } from "react-icons/md";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
-import { getDataById, updateActive } from "@mocks/utils/dataMock.service";
+import { getById, updateActive } from "@mocks/utils/dataMock.service";
 import { TraceType } from "@services/types";
 
 import { ChatContent } from "./styles";
@@ -31,11 +31,7 @@ export const Management = (props: IManagementProps) => {
       if (!id) return;
 
       try {
-        const data = await getDataById<TraceType[]>(
-          "trace",
-          "credit_request_id",
-          id
-        );
+        const data = await getById("trace", "credit_request_id", id, true);
 
         if (data instanceof Error) {
           errorObserver.notify({

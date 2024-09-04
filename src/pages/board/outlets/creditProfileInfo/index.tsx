@@ -9,7 +9,7 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
-import { get, getById, getDataById } from "@mocks/utils/dataMock.service";
+import { get, getById } from "@mocks/utils/dataMock.service";
 import { Requests, IRiskScoring, credit } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
@@ -57,9 +57,9 @@ export const CreditProfileInfo = () => {
 
   useEffect(() => {
     Promise.allSettled([
-      getById("k_Prospe", "requests", id!),
+      getById("requests", "k_Prospe", id!),
       get("risk-scoring"),
-      getDataById<credit[]>("credit_profileInfo", "credit_request_id", id!),
+      getById("credit_profileInfo", "credit_request_id", id!, true),
     ]).then((data) => {
       const [request, riskScoring, credit_profileInfo] = data;
 

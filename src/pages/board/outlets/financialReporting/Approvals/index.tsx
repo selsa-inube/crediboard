@@ -18,8 +18,7 @@ import {
   getMobileActionsConfig,
   infoItems,
 } from "./config";
-import { getDataById } from "@mocks/utils/dataMock.service";
-import { approval_by_credit_request_Mock } from "@services/types";
+import { getById } from "@mocks/utils/dataMock.service";
 
 import { StyledMessageContainer } from "../styles";
 
@@ -49,15 +48,9 @@ export const Approvals = (props: IApprovalsProps) => {
 
   useEffect(() => {
     setLoading(true);
-    getDataById<approval_by_credit_request_Mock[]>(
-      "approval",
-      "credit_request_id",
-      user
-    ).then((data) => {
-      setLoading(true);
-
-      if (!(data instanceof Error)) {
-        const entries = data!.map((entry) => ({
+    getById("approval", "credit_request_id", user, true).then((data) => {
+      if (Array.isArray(data)) {
+        const entries = data.map((entry) => ({
           id: entry.approval_id.toString(),
           usuarios: entry.approver_name,
           error: entry.error,
@@ -70,8 +63,8 @@ export const Approvals = (props: IApprovalsProps) => {
           ),
         }));
         setEntriesApprovals(entries);
-        setLoading(false);
       }
+      setLoading(false);
     });
   }, [user]);
 
