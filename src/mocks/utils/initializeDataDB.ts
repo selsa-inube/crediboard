@@ -15,6 +15,7 @@ import { documents as documentsDefault } from "@mocks/financialReporting/documen
 import { traceMock as traceMockDefault } from "@mocks/financialReporting/trace.mock";
 import { error_issued } from "@mocks/financialReporting/error.mock";
 import { credit_profileInfo } from "@src/mocks/creditProfileInfo/creditProfileInfo.mock";
+import { payment_capacity } from "@src/mocks/creditProfileInfo/paymentCapacity.mock";
 
 import {
   mockRequests,
@@ -72,5 +73,6 @@ export function initializeDataDB(company: string) {
     errorIssued(company)
   );
   intializedData("credit_profileInfo", credit_profileInfo);
+  intializedData("payment_capacity", payment_capacity);
   intializedData("prospects", mockProspectsResponse);
 }

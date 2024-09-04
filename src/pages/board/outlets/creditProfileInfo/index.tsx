@@ -10,7 +10,12 @@ import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
 import { get, getById, getDataById } from "@mocks/utils/dataMock.service";
-import { Requests, IRiskScoring, credit } from "@services/types";
+import {
+  Requests,
+  IRiskScoring,
+  credit,
+  Ipayment_capacity,
+} from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
@@ -44,6 +49,11 @@ export const CreditProfileInfo = () => {
     max_labor_stability_index: 0,
     estimated_severance: 0,
   });
+  const [payment_capacity, setPayment_capacity] = useState({
+    available_value: 0,
+    base_income: 0,
+    percentage_used: 0,
+  });
 
   const [loading, setLoading] = useState(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -60,8 +70,13 @@ export const CreditProfileInfo = () => {
       getById("k_Prospe", "requests", id!),
       get("risk-scoring"),
       getDataById<credit[]>("credit_profileInfo", "credit_request_id", id!),
+      getDataById<Ipayment_capacity[]>(
+        "payment_capacity",
+        "credit_request_id",
+        id!
+      ),
     ]).then((data) => {
-      const [request, riskScoring, credit_profileInfo] = data;
+      const [request, riskScoring, credit_profileInfo, payment_capacity] = data;
 
       if (request.status === "fulfilled") {
         setRequests(request.value as Requests);
@@ -72,11 +87,22 @@ export const CreditProfileInfo = () => {
       }
 
       if (credit_profileInfo.status === "fulfilled") {
-        const labor_stability = credit_profileInfo?.value as credit[];
-        setCredit_profileInfo((prevState) => ({
-          ...prevState,
-          ...labor_stability,
-        }));
+        const creditData = credit_profileInfo.value;
+        if (Array.isArray(creditData) && creditData.length > 0) {
+          setCredit_profileInfo((prevState) => ({
+            ...prevState,
+            ...creditData[0].labor_stability,
+          }));
+        }
+      }
+      if (payment_capacity.status === "fulfilled" && payment_capacity.value) {
+        const paymentData = payment_capacity.value;
+        if (Array.isArray(paymentData) && paymentData.length > 0) {
+          setPayment_capacity((prevState) => ({
+            ...prevState,
+            ...paymentData[0].payment_capacity,
+          }));
+        }
       }
 
       setLoading(false);
@@ -183,10 +209,10 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
         />
         <PaymentCapacity
-          availableValue={955320}
-          availablePercentage={32}
-          incomeB={3000000}
-          percentageUsed={68}
+          availableValue={payment_capacity.available_value}
+          availablePercentage={100 - payment_capacity.percentage_used}
+          incomeB={payment_capacity.base_income}
+          percentageUsed={payment_capacity.percentage_used}
           isMobile={isMobile}
         />
         <OpenWallet

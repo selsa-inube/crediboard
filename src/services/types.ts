@@ -132,6 +132,15 @@ export interface payroll_discount_authorization {
   image_unique_code: string;
 }
 
+export interface Ipayment_capacity {
+  credit_request_id: string;
+  payment_capacity: {
+      available_value: number;
+      base_income: number;
+      percentage_used: number;
+  }
+}
+
 export interface promissory_note {
   credit_request_id: string;
   promissory_note_id: string;
