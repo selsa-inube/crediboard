@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Stack } from "@inubekit/stack";
+import { inube } from "@inube/design-system";
 import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { SummaryProspect } from "@components/inputs/SummaryOnProspect";
 import { getDataById } from "@mocks/utils/dataMock.service";
-import { ProspectsResponse, CreditProduct } from "@src/services/types";
-import { Schedule } from "@src/services/enums";
+import { ProspectsResponse, CreditProduct } from "@services/types";
+import { Schedule } from "@services/enums";
 
 import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { StyledCardsCredit } from "./styles";
@@ -18,7 +19,7 @@ export const CardCommercialManagement = (
   props: CardCommercialManagementProps
 ) => {
   const { dataRef, id } = props;
-  const [prospectCredt, setProspectCredt] = useState<CreditProduct[]>([]);
+  const [prospectiveCredit, setProspectiveCredit] = useState<CreditProduct[]>([]);
   useEffect(() => {
     try {
       Promise.allSettled([
@@ -29,7 +30,7 @@ export const CardCommercialManagement = (
             const propectsCredit = prospects.value
               .map((dataPropects) => dataPropects.prospect.credit_products)
               .flat();
-            setProspectCredt(propectsCredit);
+            setProspectiveCredit(propectsCredit);
           }
         }
       });
@@ -41,9 +42,9 @@ export const CardCommercialManagement = (
   return (
     <div ref={dataRef}>
       <StyledCardsCredit>
-        <Stack gap="24px" width="fit-content" padding="4px 8px 16px 8px">
-          {prospectCredt &&
-            prospectCredt.map((entry) => (
+        <Stack gap={inube.spacing.s300} width="fit-content" padding={`${inube.spacing.s050} ${inube.spacing.s100} ${inube.spacing.s200} ${inube.spacing.s100}`} >
+          {prospectiveCredit &&
+            prospectiveCredit.map((entry) => (
               <CreditProductCard
                 key={entry.line_of_credit_id}
                 lineOfCredit={entry.line_of_credit_id}
@@ -59,7 +60,7 @@ export const CardCommercialManagement = (
             ))}
         </Stack>
       </StyledCardsCredit>
-      <Stack gap="24px" margin="35px 0px 8px 0px" padding="0px 8px" width="100%" justifyContent="space-around">
+      <Stack gap={inube.spacing.s300} margin={ `${inube.spacing.s450} ${inube.spacing.s0} ${inube.spacing.s100} ${inube.spacing.s0}` } padding={ `${inube.spacing.s0} ${inube.spacing.s100}` } justifyContent="space-around">
         {SummaryProspectCredit.map((entry, index) => (
           <SummaryProspect
             key={index}

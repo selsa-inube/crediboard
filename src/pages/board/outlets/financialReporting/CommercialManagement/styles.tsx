@@ -47,7 +47,7 @@ const StyledDivider = styled.hr<IStyledDivider>`
 `;
 
 const StyledFieldset = styled.div<IStyledFieldset>`
-  padding: 4px;
+  padding: ${inube.spacing.s050};
 `;
 
 const StyledCardsCredit = styled.div`
@@ -66,11 +66,8 @@ const StyledCardsCredit = styled.div`
 `;
 
 const StyledVerticalDivider = styled.hr<IStyledDivider>`
-  background-color: ${({ theme }) =>
-    theme?.color?.stroke?.divider?.regular ||
-    inube.color.stroke.divider.regular};
+  background-color: ${({ theme }) => theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular};
   border: 1px;
-  border: none;
   height: 28px;
   margin: ${inube.spacing.s0};
   width: 2px;
