@@ -19,7 +19,7 @@ export const CardCommercialManagement = (
   props: CardCommercialManagementProps
 ) => {
   const { dataRef, id } = props;
-  const [prospectiveCredit, setProspectiveCredit] = useState<CreditProduct[]>([]);
+  const [prospectsCredit, setProspectsCredit] = useState<CreditProduct[]>([]);
   useEffect(() => {
     try {
       Promise.allSettled([
@@ -30,7 +30,7 @@ export const CardCommercialManagement = (
             const propectsCredit = prospects.value
               .map((dataPropects) => dataPropects.prospect.credit_products)
               .flat();
-            setProspectiveCredit(propectsCredit);
+            setProspectsCredit(propectsCredit);
           }
         }
       });
@@ -43,8 +43,8 @@ export const CardCommercialManagement = (
     <div ref={dataRef}>
       <StyledCardsCredit>
         <Stack gap={inube.spacing.s300} width="fit-content" padding={`${inube.spacing.s050} ${inube.spacing.s100} ${inube.spacing.s200} ${inube.spacing.s100}`} >
-          {prospectiveCredit &&
-            prospectiveCredit.map((entry) => (
+          {prospectsCredit &&
+            prospectsCredit.map((entry) => (
               <CreditProductCard
                 key={entry.line_of_credit_id}
                 lineOfCredit={entry.line_of_credit_id}
