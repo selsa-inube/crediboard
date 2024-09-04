@@ -89,8 +89,12 @@ export const CreditProfileInfo = () => {
           setRequests(request.value as Requests);
         }
 
-        if (riskScoring.status === "fulfilled") {
-          const riskScoringData = riskScoring.value?.[0];
+        if (
+          riskScoring.status === "fulfilled" &&
+          !(riskScoring.value instanceof Error)
+        ) {
+          const [riskScoringData] = riskScoring.value ?? [];
+
           setRiskScoring((prev) => ({
             ...prev,
             ...riskScoringData?.risk_scoring,
@@ -104,9 +108,10 @@ export const CreditProfileInfo = () => {
         }
 
         if (credit_profileInfo.status === "fulfilled") {
+          const labor_stability = credit_profileInfo?.value as credit[];
           setCredit_profileInfo((prevState) => ({
             ...prevState,
-            ...credit_profileInfo?.value?.[0].labor_stability,
+            ...labor_stability,
           }));
         }
       } catch (e) {
