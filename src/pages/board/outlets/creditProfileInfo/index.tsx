@@ -10,7 +10,12 @@ import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
 import { get, getById, getDataById } from "@mocks/utils/dataMock.service";
-import { Requests, IRiskScoring, credit, Ipayment_capacity } from "@services/types";
+import {
+  Requests,
+  IRiskScoring,
+  credit,
+  Ipayment_capacity,
+} from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
@@ -45,9 +50,9 @@ export const CreditProfileInfo = () => {
     estimated_severance: 0,
   });
   const [payment_capacity, setPayment_capacity] = useState({
-        available_value: 0,
-        base_income: 0,
-        percentage_used: 0,
+    available_value: 0,
+    base_income: 0,
+    percentage_used: 0,
   });
 
   const [loading, setLoading] = useState(false);
@@ -65,8 +70,11 @@ export const CreditProfileInfo = () => {
       getById("k_Prospe", "requests", id!),
       get("risk-scoring"),
       getDataById<credit[]>("credit_profileInfo", "credit_request_id", id!),
-      getDataById<Ipayment_capacity[]>("payment_capacity", "credit_request_id", id!),
-
+      getDataById<Ipayment_capacity[]>(
+        "payment_capacity",
+        "credit_request_id",
+        id!
+      ),
     ]).then((data) => {
       const [request, riskScoring, credit_profileInfo, payment_capacity] = data;
 
@@ -79,19 +87,24 @@ export const CreditProfileInfo = () => {
       }
 
       if (credit_profileInfo.status === "fulfilled") {
-        setCredit_profileInfo((prevState) => ({
-          ...prevState,
-          ...credit_profileInfo?.value?.[0]?.labor_stability,
-        }));
+        const creditData = credit_profileInfo.value;
+        if (Array.isArray(creditData) && creditData.length > 0) {
+          setCredit_profileInfo((prevState) => ({
+            ...prevState,
+            ...creditData[0].labor_stability,
+          }));
+        }
       }
-      if (payment_capacity.status === "fulfilled" && payment_capacity.value){       
-        setPayment_capacity((prevState) => ({
-          ...prevState,
-          ...payment_capacity.value?.[0]?.payment_capacity 
-        })); 
-        
+      if (payment_capacity.status === "fulfilled" && payment_capacity.value) {
+        const paymentData = payment_capacity.value;
+        if (Array.isArray(paymentData) && paymentData.length > 0) {
+          setPayment_capacity((prevState) => ({
+            ...prevState,
+            ...paymentData[0].payment_capacity,
+          }));
+        }
       }
-      
+
       setLoading(false);
     });
   }, [id]);

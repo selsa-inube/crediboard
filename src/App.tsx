@@ -17,6 +17,7 @@ import { BoardRoutes } from "./routes/board";
 import { GlobalStyles } from "./styles/global";
 import { enviroment } from "./config/environment";
 
+
 function LogOut() {
   localStorage.clear();
   const { logout } = useAuth0();
@@ -26,6 +27,7 @@ function LogOut() {
 
 function FirstPage() {
   const { user } = useContext(AppContext);
+  initializeDataDB(user.company);
   return user.company.length === 0 ? <Login /> : <BoardRoutes />;
 }
 
@@ -46,7 +48,6 @@ function App() {
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       loginWithRedirect();
-      initializeDataDB();
     }
   }, [isLoading, isAuthenticated, loginWithRedirect]);
 
