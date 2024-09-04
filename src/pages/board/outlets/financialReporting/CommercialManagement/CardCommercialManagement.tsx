@@ -27,10 +27,9 @@ export const CardCommercialManagement = (
       ]).then(([prospects]) => {
         if (prospects.status === "fulfilled" && prospects.value) {
           if (!(prospects.value instanceof Error)) {
-            const propectsCredit = prospects.value
+            setProspectsCredit(prospects.value
               .map((dataPropects) => dataPropects.prospect.credit_products)
-              .flat();
-            setProspectsCredit(propectsCredit);
+              .flat());
           }
         }
       });
