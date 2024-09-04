@@ -71,9 +71,12 @@ export const CreditProfileInfo = () => {
       getById("k_Prospe", "requests", id!),
       get("risk-scoring"),
       getDataById<credit[]>("credit_profileInfo", "credit_request_id", id!),
-      getDataById<Ipayment_capacity[]>("payment_capacity", "credit_request_id", id!),
+      getDataById<Ipayment_capacity[]>(
+        "payment_capacity",
+        "credit_request_id",
+        id!
+      ),
       getDataById<Icredit_behavior[]>("credit_behavior", "credit_request_id", id!),
-
     ]).then((data) => {
       const [request, riskScoring, credit_profileInfo, payment_capacity, credit_behavior] = data;
 
@@ -86,22 +89,32 @@ export const CreditProfileInfo = () => {
       }
 
       if (credit_profileInfo.status === "fulfilled") {
-        setCredit_profileInfo((prevState) => ({
-          ...prevState,
-          ...credit_profileInfo?.value?.[0]?.labor_stability,
-        }));
+        const creditData = credit_profileInfo.value;
+        if (Array.isArray(creditData) && creditData.length > 0) {
+          setCredit_profileInfo((prevState) => ({
+            ...prevState,
+            ...creditData[0].labor_stability,
+          }));
+        }
       }
-      if (payment_capacity.status === "fulfilled" && payment_capacity.value){       
-        setPayment_capacity((prevState) => ({
-          ...prevState,
-          ...payment_capacity.value?.[0]?.payment_capacity 
-        })); 
+      if (payment_capacity.status === "fulfilled") {
+        const data = payment_capacity.value;
+        if (Array.isArray(data) && data.length > 0) {
+          setPayment_capacity((prevState) => ({
+            ...prevState,
+            ...data[0].payment_capacity
+          }));
+        }
       }
-      if (credit_behavior.status === "fulfilled" && credit_behavior.value){
-        setCredit_behavior((prevState) => ({
-          ...prevState,
-          ...credit_behavior.value?.[0]?.credit_behavior
-        }));
+      
+      if (credit_behavior.status === "fulfilled") {
+        const data = credit_behavior.value;
+        if (Array.isArray(data) && data.length > 0) {
+          setCredit_behavior((prevState) => ({
+            ...prevState,
+            ...data[0].credit_behavior
+          }));
+        }
       }
 
 
@@ -109,6 +122,7 @@ export const CreditProfileInfo = () => {
     });
   }, [id]);
 
+  console.log (payment_capacity);
 
   const handlePrint = () => {
     setIsGeneratingPdf(true);
