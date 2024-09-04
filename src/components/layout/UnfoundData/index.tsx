@@ -5,12 +5,12 @@ import { Stack } from "@inubekit/stack";
 import { ResponsiveImage } from "./styles";
 
 interface UnfoundDataProps {
-  buttonDescription: string;
+  title: string;
   description: string;
+  buttonDescription: string;
   image?: string;
   onRetry?: () => void;
   route: string;
-  title: string;
 }
 
 function UnfoundData(props: UnfoundDataProps) {
