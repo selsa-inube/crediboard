@@ -157,7 +157,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
               actionMobile={tableBoardActionMobile}
               loading={loading}
               appearanceTable={{
-                widthTd: !isMobile ? "100" : "23%",
+                widthTd: isMobile ? "23%" : undefined, 
                 efectzebra: true,
                 title: "primary",
                 isStyleMobile: true,

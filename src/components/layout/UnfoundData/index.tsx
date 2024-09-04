@@ -1,13 +1,16 @@
-import { Button, Stack, Text, useMediaQuery } from "@inube/design-system";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Button } from "@inubekit/button";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 import { ResponsiveImage } from "./styles";
 
 interface UnfoundDataProps {
-  image?: string;
-  title: string;
-  description: string;
   buttonDescription: string;
-  route: string;
+  description: string;
+  image?: string;
   onRetry?: () => void;
+  route: string;
+  title: string;
 }
 
 function UnfoundData(props: UnfoundDataProps) {
@@ -20,7 +23,7 @@ function UnfoundData(props: UnfoundDataProps) {
       direction={smallScreen ? "column-reverse" : "row"}
       gap={smallScreen ? "16px" : "8px"}
       alignItems="center"
-      margin="s300"
+      margin="24px"
       justifyContent="center"
     >
       <Stack direction="column" alignItems="center">
@@ -35,7 +38,7 @@ function UnfoundData(props: UnfoundDataProps) {
         {onRetry ? (
           <Button
             type="button"
-            variant="primary"
+            variant="none"
             spacing="compact"
             onClick={onRetry}
           >
