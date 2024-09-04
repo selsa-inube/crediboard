@@ -14,6 +14,7 @@ import { approval_by_credit_request_Mock } from "@mocks/financialReporting/Appro
 import { documents as documentsDefault } from "@mocks/financialReporting/documents.mock";
 import { traceMock as traceMockDefault } from "@mocks/financialReporting/trace.mock";
 import { error_issued } from "@mocks/financialReporting/error.mock";
+import { uncovered_wallet } from "@mocks/creditProfileInfo/uncoveredWallet.mock"
 import { credit_profileInfo } from "@src/mocks/creditProfileInfo/creditProfileInfo.mock";
 import { payment_capacity } from "@mocks/creditProfileInfo/paymentCapacity.mock";
 import { credit_behavior } from "@mocks/creditProfileInfo/creditBehavior.mock"
@@ -76,6 +77,7 @@ export function initializeDataDB(company: string) {
   );
   intializedData("credit_profileInfo", credit_profileInfo);
   intializedData("payment_capacity", payment_capacity);
+  intializedData("uncovered_wallet", uncovered_wallet)
   intializedData("credit_behavior", credit_behavior);
   intializedData("prospects", mockProspectsResponse);
 }

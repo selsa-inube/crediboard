@@ -135,19 +135,28 @@ export interface payroll_discount_authorization {
 export interface Ipayment_capacity {
   credit_request_id: string;
   payment_capacity: {
-      available_value: number;
-      base_income: number;
-      percentage_used: number;
-  }
+    available_value: number;
+    base_income: number;
+    percentage_used: number;
+  };
 }
-export interface Icredit_behavior{
+export interface Icredit_behavior {
   credit_request_id: string;
   credit_behavior: {
-      core_risk_score: number;
-      central_risk_score_date: number;
-      number_of_internal_arrears: number;
-      maximum_number_of_installments_in_arrears: number;
-  }
+    core_risk_score: number;
+    central_risk_score_date: number;
+    number_of_internal_arrears: number;
+    maximum_number_of_installments_in_arrears: number;
+  };
+}
+
+export interface Iuncovered_wallet {
+  credit_request_id: string;
+  uncovered_wallet: {
+    overdraft_factor: number;
+    discovered_value: number;
+    reciprocity: number;
+  };
 }
 
 export interface promissory_note {
