@@ -74,7 +74,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               </Stack>
             </Stack>
             {isMobile && (
-              <Stack margin={ `${inube.spacing.s600} ${inube.spacing.s0}` }>
+              <Stack margin={ `${inube.spacing.s050} ${inube.spacing.s0}` }>
                 <Text type="title" size={!isMobile ? "large" : "medium"}>
                   {data.nnasocia &&
                     capitalizeFirstLetterEachWord(
