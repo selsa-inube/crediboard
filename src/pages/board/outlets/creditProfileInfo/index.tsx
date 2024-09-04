@@ -10,12 +10,7 @@ import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
 import { get, getById, getDataById } from "@mocks/utils/dataMock.service";
-import {
-  Requests,
-  IRiskScoring,
-  credit,
-  Ipayment_capacity,
-} from "@services/types";
+import { Requests, IRiskScoring, credit, Ipayment_capacity, Icredit_behavior } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
@@ -54,6 +49,12 @@ export const CreditProfileInfo = () => {
     base_income: 0,
     percentage_used: 0,
   });
+  const [credit_behavior, setCredit_behavior] = useState({
+    core_risk_score: 0,
+    central_risk_score_date: 0,
+    number_of_internal_arrears: 0,
+    maximum_number_of_installments_in_arrears: 0,
+  });
 
   const [loading, setLoading] = useState(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -75,8 +76,9 @@ export const CreditProfileInfo = () => {
         "credit_request_id",
         id!
       ),
+      getDataById<Icredit_behavior[]>("credit_behavior", "credit_request_id", id!),
     ]).then((data) => {
-      const [request, riskScoring, credit_profileInfo, payment_capacity] = data;
+      const [request, riskScoring, credit_profileInfo, payment_capacity, credit_behavior] = data;
 
       if (request.status === "fulfilled") {
         setRequests(request.value as Requests);
@@ -95,19 +97,32 @@ export const CreditProfileInfo = () => {
           }));
         }
       }
-      if (payment_capacity.status === "fulfilled" && payment_capacity.value) {
-        const paymentData = payment_capacity.value;
-        if (Array.isArray(paymentData) && paymentData.length > 0) {
+      if (payment_capacity.status === "fulfilled") {
+        const data = payment_capacity.value;
+        if (Array.isArray(data) && data.length > 0) {
           setPayment_capacity((prevState) => ({
             ...prevState,
-            ...paymentData[0].payment_capacity,
+            ...data[0].payment_capacity
+          }));
+        }
+      }
+      
+      if (credit_behavior.status === "fulfilled") {
+        const data = credit_behavior.value;
+        if (Array.isArray(data) && data.length > 0) {
+          setCredit_behavior((prevState) => ({
+            ...prevState,
+            ...data[0].credit_behavior
           }));
         }
       }
 
+
       setLoading(false);
     });
   }, [id]);
+
+  console.log (payment_capacity);
 
   const handlePrint = () => {
     setIsGeneratingPdf(true);
@@ -265,10 +280,10 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
         />
         <CreditBehavior
-          centralScoreRisky={250}
-          centralScoreDate="2023-08-31T00:00:00-05:00"
-          numberInternalBlackberries={9}
-          maximumNumberInstallmentsArrears={3}
+          centralScoreRisky={credit_behavior.core_risk_score}
+          centralScoreDate={String(credit_behavior.central_risk_score_date)}
+          numberInternalBlackberries={credit_behavior.number_of_internal_arrears}
+          maximumNumberInstallmentsArrears={credit_behavior.maximum_number_of_installments_in_arrears}
           isMobile={isMobile}
         />
       </Grid>
