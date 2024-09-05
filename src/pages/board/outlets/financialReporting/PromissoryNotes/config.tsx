@@ -7,7 +7,6 @@ import {
   MdClose,
 } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
-
 import { IEntries } from "@components/data/TableBoard/types";
 
 const entrySelection = (data: IEntries) => {
@@ -169,12 +168,16 @@ export const getTableBoardActions = (
     id: action.id,
     actionName: action.actionName,
     label: "Action Label",
-    content: (data: IEntries) =>
-      action.id === "Reenviar" ? (
-        <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
-      ) : (
-        action.content(data)
-      ),
+    content: (data: IEntries) => (
+      <Icon
+        {...action.content(data).props}
+        onClick={() => {
+          if (action.id === "Reenviar") {
+            entrySelection(data);
+          }
+        }}
+      />
+    ),
   }));
 
 export const getTableBoardActionMobile = (
@@ -184,10 +187,14 @@ export const getTableBoardActionMobile = (
     id: action.id,
     actionName: action.actionName,
     label: "Mobile Action Label",
-    content: (data: IEntries) =>
-      action.id === "Reenviar" ? (
-        <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
-      ) : (
-        action.content(data)
-      ),
+    content: (data: IEntries) => (
+      <Icon
+        {...action.content(data).props}
+        onClick={() => {
+          if (action.id === "Reenviar") {
+            entrySelection(data);
+          }
+        }}
+      />
+    ),
   }));
