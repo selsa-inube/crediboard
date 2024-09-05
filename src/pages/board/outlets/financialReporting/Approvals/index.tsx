@@ -57,7 +57,6 @@ export const Approvals = (props: IApprovalsProps) => {
     setLoading(true);
     setError(null);
     setShowRetry(false);
-      
 
     getDataById<approval_by_credit_request_Mock[]>(
       "approval",
@@ -150,7 +149,12 @@ export const Approvals = (props: IApprovalsProps) => {
 
   return (
     <>
-      <Fieldset title="Aprobaciones" heightFieldset="284px" hasTable>
+      <Fieldset
+        title="Aprobaciones"
+        heightFieldset="277px"
+        hasTable
+        aspectRatio="1"
+      >
         {showRetry ? (
           <ItemNotFound
             image={userNotFound}
@@ -185,7 +189,7 @@ export const Approvals = (props: IApprovalsProps) => {
           content="¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud."
           buttonLabel="Enviar"
           handleClose={handleCloseNotificationModal}
-          onSubmit={ handleSubmit}
+          onSubmit={handleSubmit}
         />
       )}
       {showFlag && (
@@ -215,6 +219,3 @@ export const Approvals = (props: IApprovalsProps) => {
     </>
   );
 };
-
-
-
