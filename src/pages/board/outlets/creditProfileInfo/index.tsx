@@ -15,6 +15,8 @@ import {
   IRiskScoring,
   credit,
   Ipayment_capacity,
+  Icredit_behavior,
+  Iuncovered_wallet,
 } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
@@ -54,6 +56,17 @@ export const CreditProfileInfo = () => {
     base_income: 0,
     percentage_used: 0,
   });
+  const [credit_behavior, setCredit_behavior] = useState({
+    core_risk_score: 0,
+    central_risk_score_date: 0,
+    number_of_internal_arrears: 0,
+    maximum_number_of_installments_in_arrears: 0,
+  });
+  const [uncovered_wallet, setUncovered_wallet] = useState({
+    overdraft_factor: 0,
+    discovered_value: 0,
+    reciprocity: 0,
+  });
 
   const [loading, setLoading] = useState(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -71,12 +84,33 @@ export const CreditProfileInfo = () => {
       get("risk-scoring"),
       getDataById<credit[]>("credit_profileInfo", "credit_request_id", id!),
       getDataById<Ipayment_capacity[]>(
+        
         "payment_capacity",
+       
+        "credit_request_id",
+       
+        id!
+      
+      ),
+      getDataById<Icredit_behavior[]>(
+        "credit_behavior",
+        "credit_request_id",
+        id!
+      ),
+      getDataById<Iuncovered_wallet[]>(
+        "uncovered_wallet",
         "credit_request_id",
         id!
       ),
     ]).then((data) => {
-      const [request, riskScoring, credit_profileInfo, payment_capacity] = data;
+      const [
+        request,
+        riskScoring,
+        credit_profileInfo,
+        payment_capacity,
+        credit_behavior,
+        uncovered_wallet,
+      ] = data;
 
       if (request.status === "fulfilled") {
         setRequests(request.value as Requests);
@@ -95,12 +129,31 @@ export const CreditProfileInfo = () => {
           }));
         }
       }
-      if (payment_capacity.status === "fulfilled" && payment_capacity.value) {
-        const paymentData = payment_capacity.value;
-        if (Array.isArray(paymentData) && paymentData.length > 0) {
+      if (payment_capacity.status === "fulfilled") {
+        const data = payment_capacity.value;
+        if (Array.isArray(data) && data.length > 0) {
           setPayment_capacity((prevState) => ({
             ...prevState,
-            ...paymentData[0].payment_capacity,
+            ...data[0].payment_capacity
+          }));
+        }
+      }
+      
+      if (credit_behavior.status === "fulfilled") {
+        const data = credit_behavior.value;
+        if (Array.isArray(data) && data.length > 0) {
+          setCredit_behavior((prevState) => ({
+            ...prevState,
+            ...data[0].credit_behavior
+          }));
+        }
+      }
+      if (uncovered_wallet.status === "fulfilled") {
+        const data = uncovered_wallet.value;
+        if (Array.isArray(data) && data.length > 0) {
+          setUncovered_wallet((prevState) => ({
+            ...prevState,
+            ...data[0]?.uncovered_wallet,
           }));
         }
       }
@@ -108,6 +161,7 @@ export const CreditProfileInfo = () => {
       setLoading(false);
     });
   }, [id]);
+
 
   const handlePrint = () => {
     setIsGeneratingPdf(true);
@@ -216,9 +270,9 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
         />
         <OpenWallet
-          overdraftFactor={10}
-          valueDiscovered={50000000}
-          reciprocity={5}
+          overdraftFactor={uncovered_wallet.overdraft_factor}
+          valueDiscovered={uncovered_wallet.discovered_value}
+          reciprocity={uncovered_wallet.reciprocity}
           isMobile={isMobile}
         />
         <RiskScoring
@@ -265,10 +319,14 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
         />
         <CreditBehavior
-          centralScoreRisky={250}
-          centralScoreDate="2023-08-31T00:00:00-05:00"
-          numberInternalBlackberries={9}
-          maximumNumberInstallmentsArrears={3}
+          centralScoreRisky={credit_behavior.core_risk_score}
+          centralScoreDate={String(credit_behavior.central_risk_score_date)}
+          numberInternalBlackberries={
+            credit_behavior.number_of_internal_arrears
+          }
+          maximumNumberInstallmentsArrears={
+            credit_behavior.maximum_number_of_installments_in_arrears
+          }
           isMobile={isMobile}
         />
       </Grid>

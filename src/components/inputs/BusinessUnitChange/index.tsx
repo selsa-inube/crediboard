@@ -33,7 +33,7 @@ export const BusinessUnitChange = ({ clients }: BusinessUnitChangeProps) => {
       <Stack width="220px">
         <StyledUl>
           {clients.map((client, index) => (
-            <Link key={client.id} to="#" onClick={() => handleLogoClick(client)}>
+            <Link key={client.id} to=".." onClick={() => handleLogoClick(client)}>
               <StyledItem>
                 <StyledImg src={client.logo} alt={client.name} />
                 {selectedClient === client.sigla && (
