@@ -172,7 +172,7 @@ export const Management = (props: IManagementProps) => {
               <Icon
                 appearance="primary"
                 cursorHover
-                size="36px"
+                size="24px"
                 icon={<LuPaperclip />}
               />
               <Textfield
@@ -186,7 +186,7 @@ export const Management = (props: IManagementProps) => {
                 <Icon
                   appearance="primary"
                   cursorHover
-                  size="36px"
+                  size="24px"
                   icon={<MdOutlineSend />}
                   onClick={handleFormSubmit}
                 />
