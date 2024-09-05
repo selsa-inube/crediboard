@@ -57,6 +57,7 @@ export const Approvals = (props: IApprovalsProps) => {
     setLoading(true);
     setError(null);
     setShowRetry(false);
+      
 
     getDataById<approval_by_credit_request_Mock[]>(
       "approval",
@@ -64,16 +65,10 @@ export const Approvals = (props: IApprovalsProps) => {
       user
     )
       .then((data) => {
-        if (data instanceof Error) {
-          errorObserver.notify({
-            id: "Approvals",
-            message: "Error al obtener los datos de aprobaciones",
-          });
-          setEntriesApprovals([]);
-          setError("Error al obtener los datos de aprobaciones.");
-          setLoading(true);
-          setShowRetry(true);
-        } else if (Array.isArray(data)) {
+        if (!data || data instanceof Error) {
+          throw new Error("Error al obtener los datos de aprobaciones.");
+        }
+        if (Array.isArray(data)) {
           const entries = data.map((entry) => ({
             id: entry.approval_id.toString(),
             usuarios: entry.approver_name,
@@ -88,7 +83,6 @@ export const Approvals = (props: IApprovalsProps) => {
           }));
           setEntriesApprovals(entries);
           setLoading(false);
-          setShowRetry(false);
         } else {
           setEntriesApprovals([]);
           setError("No se encontraron datos.");
@@ -103,8 +97,6 @@ export const Approvals = (props: IApprovalsProps) => {
         });
         setEntriesApprovals([]);
         setError("Error al intentar conectar con el servicio de aprobaciones.");
-        setLoading(false);
-        setShowRetry(true);
       });
   }, [user]);
 
