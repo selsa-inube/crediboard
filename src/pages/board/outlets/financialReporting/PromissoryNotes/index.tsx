@@ -104,7 +104,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
         aspectRatio="1"
         hasTable
       >
-        <Stack direction="column" height={!isMobile ? "100%" : "138px"}>
+        <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
           <TableBoard
             id="promissoryNotes"
             titles={titlesFinanacialReporting}
@@ -112,7 +112,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             actions={tableBoardActions}
             actionMobile={tableBoardActionMobile}
             appearanceTable={{
-            widthTd: !isMobile ? "100" : "23%",
+              widthTd: !isMobile ? "100" : "23%",
               efectzebra: true,
               title: "primary",
               isStyleMobile: true,
@@ -126,7 +126,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
               title="Confirma los datos del usuario"
               buttonText="Enviar"
               formValues={formValues}
-              handleClose={handleCloseModal} 
+              handleClose={handleCloseModal}
               onSubmit={handleSubmit}
             />
           )}

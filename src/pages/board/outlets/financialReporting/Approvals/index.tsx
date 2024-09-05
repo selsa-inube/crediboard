@@ -147,7 +147,7 @@ export const Approvals = (props: IApprovalsProps) => {
 
   return (
     <>
-      <Fieldset title="Aprobaciones" heightFieldset="284px" hasTable>
+      <Fieldset title="Aprobaciones" heightFieldset="277px" hasTable aspectRatio="1">
         {showRetry ? (
           <ItemNotFound
             image={userNotFound}
