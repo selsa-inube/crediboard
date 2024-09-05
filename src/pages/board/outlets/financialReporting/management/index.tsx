@@ -53,12 +53,12 @@ export const Management = (props: IManagementProps) => {
       clearTimeout(timer);
   
       if (!data || (Array.isArray(data) && data.length === 0)) {
-        setError("No se encontraron datos.");
-      } else if (data instanceof Error) {
         errorObserver.notify({
           id: "Management",
           message: "Error al obtener los datos de gestión.",
         });
+        setError("No se encontraron datos.");
+      } else if (data instanceof Error) {
         setError("Error al obtener los datos de gestión.");
       } else {
         setTraces(data);
@@ -73,6 +73,7 @@ export const Management = (props: IManagementProps) => {
     } finally {
       setLoading(false);
     }
+    
   }, [id]);
   
 
