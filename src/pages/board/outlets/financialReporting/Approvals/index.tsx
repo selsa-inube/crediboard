@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Tag } from "@inubekit/tag";
+import { Flag } from "@inubekit/flag";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { Flag } from "@inubekit/flag";
 import {
   actionMobileApprovals,
   titlesApprovals,
