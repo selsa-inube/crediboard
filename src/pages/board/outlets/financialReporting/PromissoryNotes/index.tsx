@@ -90,6 +90,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
         id: "PromissoryNotes",
         message: "Error al obtener los datos de Pagarés y Libranzas",
       });
+      
       setTimeout(() => {
         setShowRetry(true);
         setLoading(false);
