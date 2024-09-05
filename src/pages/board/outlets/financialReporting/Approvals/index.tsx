@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Tag } from "@inubekit/tag";
+import { Flag } from "@inubekit/flag";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { Flag } from "@inubekit/flag";
+import { ItemNotFound } from "@components/layout/ItemNotFound";
+
 import {
   actionMobileApprovals,
   titlesApprovals,
@@ -20,8 +22,10 @@ import {
 } from "./config";
 import { getDataById } from "@mocks/utils/dataMock.service";
 import { approval_by_credit_request_Mock } from "@services/types";
+import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StyledMessageContainer } from "../styles";
+import { errorObserver } from "../config";
 
 const appearanceTag = (label: string) => {
   if (label === "Pendiente") {
@@ -41,39 +45,76 @@ interface IApprovalsProps {
 export const Approvals = (props: IApprovalsProps) => {
   const { user, isMobile } = props;
   const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
   const [showFlag, setShowFlag] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showRetry, setShowRetry] = useState(false);
 
-  useEffect(() => {
+  const fetchApprovals = useCallback(() => {
     setLoading(true);
+    setError(null);
+    setShowRetry(false);
+      
+
     getDataById<approval_by_credit_request_Mock[]>(
       "approval",
       "credit_request_id",
       user
-    ).then((data) => {
-      setLoading(true);
-
-      if (!(data instanceof Error)) {
-        const entries = data!.map((entry) => ({
-          id: entry.approval_id.toString(),
-          usuarios: entry.approver_name,
-          error: entry.error,
-          tag: (
-            <Tag
-              label={entry.concept}
-              appearance={appearanceTag(entry.concept)}
-              weight="strong"
-            />
-          ),
-        }));
-        setEntriesApprovals(entries);
-        setLoading(false);
-      }
-    });
+    )
+      .then((data) => {
+        if (!data || data instanceof Error) {
+          throw new Error("Error al obtener los datos de aprobaciones.");
+        }
+        if (Array.isArray(data)) {
+          const entries = data.map((entry) => ({
+            id: entry.approval_id.toString(),
+            usuarios: entry.approver_name,
+            error: entry.error,
+            tag: (
+              <Tag
+                label={entry.concept}
+                appearance={appearanceTag(entry.concept)}
+                weight="strong"
+              />
+            ),
+          }));
+          setEntriesApprovals(entries);
+          setLoading(false);
+        } else {
+          setEntriesApprovals([]);
+          setError("No se encontraron datos.");
+          setLoading(false);
+          setShowRetry(true);
+        }
+      })
+      .catch(() => {
+        errorObserver.notify({
+          id: "Approvals",
+          message: "Error al conectar con el servicio de aprobaciones.",
+        });
+        setEntriesApprovals([]);
+        setError("Error al intentar conectar con el servicio de aprobaciones.");
+      });
   }, [user]);
+
+  useEffect(() => {
+    if (loading) {
+      const retryTimer = setTimeout(() => {
+        setShowRetry(true);
+      }, 5000);
+
+      return () => clearTimeout(retryTimer);
+    } else {
+      setShowRetry(false);
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    fetchApprovals();
+  }, [fetchApprovals]);
 
   const handleNotificationClickBound = (data: IEntries) => {
     handleNotificationClick(data, setSelectedData, setShowNotificationModal);
@@ -94,42 +135,53 @@ export const Approvals = (props: IApprovalsProps) => {
     handleNotificationClickBound,
     handleErrorClickBound
   );
+
   const handleSubmit = () => {
     setShowFlag(true);
     setShowNotificationModal(false);
   };
 
-  const handleCloseModal = () => {
-    setShowNotificationModal(false);
+  const handleRetry = () => {
+    fetchApprovals();
   };
 
   return (
     <>
       <Fieldset title="Aprobaciones" heightFieldset="284px" hasTable>
-        <TableBoard
-          id="usuarios"
-          titles={titlesApprovals}
-          entries={entriesApprovals}
-          actions={desktopActionsConfig}
-          actionMobile={mobileActions}
-          loading={loading}
-          appearanceTable={{
-            widthTd: isMobile ? "70%" : undefined,
-            efectzebra: true,
-            title: "primary",
-            isStyleMobile: true,
-          }}
-          isFirstTable={true}
-          infoItems={infoItems}
-        />
+        {showRetry ? (
+          <ItemNotFound
+            image={userNotFound}
+            title="Error al cargar datos"
+            description={error || "No se encontraron datos."}
+            buttonDescription="Volver a intentar"
+            route="/retry-path"
+            onRetry={handleRetry}
+          />
+        ) : (
+          <TableBoard
+            id="usuarios"
+            titles={titlesApprovals}
+            entries={entriesApprovals}
+            actions={desktopActionsConfig}
+            actionMobile={mobileActions}
+            loading={loading}
+            appearanceTable={{
+              widthTd: isMobile ? "70%" : undefined,
+              efectzebra: true,
+              title: "primary",
+              isStyleMobile: true,
+            }}
+            isFirstTable={true}
+            infoItems={infoItems}
+          />
+        )}
       </Fieldset>
       {showNotificationModal && selectedData && (
         <ListModal
           title="Notificación"
           content="¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud."
           buttonLabel="Enviar"
-          handleClose={handleCloseModal}
-          onSubmit={handleSubmit}
+          handleClose={handleSubmit}
         />
       )}
       {showFlag && (
