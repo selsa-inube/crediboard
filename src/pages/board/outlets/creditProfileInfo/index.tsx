@@ -108,22 +108,17 @@ export const CreditProfileInfo = () => {
 
         if (
           riskScoring.status === "fulfilled" &&
-          !(riskScoring.value instanceof Error)
+          Array.isArray(riskScoring.value)
         ) {
-          const riskScoringData: IRiskScoring = Array.isArray(riskScoring.value)
-            ? riskScoring.value[0]
-            : riskScoring.value;
+          const [riskScoringData] = riskScoring.value;
 
           setRiskScoring((prev) => ({
             ...prev,
             ...riskScoringData?.risk_scoring,
           }));
-
-          !riskScoringData
-            ? setWataWereObtained(true)
-            : setWataWereObtained(false);
-        } else {
           setWataWereObtained(false);
+        } else {
+          setWataWereObtained(true);
         }
 
         if (credit_profileInfo.status === "fulfilled") {
