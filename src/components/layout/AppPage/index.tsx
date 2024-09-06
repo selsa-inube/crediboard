@@ -20,6 +20,7 @@ import {
   StyledMain,
   StyledMenuContainer,
   StyledCollapseIcon,
+  StyledCollapse
 } from "./styles";
 
 
@@ -36,13 +37,24 @@ function AppPage() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [collapse, setCollapse] = useState(false);
+  const collapseMenuRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const businessUnitChangeRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (event.target instanceof HTMLElement) {
       if (userMenuRef.current && event.target !== userMenuRef.current) {
         setShowUserMenu(false);
       }
+    }
+    if (
+      collapseMenuRef.current &&
+      !collapseMenuRef.current.contains(event.target as Node) &&
+      event.target !== collapseMenuRef.current &&
+      businessUnitChangeRef.current &&
+      !businessUnitChangeRef.current.contains(event.target as Node)
+    ) {
+      setCollapse(false);
     }
   };
 
@@ -89,15 +101,24 @@ function AppPage() {
           userName={user.username}
           client={user.company}
         />
-        <StyledCollapseIcon $collapse={collapse} onClick={() =>  setCollapse(!collapse)} $isTablet={isTablet}>
-            <Icon
-              icon={<MdOutlineChevronRight />}
-              appearance="primary"
-              size="24px"
-              cursorHover
-            />
-          </StyledCollapseIcon>
-        {collapse && <BusinessUnitChange clients={clientsDataMock}/>}
+        <StyledCollapseIcon
+          $collapse={collapse}
+          onClick={() =>  setCollapse(!collapse)}
+          $isTablet={isTablet}
+          ref={collapseMenuRef}
+        >
+          <Icon
+            icon={<MdOutlineChevronRight />}
+            appearance="primary"
+            size="24px"
+            cursorHover
+          />
+        </StyledCollapseIcon>
+        {collapse && (
+          <StyledCollapse ref={businessUnitChangeRef}>
+            <BusinessUnitChange clients={clientsDataMock} />
+          </StyledCollapse>
+        )}
         <StyledContainer>
           {showUserMenu && (
             <StyledMenuContainer ref={userMenuRef}>

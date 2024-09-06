@@ -13,7 +13,7 @@ import { Textfield } from "@inubekit/textfield";
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo } from "@services/types";
-import { get, getDataById } from "@mocks/utils/dataMock.service";
+import { get, getById } from "@mocks/utils/dataMock.service";
 
 import { StaffModal } from "./StaffModal";
 import { errorMessagge, FlagMessage, flagMessages } from "./config";
@@ -62,7 +62,7 @@ function ToDo(props: ToDoProps) {
       try {
         const [staffResult, toDoResult] = await Promise.allSettled([
           get("staff"),
-          getDataById<IToDo[]>("to-do", "credit_request_state_id", id!),
+          getById<IToDo[]>("to-do", "credit_request_state_id", id!, true),
         ]);
 
         if (

@@ -9,7 +9,7 @@ import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 
-import { getDataById } from "@mocks/utils/dataMock.service";
+import { getById } from "@mocks/utils/dataMock.service";
 import {
   payroll_discount_authorization,
   promissory_note,
@@ -41,15 +41,17 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
 
   useEffect(() => {
     Promise.allSettled([
-      getDataById<payroll_discount_authorization[]>(
+      getById<payroll_discount_authorization[]>(
         "payroll_discount_authorization",
         "credit_request_id",
-        user!
+        user!,
+        true
       ),
-      getDataById<promissory_note[]>(
+      getById<promissory_note[]>(
         "promissory_note",
         "credit_request_id",
-        user!
+        user!,
+        true
       ),
     ]).then((results) => {
       const dataPrommisseNotes = results

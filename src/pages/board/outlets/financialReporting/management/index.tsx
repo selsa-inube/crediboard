@@ -8,7 +8,7 @@ import localforage from "localforage";
 import { MdOutlineSend } from "react-icons/md";
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
-import { getDataById, updateActive } from "@mocks/utils/dataMock.service";
+import { getById, updateActive } from "@mocks/utils/dataMock.service";
 import { TraceType } from "@services/types";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import userNotFound from "@assets/images/ItemNotFound.png";
@@ -32,26 +32,27 @@ export const Management = (props: IManagementProps) => {
 
   const fetchData = useCallback(async () => {
     if (!id) return;
-  
+
     setLoading(true);
     setError(null);
-  
+
     const timer = setTimeout(() => {
       setError(
         "No se pudo cargar la información. Intente nuevamente más tarde."
       );
       setLoading(false);
     }, 5000);
-  
+
     try {
-      const data = await getDataById<TraceType[]>(
+      const data = await getById<TraceType[]>(
         "trace",
         "credit_request_id",
-        id
+        id,
+        true
       );
-  
+
       clearTimeout(timer);
-  
+
       if (!data || (Array.isArray(data) && data.length === 0)) {
         errorObserver.notify({
           id: "Management",
@@ -61,7 +62,11 @@ export const Management = (props: IManagementProps) => {
       } else if (data instanceof Error) {
         setError("Error al obtener los datos de gestión.");
       } else {
-        setTraces(data);
+        const flattenedData: TraceType[] = Array.isArray(data[0])
+          ? ((data as TraceType[][]).flat() as TraceType[])
+          : (data as TraceType[]);
+
+        setTraces(flattenedData);
       }
     } catch (err) {
       clearTimeout(timer);
@@ -73,9 +78,7 @@ export const Management = (props: IManagementProps) => {
     } finally {
       setLoading(false);
     }
-    
   }, [id]);
-  
 
   useEffect(() => {
     fetchData();
