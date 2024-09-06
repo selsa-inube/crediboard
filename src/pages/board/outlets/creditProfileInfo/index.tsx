@@ -9,15 +9,8 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
-import { getById, getDataById } from "@mocks/utils/dataMock.service";
-import {
-  Requests,
-  IRiskScoring,
-  credit,
-  Ipayment_capacity,
-  Icredit_behavior,
-  Iuncovered_wallet,
-} from "@services/types";
+import { getById } from "@mocks/utils/dataMock.service";
+import { Requests, IRiskScoring, credit } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
@@ -101,24 +94,12 @@ export const CreditProfileInfo = () => {
           credit_behavior,
           uncovered_wallet,
         ] = await Promise.allSettled([
-          getById("k_Prospe", "requests", id!),
-          getDataById<IRiskScoring[]>("risk-scoring", "credit_request_id", id!),
-          getDataById<credit[]>("credit_profileInfo", "credit_request_id", id!),
-          getDataById<Ipayment_capacity[]>(
-            "payment_capacity",
-            "credit_request_id",
-            id!
-          ),
-          getDataById<Icredit_behavior[]>(
-            "credit_behavior",
-            "credit_request_id",
-            id!
-          ),
-          getDataById<Iuncovered_wallet[]>(
-            "uncovered_wallet",
-            "credit_request_id",
-            id!
-          ),
+          getById("requests", "k_Prospe", id!),
+          getById<IRiskScoring>("risk-scoring", "credit_request_id", id!, true),
+          getById("credit_profileInfo", "credit_request_id", id!, true),
+          getById("payment_capacity", "credit_request_id", id!, true),
+          getById("credit_behavior", "credit_request_id", id!, true),
+          getById("uncovered_wallet", "credit_request_id", id!, true),
         ]);
 
         if (request.status === "fulfilled") {
@@ -129,7 +110,9 @@ export const CreditProfileInfo = () => {
           riskScoring.status === "fulfilled" &&
           !(riskScoring.value instanceof Error)
         ) {
-          const [riskScoringData] = riskScoring.value ?? [];
+          const riskScoringData: IRiskScoring = Array.isArray(riskScoring.value)
+            ? riskScoring.value[0]
+            : riskScoring.value;
 
           setRiskScoring((prev) => ({
             ...prev,
