@@ -22,12 +22,12 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   padding-bottom: ${({ $hasTable }) => !$hasTable && "16px"};
   padding-right: ${({ $hasTable }) => !$hasTable && "8px"};
   padding-left: ${({ $hasTable }) => !$hasTable && "8px"};
-  
+
   ${({ $isMobile, theme }) =>
     !$isMobile &&
     `
     &::-webkit-scrollbar {
-      width: 8px; 
+      width: 16px; 
       border-radius: 8px;
     }
 
