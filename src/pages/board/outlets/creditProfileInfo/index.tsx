@@ -10,7 +10,7 @@ import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
 import { getById } from "@mocks/utils/dataMock.service";
-import { Requests, IRiskScoring, credit } from "@services/types";
+import { Requests, IRiskScoring } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
@@ -127,13 +127,14 @@ export const CreditProfileInfo = () => {
         }
 
         if (credit_profileInfo.status === "fulfilled") {
-          const labor_stability = credit_profileInfo?.value as credit[];
-          setCredit_profileInfo((prevState) => ({
-            ...prevState,
-            ...labor_stability,
-          }));
+          const creditData = credit_profileInfo.value;
+          if (Array.isArray(creditData) && creditData.length > 0) {
+            setCredit_profileInfo((prevState) => ({
+              ...prevState,
+              ...creditData[0].labor_stability,
+            }));
+          }
         }
-
         if (payment_capacity.status === "fulfilled") {
           const data = payment_capacity.value;
           if (Array.isArray(data) && data.length > 0) {
