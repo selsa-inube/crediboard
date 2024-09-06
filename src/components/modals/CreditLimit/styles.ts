@@ -6,60 +6,61 @@ interface IStyledModal {
 }
 
 export const StyledDollarSign = styled.span`
-  color: green;
+  color: #28a745; 
   margin-right: 4px;
 `;
 
 export const StyledDivider = styled.hr`
   border: none;
-  border-top: 2px solid #DFE1E6;
-  margin: 4px;
+  border-top: 1px solid #dfe1e6;
+  margin: 8px ;
 `;
 
 export const StyledRow = styled.div`
   display: flex;
-  justify-content: space-between; 
-  padding: 8px;
+  justify-content: space-between;
+  padding: 12px 0px;
 `;
 
 export const StyledLabel = styled.div`
-  flex: 3; 
-  text-align: left;
+  flex: 3.5;
+  font-size: ${inube.typography.body.small.size};
 `;
 
 export const StyledAmount = styled.div`
   flex: 1;
-  text-align: right; 
+  text-align: right;
+`;
+
+export const StyledAmountWithIcon = styled(StyledAmount)`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
 `;
 
 export const StyledContainerText = styled.div`
-  padding: 10px 0px 10px;
+  padding: 10px 0px;
   font-size: ${inube.typography.body.small.size};
-  color: ${inube.color.text.neutral};
   display: flex;
+  align-items: center;
 `;
 
 export const StyledUpdateButton = styled.div`
   display: flex;
-  justify-content: end;
-  margin-top: 10px;
-`;
-
-export const StyledButtonContainer = styled.div`
-  display: flex;
   justify-content: flex-end;
+  margin-top: 20px;
 `;
 
 export const StyledModal = styled.div<IStyledModal>`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  max-height: ${({ $smallScreen }) => ($smallScreen ? "398px" : "none")}; 
+  max-height: ${({ $smallScreen }) => ($smallScreen ? "398px" : "none")};
   width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "550px")};
-  background-color: ${({ theme }) =>
-    theme.color?.surface?.light?.clear || inube.color.surface.light.clear};
+  background-color: #ffffff;
   padding: ${({ $smallScreen }) =>
-    $smallScreen ? inube.spacing.s200 : inube.spacing.s300};
+    $smallScreen ? inube.spacing.s200 : inube.spacing.s200};
   gap: ${({ $smallScreen }) =>
     $smallScreen ? inube.spacing.s150 : inube.spacing.s150};
   border-radius: ${inube.spacing.s100};
@@ -69,11 +70,12 @@ export const StyledContainerContent = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  padding: "8px";
+  padding: 8px;
 `;
 
 export const StyledContainerClose = styled.div`
   cursor: pointer;
+  display: flex;
 `;
 
 export const StyledContainerTitle = styled.div`
@@ -82,3 +84,10 @@ export const StyledContainerTitle = styled.div`
   padding: 0px;
   justify-content: space-between;
 `;
+
+export const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+

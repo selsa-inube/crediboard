@@ -1,5 +1,10 @@
 import { createPortal } from "react-dom";
-import { MdClear, MdRefresh, MdInfoOutline } from "react-icons/md";
+import {
+  MdClear,
+  MdRefresh,
+  MdOutlineVisibility,
+  MdInfoOutline,
+} from "react-icons/md";
 import { Blanket, Button, Stack, useMediaQuery } from "@inube/design-system";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
@@ -15,6 +20,7 @@ import {
   StyledDollarSign,
   StyledLabel,
   StyledAmount,
+  StyledAmountWithIcon,
 } from "./styles";
 
 export interface IListModalProps {
@@ -39,11 +45,11 @@ export const CreditLimit = (props: IListModalProps) => {
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
         <StyledContainerTitle>
-          <Text type="headline" size="small">
+          <Text type="headline" size="small" appearance="dark">
             {title}
           </Text>
           <StyledContainerClose onClick={handleClose}>
-            <Stack alignItems="center" gap="10px">
+            <Stack alignItems="center" gap="5px">
               <Text>Cerrar</Text>
               <Icon
                 icon={<MdClear />}
@@ -62,19 +68,17 @@ export const CreditLimit = (props: IListModalProps) => {
                 <strong>Cupo máximo según capacidad de pago</strong>
               </Text>
             </StyledLabel>
-            <StyledAmount>
-              <Stack alignItems="center" gap="10px">
-                <Text>
-                  <StyledDollarSign>$</StyledDollarSign>20'000.000
-                  <Icon
-                    appearance="primary"
-                    icon={<MdInfoOutline />}
-                    size="16px"
-                    spacing="none"
-                  />
-                </Text>
-              </Stack>
-            </StyledAmount>
+            <StyledAmountWithIcon>
+              <Text>
+                <StyledDollarSign>$</StyledDollarSign>20'000.000
+              </Text>
+              <Icon
+                appearance="primary"
+                icon={<MdOutlineVisibility />}
+                size="16px"
+                spacing="none"
+              />
+            </StyledAmountWithIcon>
           </StyledRow>
           <StyledRow>
             <StyledLabel>
@@ -82,23 +86,35 @@ export const CreditLimit = (props: IListModalProps) => {
                 <strong>Cupo máximo por reciprocidad</strong>
               </Text>
             </StyledLabel>
-            <StyledAmount>
+            <StyledAmountWithIcon>
               <Text>
                 <StyledDollarSign>$</StyledDollarSign>14'000.000
               </Text>
-            </StyledAmount>
+              <Icon
+                appearance="primary"
+                icon={<MdOutlineVisibility />}
+                size="16px"
+                spacing="none"
+              />
+            </StyledAmountWithIcon>
           </StyledRow>
           <StyledRow>
             <StyledLabel>
               <Text appearance="dark" size="large" type="label">
-                <strong>Cupo máximo por reciprocidad</strong>
+                <strong>Endeudamiento máximo x FRC</strong>
               </Text>
             </StyledLabel>
-            <StyledAmount>
+            <StyledAmountWithIcon>
               <Text>
                 <StyledDollarSign>$</StyledDollarSign>25'000.000
               </Text>
-            </StyledAmount>
+              <Icon
+                appearance="primary"
+                icon={<MdOutlineVisibility />}
+                size="16px"
+                spacing="none"
+              />
+            </StyledAmountWithIcon>
           </StyledRow>
           <StyledRow>
             <StyledLabel>
@@ -165,6 +181,9 @@ export const CreditLimit = (props: IListModalProps) => {
             iconAfter={<MdRefresh />}
             onClick={handleClose}
             variant="filled"
+            appearance="primary"
+            backgroundColor="#0052cc"
+            textColor="#ffffff"
           >
             Actualizar
           </Button>
