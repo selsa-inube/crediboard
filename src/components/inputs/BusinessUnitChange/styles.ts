@@ -1,14 +1,12 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 
 export const StyledContainer = styled.div`
   box-shadow: 2px 2px 3px 2px
-    ${({ theme }) =>
-      theme?.color?.stroke?.divider?.regular ||
-      inube.color.stroke.divider.regular};
+    ${({ theme }) => theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
   border-radius: 8px;
   background-color: ${({ theme }) =>
-    theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
+    theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   margin-left: 1%;
   margin-top: 60px;
   position: absolute;
@@ -38,12 +36,11 @@ export const StyledImg = styled.img`
 
 export const StyledHr = styled.hr`
   position: relative;
-  right: 20px;
+  right: 25px;
   width: 115%;
   border: 0;
   border-top: 2px solid;
   border-color: ${({ theme }) =>
-    theme?.color?.stroke?.divider?.regular ||
-    inube.color.stroke.divider.regular};
+    theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
   margin: 0;
 `;
