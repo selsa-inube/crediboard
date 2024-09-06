@@ -18,6 +18,7 @@ import { credit_profileInfo } from "@mocks/creditProfileInfo/creditProfileInfo.m
 import { uncovered_wallet } from "@mocks/creditProfileInfo/uncoveredWallet.mock";
 import { payment_capacity } from "@mocks/creditProfileInfo/paymentCapacity.mock";
 import { credit_behavior } from "@mocks/creditProfileInfo/creditBehavior.mock";
+import { requirementsMock } from "@mocks/financialReporting/Presente/Requirements.mock";
 
 import {
   mockRequests,
@@ -27,7 +28,7 @@ import {
   errorIssued,
   traceMock,
 } from "./importDataDb";
-import { requirementsMock } from "../financialReporting/Presente/Requirements.mock";
+import { IRiskScoring } from "@services/types";
 
 export function initializeDataDB(company: string) {
   localforage.clear();
@@ -55,10 +56,7 @@ export function initializeDataDB(company: string) {
     traceMock(company)
   );
   intializedData<(typeof mockToDo)[number]>("to-do", mockToDo);
-  intializedData<(typeof mockRiskScoring)[number]>(
-    "risk-scoring",
-    mockRiskScoring
-  );
+  intializedData<IRiskScoring>("risk-scoring", mockRiskScoring);
   intializedData<(typeof documentsDefault)[number]>(
     "document",
     documents(company)

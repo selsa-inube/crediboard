@@ -33,7 +33,8 @@ interface IToDo {
   analyst_name: string;
   decisions: { id: string; label: string; value: string }[];
 }
-interface IRiskScoring {
+
+interface IKeyRiskScoring {
   total_score: number;
   minimum_score: number;
   seniority: number;
@@ -46,6 +47,11 @@ interface IRiskScoring {
   marital_status_score: number;
   economic_activity: string;
   economic_activity_score: number;
+}
+
+interface IRiskScoring {
+  credit_request_id: string;
+  risk_scoring: IKeyRiskScoring;
 }
 
 type DmEtapasPrs =

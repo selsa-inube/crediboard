@@ -21,13 +21,8 @@ import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
-import { getById, getDataById } from "@mocks/utils/dataMock.service";
-import {
-  type Idocument,
-  Ierror_issued,
-  IErrorService,
-  Requests,
-} from "@services/types";
+import { getById } from "@mocks/utils/dataMock.service";
+import { Ierror_issued, IErrorService, Requests } from "@services/types";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
@@ -121,33 +116,25 @@ export const FinancialReporting = () => {
   const [errorsService, setErrorsService] = useState<IErrorService[]>([]);
 
   useEffect(() => {
-    try {
-      Promise.allSettled([
-        getById("k_Prospe", "requests", id!),
-        getDataById<Idocument[]>("document", "credit_request_id", id!),
-        getDataById<Ierror_issued[]>("error_issued", "credit_request_id", id!),
-      ]).then(([requirement, documents, error_issue]) => {
-        if (requirement.status === "fulfilled") {
-          setData(requirement.value as Requests);
-        }
-        if (documents.status === "fulfilled" && documents.value) {
-          if (!(documents.value instanceof Error)) {
-            const documentsUser = documents.value.map((dataListDocument) => ({
-              id: dataListDocument.document_id,
-              name: dataListDocument.abbreviated_name,
-            }));
-            setDocument(documentsUser);
-          }
-        }
-        if (error_issue.status === "fulfilled") {
-          if (!(error_issue.value instanceof Error)) {
-            setError(error_issue.value!);
-          }
-        }
-      });
-    } catch (error) {
-      console.log("error", error);
-    }
+    Promise.allSettled([
+      getById("requests", "k_Prospe", id!),
+      getById("document", "credit_request_id", id!, true),
+      getById("error_issued", "credit_request_id", id!, true),
+    ]).then(([requirement, documents, error_issue]) => {
+      if (requirement.status === "fulfilled") {
+        setData(requirement.value as Requests);
+      }
+      if (documents.status === "fulfilled" && Array.isArray(documents.value)) {
+        const documentsUser = documents.value.map((dataListDocument) => ({
+          id: dataListDocument.document_id,
+          name: dataListDocument.abbreviated_name,
+        }));
+        setDocument(documentsUser);
+      }
+      if (error_issue.status === "fulfilled") {
+        setError(error_issue.value as Ierror_issued[]);
+      }
+    });
   }, [id]);
 
   useEffect(() => {
@@ -290,7 +277,7 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                <ToDo icon={infoIcon} isMobile={isMobile} />
+                {<ToDo icon={infoIcon} isMobile={isMobile} />}
               </Stack>
               <Stack direction="column">
                 <Approvals user={id!} isMobile={isMobile} />
@@ -303,18 +290,18 @@ export const FinancialReporting = () => {
                 />
               </Stack>
               <Stack direction="column">
-                {
-                  <Management
-                    id={id!}
-                    isMobile={isMobile}
-                    updateData={upDateData}
-                  />
-                }
+                <Management
+                  id={id!}
+                  isMobile={isMobile}
+                  updateData={upDateData}
+                />
               </Stack>
               <Stack direction="column">
                 {<PromissoryNotes user={id!} isMobile={isMobile} />}
               </Stack>
-              <Stack direction="column">{<Postingvouchers />}</Stack>
+              <Stack direction="column">
+                <Postingvouchers />
+              </Stack>
             </Grid>
           </Stack>
           {showAttachments && (

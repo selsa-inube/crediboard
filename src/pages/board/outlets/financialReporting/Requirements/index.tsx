@@ -15,9 +15,9 @@ import { dataButton, infoItems } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
 import { StyledMessageContainer } from "../styles";
-import { getDataById } from "@mocks/utils/dataMock.service";
+import { getById } from "@mocks/utils/dataMock.service";
 import { CreditRequest } from "@src/services/types";
-import { Tag } from "@inubekit/tag";
+//import { Tag } from "@inubekit/tag";
 
 interface IData {
   id: string;
@@ -32,12 +32,12 @@ export interface IRequirementsProps {
   isMobile: boolean;
   id: string;
 }
-
+/* 
 const tileTable: { [key: string]: string } = {
   system_validations: "Validaciones del sistema",
   documentary_requirements: "Requisitos documentales",
   human_validations: "Validaciones humanas",
-} as const;
+} as const; */
 
 /* const normalizeData = (data: CreditRequest[]) => {
   const dataEntries: IData[] = data.map((item) => {
@@ -87,7 +87,7 @@ const tileTable: { [key: string]: string } = {
 };
  */
 
-const dataComponent = (data: CreditRequest[]) => {
+/* const dataComponent = (data: CreditRequest[]) => {
   return data.map((item) => {
     const titles = Object.keys(item)
       .filter((key) => key !== "credit_request_id")
@@ -120,7 +120,7 @@ const dataComponent = (data: CreditRequest[]) => {
 
     console.log("entries", entries);
   });
-};
+}; */
 
 export const Requirements = (props: IRequirementsProps) => {
   const { data, isMobile, id } = props;
@@ -135,16 +135,13 @@ export const Requirements = (props: IRequirementsProps) => {
   useEffect(() => {
     (async () => {
       try {
-        const result = await getDataById<CreditRequest[]>(
+        const result = await getById<CreditRequest>(
           "requirements",
           "credit_request_id",
           id
         );
 
-        if (result && !(result instanceof Error)) {
-          console.log("result", result);
-          dataComponent(result);
-        }
+        console.log("result", result);
       } catch (error) {
         console.error(error);
       }
