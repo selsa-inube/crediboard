@@ -9,15 +9,8 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
-import { get, getById, getDataById } from "@mocks/utils/dataMock.service";
-import {
-  Requests,
-  IRiskScoring,
-  credit,
-  Ipayment_capacity,
-  Icredit_behavior,
-  Iuncovered_wallet,
-} from "@services/types";
+import { get, getById } from "@mocks/utils/dataMock.service";
+import { Requests, IRiskScoring } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
@@ -80,28 +73,12 @@ export const CreditProfileInfo = () => {
 
   useEffect(() => {
     Promise.allSettled([
-      getById("k_Prospe", "requests", id!),
+      getById("requests", "k_Prospe", id!),
       get("risk-scoring"),
-      getDataById<credit[]>("credit_profileInfo", "credit_request_id", id!),
-      getDataById<Ipayment_capacity[]>(
-        
-        "payment_capacity",
-       
-        "credit_request_id",
-       
-        id!
-      
-      ),
-      getDataById<Icredit_behavior[]>(
-        "credit_behavior",
-        "credit_request_id",
-        id!
-      ),
-      getDataById<Iuncovered_wallet[]>(
-        "uncovered_wallet",
-        "credit_request_id",
-        id!
-      ),
+      getById("credit_profileInfo", "credit_request_id", id!, true),
+      getById("payment_capacity", "credit_request_id", id!, true),
+      getById("credit_behavior", "credit_request_id", id!, true),
+      getById("uncovered_wallet", "credit_request_id", id!, true),
     ]).then((data) => {
       const [
         request,
@@ -134,17 +111,17 @@ export const CreditProfileInfo = () => {
         if (Array.isArray(data) && data.length > 0) {
           setPayment_capacity((prevState) => ({
             ...prevState,
-            ...data[0].payment_capacity
+            ...data[0].payment_capacity,
           }));
         }
       }
-      
+
       if (credit_behavior.status === "fulfilled") {
         const data = credit_behavior.value;
         if (Array.isArray(data) && data.length > 0) {
           setCredit_behavior((prevState) => ({
             ...prevState,
-            ...data[0].credit_behavior
+            ...data[0].credit_behavior,
           }));
         }
       }
@@ -161,7 +138,6 @@ export const CreditProfileInfo = () => {
       setLoading(false);
     });
   }, [id]);
-
 
   const handlePrint = () => {
     setIsGeneratingPdf(true);
