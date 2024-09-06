@@ -31,7 +31,7 @@ interface IToDo {
   task_to_be_done: string;
   account_manager_name: string;
   analyst_name: string;
-  decisions: { id: string; label: string }[];
+  decisions: { id: string; label: string; value: string }[];
 }
 interface IRiskScoring {
   total_score: number;
@@ -99,7 +99,7 @@ interface TraceType {
   credit_request_id: string;
   use_case: string;
   user_id: string;
-  execution_date: string;
+  execution_date: string | number;
   justification?: string;
   decision_taken_by_user?: string;
   trace_type?: string;
@@ -130,6 +130,33 @@ export interface payroll_discount_authorization {
   obligation_unique_code: string;
   document_unique_code: string;
   image_unique_code: string;
+}
+
+export interface Ipayment_capacity {
+  credit_request_id: string;
+  payment_capacity: {
+    available_value: number;
+    base_income: number;
+    percentage_used: number;
+  };
+}
+export interface Icredit_behavior {
+  credit_request_id: string;
+  credit_behavior: {
+    core_risk_score: number;
+    central_risk_score_date: number;
+    number_of_internal_arrears: number;
+    maximum_number_of_installments_in_arrears: number;
+  };
+}
+
+export interface Iuncovered_wallet {
+  credit_request_id: string;
+  uncovered_wallet: {
+    overdraft_factor: number;
+    discovered_value: number;
+    reciprocity: number;
+  };
 }
 
 export interface promissory_note {
@@ -184,4 +211,28 @@ export interface credit {
 export interface IErrorService {
   id: string;
   message: string | Error;
+}
+
+interface Prospect {
+  credit_products: CreditProduct[];
+}
+
+interface CreditProduct {
+  loan_amount: number;
+  loan_term: number;
+  insurance_rate: number;
+  insurance_type: string;
+  line_of_credit_id: string;
+  rate_type: string;
+  interest_rate: number;
+  quota: number;
+  payment_channel_for_principal: string;
+  first_payment_cycle_for_principal: string;
+  payment_channel_for_interest: string;
+  first_payment_cycle_for_interest: number;
+}
+
+export interface ProspectsResponse {
+  credit_request_id: string;
+  prospect: Prospect;
 }

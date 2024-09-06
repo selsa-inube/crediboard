@@ -47,7 +47,7 @@ export const BusinessUnitChange = ({ clients }: BusinessUnitChangeProps) => {
           {clients.map((client, index) => (
             <Link
               key={client.id}
-              to="#"
+              to=".."
               onClick={() => handleLogoClick(client)}
             >
               <StyledItem>

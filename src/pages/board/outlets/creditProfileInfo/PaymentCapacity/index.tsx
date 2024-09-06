@@ -47,7 +47,7 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
         </Stack>
         <StyledDivider />
         <Stack alignItems="center" gap={inube.spacing.s400}>
-          <Stack width="120px">
+          <Stack width="110px">
             <Text size={isMobile ? "small" : "medium"}>% Disponible</Text>
           </Stack>
           <Stack>
