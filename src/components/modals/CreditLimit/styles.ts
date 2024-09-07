@@ -12,8 +12,8 @@ export const StyledDollarSign = styled.span`
 
 export const StyledDivider = styled.hr`
   border: none;
-  border-top: 1px solid #dfe1e6;
-  margin: 8px ;
+  border-top: 2px solid #dfe1e6;
+  margin: 1px ;
 `;
 
 export const StyledRow = styled.div`
@@ -49,7 +49,6 @@ export const StyledContainerText = styled.div`
 export const StyledUpdateButton = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
 `;
 
 export const StyledModal = styled.div<IStyledModal>`
@@ -89,5 +88,4 @@ export const StyledButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
-
 
