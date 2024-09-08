@@ -25,3 +25,4 @@ export const MenuPropect = (props: MenuPropectProps) => {
     </StyledMenu>
   );
 };
+export type { MenuPropectProps };
