@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Stack } from "@inubekit/stack";
-import { inube } from "@inube/design-system";
 import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { SummaryProspect } from "@components/inputs/SummaryOnProspect";
 import { getDataById } from "@mocks/utils/dataMock.service";
@@ -41,7 +40,7 @@ export const CardCommercialManagement = (
   return (
     <div ref={dataRef}>
       <StyledCardsCredit>
-        <Stack gap={inube.spacing.s300} width="fit-content" padding={`${inube.spacing.s050} ${inube.spacing.s100} ${inube.spacing.s200} ${inube.spacing.s100}`} >
+        <Stack gap="24px" width="fit-content" padding="4px 8px 16px 8px">
           {prospectsCredit &&
             prospectsCredit.map((entry) => (
               <CreditProductCard
@@ -59,7 +58,7 @@ export const CardCommercialManagement = (
             ))}
         </Stack>
       </StyledCardsCredit>
-      <Stack gap={inube.spacing.s300} margin={ `${inube.spacing.s450} ${inube.spacing.s0} ${inube.spacing.s100} ${inube.spacing.s0}` } padding={ `${inube.spacing.s0} ${inube.spacing.s100}` } justifyContent="space-around">
+      <Stack gap="24px" margin="36px 0px 8px 0px " padding="0px 8px" justifyContent="space-around">
         {SummaryProspectCredit.map((entry, index) => (
           <SummaryProspect
             key={index}

@@ -47,7 +47,7 @@ const StyledDivider = styled.hr<IStyledDivider>`
 `;
 
 const StyledFieldset = styled.div<IStyledFieldset>`
-  padding: ${inube.spacing.s050};
+  padding: "4px";
 `;
 
 const StyledCardsCredit = styled.div`
@@ -69,9 +69,27 @@ const StyledVerticalDivider = styled.hr<IStyledDivider>`
   background-color: ${({ theme }) => theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular};
   border: 1px;
   height: 28px;
-  margin: ${inube.spacing.s0};
+  margin: 0px;
   width: 2px;
 `;
+
+
+const StyledContainerIcon = styled.div`
+  display: flex;
+  gap: 8px;
+  position: relative;
+`;
+
+const StyledMenu = styled.div`
+    background-color: #ffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 4px 0px #091E4221, 0px 8px 12px 6px #091E4221;
+    padding: 6px 0px;
+    position: absolute;
+    right: 1px;
+    width: 227px;
+    z-index: 2;
+  `;
 
 export {
   StyledCollapseIcon,
@@ -80,4 +98,6 @@ export {
   StyledFieldset,
   StyledCardsCredit,
   StyledVerticalDivider,
+  StyledMenu,
+  StyledContainerIcon,
 };

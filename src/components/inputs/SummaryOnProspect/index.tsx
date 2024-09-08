@@ -2,7 +2,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
-import { inube } from "@inube/design-system";
+
 import { parseCunstomFormat } from "@utils/formatData/currency";
 import { Container, IconWrapper, ContentWrapper } from "./styles";
 
@@ -22,16 +22,16 @@ export function SummaryProspect(props: SummaryProspectProps) {
           <Stack
             key={index}
             direction="column"
-            margin={inube.spacing.s050}
-            padding={ `${inube.spacing.s0} ${inube.spacing.s150}` }
-            gap={inube.spacing.s025}
+            margin="4px"
+            padding="0px 12px"
+            gap="2px"
           >
             <Text
               size="small"
               weight="bold"
               type="body"
               appearance="gray"
-              padding= { `${inube.spacing.s0} ${inube.spacing.s0} ${inube.spacing.s050}` }
+              padding="0px 0px 4px"
               ellipsis
             >
               {item.title}

@@ -17,10 +17,8 @@ export const Container = styled.div<IStyledCollapseIcon>`
     0px 1px 3px 0px ${({ theme }) => theme?.palette?.neutralAlpha?.N40A || inube?.palette?.neutralAlpha?.N40A},
     0px 4px 8px 3px ${({ theme }) => theme?.palette?.neutralAlpha?.N40A || inube?.palette?.neutralAlpha?.N40A};
   display: flex;
-  gap: ${({ $showIcon }) =>
-    $showIcon ? inubeDesign.spacing.s200 : inubeDesign.spacing.s800};
-  padding: ${inubeDesign.spacing.s100} ${inubeDesign.spacing.s150}
-    ${inubeDesign.spacing.s150} ${inubeDesign.spacing.s150};
+  gap: ${({ $showIcon }) => $showIcon ? '16px' : '64px'};
+  padding: 8px 12px 12px 12px;
 `;
 
 export const IconWrapper = styled.div`
@@ -29,12 +27,12 @@ export const IconWrapper = styled.div`
     theme?.color?.stroke?.divider?.regular ||
     inubeDesign.color.stroke.divider.regular};
   display: flex;
-  padding: ${inubeDesign.spacing.s0} ${inubeDesign.spacing.s100};
+  padding: 0px 8px;
 `;
 
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  gap: ${inubeDesign.spacing.s800};
+  gap: 64px;
 `;

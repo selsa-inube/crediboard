@@ -1,3 +1,9 @@
+import {
+  MdOutlinePayments,
+  MdOutlineMonetizationOn,
+  MdOutlineBalance,
+  MdOutlineAccountBalanceWallet,
+} from "react-icons/md";
 import { Text, Stack } from "@inube/design-system";
 
 import { TableBoard } from "@components/data/TableBoard";
@@ -354,5 +360,28 @@ export const SummaryProspectCredit = [
       { title: "Cuota ordinaria", amount: "1200000" },
     ],
     iconEdit: false,
+  },
+];
+
+export const menuOptions = [
+  {
+    title: "Origen de cupo",
+    onClik: () => {},
+    icon: <MdOutlineBalance />,
+  },
+  {
+    title: "Fuentes de ingreso",
+    onClik: () => {},
+    icon: <MdOutlineAccountBalanceWallet />,
+  },
+  {
+    title: "Obligaciones financieras",
+    onClik: () => {},
+    icon: <MdOutlineMonetizationOn />,
+  },
+  {
+    title: "Pagos extras",
+    onClik: () => {},
+    icon: <MdOutlinePayments />,
   },
 ];
