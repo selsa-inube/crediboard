@@ -18,7 +18,6 @@ import { credit_profileInfo } from "@mocks/creditProfileInfo/creditProfileInfo.m
 import { uncovered_wallet } from "@mocks/creditProfileInfo/uncoveredWallet.mock";
 import { payment_capacity } from "@mocks/creditProfileInfo/paymentCapacity.mock";
 import { credit_behavior } from "@mocks/creditProfileInfo/creditBehavior.mock";
-import { requirementsMock } from "@mocks/financialReporting/Presente/Requirements.mock";
 
 import {
   mockRequests,
@@ -27,6 +26,7 @@ import {
   documents,
   errorIssued,
   traceMock,
+  requirementsMock,
 } from "./importDataDb";
 import { IRiskScoring } from "@services/types";
 
@@ -78,5 +78,5 @@ export function initializeDataDB(company: string) {
   intializedData("uncovered_wallet", uncovered_wallet);
   intializedData("credit_behavior", credit_behavior);
   intializedData("prospects", mockProspectsResponse);
-  intializedData("requirements", requirementsMock);
+  intializedData("requirements", requirementsMock(company));
 }

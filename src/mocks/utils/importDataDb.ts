@@ -35,96 +35,107 @@ import { traceMock as traceMockCooservunal } from "@mocks/financialReporting/Coo
 import { traceMock as traceMockCorbanca } from "@mocks/financialReporting/Corbanca/trace.mock";
 import { traceMock as traceMockFondecom } from "@mocks/financialReporting/Fondecom/trace.mock";
 
-
-
+import { requirementsMock as requirementsMockPresente } from "@mocks/financialReporting/Presente/requirements.mock";
+import { requirementsMock as requirementsMockCooservunal } from "@mocks/financialReporting/Cooservunal/requirements.mock";
+import { requirementsMock as requirementsMockCorbanca } from "@mocks/financialReporting/Corbanca/requirements.mock";
+import { requirementsMock as requirementsMockFondecom } from "@mocks/financialReporting/Presente/requirements.mock";
 
 export const mockRequests = (company: string): Requests[] => {
-    switch (company) {
-        case "Presente":
-            return mockRequestsPresente;
-        case "Cooservunal":
-            return mockRequestsCooservunal;
-        case "Corbanca":
-            return mockRequestsCorbanca;
-        case "Fondecom":
-            return mockRequestsFondecom;
-        default:
-            return mockRequestsDefault;
-    }
-}
+  switch (company) {
+    case "Presente":
+      return mockRequestsPresente;
+    case "Cooservunal":
+      return mockRequestsCooservunal;
+    case "Corbanca":
+      return mockRequestsCorbanca;
+    case "Fondecom":
+      return mockRequestsFondecom;
+    default:
+      return mockRequestsDefault;
+  }
+};
 
 export const mockStaff = (company: string) => {
-    switch (company) {
-        case "Presente":
-            return mockStaffPresente;
-        case "Cooservunal":
-            return mockStaffCooservunal;
-        case "Corbanca":
-            return mockStaffCorbanca;
-        case "Fondecom":
-            return mockStaffFondecom;
-        default:
-            return mockStaffDefault;
-    }
-}
+  switch (company) {
+    case "Presente":
+      return mockStaffPresente;
+    case "Cooservunal":
+      return mockStaffCooservunal;
+    case "Corbanca":
+      return mockStaffCorbanca;
+    case "Fondecom":
+      return mockStaffFondecom;
+    default:
+      return mockStaffDefault;
+  }
+};
 
 export const approvalByCreditRequestMock = (company: string) => {
-    switch (company) {
-        case "Presente":
-            return approval_by_credit_request_MockPresente;
-        case "Cooservunal":
-            return approval_by_credit_request_MockCooservunal;
-        case "Corbanca":
-            return approval_by_credit_request_MockCorbanca;
-        case "Fondecom":
-            return approval_by_credit_request_MockFondecom;
-        default:
-            return approval_by_credit_request_MockDefault;
-    }
-}
+  switch (company) {
+    case "Presente":
+      return approval_by_credit_request_MockPresente;
+    case "Cooservunal":
+      return approval_by_credit_request_MockCooservunal;
+    case "Corbanca":
+      return approval_by_credit_request_MockCorbanca;
+    case "Fondecom":
+      return approval_by_credit_request_MockFondecom;
+    default:
+      return approval_by_credit_request_MockDefault;
+  }
+};
 
 export const documents = (company: string) => {
-    switch (company) {
-        case "Presente":
-            return documentsPresente;
-        case "Cooservunal":
-            return documentsCooservunal;
-        case "Corbanca":
-            return documentsCorbanca;
-        case "Fondecom":
-            return documentsFondecom;
-        default:
-            return documentsDefault;
-    }
-}
-
+  switch (company) {
+    case "Presente":
+      return documentsPresente;
+    case "Cooservunal":
+      return documentsCooservunal;
+    case "Corbanca":
+      return documentsCorbanca;
+    case "Fondecom":
+      return documentsFondecom;
+    default:
+      return documentsDefault;
+  }
+};
 
 export const errorIssued = (company: string) => {
-    switch (company) {
-        case "Presente":
-            return error_issuedPresente;
-        case "Cooservunal":
-            return error_issuedCooservunal;
-        case "Corbanca":
-            return error_issuedCorbanca;
-        case "Fondecom":
-            return error_issuedFondecom;
-        default:
-            return error_issuedDefault;
-    }
-}
+  switch (company) {
+    case "Presente":
+      return error_issuedPresente;
+    case "Cooservunal":
+      return error_issuedCooservunal;
+    case "Corbanca":
+      return error_issuedCorbanca;
+    case "Fondecom":
+      return error_issuedFondecom;
+    default:
+      return error_issuedDefault;
+  }
+};
 
 export const traceMock = (company: string) => {
-    switch (company) {
-        case "Presente":
-            return traceMockPresente;
-        case "Cooservunal":
-            return traceMockCooservunal;
-        case "Corbanca":
-            return traceMockCorbanca;
-        case "Fondecom":
-            return traceMockFondecom;
-        default:
-            return traceMockDefault;
-    }
-}
+  switch (company) {
+    case "Presente":
+      return traceMockPresente;
+    case "Cooservunal":
+      return traceMockCooservunal;
+    case "Corbanca":
+      return traceMockCorbanca;
+    case "Fondecom":
+      return traceMockFondecom;
+    default:
+      return traceMockDefault;
+  }
+};
+
+const businessUnit = {
+  Presente: requirementsMockPresente,
+  Cooservunal: requirementsMockCooservunal,
+  Corbanca: requirementsMockCorbanca,
+  Fondecom: requirementsMockFondecom,
+};
+
+export const requirementsMock = (company: string) =>
+  businessUnit[company as keyof typeof businessUnit];

@@ -1,9 +1,11 @@
-export const requirementsMock = [
+import { CreditRequest } from "@services/types";
+
+export const requirementsMock: CreditRequest[] = [
   {
     credit_request_id: "999990",
     system_validations: {
       "Que el asociado sea activo": "Y",
-      "Que este al días con las obligaciones": "Y",
+      "Que este al día con las obligaciones": "Y",
       "Que tenga más de 30 años": "N",
     },
     documentary_requirements: {
@@ -26,7 +28,7 @@ export const requirementsMock = [
     documentary_requirements: {
       "Imagenes de la Cédula de ciudadanía": "N",
       "Desprendible de pago": "Y",
-      Income_tax_return: "Y",
+      "Declaración de renta": "Y",
     },
     human_validations: {
       "Referencias laborales": "N",
@@ -43,7 +45,7 @@ export const requirementsMock = [
     documentary_requirements: {
       "Imagenes de la Cédula de ciudadanía": "Y",
       "Desprendible de pago": "",
-      Income_tax_return: "N",
+      "Declaración de renta": "N",
     },
     human_validations: {
       "Referencias laborales": "Y",
@@ -60,7 +62,7 @@ export const requirementsMock = [
     documentary_requirements: {
       "Imagenes de la Cédula de ciudadanía": "N",
       "Desprendible de pago": "N",
-      Income_tax_return: "",
+      "Declaración de renta": "",
     },
     human_validations: {
       "Referencias laborales": "N",
@@ -77,7 +79,7 @@ export const requirementsMock = [
     documentary_requirements: {
       "Imagenes de la Cédula de ciudadanía": "Y",
       "Desprendible de pago": "Y",
-      Income_tax_return: "Y",
+      "Declaración de renta": "Y",
     },
     human_validations: {
       "Referencias laborales": "Y",
@@ -94,7 +96,7 @@ export const requirementsMock = [
     documentary_requirements: {
       "Imagenes de la Cédula de ciudadanía": "N",
       "Desprendible de pago": "",
-      Income_tax_return: "N",
+      "Declaración de renta": "N",
     },
     human_validations: {
       "Referencias laborales": "",
@@ -111,7 +113,7 @@ export const requirementsMock = [
     documentary_requirements: {
       "Imagenes de la Cédula de ciudadanía": "Y",
       "Desprendible de pago": "Y",
-      Income_tax_return: "N",
+      "Declaración de renta": "N",
     },
     human_validations: {
       "Referencias laborales": "Y",
@@ -122,13 +124,13 @@ export const requirementsMock = [
     credit_request_id: "999997",
     system_validations: {
       "Que el asociado sea activo": "N",
-      "Que este al días con las obligaciones": "",
+      "Que este al día con las obligaciones": "",
       "Que tenga más de 30 años": "Y",
     },
     documentary_requirements: {
       "Imagenes de la Cédula de ciudadanía": "N",
       "Desprendible de pago": "Y",
-      Income_tax_return: "",
+      "Declaración de renta": "",
     },
     human_validations: {
       "Referencias laborales": "N",
@@ -139,13 +141,13 @@ export const requirementsMock = [
     credit_request_id: "999998",
     system_validations: {
       "Que el asociado sea activo": "Y",
-      "Que este al días con las obligaciones": "Y",
+      "Que este al día con las obligaciones": "Y",
       "Que tenga más de 30 años": "N",
     },
     documentary_requirements: {
       "Imagenes de la Cédula de ciudadanía": "Y",
       "Desprendible de pago": "N",
-      Income_tax_return: "Y",
+      "Declaración de renta": "Y",
     },
     human_validations: {
       "Referencias laborales": "Y",
@@ -156,13 +158,13 @@ export const requirementsMock = [
     credit_request_id: "999999",
     system_validations: {
       "Que el asociado sea activo": "N",
-      "Que este al días con las obligaciones": "N",
+      "Que este al día con las obligaciones": "N",
       "Que tenga más de 30 años": "",
     },
     documentary_requirements: {
       "Imagenes de la Cédula de ciudadanía": "N",
       "Desprendible de pago": "Y",
-      Income_tax_return: "Y",
+      "Declaración de renta": "Y",
     },
     human_validations: {
       "Referencias laborales": "",
