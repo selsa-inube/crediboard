@@ -24,6 +24,7 @@ import {
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
 import { StyledMessageContainer } from "../styles";
+import { errorObserver } from "../config";
 
 interface IRequirementsData {
   id: string;
@@ -67,6 +68,10 @@ export const Requirements = (props: IRequirementsProps) => {
           setDataRequirements(processedRequirements);
         }
       } catch (error) {
+        errorObserver.notify({
+          id: "Requirements",
+          message: "Error al obtener los datos de los requisitos.",
+        });
         console.error(error);
       }
     })();
