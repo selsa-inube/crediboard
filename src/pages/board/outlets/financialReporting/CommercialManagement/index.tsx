@@ -153,7 +153,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               <Icon
                 icon={<MdOutlineChevronRight />}
                 appearance="primary"
-                size={isMobile ? "32px" : "56px"}
+                size={isMobile ? "32px" : "36px"}
                 cursorHover
               />
             </StyledCollapseIcon>

@@ -9,16 +9,11 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
-import { get, getById, getDataById } from "@mocks/utils/dataMock.service";
-import { Requests, IRiskScoring, credit } from "@services/types";
+import { getById } from "@mocks/utils/dataMock.service";
+import { Requests, IRiskScoring } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
-import {
-  getMaritalStatusInSpanish,
-  getEconomicActivityInSpanish,
-} from "@utils/mappingData/mappings";
-import { MaritalStatus, EconomicActivity } from "@services/enums";
 
 import { CreditBehavior } from "./CreditBehaviorCard";
 import { Guarantees } from "./Guarantees";
@@ -37,17 +32,48 @@ const margins = {
 
 export const CreditProfileInfo = () => {
   const [requests, setRequests] = useState({} as Requests);
-  const [riskScoring, setRiskScoring] = useState<IRiskScoring[] | null>(null);
+  const [riskScoring, setRiskScoring] = useState<IRiskScoring["risk_scoring"]>({
+    total_score: 0,
+    minimum_score: 0,
+    seniority: 0,
+    seniority_score: 0,
+    risk_center: 0,
+    risk_center_score: 0,
+    job_stability_index: 0,
+    job_stability_index_score: 0,
+    marital_status: "",
+    marital_status_score: 0,
+    economic_activity: "",
+    economic_activity_score: 0,
+  });
   const [credit_profileInfo, setCredit_profileInfo] = useState({
     company_seniority: 0,
     labor_stability_index: 0,
     max_labor_stability_index: 0,
     estimated_severance: 0,
   });
+  const [payment_capacity, setPayment_capacity] = useState({
+    available_value: 0,
+    base_income: 0,
+    percentage_used: 0,
+  });
+  const [credit_behavior, setCredit_behavior] = useState({
+    core_risk_score: 0,
+    central_risk_score_date: 0,
+    number_of_internal_arrears: 0,
+    maximum_number_of_installments_in_arrears: 0,
+  });
+  const [uncovered_wallet, setUncovered_wallet] = useState({
+    overdraft_factor: 0,
+    discovered_value: 0,
+    reciprocity: 0,
+  });
 
   const [loading, setLoading] = useState(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const dataPrint = useRef<HTMLDivElement>(null);
+
+  const [dataWereObtained, setWataWereObtained] = useState(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -56,31 +82,88 @@ export const CreditProfileInfo = () => {
     useMediaQueries(["(max-width: 1200px)", "(max-width: 751px)"]);
 
   useEffect(() => {
-    Promise.allSettled([
-      getById("k_Prospe", "requests", id!),
-      get("risk-scoring"),
-      getDataById<credit[]>("credit_profileInfo", "credit_request_id", id!),
-    ]).then((data) => {
-      const [request, riskScoring, credit_profileInfo] = data;
+    (async () => {
+      setLoading(true);
 
-      if (request.status === "fulfilled") {
-        setRequests(request.value as Requests);
+      try {
+        const [
+          request,
+          riskScoring,
+          credit_profileInfo,
+          payment_capacity,
+          credit_behavior,
+          uncovered_wallet,
+        ] = await Promise.allSettled([
+          getById("requests", "k_Prospe", id!),
+          getById<IRiskScoring>("risk-scoring", "credit_request_id", id!, true),
+          getById("credit_profileInfo", "credit_request_id", id!, true),
+          getById("payment_capacity", "credit_request_id", id!, true),
+          getById("credit_behavior", "credit_request_id", id!, true),
+          getById("uncovered_wallet", "credit_request_id", id!, true),
+        ]);
+
+        if (request.status === "fulfilled") {
+          setRequests(request.value as Requests);
+        }
+
+        if (
+          riskScoring.status === "fulfilled" &&
+          Array.isArray(riskScoring.value)
+        ) {
+          const [riskScoringData] = riskScoring.value;
+
+          setRiskScoring((prev) => ({
+            ...prev,
+            ...riskScoringData?.risk_scoring,
+          }));
+          setWataWereObtained(false);
+        } else {
+          setWataWereObtained(true);
+        }
+
+        if (credit_profileInfo.status === "fulfilled") {
+          const creditData = credit_profileInfo.value;
+          if (Array.isArray(creditData) && creditData.length > 0) {
+            setCredit_profileInfo((prevState) => ({
+              ...prevState,
+              ...creditData[0].labor_stability,
+            }));
+          }
+        }
+        if (payment_capacity.status === "fulfilled") {
+          const data = payment_capacity.value;
+          if (Array.isArray(data) && data.length > 0) {
+            setPayment_capacity((prevState) => ({
+              ...prevState,
+              ...data[0].payment_capacity,
+            }));
+          }
+        }
+
+        if (credit_behavior.status === "fulfilled") {
+          const data = credit_behavior.value;
+          if (Array.isArray(data) && data.length > 0) {
+            setCredit_behavior((prevState) => ({
+              ...prevState,
+              ...data[0].credit_behavior,
+            }));
+          }
+        }
+        if (uncovered_wallet.status === "fulfilled") {
+          const data = uncovered_wallet.value;
+          if (Array.isArray(data) && data.length > 0) {
+            setUncovered_wallet((prevState) => ({
+              ...prevState,
+              ...data[0]?.uncovered_wallet,
+            }));
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
       }
-
-      if (riskScoring.status === "fulfilled") {
-        setRiskScoring(riskScoring.value as IRiskScoring[]);
-      }
-
-      if (credit_profileInfo.status === "fulfilled") {
-        const labor_stability = credit_profileInfo?.value as credit[];
-        setCredit_profileInfo((prevState) => ({
-          ...prevState,
-          ...labor_stability,
-        }));
-      }
-
-      setLoading(false);
-    });
+    })();
   }, [id]);
 
   const handlePrint = () => {
@@ -183,54 +266,34 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
         />
         <PaymentCapacity
-          availableValue={955320}
-          availablePercentage={32}
-          incomeB={3000000}
-          percentageUsed={68}
+          availableValue={payment_capacity.available_value}
+          availablePercentage={100 - payment_capacity.percentage_used}
+          incomeB={payment_capacity.base_income}
+          percentageUsed={payment_capacity.percentage_used}
           isMobile={isMobile}
         />
         <OpenWallet
-          overdraftFactor={10}
-          valueDiscovered={50000000}
-          reciprocity={5}
+          overdraftFactor={uncovered_wallet.overdraft_factor}
+          valueDiscovered={uncovered_wallet.discovered_value}
+          reciprocity={uncovered_wallet.reciprocity}
           isMobile={isMobile}
         />
         <RiskScoring
-          totalScore={riskScoring ? riskScoring[0].total_score : 0}
-          minimumScore={riskScoring ? riskScoring[0].minimum_score : 0}
-          seniority={riskScoring ? riskScoring[0].seniority : 0}
-          seniorityScore={riskScoring ? riskScoring[0].seniority_score : 0}
-          riskCenter={riskScoring ? riskScoring[0].risk_center : 0}
-          riskCenterScore={riskScoring ? riskScoring[0].risk_center_score : 0}
-          jobStabilityIndex={
-            riskScoring ? riskScoring[0].job_stability_index : 0
-          }
-          jobStabilityIndexScore={
-            riskScoring ? riskScoring[0].job_stability_index_score : 0
-          }
-          maritalStatusScore={
-            riskScoring ? riskScoring[0].marital_status_score : 0
-          }
-          economicActivityScore={
-            riskScoring ? riskScoring[0].economic_activity_score : 0
-          }
-          maritalStatus={
-            riskScoring
-              ? getMaritalStatusInSpanish(
-                  riskScoring[0].marital_status as keyof typeof MaritalStatus
-                )
-              : ""
-          }
-          economicActivity={
-            riskScoring
-              ? getEconomicActivityInSpanish(
-                  riskScoring[0]
-                    .economic_activity as keyof typeof EconomicActivity
-                )
-              : ""
-          }
+          totalScore={riskScoring.total_score}
+          minimumScore={riskScoring.minimum_score}
+          seniority={riskScoring.seniority}
+          seniorityScore={riskScoring.seniority_score}
+          riskCenter={riskScoring.risk_center}
+          riskCenterScore={riskScoring.risk_center_score}
+          jobStabilityIndex={riskScoring.job_stability_index}
+          jobStabilityIndexScore={riskScoring.job_stability_index_score}
+          maritalStatusScore={riskScoring.marital_status_score}
+          economicActivityScore={riskScoring.economic_activity_score}
+          maritalStatus={riskScoring.marital_status}
+          economicActivity={riskScoring.economic_activity}
           isLoading={loading}
           isMobile={isMobile}
+          dataWereObtained={dataWereObtained}
         />
         <Guarantees
           guaranteesRequired="Ninguna garantía real, o fianza o codeudor."
@@ -239,10 +302,14 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
         />
         <CreditBehavior
-          centralScoreRisky={250}
-          centralScoreDate="2023-08-31T00:00:00-05:00"
-          numberInternalBlackberries={9}
-          maximumNumberInstallmentsArrears={3}
+          centralScoreRisky={credit_behavior.core_risk_score}
+          centralScoreDate={String(credit_behavior.central_risk_score_date)}
+          numberInternalBlackberries={
+            credit_behavior.number_of_internal_arrears
+          }
+          maximumNumberInstallmentsArrears={
+            credit_behavior.maximum_number_of_installments_in_arrears
+          }
           isMobile={isMobile}
         />
       </Grid>

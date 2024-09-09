@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Stack } from "@inubekit/stack";
 import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { SummaryProspect } from "@components/inputs/SummaryOnProspect";
-import { getDataById } from "@mocks/utils/dataMock.service";
-import { ProspectsResponse, CreditProduct } from "@services/types";
+import { getById } from "@mocks/utils/dataMock.service";
+import { CreditProduct } from "@services/types";
 import { Schedule } from "@services/enums";
 
 import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
@@ -22,9 +22,9 @@ export const CardCommercialManagement = (
   useEffect(() => {
     try {
       Promise.allSettled([
-        getDataById<ProspectsResponse[]>("prospects", "credit_request_id", id),
+        getById("prospects", "credit_request_id", id!,true),
       ]).then(([prospects]) => {
-        if (prospects.status === "fulfilled" && prospects.value) {
+        if (prospects.status === "fulfilled" && Array.isArray(prospects.value)) {
           if (!(prospects.value instanceof Error)) {
             setProspectsCredit(prospects.value
               .map((dataPropects) => dataPropects.prospect.credit_products)
