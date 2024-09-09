@@ -39,11 +39,12 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>([]);
   const [showFlag, setShowFlag] = useState(false);
   const [showRetry, setShowRetry] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     setShowRetry(false);
-  
+
     try {
       const results = await Promise.allSettled([
         getById<payroll_discount_authorization[]>(
@@ -59,13 +60,14 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           true
         ),
       ]);
-  
+
       const dataPromissoryNotes = results
         .flatMap((result) => {
           if (result.status === "fulfilled") {
             return result.value as payroll_discount_authorization[];
           } else {
             console.error(result.reason); 
+            setErrorMessage("Error al obtener los datos de Pagarés y Libranzas");
           }
           return [];
         })
@@ -82,33 +84,33 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             />
           ),
         }));
-  
-      if (dataPromissoryNotes.length > 0) {
-        setDataPromissoryNotes(dataPromissoryNotes);
-        setLoading(false);
-      } else {
+
+      if (dataPromissoryNotes.length === 0) {
         throw new Error("No se encontraron datos en la base de datos.");
       }
+
+      setDataPromissoryNotes(dataPromissoryNotes);
+      setLoading(false);
+      
     } catch (err) {
       let errorMessage = "Error al obtener los datos de Pagarés y Libranzas";
-      
       if (err instanceof Error) {
-        errorMessage = err.message;
+        errorMessage = err.message; 
+        console.error(err.message); 
       }
-  
+
       errorObserver.notify({
         id: "PromissoryNotes",
         message: errorMessage,
       });
-  
+
+      setErrorMessage(errorMessage); 
       setTimeout(() => {
         setShowRetry(true);
         setLoading(false);
       }, 5000);
     }
   }, [user]);
-  
-  
 
   useEffect(() => {
     fetchData();
@@ -153,7 +155,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           {showRetry ? (
             <UnfoundData
               title="Error al cargar datos"
-              description="Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."
+              description={errorMessage || "Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."}
               buttonDescription="Volver a intentar"
               route="/retry-path"
               onRetry={handleRetry}
@@ -167,7 +169,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
               actionMobile={tableBoardActionMobile}
               loading={loading}
               appearanceTable={{
-                  widthTd: isMobile ? "23%" : undefined, 
+                widthTd: isMobile ? "23%" : undefined, 
                 efectzebra: true,
                 title: "primary",
                 isStyleMobile: true,
