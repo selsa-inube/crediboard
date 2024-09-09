@@ -17,6 +17,7 @@ import { traceObserver } from "../config";
 import { dataButton, infoItems } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
+import { handleSuccess, handleError } from "./config";
 import { StyledMessageContainer } from "../styles";
 
 interface IData {
@@ -76,7 +77,6 @@ export const Requirements = (props: IRequirementsProps) => {
 
     if (justificationText && id) {
       const trace = {
-        trace_id: crypto.randomUUID(),
         trace_value: "Document approved",
         credit_request_id: id,
         use_case: "document_upload",
@@ -84,36 +84,16 @@ export const Requirements = (props: IRequirementsProps) => {
         execution_date: new Date().toISOString(),
         justification: justificationText,
         decision_taken_by_user: "approved",
-        trace_type: "novelty_document",
-        read_novelty: "N",
-      };
-
-      const handleSuccess = () => {
-        setFlagMessage({
-          title: "Exito",
-          description: "La aprobación se ha completado correctamente.",
-          appearance: "success",
-        });
-        setShowFlagMessage(true);
-        setShowAprovalsModal(false);
-      };
-
-      const handleError = (error: Error) => {
-        setFlagMessage({
-          title: "Aprobación Fallida",
-          description: `No se ha podido realizar la aprobación: ${error}`,
-          appearance: "danger",
-        });
-        setShowFlagMessage(true);
-        setShowApprovalstModal(false);
+        trace_type: "executed_task",
+        read_novelty: "",
       };
 
       try {
         await addItem("trace", trace);
         traceObserver.notify(trace);
-        handleSuccess();
+        handleSuccess(setFlagMessage, setShowFlagMessage, setShowApprovalstModal); 
       } catch (error) {
-        handleError(error as Error);
+        handleError(error as Error, setFlagMessage, setShowFlagMessage, setShowApprovalstModal); 
       }
     }
   };

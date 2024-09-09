@@ -134,7 +134,6 @@ function ToDo(props: ToDoProps) {
     }
 
     const trace = {
-      trace_id: crypto.randomUUID(),
       trace_value,
       credit_request_id: id,
       use_case: "decision_made",
@@ -142,8 +141,8 @@ function ToDo(props: ToDoProps) {
       execution_date: new Date().toISOString(),
       justification: decision,
       decision_taken_by_user: decision,
-      trace_type: "decision_document",
-      read_novelty: "N",
+      trace_type: "executed_task",
+      read_novelty: "",
     };
 
     try {

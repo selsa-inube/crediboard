@@ -44,7 +44,6 @@ export const handleConfirmReject = async (
 
   if (justificationText && id) {
     const trace = {
-      trace_id: crypto.randomUUID(),
       trace_value: "Document uploaded",
       credit_request_id: id,
       use_case: "document_upload",
@@ -52,13 +51,13 @@ export const handleConfirmReject = async (
       execution_date: new Date().toISOString(),
       justification: justificationText,
       decision_taken_by_user: "rejected",
-      trace_type: "novelty_document",
-      read_novelty: "N",
+      trace_type: "executed_task",
+      read_novelty: "",
     };
 
     const handleSuccess = () => {
       setFlagMessage({
-        title: "Rechazo Confirmado",
+        title: "Rechazo confirmado",
         description: "El rechazo se ha realizado correctamente",
         appearance: "success",
       });
@@ -68,7 +67,7 @@ export const handleConfirmReject = async (
 
     const handleError = (error: Error) => {
       setFlagMessage({
-        title: "Rechazo Fallido",
+        title: "Rechazo fallido",
         description: `No se ha podido realizar el rechazo: ${error}`,
         appearance: "danger",
       });
@@ -102,7 +101,6 @@ export const handleConfirmCancel = async (
 
   if (justificationText && id) {
     const trace = {
-      trace_id: crypto.randomUUID(),
       trace_value: "Document cancelled",
       credit_request_id: id,
       use_case: "document_cancel",
@@ -110,13 +108,13 @@ export const handleConfirmCancel = async (
       execution_date: new Date().toISOString(),
       justification: justificationText,
       decision_taken_by_user: "cancelled",
-      trace_type: "novelty_document",
-      read_novelty: "N",
+      trace_type: "executed_task",
+      read_novelty: "",
     };
 
     const handleSuccess = () => {
       setFlagMessage({
-        title: "Anulación Confirmada",
+        title: "Anulación confirmada",
         description: "La anulación se ha realizado correctamente",
         appearance: "success",
       });
@@ -126,7 +124,7 @@ export const handleConfirmCancel = async (
 
     const handleError = (error: Error) => {
       setFlagMessage({
-        title: "Anulación Fallida",
+        title: "Anulación fallida",
         description: `No se ha podido realizar la anulación: ${error}`,
         appearance: "danger",
       });
