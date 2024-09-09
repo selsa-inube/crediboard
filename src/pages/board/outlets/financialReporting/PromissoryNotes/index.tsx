@@ -10,7 +10,7 @@ import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 import { UnfoundData } from "@components/layout/UnfoundData";
 
-import { getDataById } from "@mocks/utils/dataMock.service";
+import { getById } from "@mocks/utils/dataMock.service";
 import {
   payroll_discount_authorization,
   promissory_note,
@@ -46,15 +46,17 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   
     try {
       const results = await Promise.allSettled([
-        getDataById<payroll_discount_authorization[]>(
+        getById<payroll_discount_authorization[]>(
           "payroll_discount_authorization",
           "credit_request_id",
-          user!
+          user!,
+        true
         ),
-        getDataById<promissory_note[]>(
+        getById<promissory_note[]>(
           "promissory_note",
           "credit_request_id",
-          user!
+          user!,
+        true
         ),
       ]);
   
@@ -139,7 +141,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
         hasOverflow
         hasTable
       >
-        <Stack direction="column" height={!isMobile ? "100%" : "138px"}>
+        <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
           {showRetry ? (
             <UnfoundData
               title="Error al cargar datos"
@@ -157,7 +159,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
               actionMobile={tableBoardActionMobile}
               loading={loading}
               appearanceTable={{
-                widthTd: isMobile ? "23%" : undefined, 
+                  widthTd: isMobile ? "23%" : undefined, 
                 efectzebra: true,
                 title: "primary",
                 isStyleMobile: true,

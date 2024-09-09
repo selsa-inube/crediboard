@@ -20,8 +20,7 @@ import {
   getMobileActionsConfig,
   infoItems,
 } from "./config";
-import { getDataById } from "@mocks/utils/dataMock.service";
-import { approval_by_credit_request_Mock } from "@services/types";
+import { getById } from "@mocks/utils/dataMock.service";
 import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StyledMessageContainer } from "../styles";
@@ -57,13 +56,8 @@ export const Approvals = (props: IApprovalsProps) => {
     setLoading(true);
     setError(null);
     setShowRetry(false);
-      
 
-    getDataById<approval_by_credit_request_Mock[]>(
-      "approval",
-      "credit_request_id",
-      user
-    )
+    getById("approval", "credit_request_id", user, true)
       .then((data) => {
         if (!data || data instanceof Error) {
           throw new Error("Error al obtener los datos de aprobaciones.");
@@ -140,6 +134,9 @@ export const Approvals = (props: IApprovalsProps) => {
     setShowFlag(true);
     setShowNotificationModal(false);
   };
+  const handleCloseNotificationModal = () => {
+    setShowNotificationModal(false);
+  };
 
   const handleRetry = () => {
     fetchApprovals();
@@ -147,7 +144,12 @@ export const Approvals = (props: IApprovalsProps) => {
 
   return (
     <>
-      <Fieldset title="Aprobaciones" heightFieldset="284px" hasTable>
+      <Fieldset
+        title="Aprobaciones"
+        heightFieldset="277px"
+        hasTable
+        aspectRatio="1"
+      >
         {showRetry ? (
           <ItemNotFound
             image={userNotFound}
@@ -181,7 +183,8 @@ export const Approvals = (props: IApprovalsProps) => {
           title="Notificación"
           content="¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud."
           buttonLabel="Enviar"
-          handleClose={handleSubmit}
+          handleClose={handleCloseNotificationModal}
+          onSubmit={handleSubmit}
         />
       )}
       {showFlag && (

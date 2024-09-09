@@ -13,7 +13,7 @@ import { Textfield } from "@inubekit/textfield";
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo } from "@services/types";
-import { get, getDataById } from "@mocks/utils/dataMock.service";
+import { get, getById } from "@mocks/utils/dataMock.service";
 
 import { StaffModal } from "./StaffModal";
 import { errorMessagge, FlagMessage, flagMessages } from "./config";
@@ -62,7 +62,7 @@ function ToDo(props: ToDoProps) {
       try {
         const [staffResult, toDoResult] = await Promise.allSettled([
           get("staff"),
-          getDataById<IToDo[]>("to-do", "credit_request_state_id", id!),
+          getById<IToDo[]>("to-do", "credit_request_state_id", id!, true),
         ]);
 
         if (
@@ -215,7 +215,7 @@ function ToDo(props: ToDoProps) {
                 <Icon
                   icon={icon.icon}
                   appearance="primary"
-                  size="32px"
+                  size="24px"
                   onClick={handleToggleStaffModal}
                   cursorHover
                 />
@@ -240,11 +240,11 @@ function ToDo(props: ToDoProps) {
               disabled={staff === null}
             />
             {icon && !isMobile && (
-              <Stack width="100px" height="70px" alignItems="end">
+              <Stack width="100px" height="60px" alignItems="end">
                 <Icon
                   icon={icon.icon}
                   appearance="primary"
-                  size="36px"
+                  size="30px"
                   onClick={handleToggleStaffModal}
                   cursorHover
                   disabled={staff === null}
