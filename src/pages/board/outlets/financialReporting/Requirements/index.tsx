@@ -15,7 +15,6 @@ import { getById } from "@mocks/utils/dataMock.service";
 import { CreditRequest } from "@services/types";
 
 import {
-  actionsMobile,
   dataButton,
   infoItems,
   maperDataRequirements,
@@ -152,7 +151,7 @@ export const Requirements = (props: IRequirementsProps) => {
               titles={item.titlesRequirements}
               entries={item.entriesRequirements}
               actions={actionsRequirements}
-              actionMobile={actionsMobile}
+              actionMobile={item.actionsMovile}
               appearanceTable={{
                 widthTd: !isMobile ? "75%" : "70%",
                 efectzebra: true,

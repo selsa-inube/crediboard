@@ -7,7 +7,7 @@ import {
   MdRemove,
 } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
-import { Stack } from "@inube/design-system";
+import { Stack } from "@inubekit/stack";
 import { Tag } from "@inubekit/tag";
 
 import { IEntries } from "@components/data/TableBoard/types";
@@ -132,7 +132,7 @@ const isValidTagElement = (element: unknown): element is TagElement => {
   return isValidElement(element) && element.props !== undefined;
 };
 
-export const actionsMobile = [
+const actionsMobile = [
   {
     id: "tags",
     actionName: "",
