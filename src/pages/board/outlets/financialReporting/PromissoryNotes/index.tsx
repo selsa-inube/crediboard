@@ -50,20 +50,22 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           "payroll_discount_authorization",
           "credit_request_id",
           user!,
-        true
+          true
         ),
         getById<promissory_note[]>(
           "promissory_note",
           "credit_request_id",
           user!,
-        true
+          true
         ),
       ]);
   
-      const dataPrommisseNotes = results
+      const dataPromissoryNotes = results
         .flatMap((result) => {
           if (result.status === "fulfilled") {
             return result.value as payroll_discount_authorization[];
+          } else {
+            console.error(result.reason); 
           }
           return [];
         })
@@ -81,24 +83,29 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           ),
         }));
   
-      if (dataPrommisseNotes.length > 0) {
-        setDataPromissoryNotes(dataPrommisseNotes);
+      if (dataPromissoryNotes.length > 0) {
+        setDataPromissoryNotes(dataPromissoryNotes);
         setLoading(false);
       } else {
-        throw new Error("No se encontraron datos.");
+        throw new Error("No se encontraron datos");
       }
     } catch (err) {
+      let errorMessage = "Error al obtener los datos de Pagarés y Libranzas";
+  
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+  
       errorObserver.notify({
         id: "PromissoryNotes",
-        message: "Error al obtener los datos de Pagarés y Libranzas",
+        message: errorMessage,
       });
-      
+  
       setTimeout(() => {
         setShowRetry(true);
         setLoading(false);
-      }, 5000); 
-  
-    } 
+      }, 5000);
+    }
   }, [user]);
   
 
