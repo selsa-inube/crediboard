@@ -37,7 +37,6 @@ import {
 import { StyledItem, StyledMessageContainer, StyledToast } from "./styles";
 import { Approvals } from "./Approvals";
 import { Requirements } from "./Requirements";
-import { dataRequirements } from "./Requirements/config";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
@@ -283,11 +282,7 @@ export const FinancialReporting = () => {
                 <Approvals user={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
-                <Requirements
-                  data={dataRequirements}
-                  isMobile={isMobile}
-                  id={id!}
-                />
+                <Requirements isMobile={isMobile} id={id!} />
               </Stack>
               <Stack direction="column">
                 <Management

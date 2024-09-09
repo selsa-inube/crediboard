@@ -243,26 +243,13 @@ export interface ProspectsResponse {
   prospect: Prospect;
 }
 
-/* interface SystemValidations {
-  "active partner": string;
-  obligations_status: string;
-  is_thirty_plus: string;
-}
-
-interface DocumentaryRequirements {
-  citizenship_card: string;
-  payment_receipt: string;
-  Income_tax_return: string;
-}
-
-interface HumanValidations {
-  employment_references: string;
-  propose_cosigner: string;
-} */
+type ItemValidation = {
+  [key: string]: "Y" | "N" | "";
+};
 
 export interface CreditRequest {
   credit_request_id: string;
-  system_validations: { [key: string]: "Y" | "N" | "" };
-  documentary_requirements: { [key: string]: "Y" | "N" | "" };
-  human_validations: { [key: string]: "Y" | "N" | "" };
+  system_validations: ItemValidation;
+  documentary_requirements: ItemValidation;
+  human_validations: ItemValidation;
 }
