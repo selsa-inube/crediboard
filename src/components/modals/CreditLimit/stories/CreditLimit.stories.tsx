@@ -59,7 +59,7 @@ export const Default: Story = (args: ICreditLimitProps) => {
 
 
 Default.args = {
-  title: "Límite de Crédito",
+  title: "Origen de cupo",
   portalId: "portal",
   maxPaymentCapacity: 50000000,
   maxReciprocity: 40000000,

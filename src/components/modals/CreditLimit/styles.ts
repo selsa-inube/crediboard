@@ -19,17 +19,19 @@ export const StyledDivider = styled.hr`
 export const StyledRow = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 12px 0px;
+  padding: 12px 0;
+  align-items: center;
 `;
 
 export const StyledLabel = styled.div`
-  flex: 3.5;
-  font-size: ${inube.typography.body.small.size};
+  flex: 3.3;
+  text-align: left; /* Alineación de texto a la izquierda */
 `;
 
 export const StyledAmount = styled.div`
   flex: 1;
-  text-align: right;
+  text-align: right; /* Alineación de texto a la derecha */
+  font-size: ${inube.typography.body.small.size};
 `;
 
 export const StyledAmountWithIcon = styled(StyledAmount)`
@@ -47,27 +49,28 @@ export const StyledContainerText = styled.div`
 
 export const StyledUpdateButton = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: end; /* Alineación del botón al final */
+  padding: 10px 0;
+  width: 100%;
 `;
 
 export const StyledModal = styled.div<IStyledModal>`
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  max-height: ${({ $smallScreen }) => ($smallScreen ? "398px" : "none")};
-  width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "550px")};
-  background-color: #ffffff;
+  max-height: ${({ $smallScreen }) => ($smallScreen ? "700px" : "500px")};
+  width: ${({ $smallScreen }) => ($smallScreen ? "335px" : "550px")};
+  background-color: ${({ theme }) =>
+    theme.color?.surface?.light?.clear || inube.color.surface.light.clear};
   padding: ${({ $smallScreen }) =>
-    $smallScreen ? inube.spacing.s200 : inube.spacing.s200};
+    $smallScreen ? "16px" : "24px"};
   gap: ${({ $smallScreen }) =>
-    $smallScreen ? inube.spacing.s150 : inube.spacing.s150};
+    $smallScreen ? "8px" : "8px"};
   border-radius: ${inube.spacing.s100};
 `;
 
 export const StyledContainerContent = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
   padding: 8px;
 `;
 
@@ -81,9 +84,4 @@ export const StyledContainerTitle = styled.div`
   margin: 0px;
   padding: 0px;
   justify-content: space-between;
-`;
-
-export const StyledButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
 `;

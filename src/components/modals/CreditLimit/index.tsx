@@ -27,23 +27,23 @@ export interface ICreditLimitProps {
   title: string;
   handleClose: () => void;
   portalId?: string;
-  maxPaymentCapacity: number;  
-  maxReciprocity: number;      
-  maxDebtFRC: number;          
-  assignedLimit: number;       
-  currentPortfolio: number;    
+  maxPaymentCapacity: number;
+  maxReciprocity: number;
+  maxDebtFRC: number;
+  assignedLimit: number;
+  currentPortfolio: number;
 }
 
 export const CreditLimit = (props: ICreditLimitProps) => {
-  const { 
-    title, 
-    portalId, 
-    handleClose, 
-    maxPaymentCapacity, 
-    maxReciprocity, 
-    maxDebtFRC, 
-    assignedLimit, 
-    currentPortfolio 
+  const {
+    title,
+    portalId,
+    handleClose,
+    maxPaymentCapacity,
+    maxReciprocity,
+    maxDebtFRC,
+    assignedLimit,
+    currentPortfolio,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -59,7 +59,11 @@ export const CreditLimit = (props: ICreditLimitProps) => {
     return amount.toLocaleString("es-CO");
   };
 
-  const maxUsableLimit = Math.min(maxPaymentCapacity, maxReciprocity, maxDebtFRC);
+  const maxUsableLimit = Math.min(
+    maxPaymentCapacity,
+    maxReciprocity,
+    maxDebtFRC
+  );
   const availableLimitWithoutGuarantee = maxUsableLimit - currentPortfolio;
 
   return createPortal(
@@ -85,13 +89,14 @@ export const CreditLimit = (props: ICreditLimitProps) => {
         <StyledContainerContent $smallScreen={isMobile}>
           <StyledRow>
             <StyledLabel>
-              <Text appearance="dark" size="large"  weight="bold">
-                Cupo máximo según capacidad de pago
+              <Text appearance="dark" size="large" weight="bold">
+                • Cupo máximo según capacidad de pago
               </Text>
             </StyledLabel>
             <StyledAmountWithIcon>
               <Text>
-                <StyledDollarSign>$</StyledDollarSign>{formatCurrency(maxPaymentCapacity)}
+                <StyledDollarSign>$</StyledDollarSign>
+                {formatCurrency(maxPaymentCapacity)}
               </Text>
               <Icon
                 appearance="primary"
@@ -104,13 +109,14 @@ export const CreditLimit = (props: ICreditLimitProps) => {
           </StyledRow>
           <StyledRow>
             <StyledLabel>
-              <Text appearance="dark" size="large"  weight="bold">
-                Cupo máximo por reciprocidad 
+              <Text appearance="dark" size="large" weight="bold">
+                • Cupo máximo por reciprocidad
               </Text>
             </StyledLabel>
             <StyledAmountWithIcon>
               <Text>
-                <StyledDollarSign>$</StyledDollarSign>{formatCurrency(maxReciprocity)}
+                <StyledDollarSign>$</StyledDollarSign>
+                {formatCurrency(maxReciprocity)}
               </Text>
               <Icon
                 appearance="primary"
@@ -123,13 +129,14 @@ export const CreditLimit = (props: ICreditLimitProps) => {
           </StyledRow>
           <StyledRow>
             <StyledLabel>
-              <Text appearance="dark" size="large"  weight="bold">
-                Endeudamiento máximo x FRC
+              <Text appearance="dark" size="large" weight="bold">
+                • Endeudamiento máximo x FRC
               </Text>
             </StyledLabel>
             <StyledAmountWithIcon>
               <Text weight="bold">
-                <StyledDollarSign>$</StyledDollarSign>{formatCurrency(maxDebtFRC)}
+                <StyledDollarSign>$</StyledDollarSign>
+                {formatCurrency(maxDebtFRC)}
               </Text>
               <Icon
                 appearance="primary"
@@ -142,13 +149,14 @@ export const CreditLimit = (props: ICreditLimitProps) => {
           </StyledRow>
           <StyledRow>
             <StyledLabel>
-              <Text appearance="dark" size="large"  weight="bold">
-                Cupo individual asignado
+              <Text appearance="dark" size="large" weight="bold">
+                • Cupo individual asignado
               </Text>
             </StyledLabel>
             <StyledAmount>
               <Text weight="bold">
-                <StyledDollarSign>$</StyledDollarSign>{formatCurrency(assignedLimit)}
+                <StyledDollarSign>$</StyledDollarSign>
+                {formatCurrency(assignedLimit)}
               </Text>
             </StyledAmount>
           </StyledRow>
@@ -162,7 +170,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               size="16px"
               spacing="none"
             />
-            <Text margin="5px">
+            <Text margin="5px" size="small">
               El menor de los anteriores es su cupo
               <strong> máximo </strong> utilizable.
             </Text>
@@ -174,7 +182,8 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             </StyledLabel>
             <StyledAmount>
               <Text>
-                <StyledDollarSign>$</StyledDollarSign>{formatCurrency(maxUsableLimit)}
+                <StyledDollarSign>$</StyledDollarSign>
+                {formatCurrency(maxUsableLimit)}
               </Text>
             </StyledAmount>
           </StyledRow>
@@ -184,7 +193,8 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             </StyledLabel>
             <StyledAmount>
               <Text>
-                <StyledDollarSign>$</StyledDollarSign>{formatCurrency(currentPortfolio)}
+                <StyledDollarSign>$</StyledDollarSign>
+                {formatCurrency(currentPortfolio)}
               </Text>
             </StyledAmount>
           </StyledRow>
@@ -194,7 +204,8 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             </StyledLabel>
             <StyledAmount>
               <Text weight="bold">
-                <StyledDollarSign>$</StyledDollarSign>{formatCurrency(availableLimitWithoutGuarantee)}
+                <StyledDollarSign>$</StyledDollarSign>
+                {formatCurrency(availableLimitWithoutGuarantee)}
               </Text>
             </StyledAmount>
           </StyledRow>
@@ -206,6 +217,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             onClick={handleClose}
             variant="filled"
             appearance="primary"
+            fullwidth={isMobile}
           >
             Actualizar
           </Button>
