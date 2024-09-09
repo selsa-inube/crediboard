@@ -67,7 +67,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             return result.value as payroll_discount_authorization[];
           } else {
             console.error(result.reason); 
-            setErrorMessage(() => "Error al obtener los datos de Pagarés y Libranzas");
+            setErrorMessage("Error al obtener los datos de Pagarés y Libranzas");
           }
           return [];
         })
@@ -94,19 +94,19 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
       
     } catch (err) {
       if (err instanceof Error) {
-        errorObserver.notify({
-          id: "PromissoryNotes",
-          message: err.message,
-        });
+      errorObserver.notify({
+        id: "PromissoryNotes",
+        message: err.message,
+      });
 
-        setErrorMessage(() => "Error al obtener los datos de Pagarés y Libranzas");
-        setTimeout(() => {
-          setShowRetry(true);
-          setLoading(false);
-        }, 5000);
-      }
+      setErrorMessage(errorMessage); 
+      setTimeout(() => {
+        setShowRetry(true);
+        setLoading(false);
+      }, 5000);
     }
-  }, [user]);
+  }
+  }, [user, errorMessage]);
 
   useEffect(() => {
     fetchData();
