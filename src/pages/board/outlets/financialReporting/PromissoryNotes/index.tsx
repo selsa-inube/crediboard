@@ -83,7 +83,6 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           ),
         }));
   
-      // Manejo del caso cuando no hay datos
       if (dataPromissoryNotes.length > 0) {
         setDataPromissoryNotes(dataPromissoryNotes);
         setLoading(false);
@@ -93,7 +92,6 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     } catch (err) {
       let errorMessage = "Error al obtener los datos de Pagarés y Libranzas";
       
-      // Muestra un mensaje personalizado si no hay datos
       if (err instanceof Error) {
         errorMessage = err.message;
       }
