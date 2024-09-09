@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
 import {
@@ -33,6 +32,8 @@ interface BoardLayoutProps {
   handleShowPinnedOnly: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
+  errorLoadingPins: boolean;
+  onCloseErrorAlert: () => void;
 }
 
 function BoardLayoutUI(props: BoardLayoutProps) {
@@ -49,13 +50,9 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     handleShowPinnedOnly,
     handleSearchRequestsValue,
     onOrientationChange,
+    errorLoadingPins,
+    onCloseErrorAlert
   } = props;
-
-  const [errorLoadingPins, setErrorLoadingPins] = useState(false);
-
-  useEffect(() => {
-    setErrorLoadingPins(!pinnedRequests || pinnedRequests.length === 0);
-  }, [pinnedRequests]);
 
   return (
     <StyledContainerToCenter>
@@ -64,7 +61,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
         {errorLoadingPins && (
           <ErrorAlert
             message="Error: No se pudo cargar el estado de los anclados."
-            onClose={() => setErrorLoadingPins(false)}
+            onClose={onCloseErrorAlert}
           />
         )}
         </StyledToast>
