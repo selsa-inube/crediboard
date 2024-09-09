@@ -18,9 +18,7 @@ export const StyledDivider = styled.hr`
 
 export const StyledRow = styled.div`
   display: flex;
-  justify-content: space-between;
   padding: 12px 0;
-  align-items: center;
 `;
 
 export const StyledLabel = styled.div`
