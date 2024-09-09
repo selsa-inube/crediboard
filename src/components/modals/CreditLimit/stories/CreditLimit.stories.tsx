@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import { CreditLimit, IListModalProps } from "..";
+
+import { Button } from "@inubekit/button";
+
+import { CreditLimit, ICreditLimitProps } from "..";
 
 const meta: Meta<typeof CreditLimit> = {
   title: "components/modals/CreditLimit",
@@ -15,7 +18,22 @@ const meta: Meta<typeof CreditLimit> = {
     portalId: {
       control: { type: "text" },
     },
-    handleClose: { action: "closed" },
+    handleClose: { action: "closed" }, 
+    maxPaymentCapacity: {
+      control: { type: "number" },
+    },
+    maxReciprocity: {
+      control: { type: "number" },
+    },
+    maxDebtFRC: {
+      control: { type: "number" },
+    },
+    assignedLimit: {
+      control: { type: "number" },
+    },
+    currentPortfolio: {
+      control: { type: "number" },
+    },
   },
 };
 
@@ -23,15 +41,15 @@ export default meta;
 
 type Story = StoryObj<typeof CreditLimit>;
 
-export const Default: Story = (args: IListModalProps) => {
+export const Default: Story = (args: ICreditLimitProps) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
     <>
-      <button onClick={() => setShowModal(true)}>Abrir Modal</button>
+      <Button onClick={() => setShowModal(true)}>Abrir Modal</Button>
       {showModal && (
         <>
-          <div id="portal"></div>
+          <div id="portal"></div> 
           <CreditLimit {...args} handleClose={() => setShowModal(false)} />
         </>
       )}
@@ -39,7 +57,13 @@ export const Default: Story = (args: IListModalProps) => {
   );
 };
 
+
 Default.args = {
-  title: "Origen de cupo ",
+  title: "Límite de Crédito",
   portalId: "portal",
+  maxPaymentCapacity: 50000000,
+  maxReciprocity: 40000000,
+  maxDebtFRC: 45000000,
+  assignedLimit: 0,
+  currentPortfolio: 10000000,
 };
