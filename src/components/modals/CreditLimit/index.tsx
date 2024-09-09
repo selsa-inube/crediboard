@@ -104,6 +104,8 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                 size="16px"
                 spacing="none"
                 cursorHover
+                variant="filled"
+                shape="circle"
               />
             </StyledAmountWithIcon>
           </StyledRow>
@@ -124,6 +126,8 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                 size="16px"
                 spacing="none"
                 cursorHover
+                variant="filled"
+                shape="circle"
               />
             </StyledAmountWithIcon>
           </StyledRow>
@@ -144,6 +148,8 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                 size="16px"
                 spacing="none"
                 cursorHover
+                variant="filled"
+                shape="circle"
               />
             </StyledAmountWithIcon>
           </StyledRow>
