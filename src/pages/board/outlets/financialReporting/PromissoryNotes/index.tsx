@@ -67,7 +67,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             return result.value as payroll_discount_authorization[];
           } else {
             console.error(result.reason); 
-            setErrorMessage("Error al obtener los datos de Pagarés y Libranzas");
+            setErrorMessage(() => "Error al obtener los datos de Pagarés y Libranzas");
           }
           return [];
         })
@@ -86,29 +86,25 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
         }));
 
       if (dataPromissoryNotes.length === 0) {
-        throw new Error("No se encontraron datos en la base de datos.");
+        throw new Error("No se encontraron datos en la base de datos");
       }
 
       setDataPromissoryNotes(dataPromissoryNotes);
       setLoading(false);
       
     } catch (err) {
-      let errorMessage = "Error al obtener los datos de Pagarés y Libranzas";
       if (err instanceof Error) {
-        errorMessage = err.message; 
-        console.error(err.message); 
+        errorObserver.notify({
+          id: "PromissoryNotes",
+          message: err.message,
+        });
+
+        setErrorMessage(() => "Error al obtener los datos de Pagarés y Libranzas");
+        setTimeout(() => {
+          setShowRetry(true);
+          setLoading(false);
+        }, 5000);
       }
-
-      errorObserver.notify({
-        id: "PromissoryNotes",
-        message: errorMessage,
-      });
-
-      setErrorMessage(errorMessage); 
-      setTimeout(() => {
-        setShowRetry(true);
-        setLoading(false);
-      }, 5000);
     }
   }, [user]);
 
