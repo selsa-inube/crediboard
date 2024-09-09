@@ -243,7 +243,7 @@ export interface ProspectsResponse {
   prospect: Prospect;
 }
 
-interface SystemValidations {
+/* interface SystemValidations {
   "active partner": string;
   obligations_status: string;
   is_thirty_plus: string;
@@ -258,11 +258,11 @@ interface DocumentaryRequirements {
 interface HumanValidations {
   employment_references: string;
   propose_cosigner: string;
-}
+} */
 
 export interface CreditRequest {
   credit_request_id: string;
-  system_validations: SystemValidations;
-  documentary_requirements: DocumentaryRequirements;
-  human_validations: HumanValidations;
+  system_validations: { [key: string]: "Y" | "N" | "" };
+  documentary_requirements: { [key: string]: "Y" | "N" | "" };
+  human_validations: { [key: string]: "Y" | "N" | "" };
 }

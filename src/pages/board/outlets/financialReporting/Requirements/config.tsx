@@ -203,7 +203,7 @@ const isValidTagElement = (element: unknown): element is TagElement => {
   return isValidElement(element) && element.props !== undefined;
 };
 
-const actionsMobile = [
+export const actionsMobile = [
   {
     id: "tags",
     actionName: "",

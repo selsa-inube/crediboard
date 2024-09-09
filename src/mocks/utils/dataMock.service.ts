@@ -24,7 +24,7 @@ export async function getById<T>(
   key: string,
   identifier: number | string,
   returnMultiple: boolean = false
-): Promise<T | T[]> {
+): Promise<T> {
   try {
     const data = await get(bd);
     if (Array.isArray(data)) {
@@ -36,7 +36,7 @@ export async function getById<T>(
               ? Number(identifier)
               : String(identifier))
         );
-        return filteredData as T[];
+        return filteredData as T;
       } else {
         const foundData = data.find(
           (item) =>

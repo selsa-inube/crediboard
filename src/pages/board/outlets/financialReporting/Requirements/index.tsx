@@ -1,23 +1,25 @@
-import { Stack, Icon } from "@inube/design-system";
 import { useState, isValidElement, useEffect } from "react";
 import {
   MdAddCircleOutline,
   MdOutlineCheckCircle,
   MdOutlineThumbUp,
 } from "react-icons/md";
+import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
+import { Stack } from "@inubekit/stack";
+import { Tag } from "@inubekit/tag";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
+import { titlesRequirements } from "@config/pages/board/oulet/financialReporting/configRequirements";
+import { getById } from "@mocks/utils/dataMock.service";
+import { CreditRequest } from "@services/types";
 
-import { dataButton, infoItems } from "./config";
+import { actionsMobile, dataButton, infoItems } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
 import { StyledMessageContainer } from "../styles";
-import { getById } from "@mocks/utils/dataMock.service";
-import { CreditRequest } from "@src/services/types";
-//import { Tag } from "@inubekit/tag";
 
 interface IData {
   id: string;
@@ -32,98 +34,59 @@ export interface IRequirementsProps {
   isMobile: boolean;
   id: string;
 }
-/* 
-const tileTable: { [key: string]: string } = {
-  system_validations: "Validaciones del sistema",
-  documentary_requirements: "Requisitos documentales",
-  human_validations: "Validaciones humanas",
-} as const; */
 
-/* const normalizeData = (data: CreditRequest[]) => {
-  const dataEntries: IData[] = data.map((item) => {
-    const entriesRequirements: IEntries[] = [];
-
-    Object.entries(item).forEach(([key, value]) => {
-      if (key === "credit_request_id") return;
-
-      const title = tileTable[key];
-      const tag = (
-        <Tag
-          label={value === "Cumple" ? "Cumple" : "No Cumple"}
-          appearance={value === "Cumple" ? "success" : "danger"}
-        />
-      );
-
-      entriesRequirements.push({
-        id: key,
-        tag,
-        title,
-        date: new Date(),
-        details: "Detalles",
-      });
-    });
-
-    return {
-      id: item.credit_request_id,
-      titlesRequirements: [
-        {
-          id: "title",
-          titleName: "Requisitos",
-          priority: 1,
-        },
-        {
-          id: "tag",
-          titleName: "",
-          priority: 2,
-        },
-      ],
-      entriesRequirements,
-      actionsRequirements: [],
-      actionsMovile: [],
-    };
-  });
-
-  return dataEntries;
+const generateTag = (value: string): JSX.Element => {
+  if (value === "Y") {
+    return <Tag label="Cumple" appearance="success" weight="strong" />;
+  } else if (value === "N") {
+    return <Tag label="No Cumple" appearance="danger" weight="strong" />;
+  } else {
+    return <Tag label="Sin Evaluar" appearance="warning" weight="strong" />;
+  }
 };
- */
 
-/* const dataComponent = (data: CreditRequest[]) => {
-  return data.map((item) => {
-    const titles = Object.keys(item)
-      .filter((key) => key !== "credit_request_id")
-      .map((key) => ({
-        id: key,
-        titleName: tileTable[key],
-        priority: 1,
-      }));
-    console.log("titles", titles);
+const maperEntries = (data: CreditRequest): IEntries[][] => {
+  const result: IEntries[][] = [];
 
-    const entries = Object.entries(item).map(([key, value]) => {
-      if (key === "credit_request_id") return;
+  const systemValidations: IEntries[] = Object.entries(
+    data.system_validations
+  ).map(([key, value], index) => ({
+    id: `sistema-${index + 1}`,
+    "Validaciones del sistema": key,
+    tag: generateTag(value),
+  }));
 
-      const title = tileTable[key];
-      const tag = (
-        <Tag
-          label={value === "Cumple" ? "Cumple" : "No Cumple"}
-          appearance={value === "Cumple" ? "success" : "danger"}
-        />
-      );
+  const documentaryRequirements: IEntries[] = Object.entries(
+    data.documentary_requirements
+  ).map(([key, value], index) => ({
+    id: `documento-${index + 1}`,
+    "Requisitos documentales": key,
+    tag: generateTag(value),
+  }));
 
-      return {
-        id: key,
-        tag,
-        title,
-        date: new Date().toISOString(),
-        details: "Detalles",
-      };
-    });
+  const humanValidations: IEntries[] = Object.entries(
+    data.human_validations
+  ).map(([key, value], index) => ({
+    id: `humano-${index + 1}`,
+    "Validaciones humanas": key,
+    tag: generateTag(value),
+  }));
 
-    console.log("entries", entries);
-  });
-}; */
+  result.push(systemValidations, documentaryRequirements, humanValidations);
+  console.log("result", result);
+
+  return result;
+};
+
+interface dataRequirements {
+  id: string;
+  titlesRequirements: ITitle[];
+  entriesRequirements: IEntries[];
+  actionsMovile: IAction[];
+}
 
 export const Requirements = (props: IRequirementsProps) => {
-  const { data, isMobile, id } = props;
+  const { isMobile, id } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [modalData, setModalData] = useState<{ date?: Date; details?: string }>(
     {}
@@ -132,16 +95,44 @@ export const Requirements = (props: IRequirementsProps) => {
   const [isApproved, setIsApproved] = useState(false);
   const [showFlagMessage, setShowFlagMessage] = useState(false);
 
+  const [dataRequirements, setDataRequirements] = useState<dataRequirements[]>(
+    []
+  );
+
   useEffect(() => {
     (async () => {
       try {
-        const result = await getById<CreditRequest>(
+        const requirements = await getById<CreditRequest>(
           "requirements",
           "credit_request_id",
           id
         );
 
-        console.log("result", result);
+        if (!(requirements instanceof Error)) {
+          const processedEntries = maperEntries(requirements);
+          console.log("prueba", typeof processedEntries);
+
+          setDataRequirements([
+            {
+              id: "tabla1",
+              titlesRequirements: titlesRequirements[0],
+              entriesRequirements: processedEntries[0],
+              actionsMovile: actionsMobile,
+            },
+            {
+              id: "tabla2",
+              titlesRequirements: titlesRequirements[1],
+              entriesRequirements: processedEntries[1],
+              actionsMovile: actionsMobile,
+            },
+            {
+              id: "tabla3",
+              titlesRequirements: titlesRequirements[2],
+              entriesRequirements: processedEntries[2],
+              actionsMovile: actionsMobile,
+            },
+          ]);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -207,6 +198,8 @@ export const Requirements = (props: IRequirementsProps) => {
     { id: "aprobar", content: renderCheckIcon },
   ];
 
+  console.log("dataRequirements", dataRequirements);
+
   return (
     <>
       <Stack>
@@ -216,14 +209,14 @@ export const Requirements = (props: IRequirementsProps) => {
           heightFieldset="340px"
           hasTable
         >
-          {data.map((item, index) => (
+          {dataRequirements.map((item, index) => (
             <TableBoard
               key={item.id}
               id={item.id}
               titles={item.titlesRequirements}
               entries={item.entriesRequirements}
               actions={actionsRequirements}
-              actionMobile={item.actionsMovile}
+              actionMobile={actionsMobile}
               appearanceTable={{
                 widthTd: !isMobile ? "75%" : "70%",
                 efectzebra: true,
