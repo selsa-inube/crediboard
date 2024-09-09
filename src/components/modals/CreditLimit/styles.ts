@@ -25,13 +25,15 @@ export const StyledRow = styled.div`
 
 export const StyledLabel = styled.div`
   flex: 3.3;
-  text-align: left; /* Alineación de texto a la izquierda */
+  text-align: left;
+
+  @media (max-width: 700px) {
+    flex: 1.5;
+  }
 `;
 
 export const StyledAmount = styled.div`
   flex: 1;
-  text-align: right; /* Alineación de texto a la derecha */
-  font-size: ${inube.typography.body.small.size};
 `;
 
 export const StyledAmountWithIcon = styled(StyledAmount)`
@@ -39,6 +41,7 @@ export const StyledAmountWithIcon = styled(StyledAmount)`
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
+
 `;
 
 export const StyledContainerText = styled.div`
@@ -49,7 +52,7 @@ export const StyledContainerText = styled.div`
 
 export const StyledUpdateButton = styled.div`
   display: flex;
-  justify-content: end; /* Alineación del botón al final */
+  justify-content: end;
   padding: 10px 0;
   width: 100%;
 `;
