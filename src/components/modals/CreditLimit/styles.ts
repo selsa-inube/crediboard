@@ -6,14 +6,14 @@ interface IStyledModal {
 }
 
 export const StyledDollarSign = styled.span`
-  color: #28a745; 
+  color: #28a745;
   margin-right: 4px;
 `;
 
 export const StyledDivider = styled.hr`
   border: none;
   border-top: 2px solid #dfe1e6;
-  margin: 1px ;
+  margin: 1px;
 `;
 
 export const StyledRow = styled.div`
@@ -40,8 +40,7 @@ export const StyledAmountWithIcon = styled(StyledAmount)`
 `;
 
 export const StyledContainerText = styled.div`
-  padding: 10px 0px;
-  font-size: ${inube.typography.body.small.size};
+  margin-top: 10px;
   display: flex;
   align-items: center;
 `;
@@ -88,4 +87,3 @@ export const StyledButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
-
