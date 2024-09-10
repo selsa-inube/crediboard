@@ -1,9 +1,16 @@
-const currencyFormat = (price: number): string => {
-  return Intl.NumberFormat("es-CO", {
+const currencyFormat = (price: number, withCurrencySymbol = true): string => {
+  if (price === 0) {
+    if (withCurrencySymbol) return "$ 0";
+    return "0";
+  }
+
+  const value = Intl.NumberFormat("es-CO", {
     style: "currency",
     currency: "COP",
     minimumFractionDigits: 0,
   }).format(price);
+
+  return withCurrencySymbol ? value : value.replace(/\$/g, "");
 };
 
 export { currencyFormat };

@@ -1,26 +1,19 @@
 import { createPortal } from "react-dom";
-import {
-  MdClear,
-  MdRefresh,
-  MdOutlineVisibility,
-  MdInfoOutline,
-} from "react-icons/md";
-import { Blanket, Button, Stack, useMediaQuery } from "@inube/design-system";
+import { MdClear, MdOutlineVisibility, MdInfoOutline } from "react-icons/md";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Button } from "@inubekit/button";
+import { Stack } from "@inubekit/stack";
+import { Blanket } from "@inubekit/blanket";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
+
+import { currencyFormat } from "@utils/formatData/currency";
+
 import {
   StyledContainerClose,
-  StyledContainerContent,
   StyledModal,
-  StyledContainerTitle,
-  StyledContainerText,
   StyledDivider,
-  StyledRow,
-  StyledUpdateButton,
-  StyledDollarSign,
-  StyledLabel,
-  StyledAmount,
-  StyledAmountWithIcon,
+  StyledList,
 } from "./styles";
 
 export interface ICreditLimitProps {
@@ -32,6 +25,8 @@ export interface ICreditLimitProps {
   maxDebtFRC: number;
   assignedLimit: number;
   currentPortfolio: number;
+  maxUsableLimit: number;
+  availableLimitWithoutGuarantee: number;
 }
 
 export const CreditLimit = (props: ICreditLimitProps) => {
@@ -44,6 +39,8 @@ export const CreditLimit = (props: ICreditLimitProps) => {
     maxDebtFRC,
     assignedLimit,
     currentPortfolio,
+    maxUsableLimit,
+    availableLimitWithoutGuarantee,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -55,21 +52,10 @@ export const CreditLimit = (props: ICreditLimitProps) => {
 
   const isMobile = useMediaQuery("(max-width: 700px)");
 
-  const formatCurrency = (amount: number) => {
-    return amount.toLocaleString("es-CO");
-  };
-
-  const maxUsableLimit = Math.min(
-    maxPaymentCapacity,
-    maxReciprocity,
-    maxDebtFRC
-  );
-  const availableLimitWithoutGuarantee = maxUsableLimit - currentPortfolio;
-
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
-        <StyledContainerTitle>
+        <Stack justifyContent="space-between">
           <Text type="headline" size="small" appearance="dark">
             {title}
           </Text>
@@ -84,92 +70,83 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               />
             </Stack>
           </StyledContainerClose>
-        </StyledContainerTitle>
+        </Stack>
         <StyledDivider />
-        <StyledContainerContent $smallScreen={isMobile}>
-          <StyledRow>
-            <StyledLabel>
-              <Text appearance="dark" size="large" weight="bold">
-                • Cupo máximo según capacidad de pago
-              </Text>
-            </StyledLabel>
-            <StyledAmountWithIcon>
-              <Text>
-                <StyledDollarSign>$</StyledDollarSign>
-                {formatCurrency(maxPaymentCapacity)}
-              </Text>
-              <Icon
-                appearance="primary"
-                icon={<MdOutlineVisibility />}
-                size="16px"
-                spacing="none"
-                cursorHover
-                variant="filled"
-                shape="circle"
-              />
-            </StyledAmountWithIcon>
-          </StyledRow>
-          <StyledRow>
-            <StyledLabel>
-              <Text appearance="dark" size="large" weight="bold">
-                • Cupo máximo por reciprocidad
-              </Text>
-            </StyledLabel>
-            <StyledAmountWithIcon>
-              <Text>
-                <StyledDollarSign>$</StyledDollarSign>
-                {formatCurrency(maxReciprocity)}
-              </Text>
-              <Icon
-                appearance="primary"
-                icon={<MdOutlineVisibility />}
-                size="16px"
-                spacing="none"
-                cursorHover
-                variant="filled"
-                shape="circle"
-              />
-            </StyledAmountWithIcon>
-          </StyledRow>
-          <StyledRow>
-            <StyledLabel>
-              <Text appearance="dark" size="large" weight="bold">
-                • Endeudamiento máximo x FRC
-              </Text>
-            </StyledLabel>
-            <StyledAmountWithIcon>
-              <Text weight="bold">
-                <StyledDollarSign>$</StyledDollarSign>
-                {formatCurrency(maxDebtFRC)}
-              </Text>
-              <Icon
-                appearance="primary"
-                icon={<MdOutlineVisibility />}
-                size="16px"
-                spacing="none"
-                cursorHover
-                variant="filled"
-                shape="circle"
-              />
-            </StyledAmountWithIcon>
-          </StyledRow>
-          <StyledRow>
-            <StyledLabel>
-              <Text appearance="dark" size="large" weight="bold">
-                • Cupo individual asignado
-              </Text>
-            </StyledLabel>
-            <StyledAmount>
-              <Text weight="bold">
-                <StyledDollarSign>$</StyledDollarSign>
-                {formatCurrency(assignedLimit)}
-              </Text>
-            </StyledAmount>
-          </StyledRow>
+        <Stack direction="column">
+          <StyledList>
+            <li>
+              <Stack padding="10px 0px" justifyContent="space-between">
+                <Text appearance="dark" size="large" weight="bold">
+                  Cupo máximo según capacidad de pago
+                </Text>
+
+                <Stack alignItems="center" gap="8px">
+                  <Text>{currencyFormat(maxPaymentCapacity)}</Text>
+                  <Icon
+                    appearance="primary"
+                    icon={<MdOutlineVisibility />}
+                    size="16px"
+                    spacing="none"
+                    cursorHover
+                    variant="filled"
+                    shape="circle"
+                  />
+                </Stack>
+              </Stack>
+            </li>
+            <li>
+              <Stack padding="10px 0px" justifyContent="space-between">
+                <Text appearance="dark" size="large" weight="bold">
+                  Cupo máximo por reciprocidad
+                </Text>
+
+                <Stack alignItems="center" gap="8px">
+                  <Text>{currencyFormat(maxReciprocity)}</Text>
+                  <Icon
+                    appearance="primary"
+                    icon={<MdOutlineVisibility />}
+                    size="16px"
+                    spacing="none"
+                    cursorHover
+                    variant="filled"
+                    shape="circle"
+                  />
+                </Stack>
+              </Stack>
+            </li>
+            <li>
+              <Stack padding="10px 0px" justifyContent="space-between">
+                <Text appearance="dark" size="large" weight="bold">
+                  Endeudamiento máximo x FRC
+                </Text>
+
+                <Stack alignItems="center" gap="8px">
+                  <Text weight="bold">{currencyFormat(maxDebtFRC)}</Text>
+                  <Icon
+                    appearance="primary"
+                    icon={<MdOutlineVisibility />}
+                    size="16px"
+                    spacing="none"
+                    cursorHover
+                    variant="filled"
+                    shape="circle"
+                  />
+                </Stack>
+              </Stack>
+            </li>
+            <li>
+              <Stack padding="10px" justifyContent="space-between">
+                <Text appearance="dark" size="large" weight="bold">
+                  Cupo individual asignado
+                </Text>
+                <Text weight="bold">{currencyFormat(assignedLimit)}</Text>
+              </Stack>
+            </li>
+          </StyledList>
 
           <StyledDivider />
 
-          <StyledContainerText>
+          <Stack alignItems="center" margin="10px 0px">
             <Icon
               appearance="primary"
               icon={<MdInfoOutline />}
@@ -180,54 +157,37 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               El menor de los anteriores es su cupo
               <strong> máximo </strong> utilizable.
             </Text>
-          </StyledContainerText>
+          </Stack>
 
-          <StyledRow>
-            <StyledLabel>
-              <Text weight="bold">Cupo máximo utilizable</Text>
-            </StyledLabel>
-            <StyledAmount>
-              <Text>
-                <StyledDollarSign>$</StyledDollarSign>
-                {formatCurrency(maxUsableLimit)}
-              </Text>
-            </StyledAmount>
-          </StyledRow>
-          <StyledRow>
-            <StyledLabel>
-              <Text>(-) Cartera vigente</Text>
-            </StyledLabel>
-            <StyledAmount>
-              <Text>
-                <StyledDollarSign>$</StyledDollarSign>
-                {formatCurrency(currentPortfolio)}
-              </Text>
-            </StyledAmount>
-          </StyledRow>
-          <StyledRow>
-            <StyledLabel>
-              <Text weight="bold">Cupo disponible sin garantía</Text>
-            </StyledLabel>
-            <StyledAmount>
-              <Text weight="bold">
-                <StyledDollarSign>$</StyledDollarSign>
-                {formatCurrency(availableLimitWithoutGuarantee)}
-              </Text>
-            </StyledAmount>
-          </StyledRow>
-        </StyledContainerContent>
+          <Stack padding="10px 0px" justifyContent="space-between">
+            <Text weight="bold">Cupo máximo utilizable</Text>
+
+            <Text>{currencyFormat(maxUsableLimit)}</Text>
+          </Stack>
+          <Stack padding="10px 0px" justifyContent="space-between">
+            <Text>(-) Cartera vigente</Text>
+
+            <Text>{currencyFormat(currentPortfolio)}</Text>
+          </Stack>
+          <Stack padding="10px 0px" justifyContent="space-between">
+            <Text weight="bold">Cupo disponible sin garantía</Text>
+
+            <Text weight="bold">
+              {currencyFormat(availableLimitWithoutGuarantee)}
+            </Text>
+          </Stack>
+        </Stack>
         <StyledDivider />
-        <StyledUpdateButton>
+        <Stack justifyContent="end">
           <Button
-            iconAfter={<MdRefresh />}
             onClick={handleClose}
             variant="filled"
             appearance="primary"
             fullwidth={isMobile}
           >
-            Actualizar
+            cerrar
           </Button>
-        </StyledUpdateButton>
+        </Stack>
       </StyledModal>
     </Blanket>,
     node

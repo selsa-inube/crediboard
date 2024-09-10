@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
-
 import { Button } from "@inubekit/button";
 
 import { CreditLimit, ICreditLimitProps } from "..";
+import { creditLimitArgTypes } from "./props";
 
 const meta: Meta<typeof CreditLimit> = {
   title: "components/modals/CreditLimit",
@@ -11,30 +11,7 @@ const meta: Meta<typeof CreditLimit> = {
   parameters: {
     backgrounds: { default: "light" },
   },
-  argTypes: {
-    title: {
-      control: { type: "text" },
-    },
-    portalId: {
-      control: { type: "text" },
-    },
-    handleClose: { action: "closed" }, 
-    maxPaymentCapacity: {
-      control: { type: "number" },
-    },
-    maxReciprocity: {
-      control: { type: "number" },
-    },
-    maxDebtFRC: {
-      control: { type: "number" },
-    },
-    assignedLimit: {
-      control: { type: "number" },
-    },
-    currentPortfolio: {
-      control: { type: "number" },
-    },
-  },
+  argTypes: creditLimitArgTypes,
 };
 
 export default meta;
@@ -49,14 +26,12 @@ export const Default: Story = (args: ICreditLimitProps) => {
       <Button onClick={() => setShowModal(true)}>Abrir Modal</Button>
       {showModal && (
         <>
-          <div id="portal"></div> 
           <CreditLimit {...args} handleClose={() => setShowModal(false)} />
         </>
       )}
     </>
   );
 };
-
 
 Default.args = {
   title: "Origen de cupo",
@@ -66,4 +41,6 @@ Default.args = {
   maxDebtFRC: 45000000,
   assignedLimit: 0,
   currentPortfolio: 10000000,
+  maxUsableLimit: 20000000,
+  availableLimitWithoutGuarantee: 15000000, 
 };
