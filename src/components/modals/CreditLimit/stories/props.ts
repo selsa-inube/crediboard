@@ -1,7 +1,7 @@
 
 import { ArgTypes } from "@storybook/react";
 
-export const creditLimitArgTypes: ArgTypes = {
+export const props: ArgTypes = {
   title: {
     control: { type: "text" },
   },

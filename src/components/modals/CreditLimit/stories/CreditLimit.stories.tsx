@@ -3,7 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@inubekit/button";
 
 import { CreditLimit, ICreditLimitProps } from "..";
-import { creditLimitArgTypes } from "./props";
+import { props } from "./props";
 
 const meta: Meta<typeof CreditLimit> = {
   title: "components/modals/CreditLimit",
@@ -11,7 +11,7 @@ const meta: Meta<typeof CreditLimit> = {
   parameters: {
     backgrounds: { default: "light" },
   },
-  argTypes: creditLimitArgTypes,
+  argTypes: props,
 };
 
 export default meta;
