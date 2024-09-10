@@ -8,8 +8,10 @@ import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
+import userNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
+import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 import { getById } from "@mocks/utils/dataMock.service";
 import { CreditRequest } from "@services/types";
@@ -51,11 +53,13 @@ export const Requirements = (props: IRequirementsProps) => {
     []
   );
 
+  const [error, setError] = useState(false);
+
   useEffect(() => {
     (async () => {
       try {
         const requirements = await getById<CreditRequest>(
-          "requirements",
+          "requirementss",
           "credit_request_id",
           id
         );
@@ -67,6 +71,7 @@ export const Requirements = (props: IRequirementsProps) => {
           setDataRequirements(processedRequirements);
         }
       } catch (error) {
+        setError(true);
         errorObserver.notify({
           id: "Requirements",
           message: "Error al obtener los datos de los requisitos.",
@@ -142,26 +147,40 @@ export const Requirements = (props: IRequirementsProps) => {
           title="Requisitos"
           activeButton={dataButton}
           heightFieldset="340px"
-          hasTable
+          hasTable={!error}
+          aspectRatio="1"
         >
-          {dataRequirements.map((item, index) => (
-            <TableBoard
-              key={item.id}
-              id={item.id}
-              titles={item.titlesRequirements}
-              entries={item.entriesRequirements}
-              actions={actionsRequirements}
-              actionMobile={item.actionsMovile}
-              appearanceTable={{
-                widthTd: !isMobile ? "75%" : "70%",
-                efectzebra: true,
-                title: "primary",
-                isStyleMobile: true,
-              }}
-              isFirstTable={index === 0}
-              infoItems={infoItems}
+          {error ? (
+            <ItemNotFound
+              image={userNotFound}
+              title="Error al cargar datos"
+              description={
+                "Error al intentar conectar con el servicio de trazabilidad."
+              }
+              buttonDescription="Volver a intentar"
+              route="#"
+              // onRetry={handleRetry}
             />
-          ))}
+          ) : (
+            dataRequirements.map((item, index) => (
+              <TableBoard
+                key={item.id}
+                id={item.id}
+                titles={item.titlesRequirements}
+                entries={item.entriesRequirements}
+                actions={actionsRequirements}
+                actionMobile={item.actionsMovile}
+                appearanceTable={{
+                  widthTd: !isMobile ? "75%" : "70%",
+                  efectzebra: true,
+                  title: "primary",
+                  isStyleMobile: true,
+                }}
+                isFirstTable={index === 0}
+                infoItems={infoItems}
+              />
+            ))
+          )}
         </Fieldset>
       </Stack>
 
