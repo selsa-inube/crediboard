@@ -10,13 +10,13 @@ export const StyledDivider = styled.hr`
   border-top: 2px solid;
   border-top-color: ${({ theme }) =>
     theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
-  margin: 1px;
+  margin: 10px 0px;
 `;
 
 export const StyledModal = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
-  max-height: ${({ $smallScreen }) => ($smallScreen ? "700px" : "517px")};
+  max-height: ${({ $smallScreen }) => ($smallScreen ? "700px" : "556px")};
   width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "550px")};
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
@@ -30,6 +30,3 @@ export const StyledContainerClose = styled.div`
   display: flex;
 `;
 
-export const StyledList = styled.ul`
-  padding-left: 20px;
-`;

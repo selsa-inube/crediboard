@@ -1,6 +1,7 @@
 import { createPortal } from "react-dom";
-import { MdClear, MdOutlineVisibility, MdInfoOutline } from "react-icons/md";
+import { MdClear, MdOutlineVisibility, MdInfoOutline ,MdOutlineAttachMoney } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
+import { inube } from "@inubekit/foundations";
 import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
 import { Blanket } from "@inubekit/blanket";
@@ -14,7 +15,6 @@ import {
   StyledContainerClose,
   StyledModal,
   StyledDivider,
-  StyledList,
 } from "./styles";
 
 export interface IIncomeModalProps {
@@ -39,7 +39,6 @@ export const IncomeModal = (props: IIncomeModalProps) => {
     subsistenceReserve,
     availableForNewCommitments,
     maxVacationTerm,
-    maxAmount,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -73,94 +72,85 @@ export const IncomeModal = (props: IIncomeModalProps) => {
 
         <StyledDivider />
         <Stack direction="column">
-          <StyledList>
-              <Stack padding="10px 0px" justifyContent="space-between">
-                <Text appearance="dark" size="large" weight="bold">
-                  Total fuentes de ingreso reportadas
-                </Text>
+        
+            <Stack padding="8px 0px" justifyContent="space-between">
+              <Text appearance="dark" size="large" weight="bold">
+                Total fuentes de ingreso reportadas
+              </Text>
 
-                <Stack alignItems="center">
-                  <Text appearance="success">$</Text>
-                  <Text>{currencyFormat(reportedIncomeSources, false)}</Text>
-                  <Stack margin="0px 0px 0px 5px">
-                    <Icon
-                      appearance="primary"
-                      icon={<MdOutlineVisibility />}
-                      size="16px"
-                      spacing="none"
-                      cursorHover={true}
-                      variant="filled"
-                      shape="circle"
-                    />
-                  </Stack>
+              <Stack alignItems="center">
+                <Text appearance="success">$</Text>
+                <Text>{currencyFormat(reportedIncomeSources, false)}</Text>
+                <Stack margin="0px 0px 0px 5px">
+                  <Icon
+                    appearance="primary"
+                    icon={<MdOutlineVisibility />}
+                    size="16px"
+                    spacing="none"
+                    cursorHover={true}
+                    variant="filled"
+                    shape="circle"
+                  />
                 </Stack>
               </Stack>
+            </Stack>
 
-              <Stack padding="10px 0px" justifyContent="space-between">
-                <Text appearance="dark" size="large" weight="bold">
-                  (-) Obligaciones financieras reportadas
+            <Stack padding="8px 0px" justifyContent="space-between">
+              <Text appearance="gray" size="large" weight="bold">
+                (-) Obligaciones financieras reportadas
+              </Text>
+
+              <Stack alignItems="center">
+                <Text appearance="success">$</Text>
+                <Text>
+                  {currencyFormat(reportedFinancialObligations, false)}
                 </Text>
-
-                <Stack alignItems="center">
-                  <Text appearance="success">$</Text>
-                  <Text>
-                    {currencyFormat(reportedFinancialObligations, false)}
-                  </Text>
-                  <Stack margin="0px 0px 0px 5px">
-                    <Icon
-                      appearance="primary"
-                      icon={<MdOutlineVisibility />}
-                      size="16px"
-                      spacing="none"
-                      cursorHover
-                      variant="filled"
-                      shape="circle"
-                    />
-                  </Stack>
+                <Stack margin="0px 0px 0px 5px">
+                  <Icon
+                    appearance="primary"
+                    icon={<MdOutlineVisibility />}
+                    size="16px"
+                    spacing="none"
+                    cursorHover
+                    variant="filled"
+                    shape="circle"
+                  />
                 </Stack>
               </Stack>
+            </Stack>
 
-              <Stack padding="10px 0px" justifyContent="space-between">
-                <Text appearance="dark" size="large" weight="bold">
-                  (-) Reserva mínima de subsistencia
-                </Text>
+            <Stack padding="8px 0px" justifyContent="space-between">
+              <Text appearance="gray" size="large" weight="bold">
+                (-) Reserva mínima de subsistencia
+              </Text>
 
-                <Stack alignItems="center">
-                  <Text appearance="success">$</Text>
-                  <Text>{currencyFormat(subsistenceReserve, false)}</Text>
-                  <Stack margin="0px 0px 0px 5px">
-                    <Icon
-                      appearance="primary"
-                      icon={<MdOutlineVisibility />}
-                      size="16px"
-                      spacing="none"
-                      cursorHover
-                      variant="filled"
-                      shape="circle"
-                    />
-                  </Stack>
-                </Stack>
+              <Stack alignItems="center">
+                <Text appearance="success">$</Text>
+                <Text>{currencyFormat(subsistenceReserve, false)}</Text>
               </Stack>
+            </Stack>
 
-              <Stack padding="10px 0px" justifyContent="space-between">
-                <Text appearance="dark" size="large" weight="bold">
-                  Neto disponible para nuevos compromisos
-                </Text>
-                <Stack>
-                  <Text appearance="success">$</Text>
-                  <Text weight="bold">
-                    {currencyFormat(availableForNewCommitments, false)}
-                  </Text>
-                </Stack>
-              </Stack>
+            <StyledDivider />
 
-              <Stack padding="10px 0px" justifyContent="space-between">
-                <Text appearance="dark" size="large" weight="bold">
-                  Plazo máx. en ‘vacaciones’
+            <Stack padding="8px 0px" justifyContent="space-between">
+              <Text appearance="dark" size="large" weight="bold">
+                Neto disponible para nuevos compromisos
+              </Text>
+              <Stack>
+                <Text appearance="success">$</Text>
+                <Text>
+                  {currencyFormat(availableForNewCommitments, false)}
                 </Text>
-                <Text weight="bold">{maxVacationTerm}</Text>
               </Stack>
-          </StyledList>
+            </Stack>
+
+            <Stack padding="8px 0px" justifyContent="space-between">
+              <Text appearance="dark" size="large" weight="bold">
+                Plazo máx. en ‘vacaciones’
+              </Text>
+              <Text>{maxVacationTerm}</Text>
+            </Stack>
+          
 
           <StyledDivider />
 
@@ -177,26 +167,23 @@ export const IncomeModal = (props: IIncomeModalProps) => {
             </Text>
           </Stack>
 
-          <Stack padding="10px 0px" justifyContent="space-between">
-            <Text weight="bold">Monto máximo</Text>
+          <Stack padding="8px 0px" justifyContent="space-between">
             <Textfield
-              value={currencyFormat(maxAmount, false)}
-              disabled={false}
-              fullwidth={false}
+              iconBefore={
+                <MdOutlineAttachMoney color={ inube.icon.dark.content.color.regular} />
+              }
+              fullwidth={true}
               id="id"
-              label="Label"
+              label="Monto máximo"
               name="name"
-              placeholder="Placeholder"
-              required={false}
-              size="wide"
+              placeholder="Ingrese la cantidad"
             />
           </Stack>
         </Stack>
 
         <StyledDivider />
 
-        {/* Modal Footer */}
-        <Stack justifyContent="space-between">
+        <Stack gap="8px" justifyContent="end">
           <Button
             onClick={handleClose}
             variant="outlined"
