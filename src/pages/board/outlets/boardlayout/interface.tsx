@@ -120,6 +120,9 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                   checked={showPinnedOnly}
                   onChange={handleShowPinnedOnly}
                   disabled={errorLoadingPins}
+                  label=""
+                  margin="0px"
+                  padding="0px"
                 />
               </Stack>
               {!isMobile && (
