@@ -15,20 +15,9 @@ export const StyledOptionList = styled.ul<IStyledOptionList>`
   z-index: 1;
   border-radius: 4px;
   background: ${({ theme }) => {
-    return (
-      theme?.input?.optionList?.background?.expanded ||
-      inube.input.optionList.background.expanded
-    );
+        return theme?.palette?.neutral?.N0 || inube.palette.neutral.N0;
   }};
   box-shadow:
     0px 1px 2px rgba(0, 0, 0, 0.3),
     0px 2px 6px 2px rgba(0, 0, 0, 0.15);
-  & > li:hover {
-    background: ${({ theme }) => {
-      return (
-        theme?.input?.optionList?.background?.selected ||
-        inube.input.optionList.background.selected
-      );
-    }};
-  }
 `;

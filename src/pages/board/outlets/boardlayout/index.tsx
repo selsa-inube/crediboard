@@ -163,7 +163,6 @@ function BoardLayout() {
       showPinnedOnly={filters.showPinnedOnly}
       pinnedRequests={boardData.requestsPinned}
       errorLoadingPins={errorLoadingPins}
-      onCloseErrorAlert={() => setErrorLoadingPins(false)}
       handleSelectCheckChange={(e) =>
         handleFiltersChange({
           selectOptions: filters.selectOptions.map((option) =>

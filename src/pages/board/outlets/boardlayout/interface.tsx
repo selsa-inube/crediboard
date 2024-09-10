@@ -1,22 +1,22 @@
+import { useState } from "react";
 import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
-import {
-  Stack,
-  Textfield,
-  Text,
-  Switch,
-  Icon,
-  inube,
-} from "@inube/design-system";
+import { Stack, Textfield, Text, Icon, inube } from "@inube/design-system";
+import { Toggle } from "@inubekit/toggle";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { BoardSection } from "@components/layout/BoardSection";
 import { PinnedRequest, Requests } from "@services/types";
 import { Selectcheck } from "@components/inputs/SelectCheck";
 import { IOptionItemCheckedProps } from "@components/inputs/SelectCheck/OptionItem";
-import { ErrorAlert } from "@src/components/ErrorAlert";
+import { ErrorAlert } from "@components/ErrorAlert";
 
-import { StyledInputsContainer, StyledBoardContainer, StyledContainerToCenter, StyledToast } from "./styles";
+import {
+  StyledInputsContainer,
+  StyledBoardContainer,
+  StyledContainerToCenter,
+  StyledToast,
+} from "./styles";
 import { boardColumns } from "./config/board";
 
 interface BoardLayoutProps {
@@ -33,7 +33,6 @@ interface BoardLayoutProps {
   handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
   errorLoadingPins: boolean;
-  onCloseErrorAlert: () => void;
 }
 
 function BoardLayoutUI(props: BoardLayoutProps) {
@@ -51,20 +50,24 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     handleSearchRequestsValue,
     onOrientationChange,
     errorLoadingPins,
-    onCloseErrorAlert
   } = props;
+
+  const [showErrorAlert, setShowErrorAlert] = useState(true);
 
   return (
     <StyledContainerToCenter>
-      <Stack direction="column" width={isMobile ? "-webkit-fill-available" : "min(100%,1500px)"}>
-        <StyledToast $isMobile={isMobile}>
-        {errorLoadingPins && (
-          <ErrorAlert
-            message="Error: No se pudo cargar el estado de los anclados."
-            onClose={onCloseErrorAlert}
-          />
+      <Stack
+        direction="column"
+        width={isMobile ? "-webkit-fill-available" : "min(100%,1500px)"}
+      >
+        {errorLoadingPins && showErrorAlert && (
+          <StyledToast $isMobile={isMobile}>
+            <ErrorAlert
+              message="Error: No se pudo cargar el estado de los anclados."
+              onClose={() => setShowErrorAlert(false)}
+            />
+          </StyledToast>
         )}
-        </StyledToast>
         <StyledInputsContainer $isMobile={isMobile}>
           {!isMobile && (
             <Stack width="480px">
@@ -110,12 +113,13 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 {!isMobile && (
                   <Text type="label">Ver unicamente los anclados</Text>
                 )}
-                <Switch
+                <Toggle
                   id="SeePinned"
                   name="SeePinned"
                   size="large"
                   checked={showPinnedOnly}
                   onChange={handleShowPinnedOnly}
+                  disabled={errorLoadingPins}
                 />
               </Stack>
               {!isMobile && (
