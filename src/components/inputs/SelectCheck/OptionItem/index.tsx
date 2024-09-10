@@ -14,7 +14,7 @@ export const OptionItemChecked = (props: IOptionItemCheckedProps) => {
   const { id, label, checked = false, onchange } = props;
 
   return (
-    <StyledOptionItemChecked>
+    <StyledOptionItemChecked as="label" htmlFor={id}>
       <Stack>
         <input
           readOnly

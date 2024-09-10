@@ -28,7 +28,7 @@ function RadioClient(props: RadioClientProps) {
         height={matches["(max-width: 532px)"] ? "auto" : "72px"}
         alignItems="center"
         alignContent="center"
-        gap="16px"
+        gap="10px"
         width="100%"
       >
         <StyledRadio
