@@ -59,7 +59,7 @@ export const Requirements = (props: IRequirementsProps) => {
     (async () => {
       try {
         const requirements = await getById<CreditRequest>(
-          "requirementss",
+          "requirements",
           "credit_request_id",
           id
         );
@@ -79,7 +79,7 @@ export const Requirements = (props: IRequirementsProps) => {
         console.error(error);
       }
     })();
-  }, [id]);
+  }, [id, error]);
 
   const toggleAprovalsModal = () => setShowAprovalsModal(!showAprovalsModal);
   const changeApprove = () => setIsApproved(!isApproved);
@@ -159,7 +159,7 @@ export const Requirements = (props: IRequirementsProps) => {
               }
               buttonDescription="Volver a intentar"
               route="#"
-              // onRetry={handleRetry}
+              onRetry={() => setError(false)}
             />
           ) : (
             dataRequirements.map((item, index) => (
