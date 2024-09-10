@@ -80,17 +80,20 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                   Cupo máximo según capacidad de pago
                 </Text>
 
-                <Stack alignItems="center" gap="8px">
-                  <Text>{currencyFormat(maxPaymentCapacity)}</Text>
-                  <Icon
-                    appearance="primary"
-                    icon={<MdOutlineVisibility />}
-                    size="16px"
-                    spacing="none"
-                    cursorHover
-                    variant="filled"
-                    shape="circle"
-                  />
+                <Stack alignItems="center">
+                  <Text appearance="success">$</Text>
+                  <Text>{currencyFormat(maxPaymentCapacity, false)}</Text>
+                  <Stack margin="0px 0px 0px 5px">
+                    <Icon
+                      appearance="primary"
+                      icon={<MdOutlineVisibility />}
+                      size="16px"
+                      spacing="none"
+                      cursorHover={true}
+                      variant="filled"
+                      shape="circle"
+                    />
+                  </Stack>
                 </Stack>
               </Stack>
             </li>
@@ -100,17 +103,20 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                   Cupo máximo por reciprocidad
                 </Text>
 
-                <Stack alignItems="center" gap="8px">
-                  <Text>{currencyFormat(maxReciprocity)}</Text>
-                  <Icon
-                    appearance="primary"
-                    icon={<MdOutlineVisibility />}
-                    size="16px"
-                    spacing="none"
-                    cursorHover
-                    variant="filled"
-                    shape="circle"
-                  />
+                <Stack alignItems="center">
+                  <Text appearance="success">$</Text>
+                  <Text>{currencyFormat(maxReciprocity, false)}</Text>
+                  <Stack margin="0px 0px 0px 5px">
+                    <Icon
+                      appearance="primary"
+                      icon={<MdOutlineVisibility />}
+                      size="16px"
+                      spacing="none"
+                      cursorHover={true}
+                      variant="filled"
+                      shape="circle"
+                    />
+                  </Stack>
                 </Stack>
               </Stack>
             </li>
@@ -120,26 +126,34 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                   Endeudamiento máximo x FRC
                 </Text>
 
-                <Stack alignItems="center" gap="8px">
-                  <Text weight="bold">{currencyFormat(maxDebtFRC)}</Text>
-                  <Icon
-                    appearance="primary"
-                    icon={<MdOutlineVisibility />}
-                    size="16px"
-                    spacing="none"
-                    cursorHover
-                    variant="filled"
-                    shape="circle"
-                  />
+                <Stack alignItems="center">
+                  <Text appearance="success">$</Text>
+                  <Text weight="bold">{currencyFormat(maxDebtFRC, false)}</Text>
+                  <Stack margin="0px 0px 0px 5px">
+                    <Icon
+                      appearance="primary"
+                      icon={<MdOutlineVisibility />}
+                      size="16px"
+                      spacing="none"
+                      cursorHover
+                      variant="filled"
+                      shape="circle"
+                    />
+                  </Stack>
                 </Stack>
               </Stack>
             </li>
             <li>
-              <Stack padding="10px" justifyContent="space-between">
+              <Stack padding="10px 0px" justifyContent="space-between">
                 <Text appearance="dark" size="large" weight="bold">
                   Cupo individual asignado
                 </Text>
-                <Text weight="bold">{currencyFormat(assignedLimit)}</Text>
+                <Stack>
+                  <Text appearance="success">$</Text>
+                  <Text weight="bold">
+                    {currencyFormat(assignedLimit, false)}
+                  </Text>
+                </Stack>
               </Stack>
             </li>
           </StyledList>
@@ -161,20 +175,26 @@ export const CreditLimit = (props: ICreditLimitProps) => {
 
           <Stack padding="10px 0px" justifyContent="space-between">
             <Text weight="bold">Cupo máximo utilizable</Text>
-
-            <Text>{currencyFormat(maxUsableLimit)}</Text>
+            <Stack>
+              <Text appearance="success">$</Text>
+              <Text>{currencyFormat(maxUsableLimit, false)}</Text>
+            </Stack>
           </Stack>
           <Stack padding="10px 0px" justifyContent="space-between">
-            <Text>(-) Cartera vigente</Text>
-
-            <Text>{currencyFormat(currentPortfolio)}</Text>
+            <Text size="large" appearance="gray" weight="bold">(-) Cartera vigente</Text>
+            <Stack>
+              <Text appearance="success">$</Text>
+              <Text>{currencyFormat(currentPortfolio, false)}</Text>
+            </Stack>
           </Stack>
           <Stack padding="10px 0px" justifyContent="space-between">
             <Text weight="bold">Cupo disponible sin garantía</Text>
-
-            <Text weight="bold">
-              {currencyFormat(availableLimitWithoutGuarantee)}
-            </Text>
+            <Stack>
+              <Text appearance="success">$</Text>
+              <Text weight="bold">
+                {currencyFormat(availableLimitWithoutGuarantee, false)}
+              </Text>
+            </Stack>
           </Stack>
         </Stack>
         <StyledDivider />
