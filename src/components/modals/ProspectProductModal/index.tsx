@@ -107,7 +107,7 @@ function ProspectProductModal(props: ProspectProductModalProps) {
             </Stack>
 
             <Divider />
-            <Stack direction="column" gap="12px" width="100%">
+            <Stack direction="column" gap="24px" width="100%">
               <Select
                 label="Línea de crédito"
                 name="creditLine"
