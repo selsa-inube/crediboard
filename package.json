@@ -31,7 +31,7 @@
     "@inubekit/text": "^2.7.0",
     "@inubekit/textarea": "^2.11.0",
     "@inubekit/textfield": "^2.13.0",
-    "@inubekit/toggle": "^2.8.0",
+    "@inubekit/toggle": "^3.1.0",
     "@types/yup": "^0.32.0",
     "formik": "^2.4.6",
     "jspdf-html2canvas": "^1.5.2",
