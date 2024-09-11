@@ -19,6 +19,7 @@ import { SkeletonLine } from "@inubekit/skeleton";
 import { currencyFormat } from "@utils/formatData/currency";
 import { StyledContainerClose, StyledModal, StyledDivider } from "./styles";
 
+
 export interface IncomeModalProps {
   title: string;
   handleClose: () => void;
@@ -92,7 +93,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
             <Stack alignItems="center">
               <Text appearance="success">$</Text>
               {loading ? (
-                <SkeletonLine width="100px" animated={true} />
+                <SkeletonLine width="70px" animated={true} />
               ) : (
                 <Text>{currencyFormat(reportedIncomeSources, false)}</Text>
               )}
@@ -118,7 +119,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
             <Stack alignItems="center">
               <Text appearance="success">$</Text>
               {loading ? (
-                <SkeletonLine width="100px" animated={true} />
+                <SkeletonLine width="70px" animated={true} />
               ) : (
                 <Text>
                   {currencyFormat(reportedFinancialObligations, false)}
@@ -146,7 +147,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
             <Stack alignItems="center">
               <Text appearance="success">$</Text>
               {loading ? (
-                <SkeletonLine width="100px" animated={true} />
+                <SkeletonLine width="70px" animated={true} />
               ) : (
                 <Text>{currencyFormat(subsistenceReserve, false)}</Text>
               )}
@@ -163,7 +164,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
             <Stack>
               <Text appearance="success">$</Text>
               {loading ? (
-                <SkeletonLine width="100px" animated={true} />
+                <SkeletonLine width="70px" animated={true} />
               ) : (
                 <Text>{currencyFormat(availableForNewCommitments, false)}</Text>
               )}
@@ -176,7 +177,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
             </Text>
 
             {loading ? (
-              <SkeletonLine width="100px" animated={true} />
+              <SkeletonLine width="70px" animated={true} />
             ) : (
               <Text>{maxVacationTerm}</Text>
             )}
