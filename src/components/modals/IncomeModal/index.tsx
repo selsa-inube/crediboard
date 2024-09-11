@@ -4,6 +4,7 @@ import {
   MdOutlineVisibility,
   MdInfoOutline,
   MdOutlineAttachMoney,
+  MdErrorOutline
 } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
 import { inube } from "@inubekit/foundations";
@@ -18,7 +19,6 @@ import { SkeletonLine } from "@inubekit/skeleton";
 
 import { currencyFormat } from "@utils/formatData/currency";
 import { StyledContainerClose, StyledModal, StyledDivider } from "./styles";
-
 
 export interface IncomeModalProps {
   title: string;
@@ -55,9 +55,11 @@ export const IncomeModal = (props: IncomeModalProps) => {
   const isMobile = useMediaQuery("(max-width: 700px)");
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false); 
 
   useEffect(() => {
     setTimeout(() => {
+      setError(false); 
       setLoading(false);
     }, 2000);
   }, []);
@@ -84,137 +86,149 @@ export const IncomeModal = (props: IncomeModalProps) => {
 
         <StyledDivider />
 
-        <Stack direction="column">
-          <Stack padding="8px 0px" justifyContent="space-between">
-            <Text appearance="dark" size="large" weight="bold">
-              Total fuentes de ingreso reportadas
+        {error ? (
+          <Stack direction="column" alignItems="center" padding="16px">
+            <Icon icon={<MdErrorOutline />} size="32px" appearance="danger" />
+            <Text size="large" weight="bold" appearance="danger">
+              Error cargando datos
             </Text>
+            <Text size="small" appearance="dark">
+              No se pudieron cargar los datos. Por favor, intente nuevamente más tarde.
+            </Text>
+          </Stack>
+        ) : (
+          <Stack direction="column">
+            <Stack padding="8px 0px" justifyContent="space-between">
+              <Text appearance="dark" size="large" weight="bold">
+                Total fuentes de ingreso reportadas
+              </Text>
 
-            <Stack alignItems="center">
-              <Text appearance="success">$</Text>
-              {loading ? (
-                <SkeletonLine width="70px" animated={true} />
-              ) : (
-                <Text>{currencyFormat(reportedIncomeSources, false)}</Text>
-              )}
-              <Stack margin="0px 0px 0px 5px">
-                <Icon
-                  appearance="primary"
-                  icon={<MdOutlineVisibility />}
-                  size="16px"
-                  spacing="none"
-                  cursorHover
-                  variant="filled"
-                  shape="circle"
-                />
+              <Stack alignItems="center">
+                <Text appearance="success">$</Text>
+                {loading ? (
+                  <SkeletonLine width="70px" animated={true} />
+                ) : (
+                  <Text>{currencyFormat(reportedIncomeSources, false)}</Text>
+                )}
+                <Stack margin="0px 0px 0px 5px">
+                  <Icon
+                    appearance="primary"
+                    icon={<MdOutlineVisibility />}
+                    size="16px"
+                    spacing="none"
+                    cursorHover
+                    variant="filled"
+                    shape="circle"
+                  />
+                </Stack>
               </Stack>
             </Stack>
-          </Stack>
 
-          <Stack padding="8px 0px" justifyContent="space-between">
-            <Text appearance="gray" size="large" weight="bold">
-              (-) Obligaciones financieras reportadas
-            </Text>
+            <Stack padding="8px 0px" justifyContent="space-between">
+              <Text appearance="gray" size="large" weight="bold">
+                (-) Obligaciones financieras reportadas
+              </Text>
 
-            <Stack alignItems="center">
-              <Text appearance="success">$</Text>
-              {loading ? (
-                <SkeletonLine width="70px" animated={true} />
-              ) : (
-                <Text>
-                  {currencyFormat(reportedFinancialObligations, false)}
-                </Text>
-              )}
-              <Stack margin="0px 0px 0px 5px">
-                <Icon
-                  appearance="primary"
-                  icon={<MdOutlineVisibility />}
-                  size="16px"
-                  spacing="none"
-                  cursorHover
-                  variant="filled"
-                  shape="circle"
-                />
+              <Stack alignItems="center">
+                <Text appearance="success">$</Text>
+                {loading ? (
+                  <SkeletonLine width="70px" animated={true} />
+                ) : (
+                  <Text>
+                    {currencyFormat(reportedFinancialObligations, false)}
+                  </Text>
+                )}
+                <Stack margin="0px 0px 0px 5px">
+                  <Icon
+                    appearance="primary"
+                    icon={<MdOutlineVisibility />}
+                    size="16px"
+                    spacing="none"
+                    cursorHover
+                    variant="filled"
+                    shape="circle"
+                  />
+                </Stack>
               </Stack>
             </Stack>
-          </Stack>
 
-          <Stack padding="8px 0px" justifyContent="space-between">
-            <Text appearance="gray" size="large" weight="bold">
-              (-) Reserva mínima de subsistencia
-            </Text>
+            <Stack padding="8px 0px" justifyContent="space-between">
+              <Text appearance="gray" size="large" weight="bold">
+                (-) Reserva mínima de subsistencia
+              </Text>
 
-            <Stack alignItems="center">
-              <Text appearance="success">$</Text>
+              <Stack alignItems="center">
+                <Text appearance="success">$</Text>
+                {loading ? (
+                  <SkeletonLine width="70px" animated={true} />
+                ) : (
+                  <Text>{currencyFormat(subsistenceReserve, false)}</Text>
+                )}
+              </Stack>
+            </Stack>
+
+            <StyledDivider />
+
+            <Stack padding="8px 0px" justifyContent="space-between">
+              <Text appearance="dark" size="large" weight="bold">
+                Neto disponible para nuevos compromisos
+              </Text>
+
+              <Stack>
+                <Text appearance="success">$</Text>
+                {loading ? (
+                  <SkeletonLine width="70px" animated={true} />
+                ) : (
+                  <Text>{currencyFormat(availableForNewCommitments, false)}</Text>
+                )}
+              </Stack>
+            </Stack>
+
+            <Stack padding="8px 0px" justifyContent="space-between">
+              <Text appearance="dark" size="large" weight="bold">
+                Plazo máx. en ‘vacaciones’
+              </Text>
+
               {loading ? (
                 <SkeletonLine width="70px" animated={true} />
               ) : (
-                <Text>{currencyFormat(subsistenceReserve, false)}</Text>
+                <Text>{maxVacationTerm}</Text>
               )}
             </Stack>
-          </Stack>
 
-          <StyledDivider />
+            <StyledDivider />
 
-          <Stack padding="8px 0px" justifyContent="space-between">
-            <Text appearance="dark" size="large" weight="bold">
-              Neto disponible para nuevos compromisos
-            </Text>
+            <Stack alignItems="center" margin="10px 0px">
+              <Icon
+                appearance="primary"
+                icon={<MdInfoOutline />}
+                size="16px"
+                spacing="none"
+              />
+              <Text margin="5px" size="small">
+                Monto máximo calculado para una cuota de{" "}
+                <strong>$1'500.000</strong> y plazo de <strong>60 meses</strong>.
+              </Text>
+            </Stack>
 
-            <Stack>
-              <Text appearance="success">$</Text>
-              {loading ? (
-                <SkeletonLine width="70px" animated={true} />
-              ) : (
-                <Text>{currencyFormat(availableForNewCommitments, false)}</Text>
-              )}
+            <Stack padding="8px 0px" justifyContent="space-between">
+              <Textfield
+                value={loading ? "loading..." : currencyFormat(maxAmount, false)}
+                iconBefore={
+                  <MdOutlineAttachMoney
+                    color={inube.icon.dark.content.color.regular}
+                  />
+                }
+                fullwidth={true}
+                id="id"
+                label="Monto máximo"
+                name="name"
+                placeholder="Ingrese la cantidad"
+                disabled={loading}
+              />
             </Stack>
           </Stack>
-
-          <Stack padding="8px 0px" justifyContent="space-between">
-            <Text appearance="dark" size="large" weight="bold">
-              Plazo máx. en ‘vacaciones’
-            </Text>
-
-            {loading ? (
-              <SkeletonLine width="70px" animated={true} />
-            ) : (
-              <Text>{maxVacationTerm}</Text>
-            )}
-          </Stack>
-
-          <StyledDivider />
-
-          <Stack alignItems="center" margin="10px 0px">
-            <Icon
-              appearance="primary"
-              icon={<MdInfoOutline />}
-              size="16px"
-              spacing="none"
-            />
-            <Text margin="5px" size="small">
-              Monto máximo calculado para una cuota de{" "}
-              <strong>$1'500.000</strong> y plazo de <strong>60 meses</strong>.
-            </Text>
-          </Stack>
-
-          <Stack padding="8px 0px" justifyContent="space-between">
-            <Textfield
-              value={loading ? "loading..." : currencyFormat(maxAmount, false)}
-              iconBefore={
-                <MdOutlineAttachMoney
-                  color={inube.icon.dark.content.color.regular}
-                />
-              }
-              fullwidth={true}
-              id="id"
-              label="Monto máximo"
-              name="name"
-              placeholder="Ingrese la cantidad"
-              disabled={loading}
-            />
-          </Stack>
-        </Stack>
+        )}
 
         <StyledDivider />
 
