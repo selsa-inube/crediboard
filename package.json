@@ -28,6 +28,7 @@
     "@inubekit/skeleton": "^2.5.0",
     "@inubekit/spinner": "^2.4.0",
     "@inubekit/stack": "^2.4.0",
+    "@inubekit/table": "^5.29.0",
     "@inubekit/tag": "^3.5.0",
     "@inubekit/text": "^2.7.0",
     "@inubekit/textarea": "^2.11.0",
