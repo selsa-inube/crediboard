@@ -4,7 +4,7 @@ import {
   MdOutlineVisibility,
   MdInfoOutline,
   MdOutlineAttachMoney,
-  MdErrorOutline
+  MdErrorOutline,
 } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
 import { inube } from "@inubekit/foundations";
@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import { SkeletonLine } from "@inubekit/skeleton";
 
 import { currencyFormat } from "@utils/formatData/currency";
+
 import { StyledContainerClose, StyledModal, StyledDivider } from "./styles";
 
 export interface IncomeModalProps {
@@ -55,11 +56,11 @@ export const IncomeModal = (props: IncomeModalProps) => {
   const isMobile = useMediaQuery("(max-width: 700px)");
 
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false); 
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
-      setError(false); 
+      setError(false);
       setLoading(false);
     }, 2000);
   }, []);
@@ -93,7 +94,8 @@ export const IncomeModal = (props: IncomeModalProps) => {
               Error cargando datos
             </Text>
             <Text size="small" appearance="dark">
-              No se pudieron cargar los datos. Por favor, intente nuevamente más tarde.
+              No se pudieron cargar los datos. Por favor, intente nuevamente más
+              tarde.
             </Text>
           </Stack>
         ) : (
@@ -179,7 +181,9 @@ export const IncomeModal = (props: IncomeModalProps) => {
                 {loading ? (
                   <SkeletonLine width="70px" animated={true} />
                 ) : (
-                  <Text>{currencyFormat(availableForNewCommitments, false)}</Text>
+                  <Text>
+                    {currencyFormat(availableForNewCommitments, false)}
+                  </Text>
                 )}
               </Stack>
             </Stack>
@@ -207,13 +211,16 @@ export const IncomeModal = (props: IncomeModalProps) => {
               />
               <Text margin="5px" size="small">
                 Monto máximo calculado para una cuota de{" "}
-                <strong>$1'500.000</strong> y plazo de <strong>60 meses</strong>.
+                <strong>$1'500.000</strong> y plazo de <strong>60 meses</strong>
+                .
               </Text>
             </Stack>
 
             <Stack padding="8px 0px" justifyContent="space-between">
               <Textfield
-                value={loading ? "loading..." : currencyFormat(maxAmount, false)}
+                value={
+                  loading ? "loading..." : currencyFormat(maxAmount, false)
+                }
                 iconBefore={
                   <MdOutlineAttachMoney
                     color={inube.icon.dark.content.color.regular}

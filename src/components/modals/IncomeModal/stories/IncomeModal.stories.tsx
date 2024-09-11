@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from "react";
-import { IncomeModal, IncomeModalProps } from '..';
 import { Button } from "@inubekit/button";
+
+import { IncomeModal, IncomeModalProps } from '..';
 import { props } from './props';
 
 
@@ -14,6 +15,7 @@ const meta: Meta<typeof IncomeModal> = {
 export default meta;
 
 type Story = StoryObj<IncomeModalProps>;
+
 export const Default: Story = (args: IncomeModalProps) => {
     const [showModal, setShowModal] = useState(false);
   
