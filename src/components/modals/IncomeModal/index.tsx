@@ -6,7 +6,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Grid } from "@inubekit/grid";
 import { Button } from "@inubekit/button";
 
-import { MdCheck, MdClear, MdOutlineCloudUpload } from "react-icons/md";
+import { MdClear, MdOutlineRemoveRedEye } from "react-icons/md";
 
 import { IncomeEmployment } from "./IncomeEmployment";
 import { ProfessionalServices } from "./ProfessionalServices";
@@ -14,11 +14,18 @@ import { IncomeCapital } from "./IncomeCapital";
 import { MicroBusinesses } from "./MicroBusinesses";
 import { StyledContainer, StyledTextField } from "./styles";
 import { Icon } from "@inubekit/icon";
+import { Select } from "@inubekit/select";
 
-export interface SourcesModalProps {
+interface SourcesModalProps {
   title: string;
   labels: string[];
   placeholders: string[];
+}
+
+interface IncomeModalProps {
+  form: { name: string };
+  onChange: (name: string, newValue: string) => void;
+  options: { id: string; label: string; value: string }[];
 }
 
 export function Sources(props: SourcesModalProps) {
@@ -48,9 +55,9 @@ export function Sources(props: SourcesModalProps) {
           <Button
             children="Adjuntar soporte"
             spacing="compact"
-            iconAfter={<MdOutlineCloudUpload />}
+            iconAfter={<MdOutlineRemoveRedEye />}
             variant="none"
-            onClick={() => console.log("Adjuntar soporte")}
+            onClick={() => console.log("Ver soporte")}
             cursorHover
           />
         </Stack>
@@ -59,7 +66,9 @@ export function Sources(props: SourcesModalProps) {
   );
 }
 
-export const IncomeModal = () => {
+export function IncomeModal (props: IncomeModalProps) {
+  const { form, onChange, options } = props
+
   const isMobile = useMediaQuery("(max-width:880px)");
 
   return (
@@ -92,13 +101,28 @@ export const IncomeModal = () => {
         justifyContent="space-between"
         alignItems="end"
       >
-        <Textfield
-          id="field1"
-          label="Total ingresos mensuales"
-          placeholder="$0"
-          size="compact"
-        />
-        <Button children="Continuar" iconAfter={<MdCheck />} />
+          <Stack justifyContent="space-between" width="50%" gap="15px">
+            <Select
+              id="income"
+              name="deudor"
+              label="Deudor"
+              placeholder="Seleccione una opción"
+              options={options}
+              value={form.name}
+              onChange={(value) => onChange("name", value)}
+              size="compact"
+            />
+            <Textfield
+              id="field1"
+              label="Total ingresos mensuales"
+              placeholder="$0"
+              size="compact"
+            />
+          </Stack>
+          <Stack justifyContent="end" gap="15px">
+            <Button children="Cerrar" appearance="light"/>
+            <Button children="Guardar" appearance="light"/>
+          </Stack>
       </Stack>
     </Stack>
   );
