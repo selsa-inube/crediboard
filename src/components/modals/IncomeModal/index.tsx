@@ -53,7 +53,7 @@ export function Sources(props: SourcesModalProps) {
         </Stack>
         <Stack justifyContent="end" margin="auto 0px 0px 0px">
           <Button
-            children="Adjuntar soporte"
+            children="Ver soporte"
             spacing="compact"
             iconAfter={<MdOutlineRemoveRedEye />}
             variant="none"
@@ -99,9 +99,10 @@ export function IncomeModal (props: IncomeModalProps) {
       <Stack
         margin="20px 0px 0px 0px"
         justifyContent="space-between"
-        alignItems="end"
+        alignItems={!isMobile ? "end" : "start"}
+        direction={!isMobile ? "row" : "column"}
       >
-          <Stack justifyContent="space-between" width="50%" gap="15px">
+          <Stack justifyContent="space-between" width={!isMobile ? "50%" : "100%"} gap="15px" direction={!isMobile ? "row" : "column"}>
             <Select
               id="income"
               name="deudor"
@@ -111,15 +112,17 @@ export function IncomeModal (props: IncomeModalProps) {
               value={form.name}
               onChange={(value) => onChange("name", value)}
               size="compact"
+              fullwidth
             />
             <Textfield
               id="field1"
               label="Total ingresos mensuales"
               placeholder="$0"
               size="compact"
+              fullwidth
             />
           </Stack>
-          <Stack justifyContent="end" gap="15px">
+          <Stack justifyContent="end" gap="15px" margin={!isMobile ? "none" : "15px 0px"} width={!isMobile ? "auto" : "100%"}>
             <Button children="Cerrar" appearance="light"/>
             <Button children="Guardar" appearance="light"/>
           </Stack>
