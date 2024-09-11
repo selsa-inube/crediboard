@@ -1,5 +1,10 @@
 import { createPortal } from "react-dom";
-import { MdClear, MdOutlineVisibility, MdInfoOutline ,MdOutlineAttachMoney } from "react-icons/md";
+import {
+  MdClear,
+  MdOutlineVisibility,
+  MdInfoOutline,
+  MdOutlineAttachMoney,
+} from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
 import { inube } from "@inubekit/foundations";
 import { Button } from "@inubekit/button";
@@ -11,13 +16,9 @@ import { Textfield } from "@inubekit/textfield";
 
 import { currencyFormat } from "@utils/formatData/currency";
 
-import {
-  StyledContainerClose,
-  StyledModal,
-  StyledDivider,
-} from "./styles";
+import { StyledContainerClose, StyledModal, StyledDivider } from "./styles";
 
-export interface IIncomeModalProps {
+export interface IncomeModalProps {
   title: string;
   handleClose: () => void;
   portalId?: string;
@@ -29,7 +30,7 @@ export interface IIncomeModalProps {
   maxAmount: number;
 }
 
-export const IncomeModal = (props: IIncomeModalProps) => {
+export const IncomeModal = (props: IncomeModalProps) => {
   const {
     title,
     portalId,
@@ -39,6 +40,7 @@ export const IncomeModal = (props: IIncomeModalProps) => {
     subsistenceReserve,
     availableForNewCommitments,
     maxVacationTerm,
+    maxAmount,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -72,85 +74,79 @@ export const IncomeModal = (props: IIncomeModalProps) => {
 
         <StyledDivider />
         <Stack direction="column">
-        
-            <Stack padding="8px 0px" justifyContent="space-between">
-              <Text appearance="dark" size="large" weight="bold">
-                Total fuentes de ingreso reportadas
-              </Text>
+          <Stack padding="8px 0px" justifyContent="space-between">
+            <Text appearance="dark" size="large" weight="bold">
+              Total fuentes de ingreso reportadas
+            </Text>
 
-              <Stack alignItems="center">
-                <Text appearance="success">$</Text>
-                <Text>{currencyFormat(reportedIncomeSources, false)}</Text>
-                <Stack margin="0px 0px 0px 5px">
-                  <Icon
-                    appearance="primary"
-                    icon={<MdOutlineVisibility />}
-                    size="16px"
-                    spacing="none"
-                    cursorHover={true}
-                    variant="filled"
-                    shape="circle"
-                  />
-                </Stack>
+            <Stack alignItems="center">
+              <Text appearance="success">$</Text>
+              <Text>{currencyFormat(reportedIncomeSources, false)}</Text>
+              <Stack margin="0px 0px 0px 5px">
+                <Icon
+                  appearance="primary"
+                  icon={<MdOutlineVisibility />}
+                  size="16px"
+                  spacing="none"
+                  cursorHover={true}
+                  variant="filled"
+                  shape="circle"
+                />
               </Stack>
             </Stack>
+          </Stack>
 
-            <Stack padding="8px 0px" justifyContent="space-between">
-              <Text appearance="gray" size="large" weight="bold">
-                (-) Obligaciones financieras reportadas
-              </Text>
+          <Stack padding="8px 0px" justifyContent="space-between">
+            <Text appearance="gray" size="large" weight="bold">
+              (-) Obligaciones financieras reportadas
+            </Text>
 
-              <Stack alignItems="center">
-                <Text appearance="success">$</Text>
-                <Text>
-                  {currencyFormat(reportedFinancialObligations, false)}
-                </Text>
-                <Stack margin="0px 0px 0px 5px">
-                  <Icon
-                    appearance="primary"
-                    icon={<MdOutlineVisibility />}
-                    size="16px"
-                    spacing="none"
-                    cursorHover
-                    variant="filled"
-                    shape="circle"
-                  />
-                </Stack>
+            <Stack alignItems="center">
+              <Text appearance="success">$</Text>
+              <Text>{currencyFormat(reportedFinancialObligations, false)}</Text>
+              <Stack margin="0px 0px 0px 5px">
+                <Icon
+                  appearance="primary"
+                  icon={<MdOutlineVisibility />}
+                  size="16px"
+                  spacing="none"
+                  cursorHover
+                  variant="filled"
+                  shape="circle"
+                />
               </Stack>
             </Stack>
+          </Stack>
 
-            <Stack padding="8px 0px" justifyContent="space-between">
-              <Text appearance="gray" size="large" weight="bold">
-                (-) Reserva mínima de subsistencia
-              </Text>
+          <Stack padding="8px 0px" justifyContent="space-between">
+            <Text appearance="gray" size="large" weight="bold">
+              (-) Reserva mínima de subsistencia
+            </Text>
 
-              <Stack alignItems="center">
-                <Text appearance="success">$</Text>
-                <Text>{currencyFormat(subsistenceReserve, false)}</Text>
-              </Stack>
+            <Stack alignItems="center">
+              <Text appearance="success">$</Text>
+              <Text>{currencyFormat(subsistenceReserve, false)}</Text>
             </Stack>
+          </Stack>
 
-            <StyledDivider />
+          <StyledDivider />
 
-            <Stack padding="8px 0px" justifyContent="space-between">
-              <Text appearance="dark" size="large" weight="bold">
-                Neto disponible para nuevos compromisos
-              </Text>
-              <Stack>
-                <Text appearance="success">$</Text>
-                <Text>
-                  {currencyFormat(availableForNewCommitments, false)}
-                </Text>
-              </Stack>
+          <Stack padding="8px 0px" justifyContent="space-between">
+            <Text appearance="dark" size="large" weight="bold">
+              Neto disponible para nuevos compromisos
+            </Text>
+            <Stack>
+              <Text appearance="success">$</Text>
+              <Text>{currencyFormat(availableForNewCommitments, false)}</Text>
             </Stack>
+          </Stack>
 
-            <Stack padding="8px 0px" justifyContent="space-between">
-              <Text appearance="dark" size="large" weight="bold">
-                Plazo máx. en ‘vacaciones’
-              </Text>
-              <Text>{maxVacationTerm}</Text>
-            </Stack>
-          
+          <Stack padding="8px 0px" justifyContent="space-between">
+            <Text appearance="dark" size="large" weight="bold">
+              Plazo máx. en ‘vacaciones’
+            </Text>
+            <Text>{maxVacationTerm}</Text>
+          </Stack>
 
           <StyledDivider />
 
@@ -169,14 +165,18 @@ export const IncomeModal = (props: IIncomeModalProps) => {
 
           <Stack padding="8px 0px" justifyContent="space-between">
             <Textfield
+              value={currencyFormat(maxAmount, false)}
               iconBefore={
-                <MdOutlineAttachMoney color={ inube.icon.dark.content.color.regular} />
+                <MdOutlineAttachMoney
+                  color={inube.icon.dark.content.color.regular}
+                />
               }
               fullwidth={true}
               id="id"
               label="Monto máximo"
               name="name"
               placeholder="Ingrese la cantidad"
+              disabled={false}
             />
           </Stack>
         </Stack>

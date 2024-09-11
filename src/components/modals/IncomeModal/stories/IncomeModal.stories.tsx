@@ -1,20 +1,20 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from "react";
-import { IncomeModal, IIncomeModalProps } from '..';
+import { IncomeModal, IncomeModalProps } from '..';
 import { Button } from "@inubekit/button";
 import { props } from './props';
 
 
 const meta: Meta<typeof IncomeModal> = {
-  title: 'Modals/IncomeModal',
+  title: 'components/modals/IncomeModal',
   component: IncomeModal,
   argTypes: props,
 };
 
 export default meta;
 
-type Story = StoryObj<IIncomeModalProps>;
-export const Default: Story = (args: IIncomeModalProps) => {
+type Story = StoryObj<IncomeModalProps>;
+export const Default: Story = (args: IncomeModalProps) => {
     const [showModal, setShowModal] = useState(false);
   
     return (
@@ -35,4 +35,5 @@ export const Default: Story = (args: IIncomeModalProps) => {
     subsistenceReserve: 200000,
     availableForNewCommitments: 800000,
     maxVacationTerm: 60,
+    maxAmount: 2000000,
   };
