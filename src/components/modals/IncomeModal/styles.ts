@@ -16,7 +16,7 @@ export const StyledDivider = styled.hr`
 export const StyledModal = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
-  max-height: ${({ $smallScreen }) => ($smallScreen ? "700px" : "563px")};
+  max-height: ${({ $smallScreen }) => ($smallScreen ? "700px" : "556px")};
   width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "550px")};
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
