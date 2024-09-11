@@ -13,9 +13,10 @@ import { Blanket } from "@inubekit/blanket";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Textfield } from "@inubekit/textfield";
+import { useState, useEffect } from "react";
+import { SkeletonLine } from "@inubekit/skeleton";
 
 import { currencyFormat } from "@utils/formatData/currency";
-
 import { StyledContainerClose, StyledModal, StyledDivider } from "./styles";
 
 export interface IncomeModalProps {
@@ -52,6 +53,14 @@ export const IncomeModal = (props: IncomeModalProps) => {
 
   const isMobile = useMediaQuery("(max-width: 700px)");
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
@@ -73,6 +82,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
         </Stack>
 
         <StyledDivider />
+
         <Stack direction="column">
           <Stack padding="8px 0px" justifyContent="space-between">
             <Text appearance="dark" size="large" weight="bold">
@@ -81,14 +91,18 @@ export const IncomeModal = (props: IncomeModalProps) => {
 
             <Stack alignItems="center">
               <Text appearance="success">$</Text>
-              <Text>{currencyFormat(reportedIncomeSources, false)}</Text>
+              {loading ? (
+                <SkeletonLine width="100px" animated={true} />
+              ) : (
+                <Text>{currencyFormat(reportedIncomeSources, false)}</Text>
+              )}
               <Stack margin="0px 0px 0px 5px">
                 <Icon
                   appearance="primary"
                   icon={<MdOutlineVisibility />}
                   size="16px"
                   spacing="none"
-                  cursorHover={true}
+                  cursorHover
                   variant="filled"
                   shape="circle"
                 />
@@ -103,7 +117,13 @@ export const IncomeModal = (props: IncomeModalProps) => {
 
             <Stack alignItems="center">
               <Text appearance="success">$</Text>
-              <Text>{currencyFormat(reportedFinancialObligations, false)}</Text>
+              {loading ? (
+                <SkeletonLine width="100px" animated={true} />
+              ) : (
+                <Text>
+                  {currencyFormat(reportedFinancialObligations, false)}
+                </Text>
+              )}
               <Stack margin="0px 0px 0px 5px">
                 <Icon
                   appearance="primary"
@@ -125,7 +145,11 @@ export const IncomeModal = (props: IncomeModalProps) => {
 
             <Stack alignItems="center">
               <Text appearance="success">$</Text>
-              <Text>{currencyFormat(subsistenceReserve, false)}</Text>
+              {loading ? (
+                <SkeletonLine width="100px" animated={true} />
+              ) : (
+                <Text>{currencyFormat(subsistenceReserve, false)}</Text>
+              )}
             </Stack>
           </Stack>
 
@@ -135,9 +159,14 @@ export const IncomeModal = (props: IncomeModalProps) => {
             <Text appearance="dark" size="large" weight="bold">
               Neto disponible para nuevos compromisos
             </Text>
+
             <Stack>
               <Text appearance="success">$</Text>
-              <Text>{currencyFormat(availableForNewCommitments, false)}</Text>
+              {loading ? (
+                <SkeletonLine width="100px" animated={true} />
+              ) : (
+                <Text>{currencyFormat(availableForNewCommitments, false)}</Text>
+              )}
             </Stack>
           </Stack>
 
@@ -145,7 +174,12 @@ export const IncomeModal = (props: IncomeModalProps) => {
             <Text appearance="dark" size="large" weight="bold">
               Plazo máx. en ‘vacaciones’
             </Text>
-            <Text>{maxVacationTerm}</Text>
+
+            {loading ? (
+              <SkeletonLine width="100px" animated={true} />
+            ) : (
+              <Text>{maxVacationTerm}</Text>
+            )}
           </Stack>
 
           <StyledDivider />
@@ -165,7 +199,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
 
           <Stack padding="8px 0px" justifyContent="space-between">
             <Textfield
-              value={currencyFormat(maxAmount, false)}
+              value={loading ? "loading..." : currencyFormat(maxAmount, false)}
               iconBefore={
                 <MdOutlineAttachMoney
                   color={inube.icon.dark.content.color.regular}
@@ -176,7 +210,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
               label="Monto máximo"
               name="name"
               placeholder="Ingrese la cantidad"
-              disabled={false}
+              disabled={loading}
             />
           </Stack>
         </Stack>
