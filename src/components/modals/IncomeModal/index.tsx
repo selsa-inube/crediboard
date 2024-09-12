@@ -93,7 +93,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
             <Text size="large" weight="bold" appearance="danger">
               Error cargando datos
             </Text>
-            <Text size="small" appearance="dark">
+            <Text size="small" appearance="dark" textAlign="center">
               No se pudieron cargar los datos. Por favor, intente nuevamente más
               tarde.
             </Text>
