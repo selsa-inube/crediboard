@@ -17,6 +17,7 @@ import {
 } from "@inubekit/table";
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
+import { useMediaQuery } from "@inubekit/hooks";  
 
 import { headers, data, usePagination } from "./interface";
 import { ActionModal } from "./actions";
@@ -33,6 +34,11 @@ export function ReportCreditsModal() {
   } = usePagination();
 
   const [ModalOpen, setModalOpen] = useState(false);
+
+  const isMobile = useMediaQuery("(max-width:880px)");
+  const visibleHeaders = isMobile
+    ? headers.filter(header => ["tipo", "saldo", "acciones"].includes(header.key))
+    : headers;
 
   return (
     <Stack direction="column">
@@ -51,10 +57,10 @@ export function ReportCreditsModal() {
       <Stack justifyContent="end" margin="20px 0px">
         <Button children="Agregar obligaciones" iconBefore={<MdAdd />} />
       </Stack>
-      <Table>
+      <Table tableLayout="auto">
         <Thead>
           <Tr>
-            {headers.map((header, index) => (
+            {visibleHeaders.map((header, index) => (
               <Th key={index} action={header.action} align="center">
                 {header.label}
               </Th>
@@ -64,7 +70,7 @@ export function ReportCreditsModal() {
         <Tbody>
           {data.map((row, rowIndex) => (
             <Tr key={rowIndex}>
-              {headers.map((header, colIndex) => {
+              {visibleHeaders.map((header, colIndex) => {
                 const cellData = row[header.key];
                 return (
                   <Td
@@ -92,7 +98,7 @@ export function ReportCreditsModal() {
         </Tbody>
         <Tfoot>
           <Tr border="bottom">
-            <Td colSpan={headers.length} type="custom" align="center">
+            <Td colSpan={visibleHeaders.length} type="custom" align="center">
               <Pagination
                 firstEntryInPage={firstEntryInPage}
                 lastEntryInPage={lastEntryInPage}
@@ -106,7 +112,7 @@ export function ReportCreditsModal() {
           </Tr>
         </Tfoot>
       </Table>
-      <Stack gap="15px" margin="20px 0px">
+      <Stack gap="15px" margin="20px 0px" direction={!isMobile ? "row" : "column"}>
         <Textfield
           id="field1"
           label="Cuota Total"
