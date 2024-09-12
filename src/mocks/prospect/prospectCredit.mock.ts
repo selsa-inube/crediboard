@@ -55,7 +55,7 @@ export const mockProspectCredit: IProspect[] = [
         interest_rate: 1.1,
         fixed_points: 5,
         loan_term: 12,
-        Schedule: Schedule.Weekly,
+        schedule: Schedule.Weekly,
         ordinary_installment_for_principal: {
           term: 10,
           number_of_installments: 10,
@@ -143,7 +143,7 @@ export const mockProspectCredit: IProspect[] = [
         interest_rate: 1.1,
         fixed_points: 5,
         loan_term: 12,
-        Schedule: Schedule.Semiannually,
+        schedule: Schedule.Semiannually,
         ordinary_installment_for_principal: {
           term: 10,
           number_of_installments: 10,
@@ -230,7 +230,7 @@ export const mockProspectCredit: IProspect[] = [
         interest_rate: 1.2,
         fixed_points: 6,
         loan_term: 12,
-        Schedule: Schedule.Monthly,
+        schedule: Schedule.Monthly,
         ordinary_installment_for_principal: {
           term: 10,
           number_of_installments: 10,
@@ -317,7 +317,7 @@ export const mockProspectCredit: IProspect[] = [
         interest_rate: 1.3,
         fixed_points: 7,
         loan_term: 12,
-        Schedule: Schedule.Monthly,
+        schedule: Schedule.Monthly,
         ordinary_installment_for_principal: {
           term: 10,
           number_of_installments: 10,
@@ -404,7 +404,7 @@ export const mockProspectCredit: IProspect[] = [
         interest_rate: 1.4,
         fixed_points: 8,
         loan_term: 12,
-        Schedule: Schedule.Weekly,
+        schedule: Schedule.Weekly,
         ordinary_installment_for_principal: {
           term: 10,
           number_of_installments: 10,
@@ -491,7 +491,7 @@ export const mockProspectCredit: IProspect[] = [
         interest_rate: 1.5,
         fixed_points: 9,
         loan_term: 12,
-        Schedule: Schedule.Monthly,
+        schedule: Schedule.Monthly,
         ordinary_installment_for_principal: {
           term: 10,
           number_of_installments: 10,
@@ -578,7 +578,7 @@ export const mockProspectCredit: IProspect[] = [
         interest_rate: 1.6,
         fixed_points: 10,
         loan_term: 12,
-        Schedule: Schedule.Weekly,
+        schedule: Schedule.Weekly,
         ordinary_installment_for_principal: {
           term: 10,
           number_of_installments: 10,
@@ -665,7 +665,7 @@ export const mockProspectCredit: IProspect[] = [
         interest_rate: 1.7,
         fixed_points: 11,
         loan_term: 12,
-        Schedule: Schedule.Monthly,
+        schedule: Schedule.Monthly,
         ordinary_installment_for_principal: {
           term: 10,
           number_of_installments: 10,
