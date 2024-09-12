@@ -1,4 +1,4 @@
-import { Sources } from "..";
+import { Sources } from "../Sources";
 
 export function ProfessionalServices() {
   return (
