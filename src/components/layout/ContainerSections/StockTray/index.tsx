@@ -1,4 +1,4 @@
-import { MdArrowBack, MdMenu } from "react-icons/md";
+import { MdOutlineChevronLeft , MdMenu } from "react-icons/md";
 import { Button, Text, inube } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
@@ -43,7 +43,7 @@ export const StockTray = (props: IStockTrayProps) => {
         <Button
           spacing="compact"
           variant="outlined"
-          iconBefore={<MdArrowBack />}
+          iconBefore={<MdOutlineChevronLeft  />}
           onClick={navigation}
         >
           Volver
@@ -51,7 +51,7 @@ export const StockTray = (props: IStockTrayProps) => {
       ) : (
         <Stack alignItems="center">
           <Icon
-            icon={<MdArrowBack />}
+            icon={<MdOutlineChevronLeft  />}
             appearance="primary"
             size="32px"
             spacing="none"
@@ -75,7 +75,7 @@ export const StockTray = (props: IStockTrayProps) => {
           gap={inube.spacing.s200}
           margin={!isMobile ? "s0 s0 s200 s0" : "s0"}
         >
-          <Stack gap={inube.spacing.s400}>
+          <Stack gap={inube.spacing.s200}>
             <Button
               spacing="compact"
               onClick={actionButtons?.buttons?.buttonReject?.OnClick}

@@ -12,9 +12,6 @@ interface IStyledIcon {
 interface IStyledDivider {
   theme?: typeof inube;
 }
-interface IStyledFieldset {
-  theme?: typeof inube;
-}
 const StyledIcon = styled.div<IStyledIcon>`
   display: flex;
   align-items: center;
@@ -37,7 +34,7 @@ const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
 `;
 
 const StyledDivider = styled.hr<IStyledDivider>`
-  margin: ${inube.spacing.s0};
+  margin: 0px;
   width: 100%;
   border: none;
   border-top: 2px solid;
@@ -46,8 +43,14 @@ const StyledDivider = styled.hr<IStyledDivider>`
     inube.color.stroke.divider.regular};
 `;
 
-const StyledFieldset = styled.div<IStyledFieldset>`
-  padding: 4px;
+const StyledHorizontalDivider = styled.hr`
+  margin: 0px 10px 0px 10px;
+  width: 2px;
+  border: none;
+  background-color: ${({ theme }) =>
+    theme?.color?.stroke?.divider?.regular ||
+    inube.color.stroke.divider.regular};
 `;
 
-export { StyledCollapseIcon, StyledIcon, StyledDivider,StyledFieldset };
+
+export { StyledCollapseIcon, StyledIcon, StyledDivider,StyledHorizontalDivider };
