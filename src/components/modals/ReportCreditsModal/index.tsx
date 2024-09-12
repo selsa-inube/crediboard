@@ -1,5 +1,6 @@
+import { createPortal } from "react-dom";
 import { useState } from "react";
-import { MdAdd, MdClear, MdLinearScale } from "react-icons/md";
+import { MdAdd, MdClear } from "react-icons/md";
 
 import { Button } from "@inubekit/button";
 import { Divider } from "@inubekit/divider";
@@ -17,12 +18,22 @@ import {
 } from "@inubekit/table";
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
-import { useMediaQuery } from "@inubekit/hooks";  
+import { Blanket } from "@inubekit/blanket";
+import { useMediaQuery } from "@inubekit/hooks";
 
 import { headers, data, usePagination } from "./interface";
-import { ActionModal } from "./actions";
+import { ActionModal } from "./Actions";
+import { Details } from "./Detail";
+import { StyledContainerClose, StyledContainer } from "./styles";
 
-export function ReportCreditsModal() {
+interface ReportCreditsModalProps {
+  handleClose: () => void;
+  portalId?: string;
+}
+
+export function ReportCreditsModal(props: ReportCreditsModalProps) {
+  const { portalId, handleClose } = props;
+
   const {
     totalRecords,
     handleStartPage,
@@ -35,100 +46,117 @@ export function ReportCreditsModal() {
 
   const [ModalOpen, setModalOpen] = useState(false);
 
+  const node = document.getElementById(portalId ?? "portal");
+  if (!node) {
+    throw new Error(
+      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
+    );
+  }
+
   const isMobile = useMediaQuery("(max-width:880px)");
   const visibleHeaders = isMobile
-    ? headers.filter(header => ["tipo", "saldo", "acciones"].includes(header.key))
+    ? headers.filter((header) =>
+        ["tipo", "saldo", "acciones"].includes(header.key)
+      )
     : headers;
 
-  return (
-    <Stack direction="column">
-      <Stack justifyContent="space-between" alignItems="center">
-        <Stack>
-          <Text size="small" margin="10px 0px" type="headline">
-            Obligaciones financieras
-          </Text>
+  return createPortal(
+    <Blanket>
+      <StyledContainer>
+        <Stack direction="column" padding="24px" gap="24px">
+          <Stack justifyContent="space-between" alignItems="center">
+            <Stack>
+              <Text size="small" type="headline">
+                Obligaciones financieras
+              </Text>
+            </Stack>
+            <StyledContainerClose onClick={handleClose}>
+              <Stack alignItems="center" gap="8px">
+                <Text>Cerrar</Text>
+                <Icon
+                  icon={<MdClear />}
+                  size="24px"
+                  cursorHover
+                  appearance="dark"
+                />
+              </Stack>
+            </StyledContainerClose>
+          </Stack>
+          <Divider />
+          <Stack justifyContent="end">
+            <Button children="Agregar obligaciones" iconBefore={<MdAdd />} />
+          </Stack>
+          <Table tableLayout="auto">
+            <Thead>
+              <Tr>
+                {visibleHeaders.map((header, index) => (
+                  <Th key={index} action={header.action} align="center">
+                    {header.label}
+                  </Th>
+                ))}
+              </Tr>
+            </Thead>
+            <Tbody>
+              {data.map((row, rowIndex) => (
+                <Tr key={rowIndex}>
+                  {visibleHeaders.map((header, colIndex) => {
+                    const cellData = row[header.key];
+                    return (
+                      <Td
+                        key={colIndex}
+                        appearance={rowIndex % 2 === 0 ? "dark" : "light"}
+                        type={header.action ? "custom" : "text"}
+                      >
+                        {header.action ? <Details /> : cellData}
+                      </Td>
+                    );
+                  })}
+                </Tr>
+              ))}
+            </Tbody>
+            <Tfoot>
+              <Tr border="bottom">
+                <Td
+                  colSpan={visibleHeaders.length}
+                  type="custom"
+                  align="center"
+                >
+                  <Pagination
+                    firstEntryInPage={firstEntryInPage}
+                    lastEntryInPage={lastEntryInPage}
+                    totalRecords={totalRecords}
+                    handleStartPage={handleStartPage}
+                    handlePrevPage={handlePrevPage}
+                    handleNextPage={handleNextPage}
+                    handleEndPage={handleEndPage}
+                  />
+                </Td>
+              </Tr>
+            </Tfoot>
+          </Table>
+          <Stack
+            gap="15px"
+            direction={!isMobile ? "row" : "column"}
+          >
+            <Textfield
+              id="field1"
+              label="Cuota Total"
+              placeholder="$0"
+              size="compact"
+              fullwidth
+            />
+            <Textfield
+              id="field2"
+              label="Saldo Total"
+              placeholder="$0"
+              size="compact"
+              fullwidth
+            />
+          </Stack>
+          {ModalOpen && <ActionModal onClose={() => setModalOpen(false)} />}
         </Stack>
-        <Stack alignItems="center">
-          <Text>Cerrar</Text>
-          <Icon icon={<MdClear />} size="24px" cursorHover appearance="dark" />
-        </Stack>
-      </Stack>
-      <Divider />
-      <Stack justifyContent="end" margin="20px 0px">
-        <Button children="Agregar obligaciones" iconBefore={<MdAdd />} />
-      </Stack>
-      <Table tableLayout="auto">
-        <Thead>
-          <Tr>
-            {visibleHeaders.map((header, index) => (
-              <Th key={index} action={header.action} align="center">
-                {header.label}
-              </Th>
-            ))}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data.map((row, rowIndex) => (
-            <Tr key={rowIndex}>
-              {visibleHeaders.map((header, colIndex) => {
-                const cellData = row[header.key];
-                return (
-                  <Td
-                    key={colIndex}
-                    appearance={rowIndex % 2 === 0 ? "dark" : "light"}
-                  >
-                    {header.action ? (
-                      <Icon
-                        icon={<MdLinearScale />}
-                        size="12px"
-                        cursorHover
-                        appearance="primary"
-                        onClick={() => setModalOpen(true)}
-                        shape="circle"
-                        variant="filled"
-                      />
-                    ) : (
-                      cellData
-                    )}
-                  </Td>
-                );
-              })}
-            </Tr>
-          ))}
-        </Tbody>
-        <Tfoot>
-          <Tr border="bottom">
-            <Td colSpan={visibleHeaders.length} type="custom" align="center">
-              <Pagination
-                firstEntryInPage={firstEntryInPage}
-                lastEntryInPage={lastEntryInPage}
-                totalRecords={totalRecords}
-                handleStartPage={handleStartPage}
-                handlePrevPage={handlePrevPage}
-                handleNextPage={handleNextPage}
-                handleEndPage={handleEndPage}
-              />
-            </Td>
-          </Tr>
-        </Tfoot>
-      </Table>
-      <Stack gap="15px" margin="20px 0px" direction={!isMobile ? "row" : "column"}>
-        <Textfield
-          id="field1"
-          label="Cuota Total"
-          placeholder="$0"
-          size="compact"
-          fullwidth
-        />
-        <Textfield
-          id="field2"
-          label="Saldo Total"
-          placeholder="$0"
-          size="compact"
-          fullwidth
-        />
-      </Stack>
-      {ModalOpen && <ActionModal onClose={() => setModalOpen(false)} />}
-    </Stack>
+      </StyledContainer>
+    </Blanket>,
+    node
   );
 }
