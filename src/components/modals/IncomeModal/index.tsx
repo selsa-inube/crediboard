@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import {
   MdClear,
@@ -14,7 +15,6 @@ import { Blanket } from "@inubekit/blanket";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Textfield } from "@inubekit/textfield";
-import { useState, useEffect } from "react";
 import { SkeletonLine } from "@inubekit/skeleton";
 
 import { currencyFormat } from "@utils/formatData/currency";
