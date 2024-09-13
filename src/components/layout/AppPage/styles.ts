@@ -28,17 +28,21 @@ const StyledContentImg = styled(Link)`
 `;
 
 const StyledLogo = styled.img`
-  max-width: 100px;
+  max-width: 120px;
 `;
 
 const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   display: flex;
   transition: all 500ms ease;
   position: absolute;
-  top: 15px;
+  top: 13.5px;
   transform: ${({ $collapse }) =>
     $collapse ? "rotate(-90deg)" : "rotate(90deg)"};
-  left: ${({ $isTablet }) => ($isTablet ? "180px" : "130px")};
+  left: ${({ $isTablet }) => ($isTablet ? "200px" : "160px")};
+`;
+
+const StyledCollapse = styled.div`
+  position: absolute;
 `;
 
 const StyledMenuContainer = styled.div`
@@ -63,4 +67,5 @@ export {
   StyledMain,
   StyledMenuContainer,
   StyledCollapseIcon,
+  StyledCollapse
 };

@@ -17,7 +17,7 @@ const StyledRadioClient = styled.label`
 `;
 
 const StyledRadio = styled.input`
-  width: 16px;
+  width: 50px;
   height: 16px;
 
   &:checked ~ img {
@@ -28,7 +28,7 @@ const StyledRadio = styled.input`
 const StyledImage = styled.img`
   font-family: "Roboto";
   font-size: 14px;
-  width: 100%;
+  width: 80%;
   transition: filter 500ms ease-out;
   filter: grayscale(100%);
 
