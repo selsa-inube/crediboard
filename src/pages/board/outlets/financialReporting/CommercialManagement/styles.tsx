@@ -44,8 +44,9 @@ const StyledDivider = styled.hr<IStyledDivider>`
 `;
 
 const StyledHorizontalDivider = styled.hr`
-  margin: 0px 10px 0px 10px;
+  margin: 0px 10px;
   width: 2px;
+  height: 28px; 
   border: none;
   background-color: ${({ theme }) =>
     theme?.color?.stroke?.divider?.regular ||

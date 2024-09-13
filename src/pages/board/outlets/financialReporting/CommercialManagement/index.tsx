@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import {
   MdOutlineChevronRight,
   MdOutlinePhone,
-  MdOutlineVideocam ,
+  MdOutlineVideocam,
   MdOutlinePictureAsPdf,
   MdOutlineShare,
   MdOutlineEdit,
@@ -52,92 +52,95 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
 
   return (
     <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
-        <Stack direction="column" gap="12px">
-          <Stack justifyContent="space-between" alignItems="center">
-            <Stack direction="column">
-              <Stack>
-                <Stack gap="6px" width="max-content">
-                  <Text type="title" size="small" appearance="gray">
-                    No. Rad.:
-                  </Text>
-                  <Text type="title" size="small">
-                    {data.k_Prospe}
-                  </Text>
-                  <Text
-                    type="title"
-                    size="small"
-                    appearance="gray"
-                    padding="0px 0px 0px 8px"
-                  >
-                    {capitalizeFirstLetter(
-                      formatISODatetoCustomFormat(data.f_Prospe)
-                    )}
-                  </Text>
-                </Stack>
-              </Stack>
-              {isMobile && (
-                <Stack margin="s050 s0">
-                  <Text type="title" size={!isMobile ? "large" : "medium"}>
-                    {data.nnasocia &&
-                      capitalizeFirstLetterEachWord(
-                        truncateTextToMaxLength(data.nnasocia)
-                      )}
-                  </Text>
-                </Stack>
-              )}
-              <Stack gap={!isMobile ? inube.spacing.s050 : "4px"}>
+      <Stack direction="column" gap="12px">
+        <Stack justifyContent="space-between" alignItems="center">
+          <Stack direction="column">
+            <Stack>
+              <Stack gap="6px" width="max-content">
                 <Text type="title" size="small" appearance="gray">
-                  Destino:
+                  No. Rad.:
                 </Text>
                 <Text type="title" size="small">
-                  {data.nnasocia &&
-                    capitalizeFirstLetter(
-                      truncateTextToMaxLength(data.k_Desdin, 60)
-                    )}
+                  {data.k_Prospe}
                 </Text>
-              </Stack>
-              <Stack gap="4px">
-                <Text type="title" size="small" appearance="gray">
-                  Valor:
-                </Text>
-                <Text type="title" size="small">
-                  {data.v_Monto === 0 ? "$ 0" : currencyFormat(data.v_Monto)}
+                <Text
+                  type="title"
+                  size="small"
+                  appearance="gray"
+                  padding="0px 0px 0px 8px"
+                >
+                  {capitalizeFirstLetter(
+                    formatISODatetoCustomFormat(data.f_Prospe)
+                  )}
                 </Text>
               </Stack>
             </Stack>
-
-            {!isMobile && (
-              <Stack  gap="36px" >
-                <Text type="title">
+            {isMobile && (
+              <Stack margin="s050 s0">
+                <Text type="title" size={!isMobile ? "large" : "medium"}>
                   {data.nnasocia &&
                     capitalizeFirstLetterEachWord(
                       truncateTextToMaxLength(data.nnasocia)
                     )}
                 </Text>
-                <Stack gap="2px">
-                  <Button
-                    type="link"
-                    spacing="compact"
-                    path={`/extended-card/${id}/credit-profile`}
-                  >
-                    Ver perfil crediticio
-                  </Button>
-                  <StyledHorizontalDivider />
-                  <Icon
-                    icon={<MdOutlinePhone />}
-                    appearance="primary"
-                    size="24px"
-                    cursorHover
-                  />
-                  <Icon
-                    icon={<MdOutlineVideocam  />}
-                    appearance="primary"
-                    size="24px"
-                    cursorHover
-                  />
-                  <StyledHorizontalDivider />
-                </Stack>
               </Stack>
+            )}
+            <Stack gap={!isMobile ? inube.spacing.s050 : "4px"}>
+              <Text type="title" size="small" appearance="gray">
+                Destino:
+              </Text>
+              <Text type="title" size="small">
+                {data.nnasocia &&
+                  capitalizeFirstLetter(
+                    truncateTextToMaxLength(data.k_Desdin, 60)
+                  )}
+              </Text>
+            </Stack>
+            <Stack gap="4px">
+              <Text type="title" size="small" appearance="gray">
+                Valor:
+              </Text>
+              <Text type="title" size="small">
+                {data.v_Monto === 0 ? "$ 0" : currencyFormat(data.v_Monto)}
+              </Text>
+            </Stack>
+          </Stack>
+
+          {!isMobile && (
+            <Stack gap="36px">
+              <Text type="title">
+                {data.nnasocia &&
+                  capitalizeFirstLetterEachWord(
+                    truncateTextToMaxLength(data.nnasocia)
+                  )}
+              </Text>
+            </Stack>
+          )}
+          <Stack gap="2px">
+            {!isMobile && (
+              <>
+                <Button
+                  type="link"
+                  spacing="compact"
+                  path={`/extended-card/${id}/credit-profile`}
+                >
+                  Ver perfil crediticio
+                </Button>
+                <StyledHorizontalDivider />
+                <Icon
+                  icon={<MdOutlinePhone />}
+                  appearance="primary"
+                  size="24px"
+                  cursorHover
+                />
+                <Icon
+                  icon={<MdOutlineVideocam />}
+                  appearance="primary"
+                  size="24px"
+                  cursorHover
+                />
+                <StyledHorizontalDivider />
+              </>
             )}
             <StyledCollapseIcon $collapse={collapse} onClick={handleCollapse}>
               <Icon
@@ -148,55 +151,56 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               />
             </StyledCollapseIcon>
           </Stack>
-          {isMobile && (
-            <Button
-              type="link"
-              path={`/extended-card/${id}/credit-profile`}
-              fullwidth
-            >
-              Ver perfil crediticio
-            </Button>
-          )}
-          {collapse && <StyledDivider />}
-          {collapse && (
-            <Stack direction="column" gap="10px">
-              {!isMobile && (
-                <Stack gap={inube.spacing.s200}>
-                  <StyledIcon>
-                    <Icon
-                      icon={<MdOutlinePictureAsPdf />}
-                      appearance="primary"
-                      size="18px"
-                      disabled={isPrint}
-                      cursorHover
-                      onClick={print}
-                    />
-                  </StyledIcon>
-                  <StyledIcon>
-                    <Icon
-                      icon={<MdOutlineShare />}
-                      appearance="primary"
-                      size="18px"
-                      cursorHover
-                    />
-                  </StyledIcon>
-
-                  <StyledIcon>
-                    <Icon
-                      icon={<MdOutlineEdit />}
-                      appearance="primary"
-                      size="18px"
-                      cursorHover
-                    />
-                  </StyledIcon>
-                </Stack>
-              )}
-              <Stack direction="column" width="fit-content">
-                {children}
-              </Stack>
-            </Stack>
-          )}
         </Stack>
+        {isMobile && (
+          <Button
+            type="link"
+            path={`/extended-card/${id}/credit-profile`}
+            fullwidth
+          >
+            Ver perfil crediticio
+          </Button>
+        )}
+        {collapse && <StyledDivider />}
+        {collapse && (
+          <Stack direction="column" gap="10px">
+            {!isMobile && (
+              <Stack gap={inube.spacing.s200}>
+                <StyledIcon>
+                  <Icon
+                    icon={<MdOutlinePictureAsPdf />}
+                    appearance="primary"
+                    size="18px"
+                    disabled={isPrint}
+                    cursorHover
+                    onClick={print}
+                  />
+                </StyledIcon>
+                <StyledIcon>
+                  <Icon
+                    icon={<MdOutlineShare />}
+                    appearance="primary"
+                    size="18px"
+                    cursorHover
+                  />
+                </StyledIcon>
+
+                <StyledIcon>
+                  <Icon
+                    icon={<MdOutlineEdit />}
+                    appearance="primary"
+                    size="18px"
+                    cursorHover
+                  />
+                </StyledIcon>
+              </Stack>
+            )}
+            <Stack direction="column" width="fit-content">
+              {children}
+            </Stack>
+          </Stack>
+        )}
+      </Stack>
     </Fieldset>
   );
 };
