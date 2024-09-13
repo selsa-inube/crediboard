@@ -21,6 +21,7 @@
     "@inubekit/flag": "^4.16.0",
     "@inubekit/foundations": "^5.8.1",
     "@inubekit/grid": "^2.13.0",
+    "@inubekit/header": "^2.35.0",
     "@inubekit/hooks": "^1.2.0",
     "@inubekit/icon": "^1.9.0",
     "@inubekit/label": "^2.7.0",
