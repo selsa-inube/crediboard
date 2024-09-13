@@ -16,7 +16,7 @@ import { IncomeEmployment } from "./IncomeEmployment";
 import { ProfessionalServices } from "./ProfessionalServices";
 import { IncomeCapital } from "./IncomeCapital";
 import { MicroBusinesses } from "./MicroBusinesses";
-import { StyledContainer, StyledContainerClose } from "./styles";
+import { StyledContainer, StyledContainerClose, StyledIncome } from "./styles";
 
 interface IncomeModalProps {
   form: { name: string };
@@ -41,9 +41,15 @@ export function IncomeModal(props: IncomeModalProps) {
   return createPortal(
     <Blanket>
       <StyledContainer>
-        <Stack direction="column" padding="24px">
+        <Stack
+          direction="column"
+          padding="24px"
+          width={!isMobile ? "1050px" : "auto"}
+          height={!isMobile ? "950px" : "auto"}
+          gap="24px"
+        >
           <Stack justifyContent="space-between" alignItems="center">
-            <Text size="small" margin="10px 0px" type="headline">
+            <Text size="small" type="headline">
               Fuentes de ingreso
             </Text>
             <StyledContainerClose onClick={handleClose}>
@@ -59,19 +65,20 @@ export function IncomeModal(props: IncomeModalProps) {
             </StyledContainerClose>
           </Stack>
           <Divider />
-          <Stack margin="20px 0px" direction="column">
-            <Grid
-              templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
-              gap="24px"
-              autoRows="auto"
-            >
-              <IncomeEmployment />
-              <ProfessionalServices />
-              <IncomeCapital />
-              <MicroBusinesses />
-            </Grid>
-          </Stack>
-          <Divider />
+          <StyledIncome>
+            <Stack direction="column" height={!isMobile ? "746px" : "auto"}>
+              <Grid
+                templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
+                gap="24px"
+                autoRows="auto"
+              >
+                <IncomeEmployment />
+                <ProfessionalServices />
+                <IncomeCapital />
+                <MicroBusinesses />
+              </Grid>
+            </Stack>
+          </StyledIncome>
           <Stack
             padding="16px 0px"
             justifyContent="space-between"
