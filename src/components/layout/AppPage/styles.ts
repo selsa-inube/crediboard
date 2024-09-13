@@ -38,7 +38,7 @@ const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   top: 13.5px;
   transform: ${({ $collapse }) =>
     $collapse ? "rotate(-90deg)" : "rotate(90deg)"};
-  left: ${({ $isTablet }) => ($isTablet ? "200px" : "160px")};
+  left: ${({ $isTablet }) => ($isTablet ? "150px" : "142px")};
 `;
 
 const StyledCollapse = styled.div`

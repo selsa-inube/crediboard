@@ -5,6 +5,10 @@ interface IStyledDivider {
   theme?: typeof inube;
 }
 
+interface IStyledUl {
+  isTablet?: boolean;
+}
+
 const StyledDivider = styled.hr`
   margin: ${inube.spacing.s0};
   width: 100%;
@@ -22,4 +26,22 @@ const StyledContainerToCenter = styled.div`
   margin: auto;
 `;
 
-export { StyledDivider, StyledContainerToCenter };
+const StyledUl = styled.ul<IStyledUl>`
+  display: flex;
+  justify-content: space-between;
+  width: ${({ isTablet }) => (isTablet ? "auto" : "35%")};
+  padding: 0;
+  margin: 0;
+  flex-direction: ${({ isTablet }) => (isTablet ? "column" : "row")};
+  align-items: center;
+  gap: 4px;
+`;
+
+const StyledLi = styled.li`
+  &::marker {
+    color: #5e6c84;
+    font-size: 14px;
+  }
+`;
+
+export { StyledDivider, StyledContainerToCenter, StyledUl, StyledLi };
