@@ -29,10 +29,12 @@ import { StyledContainerClose, StyledContainer } from "./styles";
 interface ReportCreditsModalProps {
   handleClose: () => void;
   portalId?: string;
+  totalBalance?: number;
+  totalFee?: number;
 }
 
 export function ReportCreditsModal(props: ReportCreditsModalProps) {
-  const { portalId, handleClose } = props;
+  const { portalId, handleClose, totalBalance, totalFee } = props;
 
   const {
     totalRecords,
@@ -63,13 +65,17 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
   return createPortal(
     <Blanket>
       <StyledContainer>
-        <Stack direction="column" padding="24px" gap="24px">
-          <Stack justifyContent="space-between" alignItems="center">
-            <Stack>
-              <Text size="small" type="headline">
-                Obligaciones financieras
-              </Text>
-            </Stack>
+        <Stack
+          direction="column"
+          padding="24px"
+          gap="24px"
+          height={!isMobile ? "640px" : "auto"}
+          width={!isMobile ? "1050px" : "auto"}
+        >
+          <Stack justifyContent="space-between" alignItems="center" gap="15px">
+            <Text size="small" type="headline">
+              Obligaciones financieras
+            </Text>
             <StyledContainerClose onClick={handleClose}>
               <Stack alignItems="center" gap="8px">
                 <Text>Cerrar</Text>
@@ -90,7 +96,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
             <Thead>
               <Tr>
                 {visibleHeaders.map((header, index) => (
-                  <Th key={index} action={header.action} align="center">
+                  <Th key={index} action={header.action} align="left">
                     {header.label}
                   </Th>
                 ))}
@@ -106,6 +112,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
                         key={colIndex}
                         appearance={rowIndex % 2 === 0 ? "dark" : "light"}
                         type={header.action ? "custom" : "text"}
+                        align={header.action ? "center" : "left"}
                       >
                         {header.action ? <Details /> : cellData}
                       </Td>
@@ -134,15 +141,14 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
               </Tr>
             </Tfoot>
           </Table>
-          <Stack
-            gap="15px"
-            direction={!isMobile ? "row" : "column"}
-          >
+          <Stack gap="15px" direction={!isMobile ? "row" : "column"}>
             <Textfield
               id="field1"
               label="Cuota Total"
               placeholder="$0"
               size="compact"
+              type="number"
+              value={totalFee}
               fullwidth
             />
             <Textfield
@@ -150,6 +156,8 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
               label="Saldo Total"
               placeholder="$0"
               size="compact"
+              type="number"
+              value={totalBalance}
               fullwidth
             />
           </Stack>
