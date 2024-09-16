@@ -32,10 +32,20 @@ const StyledActions = styled.div`
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   position: absolute;
   top: -20px;
-  right: -50px;
+  right: -55px;
   border-radius: 4px;
   box-shadow: 8px 2px 6px
     ${({ theme }) => theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
-export { StyledContainer, StyledUl, StyledLi, StyledActions };
+const StyledContainerClose = styled.div`
+  cursor: pointer;
+`;
+
+export {
+  StyledContainer,
+  StyledUl,
+  StyledLi,
+  StyledActions,
+  StyledContainerClose,
+};

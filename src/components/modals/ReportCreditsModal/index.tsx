@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MdAdd, MdClear } from "react-icons/md";
 
 import { Button } from "@inubekit/button";
@@ -20,6 +20,7 @@ import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
 import { Blanket } from "@inubekit/blanket";
 import { useMediaQuery } from "@inubekit/hooks";
+import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
 
 import { headers, data, usePagination } from "./interface";
 import { ActionModal } from "./Actions";
@@ -46,7 +47,16 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
     lastEntryInPage,
   } = usePagination();
 
+  const [loading, setLoading] = useState(true);
   const [ModalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -69,7 +79,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
           direction="column"
           padding="24px"
           gap="24px"
-          height={!isMobile ? "640px" : "auto"}
+          height="auto"
           width={!isMobile ? "1050px" : "auto"}
         >
           <Stack justifyContent="space-between" alignItems="center" gap="15px">
@@ -89,77 +99,135 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
             </StyledContainerClose>
           </Stack>
           <Divider />
-          <Stack justifyContent="end">
-            <Button children="Agregar obligaciones" iconBefore={<MdAdd />} />
-          </Stack>
+          {loading ? (
+            <></>
+          ) : (
+            <Stack justifyContent="end">
+              <Button
+                children="Agregar obligaciones"
+                iconBefore={<MdAdd />}
+                fullwidth={isMobile}
+              />
+            </Stack>
+          )}
           <Table tableLayout="auto">
             <Thead>
               <Tr>
-                {visibleHeaders.map((header, index) => (
-                  <Th key={index} action={header.action} align="left">
-                    {header.label}
-                  </Th>
-                ))}
+                {loading
+                  ? visibleHeaders.map((_, index) => (
+                      <Th key={index}>
+                        <SkeletonIcon />
+                      </Th>
+                    ))
+                  : visibleHeaders.map((header, index) => (
+                      <Th
+                        key={index}
+                        action={header.action}
+                        align={header.action ? "center" : "left"}
+                      >
+                        {header.label}
+                      </Th>
+                    ))}
               </Tr>
             </Thead>
             <Tbody>
-              {data.map((row, rowIndex) => (
-                <Tr key={rowIndex}>
-                  {visibleHeaders.map((header, colIndex) => {
-                    const cellData = row[header.key];
-                    return (
-                      <Td
-                        key={colIndex}
-                        appearance={rowIndex % 2 === 0 ? "dark" : "light"}
-                        type={header.action ? "custom" : "text"}
-                        align={header.action ? "center" : "left"}
-                      >
-                        {header.action ? <Details /> : cellData}
+              {(() => {
+                if (loading) {
+                  return (
+                    <Tr>
+                      {visibleHeaders.map((_, index) => (
+                        <Td key={index}>
+                          <SkeletonLine />
+                        </Td>
+                      ))}
+                    </Tr>
+                  );
+                } else if (data.length === 0) {
+                  return (
+                    <Tr>
+                      <Td colSpan={visibleHeaders.length} align="center">
+                        <Text
+                          size="large"
+                          type="label"
+                          appearance="gray"
+                          textAlign="center"
+                        >
+                          ¡Ups! No se encontraron obligaciones financieras
+                          vigentes.
+                        </Text>
                       </Td>
-                    );
-                  })}
-                </Tr>
-              ))}
+                    </Tr>
+                  );
+                } else {
+                  return data.map((row, rowIndex) => (
+                    <Tr key={rowIndex}>
+                      {visibleHeaders.map((header, colIndex) => {
+                        const cellData = row[header.key];
+                        return (
+                          <Td
+                            key={colIndex}
+                            appearance={rowIndex % 2 === 0 ? "dark" : "light"}
+                            type={header.action ? "custom" : "text"}
+                            align={header.action ? "center" : "left"}
+                          >
+                            {header.action ? <Details /> : cellData}
+                          </Td>
+                        );
+                      })}
+                    </Tr>
+                  ));
+                }
+              })()}
             </Tbody>
-            <Tfoot>
-              <Tr border="bottom">
-                <Td
-                  colSpan={visibleHeaders.length}
-                  type="custom"
-                  align="center"
-                >
-                  <Pagination
-                    firstEntryInPage={firstEntryInPage}
-                    lastEntryInPage={lastEntryInPage}
-                    totalRecords={totalRecords}
-                    handleStartPage={handleStartPage}
-                    handlePrevPage={handlePrevPage}
-                    handleNextPage={handleNextPage}
-                    handleEndPage={handleEndPage}
-                  />
-                </Td>
-              </Tr>
-            </Tfoot>
+            {!loading && data.length > 0 && (
+              <Tfoot>
+                <Tr border="bottom">
+                  <Td
+                    colSpan={visibleHeaders.length}
+                    type="custom"
+                    align="center"
+                  >
+                    <Pagination
+                      firstEntryInPage={firstEntryInPage}
+                      lastEntryInPage={lastEntryInPage}
+                      totalRecords={totalRecords}
+                      handleStartPage={handleStartPage}
+                      handlePrevPage={handlePrevPage}
+                      handleNextPage={handleNextPage}
+                      handleEndPage={handleEndPage}
+                    />
+                  </Td>
+                </Tr>
+              </Tfoot>
+            )}
           </Table>
           <Stack gap="15px" direction={!isMobile ? "row" : "column"}>
-            <Textfield
-              id="field1"
-              label="Cuota Total"
-              placeholder="$0"
-              size="compact"
-              type="number"
-              value={totalFee}
-              fullwidth
-            />
-            <Textfield
-              id="field2"
-              label="Saldo Total"
-              placeholder="$0"
-              size="compact"
-              type="number"
-              value={totalBalance}
-              fullwidth
-            />
+            {loading ? (
+              <SkeletonLine />
+            ) : (
+              <Textfield
+                id="field1"
+                label="Cuota Total"
+                placeholder="$0"
+                size="compact"
+                type="number"
+                value={totalFee}
+                fullwidth
+              />
+            )}
+            {loading ? (
+              <SkeletonLine />
+            ) : (
+              <Textfield
+                id="field2"
+                label="Saldo Total"
+                placeholder="$0"
+                size="compact"
+                type="number"
+                value={totalBalance}
+                fullwidth
+              />
+            )}
           </Stack>
           {ModalOpen && <ActionModal onClose={() => setModalOpen(false)} />}
         </Stack>

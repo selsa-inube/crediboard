@@ -8,7 +8,13 @@ import {
   MdOutlineRemoveRedEye,
 } from "react-icons/md";
 
-import { StyledContainer, StyledLi, StyledUl, StyledActions } from "./styles";
+import {
+  StyledContainer,
+  StyledLi,
+  StyledUl,
+  StyledActions,
+  StyledContainerClose,
+} from "./styles";
 
 interface Action {
   icon: React.ReactNode;
@@ -44,12 +50,14 @@ export function ActionModal({ onClose, onClick }: ActionModalProps) {
     <StyledContainer>
       <StyledActions>
         <Stack padding="10px 15px" width="132px">
-          <Icon
-            icon={<MdClose />}
-            appearance="dark"
-            size="24px"
-            onClick={onClose}
-          />
+          <StyledContainerClose>
+            <Icon
+              icon={<MdClose />}
+              appearance="dark"
+              size="24px"
+              onClick={onClose}
+            />
+          </StyledContainerClose>
           <StyledUl>
             {actions.map((item, index) => (
               <StyledLi key={index} onClick={onClick}>
