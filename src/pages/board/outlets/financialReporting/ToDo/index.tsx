@@ -148,7 +148,7 @@ function ToDo(props: ToDoProps) {
         heightFieldset={isMobile ? "inherit" : "284px"}
         hasOverflow
       >
-        <Stack direction="column" gap={isMobile ? "4px" : "6px"}>
+        <Stack direction="column" gap={isMobile ? "4px" : "6px"} height={isMobile ? "auto" : "205px"}>
           <Stack direction={isMobile ? "column" : "row"}>
             {isMobile && (
               <Text appearance="primary" type="title" size="medium">
