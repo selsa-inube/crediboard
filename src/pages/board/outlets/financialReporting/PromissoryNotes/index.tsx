@@ -106,7 +106,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
         aspectRatio="1"
         hasTable
       >
-        <Stack direction="column" height={!isMobile ? "100%" : "138px"}>
+        <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
           <TableBoard
             id="promissoryNotes"
             titles={titlesFinanacialReporting}

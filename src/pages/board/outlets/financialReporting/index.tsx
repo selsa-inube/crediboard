@@ -303,7 +303,7 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                {<ToDo icon={infoIcon} isMobile={isMobile} />}
+                {<ToDo icon={infoIcon} isMobile={isMobile}  />}
               </Stack>
               <Stack direction="column">
                 {<Approvals user={id!} isMobile={isMobile} />}

@@ -1,5 +1,7 @@
 import { MdQueryStats } from "react-icons/md";
-import { inube, Stack, Text, SkeletonLine } from "@inube/design-system";
+import { Stack } from "@inubekit/stack";
+import { SkeletonLine } from "@inubekit/skeleton";
+import { Text } from "@inubekit/text";
 
 import { CardInfoContainer } from "@components/cards/CardInfoContainer";
 import { StyledDivider } from "@components/cards/SummaryCard/styles";
@@ -19,7 +21,10 @@ interface RiskScoringProps {
   economicActivity: string;
   isLoading: boolean;
   isMobile?: boolean;
+  dataWereObtained: boolean;
 }
+
+const msgErrorService = "Error: No encontrado";
 
 export function RiskScoring(props: RiskScoringProps) {
   const {
@@ -37,21 +42,22 @@ export function RiskScoring(props: RiskScoringProps) {
     economicActivity,
     isLoading,
     isMobile,
+    dataWereObtained,
   } = props;
 
   const getMainGap = () => {
     if (isMobile) {
-      return isLoading ? inube.spacing.s200 : inube.spacing.s050;
+      return isLoading ? "16px" : "4px";
     } else {
-      return isLoading ? inube.spacing.s350 : inube.spacing.s200;
+      return isLoading ? "28px" : "16px";
     }
   };
 
   const getInnerGap = () => {
     if (isMobile) {
-      return isLoading ? inube.spacing.s200 : inube.spacing.s050;
+      return isLoading ? "16px" : "4px";
     } else {
-      return isLoading ? inube.spacing.s250 : inube.spacing.s100;
+      return isLoading ? "20px" : "8px";
     }
   };
 
@@ -62,31 +68,42 @@ export function RiskScoring(props: RiskScoringProps) {
       isMobile={isMobile}
     >
       <Stack direction="column" gap={getMainGap()}>
-        <Stack alignItems="center" gap={inube.spacing.s400}>
+        <Stack alignItems="center" gap="32px">
           <Stack width="100px">
             {isLoading ? (
               <SkeletonLine animated width="100%" />
             ) : (
-              <Text size={isMobile ? "small" : "medium"}>Puntaje total</Text>
+              <Text
+                size={isMobile ? "small" : "medium"}
+                disabled={dataWereObtained}
+              >
+                Puntaje total
+              </Text>
             )}
           </Stack>
-          <Stack alignItems="center" gap={inube.spacing.s100}>
+          <Stack alignItems="center" gap="8px">
             {isLoading ? (
               <SkeletonLine animated width="80px" />
             ) : (
               <Text
                 appearance="primary"
-                type="headline"
-                size={isMobile ? "small" : "medium"}
+                type={dataWereObtained ? "body" : "headline"}
+                size={isMobile || dataWereObtained ? "small" : "medium"}
+                disabled={dataWereObtained}
               >
-                {totalScore}
+                {dataWereObtained ? msgErrorService : totalScore}
               </Text>
             )}
             {isLoading ? (
               <SkeletonLine animated width="80px" />
             ) : (
-              <Text size={isMobile ? "small" : "medium"}>
-                / mínimo {minimumScore}
+              <Text
+                size={isMobile || dataWereObtained ? "small" : "medium"}
+                disabled={dataWereObtained}
+              >
+                {dataWereObtained
+                  ? msgErrorService
+                  : `/ mínimo ${minimumScore}`}
               </Text>
             )}
           </Stack>
@@ -98,8 +115,13 @@ export function RiskScoring(props: RiskScoringProps) {
               {isLoading ? (
                 <SkeletonLine animated width="100%" />
               ) : (
-                <Text size={isMobile ? "small" : "medium"}>
-                  Antigüedad de {seniority} años
+                <Text
+                  size={isMobile ? "small" : "medium"}
+                  disabled={dataWereObtained}
+                >
+                  {dataWereObtained
+                    ? msgErrorService
+                    : `Antigüedad de ${seniority} años`}
                 </Text>
               )}
             </Stack>
@@ -107,8 +129,13 @@ export function RiskScoring(props: RiskScoringProps) {
               {isLoading ? (
                 <SkeletonLine animated width="60px" />
               ) : (
-                <Text appearance="primary" type="title" size="large">
-                  {seniorityScore}
+                <Text
+                  appearance="primary"
+                  type="title"
+                  size={dataWereObtained ? "small" : "large"}
+                  disabled={dataWereObtained}
+                >
+                  {dataWereObtained ? msgErrorService : seniorityScore}
                 </Text>
               )}
             </Stack>
@@ -118,8 +145,13 @@ export function RiskScoring(props: RiskScoringProps) {
               {isLoading ? (
                 <SkeletonLine animated width="100%" />
               ) : (
-                <Text size={isMobile ? "small" : "medium"}>
-                  Central de riesgo de {riskCenter} P
+                <Text
+                  size={isMobile ? "small" : "medium"}
+                  disabled={dataWereObtained}
+                >
+                  {dataWereObtained
+                    ? msgErrorService
+                    : `Central de riesgo de ${riskCenter} P`}
                 </Text>
               )}
             </Stack>
@@ -127,8 +159,13 @@ export function RiskScoring(props: RiskScoringProps) {
               {isLoading ? (
                 <SkeletonLine animated width="60px" />
               ) : (
-                <Text appearance="primary" type="title" size="large">
-                  {riskCenterScore}
+                <Text
+                  appearance="primary"
+                  type="title"
+                  size={dataWereObtained ? "small" : "large"}
+                  disabled={dataWereObtained}
+                >
+                  {dataWereObtained ? msgErrorService : riskCenterScore}
                 </Text>
               )}
             </Stack>
@@ -138,8 +175,13 @@ export function RiskScoring(props: RiskScoringProps) {
               {isLoading ? (
                 <SkeletonLine animated width="100%" />
               ) : (
-                <Text size={isMobile ? "small" : "medium"}>
-                  Indice de estabilidad laboral {jobStabilityIndex} P
+                <Text
+                  size={isMobile ? "small" : "medium"}
+                  disabled={dataWereObtained}
+                >
+                  {dataWereObtained
+                    ? msgErrorService
+                    : `Indice de estabilidad laboral ${jobStabilityIndex} P`}
                 </Text>
               )}
             </Stack>
@@ -147,8 +189,13 @@ export function RiskScoring(props: RiskScoringProps) {
               {isLoading ? (
                 <SkeletonLine animated width="60px" />
               ) : (
-                <Text appearance="primary" type="title" size="large">
-                  {jobStabilityIndexScore}
+                <Text
+                  appearance="primary"
+                  type="title"
+                  size={dataWereObtained ? "small" : "large"}
+                  disabled={dataWereObtained}
+                >
+                  {dataWereObtained ? msgErrorService : jobStabilityIndexScore}
                 </Text>
               )}
             </Stack>
@@ -158,8 +205,13 @@ export function RiskScoring(props: RiskScoringProps) {
               {isLoading ? (
                 <SkeletonLine animated width="100%" />
               ) : (
-                <Text size={isMobile ? "small" : "medium"}>
-                  Estado civil - {maritalStatus}
+                <Text
+                  size={isMobile ? "small" : "medium"}
+                  disabled={dataWereObtained}
+                >
+                  {dataWereObtained
+                    ? msgErrorService
+                    : `Estado civil - ${maritalStatus}`}
                 </Text>
               )}
             </Stack>
@@ -167,8 +219,13 @@ export function RiskScoring(props: RiskScoringProps) {
               {isLoading ? (
                 <SkeletonLine animated width="60px" />
               ) : (
-                <Text appearance="primary" type="title" size="large">
-                  {maritalStatusScore}
+                <Text
+                  appearance="primary"
+                  type="title"
+                  size={dataWereObtained ? "small" : "large"}
+                  disabled={dataWereObtained}
+                >
+                  {dataWereObtained ? msgErrorService : maritalStatusScore}
                 </Text>
               )}
             </Stack>
@@ -178,8 +235,13 @@ export function RiskScoring(props: RiskScoringProps) {
               {isLoading ? (
                 <SkeletonLine animated width="100%" />
               ) : (
-                <Text size={isMobile ? "small" : "medium"}>
-                  Actividad economica - {economicActivity}
+                <Text
+                  size={isMobile ? "small" : "medium"}
+                  disabled={dataWereObtained}
+                >
+                  {dataWereObtained
+                    ? msgErrorService
+                    : `Actividad economica - ${economicActivity}`}
                 </Text>
               )}
             </Stack>
@@ -187,8 +249,13 @@ export function RiskScoring(props: RiskScoringProps) {
               {isLoading ? (
                 <SkeletonLine animated width="60px" />
               ) : (
-                <Text appearance="primary" type="title" size="large">
-                  {economicActivityScore}
+                <Text
+                  appearance="primary"
+                  type="title"
+                  size={dataWereObtained ? "small" : "large"}
+                  disabled={dataWereObtained}
+                >
+                  {dataWereObtained ? msgErrorService : economicActivityScore}
                 </Text>
               )}
             </Stack>
