@@ -3,7 +3,7 @@ import { Icon } from "@inubekit/icon";
 import { Stack, inube } from "@inube/design-system";
 import { Textfield } from "@inubekit/textfield";
 
-import { LuPaperclip } from "react-icons/lu";
+import { TfiClip } from "react-icons/tfi";
 import localforage from "localforage";
 import { MdOutlineSend } from "react-icons/md";
 import { Fieldset } from "@components/data/Fieldset";
@@ -171,19 +171,22 @@ export const Management = (props: IManagementProps) => {
                 ))}
           </ChatContent>
           <form>
-            <Stack alignItems="center" direction="row" gap={inube.spacing.s150}>
-              <Icon
-                appearance="primary"
-                cursorHover
-                size="24px"
-                icon={<LuPaperclip />}
-              />
+            <Stack alignItems="center" direction="row" gap={inube.spacing.s200}>
               <Textfield
                 id="text"
                 placeholder="Ej.: Escriba su mensaje"
                 fullwidth
                 value={newMessage}
                 onChange={handleInputChange}
+                size="compact"
+                iconBefore={
+                  <Icon
+                    appearance="primary"
+                    cursorHover
+                    size="18px"
+                    icon={<TfiClip />}
+                  />
+                }
               />
               <Stack>
                 <Icon
@@ -192,6 +195,8 @@ export const Management = (props: IManagementProps) => {
                   size="24px"
                   icon={<MdOutlineSend />}
                   onClick={handleFormSubmit}
+                  variant="filled"
+                  spacing="wide"
                 />
               </Stack>
             </Stack>

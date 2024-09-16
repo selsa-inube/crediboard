@@ -181,7 +181,6 @@ function ToDo(props: ToDoProps) {
                 value={decisionValue.decision}
                 placeholder="Seleccione una opción"
                 size="compact"
-                fullwidth
                 options={toDo?.[0]?.decisions ?? []}
                 onChange={onChangeDecision}
                 disabled={toDo === undefined}
@@ -189,7 +188,9 @@ function ToDo(props: ToDoProps) {
             </Stack>
             <Stack
               padding="16px 0px 0px 0px"
-              width={isMobile ? "100%" : "auto"}
+              width="100%"
+              justifyContent="end"
+              margin="auto 0px 0px 0px"
             >
               <Button
                 onClick={handleSend}
@@ -198,6 +199,7 @@ function ToDo(props: ToDoProps) {
                 loading={button?.loading || false}
                 type="submit"
                 fullwidth={isMobile}
+                spacing="compact"
               >
                 {button?.label || "Enviar"}
               </Button>
@@ -228,6 +230,7 @@ function ToDo(props: ToDoProps) {
                 value={assignedStaff.commercialManager}
                 fullwidth
                 disabled={staff === null}
+                size="compact"
               />
             </Stack>
             <Textfield
@@ -238,13 +241,14 @@ function ToDo(props: ToDoProps) {
               value={assignedStaff.analyst}
               fullwidth
               disabled={staff === null}
+              size="compact"
             />
             {icon && !isMobile && (
               <Stack width="100px" height="60px" alignItems="end">
                 <Icon
                   icon={icon.icon}
                   appearance="primary"
-                  size="30px"
+                  size="24px"
                   onClick={handleToggleStaffModal}
                   cursorHover
                   disabled={staff === null}
