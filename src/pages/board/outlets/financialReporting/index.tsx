@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-
 import { useNavigate, useParams } from "react-router-dom";
 import {
   MdDeleteOutline,
@@ -11,6 +10,7 @@ import { Text, inube, Grid, useMediaQuery } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
+import jsPDF from "jspdf";
 
 import { ErrorAlert } from "@components/ErrorAlert";
 import { ContainerSections } from "@components/layout/ContainerSections";
@@ -23,7 +23,8 @@ import { dataAccordeon } from "@pages/board/outlets/financialReporting/Commercia
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
 import { Ierror_issued, IErrorService, Requests } from "@services/types";
-import { generatePDF } from "@utils/pdf/generetePDF";
+import { generatePDF, convertJSXToHTML } from "@utils/pdf/generetePDF";
+import { formatSecondaryDate } from "@src/utils/formatData/date";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -41,6 +42,7 @@ import { dataRequirements } from "./Requirements/config";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
+import { getFinancialReportingDocument } from "./utilRenders";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -100,7 +102,7 @@ export const FinancialReporting = () => {
     appearance: "success" as "success" | "danger",
   });
 
-  const [document, setDocument] = useState<IListdataProps["data"]>([]);
+  const [documentInfo, setDocumentInfo] = useState<IListdataProps["data"]>([]);
   const [errors, setError] = useState<Ierror_issued[]>([]);
   const [upDateData, setUpDateData] = useState(false);
 
@@ -129,7 +131,7 @@ export const FinancialReporting = () => {
           id: dataListDocument.document_id,
           name: dataListDocument.abbreviated_name,
         }));
-        setDocument(documentsUser);
+        setDocumentInfo(documentsUser);
       }
       if (error_issue.status === "fulfilled") {
         setError(error_issue.value as Ierror_issued[]);
@@ -185,7 +187,7 @@ export const FinancialReporting = () => {
   const handleActions = configHandleactions({
     buttonReject: () => setShowRejectModal(true),
     buttonCancel: () => setShowCancelModal(true),
-    buttonPrint: () => {},
+    buttonPrint: () => handleDownloadDocument(),
     buttonAttach: () => setShowAttachments(true),
     buttonViewAttachments: () => setAttachDocuments(true),
     menuIcon: () => setShowMenu(true),
@@ -197,6 +199,30 @@ export const FinancialReporting = () => {
 
   const handleCloseErrorService = (errorId: string) => {
     setErrorsService(removeErrorByIdServices(errorsService, errorId));
+  };
+
+  const handleDownloadDocument = () => {
+    const today = new Date();
+
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "px",
+      format: "letter",
+      compress: true,
+    });
+
+    doc.html(convertJSXToHTML(getFinancialReportingDocument(id!)), {
+      callback: (pdf) => {
+        pdf.save(`plan-de-pagos-${formatSecondaryDate(today, true)}.pdf`);
+      },
+      html2canvas: {
+        scale: 0.5,
+      },
+      width: 397,
+      windowWidth: 816,
+      x: 0,
+      y: 0,
+    });
   };
 
   const handleOnCancel = () => {
@@ -303,7 +329,9 @@ export const FinancialReporting = () => {
           {showAttachments && (
             <ListModal
               title="Adjuntar"
-              content={<Listdata data={document} icon={<MdDeleteOutline />} />}
+              content={
+                <Listdata data={documentInfo} icon={<MdDeleteOutline />} />
+              }
               handleClose={() => setShowAttachments(false)}
               optionButtons={optionButtons}
               buttonLabel="Cerrar"
@@ -313,7 +341,10 @@ export const FinancialReporting = () => {
             <ListModal
               title="Ver Adjuntos"
               content={
-                <Listdata data={document} icon={<MdOutlineRemoveRedEye />} />
+                <Listdata
+                  data={documentInfo}
+                  icon={<MdOutlineRemoveRedEye />}
+                />
               }
               handleClose={() => setAttachDocuments(false)}
               buttonLabel="Cerrar"
@@ -376,6 +407,7 @@ export const FinancialReporting = () => {
           onClose={() => setShowMenu(false)}
           onReject={hanleOnReject}
           onCancel={handleOnCancel}
+          onDownload={handleDownloadDocument}
           onAttach={handleOnAttach}
           onViewAttachments={handleOnViewAttachments}
         />

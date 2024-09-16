@@ -38,7 +38,7 @@ const appearanceTag = (label: string) => {
 
 interface IApprovalsProps {
   user: string;
-  isMobile: boolean;
+  isMobile?: boolean;
 }
 
 export const Approvals = (props: IApprovalsProps) => {

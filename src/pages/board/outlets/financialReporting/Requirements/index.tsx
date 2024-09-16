@@ -1,6 +1,10 @@
-import { Stack, Icon, } from "@inube/design-system";
+import { Stack, Icon } from "@inube/design-system";
 import { useState, isValidElement } from "react";
-import { MdAddCircleOutline, MdOutlineCheckCircle, MdOutlineThumbUp } from "react-icons/md";
+import {
+  MdAddCircleOutline,
+  MdOutlineCheckCircle,
+  MdOutlineThumbUp,
+} from "react-icons/md";
 import { Flag } from "@inubekit/flag";
 
 import { Fieldset } from "@components/data/Fieldset";
@@ -22,13 +26,15 @@ interface IData {
 
 export interface IRequirementsProps {
   data: IData[];
-  isMobile: boolean;
+  isMobile?: boolean;
 }
 
 export const Requirements = (props: IRequirementsProps) => {
   const { data, isMobile } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
-  const [modalData, setModalData] = useState<{ date?: Date; details?: string }>({});
+  const [modalData, setModalData] = useState<{ date?: Date; details?: string }>(
+    {}
+  );
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [showFlagMessage, setShowFlagMessage] = useState(false);
@@ -51,7 +57,8 @@ export const Requirements = (props: IRequirementsProps) => {
 
   const renderAddIcon = (entry: IEntries) => {
     const date = typeof entry.date === "string" ? entry.date : undefined;
-    const details = typeof entry.details === "string" ? entry.details : undefined;
+    const details =
+      typeof entry.details === "string" ? entry.details : undefined;
 
     return (
       <Stack justifyContent="center">
@@ -90,7 +97,6 @@ export const Requirements = (props: IRequirementsProps) => {
     { id: "agregar", content: renderAddIcon },
     { id: "aprobar", content: renderCheckIcon },
   ];
-  
 
   return (
     <>
@@ -101,24 +107,24 @@ export const Requirements = (props: IRequirementsProps) => {
           heightFieldset="340px"
           hasTable
         >
-            {data.map((item, index) => (
-              <TableBoard
-                key={item.id}
-                id={item.id}
-                titles={item.titlesRequirements}
-                entries={item.entriesRequirements}
-                actions={actionsRequirements}
-                actionMobile={item.actionsMovile}
-                appearanceTable={{
-                  widthTd: !isMobile ? "75%" : "70%",
-                  efectzebra: true,
-                  title: "primary",
-                  isStyleMobile: true,
-                }}
-                isFirstTable={index === 0}
-                infoItems={infoItems}
-              />
-            ))}
+          {data.map((item, index) => (
+            <TableBoard
+              key={item.id}
+              id={item.id}
+              titles={item.titlesRequirements}
+              entries={item.entriesRequirements}
+              actions={actionsRequirements}
+              actionMobile={item.actionsMovile}
+              appearanceTable={{
+                widthTd: !isMobile ? "75%" : "70%",
+                efectzebra: true,
+                title: "primary",
+                isStyleMobile: true,
+              }}
+              isFirstTable={index === 0}
+              infoItems={infoItems}
+            />
+          ))}
         </Fieldset>
       </Stack>
 
@@ -138,7 +144,7 @@ export const Requirements = (props: IRequirementsProps) => {
           inputPlaceholder="Observaciones para la aprobación o rechazo."
           isApproved={isApproved}
           onCloseModal={toggleAprovalsModal}
-          onSubmit={handleSubmitAprovals} 
+          onSubmit={handleSubmitAprovals}
           onChangeApprove={changeApprove}
         />
       )}

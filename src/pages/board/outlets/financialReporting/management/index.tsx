@@ -18,7 +18,7 @@ import { errorObserver } from "../config";
 
 interface IManagementProps {
   id: string;
-  isMobile: boolean;
+  isMobile?: boolean;
   updateData: boolean;
 }
 
