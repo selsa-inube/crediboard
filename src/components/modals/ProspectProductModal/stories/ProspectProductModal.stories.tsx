@@ -14,18 +14,18 @@ import {
 } from "@services/enums";
 
 import { props, parameters } from "./props";
-import { ProspectProductModal, ProspectProductModalProps } from "..";
+import { EditProductModal, EditProductModalProps } from "..";
 
-const meta: Meta<typeof ProspectProductModal> = {
-  title: "components/modals/ProspectProductModal",
-  component: ProspectProductModal,
+const meta: Meta<typeof EditProductModal> = {
+  title: "components/modals/EditProductModal",
+  component: EditProductModal,
   parameters: parameters,
   argTypes: props,
 };
 
-type Story = StoryObj<typeof ProspectProductModal>;
+type Story = StoryObj<typeof EditProductModal>;
 
-export const Create: Story = (args: ProspectProductModalProps) => {
+export const Create: Story = (args: EditProductModalProps) => {
   const [showModal, setShowModal] = useState(false);
   const initialValues: FormikValues = {
     creditLine: "",
@@ -43,7 +43,7 @@ export const Create: Story = (args: ProspectProductModalProps) => {
     <>
       <Button onClick={() => setShowModal(true)}>Abrir Modal</Button>
       {showModal && (
-        <ProspectProductModal
+        <EditProductModal
           {...args}
           initialValues={initialValues}
           onCloseModal={() => {
@@ -69,7 +69,7 @@ Create.args = {
   iconBefore: <MdAdd />,
 };
 
-export const Edit: Story = (args: ProspectProductModalProps) => {
+export const Edit: Story = (args: EditProductModalProps) => {
   const [showModal, setShowModal] = useState(false);
   const initialValues: FormikValues = {
     creditLine: CreditLine.Vacation,
@@ -87,7 +87,7 @@ export const Edit: Story = (args: ProspectProductModalProps) => {
     <>
       <Button onClick={() => setShowModal(true)}>Abrir Modal</Button>
       {showModal && (
-        <ProspectProductModal
+        <EditProductModal
           {...args}
           initialValues={initialValues}
           onCloseModal={() => {

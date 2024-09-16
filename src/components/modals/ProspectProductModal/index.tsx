@@ -29,7 +29,7 @@ import {
   rateTypeOptions,
 } from "./config";
 
-interface ProspectProductModalProps {
+interface EditProductModalProps {
   portalId: string;
   title: string;
   confirmButtonText: string;
@@ -40,7 +40,7 @@ interface ProspectProductModalProps {
   onConfirm: () => void;
 }
 
-function ProspectProductModal(props: ProspectProductModalProps) {
+function EditProductModal(props: EditProductModalProps) {
   const {
     portalId,
     title,
@@ -260,5 +260,5 @@ function ProspectProductModal(props: ProspectProductModalProps) {
   );
 }
 
-export { ProspectProductModal };
-export type { ProspectProductModalProps };
+export { EditProductModal };
+export type { EditProductModalProps };
