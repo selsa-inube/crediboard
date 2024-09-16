@@ -59,6 +59,12 @@ const StyledMenuContainer = styled.div`
     theme.color?.surface?.light?.clear || inube.color.surface.light.clear};
 `;
 
+const StyledHeader = styled.div`
+  div:nth-child(2) {
+    padding-right: 18px;
+  }
+`;
+
 export {
   StyledAppPage,
   StyledContainer,
@@ -67,5 +73,6 @@ export {
   StyledMain,
   StyledMenuContainer,
   StyledCollapseIcon,
-  StyledCollapse
+  StyledCollapse,
+  StyledHeader,
 };
