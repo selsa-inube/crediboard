@@ -25,6 +25,7 @@ const StyledMain = styled.main`
 
 const StyledContentImg = styled(Link)`
   width: 100px;
+  padding-left: 18px;
 `;
 
 const StyledLogo = styled.img`
