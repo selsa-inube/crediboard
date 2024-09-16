@@ -1,5 +1,7 @@
 import jsPDF from "jspdf";
+import React from "react";
 import html2canvas from "html2canvas";
+import ReactDOMServer from "react-dom/server";
 
 export const generatePDF = (
   elementPrint: React.RefObject<HTMLDivElement>,
@@ -54,3 +56,9 @@ export const generatePDF = (
       console.error("Error al generar el PDF:", error);
     });
 };
+
+const convertJSXToHTML = (element: React.ReactElement) => {
+  return ReactDOMServer.renderToString(element);
+};
+
+export { convertJSXToHTML };

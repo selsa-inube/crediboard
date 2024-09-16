@@ -4,6 +4,7 @@ export const defaultMobileMenuProps: MobileMenuProps = {
   onClose: () => alert("Cerrar menú"),
   onReject: () => alert("Rechazar"),
   onCancel: () => alert("Anular"),
+  onDownload: () => alert("Descargar"),
   onAttach: () => alert("Adjuntar"),
   onViewAttachments: () => alert("Ver Adjuntos"),
 };

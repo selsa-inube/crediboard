@@ -27,7 +27,7 @@ import { StyledContainer } from "./styles";
 
 interface IPromissoryNotesProps {
   user: string;
-  isMobile: boolean;
+  isMobile?: boolean;
 }
 
 export const PromissoryNotes = (props: IPromissoryNotesProps) => {
