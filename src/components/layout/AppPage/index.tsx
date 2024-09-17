@@ -1,8 +1,9 @@
 import { useContext, useState, useRef, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { Header, Grid, useMediaQuery } from "@inube/design-system";
+import { Grid, useMediaQuery } from "@inube/design-system";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
 import { Icon } from "@inubekit/icon"
+import { Header } from "@inubekit/header"
 
 import { AppContext } from "@context/AppContext";
 import { MenuSection } from "@components/navigation/MenuSection";
@@ -11,7 +12,7 @@ import { LogoutModal } from "@components/feedback/LogoutModal";
 import { BusinessUnitChange } from "@components/inputs/BusinessUnitChange";
 import { clientsDataMock } from "@mocks/login/clients.mock";
 
-import { navigationConfig, logoutConfig } from "./config/apps.config";
+import { logoutConfig } from "./config/apps.config";
 import {
   StyledAppPage,
   StyledContainer,
@@ -96,7 +97,6 @@ function AppPage() {
       <Grid templateRows="auto 1fr" height="100vh" justifyContent="unset">
         <Header
           portalId="portal"
-          navigation={navigationConfig}
           logoURL={renderLogo(user.operator.logo)}
           userName={user.username}
           client={user.company}
