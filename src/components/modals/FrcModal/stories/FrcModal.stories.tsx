@@ -27,8 +27,8 @@ const meta: Meta<typeof ScoreModal> = {
       control: { type: 'number' },
       description: 'Labor stability index',
     },
-    estadoCivil: {
-      control: { type: 'text' },
+    EstadoCivil: {
+      control: { type: 'number' },
       description: 'Marital status',
     },
     actividadEconomica: {
@@ -71,9 +71,9 @@ Default.args = {
   title: 'Endeudamiento máximo x FRC',
   puntajeTotal: 150,
   antiguedad: 10,
-  riesgoCentral: 250,
-  estabilidadLaboral: 900,
-  estadoCivil: 'Casado',
+  riesgoCentral: 150,
+  estabilidadLaboral: 200,
+  EstadoCivil: 50,
   actividadEconomica: 150,
   ingresoMensual: 5000000,
   maxIndebtedness: '2000000',

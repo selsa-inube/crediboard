@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import { MdClear, MdQueryStats } from "react-icons/md";
+import { MdClear, MdQueryStats, MdOutlineAttachMoney } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
@@ -19,7 +19,7 @@ export interface ScoreModalProps {
   antiguedad: number;
   riesgoCentral: number;
   estabilidadLaboral: number;
-  estadoCivil: string;
+  EstadoCivil: number;
   actividadEconomica: number;
   ingresoMensual: number;
   maxIndebtedness: string;
@@ -34,7 +34,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
     antiguedad,
     riesgoCentral,
     estabilidadLaboral,
-    estadoCivil,
+    EstadoCivil,
     actividadEconomica,
     ingresoMensual,
     maxIndebtedness,
@@ -89,52 +89,86 @@ export const ScoreModal = (props: ScoreModalProps) => {
               <Text appearance="dark" weight="bold">
                 Puntaje total
               </Text>
-              <Text>{puntajeTotal}/200</Text>
+              <Stack>
+                <Text appearance="primary" weight="bold">
+                  {puntajeTotal}
+                </Text>
+                <Text>/200</Text>
+              </Stack>
             </Stack>
 
             <StyledDivider />
-            
+
             <Stack justifyContent="space-between">
-              <Text>Antigüedad de 10 años</Text>
-              <Text>{antiguedad}/200</Text>
+              <Text weight="bold">Antigüedad de 10 años</Text>
+              <Stack>
+                <Text appearance="primary" weight="bold">
+                  {antiguedad}
+                </Text>
+                <Text>/200</Text>
+              </Stack>
             </Stack>
 
             <Stack justifyContent="space-between">
-              <Text>Central de riesgo de 250 P</Text>
-              <Text>{riesgoCentral}/200</Text>
+              <Text weight="bold">Central de riesgo de 250 P</Text>
+              <Stack>
+                <Text appearance="primary" weight="bold">
+                  {riesgoCentral}
+                </Text>
+                <Text>/200</Text>
+              </Stack>
             </Stack>
 
             <Stack justifyContent="space-between">
-              <Text>Índice de estabilidad laboral 900 P</Text>
-              <Text>{estabilidadLaboral}/300</Text>
+              <Text weight="bold">Índice de estabilidad laboral 900 P</Text>
+              <Stack>
+                <Text appearance="primary" weight="bold">
+                  {estabilidadLaboral}
+                </Text>
+                <Text>/300</Text>
+              </Stack>
             </Stack>
 
             <Stack justifyContent="space-between">
-              <Text>Estado civil - {estadoCivil}</Text>
-              <Text>50/50</Text>
+              <Text weight="bold">Estado civil</Text>
+              <Stack>
+                <Text appearance="primary" weight="bold">
+                  {EstadoCivil}
+                </Text>
+                <Text>/50</Text>
+              </Stack>
             </Stack>
 
             <Stack justifyContent="space-between">
-              <Text>Actividad económica</Text>
-              <Text>{actividadEconomica}/200</Text>
+              <Text weight="bold">Actividad económica</Text>
+              <Stack>
+                <Text appearance="primary" weight="bold">
+                  {actividadEconomica}
+                </Text>
+                <Text>/200</Text>
+              </Stack>
             </Stack>
           </Stack>
 
           <StyledDivider />
 
           <Stack justifyContent="space-between">
-            <Text>No. de veces el ingreso para este scoring</Text>
+            <Text weight="bold">No. de veces el ingreso para este scoring</Text>
             <Text>5</Text>
           </Stack>
           <Stack justifyContent="space-between">
-            <Text>Ingresos mensuales</Text>
-            <Text>{currencyFormat(ingresoMensual)}</Text>
+            <Text weight="bold">Ingresos mensuales</Text>
+            <Stack>
+              <Text appearance="success">$</Text>
+              <Text>{currencyFormat(ingresoMensual, false)}</Text>
+            </Stack>
           </Stack>
-          
+
           <StyledDivider />
 
           <Textfield
             value={maxIndebtedness}
+            iconBefore={<MdOutlineAttachMoney />}
             fullwidth={true}
             id="id"
             label="Endeudamiento máximo"
