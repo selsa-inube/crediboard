@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useMediaQuery } from "@inube/design-system";
+import { useMediaQuery } from "@inubekit/hooks";
 
 import { get, updateActive } from "@mocks/utils/dataMock.service";
 import { PinnedRequest, Requests } from "@services/types";
