@@ -83,7 +83,7 @@ export const ExtraordinaryPaymentModal = (
                 onClickDetails={onClickDetails}
                 onClickEdit={onClickEdit}
                 onClickEliminate={onClickEliminate}
-              ></TableExtraordinaryPayment>
+              />
             </Stack>
             <Divider />
             <Stack  justifyContent="end">

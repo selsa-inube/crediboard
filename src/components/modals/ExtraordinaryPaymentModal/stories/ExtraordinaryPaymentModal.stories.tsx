@@ -103,5 +103,25 @@ Default.args = {
   onClickEliminate: (id) => console.log("Action Eliminate", id),
 };
 
+
+export const NoData: Story = (args: ExtraordinaryPaymentModalProps) => {
+  const [showModal, setShowModal] = useState(false);
+  return (
+    <>
+      <Button onClick={() => setShowModal(true)}>Show Modal</Button>
+      {showModal && (
+        <ExtraordinaryPaymentModal {...args} handleClose={() => setShowModal(false)} />
+      )}
+    </>
+  );
+};
+NoData.args = {
+  portalId: "portal",
+  dataTable: [],
+  onClickDetails: (id) => console.log("Action Details", id),
+  onClickEdit: (id) => console.log("Action Edit", id),
+  onClickEliminate: (id) => console.log("Action Eliminate", id),
+};
+
 export default meta;
   
