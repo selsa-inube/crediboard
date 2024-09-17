@@ -1,6 +1,6 @@
 import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
-import { Switch } from "@inube/design-system";
+import { Toggle } from "@inubekit/toggle";
 import { Icon } from "@inubekit/icon";
 import { Textfield } from "@inubekit/textfield";
 import { Text } from "@inubekit/text";
@@ -101,7 +101,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 {!isMobile && (
                   <Text type="label">Ver unicamente los anclados</Text>
                 )}
-                <Switch
+                <Toggle
                   id="SeePinned"
                   name="SeePinned"
                   size="large"
