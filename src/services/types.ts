@@ -31,9 +31,10 @@ interface IToDo {
   task_to_be_done: string;
   account_manager_name: string;
   analyst_name: string;
-  decisions: { id: string; label: string }[];
+  decisions: { id: string; label: string; value: string }[];
 }
-interface IRiskScoring {
+
+interface IKeyRiskScoring {
   total_score: number;
   minimum_score: number;
   seniority: number;
@@ -46,6 +47,11 @@ interface IRiskScoring {
   marital_status_score: number;
   economic_activity: string;
   economic_activity_score: number;
+}
+
+interface IRiskScoring {
+  credit_request_id: string;
+  risk_scoring: IKeyRiskScoring;
 }
 
 type DmEtapasPrs =
@@ -93,19 +99,18 @@ type DmDecisions =
   | "CREAR_OBLIGACIONES_DE_CARTERA"
   | "DECLINAR_OBLIGACIONES_DE_CARTERA";
 
-  interface TraceType {
-    trace_id: string;
-    trace_value: string;
-    credit_request_id: string;
-    use_case: string;
-    user_id: string;
-    execution_date: string | number;
-    justification?: string;
-    decision_taken_by_user?: string;
-    trace_type?: string;
-    read_novelty?: string;
-  }
-  
+interface TraceType {
+  trace_id: string;
+  trace_value: string;
+  credit_request_id: string;
+  use_case: string;
+  user_id: string;
+  execution_date: string | number;
+  justification?: string;
+  decision_taken_by_user?: string;
+  trace_type?: string;
+  read_novelty?: string;
+}
 
 export type {
   Requests,
@@ -117,7 +122,7 @@ export type {
   DmConceptos,
   DmDecisions,
   PinnedRequest,
-  TraceType
+  TraceType,
 };
 
 export interface payroll_discount_authorization {
@@ -131,6 +136,33 @@ export interface payroll_discount_authorization {
   obligation_unique_code: string;
   document_unique_code: string;
   image_unique_code: string;
+}
+
+export interface Ipayment_capacity {
+  credit_request_id: string;
+  payment_capacity: {
+    available_value: number;
+    base_income: number;
+    percentage_used: number;
+  };
+}
+export interface Icredit_behavior {
+  credit_request_id: string;
+  credit_behavior: {
+    core_risk_score: number;
+    central_risk_score_date: number;
+    number_of_internal_arrears: number;
+    maximum_number_of_installments_in_arrears: number;
+  };
+}
+
+export interface Iuncovered_wallet {
+  credit_request_id: string;
+  uncovered_wallet: {
+    overdraft_factor: number;
+    discovered_value: number;
+    reciprocity: number;
+  };
 }
 
 export interface promissory_note {
@@ -170,4 +202,43 @@ export interface Ierror_issued {
   user_id: string;
   user_name: string;
   read: string;
+}
+
+export interface credit {
+  credit_request_id: string;
+  labor_stability: {
+    company_seniority: number;
+    labor_stability_index: number;
+    max_labor_stability_index: number;
+    estimated_severance: number;
+  };
+}
+
+export interface IErrorService {
+  id: string;
+  message: string | Error;
+}
+
+interface Prospect {
+  credit_products: CreditProduct[];
+}
+
+interface CreditProduct {
+  loan_amount: number;
+  loan_term: number;
+  insurance_rate: number;
+  insurance_type: string;
+  line_of_credit_id: string;
+  rate_type: string;
+  interest_rate: number;
+  quota: number;
+  payment_channel_for_principal: string;
+  first_payment_cycle_for_principal: string;
+  payment_channel_for_interest: string;
+  first_payment_cycle_for_interest: number;
+}
+
+export interface ProspectsResponse {
+  credit_request_id: string;
+  prospect: Prospect;
 }

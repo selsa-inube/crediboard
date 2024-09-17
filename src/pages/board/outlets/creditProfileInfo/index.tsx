@@ -1,218 +1,183 @@
-import {
-  inube,
-  Stack,
-  Button,
-  Text,
-  Grid,
-  useMediaQueries,
-  Icon,
-} from "@inube/design-system";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdArrowBack, MdOutlinePrint } from "react-icons/md";
-import { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 
-import { Requests, IRiskScoring } from "@services/types";
+import { Button } from "@inubekit/button";
+import { Grid } from "@inubekit/grid";
+import { Icon } from "@inubekit/icon";
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
+import { useMediaQueries } from "@inubekit/hooks";
+
 import { getById } from "@mocks/utils/dataMock.service";
+import { Requests, IRiskScoring } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
-import { get } from "@mocks/utils/dataMock.service";
-import {
-  getMaritalStatusInSpanish,
-  getEconomicActivityInSpanish,
-} from "@utils/mappingData/mappings";
-import { MaritalStatus, EconomicActivity } from "@services/enums";
+import { generatePDF } from "@utils/pdf/generetePDF";
 
+import { CreditBehavior } from "./CreditBehaviorCard";
+import { Guarantees } from "./Guarantees";
 import { JobStabilityCard } from "./JobStabilityCard";
 import { PaymentCapacity } from "./PaymentCapacity";
 import { OpenWallet } from "./OpenWallet";
-import { CreditBehavior } from "./CreditBehaviorCard";
 import { RiskScoring } from "./RiskScoring";
-import { Guarantees } from "./Guarantees";
 import { StyledDivider, StyledContainerToCenter } from "./styles";
 
+const margins = {
+  top: 20,
+  bottom: 0,
+  left: 25.4,
+  right: 25.4,
+};
+
 export const CreditProfileInfo = () => {
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const [data, setData] = useState({} as Requests);
-  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
-  const [riskScoring, setRiskScoring] = useState<IRiskScoring[] | null>(null);
+  const [requests, setRequests] = useState({} as Requests);
+  const [riskScoring, setRiskScoring] = useState<IRiskScoring["risk_scoring"]>({
+    total_score: 0,
+    minimum_score: 0,
+    seniority: 0,
+    seniority_score: 0,
+    risk_center: 0,
+    risk_center_score: 0,
+    job_stability_index: 0,
+    job_stability_index_score: 0,
+    marital_status: "",
+    marital_status_score: 0,
+    economic_activity: "",
+    economic_activity_score: 0,
+  });
+  const [credit_profileInfo, setCredit_profileInfo] = useState({
+    company_seniority: 0,
+    labor_stability_index: 0,
+    max_labor_stability_index: 0,
+    estimated_severance: 0,
+  });
+  const [payment_capacity, setPayment_capacity] = useState({
+    available_value: 0,
+    base_income: 0,
+    percentage_used: 0,
+  });
+  const [credit_behavior, setCredit_behavior] = useState({
+    core_risk_score: 0,
+    central_risk_score_date: 0,
+    number_of_internal_arrears: 0,
+    maximum_number_of_installments_in_arrears: 0,
+  });
+  const [uncovered_wallet, setUncovered_wallet] = useState({
+    overdraft_factor: 0,
+    discovered_value: 0,
+    reciprocity: 0,
+  });
+
   const [loading, setLoading] = useState(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const dataPrint = useRef<HTMLDivElement>(null);
+
+  const [dataWereObtained, setWataWereObtained] = useState(false);
+
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const { "(max-width: 1200px)": isTablet, "(max-width: 751px)": isMobile } =
     useMediaQueries(["(max-width: 1200px)", "(max-width: 751px)"]);
 
   useEffect(() => {
-    if (id) {
+    (async () => {
       setLoading(true);
-      getById("k_Prospe", "requests", id)
-        .then((requirement) => {
-          setData(requirement);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
+
+      try {
+        const [
+          request,
+          riskScoring,
+          credit_profileInfo,
+          payment_capacity,
+          credit_behavior,
+          uncovered_wallet,
+        ] = await Promise.allSettled([
+          getById("requests", "k_Prospe", id!),
+          getById<IRiskScoring>("risk-scoring", "credit_request_id", id!, true),
+          getById("credit_profileInfo", "credit_request_id", id!, true),
+          getById("payment_capacity", "credit_request_id", id!, true),
+          getById("credit_behavior", "credit_request_id", id!, true),
+          getById("uncovered_wallet", "credit_request_id", id!, true),
+        ]);
+
+        if (request.status === "fulfilled") {
+          setRequests(request.value as Requests);
+        }
+
+        if (
+          riskScoring.status === "fulfilled" &&
+          Array.isArray(riskScoring.value)
+        ) {
+          const [riskScoringData] = riskScoring.value;
+
+          setRiskScoring((prev) => ({
+            ...prev,
+            ...riskScoringData?.risk_scoring,
+          }));
+          setWataWereObtained(false);
+        } else {
+          setWataWereObtained(true);
+        }
+
+        if (credit_profileInfo.status === "fulfilled") {
+          const creditData = credit_profileInfo.value;
+          if (Array.isArray(creditData) && creditData.length > 0) {
+            setCredit_profileInfo((prevState) => ({
+              ...prevState,
+              ...creditData[0].labor_stability,
+            }));
+          }
+        }
+        if (payment_capacity.status === "fulfilled") {
+          const data = payment_capacity.value;
+          if (Array.isArray(data) && data.length > 0) {
+            setPayment_capacity((prevState) => ({
+              ...prevState,
+              ...data[0].payment_capacity,
+            }));
+          }
+        }
+
+        if (credit_behavior.status === "fulfilled") {
+          const data = credit_behavior.value;
+          if (Array.isArray(data) && data.length > 0) {
+            setCredit_behavior((prevState) => ({
+              ...prevState,
+              ...data[0].credit_behavior,
+            }));
+          }
+        }
+        if (uncovered_wallet.status === "fulfilled") {
+          const data = uncovered_wallet.value;
+          if (Array.isArray(data) && data.length > 0) {
+            setUncovered_wallet((prevState) => ({
+              ...prevState,
+              ...data[0]?.uncovered_wallet,
+            }));
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, [id]);
 
-  useEffect(() => {
-    setLoading(true);
-    get("risk-scoring")
-      .then((data) => {
-        if (data) {
-          setRiskScoring(data as IRiskScoring[]);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching risk scoring data:", error.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
-  const renderPDFContent = () => (
-    <Stack direction="column" gap={inube.spacing.s500}>
-      <Stack
-        gap={inube.spacing.s200}
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Text type="title" appearance="gray">
-          Perfil crediticio del cliente
-        </Text>
-        <Text type="headline" size="medium">
-          {data.nnasocia ? capitalizeFirstLetterEachWord(data.nnasocia) : ""}
-        </Text>
-        <Text type="title" size="small">
-          {`S.C. No. ${data.aanumnit} ${currencyFormat(data.v_Monto)}`}
-        </Text>
-      </Stack>
-      <Grid
-        templateColumns="repeat(auto-fit, minmax(350px, 1fr))"
-        gap="s250"
-        autoRows="auto"
-      >
-        <JobStabilityCard
-          companySeniority={5}
-          stabilityIndex={900}
-          estimatedCompensation={20000000}
-        />
-        <PaymentCapacity
-          availableValue={955320}
-          availablePercentage={32}
-          incomeB={3000000}
-          percentageUsed={68}
-        />
-        <OpenWallet
-          overdraftFactor={10}
-          valueDiscovered={50000000}
-          reciprocity={5}
-        />
-      </Grid>
-      <Grid
-        templateColumns="repeat(auto-fit, minmax(350px, 1fr))"
-        gap="s250"
-        autoRows="auto"
-      >
-        <RiskScoring
-          totalScore={riskScoring ? riskScoring[0].total_score : 0}
-          minimumScore={riskScoring ? riskScoring[0].minimum_score : 0}
-          seniority={riskScoring ? riskScoring[0].seniority : 0}
-          seniorityScore={riskScoring ? riskScoring[0].seniority_score : 0}
-          riskCenter={riskScoring ? riskScoring[0].risk_center : 0}
-          riskCenterScore={riskScoring ? riskScoring[0].risk_center_score : 0}
-          jobStabilityIndex={
-            riskScoring ? riskScoring[0].job_stability_index : 0
-          }
-          jobStabilityIndexScore={
-            riskScoring ? riskScoring[0].job_stability_index_score : 0
-          }
-          maritalStatusScore={
-            riskScoring ? riskScoring[0].marital_status_score : 0
-          }
-          economicActivityScore={
-            riskScoring ? riskScoring[0].economic_activity_score : 0
-          }
-          maritalStatus={
-            riskScoring
-              ? getMaritalStatusInSpanish(
-                  riskScoring[0].marital_status as MaritalStatus
-                )
-              : ""
-          }
-          economicActivity={
-            riskScoring
-              ? getEconomicActivityInSpanish(
-                  riskScoring[0].economic_activity as EconomicActivity
-                )
-              : ""
-          }
-          isLoading={loading}
-          isMobile={isMobile}
-        />
-        <Guarantees
-          guaranteesRequired="Ninguna garantía real, o fianza o codeudor."
-          guaranteesOffered="Ninguna, casa Bogotá 200 mt2, o fianza o codeudor Pedro Pérez."
-          guaranteesCurrent="Ninguna, apartamento, en Bogotá 80 mt2, o vehículo Mazda 323."
-        />
-        <CreditBehavior
-          centralScoreRisky={250}
-          centralScoreDate="2023-08-31T00:00:00-05:00"
-          numberInternalBlackberries={9}
-          maximumNumberInstallmentsArrears={3}
-        />
-      </Grid>
-    </Stack>
-  );
-
-  const generatePDF = async () => {
+  const handlePrint = () => {
     setIsGeneratingPdf(true);
-    const pdfContainer = document.createElement("div");
-    document.body.appendChild(pdfContainer);
-
-    ReactDOM.render(renderPDFContent(), pdfContainer);
-
-    const canvas = await html2canvas(pdfContainer);
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("l", "mm", "a4");
-    const imgProps = pdf.getImageProperties(imgData);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-    const margins = {
-      top: 20,
-      bottom: 0,
-      left: 25.4,
-      right: 25.4,
-    };
-
-    const contentWidth = pdfWidth - margins.left - margins.right;
-    const contentHeight = pdfHeight - margins.top - margins.bottom;
-
-    pdf.addImage(
-      imgData,
-      "PNG",
-      margins.left,
-      margins.top,
-      contentWidth,
-      contentHeight
-    );
-
-    pdf.save("credit-profile.pdf");
-
-    document.body.removeChild(pdfContainer);
+    generatePDF(dataPrint, "", "Perfil crediticio del cliente", margins);
     setIsGeneratingPdf(false);
   };
 
   return (
-    <StyledContainerToCenter>
+    <StyledContainerToCenter ref={dataPrint}>
       <Stack direction="column">
         <Stack
           justifyContent="space-between"
-          margin={isTablet ? "s100 s200" : "s250 s500"}
+          margin={isTablet ? "8px 16px" : "20px 40px"}
         >
           <Button
             spacing="compact"
@@ -223,22 +188,22 @@ export const CreditProfileInfo = () => {
             Volver
           </Button>
           {!isTablet && (
-            <Stack gap={inube.spacing.s200} alignItems="center">
+            <Stack gap="16px" alignItems="center">
               <Text type="title" appearance="gray">
                 Perfil crediticio del cliente
               </Text>
               <Text type="headline" size="medium">
-                {data.nnasocia
-                  ? capitalizeFirstLetterEachWord(data.nnasocia)
+                {requests.nnasocia
+                  ? capitalizeFirstLetterEachWord(requests.nnasocia)
                   : ""}
               </Text>
               <Text type="title" size="small">
-                {`S.C. No. ${data.aanumnit} ${currencyFormat(data.v_Monto)}`}
+                {`S.C. No. ${requests.aanumnit} ${currencyFormat(requests.v_Monto)}`}
               </Text>
             </Stack>
           )}
           {!isMobile && (
-            <Button onClick={generatePDF} disabled={isGeneratingPdf}>
+            <Button onClick={handlePrint} disabled={isGeneratingPdf}>
               Imprimir
             </Button>
           )}
@@ -247,7 +212,7 @@ export const CreditProfileInfo = () => {
               appearance="dark"
               icon={<MdOutlinePrint />}
               size="24px"
-              onClick={generatePDF}
+              onClick={handlePrint}
             />
           )}
         </Stack>
@@ -257,7 +222,7 @@ export const CreditProfileInfo = () => {
             <StyledDivider />
             <Stack
               direction="column"
-              gap={inube.spacing.s050}
+              gap="4px"
               alignItems="center"
               margin="s200 s200 s0 s200"
             >
@@ -273,12 +238,12 @@ export const CreditProfileInfo = () => {
                 size={isMobile ? "small" : "medium"}
                 textAlign="center"
               >
-                {data.nnasocia
-                  ? capitalizeFirstLetterEachWord(data.nnasocia)
+                {requests.nnasocia
+                  ? capitalizeFirstLetterEachWord(requests.nnasocia)
                   : ""}
               </Text>
               <Text type="title" size="small">
-                {`S.C. No. ${data.aanumnit} ${currencyFormat(data.v_Monto)}`}
+                {`S.C. No. ${requests.aanumnit} ${currencyFormat(requests.v_Monto)}`}
               </Text>
             </Stack>
           </>
@@ -290,64 +255,45 @@ export const CreditProfileInfo = () => {
             ? "repeat(auto-fit, minmax(320px, 1fr))"
             : "repeat(auto-fit, minmax(350px, 1fr))"
         }
-        gap="s250"
+        gap="20px"
         autoRows="minmax(auto, max-content)"
-        margin={isTablet ? "s250" : "s250 s500"}
+        margin={isTablet ? "20px" : "20px 40px"}
       >
         <JobStabilityCard
-          companySeniority={5}
-          stabilityIndex={900}
-          estimatedCompensation={20000000}
+          companySeniority={credit_profileInfo.company_seniority}
+          stabilityIndex={credit_profileInfo.labor_stability_index}
+          estimatedCompensation={credit_profileInfo.estimated_severance}
           isMobile={isMobile}
         />
         <PaymentCapacity
-          availableValue={955320}
-          availablePercentage={32}
-          incomeB={3000000}
-          percentageUsed={68}
+          availableValue={payment_capacity.available_value}
+          availablePercentage={100 - payment_capacity.percentage_used}
+          incomeB={payment_capacity.base_income}
+          percentageUsed={payment_capacity.percentage_used}
           isMobile={isMobile}
         />
         <OpenWallet
-          overdraftFactor={10}
-          valueDiscovered={50000000}
-          reciprocity={5}
+          overdraftFactor={uncovered_wallet.overdraft_factor}
+          valueDiscovered={uncovered_wallet.discovered_value}
+          reciprocity={uncovered_wallet.reciprocity}
           isMobile={isMobile}
         />
         <RiskScoring
-          totalScore={riskScoring ? riskScoring[0].total_score : 0}
-          minimumScore={riskScoring ? riskScoring[0].minimum_score : 0}
-          seniority={riskScoring ? riskScoring[0].seniority : 0}
-          seniorityScore={riskScoring ? riskScoring[0].seniority_score : 0}
-          riskCenter={riskScoring ? riskScoring[0].risk_center : 0}
-          riskCenterScore={riskScoring ? riskScoring[0].risk_center_score : 0}
-          jobStabilityIndex={
-            riskScoring ? riskScoring[0].job_stability_index : 0
-          }
-          jobStabilityIndexScore={
-            riskScoring ? riskScoring[0].job_stability_index_score : 0
-          }
-          maritalStatusScore={
-            riskScoring ? riskScoring[0].marital_status_score : 0
-          }
-          economicActivityScore={
-            riskScoring ? riskScoring[0].economic_activity_score : 0
-          }
-          maritalStatus={
-            riskScoring
-              ? getMaritalStatusInSpanish(
-                  riskScoring[0].marital_status as MaritalStatus
-                )
-              : ""
-          }
-          economicActivity={
-            riskScoring
-              ? getEconomicActivityInSpanish(
-                  riskScoring[0].economic_activity as EconomicActivity
-                )
-              : ""
-          }
+          totalScore={riskScoring.total_score}
+          minimumScore={riskScoring.minimum_score}
+          seniority={riskScoring.seniority}
+          seniorityScore={riskScoring.seniority_score}
+          riskCenter={riskScoring.risk_center}
+          riskCenterScore={riskScoring.risk_center_score}
+          jobStabilityIndex={riskScoring.job_stability_index}
+          jobStabilityIndexScore={riskScoring.job_stability_index_score}
+          maritalStatusScore={riskScoring.marital_status_score}
+          economicActivityScore={riskScoring.economic_activity_score}
+          maritalStatus={riskScoring.marital_status}
+          economicActivity={riskScoring.economic_activity}
           isLoading={loading}
           isMobile={isMobile}
+          dataWereObtained={dataWereObtained}
         />
         <Guarantees
           guaranteesRequired="Ninguna garantía real, o fianza o codeudor."
@@ -356,10 +302,14 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
         />
         <CreditBehavior
-          centralScoreRisky={250}
-          centralScoreDate="2023-08-31T00:00:00-05:00"
-          numberInternalBlackberries={9}
-          maximumNumberInstallmentsArrears={3}
+          centralScoreRisky={credit_behavior.core_risk_score}
+          centralScoreDate={String(credit_behavior.central_risk_score_date)}
+          numberInternalBlackberries={
+            credit_behavior.number_of_internal_arrears
+          }
+          maximumNumberInstallmentsArrears={
+            credit_behavior.maximum_number_of_installments_in_arrears
+          }
           isMobile={isMobile}
         />
       </Grid>

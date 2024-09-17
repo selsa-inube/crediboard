@@ -13,45 +13,49 @@ export async function get<T = unknown>(option: string) {
   try {
     const optionsData = await localforage.getItem(option);
 
-    if (!optionsData) throw new Error("No found");
-
     return optionsData as T;
-  } catch (error) {
-    throw new Error(error as string);
-  }
-}
-
-export async function getById(
-  key: string,
-  option: string,
-  identifier: number | string
-) {
-  try {
-    const optionsData = await get(option);
-
-    if (Array.isArray(optionsData)) {
-      const foundData = optionsData.find(
-        (data) => data[key] === Number(identifier)
-      );
-      if (!foundData) throw new Error(`No find identifier ${identifier}`);
-      return foundData;
-    }
-    throw new Error("data structure not valid, must be an object list");
   } catch (error) {
     return error;
   }
 }
 
-export const getDataById = async <T>(bd: string, key: string, id: string) => {
+export async function getById<T>(
+  bd: string,
+  key: string,
+  identifier: number | string,
+  returnMultiple: boolean = false
+): Promise<T | T[]> {
   try {
     const data = await get(bd);
     if (Array.isArray(data)) {
-      return data.filter((dataFilter) => dataFilter[key] === id) as T;
+      if (returnMultiple) {
+        const filteredData = data.filter(
+          (item) =>
+            item[key] ===
+            (typeof item[key] === "number"
+              ? Number(identifier)
+              : String(identifier))
+        );
+        return filteredData as T[];
+      } else {
+        const foundData = data.find(
+          (item) =>
+            item[key] ===
+            (typeof item[key] === "number"
+              ? Number(identifier)
+              : String(identifier))
+        );
+        if (!foundData)
+          throw new Error(`No match found for identifier ${identifier}`);
+        return foundData as T;
+      }
+    } else {
+      throw new Error("Data structure not valid, must be an array of objects");
     }
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    throw new Error(`Failed to get data: ${error}`);
   }
-};
+}
 
 interface functionActiveById {
   key: string;
@@ -102,6 +106,6 @@ export async function addItem<T>(nameDB: string, newItem: T) {
 
     console.log("Item added successfully");
   } catch (error) {
-    console.error("Failed to add item:", error);
+    return "Failed to add item: " + error;
   }
 }

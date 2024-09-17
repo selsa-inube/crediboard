@@ -9,7 +9,7 @@ import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 
-import { getDataById } from "@mocks/utils/dataMock.service";
+import { getById } from "@mocks/utils/dataMock.service";
 import {
   payroll_discount_authorization,
   promissory_note,
@@ -20,10 +20,10 @@ import {
   getTableBoardActionMobile,
   getTableBoardActions,
   titlesFinanacialReporting,
-  infoItems
+  infoItems,
 } from "./config";
 import { StyledMessageContainer } from "../styles";
-import { StyledContainer } from "./styles"
+import { StyledContainer } from "./styles";
 
 interface IPromissoryNotesProps {
   user: string;
@@ -41,15 +41,17 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
 
   useEffect(() => {
     Promise.allSettled([
-      getDataById<payroll_discount_authorization[]>(
+      getById<payroll_discount_authorization[]>(
         "payroll_discount_authorization",
         "credit_request_id",
-        user!
+        user!,
+        true
       ),
-      getDataById<promissory_note[]>(
+      getById<promissory_note[]>(
         "promissory_note",
         "credit_request_id",
-        user!
+        user!,
+        true
       ),
     ]).then((results) => {
       const dataPrommisseNotes = results
@@ -92,55 +94,59 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     setShowModal(false);
   };
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <StyledContainer>
-    <Fieldset
-      title="Pagarés y Libranzas"
-      heightFieldset="163px"
-      aspectRatio="1"
-      hasTable
-    >
-      <Stack direction="column" height={!isMobile ? "100%" : "138px"}>
-        <TableBoard
-          id="promissoryNotes"
-          titles={titlesFinanacialReporting}
-          entries={dataPromissoryNotes}
-          actions={tableBoardActions}
-          actionMobile={tableBoardActionMobile}
-          appearanceTable={{
-            widthTd: !isMobile ? "100" : "23%",
-            efectzebra: true,
-            title: "primary",
-            isStyleMobile: true,
-          }}
-          isFirstTable={true}
-          infoItems={infoItems}
-        />
-
-        {showModal && (
-          <PromissoryNotesModal
-            title="Confirma los datos del usuario"
-            buttonText="Enviar"
-            formValues={formValues}
-            onCloseModal={() => setShowModal(false)}
-            handleClose={handleSubmit}
+      <Fieldset
+        title="Pagarés y Libranzas"
+        heightFieldset="163px"
+        aspectRatio="1"
+        hasTable
+      >
+        <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
+          <TableBoard
+            id="promissoryNotes"
+            titles={titlesFinanacialReporting}
+            entries={dataPromissoryNotes}
+            actions={tableBoardActions}
+            actionMobile={tableBoardActionMobile}
+            appearanceTable={{
+              widthTd: !isMobile ? "100" : "23%",
+              efectzebra: true,
+              title: "primary",
+              isStyleMobile: true,
+            }}
+            isFirstTable={true}
+            infoItems={infoItems}
           />
-        )}
-        {showFlag && (
-          <StyledMessageContainer>
-            <Flag
-              title="Datos enviados"
-              description="Los datos del usuario han sido enviados exitosamente."
-              appearance="success"
-              duration={5000}
-              icon={<MdOutlineThumbUp />}
-              isMessageResponsive
-              closeFlag={() => setShowFlag(false)}
+
+          {showModal && (
+            <PromissoryNotesModal
+              title="Confirma los datos del usuario"
+              buttonText="Enviar"
+              formValues={formValues}
+              handleClose={handleCloseModal}
+              onSubmit={handleSubmit}
             />
-          </StyledMessageContainer>
-        )}
-      </Stack>
-    </Fieldset>
+          )}
+          {showFlag && (
+            <StyledMessageContainer>
+              <Flag
+                title="Datos enviados"
+                description="Los datos del usuario han sido enviados exitosamente."
+                appearance="success"
+                duration={5000}
+                icon={<MdOutlineThumbUp />}
+                isMessageResponsive
+                closeFlag={() => setShowFlag(false)}
+              />
+            </StyledMessageContainer>
+          )}
+        </Stack>
+      </Fieldset>
     </StyledContainer>
   );
 };

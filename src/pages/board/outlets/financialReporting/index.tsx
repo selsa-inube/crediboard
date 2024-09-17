@@ -12,16 +12,17 @@ import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
-import { ContainerSections } from "@components/layout/ContainerSections";
 import { ErrorAlert } from "@components/ErrorAlert";
+import { ContainerSections } from "@components/layout/ContainerSections";
+import { StockTray } from "@components/layout/ContainerSections/StockTray";
 import { ListModal } from "@components/modals/ListModal";
-import { StockTray } from "@src/components/layout/ContainerSections/StockTray";
+import { MobileMenu } from "@components/modals/MobileMenu";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
-import { getById, getDataById } from "@mocks/utils/dataMock.service";
-import { Idocument, Ierror_issued, Requests } from "@services/types";
+import { getById } from "@mocks/utils/dataMock.service";
+import { Ierror_issued, IErrorService, Requests } from "@services/types";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
@@ -31,6 +32,7 @@ import {
   handleConfirmReject,
   handleConfirmCancel,
   optionButtons,
+  errorObserver,
 } from "./config";
 import { StyledItem, StyledMessageContainer, StyledToast } from "./styles";
 import { Approvals } from "./Approvals";
@@ -39,7 +41,6 @@ import { dataRequirements } from "./Requirements/config";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
-import { MobileMenu } from "@src/components/modals/MobileMenu";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -76,6 +77,13 @@ const Listdata = (props: IListdataProps) => {
   );
 };
 
+const removeErrorByIdServices = (
+  errorsList: IErrorService[],
+  errorId: string
+) => {
+  return errorsList.filter((error) => error.id !== errorId);
+};
+
 export const FinancialReporting = () => {
   const [data, setData] = useState({} as Requests);
 
@@ -105,16 +113,18 @@ export const FinancialReporting = () => {
 
   const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
 
+  const [errorsService, setErrorsService] = useState<IErrorService[]>([]);
+
   useEffect(() => {
     Promise.allSettled([
-      getById("k_Prospe", "requests", id!),
-      getDataById<Idocument[]>("document", "credit_request_id", id!),
-      getDataById<Ierror_issued[]>("error_issued", "credit_request_id", id!),
+      getById("requests", "k_Prospe", id!),
+      getById("document", "credit_request_id", id!, true),
+      getById("error_issued", "credit_request_id", id!, true),
     ]).then(([requirement, documents, error_issue]) => {
       if (requirement.status === "fulfilled") {
         setData(requirement.value as Requests);
       }
-      if (documents.status === "fulfilled" && documents.value) {
+      if (documents.status === "fulfilled" && Array.isArray(documents.value)) {
         const documentsUser = documents.value.map((dataListDocument) => ({
           id: dataListDocument.document_id,
           name: dataListDocument.abbreviated_name,
@@ -122,10 +132,38 @@ export const FinancialReporting = () => {
         setDocument(documentsUser);
       }
       if (error_issue.status === "fulfilled") {
-        setError(error_issue.value!);
+        setError(error_issue.value as Ierror_issued[]);
       }
     });
   }, [id]);
+
+  useEffect(() => {
+    const handleErrorsService = (newError: IErrorService) => {
+      setErrorsService((prevErrors) => {
+        let updatedErrors = [...prevErrors];
+
+        const errorExists = updatedErrors.some(
+          (error) => error.id === newError.id
+        );
+
+        if (!errorExists) {
+          updatedErrors = [...updatedErrors, newError];
+        } else {
+          updatedErrors = updatedErrors.map((i) =>
+            i.id === newError.id ? newError : i
+          );
+        }
+
+        return updatedErrors;
+      });
+    };
+
+    errorObserver.subscribe(handleErrorsService);
+
+    return () => {
+      errorObserver.unsubscribe(handleErrorsService);
+    };
+  }, []);
 
   const [isPrint, setIsPrint] = useState(false);
 
@@ -157,6 +195,10 @@ export const FinancialReporting = () => {
     setError(errors.filter((error) => error.error_issued_id !== errorId));
   };
 
+  const handleCloseErrorService = (errorId: string) => {
+    setErrorsService(removeErrorByIdServices(errorsService, errorId));
+  };
+
   const handleOnCancel = () => {
     setShowCancelModal(true);
     setShowMenu(false);
@@ -179,7 +221,7 @@ export const FinancialReporting = () => {
 
   return (
     <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
-      {errors.length > 0 && (
+      {errors && (
         <Stack justifyContent="center" alignContent="center">
           <StyledToast $isMobile={isMobile}>
             {errors.map((error) => (
@@ -189,6 +231,15 @@ export const FinancialReporting = () => {
                 key={error.error_issued_id}
               />
             ))}
+
+            {errorsService.length > 0 &&
+              errorsService.map((errorService) => (
+                <ErrorAlert
+                  message={errorService.message.toString()}
+                  onClose={() => handleCloseErrorService(errorService.id)}
+                  key={errorService.id}
+                />
+              ))}
           </StyledToast>
         </Stack>
       )}
@@ -226,11 +277,13 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                {<ToDo icon={infoIcon} isMobile={isMobile} />}
+                {<ToDo icon={infoIcon} isMobile={isMobile}  />}
               </Stack>
-              <Stack direction="column">{<Approvals user={id!} isMobile={isMobile}/>}</Stack>
               <Stack direction="column">
-                {<Requirements data={dataRequirements} isMobile={isMobile}/>}
+                {<Approvals user={id!} isMobile={isMobile} />}
+              </Stack>
+              <Stack direction="column">
+                {<Requirements data={dataRequirements} isMobile={isMobile} />}
               </Stack>
               <Stack direction="column">
                 {
@@ -241,7 +294,9 @@ export const FinancialReporting = () => {
                   />
                 }
               </Stack>
-              <Stack direction="column">{<PromissoryNotes user={id!} isMobile={isMobile}/>}</Stack>
+              <Stack direction="column">
+                {<PromissoryNotes user={id!} isMobile={isMobile} />}
+              </Stack>
               <Stack direction="column">{<Postingvouchers />}</Stack>
             </Grid>
           </Stack>

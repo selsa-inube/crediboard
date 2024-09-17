@@ -51,6 +51,22 @@ function BoardLayout() {
       .catch((error) => {
         console.error("Error fetching requests data:", error.message);
       });
+  },[user.company]);
+
+  useEffect(() => {
+    get("requests")
+      .then((data) => {
+        if (data && Array.isArray(data)) {
+          setBoardData((prevState) => ({
+            ...prevState,
+            boardRequests: data,
+          }));
+          setFilteredRequests(data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching requests data:", error.message);
+      });
     get("requests-pinned")
       .then((data) => {
         if (data && Array.isArray(data)) {
