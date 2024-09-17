@@ -63,11 +63,11 @@ export const StyledContainerToCenter = styled.div`
   align-items: center;
 `;
 
-interface IStyledToast {
+interface IStyledError {
   $isMobile: boolean;
 }
 
-const StyledToast = styled.div<IStyledToast>`
+const StyledError = styled.div<IStyledError>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -84,4 +84,4 @@ const StyledToast = styled.div<IStyledToast>`
   }
 `;
 
-export { StyledInputsContainer, StyledBoardContainer, StyledToast };
+export { StyledInputsContainer, StyledBoardContainer, StyledError };

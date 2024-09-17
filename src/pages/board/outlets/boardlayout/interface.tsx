@@ -15,9 +15,9 @@ import {
   StyledInputsContainer,
   StyledBoardContainer,
   StyledContainerToCenter,
-  StyledToast,
+  StyledError,
 } from "./styles";
-import { boardColumns } from "./config/board";
+import { boardColumns, selectConfig } from "./config/board";
 
 interface BoardLayoutProps {
   isMobile: boolean;
@@ -52,6 +52,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     errorLoadingPins,
   } = props;
 
+  const selectProps = selectConfig(selectOptions, handleSelectCheckChange);
   const [showErrorAlert, setShowErrorAlert] = useState(true);
 
   return (
@@ -61,12 +62,12 @@ function BoardLayoutUI(props: BoardLayoutProps) {
         width={isMobile ? "-webkit-fill-available" : "min(100%,1500px)"}
       >
         {errorLoadingPins && showErrorAlert && (
-          <StyledToast $isMobile={isMobile}>
+          <StyledError $isMobile={isMobile}>
             <ErrorAlert
               message="Error: No se pudo cargar el estado de los anclados."
               onClose={() => setShowErrorAlert(false)}
             />
-          </StyledToast>
+          </StyledError>
         )}
         <StyledInputsContainer $isMobile={isMobile}>
           {!isMobile && (
@@ -90,18 +91,8 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           >
             {!isMobile && (
               <Stack width="500px">
-                <Selectcheck
-                  label="Filtrado por"
-                  id="FilterRequests"
-                  name="FilterRequests"
-                  placeholder="Seleccione una opción"
-                  options={selectOptions}
-                  onChangeCheck={handleSelectCheckChange}
-                  value=""
-                  onChange={() => {}}
-                  fullwidth
-                />
-              </Stack>
+              <Selectcheck {...selectProps} />
+            </Stack>
             )}
             <Stack gap={inube.spacing.s200}>
               <Stack gap={inube.spacing.s100} alignItems="center">
