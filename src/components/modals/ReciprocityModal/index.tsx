@@ -44,7 +44,7 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
           direction="column"
           padding="24px"
           gap="24px"
-          width={!isMobile ? "550px" : "auto"}
+          width={!isMobile ? "502px" : "287px"}
         >
           <Stack justifyContent="space-between" alignItems="center" gap="15px">
             <Text size="small" type="headline">
@@ -63,18 +63,28 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
             </StyledContainerClose>
           </Stack>
           <Divider />
-          <Stack direction="column" justifyContent="space-between">
-            <Stack justifyContent="space-between" gap="8px">
-              <Text weight="bold">Saldo de aportes y ahorros permanentes</Text>
+          <Stack direction="column" justifyContent="space-between" gap="12px">
+            <Stack justifyContent="space-between" gap="40px">
+              <Text type="label" size="large" weight="bold">
+                Saldo de aportes y ahorros permanentes
+              </Text>
               <Stack>
-                <Text appearance="success">$</Text>
-                <Text>{currencyFormat(balanceOfContributions, false)}</Text>
+                <Text type="body" size="medium" appearance="success">
+                  $
+                </Text>
+                <Text type="body" size="medium">
+                  {currencyFormat(balanceOfContributions, false)}
+                </Text>
               </Stack>
             </Stack>
-            <Stack justifyContent="space-between">
-              <Text weight="bold">No. de veces posible según reglamento</Text>
+            <Stack justifyContent="space-between" gap="40px">
+              <Text type="label" size="large" weight="bold">
+                No. de veces posible según reglamento
+              </Text>
               <Stack>
-                <Text>{currencyFormat(accordingToRegulation, false)}</Text>
+                <Text type="body" size="medium">
+                  {currencyFormat(accordingToRegulation, false)}
+                </Text>
               </Stack>
             </Stack>
           </Stack>
