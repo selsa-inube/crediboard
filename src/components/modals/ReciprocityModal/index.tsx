@@ -1,8 +1,9 @@
 import { createPortal } from "react-dom";
-import { MdClear } from "react-icons/md";
+import { MdClear, MdOutlineAttachMoney } from "react-icons/md";
 
 import { Blanket } from "@inubekit/blanket";
 import { Stack } from "@inubekit/stack";
+import { inube } from "@inubekit/foundations";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -91,8 +92,13 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
           <Divider />
           <Textfield
             id="field1"
+            iconBefore={
+              <MdOutlineAttachMoney
+                color={inube.icon.dark.content.color.regular}
+              />
+            }
             label="Cupo asignado"
-            placeholder="$0"
+            placeholder="Ingrese la cantidad"
             type="number"
             fullwidth
           />
