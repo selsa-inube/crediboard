@@ -38,93 +38,62 @@ import { traceMock as traceMockFondecom } from "@mocks/financialReporting/Fondec
 
 
 
-export const mockRequests = (company: string): Requests[] => {
-    switch (company) {
-        case "Presente":
-            return mockRequestsPresente;
-        case "Cooservunal":
-            return mockRequestsCooservunal;
-        case "Corbanca":
-            return mockRequestsCorbanca;
-        case "Fondecom":
-            return mockRequestsFondecom;
-        default:
-            return mockRequestsDefault;
-    }
-}
+const mockRequestsMap: { [key: string]: Requests[] } = {
+    Presente: mockRequestsPresente,
+    Cooservunal: mockRequestsCooservunal,
+    Corbanca: mockRequestsCorbanca,
+    Fondecom: mockRequestsFondecom,
+    default: mockRequestsDefault
+};
 
-export const mockStaff = (company: string) => {
-    switch (company) {
-        case "Presente":
-            return mockStaffPresente;
-        case "Cooservunal":
-            return mockStaffCooservunal;
-        case "Corbanca":
-            return mockStaffCorbanca;
-        case "Fondecom":
-            return mockStaffFondecom;
-        default:
-            return mockStaffDefault;
-    }
-}
+export const mockRequests = (company: string): Requests[] => mockRequestsMap[company] || mockRequestsMap.default;
 
-export const approvalByCreditRequestMock = (company: string) => {
-    switch (company) {
-        case "Presente":
-            return approval_by_credit_request_MockPresente;
-        case "Cooservunal":
-            return approval_by_credit_request_MockCooservunal;
-        case "Corbanca":
-            return approval_by_credit_request_MockCorbanca;
-        case "Fondecom":
-            return approval_by_credit_request_MockFondecom;
-        default:
-            return approval_by_credit_request_MockDefault;
-    }
-}
+const mockStaffMap: { [key: string]: typeof mockStaffDefault } = {
+    Presente: mockStaffPresente,
+    Cooservunal: mockStaffCooservunal,
+    Corbanca: mockStaffCorbanca,
+    Fondecom: mockStaffFondecom,
+    default: mockStaffDefault
+};
 
-export const documents = (company: string) => {
-    switch (company) {
-        case "Presente":
-            return documentsPresente;
-        case "Cooservunal":
-            return documentsCooservunal;
-        case "Corbanca":
-            return documentsCorbanca;
-        case "Fondecom":
-            return documentsFondecom;
-        default:
-            return documentsDefault;
-    }
-}
+export const mockStaff = (company: string) => mockStaffMap[company] || mockStaffMap.default;
 
+const approvalByCreditRequestMockMap: { [key: string]: typeof approval_by_credit_request_MockDefault } = {
+    Presente: approval_by_credit_request_MockPresente,
+    Cooservunal: approval_by_credit_request_MockCooservunal,
+    Corbanca: approval_by_credit_request_MockCorbanca,
+    Fondecom: approval_by_credit_request_MockFondecom,
+    default: approval_by_credit_request_MockDefault
+};
 
-export const errorIssued = (company: string) => {
-    switch (company) {
-        case "Presente":
-            return error_issuedPresente;
-        case "Cooservunal":
-            return error_issuedCooservunal;
-        case "Corbanca":
-            return error_issuedCorbanca;
-        case "Fondecom":
-            return error_issuedFondecom;
-        default:
-            return error_issuedDefault;
-    }
-}
+export const approvalByCreditRequestMock = (company: string) => approvalByCreditRequestMockMap[company] || approvalByCreditRequestMockMap.default;
 
-export const traceMock = (company: string) => {
-    switch (company) {
-        case "Presente":
-            return traceMockPresente;
-        case "Cooservunal":
-            return traceMockCooservunal;
-        case "Corbanca":
-            return traceMockCorbanca;
-        case "Fondecom":
-            return traceMockFondecom;
-        default:
-            return traceMockDefault;
-    }
-}
+const documentsMap: { [key: string]: typeof documentsDefault } = {
+    Presente: documentsPresente,
+    Cooservunal: documentsCooservunal,
+    Corbanca: documentsCorbanca,
+    Fondecom: documentsFondecom,
+    default: documentsDefault
+};
+
+export const documents = (company: string) => documentsMap[company] || documentsMap.default;
+
+const errorIssuedMap: { [key: string]: typeof error_issuedDefault } = {
+    Presente: error_issuedPresente,
+    Cooservunal: error_issuedCooservunal,
+    Corbanca: error_issuedCorbanca,
+    Fondecom: error_issuedFondecom,
+    default: error_issuedDefault
+};
+
+export const errorIssued = (company: string) => errorIssuedMap[company] || errorIssuedMap.default;
+
+const traceMocks: { [key: string]: typeof traceMockDefault } = {
+    Presente: traceMockPresente,
+    Cooservunal: traceMockCooservunal,
+    Corbanca: traceMockCorbanca,
+    Fondecom: traceMockFondecom,
+    default: traceMockDefault
+};
+
+export const traceMock = (company: string) => traceMocks[company] || traceMocks.default;
