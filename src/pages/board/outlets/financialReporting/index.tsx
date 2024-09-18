@@ -101,7 +101,6 @@ export const FinancialReporting = () => {
 
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
   const [errors, setError] = useState<Ierror_issued[]>([]);
-  const [upDateData, setUpDateData] = useState(false);
 
   const { id } = useParams();
   const { user } = useAuth0();
@@ -173,10 +172,6 @@ export const FinancialReporting = () => {
         { top: 10, bottom: 10, left: 10, right: 10 }
       );
     }, 1000);
-  };
-
-  const handleUpdateData = (state: boolean) => {
-    setUpDateData(state);
   };
 
   const handleActions = configHandleactions({
@@ -273,20 +268,19 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                {<ToDo icon={infoIcon} isMobile={isMobile}  />}
+                {<ToDo icon={infoIcon} isMobile={isMobile} id={id!} user={user!.nickname!}/>}
               </Stack>
               <Stack direction="column">
                 {<Approvals user={id!} isMobile={isMobile} />}
               </Stack>
               <Stack direction="column">
-                {<Requirements data={dataRequirements} isMobile={isMobile} />}
+                {<Requirements data={dataRequirements} isMobile={isMobile} id={id!} user={user!.nickname!} />}
               </Stack>
               <Stack direction="column">
                 {
                   <Management
                     id={id!}
                     isMobile={isMobile}
-                    updateData={upDateData}
                   />
                 }
               </Stack>
@@ -332,7 +326,6 @@ export const FinancialReporting = () => {
               setFlagMessage,
               setShowFlagMessage,
               setShowRejectModal,
-              handleUpdateData
             )
           }
         />
@@ -346,10 +339,12 @@ export const FinancialReporting = () => {
           onCloseModal={() => setShowCancelModal(false)}
           onSubmit={(values) =>
             handleConfirmCancel(
+              id!,
+              user!.nickname!,
               values,
               setFlagMessage,
               setShowFlagMessage,
-              setShowCancelModal
+              setShowCancelModal,
             )
           }
         />
