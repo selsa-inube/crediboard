@@ -26,6 +26,7 @@ const Default: Story = (args: ReciprocityModalProps) => {
 Default.args = {
   balanceOfContributions: 7000000,
   accordingToRegulation: 2,
+  assignedQuota: 14000000
 };
 
 export { Default };

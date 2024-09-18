@@ -19,6 +19,7 @@ export interface ReciprocityModalProps {
   portalId?: string;
   balanceOfContributions: number;
   accordingToRegulation: number;
+  assignedQuota: number;
 }
 
 export function ReciprocityModal(props: ReciprocityModalProps) {
@@ -27,6 +28,7 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
     handleClose,
     balanceOfContributions,
     accordingToRegulation,
+    assignedQuota
   } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
@@ -98,7 +100,8 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
               />
             }
             label="Cupo asignado"
-            placeholder="Ingrese la cantidad"
+            placeholder="0"
+            value={assignedQuota}
             type="number"
             fullwidth
           />
