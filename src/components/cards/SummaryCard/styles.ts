@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
 import { Link } from "react-router-dom";
 
-
-
 const StyledLink = styled(Link)`
   display: flex;
   text-decoration: none;
