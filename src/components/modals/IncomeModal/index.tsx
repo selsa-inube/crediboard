@@ -166,7 +166,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
 
             <Divider />
 
-            <Stack  direction="column" gap="12px">
+            <Stack direction="column" gap="12px">
               <Stack justifyContent="space-between">
                 <Text appearance="dark" size="large" weight="bold" type="label">
                   {incomeModalConfig.availableCommitments.label}
