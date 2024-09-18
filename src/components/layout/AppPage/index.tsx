@@ -21,7 +21,6 @@ import {
   StyledMenuContainer,
   StyledCollapseIcon,
   StyledCollapse,
-  StyledHeader,
 } from "./styles";
 
 const renderLogo = (imgUrl: string) => {
@@ -94,7 +93,6 @@ function AppPage() {
   return (
     <StyledAppPage>
       <Grid templateRows="auto 1fr" height="100vh" justifyContent="unset">
-        <StyledHeader>
           <Header
             portalId="portal"
             navigation={navigationConfig}
@@ -102,7 +100,6 @@ function AppPage() {
             userName={user.username}
             client={user.company}
           />
-        </StyledHeader>
         <StyledCollapseIcon
           $collapse={collapse}
           onClick={() => setCollapse(!collapse)}
