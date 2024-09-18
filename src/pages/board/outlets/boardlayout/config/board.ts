@@ -1,4 +1,17 @@
 import { SectionBackground } from "@components/layout/BoardSection/types";
+import { IOptionItemCheckedProps } from "@components/inputs/SelectCheck/OptionItem";
+
+interface SelectConfigProps {
+  label: string;
+  id: string;
+  name: string;
+  placeholder: string;
+  options: IOptionItemCheckedProps[];
+  onChangeCheck: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
+  onChange: () => void;
+  fullwidth: boolean;
+}
 
 type BoardColumn = {
   id: string;
@@ -34,4 +47,17 @@ const boardColumns: BoardColumn[] = [
   },
 ];
 
-export { boardColumns };
+const selectConfig = (selectOptions: IOptionItemCheckedProps[], handleSelectCheckChange: (e: React.ChangeEvent<HTMLInputElement>) => void): SelectConfigProps => ({
+  label: "Filtrado por",
+  id: "FilterRequests",
+  name: "FilterRequests",
+  placeholder: "Seleccione una opción",
+  options: selectOptions,
+  onChangeCheck: handleSelectCheckChange,
+  value: "",
+  onChange: () => {},
+  fullwidth: true,
+});
+
+
+export { boardColumns, selectConfig };
