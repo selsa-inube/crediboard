@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import { MdClear } from "react-icons/md";
+import { MdClear, MdOutlineAttachMoney } from "react-icons/md";
 
 import { Divider } from "@inubekit/divider";
 import { Stack } from "@inubekit/stack";
@@ -11,15 +11,18 @@ import { Button } from "@inubekit/button";
 import { Icon } from "@inubekit/icon";
 import { Select } from "@inubekit/select";
 import { Blanket } from "@inubekit/blanket";
+import { inube } from "@inubekit/foundations";
 
-import { IncomeEmployment } from "./IncomeEmployment";
-import { ProfessionalServices } from "./ProfessionalServices";
-import { IncomeCapital } from "./IncomeCapital";
-import { MicroBusinesses } from "./MicroBusinesses";
+import {
+  IncomeEmployment,
+  IncomeCapital,
+  MicroBusinesses,
+  ProfessionalServices,
+} from "./config"
 import { StyledContainer, StyledContainerClose, StyledIncome } from "./styles";
 
 interface IncomeModalProps {
-  form: { name: string };
+  form: { deudor: string };
   onChange: (name: string, newValue: string) => void;
   options: { id: string; label: string; value: string }[];
   portalId?: string;
@@ -79,8 +82,9 @@ export function IncomeModal(props: IncomeModalProps) {
               </Grid>
             </Stack>
           </StyledIncome>
+          <Divider />
           <Stack
-            padding="16px 0px"
+            padding="10px 0px"
             justifyContent="space-between"
             alignItems={!isMobile ? "end" : "start"}
             direction={!isMobile ? "row" : "column"}
@@ -88,7 +92,7 @@ export function IncomeModal(props: IncomeModalProps) {
           >
             <Stack
               justifyContent="space-between"
-              width={!isMobile ? "50%" : "100%"}
+              width={!isMobile ? "48.5%" : "100%"}
               gap="15px"
               direction={!isMobile ? "row" : "column"}
             >
@@ -98,15 +102,20 @@ export function IncomeModal(props: IncomeModalProps) {
                 label="Deudor"
                 placeholder="Seleccione una opción"
                 options={options}
-                value={form.name}
-                onChange={(value) => onChange("name", value)}
+                value={form.deudor}
+                onChange={(name, value) => onChange(name, value)}
                 size="compact"
                 fullwidth
               />
               <Textfield
                 id="field1"
+                iconBefore={
+                  <MdOutlineAttachMoney
+                    color={inube.icon.dark.content.color.regular}
+                  />
+                }
                 label="Total ingresos mensuales"
-                placeholder="$0"
+                placeholder="0"
                 size="compact"
                 type="number"
                 fullwidth
@@ -120,7 +129,8 @@ export function IncomeModal(props: IncomeModalProps) {
             >
               <Button
                 children="Cerrar"
-                appearance="light"
+                appearance="gray"
+                variant="outlined"
                 onClick={handleClose}
               />
               <Button children="Guardar" appearance="primary" disabled />
@@ -132,3 +142,5 @@ export function IncomeModal(props: IncomeModalProps) {
     node
   );
 }
+
+export type { IncomeModalProps };

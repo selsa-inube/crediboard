@@ -3,11 +3,10 @@ import { Stack } from "@inubekit/stack";
 import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
-import { Button } from "@inubekit/button";
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
 
-import { StyledContainer, StyledTextField } from "./styles";
+import { StyledContainer, StyledTextField, StyledSupport } from "./styles";
 
 interface SourcesModalProps {
   title: string;
@@ -46,22 +45,20 @@ export function Sources(props: SourcesModalProps) {
           ))}
         </Stack>
         <Stack justifyContent="end" margin="auto 0px 0px 0px">
-          <Button
-            children="Ver soporte"
-            spacing="compact"
-            iconAfter={
+          <StyledSupport onClick={() => console.log("Ver soporte")}>
+            <Stack gap="8px">
+              <Text appearance="primary" type="label" size="large">
+                Ver soporte
+              </Text>
               <Icon
                 icon={<MdOutlineRemoveRedEye />}
-                size="14px"
+                size="15px"
                 appearance="primary"
                 variant="filled"
                 shape="circle"
               />
-            }
-            variant="none"
-            onClick={() => console.log("Ver soporte")}
-            cursorHover
-          />
+            </Stack>
+          </StyledSupport>
         </Stack>
       </Stack>
     </StyledContainer>

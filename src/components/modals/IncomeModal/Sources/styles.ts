@@ -20,4 +20,8 @@ const StyledTextField = styled.div`
   }
 `;
 
-export { StyledContainer, StyledTextField };
+const StyledSupport = styled.div`
+  cursor: pointer;
+`;
+
+export { StyledContainer, StyledTextField, StyledSupport };
