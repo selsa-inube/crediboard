@@ -7,9 +7,10 @@ import { Blanket } from "@inubekit/blanket";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Textfield } from "@inubekit/textfield";
+import { Divider } from "@inubekit/divider";
 import { currencyFormat } from "@utils/formatData/currency";
 
-import { StyledContainerClose, StyledModal, StyledDivider } from "./styles";
+import { StyledContainerClose, StyledModal } from "./styles";
 
 export interface ScoreModalProps {
   title: string;
@@ -67,10 +68,10 @@ export const ScoreModal = (props: ScoreModalProps) => {
           </StyledContainerClose>
         </Stack>
 
-        <StyledDivider />
+        <Divider />
 
         <Stack direction="column" gap="16px">
-          <Stack direction="column" gap="8px">
+          <Stack direction="column" gap="12px">
             <Stack gap="8px" alignItems="center">
               <Icon
                 appearance="primary"
@@ -83,93 +84,112 @@ export const ScoreModal = (props: ScoreModalProps) => {
               </Text>
             </Stack>
 
-            <StyledDivider />
+            <Divider />
 
-            <Stack justifyContent="space-between">
-              <Text appearance="dark" size="large" weight="bold">
+            <Stack justifyContent="space-between" alignItems="center">
+              <Text appearance="dark" size="large" weight="bold" type="label">
                 Puntaje total
               </Text>
               <Stack>
-                <Text appearance="primary" weight="bold">
+                <Text
+                  appearance="primary"
+                  weight="bold"
+                  type="body"
+                  size="large"
+                >
                   {puntajeTotal}
                 </Text>
-                <Text>/200</Text>
+                <Text weight="bold" type="body" size="large">
+                  /200
+                </Text>
               </Stack>
             </Stack>
 
-            <StyledDivider />
+            <Divider />
 
-            <Stack justifyContent="space-between">
-              <Text weight="bold" size="large">
+            <Stack justifyContent="space-between" alignItems="center">
+              <Text weight="bold" size="large" type="label">
                 Antigüedad de 10 años
               </Text>
               <Stack>
-                <Text appearance="primary" weight="bold">
+                <Text appearance="primary" weight="bold" size="large">
                   {antiguedad}
                 </Text>
-                <Text>/200</Text>
+                <Text weight="bold" type="body" size="large">
+                  /200
+                </Text>
               </Stack>
             </Stack>
 
-            <Stack justifyContent="space-between">
-              <Text weight="bold" size="large">
+            <Stack justifyContent="space-between" alignItems="center">
+              <Text weight="bold" size="large" type="label">
                 Central de riesgo de 250 P
               </Text>
               <Stack>
-                <Text appearance="primary" weight="bold">
+                <Text appearance="primary" weight="bold" size="large">
                   {riesgoCentral}
                 </Text>
-                <Text>/200</Text>
+                <Text weight="bold" type="body" size="large">
+                  /200
+                </Text>
               </Stack>
             </Stack>
 
-            <Stack justifyContent="space-between">
-              <Text weight="bold" size="large">
+            <Stack justifyContent="space-between" alignItems="center">
+              <Text weight="bold" size="large" type="label">
                 Índice de estabilidad laboral 900 P
               </Text>
               <Stack>
-                <Text appearance="primary" weight="bold">
+                <Text appearance="primary" weight="bold" size="large">
                   {estabilidadLaboral}
                 </Text>
-                <Text>/300</Text>
+                <Text weight="bold" type="body" size="large">
+                  /300
+                </Text>
               </Stack>
             </Stack>
 
-            <Stack justifyContent="space-between">
-              <Text weight="bold" size="large">
+            <Stack justifyContent="space-between" alignItems="center">
+              <Text weight="bold" size="large" type="label">
                 Estado civil
               </Text>
               <Stack>
-                <Text appearance="primary" weight="bold">
+                <Text appearance="primary" weight="bold" size="large">
                   {EstadoCivil}
                 </Text>
-                <Text>/50</Text>
+                <Text weight="bold" type="body" size="large">
+                  /50
+                </Text>
               </Stack>
             </Stack>
 
-            <Stack justifyContent="space-between">
-              <Text weight="bold" size="large">
+            <Stack justifyContent="space-between" alignItems="center">
+              <Text weight="bold" size="large" type="label">
                 Actividad económica
               </Text>
               <Stack>
-                <Text appearance="primary" weight="bold">
+                <Text appearance="primary" weight="bold" size="large">
                   {actividadEconomica}
                 </Text>
-                <Text>/200</Text>
+                <Text weight="bold" type="body" size="large">
+                  /200
+                </Text>
               </Stack>
             </Stack>
           </Stack>
 
-          <StyledDivider />
+          <Divider />
 
-          <Stack justifyContent="space-between">
-            <Text weight="bold" size="large">
+          <Stack justifyContent="space-between" alignItems="center">
+            <Text weight="bold" size="large" type="label">
               No. de veces el ingreso para este scoring
             </Text>
-            <Text>5</Text>
+            <Text weight="bold" type="body" size="large">
+              5
+            </Text>
           </Stack>
           <Stack justifyContent="space-between">
-            <Text weight="bold" size="large">
+            <Text weight="bold" size="large" type="label">
               Ingresos mensuales
             </Text>
             <Stack>
@@ -178,7 +198,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
             </Stack>
           </Stack>
 
-          <StyledDivider />
+          <Divider />
 
           <Textfield
             value={maxIndebtedness}
@@ -191,7 +211,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
           />
         </Stack>
 
-        <StyledDivider />
+        <Divider />
 
         <Stack gap="8px" justifyContent="end">
           <Button
