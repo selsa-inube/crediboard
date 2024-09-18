@@ -19,8 +19,6 @@ import { ListModal } from "@components/modals/ListModal";
 import { MobileMenu } from "@components/modals/MobileMenu";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
-import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
-import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
 import { Ierror_issued, IErrorService, Requests } from "@services/types";
 import { generatePDF } from "@utils/pdf/generetePDF";
@@ -41,6 +39,7 @@ import { dataRequirements } from "./Requirements/config";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
+import { CardCommercialManagement } from "./CommercialManagement/CardCommercialManagement";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -165,15 +164,13 @@ export const FinancialReporting = () => {
     };
   }, []);
 
-  const [isPrint, setIsPrint] = useState(false);
-
   const handleGeneratePDF = () => {
-    setIsPrint(true);
     setTimeout(() => {
       generatePDF(
         dataCommercialManagementRef,
         "Gestión Comercial",
-        "Gestión Comercial"
+        "Gestión Comercial",
+        { top: 10, bottom: 10, left: 10, right: 10 }
       );
     }, 1000);
   };
@@ -262,9 +259,8 @@ export const FinancialReporting = () => {
                   print={handleGeneratePDF}
                   data={data}
                   children={
-                    <DataCommercialManagement
-                      dataAccordeon={dataAccordeon}
-                      isOpen={isPrint}
+                    <CardCommercialManagement
+                      id={id!}
                       dataRef={dataCommercialManagementRef}
                     />
                   }
