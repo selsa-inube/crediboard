@@ -13,4 +13,9 @@ const currencyFormat = (price: number, withCurrencySymbol = true): string => {
   return withCurrencySymbol ? value : value.replace(/\$/g, "");
 };
 
-export { currencyFormat };
+const parseCunstomFormat = (amount: string) => {
+  const amountParsed = parseFloat(amount);
+  return amount === "0" || !amountParsed  ? "$ 0" : currencyFormat(amountParsed);
+}
+
+export { currencyFormat, parseCunstomFormat };

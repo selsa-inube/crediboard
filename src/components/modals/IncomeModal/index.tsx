@@ -18,7 +18,7 @@ import { Textfield } from "@inubekit/textfield";
 import { SkeletonLine } from "@inubekit/skeleton";
 
 import { currencyFormat } from "@utils/formatData/currency";
-
+import { incomeModalConfig } from "./IcomeModalConfig";
 import { StyledContainerClose, StyledModal, StyledDivider } from "./styles";
 
 export interface IncomeModalProps {
@@ -74,7 +74,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
           </Text>
           <StyledContainerClose onClick={handleClose}>
             <Stack alignItems="center" gap="5px">
-              <Text>Cerrar</Text>
+              <Text>{incomeModalConfig.closeButton.text}</Text>
               <Icon
                 icon={<MdClear />}
                 size="24px"
@@ -91,18 +91,17 @@ export const IncomeModal = (props: IncomeModalProps) => {
           <Stack direction="column" alignItems="center" padding="16px">
             <Icon icon={<MdErrorOutline />} size="32px" appearance="danger" />
             <Text size="large" weight="bold" appearance="danger">
-              Error cargando datos
+              {incomeModalConfig.error.title}
             </Text>
             <Text size="small" appearance="dark" textAlign="center">
-              No se pudieron cargar los datos. Por favor, intente nuevamente más
-              tarde.
+              {incomeModalConfig.error.message}
             </Text>
           </Stack>
         ) : (
           <Stack direction="column">
             <Stack padding="8px 0px" justifyContent="space-between">
               <Text appearance="dark" size="large" weight="bold">
-                Total fuentes de ingreso reportadas
+                {incomeModalConfig.incomeSources.label}
               </Text>
 
               <Stack alignItems="center">
@@ -128,7 +127,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
 
             <Stack padding="8px 0px" justifyContent="space-between">
               <Text appearance="gray" size="large" weight="bold">
-                (-) Obligaciones financieras reportadas
+                {incomeModalConfig.financialObligations.label}
               </Text>
 
               <Stack alignItems="center">
@@ -156,7 +155,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
 
             <Stack padding="8px 0px" justifyContent="space-between">
               <Text appearance="gray" size="large" weight="bold">
-                (-) Reserva mínima de subsistencia
+                {incomeModalConfig.subsistenceReserve.label}
               </Text>
 
               <Stack alignItems="center">
@@ -173,7 +172,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
 
             <Stack padding="8px 0px" justifyContent="space-between">
               <Text appearance="dark" size="large" weight="bold">
-                Neto disponible para nuevos compromisos
+                {incomeModalConfig.availableCommitments.label}
               </Text>
 
               <Stack>
@@ -190,7 +189,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
 
             <Stack padding="8px 0px" justifyContent="space-between">
               <Text appearance="dark" size="large" weight="bold">
-                Plazo máx. en ‘vacaciones’
+                {incomeModalConfig.maxVacationTerm.label}
               </Text>
 
               {loading ? (
@@ -210,9 +209,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
                 spacing="none"
               />
               <Text margin="5px" size="small">
-                Monto máximo calculado para una cuota de{" "}
-                <strong>$1'500.000</strong> y plazo de <strong>60 meses</strong>
-                .
+                {incomeModalConfig.infoText}
               </Text>
             </Stack>
 
@@ -228,9 +225,9 @@ export const IncomeModal = (props: IncomeModalProps) => {
                 }
                 fullwidth={true}
                 id="id"
-                label="Monto máximo"
+                label={incomeModalConfig.textfield.label}
                 name="name"
-                placeholder="Ingrese la cantidad"
+                placeholder={incomeModalConfig.textfield.placeholder}
                 disabled={loading}
               />
             </Stack>
@@ -246,7 +243,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
             appearance="gray"
             fullwidth={isMobile}
           >
-            Cerrar
+            {incomeModalConfig.buttons.close}
           </Button>
           <Button
             onClick={() => alert("Recalculando...")}
@@ -254,7 +251,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
             appearance="primary"
             fullwidth={isMobile}
           >
-            Recalcular
+            {incomeModalConfig.buttons.recalculate}
           </Button>
         </Stack>
       </StyledModal>
