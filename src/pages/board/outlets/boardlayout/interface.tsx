@@ -63,7 +63,8 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     function handleClickOutside(event: MouseEvent) {
       if (
         stackRef.current &&
-        !stackRef.current.contains(event.target as Node)
+        !stackRef.current.contains(event.target as Node) &&
+        !searchRequestValue
       ) {
         setIsExpanded(false);
       }
@@ -78,7 +79,31 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isExpanded]);
+  }, [isExpanded, searchRequestValue]);
+
+  useEffect(() => {
+    setIsExpanded(Boolean(searchRequestValue));
+  }, [searchRequestValue]);
+
+  const renderColumns = () => {
+    return boardColumns.map((column) => {
+      const filteredRequests = BoardRequests.filter(
+        (request) => request.i_Estprs === column.id
+      );
+
+      return (
+        <BoardSection
+          key={column.id}
+          sectionTitle={column.value}
+          sectionBackground={column.sectionBackground}
+          orientation={boardOrientation}
+          sectionInformation={filteredRequests}
+          pinnedRequests={pinnedRequests}
+          handlePinRequest={handlePinRequest}
+        />
+      );
+    });
+  };
 
   return (
     <StyledContainerToCenter>
@@ -97,9 +122,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
               $isMobile={isMobile}
               $isExpanded={isExpanded}
               onClick={() => {
-                if (!isExpanded) {
-                  setIsExpanded(true);
-                }
+                if (!isExpanded) setIsExpanded(true);
               }}
             >
               <Stack width="100%">
@@ -199,23 +222,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           $orientation={boardOrientation}
           $isMobile={isMobile}
         >
-          {boardColumns.map((column) => {
-            const filteredRequests = BoardRequests.filter(
-              (request) => request.i_Estprs === column.id
-            );
-
-            return (
-              <BoardSection
-                key={column.id}
-                sectionTitle={column.value}
-                sectionBackground={column.sectionBackground}
-                orientation={boardOrientation}
-                sectionInformation={filteredRequests}
-                pinnedRequests={pinnedRequests}
-                handlePinRequest={handlePinRequest}
-              />
-            );
-          })}
+          {renderColumns()}
         </StyledBoardContainer>
       </Stack>
     </StyledContainerToCenter>
