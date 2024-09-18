@@ -41,8 +41,14 @@ const handleChangeWithCurrency = (
   formik.setFieldValue(e.target.name, isNaN(parsedValue) ? "" : parsedValue);
 };
 
+const parseCunstomFormat = (amount: string) => {
+  const amountParsed = parseFloat(amount);
+  return amount === "0" || !amountParsed ? "$ 0" : currencyFormat(amountParsed);
+};
+
 export {
   currencyFormat,
+  parseCunstomFormat,
   handleChangeWithCurrency,
   parseCurrencyString,
   validateCurrencyField,
