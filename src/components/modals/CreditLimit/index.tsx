@@ -88,7 +88,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                     <Icon
                       appearance="primary"
                       icon={<MdOutlineVisibility />}
-                      size="16px"
+                      size="12px"
                       spacing="none"
                       cursorHover={true}
                       variant="filled"
@@ -111,7 +111,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                     <Icon
                       appearance="primary"
                       icon={<MdOutlineVisibility />}
-                      size="16px"
+                      size="12px"
                       spacing="none"
                       cursorHover={true}
                       variant="filled"
@@ -134,7 +134,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                     <Icon
                       appearance="primary"
                       icon={<MdOutlineVisibility />}
-                      size="16px"
+                      size="12px"
                       spacing="none"
                       cursorHover
                       variant="filled"
