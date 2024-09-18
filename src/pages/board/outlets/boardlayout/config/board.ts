@@ -59,5 +59,8 @@ const selectConfig = (selectOptions: IOptionItemCheckedProps[], handleSelectChec
   fullwidth: true,
 });
 
+const seePinned = {
+  viewPinned: "Ver unicamente los anclados",
+}
 
-export { boardColumns, selectConfig };
+export { boardColumns, seePinned, selectConfig };

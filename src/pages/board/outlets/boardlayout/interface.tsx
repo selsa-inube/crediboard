@@ -19,7 +19,7 @@ import {
   StyledError,
   StyledSearch,
 } from "./styles";
-import { boardColumns, selectConfig } from "./config/board";
+import { boardColumns, selectConfig, seePinned } from "./config/board";
 
 interface BoardLayoutProps {
   isMobile: boolean;
@@ -183,7 +183,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                     appearance="dark"
                     size="24px"
                   />
-                  <Text type="label">Ver unicamente los anclados</Text>
+                  <Text type="label">{seePinned.viewPinned}</Text>
                   <Toggle
                     id="SeePinned"
                     name="SeePinned"
