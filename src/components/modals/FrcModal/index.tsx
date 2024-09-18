@@ -10,6 +10,7 @@ import { Textfield } from "@inubekit/textfield";
 import { Divider } from "@inubekit/divider";
 import { currencyFormat } from "@utils/formatData/currency";
 
+import { frcConfig } from "./FrcConfig";
 import { StyledContainerClose, StyledModal } from "./styles";
 
 export interface ScoreModalProps {
@@ -28,7 +29,6 @@ export interface ScoreModalProps {
 
 export const ScoreModal = (props: ScoreModalProps) => {
   const {
-    title,
     portalId,
     handleClose,
     puntajeTotal,
@@ -53,11 +53,11 @@ export const ScoreModal = (props: ScoreModalProps) => {
       <StyledModal $smallScreen={isMobile}>
         <Stack justifyContent="space-between" alignItems="center">
           <Text type="headline" size="small" appearance="dark">
-            {title}
+            {frcConfig.title}
           </Text>
           <StyledContainerClose onClick={handleClose}>
             <Stack alignItems="center" gap="5px">
-              <Text>Cerrar</Text>
+              <Text>{frcConfig.cerrarBtn}</Text>
               <Icon
                 icon={<MdClear />}
                 size="24px"
@@ -80,7 +80,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
                 size="34px"
               />
               <Text appearance="primary" size="large" type="title">
-                Score de riesgo
+                {frcConfig.title}
               </Text>
             </Stack>
 
@@ -88,7 +88,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
 
             <Stack justifyContent="space-between" alignItems="center">
               <Text appearance="dark" size="large" weight="bold" type="label">
-                Puntaje total
+                {frcConfig.puntajeTotalLabel}
               </Text>
               <Stack>
                 <Text
@@ -100,7 +100,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
                   {puntajeTotal}
                 </Text>
                 <Text weight="bold" type="body" size="large">
-                  /200
+                  {frcConfig.puntajeTotalMax}
                 </Text>
               </Stack>
             </Stack>
@@ -109,70 +109,70 @@ export const ScoreModal = (props: ScoreModalProps) => {
 
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
-                Antigüedad de 10 años
+                {frcConfig.antiguedadLabel}
               </Text>
               <Stack>
                 <Text appearance="primary" weight="bold" size="large">
                   {antiguedad}
                 </Text>
                 <Text weight="bold" type="body" size="large">
-                  /200
+                  {frcConfig.antiguedadMax}
                 </Text>
               </Stack>
             </Stack>
 
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
-                Central de riesgo de 250 P
+                {frcConfig.riesgoCentralLabel}
               </Text>
               <Stack>
                 <Text appearance="primary" weight="bold" size="large">
                   {riesgoCentral}
                 </Text>
                 <Text weight="bold" type="body" size="large">
-                  /200
+                  {frcConfig.riesgoCentralMax}
                 </Text>
               </Stack>
             </Stack>
 
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
-                Índice de estabilidad laboral 900 P
+                {frcConfig.estabilidadLaboralLabel}
               </Text>
               <Stack>
                 <Text appearance="primary" weight="bold" size="large">
                   {estabilidadLaboral}
                 </Text>
                 <Text weight="bold" type="body" size="large">
-                  /300
+                  {frcConfig.estabilidadLaboralMax}
                 </Text>
               </Stack>
             </Stack>
 
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
-                Estado civil
+                {frcConfig.estadoCivilLabel}
               </Text>
               <Stack>
                 <Text appearance="primary" weight="bold" size="large">
                   {EstadoCivil}
                 </Text>
                 <Text weight="bold" type="body" size="large">
-                  /50
+                  {frcConfig.estadoCivilMax}
                 </Text>
               </Stack>
             </Stack>
 
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
-                Actividad económica
+                {frcConfig.actividadEconomicaLabel}
               </Text>
               <Stack>
                 <Text appearance="primary" weight="bold" size="large">
                   {actividadEconomica}
                 </Text>
                 <Text weight="bold" type="body" size="large">
-                  /200
+                  {frcConfig.actividadEconomicaMax}
                 </Text>
               </Stack>
             </Stack>
@@ -182,7 +182,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
 
           <Stack justifyContent="space-between" alignItems="center">
             <Text weight="bold" size="large" type="label">
-              No. de veces el ingreso para este scoring
+              {frcConfig.vecesIngreso}
             </Text>
             <Text weight="bold" type="body" size="large">
               5
@@ -190,7 +190,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
           </Stack>
           <Stack justifyContent="space-between">
             <Text weight="bold" size="large" type="label">
-              Ingresos mensuales
+              {frcConfig.ingresosLabel}
             </Text>
             <Stack>
               <Text appearance="success">$</Text>
@@ -205,7 +205,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
             iconBefore={<MdOutlineAttachMoney />}
             fullwidth={true}
             id="id"
-            label="Endeudamiento máximo"
+            label={frcConfig.endeudamientoMax}
             name="name"
             placeholder="Ingrese la cantidad"
           />
@@ -219,7 +219,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
             appearance="primary"
             fullwidth={isMobile}
           >
-            Cerrar
+            {frcConfig.cerrarBtn}
           </Button>
         </Stack>
       </StyledModal>
