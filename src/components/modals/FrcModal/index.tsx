@@ -51,7 +51,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
         <Stack justifyContent="space-between" alignItems="center">
-          <Text type="headline" size="medium" appearance="dark">
+          <Text type="headline" size="small" appearance="dark">
             {title}
           </Text>
           <StyledContainerClose onClick={handleClose}>
@@ -86,7 +86,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
             <StyledDivider />
 
             <Stack justifyContent="space-between">
-              <Text appearance="dark" weight="bold">
+              <Text appearance="dark" size="large" weight="bold">
                 Puntaje total
               </Text>
               <Stack>
@@ -100,7 +100,9 @@ export const ScoreModal = (props: ScoreModalProps) => {
             <StyledDivider />
 
             <Stack justifyContent="space-between">
-              <Text weight="bold">Antigüedad de 10 años</Text>
+              <Text weight="bold" size="large">
+                Antigüedad de 10 años
+              </Text>
               <Stack>
                 <Text appearance="primary" weight="bold">
                   {antiguedad}
@@ -110,7 +112,9 @@ export const ScoreModal = (props: ScoreModalProps) => {
             </Stack>
 
             <Stack justifyContent="space-between">
-              <Text weight="bold">Central de riesgo de 250 P</Text>
+              <Text weight="bold" size="large">
+                Central de riesgo de 250 P
+              </Text>
               <Stack>
                 <Text appearance="primary" weight="bold">
                   {riesgoCentral}
@@ -120,7 +124,9 @@ export const ScoreModal = (props: ScoreModalProps) => {
             </Stack>
 
             <Stack justifyContent="space-between">
-              <Text weight="bold">Índice de estabilidad laboral 900 P</Text>
+              <Text weight="bold" size="large">
+                Índice de estabilidad laboral 900 P
+              </Text>
               <Stack>
                 <Text appearance="primary" weight="bold">
                   {estabilidadLaboral}
@@ -130,7 +136,9 @@ export const ScoreModal = (props: ScoreModalProps) => {
             </Stack>
 
             <Stack justifyContent="space-between">
-              <Text weight="bold">Estado civil</Text>
+              <Text weight="bold" size="large">
+                Estado civil
+              </Text>
               <Stack>
                 <Text appearance="primary" weight="bold">
                   {EstadoCivil}
@@ -140,7 +148,9 @@ export const ScoreModal = (props: ScoreModalProps) => {
             </Stack>
 
             <Stack justifyContent="space-between">
-              <Text weight="bold">Actividad económica</Text>
+              <Text weight="bold" size="large">
+                Actividad económica
+              </Text>
               <Stack>
                 <Text appearance="primary" weight="bold">
                   {actividadEconomica}
@@ -153,11 +163,15 @@ export const ScoreModal = (props: ScoreModalProps) => {
           <StyledDivider />
 
           <Stack justifyContent="space-between">
-            <Text weight="bold">No. de veces el ingreso para este scoring</Text>
+            <Text weight="bold" size="large">
+              No. de veces el ingreso para este scoring
+            </Text>
             <Text>5</Text>
           </Stack>
           <Stack justifyContent="space-between">
-            <Text weight="bold">Ingresos mensuales</Text>
+            <Text weight="bold" size="large">
+              Ingresos mensuales
+            </Text>
             <Stack>
               <Text appearance="success">$</Text>
               <Text>{currencyFormat(ingresoMensual, false)}</Text>
