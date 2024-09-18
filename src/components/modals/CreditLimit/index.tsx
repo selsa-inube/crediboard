@@ -9,6 +9,7 @@ import { Icon } from "@inubekit/icon";
 
 import { currencyFormat } from "@utils/formatData/currency";
 
+import { creditLimitTexts } from "./creditLimitConfig";
 import {
   StyledContainerClose,
   StyledModal,
@@ -61,7 +62,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
           </Text>
           <StyledContainerClose onClick={handleClose}>
             <Stack alignItems="center" gap="5px">
-              <Text>Cerrar</Text>
+              <Text>{creditLimitTexts.close}</Text>
               <Icon
                 icon={<MdClear />}
                 size="24px"
@@ -77,7 +78,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             <li>
               <Stack padding="10px 0px" justifyContent="space-between">
                 <Text appearance="dark" size="large" weight="bold">
-                  Cupo máximo según capacidad de pago
+                  {creditLimitTexts.maxPaymentCapacity}
                 </Text>
 
                 <Stack alignItems="center">
@@ -100,7 +101,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             <li>
               <Stack padding="10px 0px" justifyContent="space-between">
                 <Text appearance="dark" size="large" weight="bold">
-                  Cupo máximo por reciprocidad
+                  {creditLimitTexts.maxReciprocity}
                 </Text>
 
                 <Stack alignItems="center">
@@ -123,7 +124,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             <li>
               <Stack padding="10px 0px" justifyContent="space-between">
                 <Text appearance="dark" size="large" weight="bold">
-                  Endeudamiento máximo x FRC
+                  {creditLimitTexts.maxDebtFRC}
                 </Text>
 
                 <Stack alignItems="center">
@@ -146,7 +147,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             <li>
               <Stack padding="10px 0px" justifyContent="space-between">
                 <Text appearance="dark" size="large" weight="bold">
-                  Cupo individual asignado
+                  {creditLimitTexts.assignedLimit}
                 </Text>
                 <Stack>
                   <Text appearance="success">$</Text>
@@ -168,27 +169,30 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               spacing="none"
             />
             <Text margin="5px" size="small">
-              El menor de los anteriores es su cupo
-              <strong> máximo </strong> utilizable.
+              {creditLimitTexts.maxUsableLimitNote}
             </Text>
           </Stack>
 
           <Stack padding="10px 0px" justifyContent="space-between">
-            <Text weight="bold">Cupo máximo utilizable</Text>
+            <Text weight="bold">{creditLimitTexts.maxUsableLimit}</Text>
             <Stack>
               <Text appearance="success">$</Text>
               <Text>{currencyFormat(maxUsableLimit, false)}</Text>
             </Stack>
           </Stack>
           <Stack padding="10px 0px" justifyContent="space-between">
-            <Text size="large" appearance="gray" weight="bold">(-) Cartera vigente</Text>
+            <Text size="large" appearance="gray" weight="bold">
+              {creditLimitTexts.currentPortfolio}
+            </Text>
             <Stack>
               <Text appearance="success">$</Text>
               <Text>{currencyFormat(currentPortfolio, false)}</Text>
             </Stack>
           </Stack>
           <Stack padding="10px 0px" justifyContent="space-between">
-            <Text weight="bold">Cupo disponible sin garantía</Text>
+            <Text weight="bold">
+              {creditLimitTexts.availableLimitWithoutGuarantee}
+            </Text>
             <Stack>
               <Text appearance="success">$</Text>
               <Text weight="bold">
@@ -205,7 +209,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             appearance="primary"
             fullwidth={isMobile}
           >
-            cerrar
+            {creditLimitTexts.closeButton}
           </Button>
         </Stack>
       </StyledModal>
