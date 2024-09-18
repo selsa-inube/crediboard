@@ -1,6 +1,13 @@
+import {
+  MdOutlinePayments,
+  MdOutlineMonetizationOn,
+  MdOutlineBalance,
+  MdOutlineAccountBalanceWallet,
+} from "react-icons/md";
 import { Text, Stack } from "@inube/design-system";
 
 import { TableBoard } from "@components/data/TableBoard";
+import { Schedule } from "@services/enums";
 
 export const titlesCommercialManagementAccordion = [
   {
@@ -261,5 +268,120 @@ export const entriesCommercialManagement = [
     obligacion: <Text type="label">Valor de la Couta</Text>,
     "Compra primera Vivienda": "$1.120.000",
     "Libre Inversion": "$200.000",
+  },
+];
+
+export const entriesCommercialManagementCard = [
+  {
+    lineOfCredit: "Crédito Vacacional",
+    paymentMethod: "Nómina mensual éxito Bancolombia",
+    loanAmount: 100000000,
+    interestRate: 123456789012,
+    termMonths: 48,
+    periodicFee: 1000,
+    schedule: Schedule.Biweekly,
+  },
+  {
+    lineOfCredit: "Crédito Vehículo",
+    paymentMethod: "Nómina mensual éxito",
+    loanAmount: 100000000,
+    interestRate: 123456789012,
+    termMonths: 48,
+    periodicFee: 1000,
+    schedule: Schedule.Biweekly,
+  },
+  {
+    lineOfCredit: "Crédito Libre Inversión",
+    paymentMethod: "Nómina mensual éxito Bancolombia",
+    loanAmount: 100000000,
+    interestRate: 123456789012,
+    termMonths: 48,
+    periodicFee: 1000,
+    schedule: Schedule.Biweekly,
+  },
+  {
+    lineOfCredit: "Crédito Educativo",
+    paymentMethod: "Nómina mensual éxito",
+    loanAmount: 100000000,
+    interestRate: 123456789012,
+    termMonths: 48,
+    periodicFee: 1000,
+    schedule: Schedule.Biweekly,
+  },
+  {
+    lineOfCredit: "Crédito Rotativo",
+    paymentMethod: "Nómina mensual éxito Bancolombia",
+    loanAmount: 100000000,
+    interestRate: 123456789012,
+    termMonths: 48,
+    periodicFee: 1000,
+    schedule: Schedule.Biweekly,
+  },
+  {
+    lineOfCredit: "Crédito Libre Inversión",
+    paymentMethod: "Nómina mensual éxito",
+    loanAmount: 100000000,
+    interestRate: 123456789012,
+    termMonths: 48,
+    periodicFee: 1000,
+    schedule: Schedule.Biweekly,
+  },
+  {
+    lineOfCredit: "Crédito Educativo",
+    paymentMethod: "Nómina mensual éxito Bancolombia",
+    loanAmount: 100000000,
+    interestRate: 123456789012,
+    termMonths: 48,
+    periodicFee: 1000,
+    schedule: Schedule.Biweekly,
+  },
+  {
+    lineOfCredit: "Crédito Rotativo",
+    paymentMethod: "Nómina mensual éxito",
+    loanAmount: 100000000,
+    interestRate: 123456789012,
+    termMonths: 48,
+    periodicFee: 1000,
+    schedule: Schedule.Biweekly,
+  },
+];
+
+export const SummaryProspectCredit = [
+  {
+    item: [{ title: "Obligaciones recogidas", amount: "5000000" }],
+    iconEdit: true,
+  },
+  {
+    item: [
+      { title: "Monto prestamo", amount: "16000000" },
+      { title: "Obligaciones recogidas", amount: "5000000" },
+      { title: "Gastos decontables", amount: "1000000" },
+      { title: "Neto a girar", amount: "10000000" },
+      { title: "Cuota ordinaria", amount: "1200000" },
+    ],
+    iconEdit: false,
+  },
+];
+
+export const menuOptions = [
+  {
+    title: "Origen de cupo",
+    onClik: () => {},
+    icon: <MdOutlineBalance />,
+  },
+  {
+    title: "Fuentes de ingreso",
+    onClik: () => {},
+    icon: <MdOutlineAccountBalanceWallet />,
+  },
+  {
+    title: "Obligaciones financieras",
+    onClik: () => {},
+    icon: <MdOutlineMonetizationOn />,
+  },
+  {
+    title: "Pagos extras",
+    onClik: () => {},
+    icon: <MdOutlinePayments />,
   },
 ];
