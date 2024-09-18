@@ -1,13 +1,12 @@
 import { isValidElement } from "react";
 import {
-  MdOutlineSend,
+  MdOutlineShare,
   MdOutlineRemoveRedEye,
   MdCheck,
   MdRemove,
   MdClose,
 } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
-
 import { IEntries } from "@components/data/TableBoard/types";
 
 const entrySelection = (data: IEntries) => {
@@ -47,7 +46,7 @@ export const actionsFinanacialReporting = [
         cursorHover
         size="22px"
         variant="none"
-        icon={<MdOutlineSend />}
+        icon={<MdOutlineShare  />}
         onClick={() => entrySelection(data)}
         spacing="none"
       />
@@ -90,7 +89,7 @@ interface TagElement {
 }
 
 export const infoItems = [
-  { icon: <MdOutlineSend />, text: "Reenviar", appearance: "primary" },
+  { icon: <MdOutlineShare  />, text: "Reenviar", appearance: "primary" },
   { icon: <MdOutlineRemoveRedEye />, text: "Ver Imagen", appearance: "primary" },
 ];
 
@@ -129,7 +128,7 @@ export const actionMobile = [
         size="22px"
         spacing="none"
         cursorHover
-        icon={<MdOutlineSend />}
+        icon={<MdOutlineShare  />}
         onClick={() => entrySelection(data)}
       />
     ),
@@ -169,12 +168,16 @@ export const getTableBoardActions = (
     id: action.id,
     actionName: action.actionName,
     label: "Action Label",
-    content: (data: IEntries) =>
-      action.id === "Reenviar" ? (
-        <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
-      ) : (
-        action.content(data)
-      ),
+    content: (data: IEntries) => (
+      <Icon
+        {...action.content(data).props}
+        onClick={() => {
+          if (action.id === "Reenviar") {
+            entrySelection(data);
+          }
+        }}
+      />
+    ),
   }));
 
 export const getTableBoardActionMobile = (
@@ -184,10 +187,14 @@ export const getTableBoardActionMobile = (
     id: action.id,
     actionName: action.actionName,
     label: "Mobile Action Label",
-    content: (data: IEntries) =>
-      action.id === "Reenviar" ? (
-        <div onClick={() => entrySelection(data)}>{action.content(data)}</div>
-      ) : (
-        action.content(data)
-      ),
+    content: (data: IEntries) => (
+      <Icon
+        {...action.content(data).props}
+        onClick={() => {
+          if (action.id === "Reenviar") {
+            entrySelection(data);
+          }
+        }}
+      />
+    ),
   }));

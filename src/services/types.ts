@@ -1,3 +1,4 @@
+import { Schedule, GracePeriodType, BorrowerProperties } from "@services/enums";
 interface Requests {
   k_Prospe: number;
   n_Prospe: string;
@@ -31,9 +32,10 @@ interface IToDo {
   task_to_be_done: string;
   account_manager_name: string;
   analyst_name: string;
-  decisions: { id: string; label: string }[];
+  decisions: { id: string; label: string; value: string }[];
 }
-interface IRiskScoring {
+
+interface IKeyRiskScoring {
   total_score: number;
   minimum_score: number;
   seniority: number;
@@ -46,6 +48,11 @@ interface IRiskScoring {
   marital_status_score: number;
   economic_activity: string;
   economic_activity_score: number;
+}
+
+interface IRiskScoring {
+  credit_request_id: string;
+  risk_scoring: IKeyRiskScoring;
 }
 
 type DmEtapasPrs =
@@ -99,7 +106,7 @@ interface TraceType {
   credit_request_id: string;
   use_case: string;
   user_id: string;
-  execution_date: string;
+  execution_date: string | number;
   justification?: string;
   decision_taken_by_user?: string;
   trace_type?: string;
@@ -130,6 +137,33 @@ export interface payroll_discount_authorization {
   obligation_unique_code: string;
   document_unique_code: string;
   image_unique_code: string;
+}
+
+export interface Ipayment_capacity {
+  credit_request_id: string;
+  payment_capacity: {
+    available_value: number;
+    base_income: number;
+    percentage_used: number;
+  };
+}
+export interface Icredit_behavior {
+  credit_request_id: string;
+  credit_behavior: {
+    core_risk_score: number;
+    central_risk_score_date: number;
+    number_of_internal_arrears: number;
+    maximum_number_of_installments_in_arrears: number;
+  };
+}
+
+export interface Iuncovered_wallet {
+  credit_request_id: string;
+  uncovered_wallet: {
+    overdraft_factor: number;
+    discovered_value: number;
+    reciprocity: number;
+  };
 }
 
 export interface promissory_note {
@@ -184,4 +218,123 @@ export interface credit {
 export interface IErrorService {
   id: string;
   message: string | Error;
+}
+
+interface Prospect {
+  credit_products: CreditProduct[];
+}
+
+export interface CreditProduct {
+  loan_amount: number;
+  loan_term: number;
+  insurance_rate: number;
+  insurance_type: string;
+  line_of_credit_id: string;
+  rate_type: string;
+  interest_rate: number;
+  quota: number;
+  payment_channel_for_principal: string;
+  first_payment_cycle_for_principal: string;
+  payment_channel_for_interest: string;
+  first_payment_cycle_for_interest: number;
+}
+
+export interface ProspectsResponse {
+  credit_request_id: string;
+  prospect: Prospect;
+}
+
+export interface IProspect {
+  prospect_id: string;
+  public_code: string;
+  state: string;
+  loan_amount: number;
+  installment_limit: number;
+  term_limit: number;
+  timestamp: string;
+  selected_payment_schedule: Schedule;
+  selected_rate_type: string;
+  payment_method: string;
+  grace_period: number;
+  grace_period_type: (typeof GracePeriodType)[keyof typeof GracePeriodType];
+  borrower: IBorrower[];
+  consolidated_credit: IConsolidatedCredit[];
+  credit_product: ICreditProductPropesct[];
+  outlay: IOutlay[];
+}
+
+export interface IConsolidatedCredit {
+  consolidated_amount: number;
+  consolidated_amount_type: string;
+  estimated_date_of_consolidation: string;
+  credit_id: string;
+  line_of_credit_description: string;
+  borrower_id: string;
+  consolidated_credit_schema: string;
+}
+
+export interface IExtraordinaryInstallment {
+  installment_amount: number;
+  installment_date: string;
+  payment_channel_code: string;
+}
+
+export interface ICreditProductPropesct {
+  abbreviated_name: string;
+  credit_product_code: string;
+  loan_amount: number;
+  line_of_credit_code: string;
+  line_of_credit_abbreviated_name: string;
+  interest_rate: number;
+  fixed_points: number;
+  loan_term: number;
+  schedule: Schedule;
+  ordinary_installment_for_principal: IOrdinaryInstallmentsForPrincipal;
+  ordinary_installment_for_interest: IInstallmentsForInterest;
+  extraordinary_installment: IExtraordinaryInstallment;
+  acquired_cash_flow: IAcquiredCashFlow;
+}
+
+export interface IBorrowerProperty {
+  property_name: (typeof BorrowerProperties)[keyof typeof BorrowerProperties];
+  property_value: string;
+}
+
+export interface IOutlay {
+  abreviated_name: string;
+  date: string;
+  amount: number;
+}
+
+export interface IBorrower {
+  borrower_name: string;
+  borrower_type: string;
+  borrower_identification_type: string;
+  borrower_identification_number: string;
+  borrower_property: IBorrowerProperty[];
+}
+
+export interface IOrdinaryInstallmentsForPrincipal {
+  term: number;
+  number_of_installments: number;
+  schedule: Schedule;
+  installment_amount_for_capital: number;
+  installment_amount: number;
+  gradient_rate: number;
+  gradient_value: number;
+  gradient_schedule: string;
+  first_gradient_date: string;
+  payment_channel_code: string;
+}
+
+export interface IInstallmentsForInterest {
+  schedule: Schedule;
+  payment_channel_code: string;
+}
+
+export interface IAcquiredCashFlow {
+  amount: string;
+  date: string;
+  payment_channel_unique_code: string;
+  flow_number: number;
 }

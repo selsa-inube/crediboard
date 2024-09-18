@@ -12,21 +12,15 @@ import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
-import { ContainerSections } from "@components/layout/ContainerSections";
 import { ErrorAlert } from "@components/ErrorAlert";
-import { ListModal } from "@components/modals/ListModal";
+import { ContainerSections } from "@components/layout/ContainerSections";
 import { StockTray } from "@components/layout/ContainerSections/StockTray";
+import { ListModal } from "@components/modals/ListModal";
+import { MobileMenu } from "@components/modals/MobileMenu";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
-import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
-import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
-import { getById, getDataById } from "@mocks/utils/dataMock.service";
-import {
-  type Idocument,
-  Ierror_issued,
-  IErrorService,
-  Requests,
-} from "@services/types";
+import { getById } from "@mocks/utils/dataMock.service";
+import { Ierror_issued, IErrorService, Requests } from "@services/types";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
@@ -45,7 +39,7 @@ import { dataRequirements } from "./Requirements/config";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
-import { MobileMenu } from "@src/components/modals/MobileMenu";
+import { CardCommercialManagement } from "./CommercialManagement/CardCommercialManagement";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -121,28 +115,22 @@ export const FinancialReporting = () => {
 
   useEffect(() => {
     Promise.allSettled([
-      getById("k_Prospe", "requests", id!),
-      getDataById<Idocument[]>("document", "credit_request_id", id!),
-      getDataById<Ierror_issued[]>("error_issued", "credit_request_id", id!),
+      getById("requests", "k_Prospe", id!),
+      getById("document", "credit_request_id", id!, true),
+      getById("error_issued", "credit_request_id", id!, true),
     ]).then(([requirement, documents, error_issue]) => {
       if (requirement.status === "fulfilled") {
         setData(requirement.value as Requests);
       }
-      if (
-        documents.status === "fulfilled" &&
-        documents.value instanceof Array
-      ) {
+      if (documents.status === "fulfilled" && Array.isArray(documents.value)) {
         const documentsUser = documents.value.map((dataListDocument) => ({
           id: dataListDocument.document_id,
           name: dataListDocument.abbreviated_name,
         }));
         setDocument(documentsUser);
       }
-      if (
-        error_issue.status === "fulfilled" &&
-        !(error_issue.value instanceof Error)
-      ) {
-        setError(error_issue.value!);
+      if (error_issue.status === "fulfilled") {
+        setError(error_issue.value as Ierror_issued[]);
       }
     });
   }, [id]);
@@ -175,15 +163,13 @@ export const FinancialReporting = () => {
     };
   }, []);
 
-  const [isPrint, setIsPrint] = useState(false);
-
   const handleGeneratePDF = () => {
-    setIsPrint(true);
     setTimeout(() => {
       generatePDF(
         dataCommercialManagementRef,
         "Gestión Comercial",
-        "Gestión Comercial"
+        "Gestión Comercial",
+        { top: 10, bottom: 10, left: 10, right: 10 }
       );
     }, 1000);
   };
@@ -227,7 +213,7 @@ export const FinancialReporting = () => {
 
   return (
     <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
-      {errors.length > 0 && (
+      {errors && (
         <Stack justifyContent="center" alignContent="center">
           <StyledToast $isMobile={isMobile}>
             {errors.map((error) => (
@@ -268,9 +254,8 @@ export const FinancialReporting = () => {
                   print={handleGeneratePDF}
                   data={data}
                   children={
-                    <DataCommercialManagement
-                      dataAccordeon={dataAccordeon}
-                      isOpen={isPrint}
+                    <CardCommercialManagement
+                      id={id!}
                       dataRef={dataCommercialManagementRef}
                     />
                   }
@@ -283,7 +268,7 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                {<ToDo icon={infoIcon} isMobile={isMobile}  id={id!} user={user!.nickname!}/>}
+                {<ToDo icon={infoIcon} isMobile={isMobile} id={id!} user={user!.nickname!}/>}
               </Stack>
               <Stack direction="column">
                 {<Approvals user={id!} isMobile={isMobile} />}
