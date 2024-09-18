@@ -9,16 +9,11 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
-import { get, getById } from "@mocks/utils/dataMock.service";
+import { getById } from "@mocks/utils/dataMock.service";
 import { Requests, IRiskScoring } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
-import {
-  getMaritalStatusInSpanish,
-  getEconomicActivityInSpanish,
-} from "@utils/mappingData/mappings";
-import { MaritalStatus, EconomicActivity } from "@services/enums";
 
 import { CreditBehavior } from "./CreditBehaviorCard";
 import { Guarantees } from "./Guarantees";
@@ -37,7 +32,20 @@ const margins = {
 
 export const CreditProfileInfo = () => {
   const [requests, setRequests] = useState({} as Requests);
-  const [riskScoring, setRiskScoring] = useState<IRiskScoring[] | null>(null);
+  const [riskScoring, setRiskScoring] = useState<IRiskScoring["risk_scoring"]>({
+    total_score: 0,
+    minimum_score: 0,
+    seniority: 0,
+    seniority_score: 0,
+    risk_center: 0,
+    risk_center_score: 0,
+    job_stability_index: 0,
+    job_stability_index_score: 0,
+    marital_status: "",
+    marital_status_score: 0,
+    economic_activity: "",
+    economic_activity_score: 0,
+  });
   const [credit_profileInfo, setCredit_profileInfo] = useState({
     company_seniority: 0,
     labor_stability_index: 0,
@@ -65,6 +73,8 @@ export const CreditProfileInfo = () => {
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const dataPrint = useRef<HTMLDivElement>(null);
 
+  const [dataWereObtained, setWataWereObtained] = useState(false);
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -72,71 +82,88 @@ export const CreditProfileInfo = () => {
     useMediaQueries(["(max-width: 1200px)", "(max-width: 751px)"]);
 
   useEffect(() => {
-    Promise.allSettled([
-      getById("requests", "k_Prospe", id!),
-      get("risk-scoring"),
-      getById("credit_profileInfo", "credit_request_id", id!, true),
-      getById("payment_capacity", "credit_request_id", id!, true),
-      getById("credit_behavior", "credit_request_id", id!, true),
-      getById("uncovered_wallet", "credit_request_id", id!, true),
-    ]).then((data) => {
-      const [
-        request,
-        riskScoring,
-        credit_profileInfo,
-        payment_capacity,
-        credit_behavior,
-        uncovered_wallet,
-      ] = data;
+    (async () => {
+      setLoading(true);
 
-      if (request.status === "fulfilled") {
-        setRequests(request.value as Requests);
-      }
+      try {
+        const [
+          request,
+          riskScoring,
+          credit_profileInfo,
+          payment_capacity,
+          credit_behavior,
+          uncovered_wallet,
+        ] = await Promise.allSettled([
+          getById("requests", "k_Prospe", id!),
+          getById<IRiskScoring>("risk-scoring", "credit_request_id", id!, true),
+          getById("credit_profileInfo", "credit_request_id", id!, true),
+          getById("payment_capacity", "credit_request_id", id!, true),
+          getById("credit_behavior", "credit_request_id", id!, true),
+          getById("uncovered_wallet", "credit_request_id", id!, true),
+        ]);
 
-      if (riskScoring.status === "fulfilled") {
-        setRiskScoring(riskScoring.value as IRiskScoring[]);
-      }
-
-      if (credit_profileInfo.status === "fulfilled") {
-        const creditData = credit_profileInfo.value;
-        if (Array.isArray(creditData) && creditData.length > 0) {
-          setCredit_profileInfo((prevState) => ({
-            ...prevState,
-            ...creditData[0].labor_stability,
-          }));
+        if (request.status === "fulfilled") {
+          setRequests(request.value as Requests);
         }
-      }
-      if (payment_capacity.status === "fulfilled") {
-        const data = payment_capacity.value;
-        if (Array.isArray(data) && data.length > 0) {
-          setPayment_capacity((prevState) => ({
-            ...prevState,
-            ...data[0].payment_capacity,
-          }));
-        }
-      }
 
-      if (credit_behavior.status === "fulfilled") {
-        const data = credit_behavior.value;
-        if (Array.isArray(data) && data.length > 0) {
-          setCredit_behavior((prevState) => ({
-            ...prevState,
-            ...data[0].credit_behavior,
-          }));
-        }
-      }
-      if (uncovered_wallet.status === "fulfilled") {
-        const data = uncovered_wallet.value;
-        if (Array.isArray(data) && data.length > 0) {
-          setUncovered_wallet((prevState) => ({
-            ...prevState,
-            ...data[0]?.uncovered_wallet,
-          }));
-        }
-      }
+        if (
+          riskScoring.status === "fulfilled" &&
+          Array.isArray(riskScoring.value)
+        ) {
+          const [riskScoringData] = riskScoring.value;
 
-      setLoading(false);
-    });
+          setRiskScoring((prev) => ({
+            ...prev,
+            ...riskScoringData?.risk_scoring,
+          }));
+          setWataWereObtained(false);
+        } else {
+          setWataWereObtained(true);
+        }
+
+        if (credit_profileInfo.status === "fulfilled") {
+          const creditData = credit_profileInfo.value;
+          if (Array.isArray(creditData) && creditData.length > 0) {
+            setCredit_profileInfo((prevState) => ({
+              ...prevState,
+              ...creditData[0].labor_stability,
+            }));
+          }
+        }
+        if (payment_capacity.status === "fulfilled") {
+          const data = payment_capacity.value;
+          if (Array.isArray(data) && data.length > 0) {
+            setPayment_capacity((prevState) => ({
+              ...prevState,
+              ...data[0].payment_capacity,
+            }));
+          }
+        }
+
+        if (credit_behavior.status === "fulfilled") {
+          const data = credit_behavior.value;
+          if (Array.isArray(data) && data.length > 0) {
+            setCredit_behavior((prevState) => ({
+              ...prevState,
+              ...data[0].credit_behavior,
+            }));
+          }
+        }
+        if (uncovered_wallet.status === "fulfilled") {
+          const data = uncovered_wallet.value;
+          if (Array.isArray(data) && data.length > 0) {
+            setUncovered_wallet((prevState) => ({
+              ...prevState,
+              ...data[0]?.uncovered_wallet,
+            }));
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, [id]);
 
   const handlePrint = () => {
@@ -252,41 +279,21 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
         />
         <RiskScoring
-          totalScore={riskScoring ? riskScoring[0].total_score : 0}
-          minimumScore={riskScoring ? riskScoring[0].minimum_score : 0}
-          seniority={riskScoring ? riskScoring[0].seniority : 0}
-          seniorityScore={riskScoring ? riskScoring[0].seniority_score : 0}
-          riskCenter={riskScoring ? riskScoring[0].risk_center : 0}
-          riskCenterScore={riskScoring ? riskScoring[0].risk_center_score : 0}
-          jobStabilityIndex={
-            riskScoring ? riskScoring[0].job_stability_index : 0
-          }
-          jobStabilityIndexScore={
-            riskScoring ? riskScoring[0].job_stability_index_score : 0
-          }
-          maritalStatusScore={
-            riskScoring ? riskScoring[0].marital_status_score : 0
-          }
-          economicActivityScore={
-            riskScoring ? riskScoring[0].economic_activity_score : 0
-          }
-          maritalStatus={
-            riskScoring
-              ? getMaritalStatusInSpanish(
-                  riskScoring[0].marital_status as keyof typeof MaritalStatus
-                )
-              : ""
-          }
-          economicActivity={
-            riskScoring
-              ? getEconomicActivityInSpanish(
-                  riskScoring[0]
-                    .economic_activity as keyof typeof EconomicActivity
-                )
-              : ""
-          }
+          totalScore={riskScoring.total_score}
+          minimumScore={riskScoring.minimum_score}
+          seniority={riskScoring.seniority}
+          seniorityScore={riskScoring.seniority_score}
+          riskCenter={riskScoring.risk_center}
+          riskCenterScore={riskScoring.risk_center_score}
+          jobStabilityIndex={riskScoring.job_stability_index}
+          jobStabilityIndexScore={riskScoring.job_stability_index_score}
+          maritalStatusScore={riskScoring.marital_status_score}
+          economicActivityScore={riskScoring.economic_activity_score}
+          maritalStatus={riskScoring.marital_status}
+          economicActivity={riskScoring.economic_activity}
           isLoading={loading}
           isMobile={isMobile}
+          dataWereObtained={dataWereObtained}
         />
         <Guarantees
           guaranteesRequired="Ninguna garantía real, o fianza o codeudor."

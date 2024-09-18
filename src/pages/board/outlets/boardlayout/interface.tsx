@@ -1,14 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
-import {
-  Stack,
-  Textfield,
-  Text,
-  Switch,
-  Icon,
-  inube,
-} from "@inube/design-system";
+import { Stack, Textfield, Text, Icon, inube } from "@inube/design-system";
+import { Toggle } from "@inubekit/toggle";
 import { Divider } from "@inubekit/divider";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
@@ -16,14 +10,16 @@ import { BoardSection } from "@components/layout/BoardSection";
 import { PinnedRequest, Requests } from "@services/types";
 import { Selectcheck } from "@components/inputs/SelectCheck";
 import { IOptionItemCheckedProps } from "@components/inputs/SelectCheck/OptionItem";
+import { ErrorAlert } from "@components/ErrorAlert";
 
 import {
   StyledInputsContainer,
   StyledBoardContainer,
   StyledContainerToCenter,
+  StyledError,
   StyledSearch,
 } from "./styles";
-import { boardColumns } from "./config/board";
+import { boardColumns, selectConfig } from "./config/board";
 
 interface BoardLayoutProps {
   isMobile: boolean;
@@ -38,6 +34,7 @@ interface BoardLayoutProps {
   handleShowPinnedOnly: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
+  errorLoadingPins: boolean;
 }
 
 function BoardLayoutUI(props: BoardLayoutProps) {
@@ -54,8 +51,11 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     handleShowPinnedOnly,
     handleSearchRequestsValue,
     onOrientationChange,
+    errorLoadingPins,
   } = props;
 
+  const selectProps = selectConfig(selectOptions, handleSelectCheckChange);
+  const [showErrorAlert, setShowErrorAlert] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const stackRef = useRef<HTMLDivElement>(null);
 
@@ -100,6 +100,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           sectionInformation={filteredRequests}
           pinnedRequests={pinnedRequests}
           handlePinRequest={handlePinRequest}
+          errorLoadingPins={errorLoadingPins}
         />
       );
     });
@@ -111,6 +112,14 @@ function BoardLayoutUI(props: BoardLayoutProps) {
         direction="column"
         width={isMobile ? "-webkit-fill-available" : "min(100%,1500px)"}
       >
+        {errorLoadingPins && showErrorAlert && (
+          <StyledError $isMobile={isMobile}>
+            <ErrorAlert
+              message="Error: No se pudo cargar el estado de los anclados."
+              onClose={() => setShowErrorAlert(false)}
+            />
+          </StyledError>
+        )}
         <StyledInputsContainer $isMobile={isMobile}>
           <Stack
             justifyContent="space-between"
@@ -145,12 +154,13 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                   appearance="dark"
                   size="24px"
                 />
-                <Switch
+                <Toggle
                   id="SeePinned"
                   name="SeePinned"
                   size="large"
                   checked={showPinnedOnly}
                   onChange={handleShowPinnedOnly}
+                  disabled={errorLoadingPins}
                 />
               </Stack>
             )}
@@ -163,17 +173,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
             margin={isMobile ? "s200 s0" : "auto"}
           >
             <Stack width={isMobile ? "100%" : "500px"}>
-              <Selectcheck
-                label="Filtrado por"
-                id="FilterRequests"
-                name="FilterRequests"
-                placeholder="Seleccione una opción"
-                options={selectOptions}
-                onChangeCheck={handleSelectCheckChange}
-                value=""
-                onChange={() => {}}
-                fullwidth
-              />
+              <Selectcheck {...selectProps} />
             </Stack>
             <Stack gap={inube.spacing.s200}>
               {!isMobile && (
@@ -184,12 +184,13 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                     size="24px"
                   />
                   <Text type="label">Ver unicamente los anclados</Text>
-                  <Switch
+                  <Toggle
                     id="SeePinned"
                     name="SeePinned"
                     size="large"
                     checked={showPinnedOnly}
                     onChange={handleShowPinnedOnly}
+                    disabled={errorLoadingPins}
                   />
                 </Stack>
               )}
