@@ -2,7 +2,8 @@ import { Meta, StoryObj } from '@storybook/react';
 import { useState } from "react";
 import { Button } from "@inubekit/button";
 
-import { IncomeModal, IncomeModalProps } from '..';
+import { IncomeModal } from '..';
+import { IncomeModalProps } from '../interface';
 import { props } from './props';
 
 

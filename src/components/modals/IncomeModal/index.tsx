@@ -16,22 +16,11 @@ import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Textfield } from "@inubekit/textfield";
 import { SkeletonLine } from "@inubekit/skeleton";
-
 import { currencyFormat } from "@utils/formatData/currency";
+
 import { incomeModalConfig } from "./IcomeModalConfig";
 import { StyledContainerClose, StyledModal, StyledDivider } from "./styles";
-
-export interface IncomeModalProps {
-  title: string;
-  handleClose: () => void;
-  portalId?: string;
-  reportedIncomeSources: number;
-  reportedFinancialObligations: number;
-  subsistenceReserve: number;
-  availableForNewCommitments: number;
-  maxVacationTerm: number;
-  maxAmount: number;
-}
+import { IncomeModalProps } from "./interface";
 
 export const IncomeModal = (props: IncomeModalProps) => {
   const {
