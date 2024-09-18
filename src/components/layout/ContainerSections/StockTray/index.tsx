@@ -38,7 +38,7 @@ export const StockTray = (props: IStockTrayProps) => {
   const { isMobile, actionButtons, navigation } = props;
 
   return (
-    <Stack justifyContent="space-between" margin="10px 0px">
+    <Stack justifyContent="space-between" margin="16px 0px">
       {!isMobile ? (
         <Button
           spacing="compact"
