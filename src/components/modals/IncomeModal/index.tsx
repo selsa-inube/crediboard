@@ -15,11 +15,12 @@ import { Blanket } from "@inubekit/blanket";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Textfield } from "@inubekit/textfield";
+import { Divider } from "@inubekit/divider";
 import { SkeletonLine } from "@inubekit/skeleton";
 import { currencyFormat } from "@utils/formatData/currency";
 
 import { incomeModalConfig } from "./IcomeModalConfig";
-import { StyledContainerClose, StyledModal, StyledDivider } from "./styles";
+import { StyledContainerClose, StyledModal } from "./styles";
 import { IncomeModalProps } from "./interface";
 
 export const IncomeModal = (props: IncomeModalProps) => {
@@ -74,10 +75,10 @@ export const IncomeModal = (props: IncomeModalProps) => {
           </StyledContainerClose>
         </Stack>
 
-        <StyledDivider />
+        <Divider />
 
         {error ? (
-          <Stack direction="column" alignItems="center" padding="16px">
+          <Stack direction="column" alignItems="center">
             <Icon icon={<MdErrorOutline />} size="32px" appearance="danger" />
             <Text size="large" weight="bold" appearance="danger">
               {incomeModalConfig.error.title}
@@ -87,122 +88,132 @@ export const IncomeModal = (props: IncomeModalProps) => {
             </Text>
           </Stack>
         ) : (
-          <Stack direction="column">
-            <Stack padding="8px 0px" justifyContent="space-between">
-              <Text appearance="dark" size="large" weight="bold">
-                {incomeModalConfig.incomeSources.label}
-              </Text>
+          <Stack direction="column" gap="24px">
+            <Stack direction="column" gap="12px">
+              <Stack justifyContent="space-between" alignItems="center">
+                <Text appearance="dark" size="large" weight="bold" type="label">
+                  {incomeModalConfig.incomeSources.label}
+                </Text>
 
-              <Stack alignItems="center">
-                <Text appearance="success">$</Text>
-                {loading ? (
-                  <SkeletonLine width="70px" animated={true} />
-                ) : (
-                  <Text>{currencyFormat(reportedIncomeSources, false)}</Text>
-                )}
-                <Stack margin="0px 0px 0px 5px">
-                  <Icon
-                    appearance="primary"
-                    icon={<MdOutlineVisibility />}
-                    size="16px"
-                    spacing="none"
-                    cursorHover
-                    variant="filled"
-                    shape="circle"
-                  />
+                <Stack alignItems="center">
+                  <Text appearance="success">$</Text>
+                  {loading ? (
+                    <SkeletonLine width="70px" animated={true} />
+                  ) : (
+                    <Text type="body" size="medium">
+                      {currencyFormat(reportedIncomeSources, false)}
+                    </Text>
+                  )}
+                  <Stack margin="0px 0px 0px 6px">
+                    <Icon
+                      appearance="primary"
+                      icon={<MdOutlineVisibility />}
+                      size="12px"
+                      spacing="none"
+                      cursorHover
+                      variant="filled"
+                      shape="circle"
+                    />
+                  </Stack>
+                </Stack>
+              </Stack>
+
+              <Stack justifyContent="space-between">
+                <Text appearance="gray" size="large" weight="bold" type="label">
+                  {incomeModalConfig.financialObligations.label}
+                </Text>
+
+                <Stack alignItems="center">
+                  <Text appearance="success">$</Text>
+                  {loading ? (
+                    <SkeletonLine width="70px" animated={true} />
+                  ) : (
+                    <Text type="body" size="medium">
+                      {currencyFormat(reportedFinancialObligations, false)}
+                    </Text>
+                  )}
+                  <Stack margin="0px 0px 0px 6px">
+                    <Icon
+                      appearance="primary"
+                      icon={<MdOutlineVisibility />}
+                      size="12px"
+                      spacing="none"
+                      cursorHover
+                      variant="filled"
+                      shape="circle"
+                    />
+                  </Stack>
+                </Stack>
+              </Stack>
+
+              <Stack justifyContent="space-between">
+                <Text appearance="gray" size="large" weight="bold" type="label">
+                  {incomeModalConfig.subsistenceReserve.label}
+                </Text>
+
+                <Stack alignItems="center">
+                  <Text appearance="success">$</Text>
+                  {loading ? (
+                    <SkeletonLine width="70px" animated={true} />
+                  ) : (
+                    <Text type="body" size="medium">
+                      {currencyFormat(subsistenceReserve, false)}
+                    </Text>
+                  )}
                 </Stack>
               </Stack>
             </Stack>
 
-            <Stack padding="8px 0px" justifyContent="space-between">
-              <Text appearance="gray" size="large" weight="bold">
-                {incomeModalConfig.financialObligations.label}
-              </Text>
+            <Divider />
 
-              <Stack alignItems="center">
-                <Text appearance="success">$</Text>
-                {loading ? (
-                  <SkeletonLine width="70px" animated={true} />
-                ) : (
-                  <Text>
-                    {currencyFormat(reportedFinancialObligations, false)}
-                  </Text>
-                )}
-                <Stack margin="0px 0px 0px 5px">
-                  <Icon
-                    appearance="primary"
-                    icon={<MdOutlineVisibility />}
-                    size="16px"
-                    spacing="none"
-                    cursorHover
-                    variant="filled"
-                    shape="circle"
-                  />
+            <Stack  direction="column" gap="12px">
+              <Stack justifyContent="space-between">
+                <Text appearance="dark" size="large" weight="bold" type="label">
+                  {incomeModalConfig.availableCommitments.label}
+                </Text>
+
+                <Stack alignItems="center">
+                  <Text appearance="success">$</Text>
+                  {loading ? (
+                    <SkeletonLine width="70px" animated={true} />
+                  ) : (
+                    <Text type="body" size="medium">
+                      {currencyFormat(availableForNewCommitments, false)}
+                    </Text>
+                  )}
                 </Stack>
               </Stack>
-            </Stack>
 
-            <Stack padding="8px 0px" justifyContent="space-between">
-              <Text appearance="gray" size="large" weight="bold">
-                {incomeModalConfig.subsistenceReserve.label}
-              </Text>
+              <Stack justifyContent="space-between">
+                <Text appearance="dark" size="large" weight="bold" type="label">
+                  {incomeModalConfig.maxVacationTerm.label}
+                </Text>
 
-              <Stack alignItems="center">
-                <Text appearance="success">$</Text>
                 {loading ? (
                   <SkeletonLine width="70px" animated={true} />
                 ) : (
-                  <Text>{currencyFormat(subsistenceReserve, false)}</Text>
-                )}
-              </Stack>
-            </Stack>
-
-            <StyledDivider />
-
-            <Stack padding="8px 0px" justifyContent="space-between">
-              <Text appearance="dark" size="large" weight="bold">
-                {incomeModalConfig.availableCommitments.label}
-              </Text>
-
-              <Stack>
-                <Text appearance="success">$</Text>
-                {loading ? (
-                  <SkeletonLine width="70px" animated={true} />
-                ) : (
-                  <Text>
-                    {currencyFormat(availableForNewCommitments, false)}
+                  <Text type="body" size="medium">
+                    {maxVacationTerm}
                   </Text>
                 )}
               </Stack>
             </Stack>
 
-            <Stack padding="8px 0px" justifyContent="space-between">
-              <Text appearance="dark" size="large" weight="bold">
-                {incomeModalConfig.maxVacationTerm.label}
-              </Text>
+            <Divider />
 
-              {loading ? (
-                <SkeletonLine width="70px" animated={true} />
-              ) : (
-                <Text>{maxVacationTerm}</Text>
-              )}
-            </Stack>
-
-            <StyledDivider />
-
-            <Stack alignItems="center" margin="10px 0px">
+            <Stack alignItems="center">
               <Icon
                 appearance="primary"
                 icon={<MdInfoOutline />}
                 size="16px"
                 spacing="none"
               />
-              <Text margin="5px" size="small">
+              <Text margin="0px 5px" size="small" type="body">
                 {incomeModalConfig.infoText}
               </Text>
             </Stack>
 
-            <Stack padding="8px 0px" justifyContent="space-between">
+            <Stack justifyContent="space-between">
               <Textfield
                 value={
                   loading ? "loading..." : currencyFormat(maxAmount, false)
@@ -223,7 +234,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
           </Stack>
         )}
 
-        <StyledDivider />
+        <Divider />
 
         <Stack gap="8px" justifyContent="end">
           <Button

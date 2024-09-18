@@ -33,8 +33,8 @@ export const Default: Story = (args: IncomeModalProps) => {
   };
   Default.args = {
     title: 'Cupo máx. capacidad de pago',
-    reportedIncomeSources: 1500000,
-    reportedFinancialObligations: 500000,
+    reportedIncomeSources: 5000000,
+    reportedFinancialObligations: 1000000,
     subsistenceReserve: 200000,
     availableForNewCommitments: 800000,
     maxVacationTerm: 60,

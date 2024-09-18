@@ -5,23 +5,15 @@ interface IStyledModal {
   $smallScreen: boolean;
 }
 
-export const StyledDivider = styled.hr`
-  border: none;
-  border-top: 2px solid;
-  border-top-color: ${({ theme }) =>
-    theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
-  margin: 10px 0px;
-`;
-
 export const StyledModal = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
-  max-height: ${({ $smallScreen }) => ($smallScreen ? "700px" : "556px")};
+  max-height: ${({ $smallScreen }) => ($smallScreen ? "700px" : "563px")};
   width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "550px")};
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   padding: 24px;
-  gap: 8px;
+  gap: 24px;
   border-radius: 8px;
 `;
 
