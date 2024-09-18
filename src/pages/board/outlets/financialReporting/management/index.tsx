@@ -3,9 +3,8 @@ import { Icon } from "@inubekit/icon";
 import { Stack, inube } from "@inube/design-system";
 import { Textfield } from "@inubekit/textfield";
 
-import { TfiClip } from "react-icons/tfi";
 import localforage from "localforage";
-import { MdOutlineSend } from "react-icons/md";
+import { MdOutlineSend, MdAttachFile } from "react-icons/md";
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
 import { getById, updateActive } from "@mocks/utils/dataMock.service";
@@ -183,8 +182,9 @@ export const Management = (props: IManagementProps) => {
                   <Icon
                     appearance="primary"
                     cursorHover
-                    size="18px"
-                    icon={<TfiClip />}
+                    size="20px"
+                    icon={<MdAttachFile />
+                    }
                   />
                 }
               />
