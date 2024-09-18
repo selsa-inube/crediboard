@@ -27,7 +27,7 @@ import { ActionModal } from "./Actions";
 import { Details } from "./Detail";
 import { StyledContainerClose, StyledContainer } from "./styles";
 
-interface ReportCreditsModalProps {
+export interface ReportCreditsModalProps {
   handleClose: () => void;
   portalId?: string;
   totalBalance?: number;
@@ -115,9 +115,9 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
               <Tr>
                 {loading
                   ? visibleHeaders.map((_, index) => (
-                      <Th key={index}>
+                      <Td key={index} type="custom">
                         <SkeletonIcon />
-                      </Th>
+                      </Td>
                     ))
                   : visibleHeaders.map((header, index) => (
                       <Th
@@ -136,7 +136,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
                   return (
                     <Tr>
                       {visibleHeaders.map((_, index) => (
-                        <Td key={index}>
+                        <Td key={index} type="custom">
                           <SkeletonLine />
                         </Td>
                       ))}
@@ -145,7 +145,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
                 } else if (data.length === 0) {
                   return (
                     <Tr>
-                      <Td colSpan={visibleHeaders.length} align="center">
+                      <Td colSpan={visibleHeaders.length} align="center" type="custom">
                         <Text
                           size="large"
                           type="label"
