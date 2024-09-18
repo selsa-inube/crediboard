@@ -236,7 +236,7 @@ export const IncomeModal = (props: IncomeModalProps) => {
 
         <Divider />
 
-        <Stack gap="8px" justifyContent="end">
+        <Stack gap="20px" justifyContent="end">
           <Button
             onClick={handleClose}
             variant="outlined"
