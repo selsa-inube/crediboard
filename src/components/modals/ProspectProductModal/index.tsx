@@ -1,7 +1,7 @@
 import { Formik, FormikValues } from "formik";
 import * as Yup from "yup";
 import { createPortal } from "react-dom";
-import { MdAttachMoney, MdPercent, MdOutlineClose } from "react-icons/md";
+import { MdAttachMoney, MdPercent, MdClear } from "react-icons/md";
 import { Textfield } from "@inubekit/textfield";
 import { Select } from "@inubekit/select";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -18,7 +18,7 @@ import {
   validateCurrencyField,
 } from "@utils/formatData/currency";
 
-import { StyledModal } from "./styles";
+import { StyledModal, StyledContainerClose } from "./styles";
 import {
   creditLineOptions,
   paymentMethodOptions,
@@ -93,16 +93,17 @@ function EditProductModal(props: EditProductModalProps) {
                 <Text type="headline" size="small" appearance="dark">
                   {truncateTextToMaxLength(title, 25)}
                 </Text>
-                <Stack alignItems="center" gap="8px">
-                  <Text>Cerrar</Text>
-                  <Icon
-                    appearance="dark"
-                    icon={<MdOutlineClose />}
-                    onClick={onCloseModal}
-                    cursorHover={true}
-                    size="24px"
-                  />
-                </Stack>
+                <StyledContainerClose onClick={onCloseModal}>
+                  <Stack alignItems="center" gap="8px">
+                    <Text>Cerrar</Text>
+                    <Icon
+                      icon={<MdClear />}
+                      size="24px"
+                      cursorHover
+                      appearance="dark"
+                    />
+                  </Stack>
+                </StyledContainerClose>
               </Stack>
             </Stack>
 

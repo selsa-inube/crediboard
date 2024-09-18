@@ -18,4 +18,9 @@ const StyledModal = styled.div<IStyledModal>`
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
 `;
 
-export { StyledModal };
+const StyledContainerClose = styled.div`
+  cursor: pointer;
+`;
+
+
+export { StyledModal, StyledContainerClose};
