@@ -85,27 +85,6 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     setIsExpanded(Boolean(searchRequestValue));
   }, [searchRequestValue]);
 
-  const renderColumns = () => {
-    return boardColumns.map((column) => {
-      const filteredRequests = BoardRequests.filter(
-        (request) => request.i_Estprs === column.id
-      );
-
-      return (
-        <BoardSection
-          key={column.id}
-          sectionTitle={column.value}
-          sectionBackground={column.sectionBackground}
-          orientation={boardOrientation}
-          sectionInformation={filteredRequests}
-          pinnedRequests={pinnedRequests}
-          handlePinRequest={handlePinRequest}
-          errorLoadingPins={errorLoadingPins}
-        />
-      );
-    });
-  };
-
   return (
     <StyledContainerToCenter>
       <Stack
@@ -223,7 +202,20 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           $orientation={boardOrientation}
           $isMobile={isMobile}
         >
-          {renderColumns()}
+          {boardColumns.map((column) => (
+            <BoardSection
+              key={column.id}
+              sectionTitle={column.value}
+              sectionBackground={column.sectionBackground}
+              orientation={boardOrientation}
+              sectionInformation={BoardRequests.filter(
+                (request) => request.i_Estprs === column.id
+              )}
+              pinnedRequests={pinnedRequests}
+              handlePinRequest={handlePinRequest}
+              errorLoadingPins={errorLoadingPins}
+            />
+          ))}
         </StyledBoardContainer>
       </Stack>
     </StyledContainerToCenter>
