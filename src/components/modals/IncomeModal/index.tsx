@@ -18,11 +18,22 @@ import {
   IncomeCapital,
   MicroBusinesses,
   ProfessionalServices,
-} from "./config"
+} from "./config";
 import { StyledContainer, StyledContainerClose, StyledIncome } from "./styles";
 
 interface IncomeModalProps {
-  form: { deudor: string };
+  form: {
+    deudor: string;
+    salarioMensual?: number;
+    otrosPagos?: number;
+    mesadaPensional?: number;
+    serviciosProfesionales?: number;
+    arrendamientos?: number;
+    dividendos?: number;
+    rendimientosFinancieros?: number;
+    gananciaPromedio?: number;
+    total?: number;
+  };
   onChange: (name: string, newValue: string) => void;
   options: { id: string; label: string; value: string }[];
   portalId?: string;
@@ -31,6 +42,17 @@ interface IncomeModalProps {
 
 export function IncomeModal(props: IncomeModalProps) {
   const { form, onChange, options, portalId, handleClose } = props;
+
+  const handleFieldChange = (
+    fields: string[],
+    index: number,
+    newValue: string
+  ) => {
+    const field = fields[index];
+    if (field) {
+      onChange(field, newValue);
+    }
+  };
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
@@ -48,7 +70,7 @@ export function IncomeModal(props: IncomeModalProps) {
           direction="column"
           padding="24px"
           width={!isMobile ? "1050px" : "auto"}
-          height={!isMobile ? "950px" : "auto"}
+          height={!isMobile ? "auto" : "auto"}
           gap="24px"
         >
           <Stack justifyContent="space-between" alignItems="center">
@@ -69,16 +91,60 @@ export function IncomeModal(props: IncomeModalProps) {
           </Stack>
           <Divider />
           <StyledIncome>
-            <Stack direction="column" height={!isMobile ? "746px" : "auto"}>
+            <Stack direction="column" height={!isMobile ? "426px" : "auto"}>
               <Grid
                 templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
                 gap="24px"
                 autoRows="auto"
               >
-                <IncomeEmployment />
-                <ProfessionalServices />
-                <IncomeCapital />
-                <MicroBusinesses />
+                <IncomeEmployment
+                  values={[
+                    form.salarioMensual?.toString() ?? "",
+                    form.otrosPagos?.toString() ?? "",
+                    form.mesadaPensional?.toString() ?? "",
+                  ]}
+                  onChange={(index, newValue) =>
+                    handleFieldChange(
+                      ["salarioMensual", "otrosPagos", "mesadaPensional"],
+                      index,
+                      newValue
+                    )
+                  }
+                />
+                <ProfessionalServices
+                  values={[form.serviciosProfesionales?.toString() ?? ""]}
+                  onChange={(index, newValue) =>
+                    handleFieldChange(
+                      ["serviciosProfesionales"],
+                      index,
+                      newValue
+                    )
+                  }
+                />
+                <IncomeCapital
+                  values={[
+                    form.arrendamientos?.toString() ?? "",
+                    form.dividendos?.toString() ?? "",
+                    form.rendimientosFinancieros?.toString() ?? "",
+                  ]}
+                  onChange={(index, newValue) =>
+                    handleFieldChange(
+                      [
+                        "arrendamientos",
+                        "dividendos",
+                        "rendimientosFinancieros",
+                      ],
+                      index,
+                      newValue
+                    )
+                  }
+                />
+                <MicroBusinesses
+                  values={[form.gananciaPromedio?.toString() ?? ""]}
+                  onChange={(index, newValue) =>
+                    handleFieldChange(["gananciaPromedio"], index, newValue)
+                  }
+                />
               </Grid>
             </Stack>
           </StyledIncome>
@@ -117,6 +183,7 @@ export function IncomeModal(props: IncomeModalProps) {
                 label="Total ingresos mensuales"
                 placeholder="0"
                 size="compact"
+                value={form.total}
                 type="number"
                 fullwidth
               />

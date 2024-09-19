@@ -12,10 +12,12 @@ interface SourcesModalProps {
   title: string;
   labels: string[];
   placeholders: string[];
+  values: string[]; 
+  onChange: (index: number, newValue: string) => void; 
 }
 
 export function Sources(props: SourcesModalProps) {
-  const { title, labels, placeholders } = props;
+  const { title, labels, placeholders, values, onChange } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
@@ -38,7 +40,10 @@ export function Sources(props: SourcesModalProps) {
                 id={`field${index}`}
                 label={label}
                 placeholder={placeholders[index]}
+                value={values[index]} 
+                onChange={(e) => onChange(index, e.target.value)} 
                 size="compact"
+                type="number"
                 fullwidth
               />
             </StyledTextField>

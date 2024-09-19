@@ -1,6 +1,11 @@
 import { Sources } from "./Sources";
 
-function IncomeCapital() {
+interface IncomeProps {
+  values: string[];
+  onChange: (index: number, newValue: string) => void;
+}
+
+function IncomeCapital({ values, onChange }: IncomeProps) {
   return (
     <Sources
       title="Rentas de capital"
@@ -10,11 +15,13 @@ function IncomeCapital() {
         "Rendimientos financieros",
       ]}
       placeholders={["Arrendamiento/mes", "Utilidades/mes", "Rendimientos/mes"]}
+      values={values}
+      onChange={onChange}
     />
   );
 }
 
-function IncomeEmployment() {
+function IncomeEmployment({ values, onChange }: IncomeProps) {
   return (
     <Sources
       title="Rentas de trabajo"
@@ -28,26 +35,32 @@ function IncomeEmployment() {
         "Subsidios, utilidades, propinas, etc.",
         "Pensión/mes",
       ]}
+      values={values}
+      onChange={onChange}
     />
   );
 }
 
-function MicroBusinesses() {
+function MicroBusinesses({ values, onChange }: IncomeProps) {
   return (
     <Sources
       title="Micronegocios personales y otros"
       labels={["Ganancia promedio mensual"]}
       placeholders={["Ganancias/mes"]}
+      values={values}
+      onChange={onChange}
     />
   );
 }
 
-function ProfessionalServices() {
+function ProfessionalServices({ values, onChange }: IncomeProps) {
   return (
     <Sources
       title="Servicios profesionales"
       labels={["Honorarios mensuales"]}
       placeholders={["Honorarios/mes"]}
+      values={values}
+      onChange={onChange}
     />
   );
 }

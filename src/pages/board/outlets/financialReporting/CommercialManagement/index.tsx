@@ -54,10 +54,24 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showIncomeModal, setShowIncomeModal] = useState(false);
-  const [form, setForm] = useState({ deudor: "" });
+  const [form, setForm] = useState({
+    deudor: "",
+    salarioMensual: 2500000,
+    otrosPagos: 0,
+    mesadaPensional: 0,
+    serviciosProfesionales: 0,
+    arrendamientos: 600000,
+    dividendos: 0,
+    rendimientosFinancieros: 0,
+    gananciaPromedio: 200000,
+    total: 3300000,
+  });
 
   const onChanges = (name: string, newValue: string) => {
-    setForm({ ...form, [name]: newValue });
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: newValue,
+    }));
   };
 
   const { id } = useParams();
@@ -76,14 +90,14 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     },
     {
       title: "Fuentes de ingreso",
-      onClik: () => {},
+      onClik: () => {
+        setShowIncomeModal(true);
+      },
       icon: <MdOutlineAccountBalanceWallet />,
     },
     {
       title: "Obligaciones financieras",
-      onClik: () => {
-        setShowIncomeModal(true);
-      },
+      onClik: () => {},
       icon: <MdOutlineMonetizationOn />,
     },
     {
