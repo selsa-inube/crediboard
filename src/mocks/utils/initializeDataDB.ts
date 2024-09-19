@@ -7,7 +7,7 @@ import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
 import { mockStaff as mockStaffDefault } from "@mocks/staff/staff.mock";
 import { mockToDo } from "@mocks/financial-reporting/to-do/toDo.mock";
 import { mockRiskScoring } from "@mocks/credit-profile/risk-scoring/riskScoring.mock";
-import { mockProspectsResponse } from "@mocks/prospect/prospect.mock";
+import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 import { promissory_note } from "@mocks/promissoryNotes/promissory_note.mock";
 import { payroll_discount_authorization } from "@mocks/promissoryNotes/payroll_discount_authorization.mock";
 import { approval_by_credit_request_Mock } from "@mocks/financialReporting/Approvals.mock";
@@ -77,6 +77,6 @@ export function initializeDataDB(company: string) {
   intializedData("payment_capacity", payment_capacity);
   intializedData("uncovered_wallet", uncovered_wallet);
   intializedData("credit_behavior", credit_behavior);
-  intializedData("prospects", mockProspectsResponse);
+  intializedData("prospects", mockProspectCredit);
   intializedData("requirements", requirementsMock(company));
 }

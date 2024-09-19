@@ -19,8 +19,6 @@ import { ListModal } from "@components/modals/ListModal";
 import { MobileMenu } from "@components/modals/MobileMenu";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
-import { dataAccordeon } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
-import { DataCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/TableCommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
 import { Ierror_issued, IErrorService, Requests } from "@services/types";
 import { generatePDF } from "@utils/pdf/generetePDF";
@@ -40,6 +38,7 @@ import { Requirements } from "./Requirements";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
+import { CardCommercialManagement } from "./CommercialManagement/CardCommercialManagement";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -101,7 +100,6 @@ export const FinancialReporting = () => {
 
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
   const [errors, setError] = useState<Ierror_issued[]>([]);
-  const [upDateData, setUpDateData] = useState(false);
 
   const { id } = useParams();
   const { user } = useAuth0();
@@ -164,21 +162,15 @@ export const FinancialReporting = () => {
     };
   }, []);
 
-  const [isPrint, setIsPrint] = useState(false);
-
   const handleGeneratePDF = () => {
-    setIsPrint(true);
     setTimeout(() => {
       generatePDF(
         dataCommercialManagementRef,
         "Gestión Comercial",
-        "Gestión Comercial"
+        "Gestión Comercial",
+        { top: 10, bottom: 10, left: 10, right: 10 }
       );
     }, 1000);
-  };
-
-  const handleUpdateData = (state: boolean) => {
-    setUpDateData(state);
   };
 
   const handleActions = configHandleactions({
@@ -261,9 +253,8 @@ export const FinancialReporting = () => {
                   print={handleGeneratePDF}
                   data={data}
                   children={
-                    <DataCommercialManagement
-                      dataAccordeon={dataAccordeon}
-                      isOpen={isPrint}
+                    <CardCommercialManagement
+                      id={id!}
                       dataRef={dataCommercialManagementRef}
                     />
                   }
@@ -276,20 +267,19 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                <ToDo icon={infoIcon} isMobile={isMobile} />
+                <ToDo icon={infoIcon} isMobile={isMobile} id={id!} user={user!.nickname!}/>
               </Stack>
               <Stack direction="column">
                 <Approvals user={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
-                <Requirements isMobile={isMobile} id={id!} />
+                <Requirements isMobile={isMobile} id={id!} user={user!.nickname!} />
               </Stack>
               <Stack direction="column">
-                <Management
-                  id={id!}
-                  isMobile={isMobile}
-                  updateData={upDateData}
-                />
+                  <Management
+                    id={id!}
+                    isMobile={isMobile}
+                  />
               </Stack>
               <Stack direction="column">
                 <PromissoryNotes user={id!} isMobile={isMobile} />
@@ -335,7 +325,6 @@ export const FinancialReporting = () => {
               setFlagMessage,
               setShowFlagMessage,
               setShowRejectModal,
-              handleUpdateData
             )
           }
         />
@@ -349,10 +338,12 @@ export const FinancialReporting = () => {
           onCloseModal={() => setShowCancelModal(false)}
           onSubmit={(values) =>
             handleConfirmCancel(
+              id!,
+              user!.nickname!,
               values,
               setFlagMessage,
               setShowFlagMessage,
-              setShowCancelModal
+              setShowCancelModal,
             )
           }
         />

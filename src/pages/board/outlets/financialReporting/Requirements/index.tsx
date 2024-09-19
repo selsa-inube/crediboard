@@ -15,7 +15,9 @@ import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 import { getById } from "@mocks/utils/dataMock.service";
 import { CreditRequest } from "@services/types";
+import { addItem } from "@mocks/utils/dataMock.service";
 
+import { traceObserver } from "../config";
 import {
   dataButton,
   infoItems,
@@ -24,6 +26,7 @@ import {
 } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
+import { handleSuccess, handleError } from "./config";
 import { StyledMessageContainer } from "../styles";
 import { errorObserver } from "../config";
 
@@ -37,10 +40,11 @@ interface IRequirementsData {
 export interface IRequirementsProps {
   isMobile: boolean;
   id: string;
+  user: string;
 }
 
 export const Requirements = (props: IRequirementsProps) => {
-  const { isMobile, id } = props;
+  const { isMobile, id, user} = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [modalData, setModalData] = useState<{ date?: Date; details?: string }>(
     {}
@@ -48,6 +52,11 @@ export const Requirements = (props: IRequirementsProps) => {
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [showFlagMessage, setShowFlagMessage] = useState(false);
+  const [flagMessage, setFlagMessage] = useState({
+    title: "",
+    description: "",
+    appearance: "success" as "success" | "danger",
+  });
 
   const [dataRequirements, setDataRequirements] = useState<IRequirementsData[]>(
     []
@@ -92,9 +101,41 @@ export const Requirements = (props: IRequirementsProps) => {
     setShowSeeDetailsModal((prevState) => !prevState);
   };
 
-  const handleSubmitAprovals = () => {
-    toggleAprovalsModal();
-    setShowFlagMessage(true);
+  const handleSubmitAprovals = async (
+    id: string,
+    user: string,
+    formData: { textarea: string },
+    setFlagMessage: (message: {
+      title: string;
+      description: string;
+      appearance: "success" | "danger";
+    }) => void,
+    setShowFlagMessage: (state: boolean) => void,
+    setShowApprovalstModal: (state: boolean) => void
+  ) => {
+    const justificationText = formData.textarea;
+
+    if (justificationText && id) {
+      const trace = {
+        trace_value: "Document approved",
+        credit_request_id: id,
+        use_case: "document_upload",
+        user_id: user,
+        execution_date: new Date().toISOString(),
+        justification: justificationText,
+        decision_taken_by_user: "approved",
+        trace_type: "executed_task",
+        read_novelty: "",
+      };
+
+      try {
+        await addItem("trace", trace);
+        traceObserver.notify(trace);
+        handleSuccess(setFlagMessage, setShowFlagMessage, setShowApprovalstModal); 
+      } catch (error) {
+        handleError(error as Error, setFlagMessage, setShowFlagMessage, setShowApprovalstModal); 
+      }
+    }
   };
 
   const renderAddIcon = (entry: IEntries) => {
@@ -200,16 +241,25 @@ export const Requirements = (props: IRequirementsProps) => {
           inputPlaceholder="Observaciones para la aprobación o rechazo."
           isApproved={isApproved}
           onCloseModal={toggleAprovalsModal}
-          onSubmit={handleSubmitAprovals}
           onChangeApprove={changeApprove}
+          onSubmit={(values) =>
+            handleSubmitAprovals(
+              id!,
+              user,
+              values,
+              setFlagMessage,
+              setShowFlagMessage,
+              setShowAprovalsModal
+            )
+          }
         />
       )}
       {showFlagMessage && (
         <StyledMessageContainer>
           <Flag
-            title="Éxito"
-            description="La aprobación se ha completado correctamente."
-            appearance="success"
+            title={flagMessage.title}
+            description={flagMessage.description}
+            appearance={flagMessage.appearance}
             icon={<MdOutlineThumbUp />}
             duration={5000}
             isMessageResponsive={false}

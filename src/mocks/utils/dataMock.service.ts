@@ -91,21 +91,22 @@ async function fakeNetwork() {
   });
 }
 
-export async function addItem<T>(nameDB: string, newItem: T) {
+export async function addItem<T>(option: string, newItem: T) {
+  await fakeNetwork();
   try {
-    const data = await localforage.getItem(nameDB);
+    const data = await localforage.getItem<T[]>(option);
+    const updatedData = Array.isArray(data) ? data : [];
+    const newTrace = {
+      ...newItem,
+      trace_id: crypto.randomUUID(), 
+    };
 
-    let updatedData;
-    if (Array.isArray(data)) {
-      updatedData = [...data, newItem];
-    } else {
-      updatedData = [newItem];
-    }
-
-    await intializedData(nameDB, updatedData);
-
-    console.log("Item added successfully");
+    updatedData.push(newTrace as T);
+    await localforage.setItem(option, updatedData);
+    return newTrace;
+    
   } catch (error) {
     return "Failed to add item: " + error;
   }
 }
+
