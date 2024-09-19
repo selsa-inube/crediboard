@@ -363,10 +363,10 @@ export const SummaryProspectCredit = [
   },
 ];
 
-export const menuOptions = [
+export const menuOptions = (handleOpenCreditLimitModal: () => void) => [
   {
     title: "Origen de cupo",
-    onClik: () => {},
+    onClik: handleOpenCreditLimitModal,
     icon: <MdOutlineBalance />,
   },
   {

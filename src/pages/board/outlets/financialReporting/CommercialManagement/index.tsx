@@ -16,7 +16,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
-
+import { CreditLimit } from "@components/modals/CreditLimit";
 import { Fieldset } from "@components/data/Fieldset";
 import {
   truncateTextToMaxLength,
@@ -49,13 +49,21 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const { data, children, print, isPrint } = props;
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [showCreditLimitModal, setShowCreditLimitModal] = useState(false); // Estado para controlar la visibilidad del modal
 
   const { id } = useParams();
-
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
 
   const handleCollapse = () => {
     setCollapse(!collapse);
+  };
+
+  const handleOpenCreditLimitModal = () => {
+    setShowCreditLimitModal(true); // Abrir el modal
+  };
+
+  const handleCloseCreditLimitModal = () => {
+    setShowCreditLimitModal(false); // Cerrar el modal
   };
 
   return (
@@ -227,7 +235,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       onClick={() => setShowMenu(!showMenu)}
                     />
                     {showMenu && (
-                      <MenuPropect options={menuOptions} onMouseLeave={ () => setShowMenu(false)}/>
+                      <MenuPropect
+                      options={menuOptions(handleOpenCreditLimitModal)}
+                        onMouseLeave={() => setShowMenu(false)}
+                      />
                     )}
                   </StyledContainerIcon>
                 </Stack>
@@ -236,6 +247,21 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             </Stack>
           )}
         </Stack>
+
+        {showCreditLimitModal && (
+          <CreditLimit
+            handleClose={handleCloseCreditLimitModal}
+            title="Origen de cupo"
+            portalId="portal"
+            maxPaymentCapacity={50000000}
+            maxReciprocity={40000000}
+            maxDebtFRC={45000000}
+            assignedLimit={0}
+            currentPortfolio={10000000}
+            maxUsableLimit={20000000}
+            availableLimitWithoutGuarantee={15000000}
+          />
+        )}
       </StyledFieldset>
     </Fieldset>
   );
