@@ -9,6 +9,9 @@ import {
   MdOutlineShare,
   MdOutlineVideoCameraFront,
   MdOutlinePayments,
+  MdOutlineMonetizationOn,
+  MdOutlineAccountBalanceWallet,
+  MdOutlineBalance,
 } from "react-icons/md";
 
 import { Icon } from "@inubekit/icon";
@@ -27,7 +30,8 @@ import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
-import { menuOptions } from "./config/config";
+import { IncomeModal } from "@src/components/modals/IncomeModal";
+import { incomeOptions } from "./config/config";
 
 import {
   StyledCollapseIcon,
@@ -49,6 +53,12 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const { data, children, print, isPrint } = props;
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [showIncomeModal, setShowIncomeModal] = useState(false);
+  const [form, setForm] = useState({ deudor: "" });
+
+  const onChanges = (name: string, newValue: string) => {
+    setForm({ ...form, [name]: newValue });
+  };
 
   const { id } = useParams();
 
@@ -57,6 +67,31 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const handleCollapse = () => {
     setCollapse(!collapse);
   };
+
+  const menuOptions = [
+    {
+      title: "Origen de cupo",
+      onClik: () => {},
+      icon: <MdOutlineBalance />,
+    },
+    {
+      title: "Fuentes de ingreso",
+      onClik: () => {},
+      icon: <MdOutlineAccountBalanceWallet />,
+    },
+    {
+      title: "Obligaciones financieras",
+      onClik: () => {
+        setShowIncomeModal(true);
+      },
+      icon: <MdOutlineMonetizationOn />,
+    },
+    {
+      title: "Pagos extras",
+      onClik: () => {},
+      icon: <MdOutlinePayments />,
+    },
+  ];
 
   return (
     <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
@@ -227,7 +262,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       onClick={() => setShowMenu(!showMenu)}
                     />
                     {showMenu && (
-                      <MenuPropect options={menuOptions} onMouseLeave={ () => setShowMenu(false)}/>
+                      <MenuPropect
+                        options={menuOptions}
+                        onMouseLeave={() => setShowMenu(false)}
+                      />
                     )}
                   </StyledContainerIcon>
                 </Stack>
@@ -236,6 +274,14 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             </Stack>
           )}
         </Stack>
+        {showIncomeModal && (
+          <IncomeModal
+            onChange={onChanges}
+            form={form}
+            handleClose={() => setShowIncomeModal(false)}
+            options={incomeOptions}
+          />
+        )}
       </StyledFieldset>
     </Fieldset>
   );
