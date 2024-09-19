@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Text } from "@inubekit/text";
+import { SkeletonLine } from "@inubekit/skeleton";
 import {
   Pagination,
   Table,
@@ -10,14 +12,13 @@ import {
   Tr,
 } from "@inubekit/table";
 import { useMediaQuery } from "@inubekit/hooks";
-import { IRowExtraordinaryPayment } from "../../modals/ExtraordinaryPaymentModal/types";
+import { IRowExtraordinaryPayment } from "@components/modals/ExtraordinaryPaymentModal/types"
+
 import {
   headersTableExtraordinaryPayment,
   rowsVisbleMobile,
   rowsActions,
 } from "./config";
-import { Text } from "@inubekit/text";
-import { SkeletonLine } from "@inubekit/skeleton";
 
 export interface TableExtraordinaryPaymentProps {
   data: IRowExtraordinaryPayment[];

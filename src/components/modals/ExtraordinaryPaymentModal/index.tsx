@@ -1,15 +1,16 @@
 import { createPortal } from "react-dom";
+import { MdClear, MdOutlineAdd } from "react-icons/md";
 import { Blanket } from "@inubekit/blanket";
 import { Stack } from "@inubekit/stack";
-import { StyledContainerClose, StyledContainerContent } from "./styles";
 import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
-import { MdClear, MdOutlineAdd } from "react-icons/md";
 import { Button } from "@inubekit/button";
-import { TableExtraordinaryPayment } from "../../data/TableExtraordinaryPayment";
-import { IRowExtraordinaryPayment } from "./types";
 import { useMediaQuery } from "@inubekit/hooks";
+
+import { TableExtraordinaryPayment } from "@components/data/TableExtraordinaryPayment";
+import { IRowExtraordinaryPayment } from "./types";
+import { StyledContainerClose, StyledContainerContent } from "./styles";
 
 export interface ExtraordinaryPaymentModalProps {
   dataTable: IRowExtraordinaryPayment[];
