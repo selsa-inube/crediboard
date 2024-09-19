@@ -35,7 +35,6 @@ import {
 import { StyledItem, StyledMessageContainer, StyledToast } from "./styles";
 import { Approvals } from "./Approvals";
 import { Requirements } from "./Requirements";
-import { dataRequirements } from "./Requirements/config";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
@@ -268,26 +267,26 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                {<ToDo icon={infoIcon} isMobile={isMobile} id={id!} user={user!.nickname!}/>}
+                <ToDo icon={infoIcon} isMobile={isMobile} id={id!} user={user!.nickname!}/>
               </Stack>
               <Stack direction="column">
-                {<Approvals user={id!} isMobile={isMobile} />}
+                <Approvals user={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
-                {<Requirements data={dataRequirements} isMobile={isMobile} id={id!} user={user!.nickname!} />}
+                <Requirements isMobile={isMobile} id={id!} user={user!.nickname!} />
               </Stack>
               <Stack direction="column">
-                {
                   <Management
                     id={id!}
                     isMobile={isMobile}
                   />
-                }
               </Stack>
               <Stack direction="column">
-                {<PromissoryNotes user={id!} isMobile={isMobile} />}
+                <PromissoryNotes user={id!} isMobile={isMobile} />
               </Stack>
-              <Stack direction="column">{<Postingvouchers />}</Stack>
+              <Stack direction="column">
+                <Postingvouchers />
+              </Stack>
             </Grid>
           </Stack>
           {showAttachments && (
