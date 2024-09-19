@@ -16,6 +16,7 @@ import { StyledContainerClose, StyledModal } from "./styles";
 export interface ScoreModalProps {
   title: string;
   handleClose: () => void;
+  subTitle: string;
   portalId?: string;
   puntajeTotal: number;
   antiguedad: number;
@@ -80,7 +81,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
                 size="34px"
               />
               <Text appearance="primary" size="large" type="title">
-                {frcConfig.title}
+                {frcConfig.subTitle}
               </Text>
             </Stack>
 

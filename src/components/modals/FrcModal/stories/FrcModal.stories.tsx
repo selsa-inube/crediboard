@@ -5,7 +5,7 @@ import { ScoreModal, ScoreModalProps } from "..";
 import { scoreModalArgs } from "./props";
 
 const meta: Meta<typeof ScoreModal> = {
-  title: 'components/modals/ScoreModal',
+  title: 'components/modals/FrcModal',
   component: ScoreModal,
   argTypes: scoreModalArgs,
 };
