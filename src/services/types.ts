@@ -220,30 +220,6 @@ export interface IErrorService {
   message: string | Error;
 }
 
-interface Prospect {
-  credit_products: CreditProduct[];
-}
-
-export interface CreditProduct {
-  loan_amount: number;
-  loan_term: number;
-  insurance_rate: number;
-  insurance_type: string;
-  line_of_credit_id: string;
-  rate_type: string;
-  interest_rate: number;
-  quota: number;
-  payment_channel_for_principal: string;
-  first_payment_cycle_for_principal: string;
-  payment_channel_for_interest: string;
-  first_payment_cycle_for_interest: number;
-}
-
-export interface ProspectsResponse {
-  credit_request_id: string;
-  prospect: Prospect;
-}
-
 export interface IProspect {
   prospect_id: string;
   public_code: string;
@@ -259,7 +235,7 @@ export interface IProspect {
   grace_period_type: (typeof GracePeriodType)[keyof typeof GracePeriodType];
   borrower: IBorrower[];
   consolidated_credit: IConsolidatedCredit[];
-  credit_product: ICreditProductPropesct[];
+  credit_product: ICreditProductProspect[];
   outlay: IOutlay[];
 }
 
@@ -279,7 +255,7 @@ export interface IExtraordinaryInstallment {
   payment_channel_code: string;
 }
 
-export interface ICreditProductPropesct {
+export interface ICreditProductProspect {
   abbreviated_name: string;
   credit_product_code: string;
   loan_amount: number;

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Stack } from "@inubekit/stack";
+
 import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { SummaryProspect } from "@components/inputs/SummaryOnProspect";
 import { getById } from "@mocks/utils/dataMock.service";
-import { CreditProduct } from "@services/types";
-import { Schedule } from "@services/enums";
-
+import { ICreditProductProspect } from "@services/types";
 import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
+
 import { StyledCardsCredit } from "./styles";
 
 interface CardCommercialManagementProps {
@@ -18,20 +18,27 @@ export const CardCommercialManagement = (
   props: CardCommercialManagementProps
 ) => {
   const { dataRef, id } = props;
-  const [prospectsCredit, setProspectsCredit] = useState<CreditProduct[]>([]);
+  const [prospectProducts, setProspectProducts] = useState<
+    ICreditProductProspect[]
+  >([]);
   useEffect(() => {
     try {
-      Promise.allSettled([
-        getById("prospects", "credit_request_id", id!,true),
-      ]).then(([prospects]) => {
-        if (prospects.status === "fulfilled" && Array.isArray(prospects.value)) {
-          if (!(prospects.value instanceof Error)) {
-            setProspectsCredit(prospects.value
-              .map((dataPropects) => dataPropects.prospect.credit_products)
-              .flat());
+      Promise.allSettled([getById("prospects", "public_code", id!, true)]).then(
+        ([prospects]) => {
+          if (
+            prospects.status === "fulfilled" &&
+            Array.isArray(prospects.value)
+          ) {
+            if (!(prospects.value instanceof Error)) {
+              setProspectProducts(
+                prospects.value
+                  .map((dataPropects) => dataPropects.credit_product)
+                  .flat()
+              );
+            }
           }
         }
-      });
+      );
     } catch (error) {
       console.log("error", error);
     }
@@ -41,24 +48,33 @@ export const CardCommercialManagement = (
     <div ref={dataRef}>
       <StyledCardsCredit>
         <Stack gap="24px" width="fit-content" padding="4px 8px 16px 8px">
-          {prospectsCredit &&
-            prospectsCredit.map((entry) => (
+          {prospectProducts &&
+            prospectProducts.map((entry) => (
               <CreditProductCard
-                key={entry.line_of_credit_id}
-                lineOfCredit={entry.line_of_credit_id}
-                paymentMethod={entry.payment_channel_for_principal}
+                key={entry.credit_product_code}
+                lineOfCredit={entry.line_of_credit_abbreviated_name}
+                paymentMethod={
+                  entry.ordinary_installment_for_principal
+                    ?.payment_channel_code || ""
+                }
                 loanAmount={entry.loan_amount}
                 interestRate={entry.interest_rate}
                 termMonths={entry.loan_term}
-                periodicFee={entry.quota}
-                schedule={Schedule.Weekly}
+                periodicFee={
+                  entry.ordinary_installment_for_principal?.gradient_value || 0
+                }
+                schedule={entry.schedule}
                 onEdit={() => {}}
                 onDelete={() => {}}
               />
             ))}
         </Stack>
       </StyledCardsCredit>
-      <Stack gap="24px" margin="36px 0px 8px 0px " padding="0px 8px" justifyContent="space-around">
+      <Stack
+        gap="24px"
+        margin="36px 16px 8px 8px"
+        justifyContent="space-between"
+      >
         {SummaryProspectCredit.map((entry, index) => (
           <SummaryProspect
             key={index}
