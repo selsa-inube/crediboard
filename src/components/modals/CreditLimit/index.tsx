@@ -6,6 +6,7 @@ import { Stack } from "@inubekit/stack";
 import { Blanket } from "@inubekit/blanket";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
+import { Divider } from "@inubekit/divider";
 
 import { currencyFormat } from "@utils/formatData/currency";
 
@@ -13,7 +14,6 @@ import { creditLimitTexts } from "./creditLimitConfig";
 import {
   StyledContainerClose,
   StyledModal,
-  StyledDivider,
   StyledList,
 } from "./styles";
 
@@ -72,136 +72,142 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             </Stack>
           </StyledContainerClose>
         </Stack>
-        <StyledDivider />
-        <Stack direction="column">
+        <Divider  />
+        <Stack direction="column" gap="24px">
           <StyledList>
-            <li>
-              <Stack padding="10px 0px" justifyContent="space-between">
-                <Text appearance="dark" size="large" weight="bold">
-                  {creditLimitTexts.maxPaymentCapacity}
-                </Text>
-
-                <Stack alignItems="center">
-                  <Text appearance="success">$</Text>
-                  <Text>{currencyFormat(maxPaymentCapacity, false)}</Text>
-                  <Stack margin="0px 0px 0px 5px">
-                    <Icon
-                      appearance="primary"
-                      icon={<MdOutlineVisibility />}
-                      size="12px"
-                      spacing="none"
-                      cursorHover={true}
-                      variant="filled"
-                      shape="circle"
-                    />
-                  </Stack>
-                </Stack>
-              </Stack>
-            </li>
-            <li>
-              <Stack padding="10px 0px" justifyContent="space-between">
-                <Text appearance="dark" size="large" weight="bold">
-                  {creditLimitTexts.maxReciprocity}
-                </Text>
-
-                <Stack alignItems="center">
-                  <Text appearance="success">$</Text>
-                  <Text>{currencyFormat(maxReciprocity, false)}</Text>
-                  <Stack margin="0px 0px 0px 5px">
-                    <Icon
-                      appearance="primary"
-                      icon={<MdOutlineVisibility />}
-                      size="12px"
-                      spacing="none"
-                      cursorHover={true}
-                      variant="filled"
-                      shape="circle"
-                    />
-                  </Stack>
-                </Stack>
-              </Stack>
-            </li>
-            <li>
-              <Stack padding="10px 0px" justifyContent="space-between">
-                <Text appearance="dark" size="large" weight="bold">
-                  {creditLimitTexts.maxDebtFRC}
-                </Text>
-
-                <Stack alignItems="center">
-                  <Text appearance="success">$</Text>
-                  <Text weight="bold">{currencyFormat(maxDebtFRC, false)}</Text>
-                  <Stack margin="0px 0px 0px 5px">
-                    <Icon
-                      appearance="primary"
-                      icon={<MdOutlineVisibility />}
-                      size="12px"
-                      spacing="none"
-                      cursorHover
-                      variant="filled"
-                      shape="circle"
-                    />
-                  </Stack>
-                </Stack>
-              </Stack>
-            </li>
-            <li>
-              <Stack padding="10px 0px" justifyContent="space-between">
-                <Text appearance="dark" size="large" weight="bold">
-                  {creditLimitTexts.assignedLimit}
-                </Text>
-                <Stack>
-                  <Text appearance="success">$</Text>
-                  <Text weight="bold">
-                    {currencyFormat(assignedLimit, false)}
+            <Stack direction="column" gap="12px">
+              <li>
+                <Stack justifyContent="space-between">
+                  <Text appearance="dark" size="large" weight="bold" type="label">
+                    {creditLimitTexts.maxPaymentCapacity}
                   </Text>
+
+                  <Stack alignItems="center">
+                    <Text appearance="success">$</Text>
+                    <Text type="body">{currencyFormat(maxPaymentCapacity, false)}</Text>
+                    <Stack margin="0px 0px 0px 5px">
+                      <Icon
+                        appearance="primary"
+                        icon={<MdOutlineVisibility />}
+                        size="12px"
+                        spacing="none"
+                        cursorHover={true}
+                        variant="filled"
+                        shape="circle"
+                      />
+                    </Stack>
+                  </Stack>
                 </Stack>
-              </Stack>
-            </li>
+              </li>
+              <li>
+                <Stack justifyContent="space-between">
+                  <Text appearance="dark" size="large" weight="bold" type="label">
+                    {creditLimitTexts.maxReciprocity}
+                  </Text>
+
+                  <Stack alignItems="center">
+                    <Text appearance="success">$</Text>
+                    <Text type="body">{currencyFormat(maxReciprocity, false)}</Text>
+                    <Stack margin="0px 0px 0px 5px">
+                      <Icon
+                        appearance="primary"
+                        icon={<MdOutlineVisibility />}
+                        size="12px"
+                        spacing="none"
+                        cursorHover={true}
+                        variant="filled"
+                        shape="circle"
+                      />
+                    </Stack>
+                  </Stack>
+                </Stack>
+              </li>
+              <li>
+                <Stack justifyContent="space-between">
+                  <Text appearance="dark" size="large" weight="bold" type="label">
+                    {creditLimitTexts.maxDebtFRC}
+                  </Text>
+
+                  <Stack alignItems="center">
+                    <Text appearance="success">$</Text>
+                    <Text weight="bold" type="body">
+                      {currencyFormat(maxDebtFRC, false)}
+                    </Text>
+                    <Stack margin="0px 0px 0px 5px">
+                      <Icon
+                        appearance="primary"
+                        icon={<MdOutlineVisibility />}
+                        size="12px"
+                        spacing="none"
+                        cursorHover
+                        variant="filled"
+                        shape="circle"
+                      />
+                    </Stack>
+                  </Stack>
+                </Stack>
+              </li>
+              <li>
+                <Stack justifyContent="space-between">
+                  <Text appearance="dark" size="large" weight="bold" type="label">
+                    {creditLimitTexts.assignedLimit}
+                  </Text>
+                  <Stack>
+                    <Text appearance="success">$</Text>
+                    <Text weight="bold" type="body">
+                      {currencyFormat(assignedLimit, false)}
+                    </Text>
+                  </Stack>
+                </Stack>
+              </li>
+            </Stack>
           </StyledList>
 
-          <StyledDivider />
+          <Divider  />
 
-          <Stack alignItems="center" margin="10px 0px">
+          <Stack alignItems="center">
             <Icon
               appearance="primary"
               icon={<MdInfoOutline />}
               size="16px"
               spacing="none"
             />
-            <Text margin="5px" size="small">
+            <Text margin="0px 5px" size="small">
               {creditLimitTexts.maxUsableLimitNote}
             </Text>
           </Stack>
 
-          <Stack padding="10px 0px" justifyContent="space-between">
-            <Text weight="bold">{creditLimitTexts.maxUsableLimit}</Text>
-            <Stack>
-              <Text appearance="success">$</Text>
-              <Text>{currencyFormat(maxUsableLimit, false)}</Text>
+          <Stack direction="column" gap="12px" >
+            <Stack justifyContent="space-between">
+              <Text weight="bold" type="label">{creditLimitTexts.maxUsableLimit}</Text>
+              <Stack>
+                <Text appearance="success">$</Text>
+                <Text type="body">{currencyFormat(maxUsableLimit, false)}</Text>
+              </Stack>
+            </Stack>
+            <Stack justifyContent="space-between">
+              <Text size="large" appearance="gray" weight="bold" type="label">
+                {creditLimitTexts.currentPortfolio}
+              </Text>
+              <Stack>
+                <Text appearance="success">$</Text>
+                <Text type="body">{currencyFormat(currentPortfolio, false)}</Text>
+              </Stack>
             </Stack>
           </Stack>
-          <Stack padding="10px 0px" justifyContent="space-between">
-            <Text size="large" appearance="gray" weight="bold">
-              {creditLimitTexts.currentPortfolio}
-            </Text>
-            <Stack>
-              <Text appearance="success">$</Text>
-              <Text>{currencyFormat(currentPortfolio, false)}</Text>
-            </Stack>
-          </Stack>
-          <Stack padding="10px 0px" justifyContent="space-between">
-            <Text weight="bold">
+          <Stack justifyContent="space-between" gap="2px">
+            <Text weight="bold" type="label">
               {creditLimitTexts.availableLimitWithoutGuarantee}
             </Text>
             <Stack>
               <Text appearance="success">$</Text>
-              <Text weight="bold">
+              <Text weight="bold" type="body">
                 {currencyFormat(availableLimitWithoutGuarantee, false)}
               </Text>
             </Stack>
           </Stack>
         </Stack>
-        <StyledDivider />
+        <Divider  />
         <Stack justifyContent="end">
           <Button
             onClick={handleClose}

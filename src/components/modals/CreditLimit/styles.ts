@@ -5,13 +5,6 @@ interface IStyledModal {
   $smallScreen: boolean;
 }
 
-export const StyledDivider = styled.hr`
-  border: none;
-  border-top: 2px solid;
-  border-top-color: ${({ theme }) =>
-    theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
-  margin: 1px;
-`;
 
 export const StyledModal = styled.div<IStyledModal>`
   display: flex;
@@ -21,7 +14,7 @@ export const StyledModal = styled.div<IStyledModal>`
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   padding: 24px;
-  gap: 8px;
+  gap: 24px;
   border-radius: 8px;
 `;
 
@@ -32,4 +25,5 @@ export const StyledContainerClose = styled.div`
 
 export const StyledList = styled.ul`
   padding-left: 20px;
+  margin: 0px;
 `;
