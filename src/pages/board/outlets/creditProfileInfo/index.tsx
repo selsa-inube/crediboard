@@ -313,6 +313,21 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
         />
       </Grid>
+      <Stack
+        gap="10px"
+        justifyContent="center"
+        alignItems="center"
+        padding=" 16px 24px 16px 24px"
+      >
+        <Text
+          type="body"
+          appearance="gray"
+          textAlign="center"
+          size={isMobile ? "small" : "medium"}
+        >
+          © 2024 Inube
+        </Text>
+      </Stack>
     </StyledContainerToCenter>
   );
 };
