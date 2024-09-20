@@ -170,7 +170,13 @@ export const Management = (props: IManagementProps) => {
                 ))}
           </ChatContent>
           <form>
-            <Stack alignItems="center" direction="row" gap={inube.spacing.s200}>
+            <Stack alignItems="center" direction="row" gap={inube.spacing.s050}>
+              <Icon
+                appearance="primary"
+                cursorHover
+                size="24px"
+                icon={<MdAttachFile />}
+              />
               <Textfield
                 id="text"
                 placeholder="Ej.: Escriba su mensaje"
@@ -178,27 +184,14 @@ export const Management = (props: IManagementProps) => {
                 value={newMessage}
                 onChange={handleInputChange}
                 size="compact"
-                iconBefore={
-                  <Icon
-                    appearance="primary"
-                    cursorHover
-                    size="20px"
-                    icon={<MdAttachFile />
-                    }
-                  />
-                }
               />
-              <Stack>
-                <Icon
-                  appearance="primary"
-                  cursorHover
-                  size="24px"
-                  icon={<MdOutlineSend />}
-                  onClick={handleFormSubmit}
-                  variant="filled"
-                  spacing="wide"
-                />
-              </Stack>
+              <Icon
+                appearance="primary"
+                cursorHover
+                size="24px"
+                icon={<MdOutlineSend />}
+                onClick={handleFormSubmit}
+              />
             </Stack>
           </form>
         </Stack>

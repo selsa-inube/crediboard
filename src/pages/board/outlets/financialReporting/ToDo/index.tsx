@@ -16,7 +16,7 @@ import { IStaff, IToDo } from "@services/types";
 import { get, getById } from "@mocks/utils/dataMock.service";
 
 import { StaffModal } from "./StaffModal";
-import { errorMessagge, FlagMessage, flagMessages } from "./config";
+import { errorMessagge, FlagMessage, flagMessages, buttonText } from "./config";
 import { StyledMessageContainer } from "../styles";
 
 interface IICon {
@@ -184,13 +184,12 @@ function ToDo(props: ToDoProps) {
                 options={toDo?.[0]?.decisions ?? []}
                 onChange={onChangeDecision}
                 disabled={toDo === undefined}
+                fullwidth={isMobile}
               />
             </Stack>
             <Stack
               padding="16px 0px 0px 0px"
               width="100%"
-              justifyContent="end"
-              margin="auto 0px 0px 0px"
             >
               <Button
                 onClick={handleSend}
@@ -201,7 +200,7 @@ function ToDo(props: ToDoProps) {
                 fullwidth={isMobile}
                 spacing="compact"
               >
-                {button?.label || "Enviar"}
+                {button?.label || buttonText}
               </Button>
             </Stack>
           </Stack>
@@ -244,7 +243,7 @@ function ToDo(props: ToDoProps) {
               size="compact"
             />
             {icon && !isMobile && (
-              <Stack width="100px" height="60px" alignItems="end">
+              <Stack width="100px" height="50px" alignItems="end">
                 <Icon
                   icon={icon.icon}
                   appearance="primary"
