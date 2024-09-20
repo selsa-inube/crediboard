@@ -49,7 +49,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const { data, children, print, isPrint } = props;
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [showCreditLimitModal, setShowCreditLimitModal] = useState(false); // Estado para controlar la visibilidad del modal
+  const [showCreditLimitModal, setShowCreditLimitModal] = useState(false);
 
   const { id } = useParams();
   const isMobile: boolean = useMediaQuery("(max-width: 720px)");
@@ -59,11 +59,11 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   };
 
   const handleOpenCreditLimitModal = () => {
-    setShowCreditLimitModal(true); // Abrir el modal
+    setShowCreditLimitModal(true);
   };
 
   const handleCloseCreditLimitModal = () => {
-    setShowCreditLimitModal(false); // Cerrar el modal
+    setShowCreditLimitModal(false); 
   };
 
   return (
