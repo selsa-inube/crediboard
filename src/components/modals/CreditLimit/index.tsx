@@ -97,7 +97,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
 
                   <Stack alignItems="center">
                     <Text appearance="success">$</Text>
-                    <Text type="body" size="medium"appearance="dark">
+                    <Text type="body" size="medium" appearance="dark">
                       {currencyFormat(maxPaymentCapacity, false)}
                     </Text>
                     <Stack margin="0px 0px 0px 5px">
@@ -128,7 +128,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
 
                   <Stack alignItems="center">
                     <Text appearance="success">$</Text>
-                    <Text type="body" size="medium"appearance="dark">
+                    <Text type="body" size="medium" appearance="dark">
                       {currencyFormat(maxReciprocity, false)}
                     </Text>
                     <Stack margin="0px 0px 0px 5px">
@@ -158,7 +158,12 @@ export const CreditLimit = (props: ICreditLimitProps) => {
 
                   <Stack alignItems="center">
                     <Text appearance="success">$</Text>
-                    <Text weight="bold" type="body" size="medium"appearance="dark">
+                    <Text
+                      weight="bold"
+                      type="body"
+                      size="medium"
+                      appearance="dark"
+                    >
                       {currencyFormat(maxDebtFRC, false)}
                     </Text>
                     <Stack margin="0px 0px 0px 5px">
@@ -185,9 +190,14 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                   >
                     {creditLimitTexts.assignedLimit}
                   </Text>
-                  <Stack>
+                  <Stack alignItems="center" gap="4px">
                     <Text appearance="success">$</Text>
-                    <Text weight="bold" type="body" size="medium"appearance="dark">
+                    <Text
+                      weight="bold"
+                      type="body"
+                      size="medium"
+                      appearance="dark"
+                    >
                       {currencyFormat(assignedLimit, false)}
                     </Text>
                   </Stack>
@@ -215,18 +225,20 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               <Text weight="bold" type="label">
                 {creditLimitTexts.maxUsableLimit}
               </Text>
-              <Stack>
+              <Stack alignItems="center">
                 <Text appearance="success">$</Text>
-                <Text type="body" size="medium"appearance="dark">{currencyFormat(maxUsableLimit, false)}</Text>
+                <Text type="body" size="medium" appearance="dark">
+                  {currencyFormat(maxUsableLimit, false)}
+                </Text>
               </Stack>
             </Stack>
             <Stack justifyContent="space-between">
               <Text size="large" appearance="gray" weight="bold" type="label">
                 {creditLimitTexts.currentPortfolio}
               </Text>
-              <Stack>
+              <Stack alignItems="center">
                 <Text appearance="success">$</Text>
-                <Text type="body" size="medium"appearance="dark">
+                <Text type="body" size="medium" appearance="dark">
                   {currencyFormat(currentPortfolio, false)}
                 </Text>
               </Stack>
@@ -236,9 +248,9 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             <Text weight="bold" type="label">
               {creditLimitTexts.availableLimitWithoutGuarantee}
             </Text>
-            <Stack>
+            <Stack justifyContent="space-between" alignItems="center">
               <Text appearance="success">$</Text>
-              <Text weight="bold" type="body" size="medium"appearance="dark">
+              <Text weight="bold" type="body" size="medium" appearance="dark">
                 {currencyFormat(availableLimitWithoutGuarantee, false)}
               </Text>
             </Stack>
