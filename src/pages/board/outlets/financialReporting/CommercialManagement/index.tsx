@@ -7,7 +7,7 @@ import {
   MdOutlinePhone,
   MdOutlinePictureAsPdf,
   MdOutlineShare,
-  MdOutlineVideoCameraFront,
+  MdOutlineVideocam,
   MdOutlinePayments,
 } from "react-icons/md";
 
@@ -31,11 +31,11 @@ import { menuOptions } from "./config/config";
 
 import {
   StyledCollapseIcon,
-  StyledIcon,
   StyledDivider,
   StyledFieldset,
   StyledVerticalDivider,
   StyledContainerIcon,
+  StyledHorizontalDivider
 } from "./styles";
 
 interface ComercialManagementProps {
@@ -116,47 +116,50 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             </Stack>
 
             {!isMobile && (
-              <Stack alignItems="center" gap="32px">
+              <Stack gap="36px">
                 <Text type="title">
                   {data.nnasocia &&
                     capitalizeFirstLetterEachWord(
                       truncateTextToMaxLength(data.nnasocia)
                     )}
                 </Text>
-                <Stack gap="16px">
+              </Stack>
+            )}
+            <Stack gap="2px">
+              {!isMobile && (
+                <>
                   <Button
                     type="link"
+                    spacing="compact"
                     path={`/extended-card/${id}/credit-profile`}
                   >
                     Ver perfil crediticio
                   </Button>
-                  <StyledIcon>
-                    <Icon
-                      icon={<MdOutlinePhone />}
-                      appearance="primary"
-                      size="18px"
-                      cursorHover
-                    />
-                  </StyledIcon>
-                  <StyledIcon>
-                    <Icon
-                      icon={<MdOutlineVideoCameraFront />}
-                      appearance="primary"
-                      size="18px"
-                      cursorHover
-                    />
-                  </StyledIcon>
-                </Stack>
-              </Stack>
-            )}
-            <StyledCollapseIcon $collapse={collapse} onClick={handleCollapse}>
-              <Icon
-                icon={<MdOutlineChevronRight />}
-                appearance="primary"
-                size={isMobile ? "32px" : "36px"}
-                cursorHover
-              />
-            </StyledCollapseIcon>
+                  <StyledHorizontalDivider />
+                  <Icon
+                    icon={<MdOutlinePhone />}
+                    appearance="primary"
+                    size="24px"
+                    cursorHover
+                  />
+                  <Icon
+                    icon={<MdOutlineVideocam />}
+                    appearance="primary"
+                    size="24px"
+                    cursorHover
+                  />
+                  <StyledHorizontalDivider />
+                </>
+              )}
+              <StyledCollapseIcon $collapse={collapse} onClick={handleCollapse}>
+                <Icon
+                  icon={<MdOutlineChevronRight />}
+                  appearance="primary"
+                  size={isMobile ? "32px" : "24px"}
+                  cursorHover
+                />
+              </StyledCollapseIcon>
+            </Stack>
           </Stack>
           {isMobile && (
             <Button
@@ -227,7 +230,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       onClick={() => setShowMenu(!showMenu)}
                     />
                     {showMenu && (
-                      <MenuPropect options={menuOptions} onMouseLeave={ () => setShowMenu(false)}/>
+                      <MenuPropect
+                        options={menuOptions}
+                        onMouseLeave={() => setShowMenu(false)}
+                      />
                     )}
                   </StyledContainerIcon>
                 </Stack>

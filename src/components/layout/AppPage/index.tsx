@@ -2,7 +2,7 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Header, Grid, useMediaQuery } from "@inube/design-system";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
-import { Icon } from "@inubekit/icon"
+import { Icon } from "@inubekit/icon";
 
 import { AppContext } from "@context/AppContext";
 import { MenuSection } from "@components/navigation/MenuSection";
@@ -20,9 +20,8 @@ import {
   StyledMain,
   StyledMenuContainer,
   StyledCollapseIcon,
-  StyledCollapse
+  StyledCollapse,
 } from "./styles";
-
 
 const renderLogo = (imgUrl: string) => {
   return (
@@ -94,16 +93,16 @@ function AppPage() {
   return (
     <StyledAppPage>
       <Grid templateRows="auto 1fr" height="100vh" justifyContent="unset">
-        <Header
-          portalId="portal"
-          navigation={navigationConfig}
-          logoURL={renderLogo(user.operator.logo)}
-          userName={user.username}
-          client={user.company}
-        />
+          <Header
+            portalId="portal"
+            navigation={navigationConfig}
+            logoURL={renderLogo(user.operator.logo)}
+            userName={user.username}
+            client={user.company}
+          />
         <StyledCollapseIcon
           $collapse={collapse}
-          onClick={() =>  setCollapse(!collapse)}
+          onClick={() => setCollapse(!collapse)}
           $isTablet={isTablet}
           ref={collapseMenuRef}
         >
