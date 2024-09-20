@@ -64,7 +64,7 @@ export const Management = (props: IManagementProps) => {
         setError("Error al obtener los datos de gestión.");
       } else {
         const flattenedData: TraceType[] = Array.isArray(data[0])
-          ? ((data as TraceType[][]).flat() as TraceType[])
+          ? ((data as TraceType[]).flat() as TraceType[])
           : (data as TraceType[]);
 
         setTraces(flattenedData);
