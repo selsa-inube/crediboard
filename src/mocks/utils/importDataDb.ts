@@ -35,6 +35,10 @@ import { traceMock as traceMockCooservunal } from "@mocks/financialReporting/Coo
 import { traceMock as traceMockCorbanca } from "@mocks/financialReporting/Corbanca/trace.mock";
 import { traceMock as traceMockFondecom } from "@mocks/financialReporting/Fondecom/trace.mock";
 
+import { requirementsMock as requirementsMockPresente } from "@mocks/financialReporting/Presente/requirements.mock";
+import { requirementsMock as requirementsMockCooservunal } from "@mocks/financialReporting/Cooservunal/requirements.mock";
+import { requirementsMock as requirementsMockCorbanca } from "@mocks/financialReporting/Corbanca/requirements.mock";
+import { requirementsMock as requirementsMockFondecom } from "@mocks/financialReporting/Presente/requirements.mock";
 
 
 
@@ -97,3 +101,12 @@ const traceMocks: { [key: string]: typeof traceMockDefault } = {
 };
 
 export const traceMock = (company: string) => traceMocks[company] || traceMocks.default;
+
+const businessUnit = {
+  Presente: requirementsMockPresente,
+  Cooservunal: requirementsMockCooservunal,
+  Corbanca: requirementsMockCorbanca,
+  Fondecom: requirementsMockFondecom,
+};
+export const requirementsMock = (company: string) =>
+  businessUnit[company as keyof typeof businessUnit];

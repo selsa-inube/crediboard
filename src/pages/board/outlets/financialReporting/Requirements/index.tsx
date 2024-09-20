@@ -1,42 +1,50 @@
-import { Stack, Icon } from "@inube/design-system";
-import { useState, isValidElement } from "react";
-
+import { useState, isValidElement, useEffect } from "react";
 import {
   MdAddCircleOutline,
   MdOutlineCheckCircle,
   MdOutlineThumbUp,
 } from "react-icons/md";
+import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
+import { Stack } from "@inubekit/stack";
 
+import userNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
+import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
+import { getById } from "@mocks/utils/dataMock.service";
+import { CreditRequest } from "@services/types";
 import { addItem } from "@mocks/utils/dataMock.service";
 
 import { traceObserver } from "../config";
-import { dataButton, infoItems } from "./config";
+import {
+  dataButton,
+  infoItems,
+  maperDataRequirements,
+  maperEntries,
+} from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
 import { handleSuccess, handleError } from "./config";
 import { StyledMessageContainer } from "../styles";
+import { errorObserver } from "../config";
 
-interface IData {
+interface IRequirementsData {
   id: string;
   titlesRequirements: ITitle[];
   entriesRequirements: IEntries[];
-  actionsRequirements: IAction[];
   actionsMovile: IAction[];
 }
 
 export interface IRequirementsProps {
-  data: IData[];
   isMobile: boolean;
   id: string;
   user: string;
 }
 
 export const Requirements = (props: IRequirementsProps) => {
-  const { data, isMobile, id, user} = props;
+  const { isMobile, id, user} = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [modalData, setModalData] = useState<{ date?: Date; details?: string }>(
     {}
@@ -49,6 +57,38 @@ export const Requirements = (props: IRequirementsProps) => {
     description: "",
     appearance: "success" as "success" | "danger",
   });
+
+  const [dataRequirements, setDataRequirements] = useState<IRequirementsData[]>(
+    []
+  );
+
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const requirements = await getById<CreditRequest>(
+          "requirements",
+          "credit_request_id",
+          id
+        );
+
+        if (!(requirements instanceof Error)) {
+          const processedEntries = maperEntries(requirements);
+          const processedRequirements = maperDataRequirements(processedEntries);
+
+          setDataRequirements(processedRequirements);
+        }
+      } catch (error) {
+        setError(true);
+        errorObserver.notify({
+          id: "Requirements",
+          message: "Error al obtener los datos de los requisitos.",
+        });
+        console.error(error);
+      }
+    })();
+  }, [id, error]);
 
   const toggleAprovalsModal = () => setShowAprovalsModal(!showAprovalsModal);
   const changeApprove = () => setIsApproved(!isApproved);
@@ -148,26 +188,40 @@ export const Requirements = (props: IRequirementsProps) => {
           title="Requisitos"
           activeButton={dataButton}
           heightFieldset="340px"
-          hasTable
+          hasTable={!error}
+          aspectRatio="1"
         >
-          {data.map((item, index) => (
-            <TableBoard
-              key={item.id}
-              id={item.id}
-              titles={item.titlesRequirements}
-              entries={item.entriesRequirements}
-              actions={actionsRequirements}
-              actionMobile={item.actionsMovile}
-              appearanceTable={{
-                widthTd: !isMobile ? "75%" : "70%",
-                efectzebra: true,
-                title: "primary",
-                isStyleMobile: true,
-              }}
-              isFirstTable={index === 0}
-              infoItems={infoItems}
+          {error ? (
+            <ItemNotFound
+              image={userNotFound}
+              title="Error al cargar datos"
+              description={
+                "Error al intentar conectar con el servicio de trazabilidad."
+              }
+              buttonDescription="Volver a intentar"
+              route="#"
+              onRetry={() => setError(false)}
             />
-          ))}
+          ) : (
+            dataRequirements.map((item, index) => (
+              <TableBoard
+                key={item.id}
+                id={item.id}
+                titles={item.titlesRequirements}
+                entries={item.entriesRequirements}
+                actions={actionsRequirements}
+                actionMobile={item.actionsMovile}
+                appearanceTable={{
+                  widthTd: !isMobile ? "75%" : "70%",
+                  efectzebra: true,
+                  title: "primary",
+                  isStyleMobile: true,
+                }}
+                isFirstTable={index === 0}
+                infoItems={infoItems}
+              />
+            ))
+          )}
         </Fieldset>
       </Stack>
 
@@ -186,7 +240,7 @@ export const Requirements = (props: IRequirementsProps) => {
           inputLabel="Observaciones de aprobación o rechazo"
           inputPlaceholder="Observaciones para la aprobación o rechazo."
           isApproved={isApproved}
-          onCloseModal={() => setShowAprovalsModal(false)}
+          onCloseModal={toggleAprovalsModal}
           onChangeApprove={changeApprove}
           onSubmit={(values) =>
             handleSubmitAprovals(

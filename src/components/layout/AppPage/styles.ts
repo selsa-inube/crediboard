@@ -67,5 +67,5 @@ export {
   StyledMain,
   StyledMenuContainer,
   StyledCollapseIcon,
-  StyledCollapse
+  StyledCollapse,
 };

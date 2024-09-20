@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
 import { Stack, Textfield, Text, Icon, inube } from "@inube/design-system";
 import { Toggle } from "@inubekit/toggle";
+import { Divider } from "@inubekit/divider";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { BoardSection } from "@components/layout/BoardSection";
@@ -16,8 +17,9 @@ import {
   StyledBoardContainer,
   StyledContainerToCenter,
   StyledError,
+  StyledSearch,
 } from "./styles";
-import { boardColumns, selectConfig } from "./config/board";
+import { boardColumns, selectConfig, seePinned } from "./config/board";
 
 interface BoardLayoutProps {
   isMobile: boolean;
@@ -54,6 +56,34 @@ function BoardLayoutUI(props: BoardLayoutProps) {
 
   const selectProps = selectConfig(selectOptions, handleSelectCheckChange);
   const [showErrorAlert, setShowErrorAlert] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const stackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        stackRef.current &&
+        !stackRef.current.contains(event.target as Node) &&
+        !searchRequestValue
+      ) {
+        setIsExpanded(false);
+      }
+    }
+
+    if (isExpanded) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isExpanded, searchRequestValue]);
+
+  useEffect(() => {
+    setIsExpanded(Boolean(searchRequestValue));
+  }, [searchRequestValue]);
 
   return (
     <StyledContainerToCenter>
@@ -70,40 +100,39 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           </StyledError>
         )}
         <StyledInputsContainer $isMobile={isMobile}>
-          {!isMobile && (
-            <Stack width="480px">
-              <Textfield
-                id="SearchCards"
-                name="SearchCards"
-                placeholder="Buscar..."
-                size="compact"
-                iconAfter={<MdSearch />}
-                value={searchRequestValue}
-                onChange={handleSearchRequestsValue}
-                fullwidth
-              />
-            </Stack>
-          )}
           <Stack
-            width="100%"
-            justifyContent={isMobile ? "end" : "space-between"}
-            alignItems="center"
+            justifyContent="space-between"
+            width={isMobile ? "100%" : "auto"}
+            margin={isMobile ? "s100 s0" : "auto"}
           >
-            {!isMobile && (
-              <Stack width="500px">
-              <Selectcheck {...selectProps} />
-            </Stack>
-            )}
-            <Stack gap={inube.spacing.s200}>
-              <Stack gap={inube.spacing.s100} alignItems="center">
+            <StyledSearch
+              ref={stackRef}
+              $isMobile={isMobile}
+              $isExpanded={isExpanded}
+              onClick={() => {
+                if (!isExpanded) setIsExpanded(true);
+              }}
+            >
+              <Stack width="100%">
+                <Textfield
+                  id="SearchCards"
+                  name="SearchCards"
+                  placeholder={isMobile ? "" : "Buscar..."}
+                  size="compact"
+                  iconAfter={<MdSearch />}
+                  value={searchRequestValue}
+                  onChange={handleSearchRequestsValue}
+                  fullwidth
+                />
+              </Stack>
+            </StyledSearch>
+            {isMobile && (
+              <Stack alignItems="center">
                 <Icon
                   icon={<MdOutlinePushPin />}
                   appearance="dark"
                   size="24px"
                 />
-                {!isMobile && (
-                  <Text type="label">Ver unicamente los anclados</Text>
-                )}
                 <Toggle
                   id="SeePinned"
                   name="SeePinned"
@@ -113,6 +142,37 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                   disabled={errorLoadingPins}
                 />
               </Stack>
+            )}
+          </Stack>
+          {isMobile && <Divider />}
+          <Stack
+            width="100%"
+            justifyContent={isMobile ? "end" : "space-between"}
+            alignItems="center"
+            margin={isMobile ? "s200 s0" : "auto"}
+          >
+            <Stack width={isMobile ? "100%" : "500px"}>
+              <Selectcheck {...selectProps} />
+            </Stack>
+            <Stack gap={inube.spacing.s200}>
+              {!isMobile && (
+                <Stack gap={inube.spacing.s100} alignItems="center">
+                  <Icon
+                    icon={<MdOutlinePushPin />}
+                    appearance="dark"
+                    size="24px"
+                  />
+                  <Text type="label">{seePinned.viewPinned}</Text>
+                  <Toggle
+                    id="SeePinned"
+                    name="SeePinned"
+                    size="large"
+                    checked={showPinnedOnly}
+                    onChange={handleShowPinnedOnly}
+                    disabled={errorLoadingPins}
+                  />
+                </Stack>
+              )}
               {!isMobile && (
                 <Stack gap={inube.spacing.s100}>
                   <Icon
@@ -142,24 +202,20 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           $orientation={boardOrientation}
           $isMobile={isMobile}
         >
-          {boardColumns.map((column) => {
-            const filteredRequests = BoardRequests.filter(
-              (request) => request.i_Estprs === column.id
-            );
-
-            return (
-              <BoardSection
-                key={column.id}
-                sectionTitle={column.value}
-                sectionBackground={column.sectionBackground}
-                orientation={boardOrientation}
-                sectionInformation={filteredRequests}
-                pinnedRequests={pinnedRequests}
-                handlePinRequest={handlePinRequest}
-                errorLoadingPins={errorLoadingPins}
-              />
-            );
-          })}
+          {boardColumns.map((column) => (
+            <BoardSection
+              key={column.id}
+              sectionTitle={column.value}
+              sectionBackground={column.sectionBackground}
+              orientation={boardOrientation}
+              sectionInformation={BoardRequests.filter(
+                (request) => request.i_Estprs === column.id
+              )}
+              pinnedRequests={pinnedRequests}
+              handlePinRequest={handlePinRequest}
+              errorLoadingPins={errorLoadingPins}
+            />
+          ))}
         </StyledBoardContainer>
       </Stack>
     </StyledContainerToCenter>
