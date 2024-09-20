@@ -2,9 +2,9 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Grid, useMediaQuery } from "@inube/design-system";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
-import { Stack } from "@inubekit/stack"
-import { Icon } from "@inubekit/icon"
-import { Header } from "@inubekit/header"
+import { Stack } from "@inubekit/stack";
+import { Icon } from "@inubekit/icon";
+import { Header } from "@inubekit/header";
 import { Text } from "@inubekit/text";
 
 import { AppContext } from "@context/AppContext";
@@ -135,23 +135,23 @@ function AppPage() {
           )}
           <StyledMain>
             <Outlet />
+            <Stack
+              gap="10px"
+              justifyContent="center"
+              alignItems="center"
+              padding=" 16px 24px 16px 24px"
+            >
+              <Text
+                type="body"
+                appearance="gray"
+                textAlign="center"
+                size="medium"
+              >
+                © 2024 Inube
+              </Text>
+            </Stack>
           </StyledMain>
         </StyledContainer>
-        <Stack
-        gap="10px"
-        justifyContent="center"
-        alignItems="center"
-        padding=" 16px 24px 16px 24px"
-      >
-        <Text
-          type="body"
-          appearance="gray"
-          textAlign="center"
-          size="medium"
-        >
-          © 2024 Inube
-        </Text>
-      </Stack>
       </Grid>
     </StyledAppPage>
   );
