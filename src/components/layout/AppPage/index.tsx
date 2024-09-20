@@ -21,9 +21,8 @@ import {
   StyledMain,
   StyledMenuContainer,
   StyledCollapseIcon,
-  StyledCollapse
+  StyledCollapse,
 } from "./styles";
-
 
 const renderLogo = (imgUrl: string) => {
   return (
@@ -103,7 +102,7 @@ function AppPage() {
         />
         <StyledCollapseIcon
           $collapse={collapse}
-          onClick={() =>  setCollapse(!collapse)}
+          onClick={() => setCollapse(!collapse)}
           $isTablet={isTablet}
           ref={collapseMenuRef}
         >
