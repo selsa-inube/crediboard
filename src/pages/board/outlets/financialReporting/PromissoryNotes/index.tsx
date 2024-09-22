@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Flag } from "@inubekit/flag";
@@ -8,6 +8,7 @@ import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
+import { UnfoundData } from "@components/layout/UnfoundData";
 
 import { getById } from "@mocks/utils/dataMock.service";
 import {
@@ -23,7 +24,7 @@ import {
   infoItems,
 } from "./config";
 import { StyledMessageContainer } from "../styles";
-import { StyledContainer } from "./styles";
+import { errorObserver } from "../config"; 
 
 interface IPromissoryNotesProps {
   user: string;
@@ -34,30 +35,39 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const { user, isMobile } = props;
 
   const [showModal, setShowModal] = useState(false);
-  const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
-    []
-  );
+  const [loading, setLoading] = useState(false);
+  const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>([]);
   const [showFlag, setShowFlag] = useState(false);
+  const [showRetry, setShowRetry] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
-  useEffect(() => {
-    Promise.allSettled([
-      getById<payroll_discount_authorization[]>(
-        "payroll_discount_authorization",
-        "credit_request_id",
-        user!,
-        true
-      ),
-      getById<promissory_note[]>(
-        "promissory_note",
-        "credit_request_id",
-        user!,
-        true
-      ),
-    ]).then((results) => {
-      const dataPrommisseNotes = results
-        .flatMap((prommiseNote): payroll_discount_authorization[] => {
-          if (prommiseNote.status === "fulfilled") {
-            return prommiseNote.value as payroll_discount_authorization[];
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setShowRetry(false);
+
+    try {
+      const results = await Promise.allSettled([
+        getById<payroll_discount_authorization[]>(
+          "payroll_discount_authorization",
+          "credit_request_id",
+          user!,
+          true
+        ),
+        getById<promissory_note[]>(
+          "promissory_note",
+          "credit_request_id",
+          user!,
+          true
+        ),
+      ]);
+
+      const dataPromissoryNotes = results
+        .flatMap((result) => {
+          if (result.status === "fulfilled") {
+            return result.value as payroll_discount_authorization[];
+          } else {
+            console.error(result.reason); 
+            setErrorMessage("Error al obtener los datos de Pagarés y Libranzas");
           }
           return [];
         })
@@ -74,9 +84,33 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             />
           ),
         }));
-      setDataPromissoryNotes(dataPrommisseNotes);
-    });
-  }, [user]);
+
+      if (dataPromissoryNotes.length === 0) {
+        throw new Error("No se encontraron datos en la base de datos");
+      }
+
+      setDataPromissoryNotes(dataPromissoryNotes);
+      setLoading(false);
+      
+    } catch (err) {
+      if (err instanceof Error) {
+      errorObserver.notify({
+        id: "PromissoryNotes",
+        message: err.message,
+      });
+
+      setErrorMessage(errorMessage); 
+      setTimeout(() => {
+        setShowRetry(true);
+        setLoading(false);
+      }, 5000);
+    }
+  }
+  }, [user, errorMessage]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const tableBoardActions = getTableBoardActions(() => setShowModal(true));
   const tableBoardActionMobile = getTableBoardActionMobile(() =>
@@ -98,30 +132,48 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     setShowModal(false);
   };
 
+  const handleRetry = () => {
+    setLoading(true);
+    setShowRetry(false);
+    fetchData(); 
+  };
+
   return (
-    <StyledContainer>
+    <>
       <Fieldset
         title="Pagarés y Libranzas"
         heightFieldset="163px"
         aspectRatio="1"
+        hasOverflow
         hasTable
       >
         <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
-          <TableBoard
-            id="promissoryNotes"
-            titles={titlesFinanacialReporting}
-            entries={dataPromissoryNotes}
-            actions={tableBoardActions}
-            actionMobile={tableBoardActionMobile}
-            appearanceTable={{
-              widthTd: !isMobile ? "100" : "23%",
-              efectzebra: true,
-              title: "primary",
-              isStyleMobile: true,
-            }}
-            isFirstTable={true}
-            infoItems={infoItems}
-          />
+          {showRetry ? (
+            <UnfoundData
+              title="Error al cargar datos"
+              description={errorMessage || "Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."}
+              buttonDescription="Volver a intentar"
+              route="/retry-path"
+              onRetry={handleRetry}
+            />
+          ) : (
+            <TableBoard
+              id="promissoryNotes"
+              titles={titlesFinanacialReporting}
+              entries={dataPromissoryNotes}
+              actions={tableBoardActions}
+              actionMobile={tableBoardActionMobile}
+              loading={loading}
+              appearanceTable={{
+                widthTd: isMobile ? "23%" : undefined, 
+                efectzebra: true,
+                title: "primary",
+                isStyleMobile: true,
+              }}
+              isFirstTable={true}
+              infoItems={infoItems}
+            />
+          )}
 
           {showModal && (
             <PromissoryNotesModal
@@ -147,6 +199,6 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           )}
         </Stack>
       </Fieldset>
-    </StyledContainer>
+    </>
   );
 };

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import SummaryProspect, { SummaryProspectProps } from "./index";
+import { SummaryProspect, SummaryProspectProps } from "./index";
 import { ListModal } from "@components/modals/ListModal";
 
 export default {

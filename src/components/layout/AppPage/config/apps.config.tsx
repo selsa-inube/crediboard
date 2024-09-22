@@ -24,25 +24,10 @@ const appsConfig = [
   },
 ];
 
-const navigationConfig = {
-  title: "MENU",
-  sections: {
-    administrate: {
-      links: {
-        board: {
-          id: "board",
-          label: "Crediboard",
-          icon: <MdVpnKey />,
-          path: "/board",
-        },
-      },
-    },
-  },
-};
 
 const logoutConfig = {
   logoutPath: "/logout",
   logoutTitle: "Cerrar sesión",
 };
 
-export { appsConfig, navigationConfig, logoutConfig };
+export { appsConfig, logoutConfig };
