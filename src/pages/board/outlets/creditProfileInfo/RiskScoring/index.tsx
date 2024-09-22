@@ -5,6 +5,7 @@ import { Text } from "@inubekit/text";
 
 import { CardInfoContainer } from "@components/cards/CardInfoContainer";
 import { StyledDivider } from "@components/cards/SummaryCard/styles";
+import { IRiskScoringRangeRequered } from "@src/services/types";
 
 interface RiskScoringProps {
   totalScore: number;
@@ -22,6 +23,7 @@ interface RiskScoringProps {
   isLoading: boolean;
   isMobile?: boolean;
   dataWereObtained: boolean;
+  dataRiskScoringMax: IRiskScoringRangeRequered;
 }
 
 const msgErrorService = "Error: No encontrado";
@@ -43,6 +45,7 @@ export function RiskScoring(props: RiskScoringProps) {
     isLoading,
     isMobile,
     dataWereObtained,
+    dataRiskScoringMax,
   } = props;
 
   const getMainGap = () => {
@@ -125,18 +128,23 @@ export function RiskScoring(props: RiskScoringProps) {
                 </Text>
               )}
             </Stack>
-            <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
+            <Stack justifyContent="end" width="100%">
               {isLoading ? (
                 <SkeletonLine animated width="60px" />
               ) : (
-                <Text
-                  appearance="primary"
-                  type="title"
-                  size={dataWereObtained ? "small" : "large"}
-                  disabled={dataWereObtained}
-                >
-                  {dataWereObtained ? msgErrorService : seniorityScore}
-                </Text>
+                <>                
+                  <Text
+                    appearance="primary"
+                    type="title"
+                    size={dataWereObtained ? "small" : "large"}
+                    disabled={dataWereObtained}
+                  >
+                    {dataWereObtained ? msgErrorService : seniorityScore}
+                  </Text>
+                  <Text>
+                    / {dataRiskScoringMax?.seniority_score}
+                  </Text>
+                </>
               )}
             </Stack>
           </Stack>
@@ -155,18 +163,24 @@ export function RiskScoring(props: RiskScoringProps) {
                 </Text>
               )}
             </Stack>
-            <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
+            <Stack justifyContent="end" width="100%">
               {isLoading ? (
                 <SkeletonLine animated width="60px" />
               ) : (
-                <Text
-                  appearance="primary"
-                  type="title"
-                  size={dataWereObtained ? "small" : "large"}
-                  disabled={dataWereObtained}
-                >
-                  {dataWereObtained ? msgErrorService : riskCenterScore}
-                </Text>
+                <>
+                
+                  <Text
+                    appearance="primary"
+                    type="title"
+                    size={dataWereObtained ? "small" : "large"}
+                    disabled={dataWereObtained}
+                  >
+                    {dataWereObtained ? msgErrorService : riskCenterScore}
+                  </Text>
+                  <Text>
+                    / {dataRiskScoringMax?.risk_center_score}
+                  </Text>
+                </>
               )}
             </Stack>
           </Stack>
@@ -185,18 +199,24 @@ export function RiskScoring(props: RiskScoringProps) {
                 </Text>
               )}
             </Stack>
-            <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
+            <Stack justifyContent="end" width="100%">
               {isLoading ? (
                 <SkeletonLine animated width="60px" />
               ) : (
-                <Text
-                  appearance="primary"
-                  type="title"
-                  size={dataWereObtained ? "small" : "large"}
-                  disabled={dataWereObtained}
-                >
-                  {dataWereObtained ? msgErrorService : jobStabilityIndexScore}
-                </Text>
+                <>
+                
+                  <Text
+                    appearance="primary"
+                    type="title"
+                    size={dataWereObtained ? "small" : "large"}
+                    disabled={dataWereObtained}
+                  >
+                    {dataWereObtained ? msgErrorService : jobStabilityIndexScore}
+                  </Text>
+                  <Text>
+                    / {dataRiskScoringMax?.job_stability_index_score}
+                  </Text>
+                </>
               )}
             </Stack>
           </Stack>
@@ -215,18 +235,24 @@ export function RiskScoring(props: RiskScoringProps) {
                 </Text>
               )}
             </Stack>
-            <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
+            <Stack justifyContent="end" width="100%">
               {isLoading ? (
                 <SkeletonLine animated width="60px" />
               ) : (
-                <Text
-                  appearance="primary"
-                  type="title"
-                  size={dataWereObtained ? "small" : "large"}
-                  disabled={dataWereObtained}
-                >
-                  {dataWereObtained ? msgErrorService : maritalStatusScore}
-                </Text>
+                <>
+                
+                  <Text
+                    appearance="primary"
+                    type="title"
+                    size={dataWereObtained ? "small" : "large"}
+                    disabled={dataWereObtained}
+                  >
+                    {dataWereObtained ? msgErrorService : maritalStatusScore}
+                  </Text>
+                  <Text>
+                   / {dataRiskScoringMax?.marital_status_score}
+                  </Text>
+                </>
               )}
             </Stack>
           </Stack>
@@ -245,18 +271,24 @@ export function RiskScoring(props: RiskScoringProps) {
                 </Text>
               )}
             </Stack>
-            <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
+            {/* <Stack justifyContent={isMobile ? "end" : "center"} width="100%"> */}
+            <Stack justifyContent="end" width="100%" alignItems="center">
               {isLoading ? (
                 <SkeletonLine animated width="60px" />
               ) : (
-                <Text
-                  appearance="primary"
-                  type="title"
-                  size={dataWereObtained ? "small" : "large"}
-                  disabled={dataWereObtained}
-                >
-                  {dataWereObtained ? msgErrorService : economicActivityScore}
-                </Text>
+                <>
+                  <Text
+                    appearance="primary"
+                    type="title"
+                    size={dataWereObtained ? "small" : "large"}
+                    disabled={dataWereObtained}
+                  >
+                    {dataWereObtained ? msgErrorService : economicActivityScore} 
+                  </Text>
+                  <Text>
+                    / {dataRiskScoringMax?.economic_activity_score}
+                  </Text>
+                </>
               )}
             </Stack>
           </Stack>

@@ -8,7 +8,7 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
-import { getById } from "@mocks/utils/dataMock.service";
+import { get, getById } from "@mocks/utils/dataMock.service";
 import { Requests, IRiskScoring } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
@@ -73,6 +73,14 @@ export const CreditProfileInfo = () => {
     reciprocity: 0,
   });
 
+  const [riskScoringMax, setRiskScoringMax] = useState({
+    seniority_score:0,
+    risk_center_score:0,
+    job_stability_index_score:0,
+    marital_status_score:0,
+    economic_activity_score:0,
+  });
+
   const [loading, setLoading] = useState(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const dataPrint = useRef<HTMLDivElement>(null);
@@ -97,6 +105,7 @@ export const CreditProfileInfo = () => {
           payment_capacity,
           credit_behavior,
           uncovered_wallet,
+          riskScoringMaximum,
         ] = await Promise.allSettled([
           getById("requests", "k_Prospe", id!),
           getById<IRiskScoring>("risk-scoring", "credit_request_id", id!, true),
@@ -104,6 +113,7 @@ export const CreditProfileInfo = () => {
           getById("payment_capacity", "credit_request_id", id!, true),
           getById("credit_behavior", "credit_request_id", id!, true),
           getById("uncovered_wallet", "credit_request_id", id!, true),
+          get("range_requered_Business_Unit"),
         ]);
 
         if (request.status === "fulfilled") {
@@ -162,6 +172,16 @@ export const CreditProfileInfo = () => {
             }));
           }
         }
+        if(riskScoringMaximum.status === "fulfilled") {
+          const data = riskScoringMaximum.value;
+          if (Array.isArray(data) && data.length > 0) {
+            setRiskScoringMax((prevState) => ({
+              ...prevState,
+              ...data[0],
+            }));
+          }
+        }
+
       } catch (e) {
         console.error(e);
       } finally {
@@ -325,6 +345,7 @@ export const CreditProfileInfo = () => {
           isLoading={loading}
           isMobile={isMobile}
           dataWereObtained={dataWereObtained}
+          dataRiskScoringMax={riskScoringMax}
         />
         <Guarantees
           guaranteesRequired="Ninguna garantía real, o fianza o codeudor."

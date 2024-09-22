@@ -242,3 +242,11 @@ export interface ProspectsResponse {
   credit_request_id: string;
   prospect: Prospect;
 }
+
+export interface IRiskScoringRangeRequered {
+  seniority_score: number;
+  risk_center_score: number;
+  job_stability_index_score: number;
+  marital_status_score: number;
+  economic_activity_score: number;
+}
