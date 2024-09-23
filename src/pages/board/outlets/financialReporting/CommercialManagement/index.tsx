@@ -18,6 +18,7 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { CreditLimit } from "@components/modals/CreditLimit";
 import { Fieldset } from "@components/data/Fieldset";
+
 import {
   truncateTextToMaxLength,
   capitalizeFirstLetter,
@@ -35,7 +36,7 @@ import {
   StyledFieldset,
   StyledVerticalDivider,
   StyledContainerIcon,
-  StyledHorizontalDivider
+  StyledHorizontalDivider,
 } from "./styles";
 
 interface ComercialManagementProps {
@@ -49,21 +50,21 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const { data, children, print, isPrint } = props;
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [showCreditLimitModal, setShowCreditLimitModal] = useState(false);
+  const [openModal, setOpenModal] = useState<string | null>(null);
 
   const { id } = useParams();
-  const isMobile: boolean = useMediaQuery("(max-width: 720px)");
+  const isMobile = useMediaQuery("(max-width: 720px)");
+
+  const handleOpenModal = (modalName: string) => {
+    setOpenModal(modalName);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(null);
+  };
 
   const handleCollapse = () => {
     setCollapse(!collapse);
-  };
-
-  const handleOpenCreditLimitModal = () => {
-    setShowCreditLimitModal(true);
-  };
-
-  const handleCloseCreditLimitModal = () => {
-    setShowCreditLimitModal(false); 
   };
 
   return (
@@ -239,7 +240,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     />
                     {showMenu && (
                       <MenuPropect
-                      options={menuOptions(handleOpenCreditLimitModal)}
+                        options={menuOptions(handleOpenModal)} 
                         onMouseLeave={() => setShowMenu(false)}
                       />
                     )}
@@ -251,9 +252,9 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           )}
         </Stack>
 
-        {showCreditLimitModal && (
+        {openModal === "creditLimit" && (
           <CreditLimit
-            handleClose={handleCloseCreditLimitModal}
+            handleClose={handleCloseModal}
             title="Origen de cupo"
             portalId="portal"
             maxPaymentCapacity={50000000}

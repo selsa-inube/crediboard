@@ -363,25 +363,25 @@ export const SummaryProspectCredit = [
   },
 ];
 
-export const menuOptions = (handleOpenCreditLimitModal: () => void) => [
+export const menuOptions = (handleOpenModal: (modalName: string) => void) => [
   {
     title: "Origen de cupo",
-    onClik: handleOpenCreditLimitModal,
+    onClick: () => handleOpenModal("creditLimit"),
     icon: <MdOutlineBalance />,
   },
   {
     title: "Fuentes de ingreso",
-    onClik: () => {},
+    onClick: () => {},
     icon: <MdOutlineAccountBalanceWallet />,
   },
   {
     title: "Obligaciones financieras",
-    onClik: () => {},
+    onClick: () => {},
     icon: <MdOutlineMonetizationOn />,
   },
   {
     title: "Pagos extras",
-    onClik: () => {},
+    onClick: () => {},
     icon: <MdOutlinePayments />,
   },
 ];
