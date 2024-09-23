@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Stack } from "@inubekit/stack";
+
 import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { SummaryProspect } from "@components/inputs/SummaryOnProspect";
 import { getById } from "@mocks/utils/dataMock.service";
