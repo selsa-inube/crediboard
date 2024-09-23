@@ -1,5 +1,6 @@
 import { MdOutlineRequestQuote } from "react-icons/md";
-import { inube, Stack, Text } from "@inube/design-system";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 
 import { CardInfoContainer } from "@components/cards/CardInfoContainer";
 import { StyledDivider } from "@components/cards/SummaryCard/styles";
@@ -20,18 +21,15 @@ export function OpenWallet(props: OpenWalletProps) {
       icon={<MdOutlineRequestQuote />}
       isMobile={isMobile}
     >
-      <Stack
-        direction="column"
-        gap={isMobile ? inube.spacing.s075 : inube.spacing.s200}
-      >
-        <Stack alignItems="center" gap={inube.spacing.s400}>
+      <Stack direction="column" gap={isMobile ? "6px" : "16px"}>
+        <Stack alignItems="center" gap="32px">
           <Stack width={isMobile ? "110px" : "150px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Factor de descubierto
             </Text>
           </Stack>
           <Stack>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text
                 appearance="primary"
                 type="headline"
@@ -46,7 +44,7 @@ export function OpenWallet(props: OpenWalletProps) {
           </Stack>
         </Stack>
         <StyledDivider />
-        <Stack alignItems="center" gap={inube.spacing.s400}>
+        <Stack alignItems="center" gap="32px">
           <Stack width={isMobile ? "110px" : "150px"}>
             <Text size={isMobile ? "small" : "medium"}>Valor descubierto</Text>
           </Stack>
@@ -61,12 +59,12 @@ export function OpenWallet(props: OpenWalletProps) {
           </Stack>
         </Stack>
         <StyledDivider />
-        <Stack alignItems="center" gap={inube.spacing.s400}>
+        <Stack alignItems="center" gap="32px">
           <Stack width={isMobile ? "120px" : "150px"}>
             <Text size={isMobile ? "small" : "medium"}>Reciprocidad</Text>
           </Stack>
           <Stack>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text
                 appearance="primary"
                 type="headline"
