@@ -1,11 +1,12 @@
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
 import {
   MdOutlinePayments,
   MdOutlineMonetizationOn,
   MdOutlineBalance,
   MdOutlineAccountBalanceWallet,
 } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
+
 
 import { TableBoard } from "@components/data/TableBoard";
 import { Schedule } from "@services/enums";
