@@ -1,4 +1,4 @@
-export interface IncomeModalProps {
+export interface PaymentCapacityProps {
     title: string;
     handleClose: () => void;
     portalId?: string;

@@ -1,7 +1,7 @@
 import { ArgTypes } from "@storybook/react";
-import { IncomeModalProps } from '../interface';
+import { PaymentCapacityProps } from '../interface';
 
-export const props: Partial<ArgTypes<IncomeModalProps>> = {
+export const props: Partial<ArgTypes<PaymentCapacityProps>> = {
   title: {
     control: { type: "text" },
   },

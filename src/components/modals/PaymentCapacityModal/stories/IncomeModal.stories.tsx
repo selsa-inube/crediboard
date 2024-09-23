@@ -2,22 +2,22 @@ import { Meta, StoryObj } from '@storybook/react';
 import { useState } from "react";
 import { Button } from "@inubekit/button";
 
-import { IncomeModal } from '..';
-import { IncomeModalProps } from '../interface';
+import { PaymentCapacity } from '..';
+import { PaymentCapacityProps } from '../interface';
 import { props } from './props';
 
 
-const meta: Meta<typeof IncomeModal> = {
-  title: 'components/modals/IncomeModal',
-  component: IncomeModal,
+const meta: Meta<typeof PaymentCapacity> = {
+  title: 'components/modals/PaymentCapacityModal',
+  component: PaymentCapacity,
   argTypes: props,
 };
 
 export default meta;
 
-type Story = StoryObj<IncomeModalProps>;
+type Story = StoryObj<PaymentCapacityProps>;
 
-export const Default: Story = (args: IncomeModalProps) => {
+export const Default: Story = (args: PaymentCapacityProps) => {
     const [showModal, setShowModal] = useState(false);
   
     return (
@@ -25,7 +25,7 @@ export const Default: Story = (args: IncomeModalProps) => {
         <Button onClick={() => setShowModal(true)}>Abrir Modal</Button>
         {showModal && (
           <>
-            <IncomeModal {...args} handleClose={() => setShowModal(false)} />
+            <PaymentCapacity {...args} handleClose={() => setShowModal(false)} />
           </>
         )}
       </>

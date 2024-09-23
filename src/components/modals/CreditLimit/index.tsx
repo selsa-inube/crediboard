@@ -10,7 +10,7 @@ import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
 
 import { currencyFormat } from "@utils/formatData/currency";
-import { IncomeModal } from "@components/modals/IncomeModal";
+import { PaymentCapacity } from "@src/components/modals/PaymentCapacityModal";
 
 import { creditLimitTexts } from "./creditLimitConfig";
 import { StyledContainerClose, StyledModal, StyledList } from "./styles";
@@ -268,8 +268,8 @@ export const CreditLimit = (props: ICreditLimitProps) => {
           </Button>
         </Stack>
         {isIncomeModalOpen && (
-          <IncomeModal
-            title="Income Details"
+          <PaymentCapacity
+            title="Cupo máx. capacidad de pago"
             portalId={portalId}
             handleClose={closeIncomeModal}
             reportedIncomeSources={2000000}

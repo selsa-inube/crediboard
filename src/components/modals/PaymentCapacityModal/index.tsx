@@ -21,9 +21,9 @@ import { currencyFormat } from "@utils/formatData/currency";
 
 import { incomeModalConfig } from "./IcomeModalConfig";
 import { StyledContainerClose, StyledModal } from "./styles";
-import { IncomeModalProps } from "./interface";
+import { PaymentCapacityProps } from "./interface";
 
-export const IncomeModal = (props: IncomeModalProps) => {
+export const PaymentCapacity = (props: PaymentCapacityProps) => {
   const {
     title,
     portalId,
