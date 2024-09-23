@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 
 interface IStyledCollapseIcon {
   $collapse: boolean;
@@ -23,9 +23,7 @@ const StyledIcon = styled.div<IStyledIcon>`
   height: 36px;
   border-radius: 8px;
   border: 1px solid
-    ${({ theme }) =>
-      theme?.color?.stroke?.primary?.regular ||
-      inube.color.stroke.primary.regular};
+    ${({ theme }) => theme?.palette?.blue?.B400 || inube.palette.blue.B400};
   cursor: pointer;
 `;
 
@@ -37,13 +35,12 @@ const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
 `;
 
 const StyledDivider = styled.hr<IStyledDivider>`
-  margin: ${inube.spacing.s0};
+  margin: "0px";
   width: 100%;
   border: none;
   border-top: 2px solid;
   border-top-color: ${({ theme }) =>
-    theme?.color?.stroke?.divider?.regular ||
-    inube.color.stroke.divider.regular};
+    theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
 const StyledFieldset = styled.div<IStyledFieldset>`
@@ -60,19 +57,19 @@ const StyledCardsCredit = styled.div`
 
   &::-webkit-scrollbar-thumb {
     background-color: ${({ theme }) =>
-      theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
+      theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
     border-radius: 8px;
   }
 `;
 
 const StyledVerticalDivider = styled.hr<IStyledDivider>`
-  background-color: ${({ theme }) => theme?.color?.stroke?.divider?.regular || inube.color.stroke.divider.regular};
+  background-color: ${({ theme }) =>
+    theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
   border: 1px;
   height: 28px;
   margin: 0px;
   width: 2px;
 `;
-
 
 const StyledContainerIcon = styled.div`
   display: flex;
@@ -81,26 +78,26 @@ const StyledContainerIcon = styled.div`
 `;
 
 const StyledMenu = styled.div`
-    background-color: #ffff;
-    border-radius: 8px;
-    box-shadow: 0px 4px 4px 0px #091E4221, 0px 8px 12px 6px #091E4221;
-    padding: 6px 0px;
-    position: absolute;
-    right: 1px;
-    width: 227px;
-    z-index: 2;
-  `;
-
-const StyledHorizontalDivider = styled.hr`
-margin: 0px 10px;
-width: 2px;
-height: 28px; 
-border: none;
-background-color: ${({ theme }) =>
-  theme?.color?.stroke?.divider?.regular ||
-  inube.color.stroke.divider.regular};
+  background-color: #ffff;
+  border-radius: 8px;
+  box-shadow:
+    0px 4px 4px 0px #091e4221,
+    0px 8px 12px 6px #091e4221;
+  padding: 6px 0px;
+  position: absolute;
+  right: 1px;
+  width: 227px;
+  z-index: 2;
 `;
 
+const StyledHorizontalDivider = styled.hr`
+  margin: 0px 10px;
+  width: 2px;
+  height: 28px;
+  border: none;
+  background-color: ${({ theme }) =>
+    theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
+`;
 
 export {
   StyledCollapseIcon,
@@ -111,5 +108,5 @@ export {
   StyledVerticalDivider,
   StyledMenu,
   StyledContainerIcon,
-  StyledHorizontalDivider
+  StyledHorizontalDivider,
 };

@@ -4,7 +4,8 @@ import {
   MdOutlineBalance,
   MdOutlineAccountBalanceWallet,
 } from "react-icons/md";
-import { Text, Stack } from "@inube/design-system";
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
 
 import { TableBoard } from "@components/data/TableBoard";
 import { Schedule } from "@services/enums";
