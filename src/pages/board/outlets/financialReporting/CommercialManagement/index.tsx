@@ -16,6 +16,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
+import { Divider } from "@inubekit/divider";
 
 import { Fieldset } from "@components/data/Fieldset";
 import {
@@ -31,11 +32,9 @@ import { menuOptions } from "./config/config";
 
 import {
   StyledCollapseIcon,
-  StyledDivider,
   StyledFieldset,
-  StyledVerticalDivider,
   StyledContainerIcon,
-  StyledHorizontalDivider
+  StyledVerticalDivider
 } from "./styles";
 
 interface ComercialManagementProps {
@@ -135,7 +134,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   >
                     Ver perfil crediticio
                   </Button>
-                  <StyledHorizontalDivider />
+                  <StyledVerticalDivider />
                   <Icon
                     icon={<MdOutlinePhone />}
                     appearance="primary"
@@ -148,7 +147,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     size="24px"
                     cursorHover
                   />
-                  <StyledHorizontalDivider />
+                  <StyledVerticalDivider />
                 </>
               )}
               <StyledCollapseIcon $collapse={collapse} onClick={handleCollapse}>
@@ -170,11 +169,11 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               Ver perfil crediticio
             </Button>
           )}
-          {collapse && <StyledDivider />}
+          {collapse && <Divider />}
           {collapse && (
             <Stack direction="column" gap="24px">
               {!isMobile && (
-                <Stack gap="24px" justifyContent="end" alignItems="center">
+                <Stack gap="16px" justifyContent="end" alignItems="center">
                   <Button
                     type="button"
                     appearance="primary"
