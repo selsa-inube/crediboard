@@ -21,36 +21,10 @@ function UnfoundData(props: UnfoundDataProps) {
   return (
     <Stack
       direction={smallScreen ? "column-reverse" : "row"}
-      gap={smallScreen ? "16px" : "8px"}
-      alignItems="center"
-      margin="24px"
+      gap="8px"
+      margin="12px"
       justifyContent="center"
     >
-      <Stack direction="column" alignItems="center">
-        <Text type="title" size="small">
-          {title}
-        </Text>
-
-        <Text type="body" size="medium" appearance="gray" textAlign="center">
-          {description}
-        </Text>
-
-        {onRetry ? (
-          <Button
-            type="button"
-            variant="none"
-            spacing="compact"
-            onClick={onRetry}
-          >
-            {buttonDescription}
-          </Button>
-        ) : (
-          <Button type="link" variant="none" spacing="compact" path={route}>
-            {buttonDescription}
-          </Button>
-        )}
-      </Stack>
-
       {image && (
         <ResponsiveImage
           src={image}
@@ -58,6 +32,31 @@ function UnfoundData(props: UnfoundDataProps) {
           $smallScreen={smallScreen}
         />
       )}
+      <Stack direction="column" alignItems="normal" gap="8px">
+        <Text type="title" size="large" appearance="primary">
+          {title}
+        </Text>
+
+        <Text type="body" size="large" appearance="gray" textAlign="start">
+          {description}
+        </Text>
+
+        <Stack
+          justifyContent={smallScreen ? "center" : "flex-end"}
+          width="100%"
+        >
+          <Button
+            type="button"
+            spacing="compact"
+            variant="outlined"
+            onClick={onRetry}
+            path={route}
+            fullwidth={smallScreen}
+          >
+            {buttonDescription}
+          </Button>
+        </Stack>
+      </Stack>
     </Stack>
   );
 }
