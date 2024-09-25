@@ -24,16 +24,15 @@ function UnfoundData(props: UnfoundDataProps) {
       gap="8px"
       margin="12px"
       justifyContent="center"
-      alignItems="center"   
+      alignItems="center"
     >
-      {smallScreen &&
-        image && ( 
-          <StyledImage
-            src={image}
-            alt="UnfoundDataImage"
-            $smallScreen={smallScreen}
-          />
-        )}
+      {smallScreen && image && (
+        <StyledImage
+          src={image}
+          alt="UnfoundDataImage"
+          $smallScreen={smallScreen}
+        />
+      )}
       <Stack direction="column" alignItems="normal" gap="8px">
         <Text type="title" size="large" appearance="primary">
           {title}

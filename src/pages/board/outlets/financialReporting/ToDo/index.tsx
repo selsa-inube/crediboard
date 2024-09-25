@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent,useCallback  } from "react";
+import { useState, useEffect, ChangeEvent, useCallback } from "react";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
@@ -59,53 +59,53 @@ function ToDo(props: ToDoProps) {
   const [flagMessage, setFlagMessage] = useState(flagMessages.success);
 
   const [loading, setLoading] = useState(true);
-  
-const fetchData = useCallback(async () => {
-  setLoading(true);
-  try {
-    const [staffResult, toDoResult] = await Promise.allSettled([
-      get("staff"),
-      getById<IToDo[]>("to-do", "credit_request_state_id", id!, true),
-    ]);
 
-    if (
-      staffResult.status === "fulfilled" &&
-      !(staffResult.value instanceof Error)
-    ) {
-      setStaff(staffResult.value as IStaff[]);
-    }
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const [staffResult, toDoResult] = await Promise.allSettled([
+        get("staff"),
+        getById<IToDo[]>("to-do", "credit_request_state_id", id!, true),
+      ]);
 
-    if (
-      toDoResult.status === "fulfilled" &&
-      !(toDoResult.value instanceof Error)
-    ) {
-      setToDo(toDoResult.value as IToDo[]);
-    } else {
       if (
-        toDoResult.status === "rejected" ||
-        toDoResult.value instanceof Error
+        staffResult.status === "fulfilled" &&
+        !(staffResult.value instanceof Error)
       ) {
-        errorObserver.notify({
-          id: "Management",
-          message: "Error al obtener los datos de gestión.",
-        });
+        setStaff(staffResult.value as IStaff[]);
       }
-      setToDo([]);
-    }
-  } catch (error) {
-    console.log(error);
-    errorObserver.notify({
-      id: "Management",
-      message: (error as Error).message.toString(),
-    });
-  } finally {
-    setLoading(false);
-  }
-}, [id]); // Add id to dependencies
 
-useEffect(() => {
-  fetchData();
-}, [fetchData]); // Only depend on fetchData
+      if (
+        toDoResult.status === "fulfilled" &&
+        !(toDoResult.value instanceof Error)
+      ) {
+        setToDo(toDoResult.value as IToDo[]);
+      } else {
+        if (
+          toDoResult.status === "rejected" ||
+          toDoResult.value instanceof Error
+        ) {
+          errorObserver.notify({
+            id: "Management",
+            message: "Error al obtener los datos de gestión.",
+          });
+        }
+        setToDo([]);
+      }
+    } catch (error) {
+      console.log(error);
+      errorObserver.notify({
+        id: "Management",
+        message: (error as Error).message.toString(),
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [id]); // Add id to dependencies
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]); // Only depend on fetchData
 
   useEffect(() => {
     if (toDo) {
@@ -184,8 +184,9 @@ useEffect(() => {
       <Fieldset
         title="Por hacer"
         descriptionTitle={assignedStaff.commercialManager}
-        heightFieldset="284px"
+        heightFieldset="277px"
         hasOverflow
+        aspectRatio="1"
       >
         {toDo.length === 0 ? (
           <ItemNotFound
@@ -257,7 +258,7 @@ useEffect(() => {
               direction={isMobile ? "column" : "row"}
               gap="16px"
               alignItems="center"
-              padding="8px 0px 0px 0px"
+              padding="4px 0px 0px 0px"
             >
               <Stack direction="column" width="100%" alignItems="end">
                 {icon && isMobile && (
