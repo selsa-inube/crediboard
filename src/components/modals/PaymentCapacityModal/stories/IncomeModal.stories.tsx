@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@inubekit/button";
 
 import { PaymentCapacity } from '..';
-import { PaymentCapacityProps } from '../interface';
+import { PaymentCapacityProps } from '..';
 import { props } from './props';
 
 
