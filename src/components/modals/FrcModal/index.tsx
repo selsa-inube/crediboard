@@ -18,13 +18,13 @@ export interface ScoreModalProps {
   handleClose: () => void;
   subTitle: string;
   portalId?: string;
-  puntajeTotal: number;
-  antiguedad: number;
-  riesgoCentral: number;
-  estabilidadLaboral: number;
-  EstadoCivil: number;
-  actividadEconomica: number;
-  ingresoMensual: number;
+  totalScore: number;
+  seniority: number;
+  centralRisk: number;
+  employmentStability: number;
+  maritalStatus: number;
+  economicActivity: number;
+  monthlyIncome: number;
   maxIndebtedness: string;
 }
 
@@ -32,13 +32,13 @@ export const ScoreModal = (props: ScoreModalProps) => {
   const {
     portalId,
     handleClose,
-    puntajeTotal,
-    antiguedad,
-    riesgoCentral,
-    estabilidadLaboral,
-    EstadoCivil,
-    actividadEconomica,
-    ingresoMensual,
+    totalScore,
+    seniority,
+    centralRisk,
+    employmentStability,
+    maritalStatus,
+    economicActivity,
+    monthlyIncome,
     maxIndebtedness,
   } = props;
 
@@ -58,7 +58,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
           </Text>
           <StyledContainerClose onClick={handleClose}>
             <Stack alignItems="center" gap="5px">
-              <Text>{frcConfig.cerrarBtn}</Text>
+              <Text>{frcConfig.closeBtn}</Text>
               <Icon
                 icon={<MdClear />}
                 size="24px"
@@ -89,7 +89,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
 
             <Stack justifyContent="space-between" alignItems="center">
               <Text appearance="dark" size="large" weight="bold" type="label">
-                {frcConfig.puntajeTotalLabel}
+                {frcConfig.totalScoreLabel}
               </Text>
               <Stack>
                 <Text
@@ -98,10 +98,10 @@ export const ScoreModal = (props: ScoreModalProps) => {
                   type="body"
                   size="large"
                 >
-                  {puntajeTotal}
+                  {totalScore}
                 </Text>
                 <Text weight="bold" type="body" size="large">
-                  {frcConfig.puntajeTotalMax}
+                  {frcConfig.totalScoreMax}
                 </Text>
               </Stack>
             </Stack>
@@ -110,70 +110,70 @@ export const ScoreModal = (props: ScoreModalProps) => {
 
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
-                {frcConfig.antiguedadLabel}
+                {frcConfig.seniorityLabel}
               </Text>
               <Stack>
                 <Text appearance="primary" weight="bold" size="large">
-                  {antiguedad}
+                  {seniority}
                 </Text>
                 <Text weight="bold" type="body" size="large">
-                  {frcConfig.antiguedadMax}
+                  {frcConfig.seniorityMax}
                 </Text>
               </Stack>
             </Stack>
 
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
-                {frcConfig.riesgoCentralLabel}
+                {frcConfig.centralRiskLabel}
               </Text>
               <Stack>
                 <Text appearance="primary" weight="bold" size="large">
-                  {riesgoCentral}
+                  {centralRisk}
                 </Text>
                 <Text weight="bold" type="body" size="large">
-                  {frcConfig.riesgoCentralMax}
+                  {frcConfig.centralRiskMax}
                 </Text>
               </Stack>
             </Stack>
 
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
-                {frcConfig.estabilidadLaboralLabel}
+                {frcConfig.employmentStabilityLabel}
               </Text>
               <Stack>
                 <Text appearance="primary" weight="bold" size="large">
-                  {estabilidadLaboral}
+                  {employmentStability}
                 </Text>
                 <Text weight="bold" type="body" size="large">
-                  {frcConfig.estabilidadLaboralMax}
+                  {frcConfig.employmentStabilityMax}
                 </Text>
               </Stack>
             </Stack>
 
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
-                {frcConfig.estadoCivilLabel}
+                {frcConfig.maritalStatusLabel}
               </Text>
               <Stack>
                 <Text appearance="primary" weight="bold" size="large">
-                  {EstadoCivil}
+                  {maritalStatus}
                 </Text>
                 <Text weight="bold" type="body" size="large">
-                  {frcConfig.estadoCivilMax}
+                  {frcConfig.maritalStatusMax}
                 </Text>
               </Stack>
             </Stack>
 
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
-                {frcConfig.actividadEconomicaLabel}
+                {frcConfig.economicActivityLabel}
               </Text>
               <Stack>
                 <Text appearance="primary" weight="bold" size="large">
-                  {actividadEconomica}
+                  {economicActivity}
                 </Text>
                 <Text weight="bold" type="body" size="large">
-                  {frcConfig.actividadEconomicaMax}
+                  {frcConfig.economicActivityMax}
                 </Text>
               </Stack>
             </Stack>
@@ -183,7 +183,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
 
           <Stack justifyContent="space-between" alignItems="center">
             <Text weight="bold" size="large" type="label">
-              {frcConfig.vecesIngreso}
+              {frcConfig.timesIncome}
             </Text>
             <Text weight="bold" type="body" size="large">
               5
@@ -191,11 +191,11 @@ export const ScoreModal = (props: ScoreModalProps) => {
           </Stack>
           <Stack justifyContent="space-between">
             <Text weight="bold" size="large" type="label">
-              {frcConfig.ingresosLabel}
+              {frcConfig.incomesLabel}
             </Text>
             <Stack>
               <Text appearance="success">$</Text>
-              <Text>{currencyFormat(ingresoMensual, false)}</Text>
+              <Text>{currencyFormat(monthlyIncome, false)}</Text>
             </Stack>
           </Stack>
 
@@ -206,9 +206,9 @@ export const ScoreModal = (props: ScoreModalProps) => {
             iconBefore={<MdOutlineAttachMoney />}
             fullwidth={true}
             id="id"
-            label={frcConfig.endeudamientoMax}
+            label={frcConfig.maxIndebtedness}
             name="name"
-            placeholder="Ingrese la cantidad"
+            placeholder="Enter the amount"
           />
         </Stack>
 
@@ -220,7 +220,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
             appearance="primary"
             fullwidth={isMobile}
           >
-            {frcConfig.cerrarBtn}
+            {frcConfig.closeBtn}
           </Button>
         </Stack>
       </StyledModal>

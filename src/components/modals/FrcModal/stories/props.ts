@@ -6,31 +6,31 @@ export const scoreModalArgs: Partial<ArgTypes<ScoreModalProps>> = {
     control: { type: "text" },
     description: "The title of the modal",
   },
-  puntajeTotal: {
+  totalScore: {
     control: { type: "number" },
     description: "Total score displayed in the modal",
   },
-  antiguedad: {
+  seniority: {
     control: { type: "number" },
     description: "Years of seniority",
   },
-  riesgoCentral: {
+  centralRisk: {
     control: { type: "number" },
     description: "Risk score from the central risk agency",
   },
-  estabilidadLaboral: {
+  employmentStability: {
     control: { type: "number" },
     description: "Labor stability index",
   },
-  EstadoCivil: {
+  maritalStatus: {
     control: { type: "number" },
     description: "Marital status",
   },
-  actividadEconomica: {
+  economicActivity: {
     control: { type: "number" },
     description: "Economic activity score",
   },
-  ingresoMensual: {
+  monthlyIncome: {
     control: { type: "number" },
     description: "Monthly income",
   },

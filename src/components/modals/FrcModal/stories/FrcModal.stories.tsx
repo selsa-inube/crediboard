@@ -32,13 +32,13 @@ export const Default: Story = (args: ScoreModalProps) => {
 };
 
 Default.args = {
-  title: 'Endeudamiento máximo x FRC',
-  puntajeTotal: 150,
-  antiguedad: 10,
-  riesgoCentral: 150,
-  estabilidadLaboral: 200,
-  EstadoCivil: 50,
-  actividadEconomica: 150,
-  ingresoMensual: 5000000,
+  title: 'Maximum Indebtedness by FRC',
+  totalScore: 150,
+  seniority: 10,
+  centralRisk: 150,
+  employmentStability: 200,
+  maritalStatus: 50,
+  economicActivity: 150,
+  monthlyIncome: 5000000,
   maxIndebtedness: '2000000',
 };
