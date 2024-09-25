@@ -92,7 +92,6 @@ export const CreditProfileInfo = () => {
 
   const { "(max-width: 1200px)": isTablet, "(max-width: 751px)": isMobile } =
     useMediaQueries(["(max-width: 1200px)", "(max-width: 751px)"]);
-
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -218,7 +217,7 @@ export const CreditProfileInfo = () => {
               <Text type="title" size="medium" appearance="gray" weight="bold">
                 Perfil crediticio
               </Text>
-              <StyledUl>
+              <StyledUl >
                 <StyledLi>
                   <Text
                     type="title"
@@ -269,7 +268,7 @@ export const CreditProfileInfo = () => {
               <Text type="title" size="medium" appearance="gray" weight="bold">
                 Perfil crediticio
               </Text>
-              <StyledUl isTablet={isTablet}>
+              <StyledUl $isTablet={isTablet}>
                 <StyledLi>
                   <Text
                     type="title"

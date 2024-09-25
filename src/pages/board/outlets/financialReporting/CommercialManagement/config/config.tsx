@@ -1,9 +1,3 @@
-import {
-  MdOutlinePayments,
-  MdOutlineMonetizationOn,
-  MdOutlineBalance,
-  MdOutlineAccountBalanceWallet,
-} from "react-icons/md";
 import { Text, Stack } from "@inube/design-system";
 
 import { TableBoard } from "@components/data/TableBoard";
@@ -363,25 +357,17 @@ export const SummaryProspectCredit = [
   },
 ];
 
-export const menuOptions = [
+export const incomeOptions = [
+  { id: "user1", label: "Camilo Rincón", value: "camilo-rincon" },
   {
-    title: "Origen de cupo",
-    onClik: () => {},
-    icon: <MdOutlineBalance />,
+    id: "user2",
+    label: "Juan Carlos Pérez Gómez",
+    value: "juan-carlos-perez-gomez",
   },
   {
-    title: "Fuentes de ingreso",
-    onClik: () => {},
-    icon: <MdOutlineAccountBalanceWallet />,
-  },
-  {
-    title: "Obligaciones financieras",
-    onClik: () => {},
-    icon: <MdOutlineMonetizationOn />,
-  },
-  {
-    title: "Pagos extras",
-    onClik: () => {},
-    icon: <MdOutlinePayments />,
+    id: "user3",
+    label: "Sofía Alejandra Romero Ruiz",
+    value: "sofia-alejandra-romero-ruiz",
   },
 ];
+
