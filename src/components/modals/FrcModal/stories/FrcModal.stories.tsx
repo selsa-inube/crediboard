@@ -32,7 +32,7 @@ export const Default: Story = (args: ScoreModalProps) => {
 };
 
 Default.args = {
-  title: 'Maximum Indebtedness by FRC',
+  title: 'Endeudamiento máximo x FRC',
   totalScore: 150,
   seniority: 10,
   centralRisk: 150,
