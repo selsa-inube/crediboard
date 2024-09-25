@@ -11,9 +11,10 @@ interface SummaryCardProps {
   isPinned?: boolean;
   hasMessage?: boolean;
   onPinChange?: () => void;
+  errorLoadingPins?: boolean;
 }
 
-function SummaryCard(props: SummaryCardProps) {
+const SummaryCard = (props: SummaryCardProps) => {
   const {
     rad,
     date,
@@ -25,6 +26,7 @@ function SummaryCard(props: SummaryCardProps) {
     isPinned = false,
     hasMessage = false,
     onPinChange,
+    errorLoadingPins,
   } = props;
 
   return (
@@ -39,9 +41,10 @@ function SummaryCard(props: SummaryCardProps) {
       isPinned={isPinned}
       hasMessage={hasMessage}
       onPinChange={onPinChange}
+      errorLoadingPins={errorLoadingPins}
     />
   );
-}
+};
 
 export { SummaryCard };
 export type { SummaryCardProps };
