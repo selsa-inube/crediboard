@@ -1,5 +1,7 @@
 import { PiSealCheckBold } from "react-icons/pi";
-import { inube, Stack, Text } from "@inube/design-system";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
+
 
 import { CardInfoContainer } from "@components/cards/CardInfoContainer";
 import { StyledDivider } from "@components/cards/SummaryCard/styles";
@@ -22,7 +24,7 @@ export function Guarantees(props: GuaranteesProps) {
     >
       <Stack
         direction="column"
-        gap={isMobile ? inube.spacing.s100 : inube.spacing.s150}
+        gap={isMobile ? "8px" : "12px"}
       >
         <Stack direction="column">
           <Text size={isMobile ? "small" : "medium"}>Requeridas:</Text>
@@ -30,6 +32,7 @@ export function Guarantees(props: GuaranteesProps) {
             appearance="primary"
             type="title"
             size={isMobile ? "small" : "medium"}
+            weight="bold"
           >
             {guaranteesRequired}
           </Text>
@@ -41,6 +44,7 @@ export function Guarantees(props: GuaranteesProps) {
             appearance="primary"
             type="title"
             size={isMobile ? "small" : "medium"}
+            weight="bold"
           >
             {guaranteesOffered}
           </Text>
@@ -52,6 +56,7 @@ export function Guarantees(props: GuaranteesProps) {
             appearance="primary"
             type="title"
             size={isMobile ? "small" : "medium"}
+            weight="bold"
           >
             {guaranteesCurrent}
           </Text>
