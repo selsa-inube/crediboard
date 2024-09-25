@@ -1,5 +1,6 @@
 import { MdOutlinePaid } from "react-icons/md";
-import { inube, Stack, Text } from "@inube/design-system";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 
 import { CardInfoContainer } from "@components/cards/CardInfoContainer";
 import { StyledDivider } from "@components/cards/SummaryCard/styles";
@@ -27,11 +28,8 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
       icon={<MdOutlinePaid />}
       isMobile={isMobile}
     >
-      <Stack
-        direction="column"
-        gap={isMobile ? inube.spacing.s075 : inube.spacing.s200}
-      >
-        <Stack alignItems="center" gap={inube.spacing.s400}>
+      <Stack direction="column" gap={isMobile ? "6px" : "16px"}>
+        <Stack alignItems="center" gap="32px">
           <Stack width="110px">
             <Text size={isMobile ? "small" : "medium"}>Valor disponible</Text>
           </Stack>
@@ -46,12 +44,12 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
           </Stack>
         </Stack>
         <StyledDivider />
-        <Stack alignItems="center" gap={inube.spacing.s400}>
+        <Stack alignItems="center" gap="32px">
           <Stack width="110px">
             <Text size={isMobile ? "small" : "medium"}>% Disponible</Text>
           </Stack>
           <Stack>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text
                 appearance="primary"
                 type="headline"
@@ -66,7 +64,7 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
           </Stack>
         </Stack>
         <StyledDivider />
-        <Stack alignItems="center" gap={inube.spacing.s400}>
+        <Stack alignItems="center" gap="32px">
           <Stack width="110px">
             <Text size={isMobile ? "small" : "medium"}>% Usado</Text>
           </Stack>

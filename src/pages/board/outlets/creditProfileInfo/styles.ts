@@ -1,18 +1,19 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
+import { DefaultTheme } from "styled-components";
 
 interface IStyledDivider {
-  theme?: typeof inube;
+  theme?: DefaultTheme;
 }
 
-const StyledDivider = styled.hr`
-  margin: ${inube.spacing.s0};
+const StyledDivider = styled.hr<IStyledDivider>`
+  margin: 0;
   width: 100%;
   border: none;
   border-top: 2px solid;
-  border-top-color: ${({ theme }: IStyledDivider) =>
-    theme?.color?.stroke?.divider?.regular ||
-    inube.color.stroke.divider.regular};
+  background-color: red;
+  border-top-color: ${({ theme }) =>
+    theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
 const StyledContainerToCenter = styled.div`
