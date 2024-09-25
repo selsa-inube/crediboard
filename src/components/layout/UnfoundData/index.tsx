@@ -2,7 +2,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
-import { ResponsiveImage } from "./styles";
+import { StyledImage } from "./styles";
 
 interface UnfoundDataProps {
   title: string;
@@ -20,18 +20,20 @@ function UnfoundData(props: UnfoundDataProps) {
 
   return (
     <Stack
-      direction={smallScreen ? "column-reverse" : "row"}
+      direction={smallScreen ? "column" : "row"}
       gap="8px"
       margin="12px"
       justifyContent="center"
+      alignItems="center"   
     >
-      {image && (
-        <ResponsiveImage
-          src={image}
-          alt="UnfoundDataImage"
-          $smallScreen={smallScreen}
-        />
-      )}
+      {smallScreen &&
+        image && ( 
+          <StyledImage
+            src={image}
+            alt="UnfoundDataImage"
+            $smallScreen={smallScreen}
+          />
+        )}
       <Stack direction="column" alignItems="normal" gap="8px">
         <Text type="title" size="large" appearance="primary">
           {title}
