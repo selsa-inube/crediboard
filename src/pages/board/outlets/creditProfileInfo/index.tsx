@@ -26,6 +26,7 @@ import {
   StyledUl,
   StyledLi,
 } from "./styles";
+import { fieldLabels } from "./config";
 
 const margins = {
   top: 20,
@@ -252,7 +253,7 @@ export const CreditProfileInfo = () => {
             spacing="compact"
             variant="filled"
           >
-            Imprimir
+            {fieldLabels.print}
           </Button>
         </Stack>
 
@@ -266,7 +267,7 @@ export const CreditProfileInfo = () => {
               gap="4px"
             >
               <Text type="title" size="medium" appearance="gray" weight="bold">
-                Perfil crediticio
+                {fieldLabels.creditProfile}
               </Text>
               <StyledUl $isTablet={isTablet}>
                 <StyledLi>
