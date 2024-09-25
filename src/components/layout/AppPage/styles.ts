@@ -59,7 +59,7 @@ const StyledMenuContainer = styled.div`
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
 `;
 
-const Footer = styled.footer`
+const StyledFooter = styled.footer`
   display: flex;
   justify-content: center;
   padding: 16px 24px;
@@ -76,5 +76,5 @@ export {
   StyledMenuContainer,
   StyledCollapseIcon,
   StyledCollapse,
-  Footer
+  StyledFooter
 };

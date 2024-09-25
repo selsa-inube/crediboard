@@ -23,7 +23,7 @@ import {
   StyledMenuContainer,
   StyledCollapseIcon,
   StyledCollapse,
-  Footer,
+  StyledFooter,
 } from "./styles";
 
 const renderLogo = (imgUrl: string) => {
@@ -135,7 +135,7 @@ function AppPage() {
           )}
           <StyledMain>
             <Outlet />
-            <Footer>
+            <StyledFooter>
               <Text
                 appearance="gray"
                 textAlign="center"
@@ -143,7 +143,7 @@ function AppPage() {
               >
                 © 2024 Inube
               </Text>
-            </Footer>
+            </StyledFooter>
           </StyledMain>
         </StyledContainer>
       </Grid>
