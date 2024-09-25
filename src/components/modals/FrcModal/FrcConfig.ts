@@ -1,6 +1,6 @@
 export const frcConfig = {
-  title: "Maximum Indebtedness by FRC",
-  subTitle: "Risk Score",
+  title: "Endeudamiento máximo x FRC",
+  subTitle: "Score de riesgo",
   totalScoreLabel: "Puntaje total",
   totalScoreMax: "/200",
   seniorityLabel: "Antigüedad de 10 años",
