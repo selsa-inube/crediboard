@@ -349,3 +349,11 @@ export interface CreditRequest {
   documentary_requirements: ItemValidation;
   human_validations: ItemValidation;
 }
+
+export interface IRiskScoringRangeRequered {
+  seniority_score: number;
+  risk_center_score: number;
+  job_stability_index_score: number;
+  marital_status_score: number;
+  economic_activity_score: number;
+}
