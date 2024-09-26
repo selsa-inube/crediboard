@@ -363,6 +363,20 @@ export const SummaryProspectCredit = [
   },
 ];
 
+export const incomeOptions = [
+  { id: "user1", label: "Camilo Rincón", value: "camilo-rincon" },
+  {
+    id: "user2",
+    label: "Juan Carlos Pérez Gómez",
+    value: "juan-carlos-perez-gomez",
+  },
+  {
+    id: "user3",
+    label: "Sofía Alejandra Romero Ruiz",
+    value: "sofia-alejandra-romero-ruiz",
+  },
+];
+
 export const menuOptions = (handleOpenModal: (modalName: string) => void) => [
   {
     title: "Origen de cupo",
@@ -371,7 +385,7 @@ export const menuOptions = (handleOpenModal: (modalName: string) => void) => [
   },
   {
     title: "Fuentes de ingreso",
-    onClick: () => {},
+   onClick: () => handleOpenModal("IncomeModal"),
     icon: <MdOutlineAccountBalanceWallet />,
   },
   {

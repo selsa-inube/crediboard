@@ -16,8 +16,11 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
+
 import { CreditLimit } from "@components/modals/CreditLimit";
 import { Fieldset } from "@components/data/Fieldset";
+import { IncomeModal } from "@src/components/modals/IncomeModal";
+import { incomeOptions } from "./config/config";
 
 import {
   truncateTextToMaxLength,
@@ -51,6 +54,26 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [openModal, setOpenModal] = useState<string | null>(null);
+
+  const [form, setForm] = useState({
+    deudor: "",
+    salarioMensual: 2500000,
+    otrosPagos: 0,
+    mesadaPensional: 0,
+    serviciosProfesionales: 0,
+    arrendamientos: 600000,
+    dividendos: 0,
+    rendimientosFinancieros: 0,
+    gananciaPromedio: 200000,
+    total: 3300000,
+  });
+
+  const onChanges = (name: string, newValue: string) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: newValue,
+    }));
+  };
 
   const { id } = useParams();
   const isMobile = useMediaQuery("(max-width: 720px)");
@@ -240,7 +263,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     />
                     {showMenu && (
                       <MenuPropect
-                        options={menuOptions(handleOpenModal)} 
+                        options={menuOptions(handleOpenModal)}
                         onMouseLeave={() => setShowMenu(false)}
                       />
                     )}
@@ -264,6 +287,14 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             currentPortfolio={10000000}
             maxUsableLimit={20000000}
             availableLimitWithoutGuarantee={15000000}
+          />
+        )}
+        {openModal   === "IncomeModal" && (
+          <IncomeModal
+            onChange={onChanges}
+            form={form}
+            handleClose={handleCloseModal}
+            options={incomeOptions}
           />
         )}
       </StyledFieldset>

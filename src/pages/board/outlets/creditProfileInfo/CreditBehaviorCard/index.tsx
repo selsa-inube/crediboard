@@ -1,5 +1,6 @@
 import { MdTrendingUp } from "react-icons/md";
-import { inube, Stack, Text } from "@inube/design-system";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 
 import { CardInfoContainer } from "@components/cards/CardInfoContainer";
 import { StyledDivider } from "@components/cards/SummaryCard/styles";
@@ -21,6 +22,7 @@ export function CreditBehavior(props: CreditBehaviorProps) {
     maximumNumberInstallmentsArrears,
     isMobile,
   } = props;
+
   return (
     <CardInfoContainer
       title="Comportamiento crediticio"
@@ -29,15 +31,15 @@ export function CreditBehavior(props: CreditBehaviorProps) {
     >
       <Stack
         direction="column"
-        gap={isMobile ? inube.spacing.s075 : inube.spacing.s200}
+        gap={isMobile ? "6px" : "16px"}
       >
-        <Stack alignItems="center" gap={inube.spacing.s400}>
+        <Stack alignItems="center" gap="32px">
           <Stack width={isMobile ? "120px" : "170px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Score central de riesgo
             </Text>
           </Stack>
-          <Stack alignItems="center" gap={inube.spacing.s100}>
+          <Stack alignItems="center" gap="8px">
             <Text
               appearance="primary"
               type="headline"
@@ -51,7 +53,7 @@ export function CreditBehavior(props: CreditBehaviorProps) {
           </Stack>
         </Stack>
         <StyledDivider />
-        <Stack alignItems="center" gap={inube.spacing.s400}>
+        <Stack alignItems="center" gap="32px">
           <Stack width={isMobile ? "120px" : "170px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Número de moras internas
@@ -68,7 +70,7 @@ export function CreditBehavior(props: CreditBehaviorProps) {
           </Stack>
         </Stack>
         <StyledDivider />
-        <Stack alignItems="center" gap={inube.spacing.s400}>
+        <Stack alignItems="center" gap="32px">
           <Stack width={isMobile ? "120px" : "170px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Máximo de número de cuotas en mora
