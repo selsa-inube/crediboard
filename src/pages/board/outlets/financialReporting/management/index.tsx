@@ -11,6 +11,7 @@ import { getById, updateActive } from "@mocks/utils/dataMock.service";
 import { TraceType } from "@services/types";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import userNotFound from "@assets/images/ItemNotFound.png";
+import { traceObserver } from "../config";
 
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
 import { errorObserver } from "../config";
@@ -18,7 +19,7 @@ import { errorObserver } from "../config";
 interface IManagementProps {
   id: string;
   isMobile: boolean;
-  updateData: boolean;
+  updateData?: boolean;
 }
 
 export const Management = (props: IManagementProps) => {
@@ -62,7 +63,7 @@ export const Management = (props: IManagementProps) => {
         setError("Error al obtener los datos de gestión.");
       } else {
         const flattenedData: TraceType[] = Array.isArray(data[0])
-          ? ((data as TraceType[][]).flat() as TraceType[])
+          ? ((data as TraceType[]).flat() as TraceType[])
           : (data as TraceType[]);
 
         setTraces(flattenedData);
@@ -77,6 +78,11 @@ export const Management = (props: IManagementProps) => {
     } finally {
       setLoading(false);
     }
+    traceObserver.subscribe(fetchData);
+
+    return () => {
+      traceObserver.unsubscribe(fetchData);
+    };
   }, [id]);
 
   useEffect(() => {

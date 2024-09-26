@@ -26,6 +26,7 @@ function SummaryCardUI(props: SummaryCardProps) {
     isPinned,
     hasMessage,
     onPinChange,
+    errorLoadingPins,
   } = props;
 
   return (
@@ -65,11 +66,7 @@ function SummaryCardUI(props: SummaryCardProps) {
       </StyledLink>
       <Stack direction="column" padding="0px 8px">
         <StyledDivider />
-        <Stack
-          gap="8px"
-          justifyContent="flex-end"
-          padding="8px 0px"
-        >
+        <Stack gap="8px" justifyContent="flex-end" padding="8px 0px">
           {hasMessage && (
             <Icon
               icon={<MdOutlineMessage />}
@@ -84,6 +81,7 @@ function SummaryCardUI(props: SummaryCardProps) {
             size="20px"
             cursorHover
             onClick={onPinChange}
+            disabled={errorLoadingPins}
           />
         </Stack>
       </Stack>

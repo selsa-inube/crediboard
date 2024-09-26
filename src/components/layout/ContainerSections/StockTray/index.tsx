@@ -1,4 +1,4 @@
-import { MdArrowBack, MdMenu } from "react-icons/md";
+import { MdOutlineChevronLeft , MdMenu } from "react-icons/md";
 import { Button, Text, inube } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
@@ -38,60 +38,68 @@ export const StockTray = (props: IStockTrayProps) => {
   const { isMobile, actionButtons, navigation } = props;
 
   return (
-    <Stack direction="column">
-      <Stack justifyContent="space-between" margin="s0">
-        {!isMobile ? (
-          <Button
-            spacing="compact"
-            variant="none"
-            iconBefore={<MdArrowBack />}
-            onClick={navigation}
-          >
-            Volver
-          </Button>
-        ) : (
-          <Stack alignItems="center">
-            <Icon
-              icon={<MdArrowBack />}
-              appearance="primary"
-              size="32px"
-              spacing="none"
-              onClick={navigation}
-            />
-            <Text>Volver</Text>
-          </Stack>
-        )}
-        {isMobile && (
+    <Stack justifyContent="space-between" margin="16px 0px">
+      {!isMobile ? (
+        <Button
+          spacing="compact"
+          variant="outlined"
+          iconBefore={<MdOutlineChevronLeft  />}
+          onClick={navigation}
+        >
+          Volver
+        </Button>
+      ) : (
+        <Stack alignItems="center">
           <Icon
-            icon={<MdMenu />}
-            appearance="dark"
+            icon={<MdOutlineChevronLeft  />}
+            appearance="primary"
             size="32px"
             spacing="none"
-            onClick={actionButtons?.menuIcon}
+            onClick={navigation}
           />
-        )}
-      </Stack>
+          <Text>Volver</Text>
+        </Stack>
+      )}
+      {isMobile && (
+        <Icon
+          icon={<MdMenu />}
+          appearance="dark"
+          size="32px"
+          spacing="none"
+          onClick={actionButtons?.menuIcon}
+        />
+      )}
       {!isMobile && (
         <Stack
           justifyContent="end"
           gap={inube.spacing.s200}
           margin={!isMobile ? "s0 s0 s200 s0" : "s0"}
         >
-          <Stack gap={inube.spacing.s400}>
-            <Button onClick={actionButtons?.buttons?.buttonReject?.OnClick}>
+          <Stack gap={inube.spacing.s200}>
+            <Button
+              spacing="compact"
+              onClick={actionButtons?.buttons?.buttonReject?.OnClick}
+            >
               {configButtons.buttons.buttonReject.label}
             </Button>
 
-            <Button onClick={actionButtons?.buttons?.buttonCancel.OnClick}>
+            <Button
+              spacing="compact"
+              onClick={actionButtons?.buttons?.buttonCancel.OnClick}
+            >
               {configButtons.buttons.buttonCancel.label}
             </Button>
-            <Button onClick={actionButtons?.buttons.buttonPrint.OnClick}>
+            <Button
+              spacing="compact"
+              onClick={actionButtons?.buttons.buttonPrint.OnClick}
+            >
               {configButtons.buttons.buttonPrint.label}
             </Button>
           </Stack>
           <StyledHorizontalDivider />
           <Stack gap={inube.spacing.s200}>
             <Button
+              spacing="compact"
               variant="outlined"
               onClick={actionButtons?.buttonsOutlined?.buttonAttach.OnClick}
             >
@@ -99,6 +107,7 @@ export const StockTray = (props: IStockTrayProps) => {
             </Button>
 
             <Button
+              spacing="compact"
               variant="outlined"
               onClick={
                 actionButtons?.buttonsOutlined.buttonViewAttachments.OnClick

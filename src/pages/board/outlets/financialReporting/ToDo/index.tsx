@@ -1,5 +1,4 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { useParams } from "react-router-dom";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
@@ -13,9 +12,10 @@ import { Textfield } from "@inubekit/textfield";
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo } from "@services/types";
-import { get, getById } from "@mocks/utils/dataMock.service";
+import { get, getById, addItem } from "@mocks/utils/dataMock.service";
 
 import { StaffModal } from "./StaffModal";
+import { traceObserver } from "../config";
 import { errorMessagge, FlagMessage, flagMessages, buttonText } from "./config";
 import { StyledMessageContainer } from "../styles";
 
@@ -35,11 +35,12 @@ interface ToDoProps {
   icon?: IICon;
   button?: IButton;
   isMobile?: boolean;
+  user: string;
+  id: string;
 }
 
 function ToDo(props: ToDoProps) {
-  const { icon, button, isMobile } = props;
-  const { id } = useParams();
+  const { icon, button, isMobile, id, user } = props;
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
   const [toDo, setToDo] = useState<IToDo[]>([]);
@@ -123,7 +124,7 @@ function ToDo(props: ToDoProps) {
     setShowFlagMessage(true);
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (button?.onClick) button.onClick();
 
     const flagMessagesMap: Record<string, FlagMessage> = {
@@ -138,6 +139,26 @@ function ToDo(props: ToDoProps) {
 
     setFlagMessage(msgFlag);
     setShowFlagMessage(true);
+
+    const trace = {
+      trace_value: "Decision_made",
+      credit_request_id: id,
+      use_case: "decision_made",
+      user_id: user,
+      execution_date: new Date().toISOString(),
+      justification: decisionValue,
+      decision_taken_by_user: decisionValue,
+      trace_type: "executed_task",
+      read_novelty: "",
+    };
+  
+    try {
+      await addItem("trace", trace);
+      traceObserver.notify(trace);
+      setShowFlagMessage(true);
+    } catch (error) {
+      console.error("Error al enviar la decisión:", error);
+    }
   };
 
   return (
