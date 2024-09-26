@@ -26,6 +26,7 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
     isMobile,
     dataWereObtained,
   } = props;
+  
   return (
     <CardInfoContainer
       title="Capacidad de pago"
