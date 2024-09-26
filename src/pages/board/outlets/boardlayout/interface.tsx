@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
-import { Stack, Textfield, Text, Icon, inube } from "@inube/design-system";
 import { Toggle } from "@inubekit/toggle";
+import { Icon } from "@inubekit/icon";
+import { Textfield } from "@inubekit/textfield";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 import { Divider } from "@inubekit/divider";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
@@ -154,9 +157,9 @@ function BoardLayoutUI(props: BoardLayoutProps) {
             <Stack width={isMobile ? "100%" : "500px"}>
               <Selectcheck {...selectProps} />
             </Stack>
-            <Stack gap={inube.spacing.s200}>
+            <Stack gap="16px">
               {!isMobile && (
-                <Stack gap={inube.spacing.s100} alignItems="center">
+                <Stack gap="8px" alignItems="center">
                   <Icon
                     icon={<MdOutlinePushPin />}
                     appearance="dark"
@@ -174,7 +177,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 </Stack>
               )}
               {!isMobile && (
-                <Stack gap={inube.spacing.s100}>
+                <Stack gap="8px">
                   <Icon
                     icon={<RxDragHandleVertical />}
                     appearance={

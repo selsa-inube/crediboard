@@ -5,14 +5,8 @@ interface IStyledCollapseIcon {
   $collapse: boolean;
 }
 
-interface IStyledIcon {
-  theme?: typeof inube;
-}
 
-interface IStyledFieldset {
-  theme?: typeof inube;
-}
-const StyledIcon = styled.div<IStyledIcon>`
+const StyledIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,7 +26,7 @@ const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
 `;
 
 
-const StyledFieldset = styled.div<IStyledFieldset>`
+const StyledFieldset = styled.div`
   padding: "4px";
 `;
 
