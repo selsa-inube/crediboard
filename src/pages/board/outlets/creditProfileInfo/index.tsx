@@ -75,11 +75,11 @@ export const CreditProfileInfo = () => {
   });
 
   const [riskScoringMax, setRiskScoringMax] = useState({
-    seniority_score:0,
-    risk_center_score:0,
-    job_stability_index_score:0,
-    marital_status_score:0,
-    economic_activity_score:0,
+    seniority_score: 0,
+    risk_center_score: 0,
+    job_stability_index_score: 0,
+    marital_status_score: 0,
+    economic_activity_score: 0,
   });
 
   const [loading, setLoading] = useState(false);
@@ -172,7 +172,7 @@ export const CreditProfileInfo = () => {
             }));
           }
         }
-        if(riskScoringMaximum.status === "fulfilled") {
+        if (riskScoringMaximum.status === "fulfilled") {
           const data = riskScoringMaximum.value;
           if (Array.isArray(data) && data.length > 0) {
             setRiskScoringMax((prevState) => ({
@@ -181,7 +181,6 @@ export const CreditProfileInfo = () => {
             }));
           }
         }
-
       } catch (e) {
         console.error(e);
       } finally {
@@ -218,7 +217,7 @@ export const CreditProfileInfo = () => {
               <Text type="title" size="medium" appearance="gray" weight="bold">
                 Perfil crediticio
               </Text>
-              <StyledUl >
+              <StyledUl>
                 <StyledLi>
                   <Text
                     type="title"
@@ -315,6 +314,7 @@ export const CreditProfileInfo = () => {
           stabilityIndex={credit_profileInfo.labor_stability_index}
           estimatedCompensation={credit_profileInfo.estimated_severance}
           isMobile={isMobile}
+          dataWereObtained={dataWereObtained}
         />
         <PaymentCapacity
           availableValue={payment_capacity.available_value}
@@ -329,6 +329,7 @@ export const CreditProfileInfo = () => {
           valueDiscovered={uncovered_wallet.discovered_value}
           reciprocity={uncovered_wallet.reciprocity}
           isMobile={isMobile}
+          dataWereObtained={dataWereObtained}
         />
         <RiskScoring
           totalScore={riskScoring.total_score}
@@ -353,6 +354,7 @@ export const CreditProfileInfo = () => {
           guaranteesOffered="Ninguna, casa Bogotá 200 mt2, o fianza o codeudor Pedro Pérez."
           guaranteesCurrent="Ninguna, apartamento, en Bogotá 80 mt2, o vehículo Mazda 323."
           isMobile={isMobile}
+          dataWereObtained={dataWereObtained}
         />
         <CreditBehavior
           centralScoreRisky={credit_behavior.core_risk_score}
@@ -364,6 +366,7 @@ export const CreditProfileInfo = () => {
             credit_behavior.maximum_number_of_installments_in_arrears
           }
           isMobile={isMobile}
+          dataWereObtained={dataWereObtained}
         />
       </Grid>
     </StyledContainerToCenter>
