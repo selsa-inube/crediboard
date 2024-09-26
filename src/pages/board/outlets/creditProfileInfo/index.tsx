@@ -322,6 +322,7 @@ export const CreditProfileInfo = () => {
           incomeB={payment_capacity.base_income}
           percentageUsed={payment_capacity.percentage_used}
           isMobile={isMobile}
+          dataWereObtained={dataWereObtained}
         />
         <OpenWallet
           overdraftFactor={uncovered_wallet.overdraft_factor}
