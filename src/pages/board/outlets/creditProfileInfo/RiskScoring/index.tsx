@@ -4,8 +4,10 @@ import { SkeletonLine } from "@inubekit/skeleton";
 import { Text } from "@inubekit/text";
 
 import { CardInfoContainer } from "@components/cards/CardInfoContainer";
-import { StyledDivider } from "@components/cards/SummaryCard/styles";
 import { IRiskScoringRangeRequered } from "@src/services/types";
+import { ItemNotFound } from "@components/layout/ItemNotFound";
+import { StyledDivider } from "@components/cards/SummaryCard/styles";
+import userNotFound from "@assets/images/ItemNotFound.png";
 
 interface RiskScoringProps {
   totalScore: number;
@@ -26,8 +28,6 @@ interface RiskScoringProps {
   dataRiskScoringMax: IRiskScoringRangeRequered;
 }
 
-const msgErrorService = "Error: No encontrado";
-
 export function RiskScoring(props: RiskScoringProps) {
   const {
     totalScore,
@@ -45,7 +45,6 @@ export function RiskScoring(props: RiskScoringProps) {
     isLoading,
     isMobile,
     dataWereObtained,
-    dataRiskScoringMax,
   } = props;
 
   const getMainGap = () => {
@@ -70,230 +69,172 @@ export function RiskScoring(props: RiskScoringProps) {
       icon={<MdQueryStats />}
       isMobile={isMobile}
     >
-      <Stack direction="column" gap={getMainGap()}>
-        <Stack alignItems="center" gap="32px">
-          <Stack width="100px">
-            {isLoading ? (
-              <SkeletonLine animated width="100%" />
-            ) : (
-              <Text
-                size={isMobile ? "small" : "medium"}
-                disabled={dataWereObtained}
-              >
-                Puntaje total
-              </Text>
-            )}
-          </Stack>
-          <Stack alignItems="center" gap="8px">
-            {isLoading ? (
-              <SkeletonLine animated width="80px" />
-            ) : (
-              <Text
-                appearance="primary"
-                type={dataWereObtained ? "body" : "headline"}
-                size={isMobile || dataWereObtained ? "small" : "medium"}
-                disabled={dataWereObtained}
-              >
-                {dataWereObtained ? msgErrorService : totalScore}
-              </Text>
-            )}
-            {isLoading ? (
-              <SkeletonLine animated width="80px" />
-            ) : (
-              <Text
-                size={isMobile || dataWereObtained ? "small" : "medium"}
-                disabled={dataWereObtained}
-              >
-                {dataWereObtained
-                  ? msgErrorService
-                  : `/ mínimo ${minimumScore}`}
-              </Text>
-            )}
-          </Stack>
-        </Stack>
-        <StyledDivider />
-        <Stack direction="column" gap={getInnerGap()}>
-          <Stack alignItems="center">
-            <Stack width={isMobile ? "600px" : "500px"}>
+      {dataWereObtained ? (
+        <ItemNotFound
+          image={userNotFound}
+          title="Datos no encontrados"
+          description="No pudimos obtener los datos solicitados."
+          buttonDescription="Reintentar"
+          route="#"
+        />
+      ) : (
+        <Stack direction="column" gap={getMainGap()}>
+          <Stack alignItems="center" gap="32px">
+            <Stack width="100px">
               {isLoading ? (
                 <SkeletonLine animated width="100%" />
               ) : (
-                <Text
-                  size={isMobile ? "small" : "medium"}
-                  disabled={dataWereObtained}
-                >
-                  {dataWereObtained
-                    ? msgErrorService
-                    : `Antigüedad de ${seniority} años`}
+                <Text size={isMobile ? "small" : "medium"}>
+                  Puntaje total
                 </Text>
               )}
             </Stack>
-            <Stack justifyContent="end" width="100%">
+            <Stack alignItems="center" gap="8px">
               {isLoading ? (
-                <SkeletonLine animated width="60px" />
+                <SkeletonLine animated width="80px" />
               ) : (
-                <>                
-                  <Text
-                    appearance="primary"
-                    type="title"
-                    size={dataWereObtained ? "small" : "large"}
-                    disabled={dataWereObtained}
-                  >
-                    {dataWereObtained ? msgErrorService : seniorityScore}
-                  </Text>
-                  <Text>
-                    / {dataRiskScoringMax?.seniority_score}
-                  </Text>
-                </>
+                <Text
+                  appearance="primary"
+                  type="headline"
+                  size={isMobile ? "small" : "medium"}
+                >
+                  {totalScore}
+                </Text>
+              )}
+              {isLoading ? (
+                <SkeletonLine animated width="80px" />
+              ) : (
+                <Text size={isMobile ? "small" : "medium"}>
+                  / mínimo {minimumScore}
+                </Text>
               )}
             </Stack>
           </Stack>
-          <Stack alignItems="center">
-            <Stack width={isMobile ? "600px" : "500px"}>
-              {isLoading ? (
-                <SkeletonLine animated width="100%" />
-              ) : (
-                <Text
-                  size={isMobile ? "small" : "medium"}
-                  disabled={dataWereObtained}
-                >
-                  {dataWereObtained
-                    ? msgErrorService
-                    : `Central de riesgo de ${riskCenter} P`}
-                </Text>
-              )}
-            </Stack>
-            <Stack justifyContent="end" width="100%">
-              {isLoading ? (
-                <SkeletonLine animated width="60px" />
-              ) : (
-                <>
-                
+          <StyledDivider />
+          <Stack direction="column" gap={getInnerGap()}>
+            <Stack alignItems="center">
+              <Stack width={isMobile ? "600px" : "500px"}>
+                {isLoading ? (
+                  <SkeletonLine animated width="100%" />
+                ) : (
+                  <Text size={isMobile ? "small" : "medium"}>
+                    Antigüedad de {seniority} años
+                  </Text>
+                )}
+              </Stack>
+              <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
+                {isLoading ? (
+                  <SkeletonLine animated width="60px" />
+                ) : (
                   <Text
                     appearance="primary"
                     type="title"
-                    size={dataWereObtained ? "small" : "large"}
-                    disabled={dataWereObtained}
+                    size={isMobile ? "small" : "large"}
                   >
-                    {dataWereObtained ? msgErrorService : riskCenterScore}
+                    {seniorityScore}
                   </Text>
-                  <Text>
-                    / {dataRiskScoringMax?.risk_center_score}
+                )}
+              </Stack>
+            </Stack>
+            <Stack alignItems="center">
+              <Stack width={isMobile ? "600px" : "500px"}>
+                {isLoading ? (
+                  <SkeletonLine animated width="100%" />
+                ) : (
+                  <Text size={isMobile ? "small" : "medium"}>
+                    Central de riesgo de {riskCenter} P
                   </Text>
-                </>
-              )}
-            </Stack>
-          </Stack>
-          <Stack alignItems="center">
-            <Stack width={isMobile ? "600px" : "500px"}>
-              {isLoading ? (
-                <SkeletonLine animated width="100%" />
-              ) : (
-                <Text
-                  size={isMobile ? "small" : "medium"}
-                  disabled={dataWereObtained}
-                >
-                  {dataWereObtained
-                    ? msgErrorService
-                    : `Indice de estabilidad laboral ${jobStabilityIndex} P`}
-                </Text>
-              )}
-            </Stack>
-            <Stack justifyContent="end" width="100%">
-              {isLoading ? (
-                <SkeletonLine animated width="60px" />
-              ) : (
-                <>
-                
+                )}
+              </Stack>
+              <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
+                {isLoading ? (
+                  <SkeletonLine animated width="60px" />
+                ) : (
                   <Text
                     appearance="primary"
                     type="title"
-                    size={dataWereObtained ? "small" : "large"}
-                    disabled={dataWereObtained}
+                    size={isMobile ? "small" : "large"}
                   >
-                    {dataWereObtained ? msgErrorService : jobStabilityIndexScore}
+                    {riskCenterScore}
                   </Text>
-                  <Text>
-                    / {dataRiskScoringMax?.job_stability_index_score}
+                )}
+              </Stack>
+            </Stack>
+            <Stack alignItems="center">
+              <Stack width={isMobile ? "600px" : "500px"}>
+                {isLoading ? (
+                  <SkeletonLine animated width="100%" />
+                ) : (
+                  <Text size={isMobile ? "small" : "medium"}>
+                    Índice de estabilidad laboral {jobStabilityIndex} P
                   </Text>
-                </>
-              )}
-            </Stack>
-          </Stack>
-          <Stack alignItems="center">
-            <Stack width={isMobile ? "600px" : "500px"}>
-              {isLoading ? (
-                <SkeletonLine animated width="100%" />
-              ) : (
-                <Text
-                  size={isMobile ? "small" : "medium"}
-                  disabled={dataWereObtained}
-                >
-                  {dataWereObtained
-                    ? msgErrorService
-                    : `Estado civil - ${maritalStatus}`}
-                </Text>
-              )}
-            </Stack>
-            <Stack justifyContent="end" width="100%">
-              {isLoading ? (
-                <SkeletonLine animated width="60px" />
-              ) : (
-                <>
-                
+                )}
+              </Stack>
+              <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
+                {isLoading ? (
+                  <SkeletonLine animated width="60px" />
+                ) : (
                   <Text
                     appearance="primary"
                     type="title"
-                    size={dataWereObtained ? "small" : "large"}
-                    disabled={dataWereObtained}
+                    size={isMobile ? "small" : "large"}
                   >
-                    {dataWereObtained ? msgErrorService : maritalStatusScore}
+                    {jobStabilityIndexScore}
                   </Text>
-                  <Text>
-                   / {dataRiskScoringMax?.marital_status_score}
+                )}
+              </Stack>
+            </Stack>
+            <Stack alignItems="center">
+              <Stack width={isMobile ? "600px" : "500px"}>
+                {isLoading ? (
+                  <SkeletonLine animated width="100%" />
+                ) : (
+                  <Text size={isMobile ? "small" : "medium"}>
+                    Estado civil - {maritalStatus}
                   </Text>
-                </>
-              )}
-            </Stack>
-          </Stack>
-          <Stack alignItems="center">
-            <Stack width={isMobile ? "600px" : "500px"}>
-              {isLoading ? (
-                <SkeletonLine animated width="100%" />
-              ) : (
-                <Text
-                  size={isMobile ? "small" : "medium"}
-                  disabled={dataWereObtained}
-                >
-                  {dataWereObtained
-                    ? msgErrorService
-                    : `Actividad economica - ${economicActivity}`}
-                </Text>
-              )}
-            </Stack>
-            {/* <Stack justifyContent={isMobile ? "end" : "center"} width="100%"> */}
-            <Stack justifyContent="end" width="100%" alignItems="center">
-              {isLoading ? (
-                <SkeletonLine animated width="60px" />
-              ) : (
-                <>
+                )}
+              </Stack>
+              <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
+                {isLoading ? (
+                  <SkeletonLine animated width="60px" />
+                ) : (
                   <Text
                     appearance="primary"
                     type="title"
-                    size={dataWereObtained ? "small" : "large"}
-                    disabled={dataWereObtained}
+                    size={isMobile ? "small" : "large"}
                   >
-                    {dataWereObtained ? msgErrorService : economicActivityScore} 
+                    {maritalStatusScore}
                   </Text>
-                  <Text>
-                    / {dataRiskScoringMax?.economic_activity_score}
+                )}
+              </Stack>
+            </Stack>
+            <Stack alignItems="center">
+              <Stack width={isMobile ? "600px" : "500px"}>
+                {isLoading ? (
+                  <SkeletonLine animated width="100%" />
+                ) : (
+                  <Text size={isMobile ? "small" : "medium"}>
+                    Actividad económica - {economicActivity}
                   </Text>
-                </>
-              )}
+                )}
+              </Stack>
+              <Stack justifyContent={isMobile ? "end" : "center"} width="100%">
+                {isLoading ? (
+                  <SkeletonLine animated width="60px" />
+                ) : (
+                  <Text
+                    appearance="primary"
+                    type="title"
+                    size={isMobile ? "small" : "large"}
+                  >
+                    {economicActivityScore}
+                  </Text>
+                )}
+              </Stack>
             </Stack>
           </Stack>
         </Stack>
-      </Stack>
+      )}
     </CardInfoContainer>
   );
 }
