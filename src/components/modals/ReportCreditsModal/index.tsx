@@ -22,7 +22,8 @@ import { Blanket } from "@inubekit/blanket";
 import { useMediaQuery } from "@inubekit/hooks";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
 
-import { headers, data, usePagination } from "./interface";
+import { usePagination } from "./utils";
+import { headers, data, dataReport } from "./config";
 import { ActionModal } from "./Actions";
 import { Details } from "./Detail";
 import { StyledContainerClose, StyledContainer } from "./styles";
@@ -84,11 +85,11 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
         >
           <Stack justifyContent="space-between" alignItems="center" gap="15px">
             <Text size="small" type="headline">
-              Obligaciones financieras
+             {dataReport.title}
             </Text>
             <StyledContainerClose onClick={handleClose}>
               <Stack alignItems="center" gap="8px">
-                <Text>Cerrar</Text>
+                <Text>{dataReport.close}</Text>
                 <Icon
                   icon={<MdClear />}
                   size="24px"
@@ -104,7 +105,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
           ) : (
             <Stack justifyContent="end">
               <Button
-                children="Agregar obligaciones"
+                children={dataReport.addObligations}
                 iconBefore={<MdAdd />}
                 fullwidth={isMobile}
               />
@@ -145,15 +146,18 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
                 } else if (data.length === 0) {
                   return (
                     <Tr>
-                      <Td colSpan={visibleHeaders.length} align="center" type="custom">
+                      <Td
+                        colSpan={visibleHeaders.length}
+                        align="center"
+                        type="custom"
+                      >
                         <Text
                           size="large"
                           type="label"
                           appearance="gray"
                           textAlign="center"
                         >
-                          ¡Ups! No se encontraron obligaciones financieras
-                          vigentes.
+                          {dataReport.noData}
                         </Text>
                       </Td>
                     </Tr>
@@ -207,7 +211,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
             ) : (
               <Textfield
                 id="field1"
-                label="Cuota Total"
+                label={dataReport.totalFee}
                 placeholder="$0"
                 size="compact"
                 type="number"
@@ -220,7 +224,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
             ) : (
               <Textfield
                 id="field2"
-                label="Saldo Total"
+                label={dataReport.totalBalance}
                 placeholder="$0"
                 size="compact"
                 type="number"
