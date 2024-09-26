@@ -21,9 +21,9 @@ function ItemNotFound(props: ItemNotFoundProps) {
   return (
     <Stack
       direction={smallScreen ? "column" : "row"}
-      gap="24px"
+      gap="30px"
       alignItems="center"
-      padding={smallScreen ? "25px" : "35px"}
+      padding={smallScreen ? "40px" : "12px"}
       justifyContent="center"
     >
       <StyledImage
@@ -32,7 +32,7 @@ function ItemNotFound(props: ItemNotFoundProps) {
         $smallScreen={smallScreen}
       />
 
-      <Stack direction="column" gap="24px" alignItems="normal">
+      <Stack direction="column" gap="8px" alignItems="normal">
         <Text type="title" size="large" appearance="primary">
           {title}
         </Text>

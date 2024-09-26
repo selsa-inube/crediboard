@@ -151,20 +151,20 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
         hasOverflow
         hasTable
       >
-        <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
-          {showRetry ? (
-            <UnfoundData
-              image={userNotFound}
-              title="Error al cargar datos"
-              description={
-                errorMessage ||
-                "Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."
-              }
-              buttonDescription="Volver a intentar"
-              route="/retry-path"
-              onRetry={handleRetry}
-            />
-          ) : (
+        {showRetry ? (
+          <UnfoundData
+            image={userNotFound}
+            title="Error al cargar datos"
+            description={
+              errorMessage ||
+              "Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."
+            }
+            buttonDescription="Volver a intentar"
+            route="/retry-path"
+            onRetry={handleRetry}
+          />
+        ) : (
+          <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
             <TableBoard
               id="promissoryNotes"
               titles={titlesFinanacialReporting}
@@ -181,31 +181,31 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
               isFirstTable={true}
               infoItems={infoItems}
             />
-          )}
 
-          {showModal && (
-            <PromissoryNotesModal
-              title="Confirma los datos del usuario"
-              buttonText="Enviar"
-              formValues={formValues}
-              handleClose={handleCloseModal}
-              onSubmit={handleSubmit}
-            />
-          )}
-          {showFlag && (
-            <StyledMessageContainer>
-              <Flag
-                title="Datos enviados"
-                description="Los datos del usuario han sido enviados exitosamente."
-                appearance="success"
-                duration={5000}
-                icon={<MdOutlineThumbUp />}
-                isMessageResponsive
-                closeFlag={() => setShowFlag(false)}
+            {showModal && (
+              <PromissoryNotesModal
+                title="Confirma los datos del usuario"
+                buttonText="Enviar"
+                formValues={formValues}
+                handleClose={handleCloseModal}
+                onSubmit={handleSubmit}
               />
-            </StyledMessageContainer>
-          )}
-        </Stack>
+            )}
+            {showFlag && (
+              <StyledMessageContainer>
+                <Flag
+                  title="Datos enviados"
+                  description="Los datos del usuario han sido enviados exitosamente."
+                  appearance="success"
+                  duration={5000}
+                  icon={<MdOutlineThumbUp />}
+                  isMessageResponsive
+                  closeFlag={() => setShowFlag(false)}
+                />
+              </StyledMessageContainer>
+            )}
+          </Stack>
+        )}
       </Fieldset>
     </>
   );
