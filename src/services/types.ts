@@ -1,3 +1,4 @@
+import { Schedule, GracePeriodType, BorrowerProperties } from "@services/enums";
 interface Requests {
   k_Prospe: number;
   n_Prospe: string;
@@ -223,7 +224,7 @@ interface Prospect {
   credit_products: CreditProduct[];
 }
 
-interface CreditProduct {
+export interface CreditProduct {
   loan_amount: number;
   loan_term: number;
   insurance_rate: number;
@@ -241,4 +242,118 @@ interface CreditProduct {
 export interface ProspectsResponse {
   credit_request_id: string;
   prospect: Prospect;
+}
+
+export interface IProspect {
+  prospect_id: string;
+  public_code: string;
+  state: string;
+  loan_amount: number;
+  installment_limit: number;
+  term_limit: number;
+  timestamp: string;
+  selected_payment_schedule: Schedule;
+  selected_rate_type: string;
+  payment_method: string;
+  grace_period: number;
+  grace_period_type: (typeof GracePeriodType)[keyof typeof GracePeriodType];
+  borrower: IBorrower[];
+  consolidated_credit: IConsolidatedCredit[];
+  credit_product: ICreditProductPropesct[];
+  outlay: IOutlay[];
+}
+
+export interface IConsolidatedCredit {
+  consolidated_amount: number;
+  consolidated_amount_type: string;
+  estimated_date_of_consolidation: string;
+  credit_id: string;
+  line_of_credit_description: string;
+  borrower_id: string;
+  consolidated_credit_schema: string;
+}
+
+export interface IExtraordinaryInstallment {
+  installment_amount: number;
+  installment_date: string;
+  payment_channel_code: string;
+}
+
+export interface ICreditProductPropesct {
+  abbreviated_name: string;
+  credit_product_code: string;
+  loan_amount: number;
+  line_of_credit_code: string;
+  line_of_credit_abbreviated_name: string;
+  interest_rate: number;
+  fixed_points: number;
+  loan_term: number;
+  schedule: Schedule;
+  ordinary_installment_for_principal: IOrdinaryInstallmentsForPrincipal;
+  ordinary_installment_for_interest: IInstallmentsForInterest;
+  extraordinary_installment: IExtraordinaryInstallment;
+  acquired_cash_flow: IAcquiredCashFlow;
+}
+
+export interface IBorrowerProperty {
+  property_name: (typeof BorrowerProperties)[keyof typeof BorrowerProperties];
+  property_value: string;
+}
+
+export interface IOutlay {
+  abreviated_name: string;
+  date: string;
+  amount: number;
+}
+
+export interface IBorrower {
+  borrower_name: string;
+  borrower_type: string;
+  borrower_identification_type: string;
+  borrower_identification_number: string;
+  borrower_property: IBorrowerProperty[];
+}
+
+export interface IOrdinaryInstallmentsForPrincipal {
+  term: number;
+  number_of_installments: number;
+  schedule: Schedule;
+  installment_amount_for_capital: number;
+  installment_amount: number;
+  gradient_rate: number;
+  gradient_value: number;
+  gradient_schedule: string;
+  first_gradient_date: string;
+  payment_channel_code: string;
+}
+
+export interface IInstallmentsForInterest {
+  schedule: Schedule;
+  payment_channel_code: string;
+}
+
+export interface IAcquiredCashFlow {
+  amount: string;
+  date: string;
+  payment_channel_unique_code: string;
+  flow_number: number;
+}
+
+type ItemValidation = {
+  [key: string]: "Y" | "N" | "";
+};
+
+export interface CreditRequest {
+  credit_request_id: string;
+  system_validations: ItemValidation;
+  documentary_requirements: ItemValidation;
+  human_validations: ItemValidation;
+}
+
+export interface IRiskScoringRangeRequered {
+  seniority_score: number;
+  risk_center_score: number;
+  job_stability_index_score: number;
+  marital_status_score: number;
+  economic_activity_score: number;
 }

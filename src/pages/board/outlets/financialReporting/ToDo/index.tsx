@@ -1,5 +1,4 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { useParams } from "react-router-dom";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
@@ -13,10 +12,11 @@ import { Textfield } from "@inubekit/textfield";
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo } from "@services/types";
-import { get, getById } from "@mocks/utils/dataMock.service";
+import { get, getById, addItem } from "@mocks/utils/dataMock.service";
 
 import { StaffModal } from "./StaffModal";
-import { errorMessagge, FlagMessage, flagMessages } from "./config";
+import { traceObserver } from "../config";
+import { errorMessagge, FlagMessage, flagMessages, buttonText } from "./config";
 import { StyledMessageContainer } from "../styles";
 
 interface IICon {
@@ -35,11 +35,12 @@ interface ToDoProps {
   icon?: IICon;
   button?: IButton;
   isMobile?: boolean;
+  user: string;
+  id: string;
 }
 
 function ToDo(props: ToDoProps) {
-  const { icon, button, isMobile } = props;
-  const { id } = useParams();
+  const { icon, button, isMobile, id, user } = props;
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
   const [toDo, setToDo] = useState<IToDo[]>([]);
@@ -123,7 +124,7 @@ function ToDo(props: ToDoProps) {
     setShowFlagMessage(true);
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (button?.onClick) button.onClick();
 
     const flagMessagesMap: Record<string, FlagMessage> = {
@@ -138,6 +139,26 @@ function ToDo(props: ToDoProps) {
 
     setFlagMessage(msgFlag);
     setShowFlagMessage(true);
+
+    const trace = {
+      trace_value: "Decision_made",
+      credit_request_id: id,
+      use_case: "decision_made",
+      user_id: user,
+      execution_date: new Date().toISOString(),
+      justification: decisionValue,
+      decision_taken_by_user: decisionValue,
+      trace_type: "executed_task",
+      read_novelty: "",
+    };
+  
+    try {
+      await addItem("trace", trace);
+      traceObserver.notify(trace);
+      setShowFlagMessage(true);
+    } catch (error) {
+      console.error("Error al enviar la decisión:", error);
+    }
   };
 
   return (
@@ -148,7 +169,7 @@ function ToDo(props: ToDoProps) {
         heightFieldset={isMobile ? "inherit" : "284px"}
         hasOverflow
       >
-        <Stack direction="column" gap={isMobile ? "4px" : "6px"}>
+        <Stack direction="column" gap={isMobile ? "4px" : "6px"} height={isMobile ? "auto" : "205px"}>
           <Stack direction={isMobile ? "column" : "row"}>
             {isMobile && (
               <Text appearance="primary" type="title" size="medium">
@@ -181,15 +202,15 @@ function ToDo(props: ToDoProps) {
                 value={decisionValue.decision}
                 placeholder="Seleccione una opción"
                 size="compact"
-                fullwidth
                 options={toDo?.[0]?.decisions ?? []}
                 onChange={onChangeDecision}
                 disabled={toDo === undefined}
+                fullwidth={isMobile}
               />
             </Stack>
             <Stack
               padding="16px 0px 0px 0px"
-              width={isMobile ? "100%" : "auto"}
+              width="100%"
             >
               <Button
                 onClick={handleSend}
@@ -198,8 +219,9 @@ function ToDo(props: ToDoProps) {
                 loading={button?.loading || false}
                 type="submit"
                 fullwidth={isMobile}
+                spacing="compact"
               >
-                {button?.label || "Enviar"}
+                {button?.label || buttonText}
               </Button>
             </Stack>
           </Stack>
@@ -228,6 +250,7 @@ function ToDo(props: ToDoProps) {
                 value={assignedStaff.commercialManager}
                 fullwidth
                 disabled={staff === null}
+                size="compact"
               />
             </Stack>
             <Textfield
@@ -238,13 +261,14 @@ function ToDo(props: ToDoProps) {
               value={assignedStaff.analyst}
               fullwidth
               disabled={staff === null}
+              size="compact"
             />
             {icon && !isMobile && (
-              <Stack width="100px" height="60px" alignItems="end">
+              <Stack width="100px" height="50px" alignItems="end">
                 <Icon
                   icon={icon.icon}
                   appearance="primary"
-                  size="30px"
+                  size="24px"
                   onClick={handleToggleStaffModal}
                   cursorHover
                   disabled={staff === null}

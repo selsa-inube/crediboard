@@ -1,15 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { MdArrowBack, MdOutlinePrint } from "react-icons/md";
+import { MdOutlineChevronLeft } from "react-icons/md";
 
 import { Button } from "@inubekit/button";
 import { Grid } from "@inubekit/grid";
-import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
-import { getById } from "@mocks/utils/dataMock.service";
+import { get, getById } from "@mocks/utils/dataMock.service";
 import { Requests, IRiskScoring } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
@@ -21,7 +20,13 @@ import { JobStabilityCard } from "./JobStabilityCard";
 import { PaymentCapacity } from "./PaymentCapacity";
 import { OpenWallet } from "./OpenWallet";
 import { RiskScoring } from "./RiskScoring";
-import { StyledDivider, StyledContainerToCenter } from "./styles";
+import {
+  StyledDivider,
+  StyledContainerToCenter,
+  StyledUl,
+  StyledLi,
+} from "./styles";
+import { fieldLabels } from "./config";
 
 const margins = {
   top: 20,
@@ -69,6 +74,14 @@ export const CreditProfileInfo = () => {
     reciprocity: 0,
   });
 
+  const [riskScoringMax, setRiskScoringMax] = useState({
+    seniority_score:0,
+    risk_center_score:0,
+    job_stability_index_score:0,
+    marital_status_score:0,
+    economic_activity_score:0,
+  });
+
   const [loading, setLoading] = useState(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const dataPrint = useRef<HTMLDivElement>(null);
@@ -80,7 +93,6 @@ export const CreditProfileInfo = () => {
 
   const { "(max-width: 1200px)": isTablet, "(max-width: 751px)": isMobile } =
     useMediaQueries(["(max-width: 1200px)", "(max-width: 751px)"]);
-
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -93,6 +105,7 @@ export const CreditProfileInfo = () => {
           payment_capacity,
           credit_behavior,
           uncovered_wallet,
+          riskScoringMaximum,
         ] = await Promise.allSettled([
           getById("requests", "k_Prospe", id!),
           getById<IRiskScoring>("risk-scoring", "credit_request_id", id!, true),
@@ -100,6 +113,7 @@ export const CreditProfileInfo = () => {
           getById("payment_capacity", "credit_request_id", id!, true),
           getById("credit_behavior", "credit_request_id", id!, true),
           getById("uncovered_wallet", "credit_request_id", id!, true),
+          get("range_requered_Business_Unit"),
         ]);
 
         if (request.status === "fulfilled") {
@@ -158,6 +172,16 @@ export const CreditProfileInfo = () => {
             }));
           }
         }
+        if(riskScoringMaximum.status === "fulfilled") {
+          const data = riskScoringMaximum.value;
+          if (Array.isArray(data) && data.length > 0) {
+            setRiskScoringMax((prevState) => ({
+              ...prevState,
+              ...data[0],
+            }));
+          }
+        }
+
       } catch (e) {
         console.error(e);
       } finally {
@@ -177,44 +201,60 @@ export const CreditProfileInfo = () => {
       <Stack direction="column">
         <Stack
           justifyContent="space-between"
-          margin={isTablet ? "8px 16px" : "20px 40px"}
+          alignItems="center"
+          margin={isTablet ? "16px" : "20px 40px"}
+          gap="16px"
         >
           <Button
             spacing="compact"
-            variant="none"
-            iconBefore={<MdArrowBack />}
+            variant="outlined"
+            iconBefore={<MdOutlineChevronLeft />}
             onClick={() => navigate(-1)}
           >
             Volver
           </Button>
           {!isTablet && (
-            <Stack gap="16px" alignItems="center">
-              <Text type="title" appearance="gray">
-                Perfil crediticio del cliente
+            <>
+              <Text type="title" size="medium" appearance="gray" weight="bold">
+                Perfil crediticio
               </Text>
-              <Text type="headline" size="medium">
-                {requests.nnasocia
-                  ? capitalizeFirstLetterEachWord(requests.nnasocia)
-                  : ""}
+              <StyledUl >
+                <StyledLi>
+                  <Text
+                    type="title"
+                    size="medium"
+                    appearance="gray"
+                    weight="normal"
+                  >
+                    {requests.nnasocia
+                      ? capitalizeFirstLetterEachWord(requests.nnasocia)
+                      : ""}
+                  </Text>
+                </StyledLi>
+                <StyledLi>
+                  <Text
+                    type="title"
+                    size="medium"
+                    appearance="gray"
+                    weight="normal"
+                  >
+                    {`CC: ${requests.aanumnit}`}
+                  </Text>
+                </StyledLi>
+              </StyledUl>
+              <Text type="title" size="medium" appearance="gray" weight="bold">
+                {currencyFormat(requests.v_Monto)}
               </Text>
-              <Text type="title" size="small">
-                {`S.C. No. ${requests.aanumnit} ${currencyFormat(requests.v_Monto)}`}
-              </Text>
-            </Stack>
+            </>
           )}
-          {!isMobile && (
-            <Button onClick={handlePrint} disabled={isGeneratingPdf}>
-              Imprimir
-            </Button>
-          )}
-          {isMobile && (
-            <Icon
-              appearance="dark"
-              icon={<MdOutlinePrint />}
-              size="24px"
-              onClick={handlePrint}
-            />
-          )}
+          <Button
+            onClick={handlePrint}
+            disabled={isGeneratingPdf}
+            spacing="compact"
+            variant="filled"
+          >
+            {fieldLabels.print}
+          </Button>
         </Stack>
 
         {isTablet && (
@@ -222,28 +262,39 @@ export const CreditProfileInfo = () => {
             <StyledDivider />
             <Stack
               direction="column"
-              gap="4px"
               alignItems="center"
-              margin="s200 s200 s0 s200"
+              padding="20px 0px 0px"
+              gap="4px"
             >
-              <Text
-                type="title"
-                size={isMobile ? "medium" : "large"}
-                appearance="gray"
-              >
-                Perfil crediticio del cliente
+              <Text type="title" size="medium" appearance="gray" weight="bold">
+                {fieldLabels.creditProfile}
               </Text>
-              <Text
-                type="headline"
-                size={isMobile ? "small" : "medium"}
-                textAlign="center"
-              >
-                {requests.nnasocia
-                  ? capitalizeFirstLetterEachWord(requests.nnasocia)
-                  : ""}
-              </Text>
-              <Text type="title" size="small">
-                {`S.C. No. ${requests.aanumnit} ${currencyFormat(requests.v_Monto)}`}
+              <StyledUl $isTablet={isTablet}>
+                <StyledLi>
+                  <Text
+                    type="title"
+                    size="medium"
+                    appearance="gray"
+                    weight="normal"
+                  >
+                    {requests.nnasocia
+                      ? capitalizeFirstLetterEachWord(requests.nnasocia)
+                      : ""}
+                  </Text>
+                </StyledLi>
+                <StyledLi>
+                  <Text
+                    type="title"
+                    size="medium"
+                    appearance="gray"
+                    weight="normal"
+                  >
+                    {`CC: ${requests.aanumnit}`}
+                  </Text>
+                </StyledLi>
+              </StyledUl>
+              <Text type="title" size="medium" appearance="gray" weight="bold">
+                {currencyFormat(requests.v_Monto)}
               </Text>
             </Stack>
           </>
@@ -294,6 +345,7 @@ export const CreditProfileInfo = () => {
           isLoading={loading}
           isMobile={isMobile}
           dataWereObtained={dataWereObtained}
+          dataRiskScoringMax={riskScoringMax}
         />
         <Guarantees
           guaranteesRequired="Ninguna garantía real, o fianza o codeudor."

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useMediaQuery } from "@inube/design-system";
+import { useMediaQuery } from "@inubekit/hooks";
 
 import { get, updateActive } from "@mocks/utils/dataMock.service";
 import { PinnedRequest, Requests } from "@services/types";
@@ -25,6 +25,7 @@ function BoardLayout() {
   });
 
   const [filteredRequests, setFilteredRequests] = useState<Requests[]>([]);
+  const [errorLoadingPins, setErrorLoadingPins] = useState(false)
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
@@ -76,6 +77,7 @@ function BoardLayout() {
         }
       })
       .catch((error) => {
+        setErrorLoadingPins(true)
         console.error("Error fetching requests pinned data:", error.message);
       });
   }, []);
@@ -176,6 +178,7 @@ function BoardLayout() {
       searchRequestValue={filters.searchRequestValue}
       showPinnedOnly={filters.showPinnedOnly}
       pinnedRequests={boardData.requestsPinned}
+      errorLoadingPins={errorLoadingPins}
       handleSelectCheckChange={(e) =>
         handleFiltersChange({
           selectOptions: filters.selectOptions.map((option) =>

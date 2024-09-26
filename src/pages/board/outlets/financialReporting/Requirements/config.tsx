@@ -6,12 +6,12 @@ import {
   MdOutlineCheckCircle,
   MdRemove,
 } from "react-icons/md";
-import { Stack } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
+import { Stack } from "@inubekit/stack";
 import { Tag } from "@inubekit/tag";
 
-
 import { IEntries } from "@components/data/TableBoard/types";
+import { CreditRequest } from "@services/types";
 
 export const dataButton = {
   title: "Agregar Requisito",
@@ -22,6 +22,34 @@ const receiveData = (data: IEntries) => {
   console.log(data, "function que recibe data");
 };
 
+export const handleSuccess = (
+  setFlagMessage: (message: { title: string; description: string; appearance: "success" | "danger" }) => void,
+  setShowFlagMessage: (state: boolean) => void,
+  setShowApprovalstModal: (state: boolean) => void
+) => {
+  setFlagMessage({
+    title: "Exito",
+    description: "La aprobación se ha completado correctamente.",
+    appearance: "success",
+  });
+  setShowFlagMessage(true);
+  setShowApprovalstModal(false);
+};
+
+export const handleError = (
+  error: Error,
+  setFlagMessage: (message: { title: string; description: string; appearance: "success" | "danger" }) => void,
+  setShowFlagMessage: (state: boolean) => void,
+  setShowApprovalstModal: (state: boolean) => void
+) => {
+  setFlagMessage({
+    title: "Aprobación fallida",
+    description: `No se ha podido realizar la aprobación: ${error.message}`,
+    appearance: "danger",
+  });
+  setShowFlagMessage(true);
+  setShowApprovalstModal(false);
+};
 
 export const titlesRequirements = [
   [
@@ -62,81 +90,13 @@ export const titlesRequirements = [
   ],
 ];
 
-export const entriesRequirements: IEntries[][] = [
-  [
-    {
-      id: "uno",
-      "Validaciones del sistema": "Que el asociado sea activo",
-      tag: <Tag label="Cumple" appearance="success" weight="strong"/>,
-      date: "2024-02-03T00:00:00-05:00",
-      details: "El asociado es activo desde el 2018",
-    },
-    {
-      id: "dos",
-      "Validaciones del sistema": "Que este al días con las obligaciones",
-      tag: <Tag label="Cumple" appearance="success" weight="strong"/>,
-      date: "2024-03-15T00:00:00-05:00",
-      details: "No tiene deudas pendientes",
-    },
-    {
-      id: "tres",
-      "Validaciones del sistema": "Que este al días con las obligaciones",
-      tag: <Tag label="Cumple" appearance="success" weight="strong"/>,
-      date: "2024-04-01T00:00:00-05:00",
-      details: "Cumple con todos los pagos hasta la fecha",
-    },
-    {
-      id: "cuatro",
-      "Validaciones del sistema": "Que tenga más de 30 años",
-      tag: <Tag label="No Cumple" appearance="danger" weight="strong"/>,
-      date: "2024-01-20T00:00:00-05:00",
-      details: "El asociado tiene 28 años",
-    },
-  ],
-  [
-    {
-      id: "cinco",
-      "Requisitos documentales": "Imagenes de la Cédula de ciudadanía",
-      tag: <Tag label="Cumple" appearance="success" weight="strong"/>,
-      date: "2024-02-28T00:00:00-05:00",
-      details: "Imágenes claras y legibles",
-    },
-    {
-      id: "seis",
-      "Requisitos documentales": "Desprendible de pago",
-      tag: <Tag label="Sin Evaluar" appearance="warning" weight="strong"/>,
-      date: "2024-03-10T00:00:00-05:00",
-      details: "Pendiente de revisión",
-    },
-    {
-      id: "siete",
-      "Requisitos documentales": "Declaración de renta",
-      tag: <Tag label="Sin Evaluar" appearance="warning" weight="strong"/>,
-      date: "2024-03-12T00:00:00-05:00",
-      details: "Falta presentar declaración del último año",
-    },
-  ],
-  [
-    {
-      id: "ocho",
-      "Validaciones humanas": "Referencias laborales",
-      tag: <Tag label="Cumple" appearance="success" weight="strong"/>,
-      date: "2024-01-15T00:00:00-05:00",
-      details: "Referencias positivas de los últimos tres empleadores",
-    },
-    {
-      id: "nueve",
-      "Validaciones humanas": "Proponer un codeudor",
-      tag: <Tag label="No Cumple" appearance="danger" weight="strong"/>,
-      date: "2024-02-05T00:00:00-05:00",
-      details: "No ha presentado un codeudor válido",
-    },
-  ],
-];
-
 export const infoItems = [
-  { icon: <MdAddCircleOutline />, text: "Adjuntar", appearance: "help"},
-  { icon: <MdOutlineCheckCircle />, text: "Forzar Aprobación", appearance: "help"},
+  { icon: <MdAddCircleOutline />, text: "Adjuntar", appearance: "help" },
+  {
+    icon: <MdOutlineCheckCircle />,
+    text: "Forzar Aprobación",
+    appearance: "help",
+  },
 ];
 
 export const actionsRequirements = [
@@ -257,26 +217,67 @@ const actionsMobile = [
   },
 ];
 
-export const dataRequirements = [
-  {
-    id: "tabla1",
-    titlesRequirements: titlesRequirements[0],
-    entriesRequirements: entriesRequirements[0],
-    actionsRequirements: actionsRequirements[0],
-    actionsMovile: actionsMobile,
-  },
-  {
-    id: "tabla2",
-    titlesRequirements: titlesRequirements[1],
-    entriesRequirements: entriesRequirements[1],
-    actionsRequirements: actionsRequirements[0],
-    actionsMovile: actionsMobile,
-  },
-  {
-    id: "tabla3",
-    titlesRequirements: titlesRequirements[2],
-    entriesRequirements: entriesRequirements[2],
-    actionsRequirements: actionsRequirements[0],
-    actionsMovile: actionsMobile,
-  },
-];
+const generateTag = (value: string): JSX.Element => {
+  if (value === "Y") {
+    return <Tag label="Cumple" appearance="success" weight="strong" />;
+  } else if (value === "N") {
+    return <Tag label="No Cumple" appearance="danger" weight="strong" />;
+  } else {
+    return <Tag label="Sin Evaluar" appearance="warning" weight="strong" />;
+  }
+};
+
+export const maperEntries = (data: CreditRequest): IEntries[][] => {
+  const result: IEntries[][] = [];
+
+  const systemValidations: IEntries[] = Object.entries(
+    data.system_validations
+  ).map(([key, value], index) => ({
+    id: `sistema-${index + 1}`,
+    "Validaciones del sistema": key,
+    tag: generateTag(value),
+  }));
+
+  const documentaryRequirements: IEntries[] = Object.entries(
+    data.documentary_requirements
+  ).map(([key, value], index) => ({
+    id: `documento-${index + 1}`,
+    "Requisitos documentales": key,
+    tag: generateTag(value),
+  }));
+
+  const humanValidations: IEntries[] = Object.entries(
+    data.human_validations
+  ).map(([key, value], index) => ({
+    id: `humano-${index + 1}`,
+    "Validaciones humanas": key,
+    tag: generateTag(value),
+  }));
+
+  result.push(systemValidations, documentaryRequirements, humanValidations);
+
+  return result;
+};
+
+export const maperDataRequirements = (processedEntries: IEntries[][]) => {
+  return [
+    {
+      id: "tabla1",
+      titlesRequirements: titlesRequirements[0],
+      entriesRequirements: processedEntries[0],
+      actionsMovile: actionsMobile,
+    },
+    {
+      id: "tabla2",
+      titlesRequirements: titlesRequirements[1],
+      entriesRequirements: processedEntries[1],
+      actionsMovile: actionsMobile,
+    },
+    {
+      id: "tabla3",
+      titlesRequirements: titlesRequirements[2],
+      entriesRequirements: processedEntries[2],
+      actionsMovile: actionsMobile,
+    },
+  ];
+};
