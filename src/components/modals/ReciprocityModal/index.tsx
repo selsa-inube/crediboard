@@ -7,12 +7,13 @@ import { inube } from "@inubekit/foundations";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
-import { currencyFormat } from "@src/utils/formatData/currency";
-
-import { StyledContainerClose, StyledContainer } from "./styles";
 import { Divider } from "@inubekit/divider";
 import { Textfield } from "@inubekit/textfield";
 import { Button } from "@inubekit/button";
+import { currencyFormat } from "@src/utils/formatData/currency";
+
+import { StyledContainerClose, StyledContainer } from "./styles";
+import { dataReciprocity } from "./config";
 
 export interface ReciprocityModalProps {
   handleClose: () => void;
@@ -51,11 +52,11 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
         >
           <Stack justifyContent="space-between" alignItems="center" gap="15px">
             <Text size="small" type="headline">
-              Cupo máx. por reciprocidad
+            {dataReciprocity.maxReciprocityQuota}
             </Text>
             <StyledContainerClose onClick={handleClose}>
               <Stack alignItems="center" gap="8px">
-                <Text>Cerrar</Text>
+                <Text>{dataReciprocity.close}</Text>
                 <Icon
                   icon={<MdClear />}
                   size="24px"
@@ -69,7 +70,7 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
           <Stack direction="column" justifyContent="space-between" gap="12px">
             <Stack justifyContent="space-between" gap="40px">
               <Text type="label" size="large" weight="bold">
-                Saldo de aportes y ahorros permanentes
+              {dataReciprocity.contributionsBalance}
               </Text>
               <Stack>
                 <Text type="body" size="medium" appearance="success">
@@ -82,7 +83,7 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
             </Stack>
             <Stack justifyContent="space-between" gap="40px">
               <Text type="label" size="large" weight="bold">
-                No. de veces posible según reglamento
+                {dataReciprocity.timesPossible}
               </Text>
               <Stack>
                 <Text type="body" size="medium">
@@ -99,7 +100,7 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
                 color={inube.icon.dark.content.color.regular}
               />
             }
-            label="Cupo asignado"
+            label={dataReciprocity.assignedQuota}
             placeholder="0"
             value={assignedQuota}
             type="number"
@@ -108,7 +109,7 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
           <Divider />
           <Stack justifyContent="end">
             <Button
-              children="Cerrar"
+              children={dataReciprocity.close}
               appearance="primary"
               onClick={handleClose}
               fullwidth={isMobile}
