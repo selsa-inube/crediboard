@@ -23,7 +23,7 @@ function ItemNotFound(props: ItemNotFoundProps) {
       direction={smallScreen ? "column" : "row"}
       gap="24px"
       alignItems="center"
-      padding="40px 0px 0px 0px"
+      padding={smallScreen ? "25px" : "35px"}
       justifyContent="center"
     >
       <StyledImage

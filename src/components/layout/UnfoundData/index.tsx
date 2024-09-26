@@ -22,9 +22,9 @@ function UnfoundData(props: UnfoundDataProps) {
     <Stack
       direction={smallScreen ? "column" : "row"}
       gap="8px"
-      margin="12px"
       justifyContent="center"
       alignItems="center"
+      padding={smallScreen ? "25px" : "12px"}
     >
       {smallScreen && image && (
         <StyledImage
