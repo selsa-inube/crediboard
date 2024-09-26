@@ -24,7 +24,7 @@ function UnfoundData(props: UnfoundDataProps) {
       gap="8px"
       justifyContent="center"
       alignItems="center"
-      padding={smallScreen ? "25px" : "12px"}
+      padding={smallScreen ? "35px" : "12px"}
     >
       {smallScreen && image && (
         <StyledImage
