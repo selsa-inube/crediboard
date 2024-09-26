@@ -1,5 +1,15 @@
-import { IRiskScoring } from "@services/types";
+import { IRiskScoring, IRiskScoringRangeRequered } from "@services/types";
 import { MaritalStatus, EconomicActivity } from "@services/enums";
+
+export const mockRangeRequeredByTheBusinessUnit: IRiskScoringRangeRequered[] = [
+  {
+    seniority_score: 120,
+    risk_center_score: 100,
+    job_stability_index_score: 100,
+    marital_status_score: 80,
+    economic_activity_score: 100,
+  },
+];
 
 export const mockRiskScoring: IRiskScoring[] = [
   {
