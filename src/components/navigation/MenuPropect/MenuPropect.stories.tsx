@@ -25,11 +25,13 @@ Default.args = {
       title: "Option 1",
       onClick: () => console.log("Option 1"),
       icon: <MdAndroid />,
+      visible: true,
     },
     {
       title: "Option 2",
       onClick: () => console.log("Option 2"),
       icon: <MdAndroid />,
+      visible: true,
     },
   ],
   onMouseLeave: () => console.log("Mouse leave"),

@@ -265,7 +265,7 @@ export interface ICreditProductProspect {
   fixed_points: number;
   loan_term: number;
   schedule: Schedule;
-  ordinary_installment_for_principal: IOrdinaryInstallmentsForPrincipal;
+  ordinary_installment_for_principal?: IOrdinaryInstallmentsForPrincipal;
   ordinary_installment_for_interest: IInstallmentsForInterest;
   extraordinary_installment: IExtraordinaryInstallment;
   acquired_cash_flow: IAcquiredCashFlow;
