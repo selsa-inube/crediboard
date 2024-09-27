@@ -1,5 +1,6 @@
 import { MdOutlineBusinessCenter } from "react-icons/md";
-import { inube, Stack, Text } from "@inube/design-system";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 
 import { CardInfoContainer } from "@components/cards/CardInfoContainer";
 import { StyledDivider } from "@components/cards/SummaryCard/styles";
@@ -15,6 +16,7 @@ interface JobStabilityCardProps {
 export function JobStabilityCard(props: JobStabilityCardProps) {
   const { companySeniority, stabilityIndex, estimatedCompensation, isMobile } =
     props;
+
   return (
     <CardInfoContainer
       title="Estabilidad Laboral"
@@ -23,9 +25,9 @@ export function JobStabilityCard(props: JobStabilityCardProps) {
     >
       <Stack
         direction="column"
-        gap={isMobile ? inube.spacing.s075 : inube.spacing.s200}
+        gap={isMobile ? "6px" : "16px"}
       >
-        <Stack alignItems="center" gap={inube.spacing.s400}>
+        <Stack alignItems="center" gap="32px">
           <Stack width={isMobile ? "110px" : "170px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Antigüedad en la empresa
@@ -42,14 +44,14 @@ export function JobStabilityCard(props: JobStabilityCardProps) {
           </Stack>
         </Stack>
         <StyledDivider />
-        <Stack alignItems="center" gap={inube.spacing.s400}>
+        <Stack alignItems="center" gap="32px">
           <Stack width={isMobile ? "110px" : "170px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Indice de estabilidad laboral
             </Text>
           </Stack>
           <Stack>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text
                 appearance="primary"
                 type="headline"
@@ -62,7 +64,7 @@ export function JobStabilityCard(props: JobStabilityCardProps) {
           </Stack>
         </Stack>
         <StyledDivider />
-        <Stack alignItems="center" gap={inube.spacing.s400}>
+        <Stack alignItems="center" gap="32px">
           <Stack width={isMobile ? "110px" : "170px"}>
             <Text size={isMobile ? "small" : "medium"}>
               Indemnización estimada

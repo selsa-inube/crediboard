@@ -16,7 +16,7 @@ import { get, getById, addItem } from "@mocks/utils/dataMock.service";
 
 import { StaffModal } from "./StaffModal";
 import { traceObserver } from "../config";
-import { errorMessagge, FlagMessage, flagMessages } from "./config";
+import { errorMessagge, FlagMessage, flagMessages, buttonText } from "./config";
 import { StyledMessageContainer } from "../styles";
 
 interface IICon {
@@ -169,7 +169,7 @@ function ToDo(props: ToDoProps) {
         heightFieldset={isMobile ? "inherit" : "284px"}
         hasOverflow
       >
-        <Stack direction="column" gap={isMobile ? "4px" : "6px"}>
+        <Stack direction="column" gap={isMobile ? "4px" : "6px"} height={isMobile ? "auto" : "205px"}>
           <Stack direction={isMobile ? "column" : "row"}>
             {isMobile && (
               <Text appearance="primary" type="title" size="medium">
@@ -202,15 +202,15 @@ function ToDo(props: ToDoProps) {
                 value={decisionValue.decision}
                 placeholder="Seleccione una opción"
                 size="compact"
-                fullwidth
                 options={toDo?.[0]?.decisions ?? []}
                 onChange={onChangeDecision}
                 disabled={toDo === undefined}
+                fullwidth={isMobile}
               />
             </Stack>
             <Stack
               padding="16px 0px 0px 0px"
-              width={isMobile ? "100%" : "auto"}
+              width="100%"
             >
               <Button
                 onClick={handleSend}
@@ -219,8 +219,9 @@ function ToDo(props: ToDoProps) {
                 loading={button?.loading || false}
                 type="submit"
                 fullwidth={isMobile}
+                spacing="compact"
               >
-                {button?.label || "Enviar"}
+                {button?.label || buttonText}
               </Button>
             </Stack>
           </Stack>
@@ -249,6 +250,7 @@ function ToDo(props: ToDoProps) {
                 value={assignedStaff.commercialManager}
                 fullwidth
                 disabled={staff === null}
+                size="compact"
               />
             </Stack>
             <Textfield
@@ -259,13 +261,14 @@ function ToDo(props: ToDoProps) {
               value={assignedStaff.analyst}
               fullwidth
               disabled={staff === null}
+              size="compact"
             />
             {icon && !isMobile && (
-              <Stack width="100px" height="60px" alignItems="end">
+              <Stack width="100px" height="50px" alignItems="end">
                 <Icon
                   icon={icon.icon}
                   appearance="primary"
-                  size="30px"
+                  size="24px"
                   onClick={handleToggleStaffModal}
                   cursorHover
                   disabled={staff === null}

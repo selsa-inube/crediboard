@@ -7,8 +7,11 @@ import {
   MdOutlinePhone,
   MdOutlinePictureAsPdf,
   MdOutlineShare,
-  MdOutlineVideoCameraFront,
+  MdOutlineVideocam,
   MdOutlinePayments,
+  MdOutlineMonetizationOn,
+  MdOutlineAccountBalanceWallet,
+  MdOutlineBalance,
 } from "react-icons/md";
 
 import { Icon } from "@inubekit/icon";
@@ -27,15 +30,16 @@ import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
-import { menuOptions } from "./config/config";
+import { IncomeModal } from "@src/components/modals/IncomeModal";
+import { incomeOptions } from "./config/config";
 
 import {
   StyledCollapseIcon,
-  StyledIcon,
   StyledDivider,
   StyledFieldset,
   StyledVerticalDivider,
   StyledContainerIcon,
+  StyledHorizontalDivider
 } from "./styles";
 
 interface ComercialManagementProps {
@@ -49,6 +53,26 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const { data, children, print, isPrint } = props;
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [showIncomeModal, setShowIncomeModal] = useState(false);
+  const [form, setForm] = useState({
+    deudor: "",
+    salarioMensual: 2500000,
+    otrosPagos: 0,
+    mesadaPensional: 0,
+    serviciosProfesionales: 0,
+    arrendamientos: 600000,
+    dividendos: 0,
+    rendimientosFinancieros: 0,
+    gananciaPromedio: 200000,
+    total: 3300000,
+  });
+
+  const onChanges = (name: string, newValue: string) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: newValue,
+    }));
+  };
 
   const { id } = useParams();
 
@@ -57,6 +81,31 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const handleCollapse = () => {
     setCollapse(!collapse);
   };
+
+  const menuOptions = [
+    {
+      title: "Origen de cupo",
+      onClik: () => {},
+      icon: <MdOutlineBalance />,
+    },
+    {
+      title: "Fuentes de ingreso",
+      onClik: () => {
+        setShowIncomeModal(true);
+      },
+      icon: <MdOutlineAccountBalanceWallet />,
+    },
+    {
+      title: "Obligaciones financieras",
+      onClik: () => {},
+      icon: <MdOutlineMonetizationOn />,
+    },
+    {
+      title: "Pagos extras",
+      onClik: () => {},
+      icon: <MdOutlinePayments />,
+    },
+  ];
 
   return (
     <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
@@ -116,47 +165,50 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             </Stack>
 
             {!isMobile && (
-              <Stack alignItems="center" gap="32px">
+              <Stack gap="36px">
                 <Text type="title">
                   {data.nnasocia &&
                     capitalizeFirstLetterEachWord(
                       truncateTextToMaxLength(data.nnasocia)
                     )}
                 </Text>
-                <Stack gap="16px">
+              </Stack>
+            )}
+            <Stack gap="2px">
+              {!isMobile && (
+                <>
                   <Button
                     type="link"
+                    spacing="compact"
                     path={`/extended-card/${id}/credit-profile`}
                   >
                     Ver perfil crediticio
                   </Button>
-                  <StyledIcon>
-                    <Icon
-                      icon={<MdOutlinePhone />}
-                      appearance="primary"
-                      size="18px"
-                      cursorHover
-                    />
-                  </StyledIcon>
-                  <StyledIcon>
-                    <Icon
-                      icon={<MdOutlineVideoCameraFront />}
-                      appearance="primary"
-                      size="18px"
-                      cursorHover
-                    />
-                  </StyledIcon>
-                </Stack>
-              </Stack>
-            )}
-            <StyledCollapseIcon $collapse={collapse} onClick={handleCollapse}>
-              <Icon
-                icon={<MdOutlineChevronRight />}
-                appearance="primary"
-                size={isMobile ? "32px" : "36px"}
-                cursorHover
-              />
-            </StyledCollapseIcon>
+                  <StyledHorizontalDivider />
+                  <Icon
+                    icon={<MdOutlinePhone />}
+                    appearance="primary"
+                    size="24px"
+                    cursorHover
+                  />
+                  <Icon
+                    icon={<MdOutlineVideocam />}
+                    appearance="primary"
+                    size="24px"
+                    cursorHover
+                  />
+                  <StyledHorizontalDivider />
+                </>
+              )}
+              <StyledCollapseIcon $collapse={collapse} onClick={handleCollapse}>
+                <Icon
+                  icon={<MdOutlineChevronRight />}
+                  appearance="primary"
+                  size={isMobile ? "32px" : "24px"}
+                  cursorHover
+                />
+              </StyledCollapseIcon>
+            </Stack>
           </Stack>
           {isMobile && (
             <Button
@@ -227,7 +279,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       onClick={() => setShowMenu(!showMenu)}
                     />
                     {showMenu && (
-                      <MenuPropect options={menuOptions} onMouseLeave={ () => setShowMenu(false)}/>
+                      <MenuPropect
+                        options={menuOptions}
+                        onMouseLeave={() => setShowMenu(false)}
+                      />
                     )}
                   </StyledContainerIcon>
                 </Stack>
@@ -236,6 +291,14 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             </Stack>
           )}
         </Stack>
+        {showIncomeModal && (
+          <IncomeModal
+            onChange={onChanges}
+            form={form}
+            handleClose={() => setShowIncomeModal(false)}
+            options={incomeOptions}
+          />
+        )}
       </StyledFieldset>
     </Fieldset>
   );

@@ -27,11 +27,11 @@ export const CardInfoContainer = (props: CardInfoContainerProps) => {
         <Icon
           icon={icon}
           appearance="primary"
-          size={isMobile ? "40px" : "56px"}
+          size={isMobile ? "35px" : "40px"}
         />
         <Text
           type="title"
-          size={isMobile ? "medium" : "large"}
+          size={"large"}
           appearance="primary"
           ellipsis
         >

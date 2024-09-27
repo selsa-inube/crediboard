@@ -1,18 +1,22 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
+import { DefaultTheme } from "styled-components";
 
 interface IStyledDivider {
-  theme?: typeof inube;
+  theme?: DefaultTheme;
 }
 
-const StyledDivider = styled.hr`
-  margin: ${inube.spacing.s0};
+interface IStyledUl {
+  $isTablet?: boolean;
+}
+const StyledDivider = styled.hr<IStyledDivider>`
+  margin: 0;
   width: 100%;
   border: none;
   border-top: 2px solid;
-  border-top-color: ${({ theme }: IStyledDivider) =>
-    theme?.color?.stroke?.divider?.regular ||
-    inube.color.stroke.divider.regular};
+  background-color: red;
+  border-top-color: ${({ theme }) =>
+    theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
 const StyledContainerToCenter = styled.div`
@@ -22,4 +26,22 @@ const StyledContainerToCenter = styled.div`
   margin: auto;
 `;
 
-export { StyledDivider, StyledContainerToCenter };
+const StyledUl = styled.ul<IStyledUl>`
+  display: flex;
+  justify-content: space-between;
+  width: ${({ $isTablet }) => ($isTablet ? "auto" : "35%")};
+  padding: 0;
+  margin: 0;
+  flex-direction: ${({ $isTablet }) => ($isTablet ? "column" : "row")};
+  align-items: center;
+  gap: 4px;
+`;
+
+const StyledLi = styled.li`
+  &::marker {
+    color: #5e6c84;
+    font-size: 14px;
+  }
+`;
+
+export { StyledDivider, StyledContainerToCenter, StyledUl, StyledLi };

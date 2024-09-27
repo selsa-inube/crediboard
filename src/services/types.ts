@@ -338,3 +338,22 @@ export interface IAcquiredCashFlow {
   payment_channel_unique_code: string;
   flow_number: number;
 }
+
+type ItemValidation = {
+  [key: string]: "Y" | "N" | "";
+};
+
+export interface CreditRequest {
+  credit_request_id: string;
+  system_validations: ItemValidation;
+  documentary_requirements: ItemValidation;
+  human_validations: ItemValidation;
+}
+
+export interface IRiskScoringRangeRequered {
+  seniority_score: number;
+  risk_center_score: number;
+  job_stability_index_score: number;
+  marital_status_score: number;
+  economic_activity_score: number;
+}
