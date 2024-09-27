@@ -57,6 +57,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [openModal, setOpenModal] = useState<string | null>(null);
+  const [modalHistory, setModalHistory] = useState<string[]>([]);
 
   const maxReciprocity = 40000000;
   const [form, setForm] = useState({
@@ -83,16 +84,26 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   const handleOpenModal = (modalName: string) => {
-    setOpenModal(modalName);
+    setModalHistory((prevHistory) => [...prevHistory, modalName]);
   };
 
   const handleCloseModal = () => {
+    setModalHistory((prevHistory) => {
+      const newHistory = [...prevHistory];
+      newHistory.pop();
+      return newHistory;
+    });
+  };
+
+  const handleCloseModalApp = () => {
     setOpenModal(null);
   };
 
   const handleCollapse = () => {
     setCollapse(!collapse);
   };
+
+  const currentModal = modalHistory[modalHistory.length - 1];
 
   return (
     <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
@@ -279,7 +290,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           )}
         </Stack>
 
-        {openModal === "creditLimit" && (
+        {currentModal === "creditLimit" && (
           <CreditLimit
             handleClose={handleCloseModal}
             title="Origen de cupo"
@@ -300,7 +311,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <PaymentCapacity
             title="Cupo máx. capacidad de pago"
             portalId="portal"
-            handleClose={handleCloseModal}
+            handleClose={handleCloseModalApp}
             reportedIncomeSources={2000000}
             reportedFinancialObligations={6789000}
             subsistenceReserve={2000000}
@@ -312,7 +323,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "reciprocityModal" && (
           <ReciprocityModal
             portalId="portal"
-            handleClose={handleCloseModal}
+            handleClose={handleCloseModalApp}
             balanceOfContributions={maxReciprocity}
             accordingToRegulation={1234500}
             assignedQuota={1000000}
@@ -321,7 +332,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "scoreModal" && (
           <ScoreModal
             title="Score Details"
-            handleClose={handleCloseModal}
+            handleClose={handleCloseModalApp}
             subTitle="Your Financial Score"
             totalScore={750}
             seniority={150}
@@ -333,7 +344,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             maxIndebtedness="50000000"
           />
         )}
-        {openModal === "IncomeModal" && (
+        {currentModal === "IncomeModal" && (
           <IncomeModal
             onChange={onChanges}
             form={form}
@@ -341,7 +352,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             options={incomeOptions}
           />
         )}
-        {openModal === "reportCreditsModal" && (
+        {currentModal === "reportCreditsModal" && (
           <ReportCreditsModal
             handleClose={handleCloseModal}
             portalId="portal"
