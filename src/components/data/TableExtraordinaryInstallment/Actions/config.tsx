@@ -5,7 +5,7 @@ import {
 } from "react-icons/md";
 import { IAction } from "./type";
 
-export const Actions = (onClickDetails:() => void, onClickEdit:() => void , onClickEliminate: () => void): IAction[] => {
+export const Actions = (onClickDetails?:() => void, onClickEdit?:() => void , onClickEliminate?: () => void): IAction[] => {
   return [
     {
       icon: <MdOutlineRemoveRedEye />,

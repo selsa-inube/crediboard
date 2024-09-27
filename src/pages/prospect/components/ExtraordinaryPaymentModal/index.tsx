@@ -9,17 +9,17 @@ import { Button } from "@inubekit/button";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { TableExtraordinaryInstallment } from "@src/components/data/TableExtraordinaryInstallment";
-import { IRowExtraordinaryPayment } from "./types";
+import { IExtraordinaryPayment } from "@src/services/types";
 import { StyledContainerClose, StyledContainerContent } from "./styles";
 import { TextLabels } from "./config";
 
 export interface ExtraordinaryPaymentModalProps {
-  dataTable: IRowExtraordinaryPayment[];
+  dataTable: IExtraordinaryPayment[];
   portalId: string;
   handleClose: () => void;
-  onClickDetails: (id: string) => void;
-  onClickEdit: (id: string) => void;
-  onClickEliminate: (id: string) => void;
+  onClickDetails?: (id: string) => void;
+  onClickEdit?: (id: string) => void;
+  onClickEliminate?: (id: string) => void;
 }
 export const ExtraordinaryPaymentModal = (
   props: ExtraordinaryPaymentModalProps
@@ -45,11 +45,11 @@ export const ExtraordinaryPaymentModal = (
         <Stack gap="16px" direction="column">
           <Stack justifyContent="space-between">
             <Text type="headline" size="small" appearance="dark">
-              Pagos extras
+              {TextLabels.extraPayments}
             </Text>
             <StyledContainerClose onClick={handleClose}>
               <Stack alignItems="center" gap="8px">
-                <Text>Cerrar</Text>
+                <Text>{TextLabels.close}</Text>
                 <Icon
                   icon={<MdClear />}
                   size="24px"

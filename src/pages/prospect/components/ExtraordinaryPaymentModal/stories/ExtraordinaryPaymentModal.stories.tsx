@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { Button, } from "@inube/design-system";
 
+import { IExtraordinaryPayment } from "@src/services/types";
 import { ExtraordinaryPaymentModalProps, ExtraordinaryPaymentModal } from "..";
 import { parameters, props } from "./props";
-import { IRowExtraordinaryPayment } from "../types";
 
 const meta: Meta<typeof ExtraordinaryPaymentModal> = {
   title: "pages/propect/components/ExtraordinaryPaymentModal",
@@ -13,7 +13,7 @@ const meta: Meta<typeof ExtraordinaryPaymentModal> = {
   argTypes: props,
 };
 
-const dataTable: IRowExtraordinaryPayment[] = [
+const dataTable: IExtraordinaryPayment[] = [
   {
     id:"1",
     datePayment: "Mar 25-26",

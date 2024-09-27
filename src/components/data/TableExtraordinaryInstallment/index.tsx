@@ -12,7 +12,7 @@ import {
   Tr,
 } from "@inubekit/table";
 import { useMediaQuery } from "@inubekit/hooks";
-import { IRowExtraordinaryPayment } from "@src/pages/prospect/components/ExtraordinaryPaymentModal/types"
+import { IExtraordinaryPayment } from "@src/services/types";
 
 import {
   headersTableExtraordinaryInstallment,
@@ -21,13 +21,13 @@ import {
 } from "./config";
 
 export interface TableExtraordinaryInstallmentProps {
-  data: IRowExtraordinaryPayment[];
-  onClickDetails: (id: string) => void;
-  onClickEdit: (id: string) => void;
-  onClickEliminate: (id: string) => void;
+  data: IExtraordinaryPayment[];
+  onClickDetails?: (id: string) => void;
+  onClickEdit?: (id: string) => void;
+  onClickEliminate?: (id: string) => void;
 }
 
-const usePagination = (data: IRowExtraordinaryPayment[]) => {
+const usePagination = (data: IExtraordinaryPayment[]) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const pageLength = 5;
@@ -155,9 +155,9 @@ export const TableExtraordinaryInstallment = (
                 visbleActions.map((action) => (
                   <Td key={action.key} type="custom">
                     {action.container(
-                      () => onClickDetails(row.id),
-                      () => onClickEdit(row.id),
-                      () => onClickEliminate(row.id)
+                      () => onClickDetails && onClickDetails(row.id),
+                      () => onClickEdit && onClickEdit(row.id),
+                      () => onClickEliminate && onClickEliminate(row.id)
                     )}
                   </Td>
                 ))}

@@ -5,9 +5,9 @@ import { ActionModal } from "../Actions";
 import { Stack } from "@inubekit/stack";
 
 interface DetailProps {
-  onClickDetails: () => void;
-  onClickEdit: () => void;
-  onClickEliminate: () => void;
+  onClickDetails?: () => void;
+  onClickEdit?: () => void;
+  onClickEliminate?: () => void;
 }
 
 export function Detail(props: DetailProps) {

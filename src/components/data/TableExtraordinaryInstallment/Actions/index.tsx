@@ -8,9 +8,9 @@ import { Actions } from "./config";
 
 interface ActionModalProps {
   onClose: () => void;
-  onClickDetails: () => void;
-  onClickEdit: () => void;
-  onClickEliminate: () => void;
+  onClickDetails?: () => void;
+  onClickEdit?: () => void;
+  onClickEliminate?: () => void;
 }
 
 export function ActionModal(props: ActionModalProps) {

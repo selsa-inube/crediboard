@@ -357,3 +357,10 @@ export interface IRiskScoringRangeRequered {
   marital_status_score: number;
   economic_activity_score: number;
 }
+
+export interface IExtraordinaryPayment {
+  id: string;
+  datePayment: string;
+  value: number;
+  paymentMethod: string;
+}

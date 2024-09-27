@@ -1,15 +1,9 @@
+import { IExtraordinaryPayment } from "@src/services/types";
 interface IHeaders {
   label: string;
-  key: keyof IRowExtraordinaryPayment;
+  key: keyof IExtraordinaryPayment;
   action?: boolean;
   mask?: (value: string|number) => string;
 }
 
-interface IRowExtraordinaryPayment {
-  id: string;
-  datePayment: string;
-  value: number;
-  paymentMethod: string;
-}
-
-export type { IHeaders, IRowExtraordinaryPayment };
+export type { IHeaders };

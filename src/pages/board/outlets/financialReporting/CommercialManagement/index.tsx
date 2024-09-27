@@ -31,6 +31,8 @@ import { currencyFormat } from "@utils/formatData/currency";
 import { Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
 import { IncomeModal } from "@src/components/modals/IncomeModal";
+import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
+import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { incomeOptions } from "./config/config";
 
 import {
@@ -54,6 +56,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showIncomeModal, setShowIncomeModal] = useState(false);
+  const [showExtraOrdinaryPaymentModal, setShowExtraOrdinaryPaymentModal] = useState(false);
   const [form, setForm] = useState({
     deudor: "",
     salarioMensual: 2500000,
@@ -252,6 +255,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                         spacing="compact"
                       />
                     }
+                    onClick={() => setShowExtraOrdinaryPaymentModal(true)}
                   >
                     Pagos extras
                   </Button>
@@ -297,6 +301,13 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             form={form}
             handleClose={() => setShowIncomeModal(false)}
             options={incomeOptions}
+          />
+        )}
+        {showExtraOrdinaryPaymentModal &&(
+          <ExtraordinaryPaymentModal 
+            dataTable={extraordinaryInstallmentMock} 
+            portalId="portal" 
+            handleClose= {() => setShowExtraOrdinaryPaymentModal(false)}
           />
         )}
       </StyledFieldset>
