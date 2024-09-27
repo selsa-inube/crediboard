@@ -7,8 +7,6 @@ import {
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 
-
-
 import { TableBoard } from "@components/data/TableBoard";
 import { Schedule } from "@services/enums";
 
@@ -388,12 +386,12 @@ export const menuOptions = (handleOpenModal: (modalName: string) => void) => [
   },
   {
     title: "Fuentes de ingreso",
-   onClick: () => handleOpenModal("IncomeModal"),
+    onClick: () => handleOpenModal("IncomeModal"),
     icon: <MdOutlineAccountBalanceWallet />,
   },
   {
     title: "Obligaciones financieras",
-    onClick: () => {},
+    onClick: () => handleOpenModal("reportCreditsModal"),
     icon: <MdOutlineMonetizationOn />,
   },
   {

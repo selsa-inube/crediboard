@@ -20,7 +20,11 @@ import { Divider } from "@inubekit/divider";
 
 import { CreditLimit } from "@components/modals/CreditLimit";
 import { Fieldset } from "@components/data/Fieldset";
-import { IncomeModal } from "@src/components/modals/IncomeModal";
+import { IncomeModal } from "@components/modals/IncomeModal";
+import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
+import { ReciprocityModal } from "@components/modals/ReciprocityModal";
+import { ReportCreditsModal } from "@components/modals/ReportCreditsModal";
+import { ScoreModal } from "@components/modals/FrcModal";
 import { incomeOptions } from "./config/config";
 
 import {
@@ -38,7 +42,7 @@ import {
   StyledCollapseIcon,
   StyledFieldset,
   StyledContainerIcon,
-  StyledVerticalDivider
+  StyledVerticalDivider,
 } from "./styles";
 
 interface ComercialManagementProps {
@@ -54,6 +58,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const [showMenu, setShowMenu] = useState(false);
   const [openModal, setOpenModal] = useState<string | null>(null);
 
+  const maxReciprocity = 40000000;
   const [form, setForm] = useState({
     deudor: "",
     salarioMensual: 2500000,
@@ -286,14 +291,62 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             currentPortfolio={10000000}
             maxUsableLimit={20000000}
             availableLimitWithoutGuarantee={15000000}
+            onOpenPaymentCapacityModal={() => setOpenModal("paymentCapacity")}
+            onOpenReciprocityModal={() => setOpenModal("reciprocityModal")}
+            onOpenFrcModal={() => setOpenModal("scoreModal")}
           />
         )}
-        {openModal   === "IncomeModal" && (
+        {openModal === "paymentCapacity" && (
+          <PaymentCapacity
+            title="Cupo máx. capacidad de pago"
+            portalId="portal"
+            handleClose={handleCloseModal}
+            reportedIncomeSources={2000000}
+            reportedFinancialObligations={6789000}
+            subsistenceReserve={2000000}
+            availableForNewCommitments={5000000}
+            maxVacationTerm={12}
+            maxAmount={1000000}
+          />
+        )}
+        {openModal === "reciprocityModal" && (
+          <ReciprocityModal
+            portalId="portal"
+            handleClose={handleCloseModal}
+            balanceOfContributions={maxReciprocity}
+            accordingToRegulation={1234500}
+            assignedQuota={1000000}
+          />
+        )}
+        {openModal === "scoreModal" && (
+          <ScoreModal
+            title="Score Details"
+            handleClose={handleCloseModal}
+            subTitle="Your Financial Score"
+            totalScore={750}
+            seniority={150}
+            centralRisk={50}
+            employmentStability={230}
+            maritalStatus={30}
+            economicActivity={118}
+            monthlyIncome={3000000}
+            maxIndebtedness="50000000"
+          />
+        )}
+        {openModal === "IncomeModal" && (
           <IncomeModal
             onChange={onChanges}
             form={form}
             handleClose={handleCloseModal}
             options={incomeOptions}
+          />
+        )}
+        {openModal === "reportCreditsModal" && (
+          <ReportCreditsModal
+            handleClose={handleCloseModal}
+            portalId="portal"
+            totalBalance={100000}
+            totalFee={5000}
           />
         )}
       </StyledFieldset>
