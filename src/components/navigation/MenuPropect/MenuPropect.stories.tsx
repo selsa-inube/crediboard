@@ -23,12 +23,12 @@ Default.args = {
   options: [
     {
       title: "Option 1",
-      onClik: () => console.log("Option 1"),
+      onClick: () => console.log("Option 1"),
       icon: <MdAndroid />,
     },
     {
       title: "Option 2",
-      onClik: () => console.log("Option 2"),
+      onClick: () => console.log("Option 2"),
       icon: <MdAndroid />,
     },
   ],
