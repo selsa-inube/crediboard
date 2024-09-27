@@ -41,3 +41,5 @@ export const flagMessages: Record<string, FlagMessage> = {
     appearance: "success",
   },
 };
+
+export const buttonText = "Enviar";

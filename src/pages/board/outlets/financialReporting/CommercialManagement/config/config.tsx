@@ -1,3 +1,9 @@
+import {
+  MdOutlinePayments,
+  MdOutlineMonetizationOn,
+  MdOutlineBalance,
+  MdOutlineAccountBalanceWallet,
+} from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 
@@ -374,3 +380,25 @@ export const incomeOptions = [
   },
 ];
 
+export const menuOptions = (handleOpenModal: (modalName: string) => void) => [
+  {
+    title: "Origen de cupo",
+    onClick: () => handleOpenModal("creditLimit"),
+    icon: <MdOutlineBalance />,
+  },
+  {
+    title: "Fuentes de ingreso",
+   onClick: () => handleOpenModal("IncomeModal"),
+    icon: <MdOutlineAccountBalanceWallet />,
+  },
+  {
+    title: "Obligaciones financieras",
+    onClick: () => {},
+    icon: <MdOutlineMonetizationOn />,
+  },
+  {
+    title: "Pagos extras",
+    onClick: () => {},
+    icon: <MdOutlinePayments />,
+  },
+];
