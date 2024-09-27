@@ -3,9 +3,8 @@ import { Icon } from "@inubekit/icon";
 import { Stack, inube } from "@inube/design-system";
 import { Textfield } from "@inubekit/textfield";
 
-import { LuPaperclip } from "react-icons/lu";
 import localforage from "localforage";
-import { MdOutlineSend } from "react-icons/md";
+import { MdOutlineSend, MdAttachFile } from "react-icons/md";
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
 import { getById, updateActive } from "@mocks/utils/dataMock.service";
@@ -177,12 +176,12 @@ export const Management = (props: IManagementProps) => {
                 ))}
           </ChatContent>
           <form>
-            <Stack alignItems="center" direction="row" gap={inube.spacing.s150}>
+            <Stack alignItems="center" direction="row" gap={inube.spacing.s050}>
               <Icon
                 appearance="primary"
                 cursorHover
                 size="24px"
-                icon={<LuPaperclip />}
+                icon={<MdAttachFile />}
               />
               <Textfield
                 id="text"
@@ -190,16 +189,15 @@ export const Management = (props: IManagementProps) => {
                 fullwidth
                 value={newMessage}
                 onChange={handleInputChange}
+                size="compact"
               />
-              <Stack>
-                <Icon
-                  appearance="primary"
-                  cursorHover
-                  size="24px"
-                  icon={<MdOutlineSend />}
-                  onClick={handleFormSubmit}
-                />
-              </Stack>
+              <Icon
+                appearance="primary"
+                cursorHover
+                size="24px"
+                icon={<MdOutlineSend />}
+                onClick={handleFormSubmit}
+              />
             </Stack>
           </form>
         </Stack>
