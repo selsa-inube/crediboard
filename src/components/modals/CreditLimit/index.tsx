@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { MdClear, MdOutlineVisibility, MdInfoOutline } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -9,13 +10,10 @@ import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
 
 import { currencyFormat } from "@utils/formatData/currency";
+import { PaymentCapacity } from "@src/components/modals/PaymentCapacityModal";
 
 import { creditLimitTexts } from "./creditLimitConfig";
-import {
-  StyledContainerClose,
-  StyledModal,
-  StyledList,
-} from "./styles";
+import { StyledContainerClose, StyledModal, StyledList } from "./styles";
 
 export interface ICreditLimitProps {
   title: string;
@@ -53,6 +51,16 @@ export const CreditLimit = (props: ICreditLimitProps) => {
 
   const isMobile = useMediaQuery("(max-width: 700px)");
 
+  const [isIncomeModalOpen, setIncomeModalOpen] = useState(false);
+
+  const openIncomeModal = () => {
+    setIncomeModalOpen(true);
+  };
+
+  const closeIncomeModal = () => {
+    setIncomeModalOpen(false);
+  };
+
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
@@ -72,19 +80,26 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             </Stack>
           </StyledContainerClose>
         </Stack>
-        <Divider  />
+        <Divider />
         <Stack direction="column" gap="24px">
           <StyledList>
             <Stack direction="column" gap="12px">
               <li>
                 <Stack justifyContent="space-between">
-                  <Text appearance="dark" size="large" weight="bold" type="label">
+                  <Text
+                    appearance="dark"
+                    size="large"
+                    weight="bold"
+                    type="label"
+                  >
                     {creditLimitTexts.maxPaymentCapacity}
                   </Text>
 
                   <Stack alignItems="center">
                     <Text appearance="success">$</Text>
-                    <Text type="body">{currencyFormat(maxPaymentCapacity, false)}</Text>
+                    <Text type="body" size="medium" appearance="dark">
+                      {currencyFormat(maxPaymentCapacity, false)}
+                    </Text>
                     <Stack margin="0px 0px 0px 5px">
                       <Icon
                         appearance="primary"
@@ -94,6 +109,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                         cursorHover={true}
                         variant="filled"
                         shape="circle"
+                        onClick={openIncomeModal}
                       />
                     </Stack>
                   </Stack>
@@ -101,13 +117,20 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               </li>
               <li>
                 <Stack justifyContent="space-between">
-                  <Text appearance="dark" size="large" weight="bold" type="label">
+                  <Text
+                    appearance="dark"
+                    size="large"
+                    weight="bold"
+                    type="label"
+                  >
                     {creditLimitTexts.maxReciprocity}
                   </Text>
 
                   <Stack alignItems="center">
                     <Text appearance="success">$</Text>
-                    <Text type="body">{currencyFormat(maxReciprocity, false)}</Text>
+                    <Text type="body" size="medium" appearance="dark">
+                      {currencyFormat(maxReciprocity, false)}
+                    </Text>
                     <Stack margin="0px 0px 0px 5px">
                       <Icon
                         appearance="primary"
@@ -124,13 +147,23 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               </li>
               <li>
                 <Stack justifyContent="space-between">
-                  <Text appearance="dark" size="large" weight="bold" type="label">
+                  <Text
+                    appearance="dark"
+                    size="large"
+                    weight="bold"
+                    type="label"
+                  >
                     {creditLimitTexts.maxDebtFRC}
                   </Text>
 
                   <Stack alignItems="center">
                     <Text appearance="success">$</Text>
-                    <Text weight="bold" type="body">
+                    <Text
+                      weight="bold"
+                      type="body"
+                      size="medium"
+                      appearance="dark"
+                    >
                       {currencyFormat(maxDebtFRC, false)}
                     </Text>
                     <Stack margin="0px 0px 0px 5px">
@@ -149,12 +182,22 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               </li>
               <li>
                 <Stack justifyContent="space-between">
-                  <Text appearance="dark" size="large" weight="bold" type="label">
+                  <Text
+                    appearance="dark"
+                    size="large"
+                    weight="bold"
+                    type="label"
+                  >
                     {creditLimitTexts.assignedLimit}
                   </Text>
-                  <Stack>
+                  <Stack alignItems="center" gap="4px">
                     <Text appearance="success">$</Text>
-                    <Text weight="bold" type="body">
+                    <Text
+                      weight="bold"
+                      type="body"
+                      size="medium"
+                      appearance="dark"
+                    >
                       {currencyFormat(assignedLimit, false)}
                     </Text>
                   </Stack>
@@ -163,7 +206,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             </Stack>
           </StyledList>
 
-          <Divider  />
+          <Divider />
 
           <Stack alignItems="center">
             <Icon
@@ -177,21 +220,27 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             </Text>
           </Stack>
 
-          <Stack direction="column" gap="12px" >
+          <Stack direction="column" gap="12px">
             <Stack justifyContent="space-between">
-              <Text weight="bold" type="label">{creditLimitTexts.maxUsableLimit}</Text>
-              <Stack>
+              <Text weight="bold" type="label">
+                {creditLimitTexts.maxUsableLimit}
+              </Text>
+              <Stack alignItems="center">
                 <Text appearance="success">$</Text>
-                <Text type="body">{currencyFormat(maxUsableLimit, false)}</Text>
+                <Text type="body" size="medium" appearance="dark">
+                  {currencyFormat(maxUsableLimit, false)}
+                </Text>
               </Stack>
             </Stack>
             <Stack justifyContent="space-between">
               <Text size="large" appearance="gray" weight="bold" type="label">
                 {creditLimitTexts.currentPortfolio}
               </Text>
-              <Stack>
+              <Stack alignItems="center">
                 <Text appearance="success">$</Text>
-                <Text type="body">{currencyFormat(currentPortfolio, false)}</Text>
+                <Text type="body" size="medium" appearance="dark">
+                  {currencyFormat(currentPortfolio, false)}
+                </Text>
               </Stack>
             </Stack>
           </Stack>
@@ -199,15 +248,15 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             <Text weight="bold" type="label">
               {creditLimitTexts.availableLimitWithoutGuarantee}
             </Text>
-            <Stack>
+            <Stack justifyContent="space-between" alignItems="center">
               <Text appearance="success">$</Text>
-              <Text weight="bold" type="body">
+              <Text weight="bold" type="body" size="medium" appearance="dark">
                 {currencyFormat(availableLimitWithoutGuarantee, false)}
               </Text>
             </Stack>
           </Stack>
         </Stack>
-        <Divider  />
+        <Divider />
         <Stack justifyContent="end">
           <Button
             onClick={handleClose}
@@ -218,6 +267,19 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             {creditLimitTexts.closeButton}
           </Button>
         </Stack>
+        {isIncomeModalOpen && (
+          <PaymentCapacity
+            title="Cupo máx. capacidad de pago"
+            portalId={portalId}
+            handleClose={closeIncomeModal}
+            reportedIncomeSources={2000000}
+            reportedFinancialObligations={6789000}
+            subsistenceReserve={2000000}
+            availableForNewCommitments={5000000}
+            maxVacationTerm={12}
+            maxAmount={1000000}
+          />
+        )}
       </StyledModal>
     </Blanket>,
     node

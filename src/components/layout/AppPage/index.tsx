@@ -2,8 +2,9 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Grid, useMediaQuery } from "@inube/design-system";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
-import { Icon } from "@inubekit/icon"
-import { Header } from "@inubekit/header"
+import { Icon } from "@inubekit/icon";
+import { Header } from "@inubekit/header";
+import { Text } from "@inubekit/text";
 
 import { AppContext } from "@context/AppContext";
 import { MenuSection } from "@components/navigation/MenuSection";
@@ -22,6 +23,7 @@ import {
   StyledMenuContainer,
   StyledCollapseIcon,
   StyledCollapse,
+  StyledFooter,
 } from "./styles";
 
 const renderLogo = (imgUrl: string) => {
@@ -133,6 +135,15 @@ function AppPage() {
           )}
           <StyledMain>
             <Outlet />
+            <StyledFooter>
+              <Text
+                appearance="gray"
+                textAlign="center"
+                size="medium"
+              >
+                © 2024 Inube
+              </Text>
+            </StyledFooter>
           </StyledMain>
         </StyledContainer>
       </Grid>

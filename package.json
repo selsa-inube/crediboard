@@ -20,7 +20,7 @@
     "@inubekit/button": "^4.19.0",
     "@inubekit/divider": "^0.4.1",
     "@inubekit/flag": "^4.16.0",
-    "@inubekit/foundations": "^5.8.1",
+    "@inubekit/foundations": "^5.11.2",
     "@inubekit/grid": "^2.5.0",
     "@inubekit/header": "^2.36.0",
     "@inubekit/hooks": "^1.2.0",

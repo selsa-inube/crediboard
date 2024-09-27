@@ -9,7 +9,6 @@ const StyledMenu = styled.div`
     position: absolute;
     right: 1px;
     width: 227px;
-    z-index: 2;
 `;
 
 const StyledContainerLabel = styled.div`

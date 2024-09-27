@@ -1,6 +1,6 @@
 interface IOptions {
   title: string;
-  onClik: () => void;
+  onClick: () => void;
   icon: JSX.Element;
 }
 

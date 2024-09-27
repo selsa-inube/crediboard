@@ -9,9 +9,6 @@ import {
   MdOutlineShare,
   MdOutlineVideocam,
   MdOutlinePayments,
-  MdOutlineMonetizationOn,
-  MdOutlineAccountBalanceWallet,
-  MdOutlineBalance,
 } from "react-icons/md";
 
 import { Icon } from "@inubekit/icon";
@@ -19,8 +16,13 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
+import { Divider } from "@inubekit/divider";
 
+import { CreditLimit } from "@components/modals/CreditLimit";
 import { Fieldset } from "@components/data/Fieldset";
+import { IncomeModal } from "@src/components/modals/IncomeModal";
+import { incomeOptions } from "./config/config";
+
 import {
   truncateTextToMaxLength,
   capitalizeFirstLetter,
@@ -30,18 +32,15 @@ import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
-import { IncomeModal } from "@src/components/modals/IncomeModal";
-import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
+import { menuOptions } from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
-import { incomeOptions } from "./config/config";
+import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
 
 import {
   StyledCollapseIcon,
-  StyledDivider,
   StyledFieldset,
-  StyledVerticalDivider,
   StyledContainerIcon,
-  StyledHorizontalDivider
+  StyledVerticalDivider
 } from "./styles";
 
 interface ComercialManagementProps {
@@ -55,7 +54,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const { data, children, print, isPrint } = props;
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [showIncomeModal, setShowIncomeModal] = useState(false);
+  const [openModal, setOpenModal] = useState<string | null>(null);
   const [showExtraOrdinaryPaymentModal, setShowExtraOrdinaryPaymentModal] = useState(false);
   const [form, setForm] = useState({
     deudor: "",
@@ -78,37 +77,19 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   };
 
   const { id } = useParams();
+  const isMobile = useMediaQuery("(max-width: 720px)");
 
-  const isMobile: boolean = useMediaQuery("(max-width: 720px)");
+  const handleOpenModal = (modalName: string) => {
+    setOpenModal(modalName);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(null);
+  };
 
   const handleCollapse = () => {
     setCollapse(!collapse);
   };
-
-  const menuOptions = [
-    {
-      title: "Origen de cupo",
-      onClik: () => {},
-      icon: <MdOutlineBalance />,
-    },
-    {
-      title: "Fuentes de ingreso",
-      onClik: () => {
-        setShowIncomeModal(true);
-      },
-      icon: <MdOutlineAccountBalanceWallet />,
-    },
-    {
-      title: "Obligaciones financieras",
-      onClik: () => {},
-      icon: <MdOutlineMonetizationOn />,
-    },
-    {
-      title: "Pagos extras",
-      onClik: () => {},
-      icon: <MdOutlinePayments />,
-    },
-  ];
 
   return (
     <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
@@ -187,7 +168,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   >
                     Ver perfil crediticio
                   </Button>
-                  <StyledHorizontalDivider />
+                  <StyledVerticalDivider />
                   <Icon
                     icon={<MdOutlinePhone />}
                     appearance="primary"
@@ -200,7 +181,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     size="24px"
                     cursorHover
                   />
-                  <StyledHorizontalDivider />
+                  <StyledVerticalDivider />
                 </>
               )}
               <StyledCollapseIcon $collapse={collapse} onClick={handleCollapse}>
@@ -222,11 +203,11 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               Ver perfil crediticio
             </Button>
           )}
-          {collapse && <StyledDivider />}
+          {collapse && <Divider />}
           {collapse && (
             <Stack direction="column" gap="24px">
               {!isMobile && (
-                <Stack gap="24px" justifyContent="end" alignItems="center">
+                <Stack gap="16px" justifyContent="end" alignItems="center">
                   <Button
                     type="button"
                     appearance="primary"
@@ -284,7 +265,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     />
                     {showMenu && (
                       <MenuPropect
-                        options={menuOptions}
+                        options={menuOptions(handleOpenModal)}
                         onMouseLeave={() => setShowMenu(false)}
                       />
                     )}
@@ -295,11 +276,26 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             </Stack>
           )}
         </Stack>
-        {showIncomeModal && (
+
+        {openModal === "creditLimit" && (
+          <CreditLimit
+            handleClose={handleCloseModal}
+            title="Origen de cupo"
+            portalId="portal"
+            maxPaymentCapacity={50000000}
+            maxReciprocity={40000000}
+            maxDebtFRC={45000000}
+            assignedLimit={0}
+            currentPortfolio={10000000}
+            maxUsableLimit={20000000}
+            availableLimitWithoutGuarantee={15000000}
+          />
+        )}
+        {openModal   === "IncomeModal" && (
           <IncomeModal
             onChange={onChanges}
             form={form}
-            handleClose={() => setShowIncomeModal(false)}
+            handleClose={handleCloseModal}
             options={incomeOptions}
           />
         )}
