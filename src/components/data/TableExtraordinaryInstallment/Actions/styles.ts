@@ -29,12 +29,12 @@ const StyledLi = styled.li`
 `;
 
 const StyledActions = styled.div`
+  border-radius: 4px;
+  position: absolute;
+  right: -8px;
+  top: -2px;
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
-  position: absolute;
-  top: -2px;
-  right: -8px;
-  border-radius: 4px;
   box-shadow: 8px 2px 6px
     ${({ theme }) => theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;

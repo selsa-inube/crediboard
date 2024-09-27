@@ -12,15 +12,15 @@ import {
   Tr,
 } from "@inubekit/table";
 import { useMediaQuery } from "@inubekit/hooks";
-import { IRowExtraordinaryPayment } from "@components/modals/ExtraordinaryPaymentModal/types"
+import { IRowExtraordinaryPayment } from "@src/pages/prospect/components/ExtraordinaryPaymentModal/types"
 
 import {
-  headersTableExtraordinaryPayment,
+  headersTableExtraordinaryInstallment,
   rowsVisbleMobile,
   rowsActions,
 } from "./config";
 
-export interface TableExtraordinaryPaymentProps {
+export interface TableExtraordinaryInstallmentProps {
   data: IRowExtraordinaryPayment[];
   onClickDetails: (id: string) => void;
   onClickEdit: (id: string) => void;
@@ -33,12 +33,11 @@ const usePagination = (data: IRowExtraordinaryPayment[]) => {
   const pageLength = 5;
   const totalRecords = data.length;
   const totalPages = Math.ceil(totalRecords / pageLength);
-
   const handleStartPage = () => setCurrentPage(0);
   const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 0));
-  const handleNextPage = () =>
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
+  const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
   const handleEndPage = () => setCurrentPage(totalPages - 1);
+
 
   const firstEntryInPage = currentPage * pageLength;
   const lastEntryInPage = Math.min(firstEntryInPage + pageLength, totalRecords);
@@ -59,11 +58,11 @@ const usePagination = (data: IRowExtraordinaryPayment[]) => {
   };
 };
 
-export const TableExtraordinaryPayment = (
-  props: TableExtraordinaryPaymentProps
+export const TableExtraordinaryInstallment = (
+  props: TableExtraordinaryInstallmentProps
 ) => {
   const { data, onClickDetails, onClickEdit, onClickEliminate } = props;
-  const headers = headersTableExtraordinaryPayment;
+  const headers = headersTableExtraordinaryInstallment;
 
   const [loading, setLoading] = useState(true);
 

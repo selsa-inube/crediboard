@@ -8,14 +8,15 @@ import { Icon } from "@inubekit/icon";
 import { Button } from "@inubekit/button";
 import { useMediaQuery } from "@inubekit/hooks";
 
-import { TableExtraordinaryPayment } from "@components/data/TableExtraordinaryPayment";
+import { TableExtraordinaryInstallment } from "@src/components/data/TableExtraordinaryInstallment";
 import { IRowExtraordinaryPayment } from "./types";
 import { StyledContainerClose, StyledContainerContent } from "./styles";
+import { TextLabels } from "./config";
 
 export interface ExtraordinaryPaymentModalProps {
   dataTable: IRowExtraordinaryPayment[];
-  handleClose: () => void;
   portalId: string;
+  handleClose: () => void;
   onClickDetails: (id: string) => void;
   onClickEdit: (id: string) => void;
   onClickEliminate: (id: string) => void;
@@ -75,11 +76,11 @@ export const ExtraordinaryPaymentModal = (
                   />
                 }
               >
-                Agregar serie
+                {TextLabels.addSeries}
               </Button>
             </Stack>
             <Stack>
-              <TableExtraordinaryPayment
+              <TableExtraordinaryInstallment
                 data={dataTable}
                 onClickDetails={onClickDetails}
                 onClickEdit={onClickEdit}
@@ -87,7 +88,7 @@ export const ExtraordinaryPaymentModal = (
               />
             </Stack>
             <Divider />
-            <Stack  justifyContent="end">
+            <Stack justifyContent="end">
               <Button
                 appearance="primary"
                 fullwidth={isMobile}
@@ -95,7 +96,7 @@ export const ExtraordinaryPaymentModal = (
                 spacing="wide"
                 type="button"
               >
-                Cerrar
+                {TextLabels.close}
               </Button>
             </Stack>
           </Stack>

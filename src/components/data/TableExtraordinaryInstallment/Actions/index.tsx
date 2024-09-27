@@ -1,17 +1,10 @@
-import {
-  MdClose,
-  MdDeleteOutline,
-  MdOutlineEdit,
-  MdOutlineRemoveRedEye,
-} from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 
 import { StyledContainer, StyledLi, StyledUl, StyledActions } from "./styles";
-import { IAction, IAppearances } from "./type";
-
-
+import { Actions } from "./config";
 
 interface ActionModalProps {
   onClose: () => void;
@@ -22,26 +15,8 @@ interface ActionModalProps {
 
 export function ActionModal(props: ActionModalProps) {
   const { onClose, onClickDetails, onClickEdit, onClickEliminate } = props;
-  const actions: IAction[] = [
-    {
-      icon: <MdOutlineRemoveRedEye />,
-      appearance: IAppearances.dark,
-      label: "Ver detalles",
-      onClick: onClickDetails,
-    },
-    {
-      icon: <MdOutlineEdit />,
-      appearance: IAppearances.primary,
-      label: "Editar",
-      onClick: onClickEdit,
-    },
-    {
-      icon: <MdDeleteOutline />,
-      appearance: IAppearances.danger,
-      label: "Eliminar",
-      onClick: onClickEliminate,
-    },
-  ];
+
+  const actionsLi = Actions(onClickDetails, onClickEdit, onClickEliminate);
   return (
     <StyledContainer>
       <StyledActions>
@@ -54,7 +29,7 @@ export function ActionModal(props: ActionModalProps) {
             cursorHover
           />
           <StyledUl>
-            {actions.map((item, index) => (
+            {actionsLi.map((item, index) => (
               <StyledLi key={index} onClick={item.onClick}>
                 <Icon icon={item.icon} appearance={item.appearance} />
                 <Text size="medium">{item.label}</Text>

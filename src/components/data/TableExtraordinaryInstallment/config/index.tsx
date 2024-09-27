@@ -1,6 +1,6 @@
 import { currencyFormat } from "@src/utils/formatData/currency";
 import { Detail } from "../Detail";
-import { IHeaders } from "../../../modals/ExtraordinaryPaymentModal/types";
+import { IHeaders } from "../../../../pages/prospect/components/ExtraordinaryPaymentModal/types";
 
 export const rowsVisbleMobile = [
     "datePayment",
@@ -21,7 +21,7 @@ export const rowsActions = [
     },
 ];
 
-export const headersTableExtraordinaryPayment: IHeaders[] = [
+export const headersTableExtraordinaryInstallment: IHeaders[] = [
     {
         label: "Fecha de pago",
         key: "datePayment",

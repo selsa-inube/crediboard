@@ -23,8 +23,15 @@ export function Detail(props: DetailProps) {
         onClick={() => setModalOpen(true)}
         shape="circle"
         variant="filled"
+      />
+      {ModalOpen && (
+        <ActionModal
+          onClose={() => setModalOpen(false)}
+          onClickDetails={onClickDetails}
+          onClickEdit={onClickEdit}
+          onClickEliminate={onClickEliminate}
         />
-      {ModalOpen && <ActionModal onClose={() => setModalOpen(false)}  onClickDetails={onClickDetails} onClickEdit={onClickEdit} onClickEliminate={onClickEliminate} />}
+      )}
     </Stack>
   );
 }

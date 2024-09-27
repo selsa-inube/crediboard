@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { TableExtraordinaryPayment } from "..";
+import { TableExtraordinaryInstallment } from "..";
 import { props } from "./props";
-import { IRowExtraordinaryPayment } from "@src/components/modals/ExtraordinaryPaymentModal/types";
+import { IRowExtraordinaryPayment } from "@src/pages/prospect/components/ExtraordinaryPaymentModal/types";
 
-type Story = StoryObj<typeof TableExtraordinaryPayment>;
+type Story = StoryObj<typeof TableExtraordinaryInstallment>;
 
-const meta: Meta<typeof TableExtraordinaryPayment> = {
-  title: "components/data/TableExtraordinaryPayment",
-  component: TableExtraordinaryPayment,
+const meta: Meta<typeof TableExtraordinaryInstallment> = {
+  title: "components/data/TableExtraordinaryInstallment",
+  component: TableExtraordinaryInstallment,
   argTypes: props,
 };
 
