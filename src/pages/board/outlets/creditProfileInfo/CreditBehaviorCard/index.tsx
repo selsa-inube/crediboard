@@ -14,7 +14,8 @@ interface CreditBehaviorProps {
   numberInternalBlackberries: number;
   maximumNumberInstallmentsArrears: number;
   isMobile?: boolean;
-  dataWereObtained: boolean;
+  dataBehaviorError: boolean;
+  setBehaviorError: (stade: boolean) => void;
 }
 
 export function CreditBehavior(props: CreditBehaviorProps) {
@@ -24,8 +25,15 @@ export function CreditBehavior(props: CreditBehaviorProps) {
     numberInternalBlackberries,
     maximumNumberInstallmentsArrears,
     isMobile,
-    dataWereObtained,
+    dataBehaviorError,
+    setBehaviorError
+    
   } = props;
+
+
+  const handleRetry = () => {
+    setBehaviorError(false);
+  };
 
   return (
     <CardInfoContainer
@@ -33,13 +41,14 @@ export function CreditBehavior(props: CreditBehaviorProps) {
       icon={<MdTrendingUp />}
       isMobile={isMobile}
     >
-      {dataWereObtained ? (
+      {dataBehaviorError ? (
         <ItemNotFound
           image={userNotFound}
           title="Datos no encontrados"
           description="No pudimos obtener los datos solicitados."
           buttonDescription="Reintentar"
           route="#"
+          onRetry={handleRetry}
         />
       ) : (
         <Stack direction="column" gap={isMobile ? "6px" : "16px"}>

@@ -88,6 +88,8 @@ export const CreditProfileInfo = () => {
 
   const [dataWereObtained, setWataWereObtained] = useState(false);
 
+  const [dataBehaviorError, setBehaviorError] = useState(false);
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -162,6 +164,8 @@ export const CreditProfileInfo = () => {
               ...data[0].credit_behavior,
             }));
           }
+        } else {
+          setBehaviorError(true);
         }
         if (uncovered_wallet.status === "fulfilled") {
           const data = uncovered_wallet.value;
@@ -187,7 +191,7 @@ export const CreditProfileInfo = () => {
         setLoading(false);
       }
     })();
-  }, [id]);
+  }, [id, dataBehaviorError]);
 
   const handlePrint = () => {
     setIsGeneratingPdf(true);
@@ -366,7 +370,8 @@ export const CreditProfileInfo = () => {
             credit_behavior.maximum_number_of_installments_in_arrears
           }
           isMobile={isMobile}
-          dataWereObtained={dataWereObtained}
+          dataBehaviorError={dataBehaviorError}
+          setBehaviorError={setBehaviorError}
         />
       </Grid>
     </StyledContainerToCenter>
