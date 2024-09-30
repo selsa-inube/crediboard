@@ -11,6 +11,7 @@ import { Text } from "@inubekit/text";
 
 import { TableBoard } from "@components/data/TableBoard";
 import { Schedule } from "@services/enums";
+import { IOptions } from "@src/components/navigation/MenuPropect/types";
 
 export const titlesCommercialManagementAccordion = [
   {
@@ -380,25 +381,29 @@ export const incomeOptions = [
   },
 ];
 
-export const menuOptions = (handleOpenModal: (modalName: string) => void) => [
+export const menuOptions = (handleOpenModal: (modalName: string) => void, visibleExtraPayments: boolean): IOptions[] => [
   {
     title: "Origen de cupo",
     onClick: () => handleOpenModal("creditLimit"),
     icon: <MdOutlineBalance />,
+    visible: true,
   },
   {
     title: "Fuentes de ingreso",
-   onClick: () => handleOpenModal("IncomeModal"),
+    onClick: () => handleOpenModal("IncomeModal"),
     icon: <MdOutlineAccountBalanceWallet />,
+    visible: true,
   },
   {
     title: "Obligaciones financieras",
     onClick: () => {},
     icon: <MdOutlineMonetizationOn />,
+    visible: true,
   },
   {
     title: "Pagos extras",
-    onClick: () => {},
+    onClick: () => {handleOpenModal("extraPayments")},
     icon: <MdOutlinePayments />,
+    visible: visibleExtraPayments,
   },
 ];

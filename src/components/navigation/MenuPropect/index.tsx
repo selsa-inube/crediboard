@@ -15,6 +15,7 @@ export const MenuPropect = (props: MenuPropectProps) => {
     <StyledMenu onMouseLeave={onMouseLeave}>
       {options &&
         options.map((option) => (
+          option.visible &&
           <StyledContainerLabel onClick={option.onClick}>
             <Icon icon={option.icon} appearance="primary" size="24px"></Icon>
             <Text size="small" weight="normal">
