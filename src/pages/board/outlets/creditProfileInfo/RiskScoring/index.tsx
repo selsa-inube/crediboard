@@ -26,6 +26,7 @@ interface RiskScoringProps {
   isMobile?: boolean;
   dataWereObtained: boolean;
   dataRiskScoringMax: IRiskScoringRangeRequered;
+  setWataWereObtained: (stade: boolean) => void;
 }
 
 export function RiskScoring(props: RiskScoringProps) {
@@ -46,6 +47,7 @@ export function RiskScoring(props: RiskScoringProps) {
     isMobile,
     dataWereObtained,
     dataRiskScoringMax,
+    setWataWereObtained,
   } = props;
 
   const getMainGap = () => {
@@ -64,6 +66,10 @@ export function RiskScoring(props: RiskScoringProps) {
     }
   };
 
+  const handleRetry = () => {
+    setWataWereObtained(false);
+  };
+
   return (
     <CardInfoContainer
     title="Scoring de riesgo"
@@ -77,6 +83,7 @@ export function RiskScoring(props: RiskScoringProps) {
         description="No pudimos obtener los datos solicitados."
         buttonDescription="Reintentar"
         route="#"
+        onRetry={handleRetry}
       />
     ) : (
       <Stack direction="column" gap={getMainGap()}>

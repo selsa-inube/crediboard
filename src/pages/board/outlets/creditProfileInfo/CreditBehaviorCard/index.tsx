@@ -30,7 +30,6 @@ export function CreditBehavior(props: CreditBehaviorProps) {
     
   } = props;
 
-
   const handleRetry = () => {
     setBehaviorError(false);
   };

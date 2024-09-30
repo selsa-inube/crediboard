@@ -13,7 +13,8 @@ interface OpenWalletProps {
   valueDiscovered: number;
   reciprocity: number;
   isMobile?: boolean;
-  dataWereObtained: boolean;
+  dataUncoveredWallet: boolean;
+  setUncoveredWallet: (stade: boolean) => void;
 }
 
 export function OpenWallet(props: OpenWalletProps) {
@@ -22,8 +23,14 @@ export function OpenWallet(props: OpenWalletProps) {
     valueDiscovered,
     reciprocity,
     isMobile,
-    dataWereObtained,
+    dataUncoveredWallet,
+    setUncoveredWallet,
   } = props;
+
+  const handleRetry = () => {
+    setUncoveredWallet(false);
+  };
+
   
   return (
     <CardInfoContainer
@@ -31,13 +38,14 @@ export function OpenWallet(props: OpenWalletProps) {
       icon={<MdOutlineRequestQuote />}
       isMobile={isMobile}
     >
-      {dataWereObtained ? (
+      {dataUncoveredWallet ? (
         <ItemNotFound
           image={userNotFound}
           title="Datos no encontrados"
           description="No pudimos obtener los datos solicitados."
           buttonDescription="Reintentar"
           route="#"
+          onRetry={handleRetry}
         />
       ) : (
         <Stack direction="column" gap={isMobile ? "6px" : "16px"}>

@@ -14,7 +14,8 @@ interface PaymentCapacityProps {
   incomeB: number;
   percentageUsed: number;
   isMobile?: boolean;
-  dataWereObtained: boolean;
+  dataPaymentcapacity: boolean;
+  setPaymentcapacity: (stade: boolean) => void;
 }
 
 export function PaymentCapacity(props: PaymentCapacityProps) {
@@ -24,22 +25,28 @@ export function PaymentCapacity(props: PaymentCapacityProps) {
     incomeB,
     percentageUsed,
     isMobile,
-    dataWereObtained,
+    dataPaymentcapacity,
+    setPaymentcapacity,
   } = props;
-  
+
+  const handleRetry = () => {
+    setPaymentcapacity(false);
+  };
+
   return (
     <CardInfoContainer
       title="Capacidad de pago"
       icon={<MdOutlinePaid />}
       isMobile={isMobile}
     >
-      {dataWereObtained ? (
+      {dataPaymentcapacity ? (
         <ItemNotFound
           image={userNotFound}
           title="Datos no encontrados"
           description="No pudimos obtener los datos solicitados."
           buttonDescription="Reintentar"
           route="#"
+          onRetry={handleRetry}
         />
       ) : (
         <Stack direction="column" gap={isMobile ? "6px" : "16px"}>

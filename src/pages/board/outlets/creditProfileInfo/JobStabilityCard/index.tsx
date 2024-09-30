@@ -13,7 +13,8 @@ interface JobStabilityCardProps {
   stabilityIndex: number;
   estimatedCompensation: number;
   isMobile?: boolean;
-  dataWereObtained: boolean;
+  dataCreditProfile: boolean;
+  setCreditProfile: (stade: boolean) => void;
 }
 
 export function JobStabilityCard(props: JobStabilityCardProps) {
@@ -22,23 +23,28 @@ export function JobStabilityCard(props: JobStabilityCardProps) {
     stabilityIndex,
     estimatedCompensation,
     isMobile,
-    dataWereObtained,
+    dataCreditProfile,
+    setCreditProfile,
   } = props;
 
-
+  const handleRetry = () => {
+    setCreditProfile(false);
+  };
+  
   return (
     <CardInfoContainer
       title="Estabilidad Laboral"
       icon={<MdOutlineBusinessCenter />}
       isMobile={isMobile}
     >
-      {dataWereObtained ? (
+      {dataCreditProfile ? (
         <ItemNotFound
           image={userNotFound}
           title="Datos no encontrados"
           description="No pudimos obtener los datos solicitados."
           buttonDescription="Reintentar"
           route="#"
+          onRetry={handleRetry}
         />
       ) : (
         <Stack direction="column" gap={isMobile ? "6px" : "16px"}>
