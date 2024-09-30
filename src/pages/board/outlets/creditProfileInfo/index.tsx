@@ -191,7 +191,7 @@ export const CreditProfileInfo = () => {
               ...data[0],
             }));
           }
-        }  else {
+        } else {
           setUncoveredWallet(false);
         }
       } catch (e) {
