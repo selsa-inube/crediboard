@@ -91,7 +91,7 @@ export function IncomeModal(props: IncomeModalProps) {
             <Stack direction="column" >
               <Grid
                 templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
-                gap="24px"
+                gap="16px"
                 autoRows="auto"
               >
                 <IncomeEmployment

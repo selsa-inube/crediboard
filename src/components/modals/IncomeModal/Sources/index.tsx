@@ -27,14 +27,14 @@ export function Sources(props: SourcesModalProps) {
         direction="column"
         padding="16px"
         height="318px"
+        gap="8px"
         width={!isMobile ? "457px" : "260px"}
-        gap="12px"
       >
         <Text size="medium" type="title" weight="bold">
           {title}
         </Text>
         <Divider />
-        <Stack direction="column"  >
+        <Stack direction="column" padding="10px 8px" >
           {labels.map((label, index) => (
             <StyledTextField key={index}>
               <Textfield
@@ -50,9 +50,9 @@ export function Sources(props: SourcesModalProps) {
             </StyledTextField>
           ))}
         </Stack>
-        <Stack justifyContent="end" margin="auto 0px 0px 0px">
+        <Stack justifyContent="end" margin="auto 12px 5px 0px">
           <StyledSupport onClick={() => console.log("Ver soporte")}>
-            <Stack gap="8px"alignItems="center" padding="12px">
+            <Stack gap="8px" alignItems="center">
               <Text appearance="primary" type="label" size="large">
                 Ver soporte
               </Text>
