@@ -95,7 +95,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     });
   };
 
-  const handleCloseModalApp = () => {
+  const handleGoBackOrCloseModal  = () => {
     setOpenModal(null);
   };
 
@@ -311,7 +311,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <PaymentCapacity
             title="Cupo máx. capacidad de pago"
             portalId="portal"
-            handleClose={handleCloseModalApp}
+            handleClose={handleGoBackOrCloseModal }
             reportedIncomeSources={2000000}
             reportedFinancialObligations={6789000}
             subsistenceReserve={2000000}
@@ -323,7 +323,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "reciprocityModal" && (
           <ReciprocityModal
             portalId="portal"
-            handleClose={handleCloseModalApp}
+            handleClose={handleGoBackOrCloseModal }
             balanceOfContributions={maxReciprocity}
             accordingToRegulation={1234500}
             assignedQuota={1000000}
@@ -332,7 +332,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "scoreModal" && (
           <ScoreModal
             title="Score Details"
-            handleClose={handleCloseModalApp}
+            handleClose={handleGoBackOrCloseModal }
             subTitle="Your Financial Score"
             totalScore={750}
             seniority={150}
