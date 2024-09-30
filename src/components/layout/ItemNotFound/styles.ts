@@ -5,7 +5,7 @@ interface ImageProps {
 }
 
 const StyledImage = styled.img<ImageProps>`
-  max-width: ${({ $smallScreen }) => ($smallScreen ? "152px" : "152px")};
+  max-width: 152px;
   height: auto;
   display: block;
 `;

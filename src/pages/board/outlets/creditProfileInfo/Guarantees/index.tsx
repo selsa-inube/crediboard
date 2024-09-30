@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { PiSealCheckBold } from "react-icons/pi";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
@@ -25,16 +24,6 @@ export function Guarantees(props: GuaranteesProps) {
     dataWereObtained,
   } = props;
 
-  const [errorOccurred, setErrorOccurred] = useState<boolean>(dataWereObtained);
-
-  const handleRetry = () => {
-    setErrorOccurred(false);
-  };
-
-  useEffect(() => {
-    setErrorOccurred(dataWereObtained);
-  }, [dataWereObtained]);
-
 
   return (
     <CardInfoContainer
@@ -42,14 +31,13 @@ export function Guarantees(props: GuaranteesProps) {
       icon={<PiSealCheckBold />}
       isMobile={isMobile}
     >
-      {errorOccurred ? (
+      {dataWereObtained ? (
         <ItemNotFound
           image={userNotFound}
           title="Datos no encontrados"
           description="No pudimos obtener los datos solicitados."
           buttonDescription="Reintentar"
           route="#"
-          onRetry={handleRetry}
         />
       ) : (
         <Stack direction="column" gap={isMobile ? "8px" : "12px"}>

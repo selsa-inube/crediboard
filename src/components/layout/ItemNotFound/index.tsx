@@ -37,7 +37,7 @@ function ItemNotFound(props: ItemNotFoundProps) {
           {title}
         </Text>
 
-        <Text type="body" size="large" appearance="gray" textAlign="start">
+        <Text size="large" appearance="gray" textAlign="start">
           {description}
         </Text>
 
