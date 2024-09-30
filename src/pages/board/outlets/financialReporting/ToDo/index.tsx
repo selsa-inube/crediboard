@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent, useCallback } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { MdOutlineThumbUp } from "react-icons/md";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
@@ -60,52 +60,54 @@ function ToDo(props: ToDoProps) {
 
   const [loading, setLoading] = useState(true);
 
-  const fetchData = useCallback(async () => {
-    setLoading(true);
-    try {
-      const [staffResult, toDoResult] = await Promise.allSettled([
-        get("staff"),
-        getById<IToDo[]>("to-do", "credit_request_state_id", id!, true),
-      ]);
-
-      if (
-        staffResult.status === "fulfilled" &&
-        !(staffResult.value instanceof Error)
-      ) {
-        setStaff(staffResult.value as IStaff[]);
-      }
-
-      if (
-        toDoResult.status === "fulfilled" &&
-        !(toDoResult.value instanceof Error)
-      ) {
-        setToDo(toDoResult.value as IToDo[]);
-      } else {
-        if (
-          toDoResult.status === "rejected" ||
-          toDoResult.value instanceof Error
-        ) {
-          errorObserver.notify({
-            id: "Management",
-            message: "Error al obtener los datos de gestión.",
-          });
-        }
-        setToDo([]);
-      }
-    } catch (error) {
-      console.log(error);
-      errorObserver.notify({
-        id: "Management",
-        message: (error as Error).message.toString(),
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [id]); // Add id to dependencies
-
   useEffect(() => {
-    fetchData();
-  }, [fetchData]); // Only depend on fetchData
+    (async () => {
+      setLoading(true);
+      try {
+        const [staffResult, toDoResult] = await Promise.allSettled([
+          get("staff"),
+          getById<IToDo[]>("to-do", "credit_request_state_id", id!, true),
+        ]);
+
+        if (
+          staffResult.status === "fulfilled" &&
+          !(staffResult.value instanceof Error)
+        ) {
+          setStaff(staffResult.value as IStaff[]);
+        }
+
+        if (
+          toDoResult.status === "fulfilled" &&
+          !(toDoResult.value instanceof Error)
+        ) {
+          setToDo(toDoResult.value as IToDo[]);
+        } else {
+          if (
+            toDoResult.status === "rejected" ||
+            toDoResult.value instanceof Error
+          ) {
+            errorObserver.notify({
+              id: "Management",
+              message: "Error al obtener los datos de gestión.",
+            });
+          }
+          setToDo([]);
+        }
+      } catch (error) {
+        console.log(error);
+        errorObserver.notify({
+          id: "Management",
+          message: (error as Error).message.toString(),
+        });
+      } finally {
+        setLoading(false);
+      }
+    })(); 
+  }, [id]);
+
+  const handleRetry = () => {
+    setLoading(true);
+  };
 
   useEffect(() => {
     if (toDo) {
@@ -195,10 +197,14 @@ function ToDo(props: ToDoProps) {
             description="Parece que no hay tareas disponibles para mostrar."
             buttonDescription="volver a intentar"
             route="/retry-path"
-            onRetry={fetchData}
+            onRetry={handleRetry}
           />
         ) : (
-          <Stack direction="column" gap={isMobile ? "4px" : "6px"} height={isMobile ? "auto" : "205px"}>
+          <Stack
+            direction="column"
+            gap={isMobile ? "4px" : "6px"}
+            height={isMobile ? "auto" : "205px"}
+          >
             <Stack direction={isMobile ? "column" : "row"}>
               {isMobile && (
                 <Text appearance="primary" type="title" size="medium">
@@ -231,16 +237,13 @@ function ToDo(props: ToDoProps) {
                   value={decisionValue.decision}
                   placeholder="Seleccione una opción"
                   size="compact"
-                    options={toDo?.[0]?.decisions ?? []}
+                  options={toDo?.[0]?.decisions ?? []}
                   onChange={onChangeDecision}
                   disabled={toDo === undefined}
                   fullwidth={isMobile}
-              />
+                />
               </Stack>
-              <Stack
-                padding="16px 0px 0px 0px"
-                width="100%"
-              >
+              <Stack padding="16px 0px 0px 0px" width="100%">
                 <Button
                   onClick={handleSend}
                   cursorHover
@@ -249,7 +252,7 @@ function ToDo(props: ToDoProps) {
                   type="submit"
                   fullwidth={isMobile}
                   spacing="compact"
-              >
+                >
                   {button?.label || buttonText}
                 </Button>
               </Stack>
@@ -280,7 +283,7 @@ function ToDo(props: ToDoProps) {
                   fullwidth
                   disabled={staff === null}
                   size="compact"
-              />
+                />
               </Stack>
               <Textfield
                 id="analista"
@@ -291,7 +294,7 @@ function ToDo(props: ToDoProps) {
                 fullwidth
                 disabled={staff === null}
                 size="compact"
-            />
+              />
               {icon && !isMobile && (
                 <Stack width="100px" height="50px" alignItems="end">
                   <Icon
