@@ -19,7 +19,7 @@ import {
   MicroBusinesses,
   ProfessionalServices,
 } from "./config";
-import { StyledContainer, StyledContainerClose, StyledIncome } from "./styles";
+import { StyledContainer, StyledContainerClose } from "./styles";
 
 interface IncomeModalProps {
   form: {
@@ -65,13 +65,11 @@ export function IncomeModal(props: IncomeModalProps) {
 
   return createPortal(
     <Blanket>
-      <StyledContainer>
+      <StyledContainer $smallScreen={isMobile}>
         <Stack
           direction="column"
-          padding="24px"
-          width={!isMobile ? "1050px" : "auto"}
-          height={!isMobile ? "auto" : "auto"}
-          gap="24px"
+          padding="16px 24px"
+          gap="16px"
         >
           <Stack justifyContent="space-between" alignItems="center">
             <Text size="small" type="headline">
@@ -90,8 +88,7 @@ export function IncomeModal(props: IncomeModalProps) {
             </StyledContainerClose>
           </Stack>
           <Divider />
-          <StyledIncome>
-            <Stack direction="column" height={!isMobile ? "426px" : "auto"}>
+            <Stack direction="column" >
               <Grid
                 templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
                 gap="24px"
@@ -147,18 +144,15 @@ export function IncomeModal(props: IncomeModalProps) {
                 />
               </Grid>
             </Stack>
-          </StyledIncome>
           <Divider />
           <Stack
             padding="10px 0px"
             justifyContent="space-between"
             alignItems={!isMobile ? "end" : "start"}
             direction={!isMobile ? "row" : "column"}
-            gap="20px"
           >
             <Stack
               justifyContent="space-between"
-              width={!isMobile ? "48.5%" : "100%"}
               gap="15px"
               direction={!isMobile ? "row" : "column"}
             >
