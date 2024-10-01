@@ -51,6 +51,8 @@ export const handleError = (
   setShowApprovalstModal(false);
 };
 
+
+
 export const titlesRequirements = [
   [
     {
@@ -189,7 +191,7 @@ const actionsMobile = [
         <Icon
           icon={<MdAddCircleOutline />}
           appearance="primary"
-          onClick={() => receiveData(data)}
+          onClick={() => (data)}
           spacing="none"
           size="22px"
           cursorHover
@@ -207,7 +209,7 @@ const actionsMobile = [
           spacing="none"
           cursorHover
           size="22px"
-          onClick={() => receiveData(data)}
+          onClick={() => (data)}
           disabled={
             isValidElement(data?.tag) && data?.tag?.props?.label === "No Cumple"
           }
