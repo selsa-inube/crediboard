@@ -99,7 +99,7 @@ export const SelectcheckUI = forwardRef<HTMLDivElement, ISelectcheckUIProps>(
               {label}
             </Label>
 
-            {!disabled && (
+            {required && !disabled && (
               <Text type="body" size="small" appearance="dark">
                 (Requerido)
               </Text>
