@@ -106,7 +106,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           <Stack
             justifyContent="space-between"
             width={isMobile ? "100%" : "auto"}
-            margin={isMobile ? "s100 s0" : "auto"}
+            margin={isMobile ? "s100 s0" : "0px 0px 24px "}
           >
             <StyledSearch
               ref={stackRef}
@@ -120,12 +120,13 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 <Textfield
                   id="SearchCards"
                   name="SearchCards"
-                  placeholder={isMobile ? "" : "Buscar..."}
+                  placeholder={isMobile ? "" : "Nombre o No. de radicado"}
                   size="compact"
                   iconAfter={<MdSearch />}
                   value={searchRequestValue}
                   onChange={handleSearchRequestsValue}
                   fullwidth
+                  label="Búsqueda"
                 />
               </Stack>
             </StyledSearch>
@@ -154,7 +155,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
             alignItems="center"
             margin={isMobile ? "s200 s0" : "auto"}
           >
-            <Stack width={isMobile ? "100%" : "500px"}>
+            <Stack width={isMobile ? "100%" : "480px"}>
               <Selectcheck {...selectProps} />
             </Stack>
             <Stack gap="16px">
