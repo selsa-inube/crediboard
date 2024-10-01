@@ -106,7 +106,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           <Stack
             justifyContent="space-between"
             width={isMobile ? "100%" : "auto"}
-            margin={isMobile ? "s100 s0" : "0px 0px 24px "}
+            margin={isMobile ? "s100 s0" : "0px 0px 24px"}
           >
             <StyledSearch
               ref={stackRef}
