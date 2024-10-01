@@ -2,6 +2,7 @@ import { MdWarningAmber, MdClear } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inube/design-system";
+
 import { AlertContainer } from "./styles";
 import { messages } from "./config";
 
