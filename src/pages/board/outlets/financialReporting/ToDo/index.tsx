@@ -202,6 +202,7 @@ function ToDo(props: ToDoProps) {
                 value={decisionValue.decision}
                 placeholder="Seleccione una opción"
                 size="compact"
+                required={true}
                 options={toDo?.[0]?.decisions ?? []}
                 onChange={onChangeDecision}
                 disabled={toDo === undefined}
