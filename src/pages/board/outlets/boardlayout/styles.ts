@@ -16,7 +16,6 @@ interface IStyledSearch {
 }
 
 const StyledInputsContainer = styled.div<IStyledInputsContainer>`
-  display: ${({ $isMobile }) => ($isMobile ? "block" : "flex")};
   flex-direction: column;
   align-items: center;
   padding-top: ${({ $isMobile }) => ($isMobile ? "12px" : "32px")};
