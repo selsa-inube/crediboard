@@ -7,7 +7,10 @@ import {
   MdWarningAmber,
 } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
+import { Tag } from "@inubekit/tag";
+
 import { IEntries } from "@components/data/TableBoard/types";
+import { IApprovals } from "./types";
 
 const handleData = (data: IEntries) => {
   console.log(data, "function that receives data");
@@ -196,12 +199,7 @@ export const desktopActions = (
           handleErrorClick(data);
         }
       };
-      return (
-        <Icon
-          {...action.content(data).props}
-          onClick={handleClick}
-        />
-      );
+      return <Icon {...action.content(data).props} onClick={handleClick} />;
     },
   }));
 };
@@ -221,12 +219,31 @@ export const getMobileActionsConfig = (
           handleErrorClickBound(data);
         }
       };
-      return (
-        <Icon
-          {...action.content(data).props}
-          onClick={handleClick}
-        />
-      );
+      return <Icon {...action.content(data).props} onClick={handleClick} />;
     },
+  }));
+};
+
+const appearanceTag = (label: string) => {
+  if (label === "Pendiente") {
+    return "warning";
+  }
+  if (label === "Aprobado") {
+    return "success";
+  }
+  return "danger";
+};
+
+export const entriesApprovals = (data: IApprovals[]) => {
+  return data.map((entry) => ({
+    id: entry?.approverName?.toString(),
+    usuarios: entry?.approverName,
+    tag: (
+      <Tag
+        label={entry.concept}
+        appearance={appearanceTag(entry.concept)}
+        weight="strong"
+      />
+    ),
   }));
 };

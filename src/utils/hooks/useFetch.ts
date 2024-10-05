@@ -18,7 +18,6 @@ export function useFetch<T>(apiUrl: string, retryFlag: boolean) {
       .then((json) => setData(json))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-    console.log("retryflag", retryFlag);
   }, [apiUrl, retryFlag]);
   return { data, loading, error };
 }
