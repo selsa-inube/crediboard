@@ -101,16 +101,17 @@ type DmDecisions =
   | "DECLINAR_OBLIGACIONES_DE_CARTERA";
 
 interface TraceType {
-  trace_id: string;
-  trace_value: string;
-  credit_request_id: string;
-  use_case: string;
-  user_id: string;
-  execution_date: string | number;
+  creditRequestId: string;
+  excecutionDate: string;
+  traceId: string;
+  traceType: string;
+  traceValue: string;
+  userId: string;
+  userName: string;
+  decisionTakenByUser?: string;
   justification?: string;
-  decision_taken_by_user?: string;
-  trace_type?: string;
-  read_novelty?: string;
+  readNovelty?: string;
+  useCase?: string;
 }
 
 export type {
