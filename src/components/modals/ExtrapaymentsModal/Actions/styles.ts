@@ -32,7 +32,7 @@ const StyledActions = styled.div`
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   position: absolute;
   top: -20px;
-  right: -55px;
+  right: -10px;
   border-radius: 4px;
   box-shadow: 8px 2px 6px
     ${({ theme }) => theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};

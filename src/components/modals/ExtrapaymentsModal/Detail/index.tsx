@@ -24,7 +24,7 @@ export function Details() {
           size="16px"
           cursorHover
           appearance="danger"
-          onClick={() => setModalOpen(true)}
+          onClick={() => setModalOpen(false)}
           variant="none"
         />
       </Stack>
