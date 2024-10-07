@@ -45,7 +45,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
     handleEndPage,
     firstEntryInPage,
     lastEntryInPage,
-    currentData, // Importar currentData
+    currentData,
   } = usePagination();
 
   const [loading, setLoading] = useState(true);
@@ -75,13 +75,11 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
 
   return createPortal(
     <Blanket>
-      <StyledContainer>
+      <StyledContainer  $smallScreen={isMobile}>
         <Stack
           direction="column"
           padding="24px"
           gap="24px"
-          height="565"
-          width={!isMobile ? "850px" : "auto"}
         >
           <Stack justifyContent="space-between" alignItems="center" gap="15px">
             <Text size="small" type="headline">
