@@ -43,7 +43,7 @@ export const Management = (props: IManagementProps) => {
     }, 5000);
 
     try {
-      const data = await getTraceByCreditRequestId("c6a6173d-01bc-4d79-b5cc-9a6132f47347").catch(
+      const data = await getTraceByCreditRequestId(id).catch(
         () => {
           errorObserver.notify({
           id: "Management",
