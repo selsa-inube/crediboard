@@ -23,14 +23,23 @@ import {
   getMobileActionsConfig,
   infoItems,
   entriesApprovals,
-  apiUrl,
 } from "./config";
 import { IApprovals } from "./types";
+import { enviroment } from "@config/environment";
 
 interface IApprovalsProps {
   user: string;
   isMobile: boolean;
 }
+
+const optionsFetch = {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json; charset=utf-8",
+    "X-Action": "SearchAllAprovalsById",
+    "X-Business-Unit": enviroment.TEMP_BUSINESS_UNIT,
+  },
+};
 
 export const Approvals = (props: IApprovalsProps) => {
   const { user, isMobile } = props;
@@ -44,7 +53,8 @@ export const Approvals = (props: IApprovalsProps) => {
   const [retryFlag, setRetryFlag] = useState(false);
 
   const { data, error, loading } = useFetch<IApprovals[]>(
-    `${apiUrl.approvals}97a2c93e-69a1-46bc-9203-99be56cd5047`,
+    `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/aprovals/97a2c93e-69a1-46bc-9203-99be56cd5047`,
+    optionsFetch,
     retryFlag
   );
 

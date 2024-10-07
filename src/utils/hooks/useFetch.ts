@@ -1,23 +1,62 @@
 import { useEffect, useState } from "react";
 
-export function useFetch<T>(apiUrl: string, retryFlag: boolean) {
-  const [data, setData] = useState<T | null>(null);
+export function useFetch<T>(
+  apiUrl: string,
+  options: RequestInit,
+  retryFlag: boolean,
+  maxRetries = 1,
+  fetchTimeout = 3000
+) {
+  const [data, setData] = useState<T | null | []>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Business-unit": "public",
-        "X-Action": "SearchAllAprovalsById",
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
-  }, [apiUrl, retryFlag]);
+    const fetchData = async () => {
+      setLoading(true);
+      setError("");
+
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        const abortController = new AbortController();
+
+        const timeout = setTimeout(
+          () => abortController?.abort(),
+          fetchTimeout
+        );
+
+        const fetchOptions: RequestInit = {
+          ...options,
+          signal: abortController.signal,
+        };
+
+        try {
+          const response = await fetch(apiUrl, fetchOptions);
+          clearTimeout(timeout);
+
+          if (!response.ok) {
+            throw new Error(`Error en la solicitud`);
+          }
+
+          if (response.status === 204) {
+            setData([]);
+            return;
+          }
+
+          const json = await response.json();
+          setData(json);
+          return;
+        } catch (e) {
+          if (attempt === maxRetries) {
+            setError((e as Error).message);
+          }
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchData();
+  }, [apiUrl, options, fetchTimeout, maxRetries, retryFlag]);
+
   return { data, loading, error };
 }
