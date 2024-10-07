@@ -46,6 +46,35 @@ export const data: RowData[] = [
     id: "-",
     actions: "",
   },
+  {
+    date: "Ene 31-27",
+    balance: "20.000.000",
+    fee: "Cesantías",
+    id: "-",
+    actions: "",
+  },
+  {
+    date: "Ene 31-27",
+    balance: "20.000.000",
+    fee: "Cesantías",
+    id: "-",
+    actions: "",
+  },
+  {
+    date: "Ene 31-27",
+    balance: "20.000.000",
+    fee: "Cesantías",
+    id: "-",
+    actions: "",
+  },
+  {
+    date: "Ene 31-27",
+    balance: "20.000.000",
+    fee: "Cesantías",
+    id: "-",
+    actions: "",
+  },
+  
 ];
 
 export const dataReport = {

@@ -22,7 +22,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
 
 import { usePagination } from "./utils";
-import { headers, data, dataReport } from "./config";
+import { headers, dataReport } from "./config";
 import { ActionModal } from "./Actions";
 import { Details } from "./Detail";
 import { StyledContainerClose, StyledContainer } from "./styles";
@@ -45,6 +45,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
     handleEndPage,
     firstEntryInPage,
     lastEntryInPage,
+    currentData, // Importar currentData
   } = usePagination();
 
   const [loading, setLoading] = useState(true);
@@ -142,7 +143,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
                       ))}
                     </Tr>
                   );
-                } else if (data.length === 0) {
+                } else if (totalRecords === 0) {
                   return (
                     <Tr>
                       <Td
@@ -162,7 +163,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
                     </Tr>
                   );
                 } else {
-                  return data.map((row, rowIndex) => (
+                  return currentData.map((row, rowIndex) => (
                     <Tr key={rowIndex}>
                       {visibleHeaders.map((header, colIndex) => {
                         const cellData = row[header.key];
@@ -182,7 +183,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
                 }
               })()}
             </Tbody>
-            {!loading && data.length > 0 && (
+            {!loading && totalRecords > 0 && (
               <Tfoot>
                 <Tr border="bottom">
                   <Td
@@ -206,7 +207,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
           </Table>
           <Divider />
           <Stack gap="15px" justifyContent="end">
-            <Button children="Cerrar" onClick={handleClose}/>
+            <Button children="Cerrar" onClick={handleClose} />
           </Stack>
           {ModalOpen && <ActionModal onClose={() => setModalOpen(false)} />}
         </Stack>
