@@ -44,6 +44,7 @@ function ItemNotFound(props: ItemNotFoundProps) {
         <Stack
           justifyContent={smallScreen ? "center" : "flex-end"}
           width="100%"
+          padding="10px 0px"
         >
           <Button
             type="button"
