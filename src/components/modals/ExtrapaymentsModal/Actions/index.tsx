@@ -3,8 +3,6 @@ import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import {
   MdClose,
-  MdDeleteOutline,
-  MdOutlineEdit,
   MdOutlineRemoveRedEye,
 } from "react-icons/md";
 
@@ -39,17 +37,16 @@ const actions: Action[] = [
   {
     icon: <MdOutlineRemoveRedEye />,
     appearance: "dark",
-    label: "Ver detalles",
+    label: "Medios de Pago",
   },
-  { icon: <MdOutlineEdit />, appearance: "primary", label: "Editar" },
-  { icon: <MdDeleteOutline />, appearance: "danger", label: "Eliminar" },
+
 ];
 
 export function ActionModal({ onClose, onClick }: ActionModalProps) {
   return (
     <StyledContainer>
       <StyledActions>
-        <Stack padding="10px 15px" width="132px">
+        <Stack padding="10px 15px" width="190px">
           <StyledContainerClose>
             <Icon
               icon={<MdClose />}
