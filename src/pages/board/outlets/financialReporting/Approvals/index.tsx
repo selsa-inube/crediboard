@@ -11,8 +11,10 @@ import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { useFetch } from "@utils/hooks/useFetch";
 
+import { enviroment } from "@config/environment";
+
 import { errorObserver } from "../config";
-import { StyledMessageContainer } from "../styles";
+import { IApprovals } from "./types";
 import {
   actionMobileApprovals,
   titlesApprovals,
@@ -23,23 +25,14 @@ import {
   getMobileActionsConfig,
   infoItems,
   entriesApprovals,
+  optionsFetch,
 } from "./config";
-import { IApprovals } from "./types";
-import { enviroment } from "@config/environment";
+import { StyledMessageContainer } from "../styles";
 
 interface IApprovalsProps {
   user: string;
   isMobile: boolean;
 }
-
-const optionsFetch = {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json; charset=utf-8",
-    "X-Action": "SearchAllAprovalsById",
-    "X-Business-Unit": enviroment.TEMP_BUSINESS_UNIT,
-  },
-};
 
 export const Approvals = (props: IApprovalsProps) => {
   const { user, isMobile } = props;

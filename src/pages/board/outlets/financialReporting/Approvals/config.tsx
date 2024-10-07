@@ -10,15 +10,21 @@ import { Icon } from "@inubekit/icon";
 import { Tag } from "@inubekit/tag";
 
 import { IEntries } from "@components/data/TableBoard/types";
+import { enviroment } from "@config/environment";
+
 import { IApprovals } from "./types";
 
 const handleData = (data: IEntries) => {
   console.log(data, "function that receives data");
 };
 
-export const apiUrl = {
-  approvals:
-    "http://192.168.31.62:8077/icorebanking-vi-crediboard-query-process-service/api/credit-requests/aprovals/",
+export const optionsFetch = {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json; charset=utf-8",
+    "X-Action": "SearchAllAprovalsById",
+    "X-Business-Unit": enviroment.TEMP_BUSINESS_UNIT,
+  },
 };
 
 export const titlesApprovals = [
