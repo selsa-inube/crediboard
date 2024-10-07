@@ -69,18 +69,14 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
   const isMobile = useMediaQuery("(max-width:880px)");
   const visibleHeaders = isMobile
     ? headers.filter((header) =>
-        ["tipo", "saldo", "acciones"].includes(header.key)
+        ["date", "balance", "actions"].includes(header.key)
       )
     : headers;
 
   return createPortal(
     <Blanket>
-      <StyledContainer  $smallScreen={isMobile}>
-        <Stack
-          direction="column"
-          padding="24px"
-          gap="24px"
-        >
+      <StyledContainer $smallScreen={isMobile}>
+        <Stack direction="column" padding="24px" gap="24px">
           <Stack justifyContent="space-between" alignItems="center" gap="15px">
             <Text size="small" type="headline">
               {dataReport.title}
@@ -205,7 +201,11 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
           </Table>
           <Divider />
           <Stack gap="15px" justifyContent="end">
-            <Button children="Cerrar" onClick={handleClose} />
+            <Button
+              children="Cerrar"
+              onClick={handleClose}
+              fullwidth={isMobile}
+            />
           </Stack>
           {ModalOpen && <ActionModal onClose={() => setModalOpen(false)} />}
         </Stack>

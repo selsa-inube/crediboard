@@ -8,8 +8,8 @@ interface IStyledModal {
 export const StyledContainer = styled.div<IStyledModal>`
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
-      max-height: ${({ $smallScreen }) => ($smallScreen ? "700px" : "700px")};
-      width: ${({ $smallScreen }) => ($smallScreen ? "380px" : "850px")};
+      max-height: ${({ $smallScreen }) => ($smallScreen ? "565" : "700px")};
+      width: ${({ $smallScreen }) => ($smallScreen ? "335px" : "850px")};
   border-radius: 8px;
 `;
 
