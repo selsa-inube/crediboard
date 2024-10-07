@@ -23,6 +23,7 @@ import {
   getMobileActionsConfig,
   infoItems,
   entriesApprovals,
+  apiUrl,
 } from "./config";
 import { IApprovals } from "./types";
 
@@ -30,9 +31,6 @@ interface IApprovalsProps {
   user: string;
   isMobile: boolean;
 }
-
-const apiUrl =
-  "http://192.168.31.62:8077/icorebanking-vi-crediboard-query-process-service/api/credit-requests/aprovals/97a2c93e-69a1-46bc-9203-99be56cd5047";
 
 export const Approvals = (props: IApprovalsProps) => {
   const { user, isMobile } = props;
@@ -45,10 +43,10 @@ export const Approvals = (props: IApprovalsProps) => {
 
   const [retryFlag, setRetryFlag] = useState(false);
 
-  /* const apiUrl =
-    `http://192.168.31.62:8077/icorebanking-vi-crediboard-query-process-service/api/credit-requests/aprovals/${user}`; */
-
-  const { data, error, loading } = useFetch<IApprovals[]>(apiUrl, retryFlag);
+  const { data, error, loading } = useFetch<IApprovals[]>(
+    `${apiUrl.approvals}97a2c93e-69a1-46bc-9203-99be56cd5047`,
+    retryFlag
+  );
 
   useEffect(() => {
     if (data) {

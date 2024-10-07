@@ -16,6 +16,11 @@ const handleData = (data: IEntries) => {
   console.log(data, "function that receives data");
 };
 
+export const apiUrl = {
+  approvals:
+    "http://192.168.31.62:8077/icorebanking-vi-crediboard-query-process-service/api/credit-requests/aprovals/",
+};
+
 export const titlesApprovals = [
   {
     id: "usuarios",
