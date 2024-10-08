@@ -1,18 +1,15 @@
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { MdClear, MdOutlineAttachMoney } from "react-icons/md";
-
+import { MdClear } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
-import { Textfield } from "@inubekit/textfield";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Grid } from "@inubekit/grid";
 import { Button } from "@inubekit/button";
 import { Icon } from "@inubekit/icon";
 import { Select } from "@inubekit/select";
 import { Blanket } from "@inubekit/blanket";
-import { inube } from "@inubekit/foundations";
-
 import { IncomeEmployment, IncomeCapital, MicroBusinesses } from "./config";
 import { StyledContainer, StyledContainerClose } from "./styles";
 
@@ -38,6 +35,8 @@ interface IncomeModalProps {
 export function IncomeModal(props: IncomeModalProps) {
   const { form, onChange, options, portalId, handleClose } = props;
 
+  const [isFormComplete, setIsFormComplete] = useState(false);
+
   const handleFieldChange = (
     fields: string[],
     index: number,
@@ -48,6 +47,21 @@ export function IncomeModal(props: IncomeModalProps) {
       onChange(field, newValue);
     }
   };
+
+  useEffect(() => {
+    const allFieldsFilled = [
+      form.deudor,
+      form.salarioMensual,
+      form.otrosPagos,
+      form.mesadaPensional,
+      form.arrendamientos,
+      form.dividendos,
+      form.rendimientosFinancieros,
+      form.gananciaPromedio,
+    ].every((field) => field !== undefined && field !== "");
+
+    setIsFormComplete(allFieldsFilled);
+  }, [form]);
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
@@ -86,7 +100,7 @@ export function IncomeModal(props: IncomeModalProps) {
               gap="24px"
               direction={!isMobile ? "row" : "column"}
             >
-              <Stack width={!isMobile ? "475px" : "auto"}>
+              <Stack width={!isMobile ? "356px" : "auto"}>
                 <Select
                   id="income"
                   name="deudor"
@@ -99,21 +113,22 @@ export function IncomeModal(props: IncomeModalProps) {
                   fullwidth
                 />
               </Stack>
-              <Stack width={!isMobile ? "475px" : "auto"}>
-                <Textfield
-                  id="field1"
-                  iconBefore={
-                    <MdOutlineAttachMoney
-                      color={inube.icon.dark.content.color.regular}
-                    />
-                  }
-                  label="Total ingresos mensuales"
-                  placeholder="0"
-                  size="compact"
-                  value={form.total}
-                  type="number"
-                  fullwidth
-                />
+              <Stack
+                width={!isMobile ? "end" : "auto"}
+                direction="column"
+                gap="8px"
+              >
+                <Text
+                  appearance="primary"
+                  type="headline"
+                  size="large"
+                  weight="bold"
+                >
+                  $ 9’000.000
+                </Text>
+                <Text size="small" appearance="gray" weight="normal">
+                  Total ingresos mensuales.
+                </Text>
               </Stack>
             </Stack>
           </Stack>
@@ -185,7 +200,11 @@ export function IncomeModal(props: IncomeModalProps) {
                 variant="outlined"
                 onClick={handleClose}
               />
-              <Button children="Guardar" appearance="primary" disabled />
+              <Button
+                children="Guardar"
+                appearance={isFormComplete ? "primary" : "gray"}
+                disabled={!isFormComplete}
+              />
             </Stack>
           </Stack>
         </Stack>

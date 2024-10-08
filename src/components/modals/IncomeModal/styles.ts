@@ -9,7 +9,7 @@ const StyledContainer = styled.div<IStyledModal>`
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   max-height: ${({ $smallScreen }) => ($smallScreen ? "auto" : "936px")};
-  width: ${({ $smallScreen }) => ($smallScreen ? "auto" : "1500px")};
+  width: ${({ $smallScreen }) => ($smallScreen ? "auto" : "auto")};
   border-radius: 8px;
 `;
 

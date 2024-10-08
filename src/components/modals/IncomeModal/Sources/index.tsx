@@ -28,7 +28,7 @@ export function Sources(props: SourcesModalProps) {
         padding="16px"
         height="318px"
         gap="8px"
-        width={!isMobile ? "457px" : "260px"}
+        width={!isMobile ? "285px" : "260px"}
       >
         <Text size="medium" type="title" weight="bold">
           {title}

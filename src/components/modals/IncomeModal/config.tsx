@@ -44,7 +44,7 @@ function IncomeEmployment({ values, onChange }: IncomeProps) {
 function MicroBusinesses({ values, onChange }: IncomeProps) {
   return (
     <Sources
-      title="Micronegocios personales y otros"
+      title="Otros ingresos variables"
       labels={["Ganancia promedio mensual", "Honorarios mensuales"]}
       placeholders={["Ganancias/mes", "Honorarios/mes"]}
       values={values}
