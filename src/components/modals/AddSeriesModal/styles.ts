@@ -6,7 +6,6 @@ interface IStyledModal {
 }
 
 const StyledModal = styled.div<IStyledModal>`
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) =>
