@@ -8,7 +8,7 @@ import { Textfield } from "@inubekit/textfield";
 import { Select } from "@inubekit/select";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
-import { Datefield, IDatefieldStatus } from "@inubekit/datefield"; 
+import { Datefield, IDatefieldStatus } from "@inubekit/datefield";
 import {
   StyledModal,
   StyledContainerClose,
