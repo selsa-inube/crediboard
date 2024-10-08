@@ -62,10 +62,18 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
     paymentMethod: "",
     frequency: "",
     firstPayment: "",
+    field1: "", // Change from number to string to handle input
+    field2: "", // Change from number to string to handle input
   });
 
   const onChange = (name: string, newValue: string) => {
     setForm({ ...form, [name]: newValue });
+  };
+
+  const handleNumberChange = (name: string, value: string) => {
+    // Allow only digits and update state
+    const numericValue = value.replace(/[^0-9]/g, "");
+    setForm({ ...form, [name]: numericValue });
   };
 
   const isMobile = useMediaQuery("(max-width: 700px)");
@@ -103,7 +111,15 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
             size="wide"
             value={form["paymentMethod"]}
           />
-          <Textfield id="field1" label="Cantidad" placeholder="(?)" fullwidth />
+          <Textfield
+            id="field1"
+            label="Cantidad"
+            placeholder="(?)"
+            fullwidth
+            type="text" 
+            onChange={(e) => handleNumberChange("field1", e.target.value)} 
+            value={form.field1} 
+          />
           <Textfield
             id="field2"
             label="Valor"
@@ -114,6 +130,9 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
             }
             placeholder="Valor a pagar"
             fullwidth
+            type="text" 
+            onChange={(e) => handleNumberChange("field2", e.target.value)} 
+            value={form.field2} 
           />
         </Stack>
         <Select
