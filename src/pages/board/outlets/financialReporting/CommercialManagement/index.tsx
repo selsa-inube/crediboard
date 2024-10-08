@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   MdOutlineAdd,
@@ -18,6 +18,7 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Divider } from "@inubekit/divider";
 
+import { getById } from "@mocks/utils/dataMock.service";
 import { CreditLimit } from "@components/modals/CreditLimit";
 import { Fieldset } from "@components/data/Fieldset";
 import { IncomeModal } from "@components/modals/IncomeModal";
@@ -25,8 +26,6 @@ import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
 import { ReciprocityModal } from "@components/modals/ReciprocityModal";
 import { ReportCreditsModal } from "@components/modals/ReportCreditsModal";
 import { ScoreModal } from "@components/modals/FrcModal";
-import { incomeOptions } from "./config/config";
-
 import {
   truncateTextToMaxLength,
   capitalizeFirstLetter,
@@ -34,9 +33,12 @@ import {
 } from "@utils/formatData/text";
 import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
-import { Requests } from "@services/types";
+import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
 import { menuOptions } from "./config/config";
+import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
+import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
+import { incomeOptions } from "./config/config";
 
 import {
   StyledCollapseIcon,
@@ -58,7 +60,8 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const [showMenu, setShowMenu] = useState(false);
   const [openModal, setOpenModal] = useState<string | null>(null);
   const [modalHistory, setModalHistory] = useState<string[]>([]);
-
+  const [prospectProducts, setProspectProducts] =
+    useState<ICreditProductProspect>();
   const maxReciprocity = 40000000;
   const [form, setForm] = useState({
     deudor: "",
@@ -79,13 +82,34 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       [name]: newValue,
     }));
   };
-
   const { id } = useParams();
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   const handleOpenModal = (modalName: string) => {
     setModalHistory((prevHistory) => [...prevHistory, modalName]);
   };
+  useEffect(() => {
+    try {
+      Promise.allSettled([getById("prospects", "public_code", id!, true)]).then(
+        ([prospects]) => {
+          if (
+            prospects.status === "fulfilled" &&
+            Array.isArray(prospects.value)
+          ) {
+            if (!(prospects.value instanceof Error)) {
+              setProspectProducts(
+                prospects.value
+                  .map((dataPropects) => dataPropects.credit_product)
+                  .flat()[0] as ICreditProductProspect
+              );
+            }
+          }
+        }
+      );
+    } catch (error) {
+      console.log("error", error);
+    }
+  }, [id]);
 
   const handleCloseModal = () => {
     setModalHistory((prevHistory) => {
@@ -237,22 +261,26 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   >
                     Agregar producto
                   </Button>
-                  <Button
-                    type="button"
-                    appearance="primary"
-                    spacing="compact"
-                    variant="outlined"
-                    iconBefore={
-                      <Icon
-                        icon={<MdOutlinePayments />}
-                        appearance="primary"
-                        size="18px"
-                        spacing="compact"
-                      />
-                    }
-                  >
-                    Pagos extras
-                  </Button>
+                  {prospectProducts?.ordinary_installment_for_principal && (
+                    <Button
+                      type="button"
+                      appearance="primary"
+                      spacing="compact"
+                      variant="outlined"
+                      iconBefore={
+                        <Icon
+                          icon={<MdOutlinePayments />}
+                          appearance="primary"
+                          size="18px"
+                          spacing="compact"
+                        />
+                      }
+                      onClick={() => setOpenModal("extraPayments")}
+                    >
+                      Pagos extras
+                    </Button>
+                  )}
+
                   <StyledVerticalDivider />
                   <StyledContainerIcon>
                     <Icon
@@ -278,7 +306,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     />
                     {showMenu && (
                       <MenuPropect
-                        options={menuOptions(handleOpenModal)}
+                        options={menuOptions(
+                          handleOpenModal,
+                          !prospectProducts?.ordinary_installment_for_principal
+                        )}
                         onMouseLeave={() => setShowMenu(false)}
                       />
                     )}
@@ -358,6 +389,13 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             portalId="portal"
             totalBalance={100000}
             totalFee={5000}
+          />
+        )}
+        {openModal === "extraPayments" && (
+          <ExtraordinaryPaymentModal
+            dataTable={extraordinaryInstallmentMock}
+            portalId="portal"
+            handleClose={handleCloseModal}
           />
         )}
       </StyledFieldset>

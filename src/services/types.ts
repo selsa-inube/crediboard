@@ -265,7 +265,7 @@ export interface ICreditProductProspect {
   fixed_points: number;
   loan_term: number;
   schedule: Schedule;
-  ordinary_installment_for_principal: IOrdinaryInstallmentsForPrincipal;
+  ordinary_installment_for_principal?: IOrdinaryInstallmentsForPrincipal;
   ordinary_installment_for_interest: IInstallmentsForInterest;
   extraordinary_installment: IExtraordinaryInstallment;
   acquired_cash_flow: IAcquiredCashFlow;
@@ -332,4 +332,11 @@ export interface IRiskScoringRangeRequered {
   job_stability_index_score: number;
   marital_status_score: number;
   economic_activity_score: number;
+}
+
+export interface IExtraordinaryPayment {
+  id: string;
+  datePayment: string;
+  value: number;
+  paymentMethod: string;
 }

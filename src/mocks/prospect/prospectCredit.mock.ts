@@ -47,7 +47,7 @@ export const mockProspectCredit: IProspect[] = [
     ],
     credit_product: [
       {
-        abbreviated_name: "Prubea",
+        abbreviated_name: "Libre Inversion",
         credit_product_code: "999991",
         loan_amount: 25000000,
         line_of_credit_code: "100",
@@ -144,18 +144,6 @@ export const mockProspectCredit: IProspect[] = [
         fixed_points: 5,
         loan_term: 12,
         schedule: Schedule.Semiannually,
-        ordinary_installment_for_principal: {
-          term: 10,
-          number_of_installments: 10,
-          schedule: Schedule.Quarterly,
-          installment_amount_for_capital: 8,
-          installment_amount: 3,
-          gradient_rate: 8,
-          gradient_value: 1000000,
-          gradient_schedule: "monthly",
-          first_gradient_date: "2024-01-15T23:59:59Z",
-          payment_channel_code: "TRANSFER",
-        },
         ordinary_installment_for_interest: {
           schedule: Schedule.Weekly,
           payment_channel_code: "TRANSFER",
