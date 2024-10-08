@@ -35,13 +35,6 @@ export const Management = (props: IManagementProps) => {
     setLoading(true);
     setError(null);
 
-    const timer = setTimeout(() => {
-      setError(
-        "No se pudo cargar la información. Intente nuevamente más tarde."
-      );
-      setLoading(false);
-    }, 5000);
-
     try {
       const data = await getTraceByCreditRequestId(id).catch(
         () => {
@@ -53,7 +46,6 @@ export const Management = (props: IManagementProps) => {
         }
       );
 
-      clearTimeout(timer);
 
       if (data || (Array.isArray(data) && data.length > 0)) {
         const flattenedData: TraceType[] = Array.isArray(data[0])
@@ -63,7 +55,6 @@ export const Management = (props: IManagementProps) => {
         setTraces(flattenedData);
       }
     } catch (err) {
-      clearTimeout(timer);
       errorObserver.notify({
         id: "Management",
         message: (err as Error).message.toString(),
