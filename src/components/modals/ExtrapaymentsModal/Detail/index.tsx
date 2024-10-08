@@ -13,7 +13,7 @@ export function Details() {
           icon={<MdOutlineEdit />}
           size="16px"
           cursorHover
-          appearance="primary"
+          appearance="dark"
           onClick={() => setModalOpen(true)}
           variant="none"
         />
