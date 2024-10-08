@@ -1,4 +1,7 @@
-import { Button, Stack, Text, useMediaQuery } from "@inube/design-system";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Button } from "@inubekit/button";
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
 import { StyledImage } from "./styles";
 
 interface ItemNotFoundProps {
@@ -7,65 +10,54 @@ interface ItemNotFoundProps {
   description: string;
   buttonDescription: string;
   route: string;
-  onRetry?: () => void; 
+  onRetry?: () => void;
 }
 
 function ItemNotFound(props: ItemNotFoundProps) {
-  const { image, title, description, buttonDescription, route, onRetry } = props;
+  const { image, title, description, buttonDescription, route, onRetry } =
+    props;
   const smallScreen = useMediaQuery("(max-width: 720px)");
 
   return (
     <Stack
-      direction={smallScreen ? "column-reverse" : "row"}
-      gap={smallScreen ? "24px" : "16px"}
+      direction={smallScreen ? "column" : "row"}
+      gap="30px"
       alignItems="center"
-      margin="s400"
+      padding={smallScreen ? "20px" : "30px"}
       justifyContent="center"
     >
-      <Stack
-        direction="column"
-        gap={smallScreen ? "8px" : "24px"}
-        alignItems="center"
-      >
-        <Text type="title" size={smallScreen ? "small" : "large"}>
-          {title}
-        </Text>
-
-        <Text
-          type={smallScreen ? "body" : "title"}
-          size={smallScreen ? "small" : "medium"}
-          appearance="gray"
-          textAlign="center"
-        >
-          {description}
-        </Text>
-
-        {onRetry ? (
-          <Button
-            type="button"
-            variant="primary"
-            spacing="compact"
-            onClick={onRetry}
-          >
-            {buttonDescription}
-          </Button>
-        ) : (
-          <Button
-            type="link"
-            variant="none"
-            spacing="compact"
-            path={route}
-          >
-            {buttonDescription}
-          </Button>
-        )}
-      </Stack>
-
       <StyledImage
         src={image}
         alt="ItemNotFoundAlt"
         $smallScreen={smallScreen}
       />
+
+      <Stack direction="column" gap="8px" alignItems="normal">
+        <Text type="title" size="large" appearance="primary">
+          {title}
+        </Text>
+
+        <Text size="large" appearance="gray" textAlign="start">
+          {description}
+        </Text>
+
+        <Stack
+          justifyContent={smallScreen ? "center" : "flex-end"}
+          width="100%"
+          padding="10px 0px"
+        >
+          <Button
+            type="button"
+            spacing="compact"
+            variant="outlined"
+            onClick={onRetry}
+            path={route}
+            fullwidth={smallScreen}
+          >
+            {buttonDescription}
+          </Button>
+        </Stack>
+      </Stack>
     </Stack>
   );
 }

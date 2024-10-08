@@ -2,7 +2,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
-import { ResponsiveImage } from "./styles";
+import { StyledImage } from "./styles";
 
 interface UnfoundDataProps {
   title: string;
@@ -20,44 +20,44 @@ function UnfoundData(props: UnfoundDataProps) {
 
   return (
     <Stack
-      direction={smallScreen ? "column-reverse" : "row"}
-      gap={smallScreen ? "16px" : "8px"}
-      alignItems="center"
-      margin="24px"
+      direction={smallScreen ? "column" : "row"}
+      gap="8px"
       justifyContent="center"
+      alignItems="center"
+      padding={smallScreen ? "35px" : "12px"}
     >
-      <Stack direction="column" alignItems="center">
-        <Text type="title" size="small">
-          {title}
-        </Text>
-
-        <Text type="body" size="medium" appearance="gray" textAlign="center">
-          {description}
-        </Text>
-
-        {onRetry ? (
-          <Button
-            type="button"
-            variant="none"
-            spacing="compact"
-            onClick={onRetry}
-          >
-            {buttonDescription}
-          </Button>
-        ) : (
-          <Button type="link" variant="none" spacing="compact" path={route}>
-            {buttonDescription}
-          </Button>
-        )}
-      </Stack>
-
-      {image && (
-        <ResponsiveImage
+      {smallScreen && image && (
+        <StyledImage
           src={image}
           alt="UnfoundDataImage"
           $smallScreen={smallScreen}
         />
       )}
+      <Stack direction="column" alignItems="normal" gap="8px">
+        <Text type="title" size="large" appearance="primary">
+          {title}
+        </Text>
+
+        <Text  size="large" appearance="gray" textAlign="start">
+          {description}
+        </Text>
+
+        <Stack
+          justifyContent={smallScreen ? "center" : "flex-end"}
+          width="100%"
+        >
+          <Button
+            type="button"
+            spacing="compact"
+            variant="outlined"
+            onClick={onRetry}
+            path={route}
+            fullwidth={smallScreen}
+          >
+            {buttonDescription}
+          </Button>
+        </Stack>
+      </Stack>
     </Stack>
   );
 }

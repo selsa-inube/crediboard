@@ -75,11 +75,11 @@ export const CreditProfileInfo = () => {
   });
 
   const [riskScoringMax, setRiskScoringMax] = useState({
-    seniority_score:0,
-    risk_center_score:0,
-    job_stability_index_score:0,
-    marital_status_score:0,
-    economic_activity_score:0,
+    seniority_score: 0,
+    risk_center_score: 0,
+    job_stability_index_score: 0,
+    marital_status_score: 0,
+    economic_activity_score: 0,
   });
 
   const [loading, setLoading] = useState(false);
@@ -87,6 +87,10 @@ export const CreditProfileInfo = () => {
   const dataPrint = useRef<HTMLDivElement>(null);
 
   const [dataWereObtained, setWataWereObtained] = useState(false);
+  const [dataBehaviorError, setBehaviorError] = useState(false);
+  const [dataCreditProfile, setCreditProfile] = useState(false);
+  const [dataPaymentcapacity, setPaymentcapacity] = useState(false);
+  const [dataUncoveredWallet, setUncoveredWallet] = useState(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -130,7 +134,6 @@ export const CreditProfileInfo = () => {
             ...prev,
             ...riskScoringData?.risk_scoring,
           }));
-          setWataWereObtained(false);
         } else {
           setWataWereObtained(true);
         }
@@ -143,6 +146,8 @@ export const CreditProfileInfo = () => {
               ...creditData[0].labor_stability,
             }));
           }
+        } else {
+          setCreditProfile(true);
         }
         if (payment_capacity.status === "fulfilled") {
           const data = payment_capacity.value;
@@ -152,6 +157,8 @@ export const CreditProfileInfo = () => {
               ...data[0].payment_capacity,
             }));
           }
+        } else {
+          setPaymentcapacity(true);
         }
 
         if (credit_behavior.status === "fulfilled") {
@@ -162,6 +169,8 @@ export const CreditProfileInfo = () => {
               ...data[0].credit_behavior,
             }));
           }
+        } else {
+          setBehaviorError(true);
         }
         if (uncovered_wallet.status === "fulfilled") {
           const data = uncovered_wallet.value;
@@ -171,8 +180,10 @@ export const CreditProfileInfo = () => {
               ...data[0]?.uncovered_wallet,
             }));
           }
+        } else {
+          setUncoveredWallet(true);
         }
-        if(riskScoringMaximum.status === "fulfilled") {
+        if (riskScoringMaximum.status === "fulfilled") {
           const data = riskScoringMaximum.value;
           if (Array.isArray(data) && data.length > 0) {
             setRiskScoringMax((prevState) => ({
@@ -180,15 +191,23 @@ export const CreditProfileInfo = () => {
               ...data[0],
             }));
           }
+        } else {
+          setUncoveredWallet(false);
         }
-
       } catch (e) {
         console.error(e);
       } finally {
         setLoading(false);
       }
     })();
-  }, [id]);
+  }, [
+    id,
+    dataWereObtained,
+    dataBehaviorError,
+    dataCreditProfile,
+    dataPaymentcapacity,
+    dataUncoveredWallet,
+  ]);
 
   const handlePrint = () => {
     setIsGeneratingPdf(true);
@@ -218,7 +237,7 @@ export const CreditProfileInfo = () => {
               <Text type="title" size="medium" appearance="gray" weight="bold">
                 Perfil crediticio
               </Text>
-              <StyledUl >
+              <StyledUl>
                 <StyledLi>
                   <Text
                     type="title"
@@ -315,6 +334,8 @@ export const CreditProfileInfo = () => {
           stabilityIndex={credit_profileInfo.labor_stability_index}
           estimatedCompensation={credit_profileInfo.estimated_severance}
           isMobile={isMobile}
+          dataCreditProfile={dataCreditProfile}
+          setCreditProfile={setCreditProfile}
         />
         <PaymentCapacity
           availableValue={payment_capacity.available_value}
@@ -322,12 +343,16 @@ export const CreditProfileInfo = () => {
           incomeB={payment_capacity.base_income}
           percentageUsed={payment_capacity.percentage_used}
           isMobile={isMobile}
+          dataPaymentcapacity={dataPaymentcapacity}
+          setPaymentcapacity={setPaymentcapacity}
         />
         <OpenWallet
           overdraftFactor={uncovered_wallet.overdraft_factor}
           valueDiscovered={uncovered_wallet.discovered_value}
           reciprocity={uncovered_wallet.reciprocity}
           isMobile={isMobile}
+          dataUncoveredWallet={dataUncoveredWallet}
+          setUncoveredWallet={setUncoveredWallet}
         />
         <RiskScoring
           totalScore={riskScoring.total_score}
@@ -346,12 +371,14 @@ export const CreditProfileInfo = () => {
           isMobile={isMobile}
           dataWereObtained={dataWereObtained}
           dataRiskScoringMax={riskScoringMax}
+          setWataWereObtained={setWataWereObtained}
         />
         <Guarantees
           guaranteesRequired="Ninguna garantía real, o fianza o codeudor."
           guaranteesOffered="Ninguna, casa Bogotá 200 mt2, o fianza o codeudor Pedro Pérez."
           guaranteesCurrent="Ninguna, apartamento, en Bogotá 80 mt2, o vehículo Mazda 323."
           isMobile={isMobile}
+          dataWereObtained={dataWereObtained}
         />
         <CreditBehavior
           centralScoreRisky={credit_behavior.core_risk_score}
@@ -363,6 +390,8 @@ export const CreditProfileInfo = () => {
             credit_behavior.maximum_number_of_installments_in_arrears
           }
           isMobile={isMobile}
+          dataBehaviorError={dataBehaviorError}
+          setBehaviorError={setBehaviorError}
         />
       </Grid>
     </StyledContainerToCenter>

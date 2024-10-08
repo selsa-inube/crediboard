@@ -6,6 +6,8 @@ import { Text } from "@inubekit/text";
 import { CardInfoContainer } from "@components/cards/CardInfoContainer";
 import { StyledDivider } from "@components/cards/SummaryCard/styles";
 import { IRiskScoringRangeRequered } from "@src/services/types";
+import { ItemNotFound } from "@components/layout/ItemNotFound";
+import userNotFound from "@assets/images/ItemNotFound.png";
 
 interface RiskScoringProps {
   totalScore: number;
@@ -24,9 +26,8 @@ interface RiskScoringProps {
   isMobile?: boolean;
   dataWereObtained: boolean;
   dataRiskScoringMax: IRiskScoringRangeRequered;
+  setWataWereObtained: (stade: boolean) => void;
 }
-
-const msgErrorService = "Error: No encontrado";
 
 export function RiskScoring(props: RiskScoringProps) {
   const {
@@ -46,6 +47,7 @@ export function RiskScoring(props: RiskScoringProps) {
     isMobile,
     dataWereObtained,
     dataRiskScoringMax,
+    setWataWereObtained,
   } = props;
 
   const getMainGap = () => {
@@ -64,12 +66,26 @@ export function RiskScoring(props: RiskScoringProps) {
     }
   };
 
+  const handleRetry = () => {
+    setWataWereObtained(false);
+  };
+
   return (
     <CardInfoContainer
-      title="Scoring de riesgo"
-      icon={<MdQueryStats />}
-      isMobile={isMobile}
-    >
+    title="Scoring de riesgo"
+    icon={<MdQueryStats />}
+    isMobile={isMobile}
+  >
+    {dataWereObtained ? (
+      <ItemNotFound
+        image={userNotFound}
+        title="Datos no encontrados"
+        description="No pudimos obtener los datos solicitados."
+        buttonDescription="Reintentar"
+        route="#"
+        onRetry={handleRetry}
+      />
+    ) : (
       <Stack direction="column" gap={getMainGap()}>
         <Stack alignItems="center" gap="32px">
           <Stack width="100px">
@@ -94,7 +110,7 @@ export function RiskScoring(props: RiskScoringProps) {
                 size={isMobile || dataWereObtained ? "small" : "medium"}
                 disabled={dataWereObtained}
               >
-                {dataWereObtained ? msgErrorService : totalScore}
+                {dataWereObtained ? "-" : totalScore}
               </Text>
             )}
             {isLoading ? (
@@ -104,9 +120,7 @@ export function RiskScoring(props: RiskScoringProps) {
                 size={isMobile || dataWereObtained ? "small" : "medium"}
                 disabled={dataWereObtained}
               >
-                {dataWereObtained
-                  ? msgErrorService
-                  : `/ mínimo ${minimumScore}`}
+                {dataWereObtained ? "-" : `/ mínimo ${minimumScore}`}
               </Text>
             )}
           </Stack>
@@ -122,44 +136,7 @@ export function RiskScoring(props: RiskScoringProps) {
                   size={isMobile ? "small" : "medium"}
                   disabled={dataWereObtained}
                 >
-                  {dataWereObtained
-                    ? msgErrorService
-                    : `Antigüedad de ${seniority} años`}
-                </Text>
-              )}
-            </Stack>
-            <Stack justifyContent="end" width="100%">
-              {isLoading ? (
-                <SkeletonLine animated width="60px" />
-              ) : (
-                <>                
-                  <Text
-                    appearance="primary"
-                    type="title"
-                    size={dataWereObtained ? "small" : "large"}
-                    disabled={dataWereObtained}
-                  >
-                    {dataWereObtained ? msgErrorService : seniorityScore}
-                  </Text>
-                  <Text>
-                    / {dataRiskScoringMax?.seniority_score}
-                  </Text>
-                </>
-              )}
-            </Stack>
-          </Stack>
-          <Stack alignItems="center">
-            <Stack width={isMobile ? "600px" : "500px"}>
-              {isLoading ? (
-                <SkeletonLine animated width="100%" />
-              ) : (
-                <Text
-                  size={isMobile ? "small" : "medium"}
-                  disabled={dataWereObtained}
-                >
-                  {dataWereObtained
-                    ? msgErrorService
-                    : `Central de riesgo de ${riskCenter} P`}
+                  {dataWereObtained ? "-" : `Antigüedad de ${seniority} años`}
                 </Text>
               )}
             </Stack>
@@ -168,18 +145,15 @@ export function RiskScoring(props: RiskScoringProps) {
                 <SkeletonLine animated width="60px" />
               ) : (
                 <>
-                
                   <Text
                     appearance="primary"
                     type="title"
                     size={dataWereObtained ? "small" : "large"}
                     disabled={dataWereObtained}
                   >
-                    {dataWereObtained ? msgErrorService : riskCenterScore}
+                    {dataWereObtained ? "-" : seniorityScore}
                   </Text>
-                  <Text>
-                    / {dataRiskScoringMax?.risk_center_score}
-                  </Text>
+                  <Text>/ {dataRiskScoringMax?.seniority_score}</Text>
                 </>
               )}
             </Stack>
@@ -193,9 +167,7 @@ export function RiskScoring(props: RiskScoringProps) {
                   size={isMobile ? "small" : "medium"}
                   disabled={dataWereObtained}
                 >
-                  {dataWereObtained
-                    ? msgErrorService
-                    : `Indice de estabilidad laboral ${jobStabilityIndex} P`}
+                  {dataWereObtained ? "-" : `Central de riesgo de ${riskCenter} P`}
                 </Text>
               )}
             </Stack>
@@ -204,18 +176,15 @@ export function RiskScoring(props: RiskScoringProps) {
                 <SkeletonLine animated width="60px" />
               ) : (
                 <>
-                
                   <Text
                     appearance="primary"
                     type="title"
                     size={dataWereObtained ? "small" : "large"}
                     disabled={dataWereObtained}
                   >
-                    {dataWereObtained ? msgErrorService : jobStabilityIndexScore}
+                    {dataWereObtained ? "-" : riskCenterScore}
                   </Text>
-                  <Text>
-                    / {dataRiskScoringMax?.job_stability_index_score}
-                  </Text>
+                  <Text>/ {dataRiskScoringMax?.risk_center_score}</Text>
                 </>
               )}
             </Stack>
@@ -229,9 +198,7 @@ export function RiskScoring(props: RiskScoringProps) {
                   size={isMobile ? "small" : "medium"}
                   disabled={dataWereObtained}
                 >
-                  {dataWereObtained
-                    ? msgErrorService
-                    : `Estado civil - ${maritalStatus}`}
+                  {dataWereObtained ? "-" : `Indice de estabilidad laboral ${jobStabilityIndex} P`}
                 </Text>
               )}
             </Stack>
@@ -240,18 +207,15 @@ export function RiskScoring(props: RiskScoringProps) {
                 <SkeletonLine animated width="60px" />
               ) : (
                 <>
-                
                   <Text
                     appearance="primary"
                     type="title"
                     size={dataWereObtained ? "small" : "large"}
                     disabled={dataWereObtained}
                   >
-                    {dataWereObtained ? msgErrorService : maritalStatusScore}
+                    {dataWereObtained ? "-" : jobStabilityIndexScore}
                   </Text>
-                  <Text>
-                   / {dataRiskScoringMax?.marital_status_score}
-                  </Text>
+                  <Text>/ {dataRiskScoringMax?.job_stability_index_score}</Text>
                 </>
               )}
             </Stack>
@@ -265,13 +229,41 @@ export function RiskScoring(props: RiskScoringProps) {
                   size={isMobile ? "small" : "medium"}
                   disabled={dataWereObtained}
                 >
-                  {dataWereObtained
-                    ? msgErrorService
-                    : `Actividad economica - ${economicActivity}`}
+                  {dataWereObtained ? "-" : `Estado civil - ${maritalStatus}`}
                 </Text>
               )}
             </Stack>
-            {/* <Stack justifyContent={isMobile ? "end" : "center"} width="100%"> */}
+            <Stack justifyContent="end" width="100%">
+              {isLoading ? (
+                <SkeletonLine animated width="60px" />
+              ) : (
+                <>
+                  <Text
+                    appearance="primary"
+                    type="title"
+                    size={dataWereObtained ? "small" : "large"}
+                    disabled={dataWereObtained}
+                  >
+                    {dataWereObtained ? "-" : maritalStatusScore}
+                  </Text>
+                  <Text>/ {dataRiskScoringMax?.marital_status_score}</Text>
+                </>
+              )}
+            </Stack>
+          </Stack>
+          <Stack alignItems="center">
+            <Stack width={isMobile ? "600px" : "500px"}>
+              {isLoading ? (
+                <SkeletonLine animated width="100%" />
+              ) : (
+                <Text
+                  size={isMobile ? "small" : "medium"}
+                  disabled={dataWereObtained}
+                >
+                  {dataWereObtained ? "-" : `Actividad economica - ${economicActivity}`}
+                </Text>
+              )}
+            </Stack>
             <Stack justifyContent="end" width="100%" alignItems="center">
               {isLoading ? (
                 <SkeletonLine animated width="60px" />
@@ -283,17 +275,17 @@ export function RiskScoring(props: RiskScoringProps) {
                     size={dataWereObtained ? "small" : "large"}
                     disabled={dataWereObtained}
                   >
-                    {dataWereObtained ? msgErrorService : economicActivityScore} 
+                    {dataWereObtained ? "-" : economicActivityScore}
                   </Text>
-                  <Text>
-                    / {dataRiskScoringMax?.economic_activity_score}
-                  </Text>
+                  <Text>/ {dataRiskScoringMax?.economic_activity_score}</Text>
                 </>
               )}
             </Stack>
           </Stack>
         </Stack>
       </Stack>
-    </CardInfoContainer>
+    )}
+  </CardInfoContainer>
   );
 }
+
