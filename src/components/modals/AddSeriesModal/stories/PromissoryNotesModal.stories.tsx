@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { StoryFn, Meta } from "@storybook/react";
 import { Button } from "@inube/design-system";
-import { PromissoryNotesModal, PromissoryNotesModalProps } from "../index";
+import { AddSeriesModal, AddSeriesModalProps } from "../index";
 import { props } from "./props";
 
-// Sample options for the selects
 const paymentMethodOptions = [
   { id: "bank_transfer", label: "Transferencia Bancaria", value: "bank_transfer" },
   { id: "credit_card", label: "Tarjeta de Crédito", value: "credit_card" },
@@ -23,13 +22,13 @@ const firstPaymentOptions = [
   { id: "next_year", label: "Próximo año", value: "next_year" },
 ];
 
-const story: Meta<typeof PromissoryNotesModal> = {
-  component: PromissoryNotesModal,
+const story: Meta<typeof AddSeriesModal> = {
+  component: AddSeriesModal,
   title: "components/modals/AddSeriesModal",
   argTypes: props,
 };
 
-const DefaultTemplate: StoryFn<PromissoryNotesModalProps> = (args) => {
+const DefaultTemplate: StoryFn<AddSeriesModalProps> = (args) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => {
@@ -48,12 +47,12 @@ const DefaultTemplate: StoryFn<PromissoryNotesModalProps> = (args) => {
     <>
       <Button onClick={handleShowModal}>Open Modal</Button>
       {showModal && (
-        <PromissoryNotesModal
+        <AddSeriesModal
           {...args}
           handleClose={handleShowModal}
-          paymentMethodOptions={paymentMethodOptions} // Pass options
-          frequencyOptions={frequencyOptions}         // Pass options
-          firstPaymentOptions={firstPaymentOptions}   // Pass options
+          paymentMethodOptions={paymentMethodOptions} 
+          frequencyOptions={frequencyOptions}         
+          firstPaymentOptions={firstPaymentOptions}   
         />
       )}
     </>
@@ -65,7 +64,7 @@ Default.args = {
   title: "Nueva serie",
   buttonText: "Enviar",
   portalId: "portal",
-  formValues: { field1: 0, field2: 0 }, // Provide default form values
+  formValues: { field1: 0, field2: 0 },
 };
 
 export default story;

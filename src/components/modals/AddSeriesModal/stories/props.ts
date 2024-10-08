@@ -1,7 +1,7 @@
 import { ArgTypes } from "@storybook/react";
-import { PromissoryNotesModalProps } from "..";
+import { AddSeriesModalProps } from "..";
 
-export const props: Partial<ArgTypes<PromissoryNotesModalProps>> = {
+export const props: Partial<ArgTypes<AddSeriesModalProps>> = {
   title: {
     control: {
       type: "text",

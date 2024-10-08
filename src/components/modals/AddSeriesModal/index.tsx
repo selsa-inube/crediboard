@@ -25,7 +25,7 @@ export interface Option {
   value: string;
 }
 
-export interface PromissoryNotesModalProps {
+export interface AddSeriesModalProps {
   title: string;
   handleClose: () => void;
   onSubmit: () => void;
@@ -37,7 +37,7 @@ export interface PromissoryNotesModalProps {
   firstPaymentOptions: Option[];   
 }
 
-export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
+export function AddSeriesModal(props: AddSeriesModalProps) {
   const {
     title,
     buttonText,
