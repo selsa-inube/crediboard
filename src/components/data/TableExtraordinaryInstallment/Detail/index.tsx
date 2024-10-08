@@ -1,6 +1,6 @@
 import { Icon } from "@inubekit/icon";
 import { useState } from "react";
-import { MdOutlineMoreVert } from "react-icons/md";
+import { MdOutlineEdit , MdDeleteOutline} from "react-icons/md";
 import { ActionModal } from "../Actions";
 import { Stack } from "@inubekit/stack";
 
@@ -15,15 +15,26 @@ export function Detail(props: DetailProps) {
   const [ModalOpen, setModalOpen] = useState(false);
   return (
     <Stack justifyContent="center">
-      <Icon
-        icon={<MdOutlineMoreVert />}
-        size="12px"
-        cursorHover
-        appearance="primary"
-        onClick={() => setModalOpen(true)}
-        shape="circle"
-        variant="filled"
-      />
+      <Stack padding="0px 16px">
+        <Icon
+          icon={<MdOutlineEdit />}
+          size="16px"
+          cursorHover
+          appearance="dark"
+          onClick={() => setModalOpen(true)}
+          variant="none"
+        />
+      </Stack>
+      <Stack padding="0px 16px">
+        <Icon
+          icon={<MdDeleteOutline />}
+          size="16px"
+          cursorHover
+          appearance="danger"
+          onClick={() => setModalOpen(false)}
+          variant="none"
+        />
+      </Stack>
       {ModalOpen && (
         <ActionModal
           onClose={() => setModalOpen(false)}
