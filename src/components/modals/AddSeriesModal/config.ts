@@ -10,9 +10,3 @@ export const paymentMethodOptions = [
     { id: "annually", label: "Anual", value: "annually" },
   ];
   
-  export const firstPaymentOptions = [
-    { id: "next_month", label: "Próximo mes", value: "next_month" },
-    { id: "next_quarter", label: "Próximo trimestre", value: "next_quarter" },
-    { id: "next_year", label: "Próximo año", value: "next_year" },
-  ];
-  

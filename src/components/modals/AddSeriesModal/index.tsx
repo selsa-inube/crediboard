@@ -8,6 +8,7 @@ import { Textfield } from "@inubekit/textfield";
 import { Select } from "@inubekit/select";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
+import { Datefield, IDatefieldStatus } from "@inubekit/datefield"; 
 import {
   StyledModal,
   StyledContainerClose,
@@ -35,7 +36,6 @@ export interface AddSeriesModalProps {
   formValues: FormValues;
   paymentMethodOptions: Option[];
   frequencyOptions: Option[];
-  firstPaymentOptions: Option[];
 }
 
 export function AddSeriesModal(props: AddSeriesModalProps) {
@@ -48,7 +48,6 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
     onSubmit,
     paymentMethodOptions,
     frequencyOptions,
-    firstPaymentOptions,
   } = props;
 
   const node = document.getElementById(portalId);
@@ -61,9 +60,9 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
   const [form, setForm] = useState({
     paymentMethod: "",
     frequency: "",
-    firstPayment: "",
-    field1: "", 
-    field2: "", 
+    firstPayment: { value: "", status: "pending" as IDatefieldStatus },
+    field1: "",
+    field2: "",
   });
 
   const onChange = (name: string, newValue: string) => {
@@ -73,6 +72,38 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
   const handleNumberChange = (name: string, value: string) => {
     const numericValue = value.replace(/[^0-9]/g, "");
     setForm({ ...form, [name]: numericValue });
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({
+      ...form,
+      firstPayment: { value: e.target.value, status: "pending" },
+    });
+  };
+
+  const handleDateBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isValid = isValidDate(e.target.value);
+    setForm({
+      ...form,
+      firstPayment: {
+        value: e.target.value,
+        status: isValid ? "pending" : "invalid",
+      },
+    });
+  };
+
+  const handleDateFocus = () => {
+    setForm({
+      ...form,
+      firstPayment: {
+        ...form.firstPayment,
+        status: form.firstPayment.status === "invalid" ? "invalid" : "pending",
+      },
+    });
+  };
+
+  const isValidDate = (value: string) => {
+    return /^(19|20)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/.test(value);
   };
 
   const isMobile = useMediaQuery("(max-width: 700px)");
@@ -115,9 +146,9 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
             label="Cantidad"
             placeholder="Número de pagos"
             fullwidth
-            type="text" 
-            onChange={(e) => handleNumberChange("field1", e.target.value)} 
-            value={form.field1} 
+            type="text"
+            onChange={(e) => handleNumberChange("field1", e.target.value)}
+            value={form.field1}
             size="wide"
           />
           <Textfield
@@ -130,9 +161,9 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
             }
             placeholder="Valor a pagar"
             fullwidth
-            type="text" 
-            onChange={(e) => handleNumberChange("field2", e.target.value)} 
-            value={form.field2} 
+            type="text"
+            onChange={(e) => handleNumberChange("field2", e.target.value)}
+            value={form.field2}
           />
         </Stack>
         <Select
@@ -143,18 +174,20 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
           options={frequencyOptions}
           value={form["frequency"]}
           onChange={onChange}
-          size="wide" 
+          size="wide"
           fullwidth
         />
-        <Select
+        <Datefield
           id="firstPayment"
           name="firstPayment"
-          label="Primer pago"
-          placeholder="Seleccione una opción"
-          options={firstPaymentOptions}
-          value={form["firstPayment"]}
-          onChange={onChange}
-          size="wide" 
+          label="Fecha del primer pago"
+          value={form.firstPayment.value}
+          onChange={handleDateChange}
+          onBlur={handleDateBlur}
+          onFocus={handleDateFocus}
+          message="Formato de fecha no válido"
+          status={form.firstPayment.status}
+          size="wide"
           fullwidth
         />
         <Divider />

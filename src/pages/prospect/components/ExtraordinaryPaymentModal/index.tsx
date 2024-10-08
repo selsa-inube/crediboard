@@ -18,7 +18,6 @@ import { AddSeriesModal } from "@components/modals/AddSeriesModal";
 import {
   paymentMethodOptions,
   frequencyOptions,
-  firstPaymentOptions,
 } from "@components/modals/AddSeriesModal/config";
 
 export interface ExtraordinaryPaymentModalProps {
@@ -140,7 +139,6 @@ export const ExtraordinaryPaymentModal = (
           formValues={{ field1: 0, field2: 0 }}
           paymentMethodOptions={paymentMethodOptions} 
           frequencyOptions={frequencyOptions} 
-          firstPaymentOptions={firstPaymentOptions}
           portalId={portalId}
         />
       )}
