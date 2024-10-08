@@ -118,6 +118,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
             type="text" 
             onChange={(e) => handleNumberChange("field1", e.target.value)} 
             value={form.field1} 
+            size="wide"
           />
           <Textfield
             id="field2"
