@@ -114,7 +114,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
           <Textfield
             id="field1"
             label="Cantidad"
-            placeholder="(?)"
+            placeholder="Numero de pagos"
             fullwidth
             type="text" 
             onChange={(e) => handleNumberChange("field1", e.target.value)} 
