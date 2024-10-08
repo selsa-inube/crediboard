@@ -2,7 +2,6 @@ import { MdWarningAmber, MdClear } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inube/design-system";
-
 import { AlertContainer } from "./styles";
 import { messages } from "./config";
 
@@ -16,17 +15,21 @@ const ErrorAlert = (props: ErrorAlertProps) => {
 
   return (
     <AlertContainer>
-      <Icon appearance="warning" icon={<MdWarningAmber />} size="24px" />
-      <Stack>
-        <Text>{message || messages.defaultError}</Text>
+      <Stack alignItems="center" justifyContent="space-between" gap="20px" width="100%">
+        <Icon appearance="warning" icon={<MdWarningAmber />} size="24px" />
+
+        <Stack justifyContent="center">
+          <Text>{message || messages.defaultError}</Text>
+        </Stack>
+
+        <Icon
+          appearance="dark"
+          icon={<MdClear />}
+          size="16px"
+          cursorHover
+          onClick={onClose}
+        />
       </Stack>
-      <Icon
-        appearance="dark"
-        icon={<MdClear />}
-        size="16px"
-        cursorHover
-        onClick={onClose}
-      />
     </AlertContainer>
   );
 };

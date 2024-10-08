@@ -49,7 +49,6 @@ const slideDown = keyframes`
 
 export const AlertContainer = styled.div`
   display: flex;
-  align-items: center;
   background-color: ${({ theme }) =>
     theme?.color?.stroke?.gray?.regular || inube.color.surface.warning.clear};
   padding: 7px;
@@ -57,7 +56,7 @@ export const AlertContainer = styled.div`
   border: 1px solid
     ${({ theme }) =>
       theme?.color?.stroke?.gray?.regular || inube.color.surface.gray.regular};
-  min-width: 250px;
+   width: 100%;
   justify-content: center;
   animation: ${slideDown} 2s ease-in-out;
   position: relative;
