@@ -274,7 +274,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                           spacing="compact"
                         />
                       }
-                      onClick={() => setOpenModal("extraPayments")}
+                      onClick={() => handleOpenModal("extraPayments")}
                     >
                       Pagos extras
                     </Button>
@@ -390,7 +390,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             totalFee={5000}
           />
         )}
-        {openModal === "extraPayments" && (
+        {currentModal === "extraPayments" && (
           <ExtraordinaryPaymentModal
             dataTable={extraordinaryInstallmentMock}
             portalId="portal"
