@@ -12,7 +12,7 @@ export function useFetch<T>(
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    (async () => {
       setLoading(true);
       setError("");
 
@@ -53,9 +53,7 @@ export function useFetch<T>(
           setLoading(false);
         }
       }
-    };
-
-    fetchData();
+    })();
   }, [apiUrl, options, fetchTimeout, maxRetries, retryFlag]);
 
   return { data, loading, error };
