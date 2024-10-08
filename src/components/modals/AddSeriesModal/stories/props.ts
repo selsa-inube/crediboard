@@ -14,7 +14,14 @@ export const props: Partial<ArgTypes<AddSeriesModalProps>> = {
       type: "text",
     },
     description: "Texto del botón",
-    defaultValue: "Enviar",
+    defaultValue: "hola",
+  },
+  secondButtonText: {
+    control: {
+      type: "text",
+    },
+    description: "Texto del segundo botón",
+    defaultValue: "hola", 
   },
   portalId: {
     control: {

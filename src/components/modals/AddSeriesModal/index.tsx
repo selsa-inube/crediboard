@@ -30,23 +30,25 @@ export interface AddSeriesModalProps {
   handleClose: () => void;
   onSubmit: () => void;
   buttonText: string;
+  secondButtonText: string;
   portalId?: string;
   formValues: FormValues;
-  paymentMethodOptions: Option[]; 
-  frequencyOptions: Option[];      
-  firstPaymentOptions: Option[];   
+  paymentMethodOptions: Option[];
+  frequencyOptions: Option[];
+  firstPaymentOptions: Option[];
 }
 
 export function AddSeriesModal(props: AddSeriesModalProps) {
   const {
     title,
     buttonText,
+    secondButtonText,
     portalId = "portal",
     handleClose,
     onSubmit,
-    paymentMethodOptions, 
-    frequencyOptions,      
-    firstPaymentOptions,   
+    paymentMethodOptions,
+    frequencyOptions,
+    firstPaymentOptions,
   } = props;
 
   const node = document.getElementById(portalId);
@@ -95,18 +97,13 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
             label="Medio de pago"
             name="paymentMethod"
             onChange={onChange}
-            options={paymentMethodOptions} 
+            options={paymentMethodOptions}
             placeholder="Seleccione una opción"
             required={false}
             size="wide"
             value={form["paymentMethod"]}
           />
-          <Textfield
-            id="field1"
-            label="Cantidad"
-            placeholder="(?)"
-            fullwidth
-          />
+          <Textfield id="field1" label="Cantidad" placeholder="(?)" fullwidth />
           <Textfield
             id="field2"
             label="Valor"
@@ -124,7 +121,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
           name="frequency"
           label="Frecuencia de pago"
           placeholder="Seleccione una opción"
-          options={frequencyOptions} 
+          options={frequencyOptions}
           value={form["frequency"]}
           onChange={onChange}
           size="compact"
@@ -135,7 +132,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
           name="firstPayment"
           label="Primer pago"
           placeholder="Seleccione una opción"
-          options={firstPaymentOptions} 
+          options={firstPaymentOptions}
           value={form["firstPayment"]}
           onChange={onChange}
           size="compact"
@@ -152,7 +149,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
             {buttonText}
           </Button>
           <Button type="button" onClick={onSubmit}>
-            {buttonText}
+            {secondButtonText}
           </Button>
         </Stack>
       </StyledModal>
