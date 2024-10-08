@@ -150,6 +150,7 @@ export function IncomeModal(props: IncomeModalProps) {
             justifyContent="space-between"
             alignItems={!isMobile ? "end" : "start"}
             direction={!isMobile ? "row" : "column"}
+            width={!isMobile ? "auto" : "100%"}
           >
             <Stack
               justifyContent="space-between"
