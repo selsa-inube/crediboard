@@ -30,8 +30,7 @@ import { StyledContainerClose, StyledContainer } from "./styles";
 export interface ReportCreditsModalProps {
   handleClose: () => void;
   portalId?: string;
-  totalBalance?: number;
-  totalFee?: number;
+  title?: string;
 }
 
 export function ReportCreditsModal(props: ReportCreditsModalProps) {

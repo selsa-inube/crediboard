@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@inubekit/button";
 
 import { ReportCreditsModal, ReportCreditsModalProps } from ".";
+import { dataReport } from "./config";
 
 const meta: Meta<typeof ReportCreditsModal> = {
   title: "components/modals/ExtrapaymentsModal",
@@ -16,7 +17,7 @@ const Default: Story = (args: ReportCreditsModalProps) => {
 
   return (
     <>
-      <Button onClick={() => setShowModal(true)}>Modal Report Credit</Button>
+      <Button onClick={() => setShowModal(true)}>Open Modal</Button>
       {showModal && (
         <ReportCreditsModal {...args} handleClose={() => setShowModal(false)} />
       )}
@@ -25,8 +26,7 @@ const Default: Story = (args: ReportCreditsModalProps) => {
 };
 
 Default.args = {
-  totalFee: 3300000,
-  totalBalance: 87000000,
+  title: dataReport.title,
 };
 
 export { Default };

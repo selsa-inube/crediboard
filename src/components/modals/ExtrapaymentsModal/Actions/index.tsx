@@ -1,10 +1,7 @@
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
-import {
-  MdClose,
-  MdOutlineRemoveRedEye,
-} from "react-icons/md";
+import { MdClose, MdOutlineRemoveRedEye } from "react-icons/md";
 
 import {
   StyledContainer,
@@ -39,7 +36,6 @@ const actions: Action[] = [
     appearance: "dark",
     label: "Medios de Pago",
   },
-
 ];
 
 export function ActionModal({ onClose, onClick }: ActionModalProps) {

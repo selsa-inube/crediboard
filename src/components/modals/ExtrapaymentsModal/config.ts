@@ -74,14 +74,11 @@ export const data: RowData[] = [
     id: "-",
     actions: "",
   },
-  
 ];
 
 export const dataReport = {
-    title: "pagos extras",
-    close: "Cerrar",
-    addObligations: "Agregar serie",
-    noData: "¡Ups! No se encontraron pagos extras",
-    totalFee: "Pago total",
-    totalBalance: "Saldo Total"
-}
+  title: "pagos extras",
+  close: "Cerrar",
+  addObligations: "Agregar serie",
+  noData: "¡Ups! No se encontraron pagos extras",
+};
