@@ -156,6 +156,7 @@ export function IncomeModal(props: IncomeModalProps) {
               justifyContent="space-between"
               gap="15px"
               direction={!isMobile ? "row" : "column"}
+              width={!isMobile ? "auto" : "100%"}
             >
               <Select
                 id="income"
