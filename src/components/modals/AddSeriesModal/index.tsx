@@ -62,8 +62,8 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
     paymentMethod: "",
     frequency: "",
     firstPayment: "",
-    field1: "", // Change from number to string to handle input
-    field2: "", // Change from number to string to handle input
+    field1: "", 
+    field2: "", 
   });
 
   const onChange = (name: string, newValue: string) => {
@@ -71,7 +71,6 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
   };
 
   const handleNumberChange = (name: string, value: string) => {
-    // Allow only digits and update state
     const numericValue = value.replace(/[^0-9]/g, "");
     setForm({ ...form, [name]: numericValue });
   };
@@ -143,7 +142,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
           options={frequencyOptions}
           value={form["frequency"]}
           onChange={onChange}
-          size="compact"
+          size="wide" 
           fullwidth
         />
         <Select
@@ -154,7 +153,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
           options={firstPaymentOptions}
           value={form["firstPayment"]}
           onChange={onChange}
-          size="compact"
+          size="wide" 
           fullwidth
         />
         <Divider />

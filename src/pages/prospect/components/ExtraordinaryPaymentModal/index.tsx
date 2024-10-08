@@ -132,7 +132,7 @@ export const ExtraordinaryPaymentModal = (
       </Blanket>
       {isAddSeriesModalOpen && (
         <AddSeriesModal
-          title="Add Series"
+          title="Agregar serie"
           handleClose={closeAddSeriesModal}
           onSubmit={handleSubmit}
           buttonText="Cancelar"
