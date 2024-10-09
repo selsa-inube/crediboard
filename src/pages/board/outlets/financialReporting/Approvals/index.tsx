@@ -9,12 +9,9 @@ import { IEntries } from "@components/data/TableBoard/types";
 import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
-import { useFetch } from "@utils/hooks/useFetch";
+import { useFetch } from "@src/services/pages/bord/outlets/financialReporting/getApprovals/useFetch";
 
 import { enviroment } from "@config/environment";
-
-import { errorObserver } from "../config";
-import { IApprovals } from "./types";
 import {
   actionMobileApprovals,
   titlesApprovals,
@@ -26,7 +23,11 @@ import {
   infoItems,
   entriesApprovals,
   optionsFetch,
-} from "./config";
+} from "@config/pages/board/oulet/financialReporting/configApprovals";
+
+import { errorObserver } from "../config";
+import { IApprovals } from "./types";
+
 import { StyledMessageContainer } from "../styles";
 
 interface IApprovalsProps {
