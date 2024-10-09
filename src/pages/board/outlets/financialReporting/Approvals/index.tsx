@@ -95,7 +95,6 @@ export const Approvals = (props: IApprovalsProps) => {
   };
 
   const handleRetry = () => {
-    console.log("retry");
     setRetryFlag((prev) => !prev);
   };
 
