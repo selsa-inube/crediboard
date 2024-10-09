@@ -100,7 +100,7 @@ export function IncomeModal(props: IncomeModalProps) {
               gap="24px"
               direction={!isMobile ? "row" : "column"}
             >
-              <Stack width={!isMobile ? "356px" : "auto"}>
+              <Stack width={!isMobile ? "317px" : "auto"}>
                 <Select
                   id="income"
                   name="deudor"
@@ -177,17 +177,11 @@ export function IncomeModal(props: IncomeModalProps) {
           <Divider />
           <Stack
             padding="10px 0px"
-            justifyContent="space-between"
-            alignItems={!isMobile ? "end" : "start"}
+            justifyContent="end"
+            alignItems={!isMobile ? "end" : "end"}
             direction={!isMobile ? "row" : "column"}
             width={!isMobile ? "auto" : "100%"}
           >
-            <Stack
-              justifyContent="space-between"
-              gap="15px"
-              direction={!isMobile ? "row" : "column"}
-              width={!isMobile ? "auto" : "100%"}
-            ></Stack>
             <Stack
               justifyContent="end"
               gap="15px"
