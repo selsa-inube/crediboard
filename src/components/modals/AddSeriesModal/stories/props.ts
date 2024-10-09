@@ -1,5 +1,5 @@
 import { ArgTypes } from "@storybook/react";
-import { AddSeriesModalProps } from "..";
+import { AddSeriesModalProps } from "../type";
 
 export const props: Partial<ArgTypes<AddSeriesModalProps>> = {
   title: {

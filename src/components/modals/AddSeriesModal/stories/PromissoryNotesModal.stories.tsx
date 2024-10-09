@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { StoryFn, Meta } from "@storybook/react";
 import { Button } from "@inube/design-system";
-import { AddSeriesModal, AddSeriesModalProps } from "../index";
+import { AddSeriesModal } from "../index";
+import { AddSeriesModalProps } from "../type";
 import { props } from "./props";
 
 const paymentMethodOptions = [

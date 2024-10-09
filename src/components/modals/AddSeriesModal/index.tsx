@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { useMediaQuery, Blanket, Text, inube } from "@inube/design-system";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Text } from "@inubekit/text";
+import { inube } from "@inubekit/foundations";
+import { Blanket } from "@inubekit/blanket";
 import { createPortal } from "react-dom";
 import { MdClear, MdOutlineAttachMoney } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
@@ -8,35 +11,14 @@ import { Textfield } from "@inubekit/textfield";
 import { Select } from "@inubekit/select";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
-import { Datefield, IDatefieldStatus } from "@inubekit/datefield";
+import { Datefield, IDatefieldStatus } from "@inubekit/datefield"; 
 import {
   StyledModal,
   StyledContainerClose,
   StyledContainerTitle,
 } from "./styles";
 
-interface FormValues {
-  field1: number;
-  field2: number;
-}
-
-export interface Option {
-  id: string;
-  label: string;
-  value: string;
-}
-
-export interface AddSeriesModalProps {
-  title: string;
-  handleClose: () => void;
-  onSubmit: () => void;
-  buttonText: string;
-  secondButtonText: string;
-  portalId?: string;
-  formValues: FormValues;
-  paymentMethodOptions: Option[];
-  frequencyOptions: Option[];
-}
+import { AddSeriesModalProps } from "./type";
 
 export function AddSeriesModal(props: AddSeriesModalProps) {
   const {
@@ -60,9 +42,10 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
   const [form, setForm] = useState({
     paymentMethod: "",
     frequency: "",
-    firstPayment: { value: "", status: "pending" as IDatefieldStatus },
     field1: "",
     field2: "",
+    date: "", 
+    dateStatus: "pending", 
   });
 
   const onChange = (name: string, newValue: string) => {
@@ -70,41 +53,23 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
   };
 
   const handleNumberChange = (name: string, value: string) => {
-    const numericValue = value.replace(/[^0-9]/g, "");
-    setForm({ ...form, [name]: numericValue });
-  };
-
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({
-      ...form,
-      firstPayment: { value: e.target.value, status: "pending" },
-    });
-  };
-
-  const handleDateBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isValid = isValidDate(e.target.value);
-    setForm({
-      ...form,
-      firstPayment: {
-        value: e.target.value,
-        status: isValid ? "pending" : "invalid",
-      },
-    });
-  };
-
-  const handleDateFocus = () => {
-    setForm({
-      ...form,
-      firstPayment: {
-        ...form.firstPayment,
-        status: form.firstPayment.status === "invalid" ? "invalid" : "pending",
-      },
-    });
+    setForm({ ...form, [name]: value });
   };
 
   const isValidDate = (value: string) => {
     return /^(19|20)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/.test(value);
   };
+
+  const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, date: e.target.value, dateStatus: "pending" });
+  };
+
+  const onDateBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isValid = isValidDate(e.target.value);
+    setForm({ ...form, dateStatus: isValid ? "pending" : "invalid" });
+  };
+
+  const dateMessage = "La fecha no es válida."; 
 
   const isMobile = useMediaQuery("(max-width: 700px)");
 
@@ -116,7 +81,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
             {title}
           </Text>
           <StyledContainerClose onClick={handleClose}>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text>Cerrar</Text>
               <Icon
                 appearance="dark"
@@ -128,7 +93,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
           </StyledContainerClose>
         </StyledContainerTitle>
         <Divider />
-        <Stack gap={inube.spacing.s300} direction="column">
+        <Stack gap="24px" direction="column">
           <Select
             fullwidth
             id="paymentMethod"
@@ -146,7 +111,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
             label="Cantidad"
             placeholder="Número de pagos"
             fullwidth
-            type="text"
+            type="number"
             onChange={(e) => handleNumberChange("field1", e.target.value)}
             value={form.field1}
             size="wide"
@@ -156,12 +121,12 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
             label="Valor"
             iconBefore={
               <MdOutlineAttachMoney
-                color={inube.color.stroke.success.regular}
+                color={inube.icon.success.content.color.regular}
               />
             }
             placeholder="Valor a pagar"
             fullwidth
-            type="text"
+            type="number"
             onChange={(e) => handleNumberChange("field2", e.target.value)}
             value={form.field2}
           />
@@ -178,16 +143,14 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
           fullwidth
         />
         <Datefield
-          id="firstPayment"
-          name="firstPayment"
-          label="Fecha del primer pago"
-          value={form.firstPayment.value}
-          onChange={handleDateChange}
-          onBlur={handleDateBlur}
-          onFocus={handleDateFocus}
-          message="Formato de fecha no válido"
-          status={form.firstPayment.status}
-          size="wide"
+          id="date"
+          label="Fecha"
+          message={dateMessage}
+          onChange={onDateChange}
+          onBlur={onDateBlur}
+          required={false}
+          status={form.dateStatus as IDatefieldStatus}
+          value={form.date}
           fullwidth
         />
         <Divider />
