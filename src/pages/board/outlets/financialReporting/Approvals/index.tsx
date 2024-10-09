@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from "react";
-import { MdOutlineThumbUp } from "react-icons/md";
 import { Tag } from "@inubekit/tag";
 import { Flag } from "@inubekit/flag";
 
@@ -190,13 +189,11 @@ export const Approvals = (props: IApprovalsProps) => {
       {showFlag && (
         <StyledMessageContainer>
           <Flag
+            id="Solicitud"
             title="Solicitud enviada"
             description="La solicitud ha sido enviada exitosamente para su aprobación."
             appearance="success"
             duration={5000}
-            icon={<MdOutlineThumbUp />}
-            isMessageResponsive
-            closeFlag={() => setShowFlag(false)}
           />
         </StyledMessageContainer>
       )}

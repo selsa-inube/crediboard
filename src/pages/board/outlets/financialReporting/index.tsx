@@ -5,7 +5,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   MdDeleteOutline,
   MdOutlineRemoveRedEye,
-  MdOutlineThumbUp,
 } from "react-icons/md";
 import { Text, inube, Grid, useMediaQuery } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
@@ -65,7 +64,7 @@ const Listdata = (props: IListdataProps) => {
           <Icon
             icon={icon}
             appearance="dark"
-            spacing="none"
+            spacing="narrow"
             size="24px"
             cursorHover
           />
@@ -351,13 +350,11 @@ export const FinancialReporting = () => {
       {showFlagMessage && (
         <StyledMessageContainer>
           <Flag
+          id={flagMessage.title}
             title={flagMessage.title}
             description={flagMessage.description}
             appearance={flagMessage.appearance}
-            icon={<MdOutlineThumbUp />}
             duration={5000}
-            isMessageResponsive={false}
-            closeFlag={() => setShowFlagMessage(false)}
           />
         </StyledMessageContainer>
       )}

@@ -1,9 +1,5 @@
 import { useState, isValidElement, useEffect } from "react";
-import {
-  MdAddCircleOutline,
-  MdOutlineCheckCircle,
-  MdOutlineThumbUp,
-} from "react-icons/md";
+import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
@@ -44,7 +40,7 @@ export interface IRequirementsProps {
 }
 
 export const Requirements = (props: IRequirementsProps) => {
-  const { isMobile, id, user} = props;
+  const { isMobile, id, user } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [modalData, setModalData] = useState<{ date?: Date; details?: string }>(
     {}
@@ -131,9 +127,18 @@ export const Requirements = (props: IRequirementsProps) => {
       try {
         await addItem("trace", trace);
         traceObserver.notify(trace);
-        handleSuccess(setFlagMessage, setShowFlagMessage, setShowApprovalstModal); 
+        handleSuccess(
+          setFlagMessage,
+          setShowFlagMessage,
+          setShowApprovalstModal
+        );
       } catch (error) {
-        handleError(error as Error, setFlagMessage, setShowFlagMessage, setShowApprovalstModal); 
+        handleError(
+          error as Error,
+          setFlagMessage,
+          setShowFlagMessage,
+          setShowApprovalstModal
+        );
       }
     }
   };
@@ -149,7 +154,8 @@ export const Requirements = (props: IRequirementsProps) => {
           icon={<MdAddCircleOutline />}
           appearance="primary"
           onClick={() => handleToggleSeeDetailsModal(date, details)}
-          spacing="compact"
+          spacing="narrow"
+          variant="empty"
           size="24px"
           cursorHover
         />
@@ -162,7 +168,7 @@ export const Requirements = (props: IRequirementsProps) => {
       <Icon
         icon={<MdOutlineCheckCircle />}
         appearance="primary"
-        spacing="compact"
+        spacing="narrow"
         cursorHover
         size="24px"
         onClick={() => {
@@ -257,13 +263,11 @@ export const Requirements = (props: IRequirementsProps) => {
       {showFlagMessage && (
         <StyledMessageContainer>
           <Flag
+            id={flagMessage.title}
             title={flagMessage.title}
             description={flagMessage.description}
             appearance={flagMessage.appearance}
-            icon={<MdOutlineThumbUp />}
             duration={5000}
-            isMessageResponsive={false}
-            closeFlag={() => setShowFlagMessage(false)}
           />
         </StyledMessageContainer>
       )}

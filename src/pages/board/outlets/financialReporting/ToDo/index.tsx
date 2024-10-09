@@ -1,5 +1,4 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { MdOutlineThumbUp } from "react-icons/md";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
 import { Flag } from "@inubekit/flag";
@@ -151,7 +150,7 @@ function ToDo(props: ToDoProps) {
       trace_type: "executed_task",
       read_novelty: "",
     };
-  
+
     try {
       await addItem("trace", trace);
       traceObserver.notify(trace);
@@ -169,7 +168,11 @@ function ToDo(props: ToDoProps) {
         heightFieldset={isMobile ? "inherit" : "284px"}
         hasOverflow
       >
-        <Stack direction="column" gap={isMobile ? "4px" : "6px"} height={isMobile ? "auto" : "205px"}>
+        <Stack
+          direction="column"
+          gap={isMobile ? "4px" : "6px"}
+          height={isMobile ? "auto" : "205px"}
+        >
           <Stack direction={isMobile ? "column" : "row"}>
             {isMobile && (
               <Text appearance="primary" type="title" size="medium">
@@ -208,10 +211,7 @@ function ToDo(props: ToDoProps) {
                 fullwidth={isMobile}
               />
             </Stack>
-            <Stack
-              padding="16px 0px 0px 0px"
-              width="100%"
-            >
+            <Stack padding="16px 0px 0px 0px" width="100%">
               <Button
                 onClick={handleSend}
                 cursorHover
@@ -291,13 +291,11 @@ function ToDo(props: ToDoProps) {
       {showFlagMessage && (
         <StyledMessageContainer>
           <Flag
+            id={flagMessage.title}
             title={flagMessage.title}
             description={flagMessage.description}
             appearance={flagMessage.appearance}
-            icon={<MdOutlineThumbUp />}
             duration={5000}
-            isMessageResponsive={false}
-            closeFlag={() => setShowFlagMessage(false)}
           />
         </StyledMessageContainer>
       )}
