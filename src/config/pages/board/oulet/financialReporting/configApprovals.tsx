@@ -7,11 +7,23 @@ import {
   MdWarningAmber,
 } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
+import { Tag } from "@inubekit/tag";
 
 import { IEntries } from "@components/data/TableBoard/types";
+import { enviroment } from "@config/environment";
+import { IApprovals } from "@pages/board/outlets/financialReporting/Approvals/types";
 
-const handledata = (data: IEntries) => {
+const handleData = (data: IEntries) => {
   console.log(data, "function that receives data");
+};
+
+export const optionsFetch = {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json; charset=utf-8",
+    "X-Action": "SearchAllAprovalsById",
+    "X-Business-Unit": enviroment.TEMP_BUSINESS_UNIT,
+  },
 };
 
 export const titlesApprovals = [
@@ -40,7 +52,6 @@ export const actionsApprovals = [
           spacing="none"
           cursorHover
           size="22px"
-          onClick={() => handledata(data)}
           disabled={!error}
         />
       );
@@ -56,7 +67,6 @@ export const actionsApprovals = [
         spacing="none"
         cursorHover
         size="22px"
-        onClick={() => handledata(data)}
         disabled={
           isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
         }
@@ -83,6 +93,14 @@ interface TagProps {
 interface TagElement {
   props: TagProps;
 }
+
+export const infoItems = [
+  { icon: <MdCheck />, text: "Aprobado" },
+  { icon: <MdClose />, text: "Rechazado" },
+  { icon: <MdRemove />, text: "Pendiente" },
+  { icon: <MdWarningAmber />, text: "Error", appearance: "danger" },
+  { icon: <MdNotificationsNone />, text: "Notificaciones", appearance: "help" },
+];
 
 const isValidTagElement = (element: unknown): element is TagElement => {
   return isValidElement(element) && element.props !== undefined;
@@ -119,7 +137,7 @@ export const actionMobileApprovals = [
         spacing="none"
         cursorHover
         size="20px"
-        onClick={() => handledata(data)}
+        onClick={() => handleData(data)}
         disabled={
           isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
         }
@@ -136,7 +154,7 @@ export const actionMobileApprovals = [
         spacing="none"
         cursorHover
         size="20px"
-        onClick={() => handledata(data)}
+        onClick={() => handleData(data)}
         disabled={
           isValidElement(data?.tag) && data?.tag?.props?.label !== "Pendiente"
         }
@@ -157,6 +175,18 @@ export const handleNotificationClick = (
   }
 };
 
+export const handleErrorClick = (
+  data: IEntries,
+  setSelectedData: (data: IEntries) => void,
+  setShowModal: (showModal: boolean) => void
+) => {
+  const tag = data?.tag;
+  if (isValidElement(tag) && tag.props?.label === "Pendiente") {
+    setSelectedData(data);
+    setShowModal(true);
+  }
+};
+
 interface Action {
   id: string;
   actionName: string;
@@ -165,49 +195,65 @@ interface Action {
 
 export const desktopActions = (
   actionsApprovals: Action[],
-  handleNotificationClick: (data: IEntries) => void
+  handleNotificationClick: (data: IEntries) => void,
+  handleErrorClick: (data: IEntries) => void
 ) => {
-  return actionsApprovals.map((action) => {
-    return {
-      id: action.id,
-      actionName: action.actionName,
-      content: (data: IEntries) => (
-        <div
-          onClick={() => {
-            if (action.id === "notificaciones") {
-              handleNotificationClick(data);
-            } else if (action.id === "Error") {
-              action.content(data);
-            }
-          }}
-        >
-          {action.content(data)}
-        </div>
-      ),
-    };
-  });
+  return actionsApprovals.map((action) => ({
+    id: action.id,
+    actionName: action.actionName,
+    content: (data: IEntries) => {
+      const handleClick = () => {
+        if (action.id === "notificaciones") {
+          handleNotificationClick(data);
+        } else if (action.id === "Error") {
+          handleErrorClick(data);
+        }
+      };
+      return <Icon {...action.content(data).props} onClick={handleClick} />;
+    },
+  }));
 };
 
 export const getMobileActionsConfig = (
   actionMobileApprovals: Action[],
-  handleNotificationClickBound: (data: IEntries) => void
+  handleNotificationClickBound: (data: IEntries) => void,
+  handleErrorClickBound: (data: IEntries) => void
 ) => {
-  return actionMobileApprovals.map((action) => {
-    return {
-      id: action.id,
-      content: (data: IEntries) => (
-        <div
-          onClick={() => {
-            if (action.id === "notificaciones") {
-              handleNotificationClickBound(data);
-            } else if (action.id === "Error") {
-              action.content(data);
-            }
-          }}
-        >
-          {action.content(data)}
-        </div>
-      ),
-    };
-  });
+  return actionMobileApprovals.map((action) => ({
+    id: action.id,
+    content: (data: IEntries) => {
+      const handleClick = () => {
+        if (action.id === "notificaciones") {
+          handleNotificationClickBound(data);
+        } else if (action.id === "Error") {
+          handleErrorClickBound(data);
+        }
+      };
+      return <Icon {...action.content(data).props} onClick={handleClick} />;
+    },
+  }));
+};
+
+const appearanceTag = (label: string) => {
+  if (label === "Pendiente") {
+    return "warning";
+  }
+  if (label === "Aprobado") {
+    return "success";
+  }
+  return "danger";
+};
+
+export const entriesApprovals = (data: IApprovals[]) => {
+  return data.map((entry) => ({
+    id: entry?.approverName?.toString(),
+    usuarios: entry?.approverName,
+    tag: (
+      <Tag
+        label={entry.concept}
+        appearance={appearanceTag(entry.concept)}
+        weight="strong"
+      />
+    ),
+  }));
 };
