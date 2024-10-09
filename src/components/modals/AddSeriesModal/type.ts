@@ -21,4 +21,11 @@ export interface FormValues {
     frequencyOptions: Option[];
   }
   
+  export interface FormState {
+    paymentMethod: string;
+    frequency: string;
+    field1: string;
+    field2: string;
+    date: string; 
+  }
   

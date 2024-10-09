@@ -18,7 +18,7 @@ import {
   StyledContainerTitle,
 } from "./styles";
 
-import { AddSeriesModalProps } from "./type";
+import { AddSeriesModalProps,FormState } from "./type";
 
 export function AddSeriesModal(props: AddSeriesModalProps) {
   const {
@@ -39,12 +39,12 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
     );
   }
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormState>({
     paymentMethod: "",
     frequency: "",
     field1: "",
     field2: "",
-    date: "", 
+    date: "",
   });
 
   const onChange = (name: string, newValue: string) => {
