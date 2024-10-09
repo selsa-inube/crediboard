@@ -212,7 +212,7 @@ export const PaymentCapacityInterface = forwardRef<
               value={loading ? "loading..." : currencyFormat(maxAmount, false)}
               iconBefore={
                 <MdOutlineAttachMoney
-                  color={inube.icon.dark.content.color.regular}
+                  color={inube.palette.neutral.N900}
                 />
               }
               fullwidth={true}

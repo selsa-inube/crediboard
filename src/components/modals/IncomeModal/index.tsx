@@ -177,7 +177,7 @@ export function IncomeModal(props: IncomeModalProps) {
                 id="field1"
                 iconBefore={
                   <MdOutlineAttachMoney
-                    color={inube.icon.dark.content.color.regular}
+                    color={inube.palette.neutral.N900}
                   />
                 }
                 label="Total ingresos mensuales"
