@@ -1,8 +1,9 @@
-import { Icon } from "@inubekit/icon";
 import { useState } from "react";
 import { MdOutlineEdit , MdDeleteOutline} from "react-icons/md";
-import { ActionModal } from "../Actions";
 import { Stack } from "@inubekit/stack";
+import { Icon } from "@inubekit/icon";
+
+import { ActionModal } from "../Actions";
 
 interface DetailProps {
   onClickDetails?: () => void;
@@ -21,7 +22,7 @@ export function Detail(props: DetailProps) {
           size="16px"
           cursorHover
           appearance="dark"
-          onClick={() => setModalOpen(true)}
+          onClick={() => setModalOpen(false)}
           variant="none"
         />
       </Stack>

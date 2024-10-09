@@ -11,7 +11,7 @@ import { Textfield } from "@inubekit/textfield";
 import { Select } from "@inubekit/select";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
-import { Datefield, IDatefieldStatus } from "@inubekit/datefield"; 
+import { Datefield } from "@inubekit/datefield"; 
 import {
   StyledModal,
   StyledContainerClose,
@@ -45,7 +45,6 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
     field1: "",
     field2: "",
     date: "", 
-    dateStatus: "pending", 
   });
 
   const onChange = (name: string, newValue: string) => {
@@ -55,21 +54,6 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
   const handleNumberChange = (name: string, value: string) => {
     setForm({ ...form, [name]: value });
   };
-
-  const isValidDate = (value: string) => {
-    return /^(19|20)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/.test(value);
-  };
-
-  const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, date: e.target.value, dateStatus: "pending" });
-  };
-
-  const onDateBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isValid = isValidDate(e.target.value);
-    setForm({ ...form, dateStatus: isValid ? "pending" : "invalid" });
-  };
-
-  const dateMessage = "La fecha no es válida."; 
 
   const isMobile = useMediaQuery("(max-width: 700px)");
 
@@ -145,16 +129,13 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
         <Datefield
           id="date"
           label="Fecha"
-          message={dateMessage}
-          onChange={onDateChange}
-          onBlur={onDateBlur}
+          onChange={(e) => setForm({ ...form, date: e.target.value })}
           required={false}
-          status={form.dateStatus as IDatefieldStatus}
           value={form.date}
           fullwidth
         />
         <Divider />
-        <Stack justifyContent="flex-end" margin="s200 s0" gap="10px">
+        <Stack justifyContent="flex-end" margin="16px 0px" gap="10px">
           <Button
             type="button"
             onClick={onSubmit}
