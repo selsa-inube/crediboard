@@ -72,7 +72,7 @@ export const ExtraordinaryPaymentModal = (
                     icon={<MdOutlineAdd />}
                     appearance="light"
                     size="18px"
-                    spacing="none"
+                    spacing="narrow"
                   />
                 }
               >

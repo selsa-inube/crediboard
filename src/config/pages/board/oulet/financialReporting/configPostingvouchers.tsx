@@ -46,7 +46,7 @@ export const actionsPostingvouchers = [
       <Icon
         appearance="primary"
         size="22px"
-        spacing="none"
+        spacing="narrow"
         variant="filled"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}

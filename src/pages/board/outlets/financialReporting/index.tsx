@@ -64,7 +64,7 @@ const Listdata = (props: IListdataProps) => {
           <Icon
             icon={icon}
             appearance="dark"
-            spacing="none"
+            spacing="narrow"
             size="24px"
             cursorHover
           />

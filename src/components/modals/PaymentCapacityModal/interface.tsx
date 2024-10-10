@@ -103,7 +103,7 @@ export const PaymentCapacityInterface = forwardRef<
                     appearance="primary"
                     icon={<MdOutlineVisibility />}
                     size="12px"
-                    spacing="none"
+                    spacing="narrow"
                     cursorHover
                     variant="filled"
                     shape="circle"
@@ -131,7 +131,7 @@ export const PaymentCapacityInterface = forwardRef<
                     appearance="primary"
                     icon={<MdOutlineVisibility />}
                     size="12px"
-                    spacing="none"
+                    spacing="narrow"
                     cursorHover
                     variant="filled"
                     shape="circle"
