@@ -39,7 +39,7 @@ function MenuItem(props: MenuItemProps) {
         {iconBefore && (
           <Icon
             icon={iconBefore}
-            spacing="narrow"
+            spacing="none"
             size="24px"
             appearance="dark"
             disabled={isDisabled}
@@ -62,7 +62,7 @@ function MenuItem(props: MenuItemProps) {
       {iconAfter && (
         <Icon
           icon={iconAfter}
-          spacing="narrow"
+          spacing="none"
           size="24px"
           appearance="dark"
           disabled={isDisabled}

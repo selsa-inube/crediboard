@@ -132,7 +132,7 @@ function EditProductModal(props: EditProductModalProps) {
                     icon={<MdAttachMoney />}
                     appearance="success"
                     size="18px"
-                    spacing="narrow"
+                    spacing="none"
                   />
                 }
                 size="compact"
@@ -211,7 +211,7 @@ function EditProductModal(props: EditProductModalProps) {
                     icon={<MdPercent />}
                     appearance="dark"
                     size="18px"
-                    spacing="narrow"
+                    spacing="none"
                   />
                 }
                 type="number"

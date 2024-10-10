@@ -54,7 +54,7 @@ export const StockTray = (props: IStockTrayProps) => {
             icon={<MdOutlineChevronLeft  />}
             appearance="primary"
             size="32px"
-            spacing="narrow"
+            spacing="none"
             onClick={navigation}
           />
           <Text>Volver</Text>
@@ -65,7 +65,7 @@ export const StockTray = (props: IStockTrayProps) => {
           icon={<MdMenu />}
           appearance="dark"
           size="32px"
-          spacing="narrow"
+          spacing="none"
           onClick={actionButtons?.menuIcon}
         />
       )}

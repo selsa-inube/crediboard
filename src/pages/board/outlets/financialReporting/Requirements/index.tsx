@@ -154,8 +154,8 @@ export const Requirements = (props: IRequirementsProps) => {
           icon={<MdAddCircleOutline />}
           appearance="primary"
           onClick={() => handleToggleSeeDetailsModal(date, details)}
-          spacing="narrow"
-          variant="empty"
+          spacing="none"
+          variant="none"
           size="24px"
           cursorHover
         />
@@ -168,7 +168,7 @@ export const Requirements = (props: IRequirementsProps) => {
       <Icon
         icon={<MdOutlineCheckCircle />}
         appearance="primary"
-        spacing="narrow"
+        spacing="none"
         cursorHover
         size="24px"
         onClick={() => {

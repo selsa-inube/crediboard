@@ -19,7 +19,7 @@ export const InfoItemComponent: React.FC<InfoItemComponentProps> = ({ item }) =>
         size={size}
         shape={item.shape}
         variant={variant}
-        spacing="narrow"
+        spacing="none"
       />
       <Text size="medium">{item.text}</Text>
     </StyledLi>
