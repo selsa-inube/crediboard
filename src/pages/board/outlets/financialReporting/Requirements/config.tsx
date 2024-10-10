@@ -179,6 +179,7 @@ const actionsMobile = [
         cursorHover
         variant="filled"
         shape="circle"
+        size="16px"
       />
     ),
   },

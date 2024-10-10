@@ -154,9 +154,9 @@ export const Requirements = (props: IRequirementsProps) => {
           icon={<MdAddCircleOutline />}
           appearance="primary"
           onClick={() => handleToggleSeeDetailsModal(date, details)}
-          spacing="narrow"
+          spacing="compact"
           variant="empty"
-          size="24px"
+          size="32px"
           cursorHover
         />
       </Stack>
@@ -168,9 +168,9 @@ export const Requirements = (props: IRequirementsProps) => {
       <Icon
         icon={<MdOutlineCheckCircle />}
         appearance="primary"
-        spacing="narrow"
+        spacing="compact"
         cursorHover
-        size="24px"
+        size="32px"
         onClick={() => {
           setIsApproved(false);
           toggleAprovalsModal();
@@ -263,7 +263,7 @@ export const Requirements = (props: IRequirementsProps) => {
       {showFlagMessage && (
         <StyledMessageContainer>
           <Flag
-            id={flagMessage.title}
+            id="flag4"
             title={flagMessage.title}
             description={flagMessage.description}
             appearance={flagMessage.appearance}

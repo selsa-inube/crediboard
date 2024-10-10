@@ -189,7 +189,7 @@ export const Approvals = (props: IApprovalsProps) => {
       {showFlag && (
         <StyledMessageContainer>
           <Flag
-            id="Solicitud"
+            id="flag1"
             title="Solicitud enviada"
             description="La solicitud ha sido enviada exitosamente para su aprobación."
             appearance="success"

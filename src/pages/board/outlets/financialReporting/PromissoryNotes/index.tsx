@@ -192,7 +192,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           {showFlag && (
             <StyledMessageContainer>
               <Flag
-                id="Datos enviados"
+                id="flag2"
                 title="Datos enviados"
                 description="Los datos del usuario han sido enviados exitosamente."
                 appearance="success"

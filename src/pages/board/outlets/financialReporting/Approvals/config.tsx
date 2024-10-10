@@ -111,6 +111,7 @@ export const actionMobileApprovals = [
         cursorHover
         variant="filled"
         shape="circle"
+        size="17px"
       />
     ),
   },

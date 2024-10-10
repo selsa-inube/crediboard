@@ -116,6 +116,7 @@ export const actionMobile = [
         cursorHover
         variant="filled"
         shape="circle"
+        size="16px"
       />
     ),
   },

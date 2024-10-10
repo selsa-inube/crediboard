@@ -2,10 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  MdDeleteOutline,
-  MdOutlineRemoveRedEye,
-} from "react-icons/md";
+import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
 import { Text, inube, Grid, useMediaQuery } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Flag } from "@inubekit/flag";
@@ -266,19 +263,25 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                <ToDo icon={infoIcon} isMobile={isMobile} id={id!} user={user!.nickname!}/>
+                <ToDo
+                  icon={infoIcon}
+                  isMobile={isMobile}
+                  id={id!}
+                  user={user!.nickname!}
+                />
               </Stack>
               <Stack direction="column">
                 <Approvals user={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
-                <Requirements isMobile={isMobile} id={id!} user={user!.nickname!} />
+                <Requirements
+                  isMobile={isMobile}
+                  id={id!}
+                  user={user!.nickname!}
+                />
               </Stack>
               <Stack direction="column">
-                  <Management
-                    id={id!}
-                    isMobile={isMobile}
-                  />
+                <Management id={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
                 <PromissoryNotes user={id!} isMobile={isMobile} />
@@ -323,7 +326,7 @@ export const FinancialReporting = () => {
               values,
               setFlagMessage,
               setShowFlagMessage,
-              setShowRejectModal,
+              setShowRejectModal
             )
           }
         />
@@ -342,7 +345,7 @@ export const FinancialReporting = () => {
               values,
               setFlagMessage,
               setShowFlagMessage,
-              setShowCancelModal,
+              setShowCancelModal
             )
           }
         />
@@ -350,7 +353,7 @@ export const FinancialReporting = () => {
       {showFlagMessage && (
         <StyledMessageContainer>
           <Flag
-          id={flagMessage.title}
+            id="flag"
             title={flagMessage.title}
             description={flagMessage.description}
             appearance={flagMessage.appearance}

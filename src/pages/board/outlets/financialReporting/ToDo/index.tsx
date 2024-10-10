@@ -291,7 +291,7 @@ function ToDo(props: ToDoProps) {
       {showFlagMessage && (
         <StyledMessageContainer>
           <Flag
-            id={flagMessage.title}
+            id="flag3"
             title={flagMessage.title}
             description={flagMessage.description}
             appearance={flagMessage.appearance}
