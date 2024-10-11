@@ -1,20 +1,19 @@
 import { useState, useEffect, useCallback } from "react";
+import { LuPaperclip } from "react-icons/lu";
+import { MdOutlineSend } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
-import { Stack, inube } from "@inube/design-system";
+import { Stack } from "@inubekit/stack";
 import { Textfield } from "@inubekit/textfield";
 
-import localforage from "localforage";
-import { MdOutlineSend, MdAttachFile } from "react-icons/md";
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
-import { getById, updateActive } from "@mocks/utils/dataMock.service";
 import { TraceType } from "@services/types";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import userNotFound from "@assets/images/ItemNotFound.png";
-import { traceObserver } from "../config";
+import { getTraceByCreditRequestId } from "@services/trace/getTraceByCreditRequestId";
 
+import { traceObserver, errorObserver } from "../config";
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
-import { errorObserver } from "../config";
 
 interface IManagementProps {
   id: string;
@@ -36,32 +35,19 @@ export const Management = (props: IManagementProps) => {
     setLoading(true);
     setError(null);
 
-    const timer = setTimeout(() => {
-      setError(
-        "No se pudo cargar la información. Intente nuevamente más tarde."
-      );
-      setLoading(false);
-    }, 5000);
-
     try {
-      const data = await getById<TraceType[]>(
-        "trace",
-        "credit_request_id",
-        id,
-        true
-      );
-
-      clearTimeout(timer);
-
-      if (!data || (Array.isArray(data) && data.length === 0)) {
-        errorObserver.notify({
+      const data = await getTraceByCreditRequestId(id).catch(
+        () => {
+          errorObserver.notify({
           id: "Management",
           message: "Error al obtener los datos de gestión.",
         });
         setError("No se encontraron datos.");
-      } else if (data instanceof Error) {
-        setError("Error al obtener los datos de gestión.");
-      } else {
+        }
+      );
+
+
+      if (data || (Array.isArray(data) && data.length > 0)) {
         const flattenedData: TraceType[] = Array.isArray(data[0])
           ? ((data as TraceType[]).flat() as TraceType[])
           : (data as TraceType[]);
@@ -69,7 +55,6 @@ export const Management = (props: IManagementProps) => {
         setTraces(flattenedData);
       }
     } catch (err) {
-      clearTimeout(timer);
       errorObserver.notify({
         id: "Management",
         message: (err as Error).message.toString(),
@@ -97,36 +82,20 @@ export const Management = (props: IManagementProps) => {
   const sendMessage = async () => {
     if (newMessage.trim() !== "") {
       const newTrace: TraceType = {
-        trace_id: crypto.randomUUID(),
-        trace_value: newMessage,
-        credit_request_id: id ?? "default",
-        use_case: "message",
-        user_id: "user_001",
-        execution_date: new Date().toISOString(),
+        traceId: crypto.randomUUID(),
+        traceValue: newMessage,
+        creditRequestId: id ?? "default",
+        useCase: "message",
+        userId: "user_001",
+        excecutionDate: new Date().toISOString(),
+        traceType: "message",
+        userName: "Usuario de Prueba",
       };
 
       const updatedTraces = [...traces, newTrace];
       setTraces(updatedTraces);
 
       try {
-        await localforage.setItem("trace", updatedTraces);
-        await updateActive({
-          key: "trace_id",
-          nameDB: "trace",
-          identifier: newTrace.trace_id,
-          editData: {
-            trace_id: newTrace.trace_id,
-            trace_value: newTrace.trace_value,
-            credit_request_id: newTrace.credit_request_id,
-            use_case: newTrace.use_case,
-            user_id: newTrace.user_id,
-            execution_date: newTrace.execution_date as string,
-            justification: newTrace.justification ?? "",
-            decision_taken_by_user: newTrace.decision_taken_by_user ?? "",
-            trace_type: newTrace.trace_type ?? "",
-            read_novelty: newTrace.read_novelty ?? "",
-          },
-        });
         setNewMessage("");
       } catch (err) {
         console.error("Error al guardar el mensaje:", err);
@@ -168,20 +137,20 @@ export const Management = (props: IManagementProps) => {
                 ))
               : traces.map((trace) => (
                   <Message
-                    key={trace.trace_id}
+                    key={trace.traceId}
                     type="sent"
-                    timestamp={trace.execution_date}
-                    message={trace.trace_value}
+                    timestamp={trace.excecutionDate}
+                    message={trace.traceValue}
                   />
                 ))}
           </ChatContent>
           <form>
-            <Stack alignItems="center" direction="row" gap={inube.spacing.s050}>
+            <Stack alignItems="center" direction="row" gap="4px">
               <Icon
                 appearance="primary"
                 cursorHover
                 size="24px"
-                icon={<MdAttachFile />}
+                icon={<LuPaperclip />}
               />
               <Textfield
                 id="text"
@@ -189,15 +158,16 @@ export const Management = (props: IManagementProps) => {
                 fullwidth
                 value={newMessage}
                 onChange={handleInputChange}
-                size="compact"
               />
-              <Icon
-                appearance="primary"
-                cursorHover
-                size="24px"
-                icon={<MdOutlineSend />}
-                onClick={handleFormSubmit}
-              />
+              <Stack>
+                <Icon
+                  appearance="primary"
+                  cursorHover
+                  size="24px"
+                  icon={<MdOutlineSend />}
+                  onClick={handleFormSubmit}
+                />
+              </Stack>
             </Stack>
           </form>
         </Stack>
