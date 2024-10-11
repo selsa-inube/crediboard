@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
 import { Text, inube, Grid, useMediaQuery } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
-import { Flag } from "@inubekit/flag";
+import { Flag  } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
 import { ErrorAlert } from "@components/ErrorAlert";
@@ -47,6 +47,7 @@ const Listdata = (props: IListdataProps) => {
   if (data.length === 0) {
     return <Text>No hay documentos adjuntos.</Text>;
   }
+
 
   return (
     <ul
@@ -358,6 +359,7 @@ export const FinancialReporting = () => {
             description={flagMessage.description}
             appearance={flagMessage.appearance}
             duration={5000}
+            
           />
         </StyledMessageContainer>
       )}

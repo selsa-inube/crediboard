@@ -187,15 +187,15 @@ export const Approvals = (props: IApprovalsProps) => {
         />
       )}
       {showFlag && (
-        <StyledMessageContainer>
-          <Flag
-            id="flag1"
-            title="Solicitud enviada"
-            description="La solicitud ha sido enviada exitosamente para su aprobación."
-            appearance="success"
-            duration={5000}
-          />
-        </StyledMessageContainer>
+          <StyledMessageContainer>
+            <Flag
+              id="flag1"
+              title="Solicitud enviada"
+              description="La solicitud ha sido enviada exitosamente para su aprobación."
+              appearance="success"
+              duration={5000}
+            />
+          </StyledMessageContainer>
       )}
       {showErrorModal && selectedData && (
         <TextAreaModal
