@@ -1,11 +1,11 @@
-import {  useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
 import { Text, inube, Grid, useMediaQuery } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
-import { Flag  } from "@inubekit/flag";
+import { useFlag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
 import { ErrorAlert } from "@components/ErrorAlert";
@@ -28,7 +28,7 @@ import {
   optionButtons,
   errorObserver,
 } from "./config";
-import { StyledItem, StyledMessageContainer, StyledToast } from "./styles";
+import { StyledItem, StyledToast } from "./styles";
 import { Approvals } from "./Approvals";
 import { Requirements } from "./Requirements";
 import { Management } from "./management";
@@ -47,7 +47,6 @@ const Listdata = (props: IListdataProps) => {
   if (data.length === 0) {
     return <Text>No hay documentos adjuntos.</Text>;
   }
-
 
   return (
     <ul
@@ -88,12 +87,7 @@ export const FinancialReporting = () => {
 
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
-  const [showFlagMessage, setShowFlagMessage] = useState(false);
-  const [flagMessage, setFlagMessage] = useState({
-    title: "",
-    description: "",
-    appearance: "success" as "success" | "danger",
-  });
+  const { addFlag } = useFlag();
 
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
   const [errors, setError] = useState<Ierror_issued[]>([]);
@@ -200,6 +194,25 @@ export const FinancialReporting = () => {
   const handleOnAttach = () => {
     setShowAttachments(true);
     setShowMenu(false);
+  };
+
+  const handleSubmit = () => {
+    addFlag({
+      title: "Rechazo confirmado",
+      description:
+        "La solicitud ha sido enviada exitosamente para su aprobación.",
+      appearance: "success",
+      duration: 5000,
+    });
+  };
+
+  const handleCancelSubmit = () => {
+    addFlag({
+      title: "Anulación confirmada",
+      description: "La solicitud ha sido anulada exitosamente.",
+      appearance: "success",
+      duration: 5000,
+    });
   };
 
   const handleOnViewAttachments = () => {
@@ -320,16 +333,14 @@ export const FinancialReporting = () => {
           inputLabel="Motivo del Rechazo."
           inputPlaceholder="Describa el motivo del Rechazo."
           onCloseModal={() => setShowRejectModal(false)}
-          onSubmit={(values) =>
+          onSubmit={(values) => {
             handleConfirmReject(
               id!,
               user!.nickname!,
               values,
-              setFlagMessage,
-              setShowFlagMessage,
-              setShowRejectModal
-            )
-          }
+            );
+            handleSubmit();
+          }}
         />
       )}
       {showCancelModal && (
@@ -339,29 +350,15 @@ export const FinancialReporting = () => {
           inputLabel="Motivo de la anulación."
           inputPlaceholder="Describa el motivo de la anulación."
           onCloseModal={() => setShowCancelModal(false)}
-          onSubmit={(values) =>
+          onSubmit={(values) => {
             handleConfirmCancel(
               id!,
               user!.nickname!,
               values,
-              setFlagMessage,
-              setShowFlagMessage,
-              setShowCancelModal
-            )
-          }
+            );
+            handleCancelSubmit();
+          }}
         />
-      )}
-      {showFlagMessage && (
-        <StyledMessageContainer>
-          <Flag
-            id="flag"
-            title={flagMessage.title}
-            description={flagMessage.description}
-            appearance={flagMessage.appearance}
-            duration={5000}
-            
-          />
-        </StyledMessageContainer>
       )}
       {showMenu && isMobile && (
         <MobileMenu
