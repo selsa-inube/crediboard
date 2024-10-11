@@ -194,7 +194,6 @@ export const Requirements = (props: IRequirementsProps) => {
 
   return (
     <>
-      <Stack>
         <Fieldset
           title="Requisitos"
           activeButton={dataButton}
@@ -234,7 +233,6 @@ export const Requirements = (props: IRequirementsProps) => {
             ))
           )}
         </Fieldset>
-      </Stack>
 
       {showSeeDetailsModal && (
         <SeeDetailsModal
