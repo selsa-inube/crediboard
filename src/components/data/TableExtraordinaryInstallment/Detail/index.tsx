@@ -17,7 +17,7 @@ export function Detail(props: DetailProps) {
     <Stack justifyContent="center">
       <Icon
         icon={<MdOutlineMoreVert />}
-        size="12px"
+        size="16px"
         cursorHover
         appearance="primary"
         onClick={() => setModalOpen(true)}

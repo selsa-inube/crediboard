@@ -29,7 +29,7 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
     handleClose,
     balanceOfContributions,
     accordingToRegulation,
-    assignedQuota
+    assignedQuota,
   } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
@@ -52,7 +52,7 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
         >
           <Stack justifyContent="space-between" alignItems="center" gap="15px">
             <Text size="small" type="headline">
-            {dataReciprocity.maxReciprocityQuota}
+              {dataReciprocity.maxReciprocityQuota}
             </Text>
             <StyledContainerClose onClick={handleClose}>
               <Stack alignItems="center" gap="8px">
@@ -70,7 +70,7 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
           <Stack direction="column" justifyContent="space-between" gap="12px">
             <Stack justifyContent="space-between" gap="40px">
               <Text type="label" size="large" weight="bold">
-              {dataReciprocity.contributionsBalance}
+                {dataReciprocity.contributionsBalance}
               </Text>
               <Stack>
                 <Text type="body" size="medium" appearance="success">
@@ -96,9 +96,7 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
           <Textfield
             id="field1"
             iconBefore={
-              <MdOutlineAttachMoney
-                color={inube.icon.dark.content.color.regular}
-              />
+              <MdOutlineAttachMoney color={inube.palette.neutral.N900} />
             }
             label={dataReciprocity.assignedQuota}
             placeholder="0"

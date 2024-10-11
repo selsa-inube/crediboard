@@ -18,38 +18,11 @@ export const dataButton = {
   onClick: () => console.log("Agregar"),
 };
 
+
 const receiveData = (data: IEntries) => {
   console.log(data, "function que recibe data");
 };
 
-export const handleSuccess = (
-  setFlagMessage: (message: { title: string; description: string; appearance: "success" | "danger" }) => void,
-  setShowFlagMessage: (state: boolean) => void,
-  setShowApprovalstModal: (state: boolean) => void
-) => {
-  setFlagMessage({
-    title: "Exito",
-    description: "La aprobación se ha completado correctamente.",
-    appearance: "success",
-  });
-  setShowFlagMessage(true);
-  setShowApprovalstModal(false);
-};
-
-export const handleError = (
-  error: Error,
-  setFlagMessage: (message: { title: string; description: string; appearance: "success" | "danger" }) => void,
-  setShowFlagMessage: (state: boolean) => void,
-  setShowApprovalstModal: (state: boolean) => void
-) => {
-  setFlagMessage({
-    title: "Aprobación fallida",
-    description: `No se ha podido realizar la aprobación: ${error.message}`,
-    appearance: "danger",
-  });
-  setShowFlagMessage(true);
-  setShowApprovalstModal(false);
-};
 
 export const titlesRequirements = [
   [
@@ -109,7 +82,7 @@ export const actionsRequirements = [
             icon={<MdAddCircleOutline />}
             appearance="primary"
             onClick={() => receiveData(data)}
-            spacing="none"
+            spacing="narrow"
             size="22px"
             cursorHover
           />
@@ -123,7 +96,7 @@ export const actionsRequirements = [
           <Icon
             icon={<MdOutlineCheckCircle />}
             appearance="primary"
-            spacing="none"
+            spacing="narrow"
             cursorHover
             size="22px"
             onClick={() => receiveData(data)}
@@ -183,6 +156,7 @@ export const getAcctionMobile = (
           cursorHover
           variant="filled"
           shape="circle"
+          size="17px"
         />
       ),
     },
@@ -194,7 +168,7 @@ export const getAcctionMobile = (
             icon={<MdAddCircleOutline />}
             appearance="primary"
             onClick={() => showModalAdd(true)}
-            spacing="none"
+            spacing="narrow"
             size="22px"
             cursorHover
           />
@@ -208,7 +182,7 @@ export const getAcctionMobile = (
           <Icon
             icon={<MdOutlineCheckCircle />}
             appearance="primary"
-            spacing="none"
+            spacing="narrow"
             cursorHover
             size="22px"
             onClick={() => showAprovalsModal(true)}
@@ -241,6 +215,7 @@ const actionsMobile = [
         cursorHover
         variant="filled"
         shape="circle"
+        size="16px"
       />
     ),
   },
@@ -252,7 +227,8 @@ const actionsMobile = [
           icon={<MdAddCircleOutline />}
           appearance="primary"
           onClick={() => receiveData(data)}
-          spacing="none"
+          spacing="narrow"
+          variant="empty"
           size="22px"
           cursorHover
         />
@@ -266,7 +242,8 @@ const actionsMobile = [
         <Icon
           icon={<MdOutlineCheckCircle />}
           appearance="primary"
-          spacing="none"
+          spacing="narrow"
+          variant="empty"
           cursorHover
           size="22px"
           onClick={() => receiveData(data)}

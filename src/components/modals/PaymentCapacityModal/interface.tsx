@@ -102,8 +102,8 @@ export const PaymentCapacityInterface = forwardRef<
                   <Icon
                     appearance="primary"
                     icon={<MdOutlineVisibility />}
-                    size="12px"
-                    spacing="none"
+                    size="16px"
+                    spacing="narrow"
                     cursorHover
                     variant="filled"
                     shape="circle"
@@ -130,8 +130,8 @@ export const PaymentCapacityInterface = forwardRef<
                   <Icon
                     appearance="primary"
                     icon={<MdOutlineVisibility />}
-                    size="12px"
-                    spacing="none"
+                    size="16px"
+                    spacing="narrow"
                     cursorHover
                     variant="filled"
                     shape="circle"
@@ -200,7 +200,7 @@ export const PaymentCapacityInterface = forwardRef<
               appearance="primary"
               icon={<MdInfoOutline />}
               size="16px"
-              spacing="none"
+              spacing="wide"
             />
             <Text margin="0px 5px" size="small" type="body">
               {incomeModalConfig.infoText}
@@ -212,7 +212,7 @@ export const PaymentCapacityInterface = forwardRef<
               value={loading ? "loading..." : currencyFormat(maxAmount, false)}
               iconBefore={
                 <MdOutlineAttachMoney
-                  color={inube.icon.dark.content.color.regular}
+                  color={inube.palette.neutral.N900}
                 />
               }
               fullwidth={true}

@@ -32,13 +32,6 @@ export const handleConfirmReject = async (
   id: string,
   user: string,
   formData: { textarea: string },
-  setFlagMessage: (message: {
-    title: string;
-    description: string;
-    appearance: "success" | "danger";
-  }) => void,
-  setShowFlagMessage: (state: boolean) => void,
-  setShowRejectModal: (state: boolean) => void
 ) => {
   const justificationText = formData.textarea;
 
@@ -55,32 +48,12 @@ export const handleConfirmReject = async (
       read_novelty: "",
     };
 
-    const handleSuccess = () => {
-      setFlagMessage({
-        title: "Rechazo confirmado",
-        description: "El rechazo se ha realizado correctamente",
-        appearance: "success",
-      });
-      setShowFlagMessage(true);
-      setShowRejectModal(false);
-    };
-
-    const handleError = (error: Error) => {
-      setFlagMessage({
-        title: "Rechazo fallido",
-        description: `No se ha podido realizar el rechazo: ${error}`,
-        appearance: "danger",
-      });
-      setShowFlagMessage(true);
-      setShowRejectModal(false);
-    };
 
     try {
       await addItem("trace", trace);
       traceObserver.notify(trace);
-      handleSuccess();
     } catch (error) {
-      handleError(error as Error);
+      console.error(`No se ha podido realizar el rechazo: ${error}`);
     }
   }
 };
@@ -89,13 +62,6 @@ export const handleConfirmCancel = async (
   id: string,
   user: string,
   formData: { textarea: string },
-  setFlagMessage: (message: {
-    title: string;
-    description: string;
-    appearance: "success" | "danger";
-  }) => void,
-  setShowFlagMessage: (state: boolean) => void,
-  setShowCancelModal: (state: boolean) => void
 ) => {
   const justificationText = formData.textarea;
 
@@ -112,32 +78,11 @@ export const handleConfirmCancel = async (
       read_novelty: "",
     };
 
-    const handleSuccess = () => {
-      setFlagMessage({
-        title: "Anulación confirmada",
-        description: "La anulación se ha realizado correctamente",
-        appearance: "success",
-      });
-      setShowFlagMessage(true);
-      setShowCancelModal(false);
-    };
-
-    const handleError = (error: Error) => {
-      setFlagMessage({
-        title: "Anulación fallida",
-        description: `No se ha podido realizar la anulación: ${error}`,
-        appearance: "danger",
-      });
-      setShowFlagMessage(true);
-      setShowCancelModal(false);
-    };
-
     try {
       await addItem("trace", trace);
       traceObserver.notify(trace);
-      handleSuccess();
     } catch (error) {
-      handleError(error as Error);
+      console.error(`No se ha podido realizar la anulación: ${error}`);
     }
   }
 };

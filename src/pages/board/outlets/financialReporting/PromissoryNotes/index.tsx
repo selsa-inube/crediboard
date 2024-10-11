@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { MdOutlineThumbUp } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
-import { Flag } from "@inubekit/flag";
+import { useFlag } from "@inubekit/flag";
 import { Tag } from "@inubekit/tag";
 
 import { Fieldset } from "@components/data/Fieldset";
@@ -23,7 +22,6 @@ import {
   titlesFinanacialReporting,
   infoItems,
 } from "./config";
-import { StyledMessageContainer } from "../styles";
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { errorObserver } from "../config";
 
@@ -34,13 +32,11 @@ interface IPromissoryNotesProps {
 
 export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const { user, isMobile } = props;
+  const { addFlag } = useFlag();
 
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
-    []
-  );
-  const [showFlag, setShowFlag] = useState(false);
+  const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>([]);
   const [showRetry, setShowRetry] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -70,9 +66,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             return result.value as payroll_discount_authorization[];
           } else {
             console.error(result.reason);
-            setErrorMessage(
-              "Error al obtener los datos de Pagarés y Libranzas"
-            );
+            setErrorMessage("Error al obtener los datos de Pagarés y Libranzas");
           }
           return [];
         })
@@ -103,14 +97,14 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           message: err.message,
         });
 
-        setErrorMessage(errorMessage);
+        setErrorMessage(err.message); 
         setTimeout(() => {
           setShowRetry(true);
           setLoading(false);
         }, 5000);
       }
     }
-  }, [user, errorMessage]);
+  }, [user]);
 
   useEffect(() => {
     fetchData();
@@ -128,7 +122,12 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   };
 
   const handleSubmit = () => {
-    setShowFlag(true);
+    addFlag({
+      title: "Datos enviados",
+      description: "Los datos del usuario han sido enviados exitosamente.",
+      appearance: "success",
+      duration: 5000,
+    });
     setShowModal(false);
   };
 
@@ -143,7 +142,6 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   };
 
   return (
-    <>
       <Fieldset
         title="Pagarés y Libranzas"
         heightFieldset="163px"
@@ -191,22 +189,8 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
                 onSubmit={handleSubmit}
               />
             )}
-            {showFlag && (
-              <StyledMessageContainer>
-                <Flag
-                  title="Datos enviados"
-                  description="Los datos del usuario han sido enviados exitosamente."
-                  appearance="success"
-                  duration={5000}
-                  icon={<MdOutlineThumbUp />}
-                  isMessageResponsive
-                  closeFlag={() => setShowFlag(false)}
-                />
-              </StyledMessageContainer>
-            )}
           </Stack>
         )}
       </Fieldset>
-    </>
   );
 };

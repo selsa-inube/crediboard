@@ -9,7 +9,7 @@ interface InfoItemComponentProps {
 
 export const InfoItemComponent: React.FC<InfoItemComponentProps> = ({ item }) => {
   const size = item.shape === "circle" ? "16px" : "20px";
-  const variant = item.shape === "circle" ? "filled" : "none";
+  const variant = item.shape === "circle" ? "filled" : "outlined";
 
   return (
     <StyledLi>
@@ -19,7 +19,7 @@ export const InfoItemComponent: React.FC<InfoItemComponentProps> = ({ item }) =>
         size={size}
         shape={item.shape}
         variant={variant}
-        spacing="none"
+        spacing="narrow"
       />
       <Text size="medium">{item.text}</Text>
     </StyledLi>

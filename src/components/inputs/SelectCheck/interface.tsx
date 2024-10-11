@@ -139,7 +139,7 @@ export const SelectcheckUI = forwardRef<HTMLDivElement, ISelectcheckUIProps>(
               appearance="dark"
               icon={<MdOutlineArrowDropDown />}
               size="24px"
-              spacing="none"
+              spacing="narrow"
               disabled={disabled}
             />
           )}

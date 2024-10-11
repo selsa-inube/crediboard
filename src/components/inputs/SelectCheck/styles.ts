@@ -39,8 +39,8 @@ interface IStyledContainer {
 
 export const StyledContainer = styled.div<IStyledContainer>`
   position: relative;
-  cursor: ${({ disabled }) => disabled && "not-allowed"};
   width: ${({ $fullwidth }) => ($fullwidth ? "100%" : "300px")};
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 `;
 
 export const StyledInputContainer = styled.div<IStyledInputContainer>`
@@ -52,34 +52,27 @@ export const StyledInputContainer = styled.div<IStyledInputContainer>`
   user-select: none;
   border-width: 1px;
   border-style: solid;
+
   background-color: ${({ theme, $readonly }) =>
-    $readonly &&
-    (theme?.input?.border?.color?.regular || inube.input.border.color.regular)};
+    $readonly && (theme?.palette?.neutral?.N40 || inube.palette.neutral.N40)};
+
   border-color: ${({ theme, disabled, $readonly, $status, $focused }) => {
     if (disabled) {
       return (
-        (theme?.input?.border?.color?.disabled ||
-          inube.input.border.color.disabled) +
+        (theme?.palette?.neutral?.N40 || inube.palette.neutral.N40) +
         "; pointer-events: none; opacity: 0.5;"
       );
     }
     if ($focused && !$readonly) {
-      return (
-        theme?.input?.border?.color?.focus || inube.input.border.color.focus
-      );
+      return theme?.palette?.blue?.B300 || inube.palette.blue.B300;
     }
     if ($status === "invalid" && !$readonly) {
-      return (
-        theme?.input?.border?.color?.invalid || inube.input.border.color.invalid
-      );
+      return theme?.palette?.red?.R400 || inube.palette.red.R400;
     }
-    return (
-      theme?.input?.border?.color?.regular || inube.input.border.color.regular
-    );
+    return theme?.palette?.neutral?.N40 || inube.palette.neutral.N40;
   }};
 
   opacity: ${({ disabled }) => disabled && "0.75"};
-  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 `;
 
 export const StyledInput = styled.input<IStyledInput>`
@@ -88,28 +81,25 @@ export const StyledInput = styled.input<IStyledInput>`
   padding-right: 12px;
   padding-left: 16px;
   border-style: none;
+
   font-family: ${({ theme }) =>
     theme?.typography?.body?.large?.font || inube.typography.body.large.font};
   font-size: ${({ theme }) =>
-    theme?.typography?.body?.large?.font || inube.typography.body.large.size};
+    theme?.typography?.body?.large?.size || inube.typography.body.large.size};
   line-height: ${({ theme }) =>
-    theme?.typography?.body?.large?.font ||
+    theme?.typography?.body?.large?.lineHeight ||
     inube.typography.body.large.lineHeight};
   letter-spacing: ${({ theme }) =>
     theme?.typography?.body?.large?.tracking ||
-    inube.typography.display.large.tracking};
+    inube.typography.body.large.tracking};
+
   color: ${({ theme, disabled }) => {
     if (disabled) {
-      return (
-        theme?.text?.dark?.content?.color?.disabled ||
-        inube.text.dark.content.color.disabled
-      );
+      return theme?.palette?.neutral?.N90 || inube.palette.neutral.N90;
     }
-    return (
-      theme?.text?.dark?.content?.color?.regular ||
-      inube.text.dark.content.color.regular
-    );
+    return theme?.palette?.neutral?.N900 || inube.palette.neutral.N900;
   }};
+
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
@@ -118,8 +108,7 @@ export const StyledInput = styled.input<IStyledInput>`
 
   ::placeholder {
     color: ${({ theme }) =>
-      theme?.text?.dark?.content?.color?.disabled ||
-      inube.text.dark.content.color.disabled};
+      theme?.palette?.neutral?.N90 || inube.palette.neutral.N90};
   }
 
   &:focus {
