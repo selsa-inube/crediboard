@@ -18,38 +18,11 @@ export const dataButton = {
   onClick: () => console.log("Agregar"),
 };
 
+
 const receiveData = (data: IEntries) => {
   console.log(data, "function que recibe data");
 };
 
-export const handleSuccess = (
-  setFlagMessage: (message: { title: string; description: string; appearance: "success" | "danger" }) => void,
-  setShowFlagMessage: (state: boolean) => void,
-  setShowApprovalstModal: (state: boolean) => void
-) => {
-  setFlagMessage({
-    title: "Exito",
-    description: "La aprobación se ha completado correctamente.",
-    appearance: "success",
-  });
-  setShowFlagMessage(true);
-  setShowApprovalstModal(false);
-};
-
-export const handleError = (
-  error: Error,
-  setFlagMessage: (message: { title: string; description: string; appearance: "success" | "danger" }) => void,
-  setShowFlagMessage: (state: boolean) => void,
-  setShowApprovalstModal: (state: boolean) => void
-) => {
-  setFlagMessage({
-    title: "Aprobación fallida",
-    description: `No se ha podido realizar la aprobación: ${error.message}`,
-    appearance: "danger",
-  });
-  setShowFlagMessage(true);
-  setShowApprovalstModal(false);
-};
 
 export const titlesRequirements = [
   [

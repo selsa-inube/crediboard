@@ -1,7 +1,7 @@
 import { useState, isValidElement, useEffect } from "react";
 import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
-import { Flag } from "@inubekit/flag";
+import { useFlag } from "@inubekit/flag"; 
 import { Stack } from "@inubekit/stack";
 
 import userNotFound from "@assets/images/ItemNotFound.png";
@@ -22,8 +22,6 @@ import {
 } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
-import { handleSuccess, handleError } from "./config";
-import { StyledMessageContainer } from "../styles";
 import { errorObserver } from "../config";
 
 interface IRequirementsData {
@@ -42,23 +40,13 @@ export interface IRequirementsProps {
 export const Requirements = (props: IRequirementsProps) => {
   const { isMobile, id, user } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
-  const [modalData, setModalData] = useState<{ date?: Date; details?: string }>(
-    {}
-  );
+  const [modalData, setModalData] = useState<{ date?: Date; details?: string }>({});
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
-  const [showFlagMessage, setShowFlagMessage] = useState(false);
-  const [flagMessage, setFlagMessage] = useState({
-    title: "",
-    description: "",
-    appearance: "success" as "success" | "danger",
-  });
-
-  const [dataRequirements, setDataRequirements] = useState<IRequirementsData[]>(
-    []
-  );
-
+  const [dataRequirements, setDataRequirements] = useState<IRequirementsData[]>([]);
   const [error, setError] = useState(false);
+
+  const { addFlag } = useFlag();
 
   useEffect(() => {
     (async () => {
@@ -101,13 +89,6 @@ export const Requirements = (props: IRequirementsProps) => {
     id: string,
     user: string,
     formData: { textarea: string },
-    setFlagMessage: (message: {
-      title: string;
-      description: string;
-      appearance: "success" | "danger";
-    }) => void,
-    setShowFlagMessage: (state: boolean) => void,
-    setShowApprovalstModal: (state: boolean) => void
   ) => {
     const justificationText = formData.textarea;
 
@@ -127,26 +108,26 @@ export const Requirements = (props: IRequirementsProps) => {
       try {
         await addItem("trace", trace);
         traceObserver.notify(trace);
-        handleSuccess(
-          setFlagMessage,
-          setShowFlagMessage,
-          setShowApprovalstModal
-        );
+        addFlag({
+          title: "Éxito",
+          description: "Documentación aprobada correctamente.",
+          appearance: "success",
+          duration: 5000,
+        });
       } catch (error) {
-        handleError(
-          error as Error,
-          setFlagMessage,
-          setShowFlagMessage,
-          setShowApprovalstModal
-        );
+        addFlag({
+          title: "Error",
+          description: "Ocurrió un error al aprobar el documento.",
+          appearance: "danger",
+          duration: 5000,
+        });
       }
     }
   };
 
   const renderAddIcon = (entry: IEntries) => {
     const date = typeof entry.date === "string" ? entry.date : undefined;
-    const details =
-      typeof entry.details === "string" ? entry.details : undefined;
+    const details = typeof entry.details === "string" ? entry.details : undefined;
 
     return (
       <Stack justifyContent="center">
@@ -253,23 +234,9 @@ export const Requirements = (props: IRequirementsProps) => {
               id!,
               user,
               values,
-              setFlagMessage,
-              setShowFlagMessage,
-              setShowAprovalsModal
             )
           }
         />
-      )}
-      {showFlagMessage && (
-        <StyledMessageContainer>
-          <Flag
-            id="flag4"
-            title={flagMessage.title}
-            description={flagMessage.description}
-            appearance={flagMessage.appearance}
-            duration={5000}
-          />
-        </StyledMessageContainer>
       )}
     </>
   );
