@@ -22,6 +22,7 @@ import {
   titlesFinanacialReporting,
   infoItems,
 } from "./config";
+import userNotFound from "@assets/images/ItemNotFound.png";
 import { errorObserver } from "../config";
 
 interface IPromissoryNotesProps {
@@ -35,9 +36,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
 
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
-    []
-  );
+  const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>([]);
   const [showRetry, setShowRetry] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -67,9 +66,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
             return result.value as payroll_discount_authorization[];
           } else {
             console.error(result.reason);
-            setErrorMessage(
-              "Error al obtener los datos de Pagarés y Libranzas"
-            );
+            setErrorMessage("Error al obtener los datos de Pagarés y Libranzas");
           }
           return [];
         })
@@ -100,14 +97,14 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           message: err.message,
         });
 
-        setErrorMessage(errorMessage);
+        setErrorMessage(err.message); 
         setTimeout(() => {
           setShowRetry(true);
           setLoading(false);
         }, 5000);
       }
     }
-  }, [user, errorMessage]);
+  }, [user]);
 
   useEffect(() => {
     fetchData();
@@ -145,7 +142,6 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   };
 
   return (
-    <>
       <Fieldset
         title="Pagarés y Libranzas"
         heightFieldset="163px"
@@ -153,19 +149,20 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
         hasOverflow
         hasTable
       >
-        <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
-          {showRetry ? (
-            <UnfoundData
-              title="Error al cargar datos"
-              description={
-                errorMessage ||
-                "Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."
-              }
-              buttonDescription="Volver a intentar"
-              route="/retry-path"
-              onRetry={handleRetry}
-            />
-          ) : (
+        {showRetry ? (
+          <UnfoundData
+            image={userNotFound}
+            title="Error al cargar datos"
+            description={
+              errorMessage ||
+              "Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."
+            }
+            buttonDescription="Volver a intentar"
+            route="/retry-path"
+            onRetry={handleRetry}
+          />
+        ) : (
+          <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
             <TableBoard
               id="promissoryNotes"
               titles={titlesFinanacialReporting}
@@ -182,19 +179,18 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
               isFirstTable={true}
               infoItems={infoItems}
             />
-          )}
 
-          {showModal && (
-            <PromissoryNotesModal
-              title="Confirma los datos del usuario"
-              buttonText="Enviar"
-              formValues={formValues}
-              handleClose={handleCloseModal}
-              onSubmit={handleSubmit}
-            />
-          )}
-        </Stack>
+            {showModal && (
+              <PromissoryNotesModal
+                title="Confirma los datos del usuario"
+                buttonText="Enviar"
+                formValues={formValues}
+                handleClose={handleCloseModal}
+                onSubmit={handleSubmit}
+              />
+            )}
+          </Stack>
+        )}
       </Fieldset>
-    </>
   );
 };
