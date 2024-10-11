@@ -64,15 +64,15 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const maxReciprocity = 40000000;
   const [form, setForm] = useState({
     deudor: "",
-    salarioMensual: 2500000,
-    otrosPagos: 0,
-    mesadaPensional: 0,
-    serviciosProfesionales: 0,
-    arrendamientos: 600000,
-    dividendos: 0,
-    rendimientosFinancieros: 0,
-    gananciaPromedio: 200000,
-    total: 3300000,
+    salarioMensual: undefined,
+    otrosPagos: undefined,
+    mesadaPensional: undefined,
+    serviciosProfesionales: undefined,
+    arrendamientos: undefined,
+    dividendos: undefined,
+    rendimientosFinancieros: undefined,
+    gananciaPromedio: undefined,
+    total: undefined,
   });
 
   const onChanges = (name: string, newValue: string) => {
