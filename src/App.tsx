@@ -14,9 +14,9 @@ import AppContextProvider, { AppContext } from "@context/AppContext";
 
 import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
+import { AssistedRoutes } from "./routes/assistedRoutes";
 import { GlobalStyles } from "./styles/global";
 import { enviroment } from "./config/environment";
-
 
 function LogOut() {
   localStorage.clear();
@@ -37,6 +37,7 @@ const router = createBrowserRouter(
       <Route path="*" element={<FirstPage />} errorElement={<ErrorPage />} />
       <Route path="login/*" element={<LoginRoutes />} />
       <Route path="/*" element={<BoardRoutes />} />
+      <Route path="assisted/*" element={<AssistedRoutes />} />
       <Route path="logout" element={<LogOut />} />
     </>
   )
