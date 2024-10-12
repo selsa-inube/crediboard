@@ -38,6 +38,7 @@ import { Requirements } from "./Requirements";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { CardCommercialManagement } from "./CommercialManagement/CardCommercialManagement";
 
 interface IListdataProps {
@@ -114,13 +115,9 @@ export const FinancialReporting = () => {
 
   useEffect(() => {
     Promise.allSettled([
-      getById("requests", "k_Prospe", id!),
       getById("document", "credit_request_id", id!, true),
       getById("error_issued", "credit_request_id", id!, true),
-    ]).then(([requirement, documents, error_issue]) => {
-      if (requirement.status === "fulfilled") {
-        setData(requirement.value as Requests);
-      }
+    ]).then(([documents, error_issue]) => {
       if (documents.status === "fulfilled" && Array.isArray(documents.value)) {
         const documentsUser = documents.value.map((dataListDocument) => ({
           id: dataListDocument.document_id,
@@ -131,6 +128,13 @@ export const FinancialReporting = () => {
       if (error_issue.status === "fulfilled") {
         setError(error_issue.value as Ierror_issued[]);
       }
+    });
+
+    getCreditRequestByCode(id!).then((data) => {
+      setData(data[0]);
+    }).
+    catch((error) => {
+      console.error(error);
     });
   }, [id]);
 
@@ -267,19 +271,25 @@ export const FinancialReporting = () => {
               autoRows="auto"
             >
               <Stack direction="column">
-                <ToDo icon={infoIcon} isMobile={isMobile} id={id!} user={user!.nickname!}/>
+                <ToDo
+                  icon={infoIcon}
+                  isMobile={isMobile}
+                  id={id!}
+                  user={user!.nickname!}
+                />
               </Stack>
               <Stack direction="column">
                 <Approvals user={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
-                <Requirements isMobile={isMobile} id={id!} user={user!.nickname!} />
+                <Requirements
+                  isMobile={isMobile}
+                  id={id!}
+                  user={user!.nickname!}
+                />
               </Stack>
               <Stack direction="column">
-                  <Management
-                    id={id!}
-                    isMobile={isMobile}
-                  />
+                <Management id={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
                 <PromissoryNotes user={id!} isMobile={isMobile} />
@@ -324,7 +334,7 @@ export const FinancialReporting = () => {
               values,
               setFlagMessage,
               setShowFlagMessage,
-              setShowRejectModal,
+              setShowRejectModal
             )
           }
         />
@@ -343,7 +353,7 @@ export const FinancialReporting = () => {
               values,
               setFlagMessage,
               setShowFlagMessage,
-              setShowCancelModal,
+              setShowCancelModal
             )
           }
         />

@@ -14,6 +14,7 @@ import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { CreditBehavior } from "./CreditBehaviorCard";
 import { Guarantees } from "./Guarantees";
 import { JobStabilityCard } from "./JobStabilityCard";
@@ -99,7 +100,6 @@ export const CreditProfileInfo = () => {
 
       try {
         const [
-          request,
           riskScoring,
           credit_profileInfo,
           payment_capacity,
@@ -107,7 +107,7 @@ export const CreditProfileInfo = () => {
           uncovered_wallet,
           riskScoringMaximum,
         ] = await Promise.allSettled([
-          getById("requests", "k_Prospe", id!),
+          getById("requests", "creditRequestCode", id!),
           getById<IRiskScoring>("risk-scoring", "credit_request_id", id!, true),
           getById("credit_profileInfo", "credit_request_id", id!, true),
           getById("payment_capacity", "credit_request_id", id!, true),
@@ -115,10 +115,6 @@ export const CreditProfileInfo = () => {
           getById("uncovered_wallet", "credit_request_id", id!, true),
           get("range_requered_Business_Unit"),
         ]);
-
-        if (request.status === "fulfilled") {
-          setRequests(request.value as Requests);
-        }
 
         if (
           riskScoring.status === "fulfilled" &&
@@ -188,6 +184,13 @@ export const CreditProfileInfo = () => {
         setLoading(false);
       }
     })();
+
+    getCreditRequestByCode(id!).then((data) => {
+      setRequests(data[0] as Requests);
+    }).
+    catch((error) => {
+      console.error(error);
+    });
   }, [id]);
 
   const handlePrint = () => {
@@ -226,8 +229,8 @@ export const CreditProfileInfo = () => {
                     appearance="gray"
                     weight="normal"
                   >
-                    {requests.nnasocia
-                      ? capitalizeFirstLetterEachWord(requests.nnasocia)
+                    {requests.clientName
+                      ? capitalizeFirstLetterEachWord(requests.clientName)
                       : ""}
                   </Text>
                 </StyledLi>
@@ -238,12 +241,12 @@ export const CreditProfileInfo = () => {
                     appearance="gray"
                     weight="normal"
                   >
-                    {`CC: ${requests.aanumnit}`}
+                    {`CC: ${requests.clientIdentificationNumber}`}
                   </Text>
                 </StyledLi>
               </StyledUl>
               <Text type="title" size="medium" appearance="gray" weight="bold">
-                {currencyFormat(requests.v_Monto)}
+                {currencyFormat(requests.loanAmount)}
               </Text>
             </>
           )}
@@ -277,8 +280,8 @@ export const CreditProfileInfo = () => {
                     appearance="gray"
                     weight="normal"
                   >
-                    {requests.nnasocia
-                      ? capitalizeFirstLetterEachWord(requests.nnasocia)
+                    {requests.clientName
+                      ? capitalizeFirstLetterEachWord(requests.clientName)
                       : ""}
                   </Text>
                 </StyledLi>
@@ -289,12 +292,12 @@ export const CreditProfileInfo = () => {
                     appearance="gray"
                     weight="normal"
                   >
-                    {`CC: ${requests.aanumnit}`}
+                    {`CC: ${requests.clientIdentificationNumber}`}
                   </Text>
                 </StyledLi>
               </StyledUl>
               <Text type="title" size="medium" appearance="gray" weight="bold">
-                {currencyFormat(requests.v_Monto)}
+                {currencyFormat(requests.loanAmount)}
               </Text>
             </Stack>
           </>
