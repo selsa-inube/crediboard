@@ -23,6 +23,7 @@ import {
   infoItems,
   maperDataRequirements,
   maperEntries,
+  getAcctionMobile,
 } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
@@ -44,7 +45,7 @@ export interface IRequirementsProps {
 }
 
 export const Requirements = (props: IRequirementsProps) => {
-  const { isMobile, id, user} = props;
+  const { isMobile, id, user } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [modalData, setModalData] = useState<{ date?: Date; details?: string }>(
     {}
@@ -90,12 +91,14 @@ export const Requirements = (props: IRequirementsProps) => {
     })();
   }, [id, error]);
 
+  const renderAccion = getAcctionMobile(setShowSeeDetailsModal , setShowAprovalsModal);
+
   const toggleAprovalsModal = () => setShowAprovalsModal(!showAprovalsModal);
   const changeApprove = () => setIsApproved(!isApproved);
 
-  const handleToggleSeeDetailsModal = (date?: string, details?: string) => {
+  const handleToggleSeeDetailsModal = (details?: string) => {
     setModalData({
-      date: date ? new Date(date) : undefined,
+      date: new Date(),
       details,
     });
     setShowSeeDetailsModal((prevState) => !prevState);
@@ -131,15 +134,23 @@ export const Requirements = (props: IRequirementsProps) => {
       try {
         await addItem("trace", trace);
         traceObserver.notify(trace);
-        handleSuccess(setFlagMessage, setShowFlagMessage, setShowApprovalstModal); 
+        handleSuccess(
+          setFlagMessage,
+          setShowFlagMessage,
+          setShowApprovalstModal
+        );
       } catch (error) {
-        handleError(error as Error, setFlagMessage, setShowFlagMessage, setShowApprovalstModal); 
+        handleError(
+          error as Error,
+          setFlagMessage,
+          setShowFlagMessage,
+          setShowApprovalstModal
+        );
       }
     }
   };
 
   const renderAddIcon = (entry: IEntries) => {
-    const date = typeof entry.date === "string" ? entry.date : undefined;
     const details =
       typeof entry.details === "string" ? entry.details : undefined;
 
@@ -148,7 +159,7 @@ export const Requirements = (props: IRequirementsProps) => {
         <Icon
           icon={<MdAddCircleOutline />}
           appearance="primary"
-          onClick={() => handleToggleSeeDetailsModal(date, details)}
+          onClick={() => handleToggleSeeDetailsModal(details)}
           spacing="compact"
           size="24px"
           cursorHover
@@ -183,7 +194,6 @@ export const Requirements = (props: IRequirementsProps) => {
 
   return (
     <>
-      <Stack>
         <Fieldset
           title="Requisitos"
           activeButton={dataButton}
@@ -210,7 +220,7 @@ export const Requirements = (props: IRequirementsProps) => {
                 titles={item.titlesRequirements}
                 entries={item.entriesRequirements}
                 actions={actionsRequirements}
-                actionMobile={item.actionsMovile}
+                actionMobile={renderAccion}
                 appearanceTable={{
                   widthTd: !isMobile ? "75%" : "70%",
                   efectzebra: true,
@@ -223,12 +233,11 @@ export const Requirements = (props: IRequirementsProps) => {
             ))
           )}
         </Fieldset>
-      </Stack>
 
       {showSeeDetailsModal && (
         <SeeDetailsModal
-          date={modalData.date || new Date()}
-          details={modalData.details || ""}
+          date={modalData.date!}
+          details=""
           onCloseModal={handleToggleSeeDetailsModal}
         />
       )}

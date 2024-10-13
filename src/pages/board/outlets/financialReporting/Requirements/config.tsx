@@ -161,6 +161,68 @@ const isValidTagElement = (element: unknown): element is TagElement => {
   return isValidElement(element) && element.props !== undefined;
 };
 
+export const getAcctionMobile = (
+  showModalAdd: (state: boolean) => void,
+  showAprovalsModal: (state: boolean) => void
+) => {
+  const actionsMobile = [
+    {
+      id: "tags",
+      actionName: "",
+      content: (data: IEntries) => (
+        <Icon
+          icon={
+            isValidElement(data?.tag) &&
+            iconActionsMobile(data?.tag?.props?.label)
+          }
+          appearance={
+            isValidTagElement(data?.tag)
+              ? data?.tag?.props?.appearance
+              : undefined
+          }
+          cursorHover
+          variant="filled"
+          shape="circle"
+        />
+      ),
+    },
+    {
+      id: "agregar",
+      content: () => (
+        <Stack justifyContent="center">
+          <Icon
+            icon={<MdAddCircleOutline />}
+            appearance="primary"
+            onClick={() => showModalAdd(true)}
+            spacing="none"
+            size="22px"
+            cursorHover
+          />
+        </Stack>
+      ),
+    },
+    {
+      id: "aprobar",
+      content: (data: IEntries) => (
+        <Stack justifyContent="center">
+          <Icon
+            icon={<MdOutlineCheckCircle />}
+            appearance="primary"
+            spacing="none"
+            cursorHover
+            size="22px"
+            onClick={() => showAprovalsModal(true)}
+            disabled={
+              isValidElement(data?.tag) && data?.tag?.props?.label === "No Cumple"
+            }
+          />
+        </Stack>
+      ),
+    },
+  ];
+  return actionsMobile;
+};
+
 const actionsMobile = [
   {
     id: "tags",
