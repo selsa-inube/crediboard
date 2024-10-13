@@ -12,11 +12,13 @@ import { Textfield } from "@inubekit/textfield";
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo } from "@services/types";
-import { get, getById, addItem } from "@mocks/utils/dataMock.service";
+import { addItem } from "@mocks/utils/dataMock.service";
+import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
+import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 
 import { StaffModal } from "./StaffModal";
 import { traceObserver } from "../config";
-import { errorMessagge, FlagMessage, flagMessages, buttonText } from "./config";
+import { FlagMessage, flagMessages, buttonText, decisions } from "./config";
 import { StyledMessageContainer } from "../styles";
 
 interface IICon {
@@ -43,7 +45,6 @@ function ToDo(props: ToDoProps) {
   const { icon, button, isMobile, id, user } = props;
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
-  const [toDo, setToDo] = useState<IToDo[]>([]);
   const [assignedStaff, setAssignedStaff] = useState({
     commercialManager: "",
     analyst: "",
@@ -56,53 +57,55 @@ function ToDo(props: ToDoProps) {
   const [flagMessage, setFlagMessage] = useState(flagMessages.success);
 
   const [loading, setLoading] = useState(true);
+  const [taskData, setTaskData] = useState<IToDo | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [staffResult, toDoResult] = await Promise.allSettled([
-          get("staff"),
-          getById<IToDo[]>("to-do", "credit_request_state_id", id!, true),
-        ]);
-
-        if (
-          staffResult.status === "fulfilled" &&
-          !(staffResult.value instanceof Error)
-        ) {
-          setStaff(staffResult.value as IStaff[]);
-        }
-
-        if (
-          toDoResult.status === "fulfilled" &&
-          !(toDoResult.value instanceof Error)
-        ) {
-          setToDo(toDoResult.value as IToDo[]);
-        }
+        const data = await getToDoByCreditRequestId(id);
+        setTaskData(data);
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching task data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    if (id) {
+      fetchData();
+    }
   }, [id]);
 
   useEffect(() => {
-    if (toDo) {
-      const { account_manager_name = "", analyst_name = "" } = toDo[0] ?? {};
+    if (taskData && taskData.usersByCreditRequestResponse) {
+      const formattedStaff = taskData.usersByCreditRequestResponse.map(
+        (staffMember: IStaff) => ({
+          ...staffMember,
+          userName: capitalizeFirstLetterEachWord(staffMember.userName),
+        })
+      );
+      setStaff(formattedStaff);
+
+      const firstAccountManager = formattedStaff.find(
+        (staffMember) => staffMember.position === "Account_manager"
+      );
+
+      const firstAnalyst = formattedStaff.find(
+        (staffMember) => staffMember.position === "Analyst"
+      );
 
       setAssignedStaff({
-        commercialManager: account_manager_name,
-        analyst: analyst_name,
+        commercialManager: firstAccountManager?.userName || "",
+        analyst: firstAnalyst?.userName || "",
       });
+
       setTempStaff({
-        commercialManager: account_manager_name,
-        analyst: analyst_name,
+        commercialManager: firstAccountManager?.userName || "",
+        analyst: firstAnalyst?.userName || "",
       });
     }
-  }, [toDo]);
+  }, [taskData]);
 
   const handleToggleStaffModal = () => setShowStaffModal((prev) => !prev);
 
@@ -151,7 +154,7 @@ function ToDo(props: ToDoProps) {
       trace_type: "executed_task",
       read_novelty: "",
     };
-  
+
     try {
       await addItem("trace", trace);
       traceObserver.notify(trace);
@@ -169,7 +172,11 @@ function ToDo(props: ToDoProps) {
         heightFieldset={isMobile ? "inherit" : "284px"}
         hasOverflow
       >
-        <Stack direction="column" gap={isMobile ? "4px" : "6px"} height={isMobile ? "auto" : "205px"}>
+        <Stack
+          direction="column"
+          gap={isMobile ? "4px" : "6px"}
+          height={isMobile ? "auto" : "205px"}
+        >
           <Stack direction={isMobile ? "column" : "row"}>
             {isMobile && (
               <Text appearance="primary" type="title" size="medium">
@@ -182,9 +189,9 @@ function ToDo(props: ToDoProps) {
             ) : (
               <Text
                 size={isMobile ? "medium" : "large"}
-                appearance={toDo?.[0]?.task_to_be_done ? "dark" : "gray"}
+                appearance={taskData?.taskToBeDone ? "dark" : "gray"}
               >
-                {toDo?.[0]?.task_to_be_done ?? errorMessagge}
+                {taskData?.taskToBeDone || "Tarea no disponible"}
               </Text>
             )}
           </Stack>
@@ -202,20 +209,15 @@ function ToDo(props: ToDoProps) {
                 value={decisionValue.decision}
                 placeholder="Seleccione una opción"
                 size="compact"
-                options={toDo?.[0]?.decisions ?? []}
+                options={decisions}
                 onChange={onChangeDecision}
-                disabled={toDo === undefined}
                 fullwidth={isMobile}
               />
             </Stack>
-            <Stack
-              padding="16px 0px 0px 0px"
-              width="100%"
-            >
+            <Stack padding="16px 0px 0px 0px" width="100%">
               <Button
                 onClick={handleSend}
                 cursorHover
-                disabled={toDo === undefined}
                 loading={button?.loading || false}
                 type="submit"
                 fullwidth={isMobile}
