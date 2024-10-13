@@ -4,9 +4,10 @@ import { intializedData } from "@mocks/utils/dataMock.service";
 import { themes } from "@mocks/design/themes";
 import { mockRequests as mockRequestsDefault } from "@mocks/requests/requests.mock";
 import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
-import { mockStaff as mockStaffDefault } from "@mocks/staff/staff.mock";
-import { mockToDo } from "@mocks/financial-reporting/to-do/toDo.mock";
-import { mockRangeRequeredByTheBusinessUnit, mockRiskScoring } from "@mocks/credit-profile/risk-scoring/riskScoring.mock";
+import {
+  mockRangeRequeredByTheBusinessUnit,
+  mockRiskScoring,
+} from "@mocks/credit-profile/risk-scoring/riskScoring.mock";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 import { promissory_note } from "@mocks/promissoryNotes/promissory_note.mock";
 import { payroll_discount_authorization } from "@mocks/promissoryNotes/payroll_discount_authorization.mock";
@@ -18,17 +19,16 @@ import { credit_profileInfo } from "@mocks/creditProfileInfo/creditProfileInfo.m
 import { uncovered_wallet } from "@mocks/creditProfileInfo/uncoveredWallet.mock";
 import { payment_capacity } from "@mocks/creditProfileInfo/paymentCapacity.mock";
 import { credit_behavior } from "@mocks/creditProfileInfo/creditBehavior.mock";
+import { IRiskScoring } from "@services/types";
 
 import {
   mockRequests,
-  mockStaff,
   approvalByCreditRequestMock,
   documents,
   errorIssued,
   traceMock,
   requirementsMock,
 } from "./importDataDb";
-import { IRiskScoring } from "@services/types";
 
 export function initializeDataDB(company: string) {
   localforage.clear();
@@ -43,10 +43,6 @@ export function initializeDataDB(company: string) {
     "requests-pinned",
     mockRequestsPinned
   );
-  intializedData<(typeof mockStaffDefault)[number]>(
-    "staff",
-    mockStaff(company)
-  );
   intializedData<(typeof approval_by_credit_request_Mock)[number]>(
     "approval",
     approvalByCreditRequestMock(company)
@@ -55,7 +51,6 @@ export function initializeDataDB(company: string) {
     "trace",
     traceMock(company)
   );
-  intializedData<(typeof mockToDo)[number]>("to-do", mockToDo);
   intializedData<IRiskScoring>("risk-scoring", mockRiskScoring);
   intializedData<(typeof documentsDefault)[number]>(
     "document",
@@ -79,5 +74,8 @@ export function initializeDataDB(company: string) {
   intializedData("credit_behavior", credit_behavior);
   intializedData("prospects", mockProspectCredit);
   intializedData("requirements", requirementsMock(company));
-  intializedData("range_requered_Business_Unit", mockRangeRequeredByTheBusinessUnit);
+  intializedData(
+    "range_requered_Business_Unit",
+    mockRangeRequeredByTheBusinessUnit
+  );
 }
