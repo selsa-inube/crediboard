@@ -400,6 +400,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             title="Agregar producto"
             confirmButtonText="Guardar"
             initialValues={initialValues}
+            iconBefore={<MdOutlineAdd />}
             onCloseModal={handleCloseModal}
             onConfirm={handleConfirm}
           />
