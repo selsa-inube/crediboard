@@ -10,6 +10,7 @@ import {
   MdOutlineVideocam,
   MdOutlinePayments,
 } from "react-icons/md";
+import { FormikValues } from "formik";
 
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -26,6 +27,7 @@ import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
 import { ReciprocityModal } from "@components/modals/ReciprocityModal";
 import { ReportCreditsModal } from "@components/modals/ReportCreditsModal";
 import { ScoreModal } from "@components/modals/FrcModal";
+import { EditProductModal } from "@components/modals/ProspectProductModal";
 import {
   truncateTextToMaxLength,
   capitalizeFirstLetter,
@@ -35,7 +37,7 @@ import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
-import { menuOptions ,incomeOptions} from "./config/config";
+import { menuOptions, incomeOptions } from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
 
@@ -74,6 +76,18 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     gananciaPromedio: undefined,
     total: undefined,
   });
+
+  const initialValues: FormikValues = {
+    creditLine: "",
+    creditAmount: "",
+    paymentMethod: "",
+    paymentCycle: "",
+    firstPaymentCycle: "",
+    termInMonths: "",
+    amortizationType: "",
+    interestRate: "",
+    rateType: "",
+  };
 
   const onChanges = (name: string, newValue: string) => {
     setForm((prevForm) => ({
@@ -118,13 +132,18 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     });
   };
 
-  const handleGoBackOrCloseModal  = () => {
+  const handleGoBackOrCloseModal = () => {
     setOpenModal(null);
   };
 
   const handleCollapse = () => {
     setCollapse(!collapse);
   };
+
+  const handleConfirm = () => {
+    console.log("Datos confirmados");
+  };
+
 
   const currentModal = modalHistory[modalHistory.length - 1];
 
@@ -254,9 +273,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                         icon={<MdOutlineAdd />}
                         appearance="light"
                         size="18px"
-                        spacing="compact"
+                        spacing="none"
                       />
                     }
+                    onClick={() => handleOpenModal("editProductModal")}
                   >
                     Agregar producto
                   </Button>
@@ -271,7 +291,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                           icon={<MdOutlinePayments />}
                           appearance="primary"
                           size="18px"
-                          spacing="compact"
+                          spacing="none"
                         />
                       }
                       onClick={() => handleOpenModal("extraPayments")}
@@ -341,7 +361,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <PaymentCapacity
             title="Cupo máx. capacidad de pago"
             portalId="portal"
-            handleClose={handleGoBackOrCloseModal }
+            handleClose={handleGoBackOrCloseModal}
             reportedIncomeSources={2000000}
             reportedFinancialObligations={6789000}
             subsistenceReserve={2000000}
@@ -353,7 +373,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "reciprocityModal" && (
           <ReciprocityModal
             portalId="portal"
-            handleClose={handleGoBackOrCloseModal }
+            handleClose={handleGoBackOrCloseModal}
             balanceOfContributions={maxReciprocity}
             accordingToRegulation={1234500}
             assignedQuota={1000000}
@@ -362,7 +382,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "scoreModal" && (
           <ScoreModal
             title="Score Details"
-            handleClose={handleGoBackOrCloseModal }
+            handleClose={handleGoBackOrCloseModal}
             subTitle="Your Financial Score"
             totalScore={750}
             seniority={150}
@@ -372,6 +392,16 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             economicActivity={118}
             monthlyIncome={3000000}
             maxIndebtedness="50000000"
+          />
+        )}
+        {currentModal === "editProductModal" && (
+          <EditProductModal
+            portalId="portal"
+            title="Agregar producto"
+            confirmButtonText="Guardar"
+            initialValues={initialValues}
+            onCloseModal={handleCloseModal}
+            onConfirm={handleConfirm}
           />
         )}
         {currentModal === "IncomeModal" && (
