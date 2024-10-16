@@ -128,7 +128,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
         />
         <Datefield
           id="date"
-          label="Fecha"
+          label="Primer pago"
           onChange={(e) => setForm({ ...form, date: e.target.value })}
           required={false}
           value={form.date}
