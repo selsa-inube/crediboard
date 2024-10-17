@@ -21,7 +21,11 @@ import { Divider } from "@inubekit/divider";
 import { getById } from "@mocks/utils/dataMock.service";
 import { CreditLimit } from "@components/modals/CreditLimit";
 import { Fieldset } from "@components/data/Fieldset";
-import { IncomeModal } from "@src/components/modals/IncomeModal";
+import { IncomeModal } from "@components/modals/IncomeModal";
+import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
+import { ReciprocityModal } from "@components/modals/ReciprocityModal";
+import { ReportCreditsModal } from "@components/modals/ReportCreditsModal";
+import { ScoreModal } from "@components/modals/FrcModal";
 import {
   truncateTextToMaxLength,
   capitalizeFirstLetter,
@@ -31,10 +35,9 @@ import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
-import { menuOptions } from "./config/config";
+import { menuOptions ,incomeOptions} from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
-import { incomeOptions } from "./config/config";
 
 import {
   StyledCollapseIcon,
@@ -55,19 +58,21 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [openModal, setOpenModal] = useState<string | null>(null);
+  const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [prospectProducts, setProspectProducts] =
     useState<ICreditProductProspect>();
+  const maxReciprocity = 40000000;
   const [form, setForm] = useState({
     deudor: "",
-    salarioMensual: 2500000,
-    otrosPagos: 0,
-    mesadaPensional: 0,
-    serviciosProfesionales: 0,
-    arrendamientos: 600000,
-    dividendos: 0,
-    rendimientosFinancieros: 0,
-    gananciaPromedio: 200000,
-    total: 3300000,
+    salarioMensual: undefined,
+    otrosPagos: undefined,
+    mesadaPensional: undefined,
+    serviciosProfesionales: undefined,
+    arrendamientos: undefined,
+    dividendos: undefined,
+    rendimientosFinancieros: undefined,
+    gananciaPromedio: undefined,
+    total: undefined,
   });
 
   const onChanges = (name: string, newValue: string) => {
@@ -80,7 +85,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   const handleOpenModal = (modalName: string) => {
-    setOpenModal(modalName);
+    setModalHistory((prevHistory) => [...prevHistory, modalName]);
   };
   useEffect(() => {
     try {
@@ -106,12 +111,22 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   }, [id]);
 
   const handleCloseModal = () => {
+    setModalHistory((prevHistory) => {
+      const newHistory = [...prevHistory];
+      newHistory.pop();
+      return newHistory;
+    });
+  };
+
+  const handleGoBackOrCloseModal  = () => {
     setOpenModal(null);
   };
 
   const handleCollapse = () => {
     setCollapse(!collapse);
   };
+
+  const currentModal = modalHistory[modalHistory.length - 1];
 
   return (
     <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
@@ -259,7 +274,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                           spacing="compact"
                         />
                       }
-                      onClick={() => setOpenModal("extraPayments")}
+                      onClick={() => handleOpenModal("extraPayments")}
                     >
                       Pagos extras
                     </Button>
@@ -305,7 +320,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           )}
         </Stack>
 
-        {openModal === "creditLimit" && (
+        {currentModal === "creditLimit" && (
           <CreditLimit
             handleClose={handleCloseModal}
             title="Origen de cupo"
@@ -317,9 +332,49 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             currentPortfolio={10000000}
             maxUsableLimit={20000000}
             availableLimitWithoutGuarantee={15000000}
+            onOpenPaymentCapacityModal={() => setOpenModal("paymentCapacity")}
+            onOpenReciprocityModal={() => setOpenModal("reciprocityModal")}
+            onOpenFrcModal={() => setOpenModal("scoreModal")}
           />
         )}
-        {openModal === "IncomeModal" && (
+        {openModal === "paymentCapacity" && (
+          <PaymentCapacity
+            title="Cupo máx. capacidad de pago"
+            portalId="portal"
+            handleClose={handleGoBackOrCloseModal }
+            reportedIncomeSources={2000000}
+            reportedFinancialObligations={6789000}
+            subsistenceReserve={2000000}
+            availableForNewCommitments={5000000}
+            maxVacationTerm={12}
+            maxAmount={1000000}
+          />
+        )}
+        {openModal === "reciprocityModal" && (
+          <ReciprocityModal
+            portalId="portal"
+            handleClose={handleGoBackOrCloseModal }
+            balanceOfContributions={maxReciprocity}
+            accordingToRegulation={1234500}
+            assignedQuota={1000000}
+          />
+        )}
+        {openModal === "scoreModal" && (
+          <ScoreModal
+            title="Score Details"
+            handleClose={handleGoBackOrCloseModal }
+            subTitle="Your Financial Score"
+            totalScore={750}
+            seniority={150}
+            centralRisk={50}
+            employmentStability={230}
+            maritalStatus={30}
+            economicActivity={118}
+            monthlyIncome={3000000}
+            maxIndebtedness="50000000"
+          />
+        )}
+        {currentModal === "IncomeModal" && (
           <IncomeModal
             onChange={onChanges}
             form={form}
@@ -327,7 +382,15 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             options={incomeOptions}
           />
         )}
-        {openModal === "extraPayments" && (
+        {currentModal === "reportCreditsModal" && (
+          <ReportCreditsModal
+            handleClose={handleCloseModal}
+            portalId="portal"
+            totalBalance={100000}
+            totalFee={5000}
+          />
+        )}
+        {currentModal === "extraPayments" && (
           <ExtraordinaryPaymentModal
             dataTable={extraordinaryInstallmentMock}
             portalId="portal"
