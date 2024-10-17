@@ -35,9 +35,10 @@ import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
-import { menuOptions ,incomeOptions} from "./config/config";
+import { menuOptions, incomeOptions } from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
+import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
 import {
   StyledCollapseIcon,
@@ -62,18 +63,43 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const [prospectProducts, setProspectProducts] =
     useState<ICreditProductProspect>();
   const maxReciprocity = 40000000;
+
+  const { id } = useParams();
   const [form, setForm] = useState({
-    deudor: "",
-    salarioMensual: undefined,
-    otrosPagos: undefined,
-    mesadaPensional: undefined,
-    serviciosProfesionales: undefined,
-    arrendamientos: undefined,
-    dividendos: undefined,
-    rendimientosFinancieros: undefined,
-    gananciaPromedio: undefined,
+    debtor: "",
+    monthly_salary: 0,
+    other_monthly_payments: 0,
+    pension_allowances: 0,
+    leases: 0,
+    dividends_or_shares: 0,
+    financial_returns: 0,
+    average_monthly_profit: 0,
+    monthly_fees: 0,
     total: undefined,
   });
+
+  useEffect(() => {
+    if (id) {
+      const foundProspect = mockProspectCredit.find(
+        (prospect) => prospect.public_code === id
+      );
+      if (foundProspect) {
+        const mockCredit = foundProspect.consolidated_credit[0];
+        setForm({
+          debtor: foundProspect.borrower[0].borrower_name,
+          monthly_salary: mockCredit.monthly_salary ?? 0,
+          other_monthly_payments: mockCredit.other_monthly_payments ?? 0,
+          pension_allowances: mockCredit.pension_allowances ?? 0,
+          leases: mockCredit.leases ?? 0,
+          dividends_or_shares: mockCredit.dividends_or_shares ?? 0,
+          financial_returns: mockCredit.financial_returns ?? 0,
+          average_monthly_profit: mockCredit.average_monthly_profit ?? 0,
+          monthly_fees: mockCredit.monthly_fees ?? 0,
+          total: undefined,
+        });
+      }
+    }
+  }, [id]);
 
   const onChanges = (name: string, newValue: string) => {
     setForm((prevForm) => ({
@@ -81,7 +107,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       [name]: newValue,
     }));
   };
-  const { id } = useParams();
+
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   const handleOpenModal = (modalName: string) => {
@@ -118,7 +144,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     });
   };
 
-  const handleGoBackOrCloseModal  = () => {
+  const handleGoBackOrCloseModal = () => {
     setOpenModal(null);
   };
 
@@ -341,7 +367,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <PaymentCapacity
             title="Cupo máx. capacidad de pago"
             portalId="portal"
-            handleClose={handleGoBackOrCloseModal }
+            handleClose={handleGoBackOrCloseModal}
             reportedIncomeSources={2000000}
             reportedFinancialObligations={6789000}
             subsistenceReserve={2000000}
@@ -353,7 +379,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "reciprocityModal" && (
           <ReciprocityModal
             portalId="portal"
-            handleClose={handleGoBackOrCloseModal }
+            handleClose={handleGoBackOrCloseModal}
             balanceOfContributions={maxReciprocity}
             accordingToRegulation={1234500}
             assignedQuota={1000000}
@@ -362,7 +388,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "scoreModal" && (
           <ScoreModal
             title="Score Details"
-            handleClose={handleGoBackOrCloseModal }
+            handleClose={handleGoBackOrCloseModal}
             subTitle="Your Financial Score"
             totalScore={750}
             seniority={150}
