@@ -10,6 +10,7 @@ import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 interface CardCommercialManagementProps {
   id: string;
   dataRef: React.RefObject<HTMLDivElement>;
+  refreshProducts?: () => void;
 }
 
 export const CardCommercialManagement = (
