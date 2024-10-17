@@ -51,6 +51,11 @@ export const ExtraordinaryPaymentModal = (
     );
   }
 
+  const handleConfirm = () => {
+    console.log("Confirmar acción");
+  };
+  
+
   const openAddSeriesModal = () => {
     setAddSeriesModalOpen(true);
   };
@@ -134,11 +139,13 @@ export const ExtraordinaryPaymentModal = (
           title="Agregar serie"
           handleClose={closeAddSeriesModal}
           onSubmit={handleSubmit}
+          onConfirm={handleConfirm}
           buttonText="Cancelar"
           secondButtonText="Agregar"
           formValues={{ field1: 0, field2: 0 }}
-          paymentMethodOptions={paymentMethodOptions} 
-          frequencyOptions={frequencyOptions} 
+          initialValues={{ field1: 0, field2: 0 }} 
+          paymentMethodOptions={paymentMethodOptions}
+          frequencyOptions={frequencyOptions}
           portalId={portalId}
         />
       )}

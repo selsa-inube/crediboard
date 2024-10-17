@@ -1,3 +1,4 @@
+import {  FormikValues } from "formik";
 export interface FormValues {
     field1: number;
     field2: number;
@@ -13,8 +14,10 @@ export interface FormValues {
     title: string;
     handleClose: () => void;
     onSubmit: () => void;
+    onConfirm: () => void;
     buttonText: string;
     secondButtonText: string;
+    initialValues: FormikValues;
     portalId?: string;
     formValues: FormValues;
     paymentMethodOptions: Option[];
