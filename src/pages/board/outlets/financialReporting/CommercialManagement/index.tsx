@@ -202,10 +202,8 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         },
       };
   
-      // Agregar el nuevo producto de crédito al prospecto encontrado
       mockProspectCredit[foundProspectIndex].credit_product.push(newCreditProduct);
   
-      // Guardar en localforage
       await localforage.setItem('prospects', mockProspectCredit);
   
     } catch (error) {
