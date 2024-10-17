@@ -10,6 +10,7 @@ import {
   MdOutlineVideocam,
   MdOutlinePayments,
 } from "react-icons/md";
+import { FormikValues } from "formik";
 
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -26,6 +27,7 @@ import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
 import { ReciprocityModal } from "@components/modals/ReciprocityModal";
 import { ReportCreditsModal } from "@components/modals/ReportCreditsModal";
 import { ScoreModal } from "@components/modals/FrcModal";
+import { EditProductModal } from "@components/modals/ProspectProductModal";
 import {
   truncateTextToMaxLength,
   capitalizeFirstLetter,
@@ -35,9 +37,11 @@ import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
-import { menuOptions ,incomeOptions} from "./config/config";
+import { menuOptions, incomeOptions } from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
+import { addCreditProduct } from "@mocks/utils/addCeditProductMock.service"
 import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
+import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
 import {
   StyledCollapseIcon,
@@ -75,13 +79,26 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     total: undefined,
   });
 
+  const { id } = useParams();
+
+  const initialValues: FormikValues = {
+    creditLine: "",
+    creditAmount: "",
+    paymentMethod: "",
+    paymentCycle: "",
+    firstPaymentCycle: "",
+    termInMonths: "",
+    amortizationType: "",
+    interestRate: "",
+    rateType: "",
+  };
+
   const onChanges = (name: string, newValue: string) => {
     setForm((prevForm) => ({
       ...prevForm,
       [name]: newValue,
     }));
   };
-  const { id } = useParams();
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   const handleOpenModal = (modalName: string) => {
@@ -118,7 +135,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     });
   };
 
-  const handleGoBackOrCloseModal  = () => {
+  const handleGoBackOrCloseModal = () => {
     setOpenModal(null);
   };
 
@@ -126,6 +143,19 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     setCollapse(!collapse);
   };
 
+  const handleConfirm = async (values: FormikValues) => {
+    if (!id) {
+      console.error('ID no está definido');
+      return;
+    }
+  
+    const result = await addCreditProduct(id, values, mockProspectCredit);
+  
+    if (result) {
+      handleCloseModal();
+    }
+  };
+  
   const currentModal = modalHistory[modalHistory.length - 1];
 
   return (
@@ -254,9 +284,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                         icon={<MdOutlineAdd />}
                         appearance="light"
                         size="18px"
-                        spacing="compact"
+                        spacing="none"
                       />
                     }
+                    onClick={() => handleOpenModal("editProductModal")}
                   >
                     Agregar producto
                   </Button>
@@ -271,7 +302,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                           icon={<MdOutlinePayments />}
                           appearance="primary"
                           size="18px"
-                          spacing="compact"
+                          spacing="none"
                         />
                       }
                       onClick={() => handleOpenModal("extraPayments")}
@@ -341,7 +372,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <PaymentCapacity
             title="Cupo máx. capacidad de pago"
             portalId="portal"
-            handleClose={handleGoBackOrCloseModal }
+            handleClose={handleGoBackOrCloseModal}
             reportedIncomeSources={2000000}
             reportedFinancialObligations={6789000}
             subsistenceReserve={2000000}
@@ -353,7 +384,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "reciprocityModal" && (
           <ReciprocityModal
             portalId="portal"
-            handleClose={handleGoBackOrCloseModal }
+            handleClose={handleGoBackOrCloseModal}
             balanceOfContributions={maxReciprocity}
             accordingToRegulation={1234500}
             assignedQuota={1000000}
@@ -362,7 +393,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "scoreModal" && (
           <ScoreModal
             title="Score Details"
-            handleClose={handleGoBackOrCloseModal }
+            handleClose={handleGoBackOrCloseModal}
             subTitle="Your Financial Score"
             totalScore={750}
             seniority={150}
@@ -372,6 +403,17 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             economicActivity={118}
             monthlyIncome={3000000}
             maxIndebtedness="50000000"
+          />
+        )}
+        {currentModal === "editProductModal" && (
+          <EditProductModal
+            portalId="portal"
+            title="Agregar producto"
+            confirmButtonText="Guardar"
+            initialValues={initialValues}
+            iconBefore={<MdOutlineAdd />}
+            onCloseModal={handleCloseModal}
+            onConfirm={handleConfirm}
           />
         )}
         {currentModal === "IncomeModal" && (
