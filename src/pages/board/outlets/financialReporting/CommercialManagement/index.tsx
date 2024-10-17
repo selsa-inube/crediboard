@@ -202,7 +202,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
 
       await localforage.setItem('prospects', mockProspectCredit);
   
-      console.log('Nuevo credit_product agregado y guardado:', newCreditProduct);
     } catch (error) {
       console.error('Error al guardar el producto:', error);
     }

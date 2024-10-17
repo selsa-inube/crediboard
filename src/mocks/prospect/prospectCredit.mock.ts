@@ -49,7 +49,7 @@ export const mockProspectCredit: IProspect[] = [
       {
         abbreviated_name: "Libre Inversion",
         credit_product_code: "999991",
-        loan_amount: 90000000000,
+        loan_amount: 25000000,
         line_of_credit_code: "100",
         line_of_credit_abbreviated_name: "Compra Primera Vivienda",
         interest_rate: 1.1,
