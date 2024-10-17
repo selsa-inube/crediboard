@@ -1,3 +1,7 @@
+import {
+  Schedule,
+} from "@src/services/enums";
+import localforage from 'localforage';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -40,6 +44,7 @@ import { MenuPropect } from "@components/navigation/MenuPropect";
 import { menuOptions, incomeOptions } from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
+import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
 import {
   StyledCollapseIcon,
@@ -77,6 +82,8 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     total: undefined,
   });
 
+  const { id } = useParams();
+  
   const initialValues: FormikValues = {
     creditLine: "",
     creditAmount: "",
@@ -88,6 +95,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     interestRate: "",
     rateType: "",
   };
+  
 
   const onChanges = (name: string, newValue: string) => {
     setForm((prevForm) => ({
@@ -95,7 +103,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       [name]: newValue,
     }));
   };
-  const { id } = useParams();
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   const handleOpenModal = (modalName: string) => {
@@ -140,9 +147,68 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     setCollapse(!collapse);
   };
 
-  const handleConfirm = () => {
-    console.log("Datos confirmados");
+  const handleConfirm = async (values: FormikValues) => {
+    try {
+      const foundProspectIndex = mockProspectCredit.findIndex(
+        (prospect) => prospect.public_code === id
+      );
+  
+      if (foundProspectIndex === -1) {
+        console.error('Prospecto no encontrado para guardar el credit_product');
+        return;
+      }
+  
+      const newCreditProduct = {
+        abbreviated_name: values.creditLine,
+        credit_product_code: `CP-${Math.random().toString(36).substr(2, 9)}`,
+        loan_amount: parseFloat(values.creditAmount),
+        line_of_credit_code: "100",
+        line_of_credit_abbreviated_name: "Compra Primera Vivienda",
+        interest_rate: parseFloat(values.interestRate),
+        fixed_points: 5,
+        loan_term: parseInt(values.termInMonths, 10),
+        schedule: Schedule.Weekly,
+        ordinary_installment_for_principal: {
+          term: 10,
+          number_of_installments: 10,
+          schedule: Schedule.Quarterly,
+          installment_amount_for_capital: 8,
+          installment_amount: 3,
+          gradient_rate: 8,
+          gradient_value: 1000000,
+          gradient_schedule: "monthly",
+          first_gradient_date: "2024-01-15T23:59:59Z",
+          payment_channel_code: "TRANSFER",
+        },
+        ordinary_installment_for_interest: {
+          schedule: Schedule.Weekly,
+          payment_channel_code: "TRANSFER",
+        },
+        extraordinary_installment: {
+          installment_amount: 2000,
+          installment_date: "2024-01-15T23:59:59Z",
+          payment_channel_code: "CAJA",
+        },
+        acquired_cash_flow: {
+          amount: "2000",
+          date: "2024-01-15T23:59:59Z",
+          payment_channel_unique_code: "Principal",
+          flow_number: 10,
+        },
+      };
+  
+      mockProspectCredit[foundProspectIndex].credit_product.push(newCreditProduct);
+  
+
+      await localforage.setItem('prospects', mockProspectCredit);
+  
+      console.log('Nuevo credit_product agregado y guardado:', newCreditProduct);
+    } catch (error) {
+      console.error('Error al guardar el producto:', error);
+    }
   };
+  
+  
 
 
   const currentModal = modalHistory[modalHistory.length - 1];

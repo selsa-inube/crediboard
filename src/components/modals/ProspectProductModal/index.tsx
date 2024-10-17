@@ -1,4 +1,4 @@
-import { Formik, FormikValues } from "formik";
+import { Formik, FormikValues ,FormikHelpers} from "formik";
 import * as Yup from "yup";
 import { createPortal } from "react-dom";
 import { MdAttachMoney, MdPercent, MdClear } from "react-icons/md";
@@ -42,7 +42,7 @@ interface EditProductModalProps {
   iconBefore?: React.JSX.Element;
   iconAfter?: React.JSX.Element;
   onCloseModal: () => void;
-  onConfirm: () => void;
+  onConfirm: (values: FormikValues) => void;
 }
 
 function EditProductModal(props: EditProductModalProps) {
@@ -85,7 +85,10 @@ function EditProductModal(props: EditProductModalProps) {
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={() => onConfirm()}
+      onSubmit={(values: FormikValues, formikHelpers: FormikHelpers<FormikValues>) => {
+        onConfirm(values);
+        formikHelpers.setSubmitting(false); 
+      }}
     >
       {(formik) => (
         <Blanket>
