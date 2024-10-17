@@ -158,9 +158,14 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         return;
       }
   
-      const newCreditProduct = {
+      if (!id) {
+        console.error('ID no está definido');
+        return;
+      }
+  
+      const newCreditProduct: ICreditProductProspect = {
         abbreviated_name: values.creditLine,
-        credit_product_code: `CP-${Math.random().toString(36).substr(2, 9)}`,
+        credit_product_code: id,
         loan_amount: parseFloat(values.creditAmount),
         line_of_credit_code: "100",
         line_of_credit_abbreviated_name: "Compra Primera Vivienda",
@@ -197,16 +202,16 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         },
       };
   
+      // Agregar el nuevo producto de crédito al prospecto encontrado
       mockProspectCredit[foundProspectIndex].credit_product.push(newCreditProduct);
   
-
+      // Guardar en localforage
       await localforage.setItem('prospects', mockProspectCredit);
   
     } catch (error) {
       console.error('Error al guardar el producto:', error);
     }
   };
-  
   
 
 
