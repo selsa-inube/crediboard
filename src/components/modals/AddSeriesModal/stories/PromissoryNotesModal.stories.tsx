@@ -2,7 +2,7 @@ import { useState } from "react";
 import { StoryFn, Meta } from "@storybook/react";
 import { Button } from "@inubekit/button";
 
-import { props } from "./props";
+import { props, parameters } from "./props";
 import { AddSeriesModal } from "../index";
 import { AddSeriesModalProps } from "../type";
 
@@ -27,6 +27,7 @@ const story: Meta<typeof AddSeriesModal> = {
   component: AddSeriesModal,
   title: "components/modals/AddSeriesModal",
   argTypes: props,
+  parameters: parameters,
 };
 
 const DefaultTemplate: StoryFn<AddSeriesModalProps> = (args) => {

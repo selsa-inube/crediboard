@@ -1,6 +1,15 @@
 import { ArgTypes } from "@storybook/react";
 import { AddSeriesModalProps } from "../type";
 
+export const parameters = {
+  docs: {
+    description: {
+      component:
+        "modal to add a new series",
+    },
+  },
+};
+
 export const props: Partial<ArgTypes<AddSeriesModalProps>> = {
   title: {
     control: {
