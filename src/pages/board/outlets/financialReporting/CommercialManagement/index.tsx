@@ -1,7 +1,3 @@
-import {
-  Schedule,
-} from "@src/services/enums";
-import localforage from 'localforage';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -43,6 +39,7 @@ import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
 import { menuOptions, incomeOptions } from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
+import { addCreditProduct } from "@mocks/utils/addCeditProductMock.service"
 import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
@@ -83,7 +80,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   });
 
   const { id } = useParams();
-  
+
   const initialValues: FormikValues = {
     creditLine: "",
     creditAmount: "",
@@ -95,7 +92,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     interestRate: "",
     rateType: "",
   };
-  
 
   const onChanges = (name: string, newValue: string) => {
     setForm((prevForm) => ({
@@ -148,73 +144,18 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   };
 
   const handleConfirm = async (values: FormikValues) => {
-    try {
-      const foundProspectIndex = mockProspectCredit.findIndex(
-        (prospect) => prospect.public_code === id
-      );
+    if (!id) {
+      console.error('ID no está definido');
+      return;
+    }
   
-      if (foundProspectIndex === -1) {
-        console.error('Prospecto no encontrado para guardar el credit_product');
-        return;
-      }
+    const result = await addCreditProduct(id, values, mockProspectCredit);
   
-      if (!id) {
-        console.error('ID no está definido');
-        return;
-      }
-  
-      const newCreditProduct: ICreditProductProspect = {
-        abbreviated_name: values.creditLine,
-        credit_product_code: id,
-        loan_amount: parseFloat(values.creditAmount),
-        line_of_credit_code: "100",
-        line_of_credit_abbreviated_name: "Compra Primera Vivienda",
-        interest_rate: parseFloat(values.interestRate),
-        fixed_points: 5,
-        loan_term: parseInt(values.termInMonths, 10),
-        schedule: Schedule.Weekly,
-        ordinary_installment_for_principal: {
-          term: 10,
-          number_of_installments: 10,
-          schedule: Schedule.Quarterly,
-          installment_amount_for_capital: 8,
-          installment_amount: 3,
-          gradient_rate: 8,
-          gradient_value: 1000000,
-          gradient_schedule: "monthly",
-          first_gradient_date: "2024-01-15T23:59:59Z",
-          payment_channel_code: "TRANSFER",
-        },
-        ordinary_installment_for_interest: {
-          schedule: Schedule.Weekly,
-          payment_channel_code: "TRANSFER",
-        },
-        extraordinary_installment: {
-          installment_amount: 2000,
-          installment_date: "2024-01-15T23:59:59Z",
-          payment_channel_code: "CAJA",
-        },
-        acquired_cash_flow: {
-          amount: "2000",
-          date: "2024-01-15T23:59:59Z",
-          payment_channel_unique_code: "Principal",
-          flow_number: 10,
-        },
-      };
-  
-      mockProspectCredit[foundProspectIndex].credit_product.push(newCreditProduct);
-  
-      await localforage.setItem('prospects', mockProspectCredit);
-
+    if (result) {
       handleCloseModal();
-  
-    } catch (error) {
-      console.error('Error al guardar el producto:', error);
     }
   };
   
-
-
   const currentModal = modalHistory[modalHistory.length - 1];
 
   return (

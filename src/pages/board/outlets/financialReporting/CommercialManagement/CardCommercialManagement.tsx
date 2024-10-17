@@ -12,34 +12,45 @@ interface CardCommercialManagementProps {
   dataRef: React.RefObject<HTMLDivElement>;
 }
 
-export const CardCommercialManagement = (props: CardCommercialManagementProps) => {
+export const CardCommercialManagement = (
+  props: CardCommercialManagementProps
+) => {
   const { dataRef, id } = props;
-  const [prospectProducts, setProspectProducts] = useState<ICreditProductProspect[]>([]);
+  const [prospectProducts, setProspectProducts] = useState<
+    ICreditProductProspect[]
+  >([]);
 
   const loadProspectProducts = useCallback(() => {
-    const foundProspect = mockProspectCredit.find(prospect => prospect.public_code === id);
+    const foundProspect = mockProspectCredit.find(
+      (prospect) => prospect.public_code === id
+    );
     if (foundProspect) {
       setProspectProducts(foundProspect.credit_product);
     }
   }, [id]);
 
   useEffect(() => {
-    loadProspectProducts(); 
+    loadProspectProducts();
   }, [loadProspectProducts]);
 
   return (
     <div ref={dataRef}>
       <StyledCardsCredit>
         <Stack gap="24px" width="fit-content" padding="4px 8px 16px 8px">
-          {prospectProducts.map((entry) => (
+          {prospectProducts.map((entry, index) => (
             <CreditProductCard
-              key={entry.credit_product_code}
+              key={`${entry.credit_product_code}-${index}`}
               lineOfCredit={entry.line_of_credit_abbreviated_name}
-              paymentMethod={entry.ordinary_installment_for_principal?.payment_channel_code || ""}
+              paymentMethod={
+                entry.ordinary_installment_for_principal
+                  ?.payment_channel_code || ""
+              }
               loanAmount={entry.loan_amount}
               interestRate={entry.interest_rate}
               termMonths={entry.loan_term}
-              periodicFee={entry.ordinary_installment_for_principal?.gradient_value || 0}
+              periodicFee={
+                entry.ordinary_installment_for_principal?.gradient_value || 0
+              }
               schedule={entry.schedule}
               onEdit={() => {}}
               onDelete={() => {}}
@@ -47,7 +58,11 @@ export const CardCommercialManagement = (props: CardCommercialManagementProps) =
           ))}
         </Stack>
       </StyledCardsCredit>
-      <Stack gap="24px" margin="36px 16px 8px 8px" justifyContent="space-between">
+      <Stack
+        gap="24px"
+        margin="36px 16px 8px 8px"
+        justifyContent="space-between"
+      >
         {SummaryProspectCredit.map((entry, index) => (
           <SummaryProspect
             key={index}
