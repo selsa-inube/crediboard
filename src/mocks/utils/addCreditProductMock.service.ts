@@ -33,7 +33,7 @@ export async function addCreditProduct(
       interest_rate: parseFloat(values.interestRate),
       fixed_points: 5,
       loan_term: parseInt(values.termInMonths, 10),
-      schedule: Schedule.Weekly,
+      schedule: values.paymentCycle,
       ordinary_installment_for_principal: {
         term: 10,
         number_of_installments: 10,
@@ -44,11 +44,11 @@ export async function addCreditProduct(
         gradient_value: 1000000,
         gradient_schedule: "monthly",
         first_gradient_date: "2024-01-15T23:59:59Z",
-        payment_channel_code: "TRANSFER",
+         payment_channel_code: values.paymentMethod,
       },
       ordinary_installment_for_interest: {
-        schedule: Schedule.Weekly,
-        payment_channel_code: "TRANSFER",
+        schedule: values.paymentCycle,
+         payment_channel_code: values.paymentMethod,
       },
       extraordinary_installment: {
         installment_amount: 2000,
