@@ -36,7 +36,7 @@ export const actionsApprovals = [
         <Icon
           icon={<MdWarningAmber />}
           appearance="warning"
-          spacing="none"
+          spacing="narrow"
           cursorHover
           size="22px"
           disabled={!error}
@@ -51,7 +51,7 @@ export const actionsApprovals = [
       <Icon
         icon={<MdNotificationsNone />}
         appearance="primary"
-        spacing="none"
+        spacing="narrow"
         cursorHover
         size="22px"
         disabled={
@@ -111,6 +111,7 @@ export const actionMobileApprovals = [
         cursorHover
         variant="filled"
         shape="circle"
+        size="17px"
       />
     ),
   },
@@ -121,7 +122,7 @@ export const actionMobileApprovals = [
       <Icon
         icon={<MdWarningAmber />}
         appearance="warning"
-        spacing="none"
+        spacing="narrow"
         cursorHover
         size="20px"
         onClick={() => handleData(data)}
@@ -138,7 +139,7 @@ export const actionMobileApprovals = [
       <Icon
         icon={<MdNotificationsNone />}
         appearance="primary"
-        spacing="none"
+        spacing="narrow"
         cursorHover
         size="20px"
         onClick={() => handleData(data)}

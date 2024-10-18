@@ -102,7 +102,7 @@ export const ExtraordinaryPaymentModal = (
                       icon={<MdOutlineAdd />}
                       appearance="light"
                       size="18px"
-                      spacing="compact"
+                      spacing="narrow"
                     />
                   }
                   onClick={openAddSeriesModal}

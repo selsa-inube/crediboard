@@ -123,7 +123,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
                 label="Valor"
                 iconBefore={
                   <MdOutlineAttachMoney
-                    color={inube.icon.success.content.color.regular}
+                    color={inube.palette.green.G400}
                   />
                 }
                 placeholder="Valor a pagar"

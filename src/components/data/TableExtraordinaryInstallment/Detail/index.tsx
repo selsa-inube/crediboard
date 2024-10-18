@@ -23,7 +23,7 @@ export function Detail(props: DetailProps) {
           cursorHover
           appearance="dark"
           onClick={() => setModalOpen(false)}
-          variant="none"
+          variant="empty"
         />
       </Stack>
       <Stack padding="0px 16px">
@@ -33,7 +33,7 @@ export function Detail(props: DetailProps) {
           cursorHover
           appearance="danger"
           onClick={() => setModalOpen(false)}
-          variant="none"
+          variant="empty"
         />
       </Stack>
       {ModalOpen && (
