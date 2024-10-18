@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react";
+import { FlagProvider } from "@inubekit/flag";
 import {
   Route,
   RouterProvider,
@@ -16,7 +17,6 @@ import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
 import { GlobalStyles } from "./styles/global";
 import { enviroment } from "./config/environment";
-
 
 function LogOut() {
   localStorage.clear();
@@ -56,8 +56,10 @@ function App() {
   }
   return (
     <AppContextProvider>
-      <GlobalStyles />
-      <RouterProvider router={router} />
+      <FlagProvider>
+        <GlobalStyles />
+        <RouterProvider router={router} />
+      </FlagProvider>
     </AppContextProvider>
   );
 }
