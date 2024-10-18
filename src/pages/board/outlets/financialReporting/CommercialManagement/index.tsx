@@ -284,7 +284,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                         icon={<MdOutlineAdd />}
                         appearance="light"
                         size="18px"
-                        spacing="none"
+                        spacing="narrow"
                       />
                     }
                     onClick={() => handleOpenModal("editProductModal")}
@@ -302,7 +302,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                           icon={<MdOutlinePayments />}
                           appearance="primary"
                           size="18px"
-                          spacing="none"
+                          spacing="narrow"
                         />
                       }
                       onClick={() => handleOpenModal("extraPayments")}

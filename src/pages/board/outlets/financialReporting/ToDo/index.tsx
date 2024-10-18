@@ -1,8 +1,7 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { MdOutlineThumbUp } from "react-icons/md";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
-import { Flag } from "@inubekit/flag";
+import { useFlag } from "@inubekit/flag";
 import { Icon } from "@inubekit/icon";
 import { SkeletonLine } from "@inubekit/skeleton";
 import { Stack } from "@inubekit/stack";
@@ -19,7 +18,6 @@ import userNotFound from "@assets/images/ItemNotFound.png";
 import { StaffModal } from "./StaffModal";
 import { traceObserver } from "../config";
 import { errorMessagge, FlagMessage, flagMessages, buttonText } from "./config";
-import { StyledMessageContainer } from "../styles";
 import { errorObserver } from "../config";
 
 interface IICon {
@@ -55,10 +53,9 @@ function ToDo(props: ToDoProps) {
   const [decisionValue, setDecisionValue] = useState({
     decision: "",
   });
-  const [showFlagMessage, setShowFlagMessage] = useState(false);
-  const [flagMessage, setFlagMessage] = useState(flagMessages.success);
 
   const [loading, setLoading] = useState(true);
+  const { addFlag } = useFlag();
 
   useEffect(() => {
     (async () => {
@@ -102,7 +99,7 @@ function ToDo(props: ToDoProps) {
       } finally {
         setLoading(false);
       }
-    })(); 
+    })();
   }, [id]);
 
   const handleRetry = () => {
@@ -140,8 +137,12 @@ function ToDo(props: ToDoProps) {
     setAssignedStaff(tempStaff);
     handleToggleStaffModal();
 
-    setFlagMessage(flagMessages.changeSuccess);
-    setShowFlagMessage(true);
+    addFlag({
+      title: "Cambio realizado",
+      description: "El cambio se realizó con éxito.",
+      appearance: "success",
+      duration: 5000,
+    });
   };
 
   const handleSend = async () => {
@@ -157,8 +158,12 @@ function ToDo(props: ToDoProps) {
     const msgFlag =
       flagMessagesMap[decisionValue.decision] || flagMessagesMap.Default;
 
-    setFlagMessage(msgFlag);
-    setShowFlagMessage(true);
+    addFlag({
+      title: msgFlag.title,
+      description: msgFlag.description,
+      appearance: msgFlag.appearance,
+      duration: 5000,
+    });
 
     const trace = {
       trace_value: "Decision_made",
@@ -166,8 +171,8 @@ function ToDo(props: ToDoProps) {
       use_case: "decision_made",
       user_id: user,
       execution_date: new Date().toISOString(),
-      justification: decisionValue,
-      decision_taken_by_user: decisionValue,
+      justification: decisionValue.decision,
+      decision_taken_by_user: decisionValue.decision,
       trace_type: "executed_task",
       read_novelty: "",
     };
@@ -175,7 +180,6 @@ function ToDo(props: ToDoProps) {
     try {
       await addItem("trace", trace);
       traceObserver.notify(trace);
-      setShowFlagMessage(true);
     } catch (error) {
       console.error("Error al enviar la decisión:", error);
     }
@@ -262,7 +266,7 @@ function ToDo(props: ToDoProps) {
               direction={isMobile ? "column" : "row"}
               gap="16px"
               alignItems="center"
-              padding="4px 0px 0px 0px"
+              padding="8px 0px 0px 0px"
             >
               <Stack direction="column" width="100%" alignItems="end">
                 {icon && isMobile && (
@@ -320,19 +324,6 @@ function ToDo(props: ToDoProps) {
           onSubmit={handleSubmit}
           onCloseModal={handleToggleStaffModal}
         />
-      )}
-      {showFlagMessage && (
-        <StyledMessageContainer>
-          <Flag
-            title={flagMessage.title}
-            description={flagMessage.description}
-            appearance={flagMessage.appearance}
-            icon={<MdOutlineThumbUp />}
-            duration={5000}
-            isMessageResponsive={false}
-            closeFlag={() => setShowFlagMessage(false)}
-          />
-        </StyledMessageContainer>
       )}
     </>
   );
