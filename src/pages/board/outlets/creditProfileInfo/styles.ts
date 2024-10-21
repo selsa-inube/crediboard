@@ -14,7 +14,6 @@ const StyledDivider = styled.hr<IStyledDivider>`
   width: 100%;
   border: none;
   border-top: 2px solid;
-  background-color: red;
   border-top-color: ${({ theme }) =>
     theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;

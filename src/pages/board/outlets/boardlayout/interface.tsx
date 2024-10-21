@@ -154,8 +154,8 @@ function BoardLayoutUI(props: BoardLayoutProps) {
             alignItems="center"
             margin={isMobile ? "s200 s0" : "auto"}
           >
-            <Stack width={isMobile ? "100%" : "500px"}>
-              <Selectcheck {...selectProps} />
+            <Stack width={isMobile ? "100%" : "500px"} >
+              <Selectcheck size="compact" {...selectProps} />
             </Stack>
             <Stack gap="16px">
               {!isMobile && (

@@ -43,21 +43,21 @@ function SummaryCardUI(props: SummaryCardProps) {
         <Text type="label">
           {capitalizeFirstLetterEachWord(truncateTextToMaxLength(name))}
         </Text>
-        <Text size="medium" appearance="gray">
+        <Text size="medium" appearance="gray" weight="bold">
           Destino:
         </Text>
         <Text type="label">
           {capitalizeFirstLetter(truncateTextToMaxLength(destination, 60))}
         </Text>
         <Stack gap="8px">
-          <Text size="medium" appearance="gray">
+          <Text size="medium" appearance="gray" weight="bold">
             Valor:
           </Text>
           <Text type="label">
             {value === 0 ? "$ 0" : currencyFormat(value)}
           </Text>
         </Stack>
-        <Text size="medium" appearance="gray">
+        <Text size="medium" appearance="gray" weight="bold">
           Actividad en ejecución:
         </Text>
         <Text type="label">
