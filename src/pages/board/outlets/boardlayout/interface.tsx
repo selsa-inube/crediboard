@@ -106,29 +106,31 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           <Stack
             justifyContent="space-between"
             width={isMobile ? "100%" : "auto"}
-            margin={isMobile ? "s100 s0" : "auto"}
+            margin={isMobile ? "8px 0px"  : "auto"}
           >
-            <StyledSearch
-              ref={stackRef}
-              $isMobile={isMobile}
-              $isExpanded={isExpanded}
-              onClick={() => {
-                if (!isExpanded) setIsExpanded(true);
-              }}
-            >
-              <Stack width="100%">
-                <Textfield
-                  id="SearchCards"
-                  name="SearchCards"
-                  placeholder={isMobile ? "" : "Buscar..."}
-                  size="compact"
-                  iconAfter={<MdSearch />}
-                  value={searchRequestValue}
-                  onChange={handleSearchRequestsValue}
-                  fullwidth
-                />
-              </Stack>
-            </StyledSearch>
+            {isMobile && (
+              <StyledSearch
+                ref={stackRef}
+                $isMobile={isMobile}
+                $isExpanded={isExpanded}
+                onClick={() => {
+                  if (!isExpanded) setIsExpanded(true);
+                }}
+              >
+                <Stack width="100%">
+                  <Textfield
+                    id="SearchCardsMobile"
+                    name="SearchCardsMobile"
+                    placeholder=""
+                    size="compact"
+                    iconAfter={<MdSearch />}
+                    value={searchRequestValue}
+                    onChange={handleSearchRequestsValue}
+                    fullwidth
+                  />
+                </Stack>
+              </StyledSearch>
+            )}
             {isMobile && (
               <Stack alignItems="center">
                 <Icon
@@ -152,11 +154,25 @@ function BoardLayoutUI(props: BoardLayoutProps) {
             width="100%"
             justifyContent={isMobile ? "end" : "space-between"}
             alignItems="end"
-            margin={isMobile ? "s200 s0" : "auto"}
+            margin={isMobile ? "16px 0px" : "auto"}
           >
-            <Stack width={isMobile ? "100%" : "500px"} >
+            <Stack width={isMobile ? "100%" : "400px"} >
               <Selectcheck size="compact" {...selectProps} />
             </Stack>
+            {!isMobile && (
+              <Stack width="400px">
+                <Textfield
+                  id="SearchCardsDesktop"
+                  name="SearchCardsDesktop"
+                  placeholder="Buscar..."
+                  size="compact"
+                  iconAfter={<MdSearch />}
+                  value={searchRequestValue}
+                  onChange={handleSearchRequestsValue}
+                  fullwidth
+                />
+              </Stack>
+            )}
             <Stack gap="16px">
               {!isMobile && (
                 <Stack gap="8px" alignItems="center">
