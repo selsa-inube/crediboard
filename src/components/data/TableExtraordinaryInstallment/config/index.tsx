@@ -12,9 +12,9 @@ export const rowsActions = [
     {
         label: "Acciones",
         key: "actions",
-        container: (onClickDetails: () => void, onClickEdit: () => void, onClickEliminate: () => void)=>{
+        container: () => {
             return(
-                <Detail onClickDetails={onClickDetails} onClickEdit={onClickEdit} onClickEliminate={onClickEliminate} />
+                <Detail  />
             )
         }
         ,

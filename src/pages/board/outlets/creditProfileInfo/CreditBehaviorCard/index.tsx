@@ -4,7 +4,7 @@ import { Stack } from "@inubekit/stack";
 
 import { CardInfoContainer } from "@components/cards/CardInfoContainer";
 import { StyledDivider } from "@components/cards/SummaryCard/styles";
-import { formatDateWithFullYear } from "@utils/formatData/date";
+import { formatPrimaryDate } from "@utils/formatData/date";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import userNotFound from "@assets/images/ItemNotFound.png";
 
@@ -33,6 +33,9 @@ export function CreditBehavior(props: CreditBehaviorProps) {
   const handleRetry = () => {
     setBehaviorError(false);
   };
+
+
+  const dateObject = new Date(centralScoreDate);
 
   return (
     <CardInfoContainer
@@ -66,7 +69,7 @@ export function CreditBehavior(props: CreditBehaviorProps) {
                 {centralScoreRisky}
               </Text>
               <Text size={isMobile ? "small" : "medium"}>
-                / {formatDateWithFullYear(centralScoreDate)}
+                / {formatPrimaryDate(dateObject)}
               </Text>
             </Stack>
           </Stack>

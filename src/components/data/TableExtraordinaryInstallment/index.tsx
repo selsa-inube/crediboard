@@ -61,7 +61,7 @@ const usePagination = (data: IExtraordinaryPayment[]) => {
 export const TableExtraordinaryInstallment = (
   props: TableExtraordinaryInstallmentProps
 ) => {
-  const { data, onClickDetails, onClickEdit, onClickEliminate } = props;
+  const { data } = props;
   const headers = headersTableExtraordinaryInstallment;
 
   const [loading, setLoading] = useState(true);
@@ -155,9 +155,6 @@ export const TableExtraordinaryInstallment = (
                 visbleActions.map((action) => (
                   <Td key={action.key} type="custom">
                     {action.container(
-                      () => onClickDetails && onClickDetails(row.id),
-                      () => onClickEdit && onClickEdit(row.id),
-                      () => onClickEliminate && onClickEliminate(row.id)
                     )}
                   </Td>
                 ))}

@@ -26,6 +26,7 @@ export const Container = styled.div<IStyledCollapseIcon>`
   display: flex;
   gap: ${({ $showIcon }) => ($showIcon ? "0px" : "64px")};
   padding: 4px;
+  width: ${({ $showIcon }) => ($showIcon ? "auto" : "100%")};
 `;
 
 export const IconWrapper = styled.div`
@@ -42,5 +43,5 @@ export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  gap: 74px;
+  justify-content: space-around;
 `;
