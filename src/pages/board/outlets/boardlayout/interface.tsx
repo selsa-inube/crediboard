@@ -151,7 +151,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           <Stack
             width="100%"
             justifyContent={isMobile ? "end" : "space-between"}
-            alignItems="center"
+            alignItems="end"
             margin={isMobile ? "s200 s0" : "auto"}
           >
             <Stack width={isMobile ? "100%" : "500px"} >

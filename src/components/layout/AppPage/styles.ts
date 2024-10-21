@@ -63,9 +63,8 @@ const StyledFooter = styled.footer`
   display: flex;
   justify-content: center;
   padding: 16px 24px;
-  background-color: ${({ theme }) =>
+  background-color:${({ theme }) =>
     theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
-  margin-top: auto;
 `;
 
 export {
@@ -77,5 +76,5 @@ export {
   StyledMenuContainer,
   StyledCollapseIcon,
   StyledCollapse,
-  StyledFooter,
+  StyledFooter
 };
