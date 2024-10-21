@@ -1,23 +1,24 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { MdOutlineThumbUp } from "react-icons/md";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
-import { Flag } from "@inubekit/flag";
+import { useFlag } from "@inubekit/flag";
 import { Icon } from "@inubekit/icon";
 import { SkeletonLine } from "@inubekit/skeleton";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
+import { ItemNotFound } from "@components/layout/ItemNotFound";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo } from "@services/types";
 import { get, getById, addItem } from "@mocks/utils/dataMock.service";
+import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StaffModal } from "./StaffModal";
 import { traceObserver } from "../config";
 import { errorMessagge, FlagMessage, flagMessages, buttonText } from "./config";
-import { StyledMessageContainer } from "../styles";
+import { errorObserver } from "../config";
 
 interface IICon {
   icon: JSX.Element;
@@ -52,13 +53,12 @@ function ToDo(props: ToDoProps) {
   const [decisionValue, setDecisionValue] = useState({
     decision: "",
   });
-  const [showFlagMessage, setShowFlagMessage] = useState(false);
-  const [flagMessage, setFlagMessage] = useState(flagMessages.success);
 
   const [loading, setLoading] = useState(true);
+  const { addFlag } = useFlag();
 
   useEffect(() => {
-    const fetchData = async () => {
+    (async () => {
       setLoading(true);
       try {
         const [staffResult, toDoResult] = await Promise.allSettled([
@@ -78,16 +78,33 @@ function ToDo(props: ToDoProps) {
           !(toDoResult.value instanceof Error)
         ) {
           setToDo(toDoResult.value as IToDo[]);
+        } else {
+          if (
+            toDoResult.status === "rejected" ||
+            toDoResult.value instanceof Error
+          ) {
+            errorObserver.notify({
+              id: "Management",
+              message: "Error al obtener los datos de gestión.",
+            });
+          }
+          setToDo([]);
         }
       } catch (error) {
         console.log(error);
+        errorObserver.notify({
+          id: "Management",
+          message: (error as Error).message.toString(),
+        });
       } finally {
         setLoading(false);
       }
-    };
-
-    fetchData();
+    })();
   }, [id]);
+
+  const handleRetry = () => {
+    setLoading(true);
+  };
 
   useEffect(() => {
     if (toDo) {
@@ -120,8 +137,12 @@ function ToDo(props: ToDoProps) {
     setAssignedStaff(tempStaff);
     handleToggleStaffModal();
 
-    setFlagMessage(flagMessages.changeSuccess);
-    setShowFlagMessage(true);
+    addFlag({
+      title: "Cambio realizado",
+      description: "El cambio se realizó con éxito.",
+      appearance: "success",
+      duration: 5000,
+    });
   };
 
   const handleSend = async () => {
@@ -137,8 +158,12 @@ function ToDo(props: ToDoProps) {
     const msgFlag =
       flagMessagesMap[decisionValue.decision] || flagMessagesMap.Default;
 
-    setFlagMessage(msgFlag);
-    setShowFlagMessage(true);
+    addFlag({
+      title: msgFlag.title,
+      description: msgFlag.description,
+      appearance: msgFlag.appearance,
+      duration: 5000,
+    });
 
     const trace = {
       trace_value: "Decision_made",
@@ -146,16 +171,15 @@ function ToDo(props: ToDoProps) {
       use_case: "decision_made",
       user_id: user,
       execution_date: new Date().toISOString(),
-      justification: decisionValue,
-      decision_taken_by_user: decisionValue,
+      justification: decisionValue.decision,
+      decision_taken_by_user: decisionValue.decision,
       trace_type: "executed_task",
       read_novelty: "",
     };
-  
+
     try {
       await addItem("trace", trace);
       traceObserver.notify(trace);
-      setShowFlagMessage(true);
     } catch (error) {
       console.error("Error al enviar la decisión:", error);
     }
@@ -166,117 +190,130 @@ function ToDo(props: ToDoProps) {
       <Fieldset
         title="Por hacer"
         descriptionTitle={assignedStaff.commercialManager}
-        heightFieldset={isMobile ? "inherit" : "284px"}
+        heightFieldset="277px"
         hasOverflow
+        aspectRatio="1"
       >
-        <Stack direction="column" gap={isMobile ? "4px" : "6px"} height={isMobile ? "auto" : "205px"}>
-          <Stack direction={isMobile ? "column" : "row"}>
-            {isMobile && (
-              <Text appearance="primary" type="title" size="medium">
-                Tarea
-              </Text>
-            )}
-
-            {loading ? (
-              <SkeletonLine width="100%" animated />
-            ) : (
-              <Text
-                size={isMobile ? "medium" : "large"}
-                appearance={toDo?.[0]?.task_to_be_done ? "dark" : "gray"}
-              >
-                {toDo?.[0]?.task_to_be_done ?? errorMessagge}
-              </Text>
-            )}
-          </Stack>
+        {toDo.length === 0 ? (
+          <ItemNotFound
+            image={userNotFound}
+            title="No se encontraron tareas"
+            description="Parece que no hay tareas disponibles para mostrar."
+            buttonDescription="volver a intentar"
+            route="/retry-path"
+            onRetry={handleRetry}
+          />
+        ) : (
           <Stack
-            direction={isMobile ? "column" : "row"}
-            gap={isMobile ? "2px" : "16px"}
-            padding="8px 0px"
-            alignItems="center"
+            direction="column"
+            gap={isMobile ? "4px" : "6px"}
+            height={isMobile ? "auto" : "205px"}
           >
-            <Stack width={isMobile ? "100%" : "340px"}>
-              <Select
-                id="toDo"
-                name="decision"
-                label="Decisión"
-                value={decisionValue.decision}
-                placeholder="Seleccione una opción"
-                size="compact"
-                options={toDo?.[0]?.decisions ?? []}
-                onChange={onChangeDecision}
-                disabled={toDo === undefined}
-                fullwidth={isMobile}
-              />
+            <Stack direction={isMobile ? "column" : "row"}>
+              {isMobile && (
+                <Text appearance="primary" type="title" size="medium">
+                  Tarea
+                </Text>
+              )}
+
+              {loading ? (
+                <SkeletonLine width="100%" animated />
+              ) : (
+                <Text
+                  size={isMobile ? "medium" : "large"}
+                  appearance={toDo?.[0]?.task_to_be_done ? "dark" : "gray"}
+                >
+                  {toDo?.[0]?.task_to_be_done ?? errorMessagge}
+                </Text>
+              )}
             </Stack>
             <Stack
-              padding="16px 0px 0px 0px"
-              width="100%"
+              direction={isMobile ? "column" : "row"}
+              gap={isMobile ? "2px" : "16px"}
+              padding="8px 0px"
+              alignItems="center"
             >
-              <Button
-                onClick={handleSend}
-                cursorHover
-                disabled={toDo === undefined}
-                loading={button?.loading || false}
-                type="submit"
-                fullwidth={isMobile}
-                spacing="compact"
-              >
-                {button?.label || buttonText}
-              </Button>
-            </Stack>
-          </Stack>
-          <Divider />
-          <Stack
-            direction={isMobile ? "column" : "row"}
-            gap="16px"
-            alignItems="center"
-            padding="8px 0px 0px 0px"
-          >
-            <Stack direction="column" width="100%" alignItems="end">
-              {icon && isMobile && (
-                <Icon
-                  icon={icon.icon}
-                  appearance="primary"
-                  size="24px"
-                  onClick={handleToggleStaffModal}
-                  cursorHover
+              <Stack width={isMobile ? "100%" : "340px"}>
+                <Select
+                  id="toDo"
+                  name="decision"
+                  label="Decisión"
+                  value={decisionValue.decision}
+                  placeholder="Seleccione una opción"
+                  size="compact"
+                  options={toDo?.[0]?.decisions ?? []}
+                  onChange={onChangeDecision}
+                  disabled={toDo === undefined}
+                  fullwidth={isMobile}
                 />
-              )}
+              </Stack>
+              <Stack padding="16px 0px 0px 0px" width="100%">
+                <Button
+                  onClick={handleSend}
+                  cursorHover
+                  disabled={toDo === undefined}
+                  loading={button?.loading || false}
+                  type="submit"
+                  fullwidth={isMobile}
+                  spacing="compact"
+                >
+                  {button?.label || buttonText}
+                </Button>
+              </Stack>
+            </Stack>
+            <Divider />
+            <Stack
+              direction={isMobile ? "column" : "row"}
+              gap="16px"
+              alignItems="center"
+              padding="8px 0px 0px 0px"
+            >
+              <Stack direction="column" width="100%" alignItems="end">
+                {icon && isMobile && (
+                  <Icon
+                    icon={icon.icon}
+                    appearance="primary"
+                    size="24px"
+                    onClick={handleToggleStaffModal}
+                    cursorHover
+                  />
+                )}
+                <Textfield
+                  id="gestorComercial"
+                  name="gestorComercial"
+                  label="Gestor Comercial"
+                  placeholder="Gestor Comercial"
+                  value={assignedStaff.commercialManager}
+                  fullwidth
+                  disabled={staff === null}
+                  size="compact"
+                />
+              </Stack>
               <Textfield
-                id="gestorComercial"
-                name="gestorComercial"
-                label="Gestor Comercial"
-                placeholder="Gestor Comercial"
-                value={assignedStaff.commercialManager}
+                id="analista"
+                name="analista"
+                label="Analista"
+                placeholder="Analista"
+                value={assignedStaff.analyst}
                 fullwidth
                 disabled={staff === null}
                 size="compact"
               />
+              {icon && !isMobile && (
+                <Stack width="100px" height="50px" alignItems="end">
+                  <Icon
+                    icon={icon.icon}
+                    appearance="primary"
+                    size="24px"
+                    onClick={handleToggleStaffModal}
+                    cursorHover
+                    disabled={staff === null}
+                  />
+                </Stack>
+              )}
             </Stack>
-            <Textfield
-              id="analista"
-              name="analista"
-              label="Analista"
-              placeholder="Analista"
-              value={assignedStaff.analyst}
-              fullwidth
-              disabled={staff === null}
-              size="compact"
-            />
-            {icon && !isMobile && (
-              <Stack width="100px" height="50px" alignItems="end">
-                <Icon
-                  icon={icon.icon}
-                  appearance="primary"
-                  size="24px"
-                  onClick={handleToggleStaffModal}
-                  cursorHover
-                  disabled={staff === null}
-                />
-              </Stack>
-            )}
           </Stack>
-        </Stack>
+        )}
       </Fieldset>
       {showStaffModal && (
         <StaffModal
@@ -287,19 +324,6 @@ function ToDo(props: ToDoProps) {
           onSubmit={handleSubmit}
           onCloseModal={handleToggleStaffModal}
         />
-      )}
-      {showFlagMessage && (
-        <StyledMessageContainer>
-          <Flag
-            title={flagMessage.title}
-            description={flagMessage.description}
-            appearance={flagMessage.appearance}
-            icon={<MdOutlineThumbUp />}
-            duration={5000}
-            isMessageResponsive={false}
-            closeFlag={() => setShowFlagMessage(false)}
-          />
-        </StyledMessageContainer>
       )}
     </>
   );
