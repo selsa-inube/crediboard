@@ -1,8 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Icon } from "@inubekit/icon";
 import { Stack, inube } from "@inube/design-system";
 import { Textfield } from "@inubekit/textfield";
-
 import localforage from "localforage";
 import { MdOutlineSend, MdAttachFile } from "react-icons/md";
 import { Fieldset } from "@components/data/Fieldset";
@@ -12,7 +11,6 @@ import { TraceType } from "@services/types";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { traceObserver } from "../config";
-
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
 import { errorObserver } from "../config";
 
@@ -29,6 +27,8 @@ export const Management = (props: IManagementProps) => {
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const chatContentRef = useRef<HTMLDivElement>(null); // Ref para el contenedor de mensajes
 
   const fetchData = useCallback(async () => {
     if (!id) return;
@@ -88,6 +88,13 @@ export const Management = (props: IManagementProps) => {
   useEffect(() => {
     fetchData();
   }, [fetchData, updateData]);
+
+  // Efecto para desplazar el scroll hacia abajo cuando cambian los mensajes
+  useEffect(() => {
+    if (chatContentRef.current) {
+      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight; // Desplazar hacia abajo
+    }
+  }, [traces]); // Se ejecuta cada vez que 'traces' cambie
 
   const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -156,7 +163,7 @@ export const Management = (props: IManagementProps) => {
         />
       ) : (
         <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
-          <ChatContent>
+          <ChatContent ref={chatContentRef}> {/* Asigna el ref aquí */}
             {loading
               ? [...Array(5)].map((_, index) => (
                   <SkeletonContainer

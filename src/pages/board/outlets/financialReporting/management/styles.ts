@@ -12,7 +12,7 @@ export const ChatContent = styled.div`
   flex-direction: column;
 
   &::-webkit-scrollbar {
-    border-radius: 8px;
+    width: 8px;
   }
 
   &::-webkit-scrollbar-thumb {

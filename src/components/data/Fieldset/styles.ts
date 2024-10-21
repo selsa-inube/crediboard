@@ -28,7 +28,7 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
     !$isMobile &&
     `
     &::-webkit-scrollbar {
-      width: 16px; 
+      width: 8px; 
       border-radius: 8px;
     }
 
