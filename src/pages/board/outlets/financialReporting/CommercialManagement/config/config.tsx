@@ -7,8 +7,6 @@ import {
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 
-
-
 import { TableBoard } from "@components/data/TableBoard";
 import { Schedule } from "@services/enums";
 import { IOptions } from "@src/components/navigation/MenuPropect/types";
@@ -396,7 +394,7 @@ export const menuOptions = (handleOpenModal: (modalName: string) => void, visibl
   },
   {
     title: "Obligaciones financieras",
-    onClick: () => {},
+    onClick: () => handleOpenModal("reportCreditsModal"),
     icon: <MdOutlineMonetizationOn />,
     visible: true,
   },

@@ -46,10 +46,10 @@ export const actionsFinanacialReporting = [
         appearance="primary"
         cursorHover
         size="22px"
-        variant="none"
+        variant="filled"
         icon={<MdOutlineSend />}
         onClick={() => entrySelection(data)}
-        spacing="none"
+        spacing="narrow"
       />
     ),
   },
@@ -60,8 +60,8 @@ export const actionsFinanacialReporting = [
       <Icon
         appearance="primary"
         size="22px"
-        spacing="none"
-        variant="none"
+        spacing="narrow"
+        variant="filled"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
         onClick={() => entrySelection(data)}
@@ -108,7 +108,7 @@ export const actionMobile = [
             ? data?.tag?.props?.appearance
             : undefined
         }
-        spacing="none"
+        spacing="narrow"
         cursorHover
         variant="filled"
         shape="circle"
@@ -122,7 +122,7 @@ export const actionMobile = [
       <Icon
         appearance="primary"
         size="22px"
-        spacing="none"
+        spacing="narrow"
         cursorHover
         icon={<MdOutlineSend />}
         onClick={() => entrySelection(data)}
@@ -136,7 +136,7 @@ export const actionMobile = [
       <Icon
         appearance="primary"
         size="22px"
-        spacing="none"
+        spacing="narrow"
         cursorHover
         icon={<MdOutlineRemoveRedEye />}
         onClick={() => entrySelection(data)}

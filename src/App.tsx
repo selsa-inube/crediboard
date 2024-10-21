@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react";
+import { FlagProvider } from "@inubekit/flag";
 import {
   Route,
   RouterProvider,
@@ -57,8 +58,10 @@ function App() {
   }
   return (
     <AppContextProvider>
-      <GlobalStyles />
-      <RouterProvider router={router} />
+      <FlagProvider>
+        <GlobalStyles />
+        <RouterProvider router={router} />
+      </FlagProvider>
     </AppContextProvider>
   );
 }
