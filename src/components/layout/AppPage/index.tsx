@@ -102,25 +102,25 @@ function AppPage() {
           userName={user.username}
           client={user.company}
         />
-        <StyledCollapseIcon
-          $collapse={collapse}
-          onClick={() => setCollapse(!collapse)}
-          $isTablet={isTablet}
-          ref={collapseMenuRef}
-        >
-          <Icon
-            icon={<MdOutlineChevronRight />}
-            appearance="primary"
-            size="24px"
-            cursorHover
-          />
-        </StyledCollapseIcon>
-        {collapse && (
-          <StyledCollapse ref={businessUnitChangeRef}>
-            <BusinessUnitChange clients={clientsDataMock} />
-          </StyledCollapse>
-        )}
         <StyledContainer>
+          <StyledCollapseIcon
+            $collapse={collapse}
+            onClick={() => setCollapse(!collapse)}
+            $isTablet={isTablet}
+            ref={collapseMenuRef}
+          >
+            <Icon
+              icon={<MdOutlineChevronRight />}
+              appearance="primary"
+              size="24px"
+              cursorHover
+            />
+          </StyledCollapseIcon>
+          {collapse && (
+            <StyledCollapse ref={businessUnitChangeRef}>
+              <BusinessUnitChange clients={clientsDataMock} />
+            </StyledCollapse>
+          )}
           {showUserMenu && (
             <StyledMenuContainer ref={userMenuRef}>
               <MenuUser userName={user.username} businessUnit={user.company} />
@@ -135,16 +135,12 @@ function AppPage() {
           )}
           <StyledMain>
             <Outlet />
-            <StyledFooter>
-              <Text
-                appearance="gray"
-                textAlign="center"
-                size="medium"
-              >
-                © 2024 Inube
-              </Text>
-            </StyledFooter>
           </StyledMain>
+          <StyledFooter>
+            <Text appearance="gray" textAlign="center" size="medium">
+              © 2024 Inube
+            </Text>
+          </StyledFooter>
         </StyledContainer>
       </Grid>
     </StyledAppPage>
