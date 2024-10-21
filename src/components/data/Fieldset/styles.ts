@@ -6,17 +6,20 @@ interface IStyledContainerFieldset {
   $isMobile: boolean;
   $hasTable: boolean;
   $hasOverflow?: boolean;
+  $slim?: boolean;
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
   overflow-x: hidden;
   border-radius: 8px;
-  border-width: 2px;
+  border-width: ${({ $slim }) => ($slim ? "1px" : "2px")};
   border-style: solid;
   aspect-ratio: ${({ $aspectRatio, $isMobile }) => !$isMobile && $aspectRatio};
-  border-color: ${({ theme }) =>
-    theme?.palette?.neutral?.N200 || inube.palette.neutral.N200};
+  border-color: ${({ $slim, theme }) =>
+    $slim
+      ? theme?.palette?.neutral?.N50 || inube.palette.neutral.N50
+      : theme?.palette?.neutral?.N200 || inube.palette.neutral.N200};
   box-shadow: 0px 2px 6px
     ${({ theme }) => theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
   padding-top: ${({ $hasTable }) => !$hasTable && "16px"};

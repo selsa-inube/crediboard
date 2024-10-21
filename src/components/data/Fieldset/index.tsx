@@ -11,7 +11,7 @@ interface IPtionsButton {
 }
 
 interface IFieldsetProps {
-  title: string;
+  title?: string;
   children: JSX.Element | JSX.Element[];
   aspectRatio?: string;
   heightFieldset?: string;
@@ -19,6 +19,7 @@ interface IFieldsetProps {
   activeButton?: IPtionsButton;
   hasTable?: boolean;
   hasOverflow?: boolean;
+  slim?: boolean;
 }
 
 export const Fieldset = (props: IFieldsetProps) => {
@@ -31,6 +32,7 @@ export const Fieldset = (props: IFieldsetProps) => {
     activeButton,
     hasTable = false,
     hasOverflow,
+    slim,
   } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
@@ -49,7 +51,7 @@ export const Fieldset = (props: IFieldsetProps) => {
             appearance="gray"
             size={isMobile ? "medium" : "large"}
           >
-            {`${title} `}
+            {title} 
           </Text>
           {descriptionTitle && (
             <Text type="title" ellipsis size={isMobile ? "medium" : "large"}>
@@ -74,6 +76,7 @@ export const Fieldset = (props: IFieldsetProps) => {
         $isMobile={isMobile}
         $hasTable={hasTable}
         $hasOverflow={hasOverflow}
+        $slim={slim}
       >
         {children}
       </StyledContainerFieldset>
