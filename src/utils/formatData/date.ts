@@ -39,7 +39,7 @@ const formatPrimaryDate = (date: Date, withTime?: boolean): string => {
 
   const day = date.getUTCDate().toString().padStart(2, "0");
   const month = months[date.getUTCMonth()];
-  const year = date.getUTCFullYear();
+  const year = date.getUTCFullYear().toString().slice(-2);
 
   if (withTime) {
     let hours = date.getUTCHours();

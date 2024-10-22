@@ -184,7 +184,7 @@ export const Management = (props: IManagementProps) => {
                 ))}
           </ChatContent>
           <form>
-            <Stack alignItems="center"  direction="row" gap="4px">
+            <Stack alignItems="center"  direction="row" gap="16px" margin="2px 4px">
               <Icon
                 appearance="primary"
                 cursorHover
