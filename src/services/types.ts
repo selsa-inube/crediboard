@@ -106,7 +106,7 @@ interface TraceType {
   credit_request_id: string;
   use_case: string;
   user_id: string;
-  execution_date: string | number;
+  execution_date: string;
   justification?: string;
   decision_taken_by_user?: string;
   trace_type?: string;

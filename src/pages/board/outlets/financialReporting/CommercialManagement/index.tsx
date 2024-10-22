@@ -234,6 +234,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           {isMobile && (
             <Button
               type="link"
+              spacing="compact"
               path={`/extended-card/${id}/credit-profile`}
               fullwidth
             >
