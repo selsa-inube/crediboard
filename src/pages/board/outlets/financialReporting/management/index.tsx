@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Icon } from "@inubekit/icon";
-import { Stack, inube } from "@inube/design-system";
+import { Stack } from "@inubekit/stack";
 import { Textfield } from "@inubekit/textfield";
 import localforage from "localforage";
 import { MdOutlineSend, MdAttachFile } from "react-icons/md";
@@ -28,7 +28,7 @@ export const Management = (props: IManagementProps) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const chatContentRef = useRef<HTMLDivElement>(null); 
+  const chatContentRef = useRef<HTMLDivElement>(null);
 
   const fetchData = useCallback(async () => {
     if (!id) return;
@@ -91,7 +91,7 @@ export const Management = (props: IManagementProps) => {
 
   useEffect(() => {
     if (chatContentRef.current) {
-      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight; 
+      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
     }
   }, [traces]);
 
@@ -162,7 +162,7 @@ export const Management = (props: IManagementProps) => {
         />
       ) : (
         <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
-          <ChatContent ref={chatContentRef}> 
+          <ChatContent ref={chatContentRef}>
             {loading
               ? [...Array(5)].map((_, index) => (
                   <SkeletonContainer
@@ -182,28 +182,38 @@ export const Management = (props: IManagementProps) => {
                 ))}
           </ChatContent>
           <form>
-            <Stack alignItems="center" direction="row" gap={inube.spacing.s050}>
-              <Icon
-                appearance="primary"
-                cursorHover
-                size="24px"
-                icon={<MdAttachFile />}
-              />
-              <Textfield
-                id="text"
-                placeholder="Ej.: Escriba su mensaje"
-                fullwidth
-                value={newMessage}
-                onChange={handleInputChange}
-                size="compact"
-              />
-              <Icon
-                appearance="primary"
-                cursorHover
-                size="24px"
-                icon={<MdOutlineSend />}
-                onClick={handleFormSubmit}
-              />
+            <Stack
+              alignItems="center"
+              direction="row"
+              justifyContent="space-between"
+            >
+              <Stack padding="8px"> 
+                <Icon
+                  appearance="primary"
+                  cursorHover
+                  size="24px"
+                  icon={<MdAttachFile />}
+                />
+              </Stack>
+              <Stack width="600px"gap="8px">
+                <Textfield
+                  id="text"
+                  placeholder="Ej.: Escriba su mensaje"
+                  fullwidth
+                  value={newMessage}
+                  onChange={handleInputChange}
+                  size="compact"
+                />
+              </Stack>
+              <Stack padding="8px">
+                <Icon
+                  appearance="primary"
+                  cursorHover
+                  size="24px"
+                  icon={<MdOutlineSend />}
+                  onClick={handleFormSubmit}
+                />
+              </Stack>
             </Stack>
           </form>
         </Stack>
