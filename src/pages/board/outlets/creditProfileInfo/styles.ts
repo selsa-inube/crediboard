@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
 import { DefaultTheme } from "styled-components";
+import { inube } from "@inubekit/foundations";
+
 
 interface IStyledDivider {
   theme?: DefaultTheme;
