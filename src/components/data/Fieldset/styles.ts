@@ -11,6 +11,7 @@ interface IStyledContainerFieldset {
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
   overflow-x: hidden;
+  overflow: visible;
   border-radius: 8px;
   border-width: 2px;
   border-style: solid;
