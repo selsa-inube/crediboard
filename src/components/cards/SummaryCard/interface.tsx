@@ -47,7 +47,7 @@ function SummaryCardUI(props: SummaryCardProps) {
           Destino:
         </Text>
         <Text type="label">
-          {capitalizeFirstLetter(truncateTextToMaxLength(destination, 60))}
+          {capitalizeFirstLetter(truncateTextToMaxLength(destination, 60))}g
         </Text>
         <Stack gap="8px">
           <Text size="medium" appearance="gray" weight="bold">
