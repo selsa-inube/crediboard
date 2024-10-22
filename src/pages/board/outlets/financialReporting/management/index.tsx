@@ -1,15 +1,17 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { MdOutlineSend, MdAttachFile } from "react-icons/md";
+import localforage from "localforage";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { Textfield } from "@inubekit/textfield";
-import localforage from "localforage";
-import { MdOutlineSend, MdAttachFile } from "react-icons/md";
+
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
 import { getById, updateActive } from "@mocks/utils/dataMock.service";
 import { TraceType } from "@services/types";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import userNotFound from "@assets/images/ItemNotFound.png";
+
 import { traceObserver } from "../config";
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
 import { errorObserver } from "../config";
@@ -182,7 +184,7 @@ export const Management = (props: IManagementProps) => {
                 ))}
           </ChatContent>
           <form>
-            <Stack alignItems="center"  direction="row" gap="4px" justifyContent="space-between">
+            <Stack alignItems="center"  direction="row" gap="4px">
               <Icon
                 appearance="primary"
                 cursorHover
