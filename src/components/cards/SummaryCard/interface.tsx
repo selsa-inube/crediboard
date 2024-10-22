@@ -9,7 +9,7 @@ import {
   capitalizeFirstLetterEachWord,
 } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
-import { formatISODatetoCustomFormat } from "@utils/formatData/date";
+import { formatPrimaryDate } from "@utils/formatData/date"; 
 
 import { StyledSummaryCard, StyledDivider, StyledLink } from "./styles";
 import { SummaryCardProps } from ".";
@@ -37,7 +37,7 @@ function SummaryCardUI(props: SummaryCardProps) {
             No. Rad.:{rad}
           </Text>
           <Text size="small" appearance="gray">
-            {capitalizeFirstLetter(formatISODatetoCustomFormat(date))}
+            {capitalizeFirstLetter(formatPrimaryDate(new Date(date)))}
           </Text>
         </Stack>
         <Text type="label">

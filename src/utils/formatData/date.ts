@@ -1,73 +1,46 @@
-function formatISODatetoCustomFormat(isoDateString: string): string {
+function formatISODatetoCustomFormat(isoDateString: string) {
   const date = new Date(isoDateString);
-  const day = date.getDate().toString().padStart(2, "0");
-  const months = [
-    "ene",
-    "feb",
-    "mar",
-    "abr",
-    "may",
-    "jun",
-    "jul",
-    "ago",
-    "sep",
-    "oct",
-    "nov",
-    "dic",
-  ];
-  const month = months[date.getMonth()];
-  const year = date.getFullYear().toString().slice(-2); 
+  const day = date.getDate();
+  const month = date.toLocaleString("es-CO", { month: "long" });
+  const year = date.getFullYear().toString().slice(-2);
 
-  return `${day}/${month}/${year}`;
+  return `${month} ${day}/${year}`;
 }
 
-function formatDateWithFullYear(dateString: string): string {
+function formatDateWithFullYear(dateString: string) {
   const date = new Date(dateString);
-  const day = date.getDate().toString().padStart(2, "0");
-  const months = [
-    "ene",
-    "feb",
-    "mar",
-    "abr",
-    "may",
-    "jun",
-    "jul",
-    "ago",
-    "sep",
-    "oct",
-    "nov",
-    "dic",
-  ];
-  const month =
-    months[date.getMonth()].charAt(0).toUpperCase() +
-    months[date.getMonth()].slice(1); 
-  const year = date.getFullYear(); 
+  const day = date.getDate();
+  const month = date.toLocaleString("es-CO", { month: "long" });
+  const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
+  const year = date.getFullYear();
 
-  return `${day}/${month}/${year}`;
+  return `${capitalizedMonth} ${day} / ${year}`;
 }
 
-function isValidDate(value: string): boolean {
+function isValidDate(value: string) {
   return /^(19|20)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/.test(value);
 }
 
 const formatPrimaryDate = (date: Date, withTime?: boolean): string => {
   const months = [
-    "ene",
-    "feb",
-    "mar",
-    "abr",
-    "may",
-    "jun",
-    "jul",
-    "ago",
-    "sep",
-    "oct",
-    "nov",
-    "dic",
+    "Ene",
+    "Feb",
+    "Mar",
+    "Abr",
+    "May",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dic",
   ];
+
   const day = date.getUTCDate().toString().padStart(2, "0");
   const month = months[date.getUTCMonth()];
-  const year = date.getUTCFullYear().toString().slice(-2);
+  const year = date.getUTCFullYear();
+
   if (withTime) {
     let hours = date.getUTCHours();
     const minutes = date.getUTCMinutes().toString().padStart(2, "0");
