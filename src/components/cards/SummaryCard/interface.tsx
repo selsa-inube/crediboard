@@ -1,7 +1,7 @@
+import { MdOutlineMessage, MdOutlinePushPin, MdPushPin } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
-import { MdOutlineMessage, MdOutlinePushPin, MdPushPin } from "react-icons/md";
 
 import {
   truncateTextToMaxLength,
@@ -9,7 +9,7 @@ import {
   capitalizeFirstLetterEachWord,
 } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
-import { formatPrimaryDate } from "@utils/formatData/date"; 
+import { formatPrimaryDate } from "@utils/formatData/date";
 
 import { StyledSummaryCard, StyledDivider, StyledLink } from "./styles";
 import { SummaryCardProps } from ".";
@@ -47,7 +47,7 @@ function SummaryCardUI(props: SummaryCardProps) {
           Destino:
         </Text>
         <Text type="label">
-          {capitalizeFirstLetter(truncateTextToMaxLength(destination, 60))}g
+          {capitalizeFirstLetter(truncateTextToMaxLength(destination, 60))}
         </Text>
         <Stack gap="8px">
           <Text size="medium" appearance="gray" weight="bold">
