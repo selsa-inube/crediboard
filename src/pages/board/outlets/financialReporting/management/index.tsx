@@ -28,7 +28,7 @@ export const Management = (props: IManagementProps) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const chatContentRef = useRef<HTMLDivElement>(null); // Ref para el contenedor de mensajes
+  const chatContentRef = useRef<HTMLDivElement>(null); 
 
   const fetchData = useCallback(async () => {
     if (!id) return;
@@ -89,12 +89,11 @@ export const Management = (props: IManagementProps) => {
     fetchData();
   }, [fetchData, updateData]);
 
-  // Efecto para desplazar el scroll hacia abajo cuando cambian los mensajes
   useEffect(() => {
     if (chatContentRef.current) {
-      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight; // Desplazar hacia abajo
+      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight; 
     }
-  }, [traces]); // Se ejecuta cada vez que 'traces' cambie
+  }, [traces]);
 
   const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -163,7 +162,7 @@ export const Management = (props: IManagementProps) => {
         />
       ) : (
         <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
-          <ChatContent ref={chatContentRef}> {/* Asigna el ref aquí */}
+          <ChatContent ref={chatContentRef}> 
             {loading
               ? [...Array(5)].map((_, index) => (
                   <SkeletonContainer
