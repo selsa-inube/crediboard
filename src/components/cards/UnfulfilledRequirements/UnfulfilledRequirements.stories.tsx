@@ -27,7 +27,7 @@ const meta: Meta<typeof UnfulfilledRequirements> = {
       },
       description: "requirement of the component",
     },
-    causeNoncompliance: {
+    causeNonCompliance: {
       control: {
         type: "text",
       },
@@ -46,7 +46,7 @@ export const Default: Story = {
   args: {
     title: "Alerta",
     requirement: "Requiere 90 días de antigüedad.",
-    causeNoncompliance: "El cliente tine solo 60 días de afiliación.",
+    causeNonCompliance: "El cliente tine solo 60 días de afiliación.",
   },
 };
 

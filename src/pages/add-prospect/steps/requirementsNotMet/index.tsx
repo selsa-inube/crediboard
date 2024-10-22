@@ -21,7 +21,7 @@ export function RequirementsNotMet() {
             title={requirementData.title}
             isMobile={smallScreen}
             requirement={requirementData.requirement}
-            causeNoncompliance={requirementData.causeNoncompliance}
+            causeNonCompliance={requirementData.causeNonCompliance}
           />
         ))}
       </Stack>

@@ -5,26 +5,25 @@ import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Fieldset } from "@components/data/Fieldset";
+import LabelData from "./Config/config";
 
 interface IUnfulfilledRequirementsProps {
   title: string;
   requirement: string;
-  causeNoncompliance: string;
-  isMobile: boolean;
+  causeNonCompliance: string;
+  isMobile?: boolean;
 }
 
 export const UnfulfilledRequirements = (
   props: IUnfulfilledRequirementsProps
 ) => {
-  const { title, requirement, causeNoncompliance } = props;
+  const { title, requirement, causeNonCompliance, isMobile } = props;
   return (
-    <Fieldset title={title}>
+    <Fieldset title={title} isMobile={isMobile}>
       <Stack direction="column" gap="16px" padding="0 16px">
         <Stack direction="column" gap="4px">
           <Stack justifyContent="space-between" alignItems="center">
-            <Text type="body" size="large">
-              Requisito:
-            </Text>
+            <Text>{LabelData.requirement}</Text>
             <Icon icon={<MdWarningAmber />} appearance="warning" size="24px" />
           </Stack>
           <Divider />
@@ -33,10 +32,10 @@ export const UnfulfilledRequirements = (
           </Text>
         </Stack>
         <Stack direction="column" gap="4px">
-          <Text>Causa de incumplimiento:</Text>
+          <Text>{LabelData.causeNonCompliance}</Text>
           <Divider />
           <Text appearance="gray" size="medium">
-            {causeNoncompliance}
+            {causeNonCompliance}
           </Text>
         </Stack>
       </Stack>
