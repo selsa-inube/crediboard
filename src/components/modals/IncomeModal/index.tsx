@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { MdClear } from "react-icons/md";
+import { MdClear,  } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -10,6 +10,7 @@ import { Button } from "@inubekit/button";
 import { Icon } from "@inubekit/icon";
 import { Select } from "@inubekit/select";
 import { Blanket } from "@inubekit/blanket";
+
 import { IncomeEmployment, IncomeCapital, MicroBusinesses } from "./config";
 import { StyledContainer, StyledContainerClose } from "./styles";
 
@@ -180,7 +181,7 @@ export function IncomeModal(props: IncomeModalProps) {
             justifyContent="end"
             alignItems={!isMobile ? "end" : "end"}
             direction={!isMobile ? "row" : "column"}
-            width={!isMobile ? "auto" : "100%"}
+            gap="20px"
           >
             <Stack
               justifyContent="end"
