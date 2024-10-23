@@ -10,7 +10,7 @@ interface IStyledContainerFieldset {
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
-  overflow-x: hidden;
+  overflow-x: visible;
   border-radius: 8px;
   border-width: 2px;
   border-style: solid;
@@ -28,7 +28,7 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
     !$isMobile &&
     `
     &::-webkit-scrollbar {
-      width: 16px; 
+      width: 8px; 
       border-radius: 8px;
     }
 

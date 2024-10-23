@@ -1,5 +1,5 @@
-import { MdOutlineChevronLeft , MdMenu } from "react-icons/md";
-import { Button, Text, inube } from "@inube/design-system";
+import { MdOutlineChevronLeft, MdMenu } from "react-icons/md";
+import { Button, inube } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { configButtons } from "../config";
@@ -38,28 +38,19 @@ export const StockTray = (props: IStockTrayProps) => {
   const { isMobile, actionButtons, navigation } = props;
 
   return (
-    <Stack justifyContent="space-between" margin="16px 0px">
-      {!isMobile ? (
-        <Button
-          spacing="compact"
-          variant="outlined"
-          iconBefore={<MdOutlineChevronLeft  />}
-          onClick={navigation}
-        >
-          Volver
-        </Button>
-      ) : (
-        <Stack alignItems="center">
-          <Icon
-            icon={<MdOutlineChevronLeft  />}
-            appearance="primary"
-            size="32px"
-            spacing="narrow"
-            onClick={navigation}
-          />
-          <Text>Volver</Text>
-        </Stack>
-      )}
+    <Stack
+      justifyContent="space-between"
+      margin={isMobile ? "0px 0px 16px" : "0px 0px 16px"}
+    >
+      <Button
+        spacing="compact"
+        variant="outlined"
+        iconBefore={<MdOutlineChevronLeft />}
+        onClick={navigation}
+      >
+        Volver
+      </Button>
+
       {isMobile && (
         <Icon
           icon={<MdMenu />}
@@ -69,11 +60,12 @@ export const StockTray = (props: IStockTrayProps) => {
           onClick={actionButtons?.menuIcon}
         />
       )}
+
       {!isMobile && (
         <Stack
           justifyContent="end"
           gap={inube.spacing.s200}
-          margin={!isMobile ? "s0 s0 s200 s0" : "s0"}
+          margin={!isMobile ? "0px 0px 16px 0px" : "0px"}
         >
           <Stack gap={inube.spacing.s200}>
             <Button

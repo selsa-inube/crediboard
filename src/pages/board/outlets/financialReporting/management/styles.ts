@@ -10,9 +10,11 @@ export const ChatContent = styled.div`
   color: #000000;
   font-family: Roboto;
   flex-direction: column;
+  padding-right: 10px; 
+  margin-right: -8px;
 
   &::-webkit-scrollbar {
-    border-radius: 8px;
+    width: 8px;
   }
 
   &::-webkit-scrollbar-thumb {
