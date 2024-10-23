@@ -8,21 +8,19 @@ interface IStyledCollapseIcon {
 }
 
 const StyledAppPage = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh; 
+  display: inherit;
+  box-sizing: border-box;
 `;
 
 const StyledContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  display: inherit;
+  overflow: hidden;
 `;
 
 const StyledMain = styled.main`
-  flex: 1; 
-  overflow-y: auto; 
-  padding: 16px; 
+  box-sizing: border-box;
+  height: calc(100vh - 54px);
+  overflow-y: auto;
 `;
 
 const StyledContentImg = styled(Link)`
@@ -63,9 +61,10 @@ const StyledMenuContainer = styled.div`
 
 const StyledFooter = styled.footer`
   display: flex;
+  bottom: 0;
   justify-content: center;
   padding: 16px 24px;
-  background-color: ${({ theme }) =>
+  background-color:${({ theme }) =>
     theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
 `;
 
@@ -78,5 +77,5 @@ export {
   StyledMenuContainer,
   StyledCollapseIcon,
   StyledCollapse,
-  StyledFooter,
+  StyledFooter
 };

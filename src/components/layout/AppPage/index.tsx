@@ -135,12 +135,12 @@ function AppPage() {
           )}
           <StyledMain>
             <Outlet />
-          </StyledMain>
-          <StyledFooter>
+            <StyledFooter>
             <Text appearance="gray" textAlign="center" size="medium">
               © 2024 Inube
             </Text>
           </StyledFooter>
+          </StyledMain>
         </StyledContainer>
       </Grid>
     </StyledAppPage>
