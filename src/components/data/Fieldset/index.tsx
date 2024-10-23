@@ -24,6 +24,7 @@ interface IFieldsetProps {
   slim?: boolean;
   isMobile?: boolean;
   isClickable?: boolean;
+  selectedState?: boolean;
 }
 
 export const Fieldset = (props: IFieldsetProps) => {
@@ -36,11 +37,12 @@ export const Fieldset = (props: IFieldsetProps) => {
     activeButton,
     hasOverflow,
     isClickable,
+    selectedState
   } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
-  const [isSelected, setIsSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState(selectedState || false);
 
   const handleOnClick = () => {
     if (isClickable) {
@@ -88,7 +90,8 @@ export const Fieldset = (props: IFieldsetProps) => {
         $isMobile={isMobile}
         $hasOverflow={hasOverflow}
         onClick={handleOnClick}
-        $isSelected={isSelected}
+        $isSelected={selectedState ?? isSelected}
+        $isClickable={isClickable}
       >
         {children}
       </StyledContainerFieldset>
