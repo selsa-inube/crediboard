@@ -172,47 +172,49 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 />
               </Stack>
             )}
-            <Stack gap="16px" alignItems="end" >
-              {!isMobile && (
-                <Stack gap="8px" >
-                  <Icon
-                    icon={<MdOutlinePushPin />}
-                    appearance="dark"
-                    size="24px"
-                  />
-                  <Text type="label">{seePinned.viewPinned}</Text>
-                  <Toggle
-                    id="SeePinned"
-                    name="SeePinned"
-                    size="large"
-                    checked={showPinnedOnly}
-                    onChange={handleShowPinnedOnly}
-                    disabled={errorLoadingPins}
-                  />
-                </Stack>
-              )}
-              {!isMobile && (
-                <Stack gap="8px">
-                  <Icon
-                    icon={<RxDragHandleVertical />}
-                    appearance={
-                      boardOrientation === "vertical" ? "dark" : "gray"
-                    }
-                    size="24px"
-                    cursorHover
-                    onClick={() => onOrientationChange("vertical")}
-                  />
-                  <Icon
-                    icon={<RxDragHandleHorizontal />}
-                    appearance={
-                      boardOrientation === "horizontal" ? "dark" : "gray"
-                    }
-                    size="24px"
-                    cursorHover
-                    onClick={() => onOrientationChange("horizontal")}
-                  />
-                </Stack>
-              )}
+            <Stack alignItems="center" margin="25px 0px 0px">
+              <Stack gap="16px">
+                {!isMobile && (
+                  <Stack gap="8px">
+                    <Icon
+                      icon={<MdOutlinePushPin />}
+                      appearance="dark"
+                      size="24px"
+                    />
+                    <Text type="label">{seePinned.viewPinned}</Text>
+                    <Toggle
+                      id="SeePinned"
+                      name="SeePinned"
+                      size="large"
+                      checked={showPinnedOnly}
+                      onChange={handleShowPinnedOnly}
+                      disabled={errorLoadingPins}
+                    />
+                  </Stack>
+                )}
+                {!isMobile && (
+                  <Stack gap="8px">
+                    <Icon
+                      icon={<RxDragHandleVertical />}
+                      appearance={
+                        boardOrientation === "vertical" ? "dark" : "gray"
+                      }
+                      size="24px"
+                      cursorHover
+                      onClick={() => onOrientationChange("vertical")}
+                    />
+                    <Icon
+                      icon={<RxDragHandleHorizontal />}
+                      appearance={
+                        boardOrientation === "horizontal" ? "dark" : "gray"
+                      }
+                      size="24px"
+                      cursorHover
+                      onClick={() => onOrientationChange("horizontal")}
+                    />
+                  </Stack>
+                )}
+              </Stack>
             </Stack>
           </Stack>
         </StyledInputsContainer>
