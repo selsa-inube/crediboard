@@ -153,14 +153,13 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           <Stack
             width="100%"
             justifyContent={isMobile ? "end" : "space-between"}
-            alignItems="end"
             margin={isMobile ? "16px 0px" : "auto"}
           >
             <Stack width={isMobile ? "100%" : "400px"}>
               <Selectcheck size="compact" {...selectProps} />
             </Stack>
             {!isMobile && (
-              <Stack width="400px">
+              <Stack width="400px" alignItems="end">
                 <Textfield
                   id="SearchCardsDesktop"
                   name="SearchCardsDesktop"
@@ -173,9 +172,9 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 />
               </Stack>
             )}
-            <Stack gap="16px">
+            <Stack gap="16px" alignItems="end" >
               {!isMobile && (
-                <Stack gap="8px" alignItems="center" justifyContent="center">
+                <Stack gap="8px" >
                   <Icon
                     icon={<MdOutlinePushPin />}
                     appearance="dark"
@@ -193,7 +192,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 </Stack>
               )}
               {!isMobile && (
-                <Stack gap="8px" >
+                <Stack gap="8px">
                   <Icon
                     icon={<RxDragHandleVertical />}
                     appearance={
