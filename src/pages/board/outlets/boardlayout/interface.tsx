@@ -106,7 +106,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           <Stack
             justifyContent="space-between"
             width={isMobile ? "100%" : "auto"}
-            margin={isMobile ? "8px 0px"  : "auto"}
+            margin={isMobile ? "8px 0px" : "auto"}
           >
             {isMobile && (
               <StyledSearch
@@ -156,7 +156,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
             alignItems="end"
             margin={isMobile ? "16px 0px" : "auto"}
           >
-            <Stack width={isMobile ? "100%" : "400px"} >
+            <Stack width={isMobile ? "100%" : "400px"}>
               <Selectcheck size="compact" {...selectProps} />
             </Stack>
             {!isMobile && (
@@ -175,7 +175,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
             )}
             <Stack gap="16px">
               {!isMobile && (
-                <Stack gap="8px" alignItems="center">
+                <Stack gap="8px" alignItems="center" justifyContent="center">
                   <Icon
                     icon={<MdOutlinePushPin />}
                     appearance="dark"
@@ -193,7 +193,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 </Stack>
               )}
               {!isMobile && (
-                <Stack gap="8px">
+                <Stack gap="8px" >
                   <Icon
                     icon={<RxDragHandleVertical />}
                     appearance={
