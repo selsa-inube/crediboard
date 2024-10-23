@@ -364,14 +364,14 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             title="Score Details"
             handleClose={handleGoBackOrCloseModal }
             subTitle="Your Financial Score"
-            totalScore={750}
+            totalScore={150}
             seniority={150}
             centralRisk={50}
             employmentStability={230}
             maritalStatus={30}
             economicActivity={118}
             monthlyIncome={3000000}
-            maxIndebtedness="50000000"
+            maxIndebtedness={50000000}
           />
         )}
         {currentModal === "IncomeModal" && (

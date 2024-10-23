@@ -98,7 +98,7 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
               type="headline"
               size="large"
             >
-              {currencyFormat(assignedQuota, false)}
+              ${currencyFormat(assignedQuota, false)}
             </Text>
             <Stack>
               <Text appearance="gray" size="small" textAlign="center">

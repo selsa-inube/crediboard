@@ -207,14 +207,14 @@ export const PaymentCapacityInterface = forwardRef<
             </Text>
           </Stack>
 
-          <Stack justifyContent="center" alignItems="center" width="100%" direction="column">
+          <Stack justifyContent="center" alignItems="center" width="100%" direction="column" gap="8px">
             <Text
               appearance="primary"
               weight="bold"
               type="headline"
               size="large"
             >
-              {loading ? "Cargando..." : currencyFormat(maxAmount, false)}
+              ${loading ? "Cargando..." : currencyFormat(maxAmount, false)}
             </Text>
             <Text
               appearance="gray"   
