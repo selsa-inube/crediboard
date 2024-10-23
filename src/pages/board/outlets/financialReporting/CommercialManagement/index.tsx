@@ -148,7 +148,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     appearance="gray"
                     padding={`0px 0px 0px 8px`}
                   >
-                    {capitalizeFirstLetter(
+                    {(
                       formatPrimaryDate(new Date(data.f_Prospe))
                     )}
                   </Text>
