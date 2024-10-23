@@ -25,6 +25,7 @@ export function SummaryProspect(props: SummaryProspectProps) {
             margin="4px"
             padding="0px 12px"
             gap="2px"
+            alignItems={showIcon ? "start" : "center"}
           >
             <Text
               size="small"

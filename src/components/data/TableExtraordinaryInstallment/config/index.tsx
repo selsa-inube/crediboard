@@ -1,6 +1,7 @@
-import { currencyFormat } from "@src/utils/formatData/currency";
+import { currencyFormat } from "@utils/formatData/currency";
+import { IHeaders } from "@pages/prospect/components/ExtraordinaryPaymentModal/types";
+
 import { Detail } from "../Detail";
-import { IHeaders } from "../../../../pages/prospect/components/ExtraordinaryPaymentModal/types";
 
 export const rowsVisbleMobile = [
     "datePayment",
@@ -12,9 +13,9 @@ export const rowsActions = [
     {
         label: "Acciones",
         key: "actions",
-        container: (onClickDetails: () => void, onClickEdit: () => void, onClickEliminate: () => void)=>{
+        container: () => {
             return(
-                <Detail onClickDetails={onClickDetails} onClickEdit={onClickEdit} onClickEliminate={onClickEliminate} />
+                <Detail  />
             )
         }
         ,

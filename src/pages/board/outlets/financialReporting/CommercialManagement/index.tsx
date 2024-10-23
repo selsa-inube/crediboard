@@ -35,10 +35,10 @@ import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
-import { menuOptions ,incomeOptions} from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
-import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
+import { ExtraordinaryPaymentModal } from "@pages/prospect/components/ExtraordinaryPaymentModal";
 
+import { menuOptions ,incomeOptions} from "./config/config";
 import {
   StyledCollapseIcon,
   StyledFieldset,
@@ -386,8 +386,11 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <ReportCreditsModal
             handleClose={handleCloseModal}
             portalId="portal"
-            totalBalance={100000}
-            totalFee={5000}
+            totalBalance={87000000}
+            totalFee={3300000}
+            options={incomeOptions}
+            onChange={onChanges}
+            debtor={form.deudor}
           />
         )}
         {currentModal === "extraPayments" && (

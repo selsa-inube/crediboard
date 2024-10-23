@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { Text } from "@inubekit/text";
 import { SkeletonLine } from "@inubekit/skeleton";
 import {
@@ -12,7 +13,7 @@ import {
   Tr,
 } from "@inubekit/table";
 import { useMediaQuery } from "@inubekit/hooks";
-import { IExtraordinaryPayment } from "@src/services/types";
+import { IExtraordinaryPayment } from "@services/types";
 
 import {
   headersTableExtraordinaryInstallment,
@@ -61,7 +62,7 @@ const usePagination = (data: IExtraordinaryPayment[]) => {
 export const TableExtraordinaryInstallment = (
   props: TableExtraordinaryInstallmentProps
 ) => {
-  const { data, onClickDetails, onClickEdit, onClickEliminate } = props;
+  const { data } = props;
   const headers = headersTableExtraordinaryInstallment;
 
   const [loading, setLoading] = useState(true);
@@ -155,9 +156,6 @@ export const TableExtraordinaryInstallment = (
                 visbleActions.map((action) => (
                   <Td key={action.key} type="custom">
                     {action.container(
-                      () => onClickDetails && onClickDetails(row.id),
-                      () => onClickEdit && onClickEdit(row.id),
-                      () => onClickEliminate && onClickEliminate(row.id)
                     )}
                   </Td>
                 ))}
