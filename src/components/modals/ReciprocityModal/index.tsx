@@ -46,7 +46,7 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
           direction="column"
           padding="24px"
           gap="24px"
-          width={!isMobile ? "500px" : "287px"}
+          width={!isMobile ? "450px" : "287px"}
         >
           <Stack justifyContent="space-between" alignItems="center" gap="15px">
             <Text size="small" type="headline">

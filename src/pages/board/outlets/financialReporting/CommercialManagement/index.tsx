@@ -355,7 +355,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             portalId="portal"
             handleClose={handleGoBackOrCloseModal }
             balanceOfContributions={maxReciprocity}
-            accordingToRegulation={1234500}
+            accordingToRegulation={2}
             assignedQuota={1000000}
           />
         )}
