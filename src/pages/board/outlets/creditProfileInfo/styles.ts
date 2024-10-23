@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
 import { DefaultTheme } from "styled-components";
+import { inube } from "@inubekit/foundations";
+
 
 interface IStyledDivider {
   theme?: DefaultTheme;
@@ -14,7 +15,6 @@ const StyledDivider = styled.hr<IStyledDivider>`
   width: 100%;
   border: none;
   border-top: 2px solid;
-  background-color: red;
   border-top-color: ${({ theme }) =>
     theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
@@ -24,6 +24,8 @@ const StyledContainerToCenter = styled.div`
   flex-direction: column;
   max-width: 1520px;
   margin: auto;
+  margin-top: 0px;
+  width: 100%;
 `;
 
 const StyledUl = styled.ul<IStyledUl>`
