@@ -18,7 +18,6 @@ const StyledContainer = styled.div`
 `;
 
 const StyledMain = styled.main`
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
