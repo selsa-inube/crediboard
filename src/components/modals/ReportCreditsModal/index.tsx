@@ -21,21 +21,21 @@ import { Blanket } from "@inubekit/blanket";
 import { useMediaQuery } from "@inubekit/hooks";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
 import { Select } from "@inubekit/select";
+import { Detail } from "@components/data/TableExtraordinaryInstallment/Detail";
 
 import { usePagination } from "./utils";
 import { headers, data, dataReport } from "./config";
-import { Detail } from "@components/data/TableExtraordinaryInstallment/Detail";
-import { NewPrice } from "./components/newPrice";
 import { StyledContainerClose, StyledContainer } from "./styles";
+import { NewPrice } from "./components/newPrice";
 
 export interface ReportCreditsModalProps {
   handleClose: () => void;
   onChange: (name: string, newValue: string) => void;
-  portalId?: string;
   options: { id: string; label: string; value: string }[];
-  totalBalance?: number;
-  totalFee?: number;
+  totalBalance: number;
+  totalFee: number;
   debtor: string;
+  portalId?: string;
 }
 
 export function ReportCreditsModal(props: ReportCreditsModalProps) {

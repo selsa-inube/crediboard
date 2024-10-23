@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
-import { inube as inubeDesign } from "@inube/design-system";
 
 interface IStyledCollapseIcon {
   $showIcon: boolean;
@@ -32,9 +31,7 @@ export const Container = styled.div<IStyledCollapseIcon>`
 export const IconWrapper = styled.div`
   align-items: center;
   border-left: 1px solid
-    ${({ theme }) =>
-      theme?.color?.stroke?.divider?.regular ||
-      inubeDesign.color.stroke.divider.regular};
+    ${({ theme }) => theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
   display: flex;
   padding: 0px 8px;
 `;

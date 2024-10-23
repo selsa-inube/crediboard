@@ -3,31 +3,31 @@ import { IExtraordinaryPayment } from "@src/services/types";
 export const extraordinaryInstallmentMock: IExtraordinaryPayment[] = [
   {
     id: "1",
-    datePayment: "Mar 25-26",
+    datePayment: "02/oct/24",
     value: 1500000,
     paymentMethod: "Selsa",
   },
   {
     id: "2",
-    datePayment: "Mar 25-26",
+    datePayment: "15/oct/24",
     value: 1000000,
     paymentMethod: "Selsa",
   },
   {
     id: "3",
-    datePayment: "Mar 25-26",
+    datePayment: "30/oct/24",
     value: 2000000,
     paymentMethod: "Prima",
   },
   {
     id: "4",
-    datePayment: "Mar 25-26",
+    datePayment: "26/abr/25",
     value: 2500000,
     paymentMethod: "Cesantias",
   },
   {
     id: "5",
-    datePayment: "Mar 25-26",
+    datePayment: "30/jun/26",
     value: 3000000,
     paymentMethod: "Cesantias",
   },

@@ -9,13 +9,13 @@ import { ItemNotFound } from "@components/layout/ItemNotFound";
 import userNotFound from "@assets/images/ItemNotFound.png";
 
 interface CreditBehaviorProps {
+  setBehaviorError: (stade: boolean) => void;
   centralScoreRisky: number;
   centralScoreDate: string;
   numberInternalBlackberries: number;
   maximumNumberInstallmentsArrears: number;
-  isMobile?: boolean;
   dataBehaviorError: boolean;
-  setBehaviorError: (stade: boolean) => void;
+  isMobile?: boolean;
 }
 
 export function CreditBehavior(props: CreditBehaviorProps) {
