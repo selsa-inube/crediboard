@@ -1,7 +1,7 @@
 import { useContext, useState, useRef, useEffect } from "react";
-import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
 import { Outlet } from "react-router-dom";
 import { Grid, useMediaQuery } from "@inube/design-system";
+import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 import { Header } from "@inubekit/header";
 import { Text } from "@inubekit/text";
@@ -102,25 +102,25 @@ function AppPage() {
           userName={user.username}
           client={user.company}
         />
+        <StyledCollapseIcon
+          $collapse={collapse}
+          onClick={() => setCollapse(!collapse)}
+          $isTablet={isTablet}
+          ref={collapseMenuRef}
+        >
+          <Icon
+            icon={<MdOutlineChevronRight />}
+            appearance="primary"
+            size="24px"
+            cursorHover
+          />
+        </StyledCollapseIcon>
+        {collapse && (
+          <StyledCollapse ref={businessUnitChangeRef}>
+            <BusinessUnitChange clients={clientsDataMock} />
+          </StyledCollapse>
+        )}
         <StyledContainer>
-          <StyledCollapseIcon
-            $collapse={collapse}
-            onClick={() => setCollapse(!collapse)}
-            $isTablet={isTablet}
-            ref={collapseMenuRef}
-          >
-            <Icon
-              icon={<MdOutlineChevronRight />}
-              appearance="primary"
-              size="24px"
-              cursorHover
-            />
-          </StyledCollapseIcon>
-          {collapse && (
-            <StyledCollapse ref={businessUnitChangeRef}>
-              <BusinessUnitChange clients={clientsDataMock} />
-            </StyledCollapse>
-          )}
           {showUserMenu && (
             <StyledMenuContainer ref={userMenuRef}>
               <MenuUser userName={user.username} businessUnit={user.company} />
@@ -136,10 +136,14 @@ function AppPage() {
           <StyledMain>
             <Outlet />
             <StyledFooter>
-            <Text appearance="gray" textAlign="center" size="medium">
-              © 2024 Inube
-            </Text>
-          </StyledFooter>
+              <Text
+                appearance="gray"
+                textAlign="center"
+                size="medium"
+              >
+                © 2024 Inube
+              </Text>
+            </StyledFooter>
           </StyledMain>
         </StyledContainer>
       </Grid>

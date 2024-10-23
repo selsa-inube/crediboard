@@ -24,6 +24,8 @@ const StyledContainerToCenter = styled.div`
   flex-direction: column;
   max-width: 1520px;
   margin: auto;
+  margin-top: 0px;
+  width: 100%;
 `;
 
 const StyledUl = styled.ul<IStyledUl>`

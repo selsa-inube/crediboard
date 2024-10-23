@@ -19,7 +19,8 @@ const StyledContainer = styled.div`
 
 const StyledMain = styled.main`
   box-sizing: border-box;
-  height: calc(100vh - 54px);
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
 `;
 
@@ -60,8 +61,8 @@ const StyledMenuContainer = styled.div`
 `;
 
 const StyledFooter = styled.footer`
+margin-top: auto;
   display: flex;
-  bottom: 0;
   justify-content: center;
   padding: 16px 24px;
   background-color:${({ theme }) =>
