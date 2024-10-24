@@ -4,25 +4,39 @@ import { inube } from "@inubekit/foundations";
 interface IStyledContainerFieldset {
   $aspectRatio?: string;
   $isMobile: boolean;
-  $hasTable: boolean;
   $hasOverflow?: boolean;
+  $isSelected: boolean;
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
-  overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
+  cursor: pointer;
+  box-sizing: border-box;
   overflow-x: hidden;
   border-radius: 8px;
-  border-width: 2px;
-  border-style: solid;
-  aspect-ratio: ${({ $aspectRatio, $isMobile }) => !$isMobile && $aspectRatio};
-  border-color: ${({ theme }) =>
-    theme?.palette?.neutral?.N200 || inube.palette.neutral.N200};
-  box-shadow: 0px 2px 6px
-    ${({ theme }) => theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
-  padding-top: ${({ $hasTable }) => !$hasTable && "16px"};
-  padding-bottom: ${({ $hasTable }) => !$hasTable && "16px"};
-  padding-right: ${({ $hasTable }) => !$hasTable && "8px"};
-  padding-left: ${({ $hasTable }) => !$hasTable && "8px"};
+  border: 1px solid;
+  padding-top: ${({ $isMobile }) => !$isMobile && "16px"};
+  padding-bottom: ${({ $isMobile }) => !$isMobile && "16px"};
+  padding-right: ${({ $isMobile }) => !$isMobile && "8px"};
+  padding-left: ${({ $isMobile }) => !$isMobile && "8px"};
+  overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
+  aspect-ratio: ${({ $aspectRatio }) => $aspectRatio};
+  background-color: ${({ theme, $isSelected }) =>
+    !$isSelected
+      ? theme?.radiofield?.background?.color?.active || inube.palette.neutral.N0
+      : theme?.radiofield?.background?.color?.checked ||
+        inube.palette.blue.B50};
+  border-color: ${({ theme, $isSelected }) =>
+    !$isSelected
+      ? theme?.palette?.neutral?.N300 || inube.palette.neutral.N300
+      : theme?.palette?.blue?.B300 || inube.palette.blue.B300};
+  box-shadow: ${({ theme, $isSelected }) =>
+    $isSelected &&
+    `-12px 0px 0px ${
+      theme?.radiofield?.background?.color?.checked || inube.palette.blue.B400
+    }`};
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
 
   ${({ $isMobile, theme }) =>
     !$isMobile &&
