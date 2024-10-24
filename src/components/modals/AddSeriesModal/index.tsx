@@ -22,7 +22,6 @@ import {
 import { paymentMethodOptions, frequencyOptions } from "./config";
 
 import { AddSeriesModalProps, FormState } from "./type";
-//import { TableExtraordinaryInstallment } from "@src/components/data/TableExtraordinaryInstallment";
 
 export function AddSeriesModal(props: AddSeriesModalProps) {
   const {

@@ -3,12 +3,10 @@ import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { LoanCondition } from "@components/inputs/LoanConditions";
-//mias
-import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
+import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
 
 import { IMessageState } from "./types/forms.types";
-
 import { stepsAddProspect } from "./config/addProspect.config";
 import {
   IFormAddPosition,

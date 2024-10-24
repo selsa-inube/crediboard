@@ -18,7 +18,6 @@ import { TableExtraordinaryInstallment } from "@components/data/TableExtraordina
 
 export interface ExtraordinaryInstallmentsProps {
   dataTable: IExtraordinaryPayment[];
-  //handleClose: () => void;
   onClickDetails?: (id: string) => void;
   onClickEdit?: (id: string) => void;
   onClickEliminate?: (id: string) => void;
@@ -70,11 +69,6 @@ export const ExtraordinaryInstallments = (
               {TextLabels.addSeries}
             </Button>
           </Stack>
-          {/* <Stack justifyContent="center">
-            <Text size="large" type="label" appearance="gray" weight="bold">
-              {TextLabels.NoData}
-            </Text>
-          </Stack> */}
           <Stack justifyContent="center">
             {dataTable.length > 0 ? (
               <TableExtraordinaryInstallment
