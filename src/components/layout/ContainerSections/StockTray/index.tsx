@@ -1,5 +1,5 @@
-import { MdOutlineChevronLeft , MdMenu } from "react-icons/md";
-import { Button, Text, inube } from "@inube/design-system";
+import { MdOutlineChevronLeft, MdMenu } from "react-icons/md";
+import { Button, inube } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { configButtons } from "../config";
@@ -43,21 +43,21 @@ export const StockTray = (props: IStockTrayProps) => {
         <Button
           spacing="compact"
           variant="outlined"
-          iconBefore={<MdOutlineChevronLeft  />}
+          iconBefore={<MdOutlineChevronLeft />}
           onClick={navigation}
         >
           Volver
         </Button>
       ) : (
         <Stack alignItems="center">
-          <Icon
-            icon={<MdOutlineChevronLeft  />}
-            appearance="primary"
-            size="32px"
-            spacing="narrow"
+          <Button
+            spacing="compact"
+            variant="outlined"
+            iconBefore={<MdOutlineChevronLeft />}
             onClick={navigation}
-          />
-          <Text>Volver</Text>
+          >
+            Volver
+          </Button>
         </Stack>
       )}
       {isMobile && (

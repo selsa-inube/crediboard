@@ -10,9 +10,8 @@ interface IStyledContainerFieldset {
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
-  cursor: pointer;
   box-sizing: border-box;
-  overflow-x: hidden;
+  overflow-x: visible;
   border-radius: 8px;
   border: 1px solid;
   padding-top: ${({ $hasTable }) => !$hasTable && "16px"};
