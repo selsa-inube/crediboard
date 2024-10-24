@@ -50,8 +50,6 @@ export const CardCommercialManagement = (props: CardCommercialManagementProps) =
           width="fit-content"
           padding="4px 8px 16px 8px"
           direction={isMobile ? "column" : "row"}
-          justifyContent={isMobile ? "center" : "flex-start"} 
-          alignItems={isMobile ? "center" : "flex-start"} 
         >
           {prospectProducts.map((entry) => (
             <CreditProductCard
