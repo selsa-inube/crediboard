@@ -22,8 +22,6 @@ export const incomeModalConfig = {
   maxVacationTerm: {
     label: "Plazo máx. en ‘vacaciones’",
   },
-  infoText:
-    "Monto máximo calculado para una cuota de $1'500.000 y plazo de 60 meses.",
   textfield: {
     label: "Monto máximo",
     placeholder: "Ingrese la cantidad",

@@ -40,5 +40,5 @@ Default.args = {
   maritalStatus: 50,
   economicActivity: 150,
   monthlyIncome: 5000000,
-  maxIndebtedness: '2000000',
+  maxIndebtedness: 2000000,
 };
