@@ -257,6 +257,14 @@ export interface IConsolidatedCredit {
   line_of_credit_description: string;
   borrower_id: string;
   consolidated_credit_schema: string;
+  monthly_salary?: number;
+  other_monthly_payments?: number;
+  pension_allowances?: number;
+  leases?: number;
+  dividends_or_shares?: number;
+  financial_returns?: number;
+  average_monthly_profit?: number;
+  monthly_fees?: number;
 }
 
 export interface IExtraordinaryInstallment {
