@@ -33,7 +33,7 @@ interface BoardLayoutProps {
   showPinnedOnly: boolean;
   pinnedRequests: PinnedRequest[];
   handleSelectCheckChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handlePinRequest: (requestId: number) => void;
+  handlePinRequest: (requestId: string) => void;
   handleShowPinnedOnly: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
@@ -61,7 +61,6 @@ function BoardLayoutUI(props: BoardLayoutProps) {
   const [showErrorAlert, setShowErrorAlert] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const stackRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -212,7 +211,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
               sectionBackground={column.sectionBackground}
               orientation={boardOrientation}
               sectionInformation={BoardRequests.filter(
-                (request) => request.i_Estprs === column.id
+                (request) => request.stage === column.id
               )}
               pinnedRequests={pinnedRequests}
               handlePinRequest={handlePinRequest}

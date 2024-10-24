@@ -23,7 +23,7 @@ export const Default: StoryFn<SummaryCardProps> = (args) => (
 );
 
 Default.args = {
-  rad: 100000012,
+  rad: "100000012",
   date: "Septiembre 30/23",
   name: "Juan Sebastian Moralez García",
   destination: "Educación de Postgrado a menos de tres meses",

@@ -1,17 +1,15 @@
 import { Schedule, GracePeriodType, BorrowerProperties } from "@services/enums";
 interface Requests {
-  k_Prospe: number;
-  n_Prospe: string;
-  f_Prospe: string;
-  v_Monto: number;
-  k_Idterc: number;
-  k_Desdin: string;
-  i_Estprs: DmEtapasPrs;
-  n_Desdin: string;
-  aanumnit: string;
-  nnasocia: string;
-  n_Descr_Etapa: string;
-  n_Descr_Tarea: string;
+  creditRequestCode: string;
+  creditRequestDateOfCreation: string;
+  loanAmount: number;
+  clientId: string;
+  moneyDestinationId: string;
+  stage: DmEtapasPrs;
+  moneyDestinationAbreviatedName: string;
+  clientIdentificationNumber: string;
+  clientName: string; 
+  taskToBeDone: string;
 }
 
 interface IStaff {
@@ -23,7 +21,7 @@ interface IStaff {
 }
 
 interface PinnedRequest {
-  requestId: number;
+  requestId: string;
   isPinned: "Y" | "N";
 }
 

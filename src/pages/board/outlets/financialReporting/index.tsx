@@ -34,6 +34,7 @@ import { Requirements } from "./Requirements";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { CardCommercialManagement } from "./CommercialManagement/CardCommercialManagement";
 
 interface IListdataProps {
@@ -105,13 +106,9 @@ export const FinancialReporting = () => {
 
   useEffect(() => {
     Promise.allSettled([
-      getById("requests", "k_Prospe", id!),
       getById("document", "credit_request_id", id!, true),
       getById("error_issued", "credit_request_id", id!, true),
-    ]).then(([requirement, documents, error_issue]) => {
-      if (requirement.status === "fulfilled") {
-        setData(requirement.value as Requests);
-      }
+    ]).then(([documents, error_issue]) => {
       if (documents.status === "fulfilled" && Array.isArray(documents.value)) {
         const documentsUser = documents.value.map((dataListDocument) => ({
           id: dataListDocument.document_id,
@@ -123,6 +120,14 @@ export const FinancialReporting = () => {
         setError(error_issue.value as Ierror_issued[]);
       }
     });
+
+    getCreditRequestByCode(id!)
+      .then((data) => {
+        setData(data[0]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, [id]);
 
   useEffect(() => {
@@ -334,12 +339,9 @@ export const FinancialReporting = () => {
           inputPlaceholder="Describa el motivo del Rechazo."
           onCloseModal={() => setShowRejectModal(false)}
           onSubmit={(values) => {
-            handleConfirmReject(
-              id!,
-              user!.nickname!,
-              values,
-            );
+            handleConfirmReject(id!, user!.nickname!, values);
             handleSubmit();
+            setShowRejectModal(false);
           }}
         />
       )}
@@ -351,12 +353,9 @@ export const FinancialReporting = () => {
           inputPlaceholder="Describa el motivo de la anulación."
           onCloseModal={() => setShowCancelModal(false)}
           onSubmit={(values) => {
-            handleConfirmCancel(
-              id!,
-              user!.nickname!,
-              values,
-            );
+            handleConfirmCancel(id!, user!.nickname!, values);
             handleCancelSubmit();
+            setShowCancelModal(false);
           }}
         />
       )}
