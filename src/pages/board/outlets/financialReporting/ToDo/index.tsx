@@ -12,12 +12,20 @@ import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo } from "@services/types";
-import { get, getById, addItem } from "@mocks/utils/dataMock.service";
+import { addItem } from "@mocks/utils/dataMock.service";
+import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
+import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StaffModal } from "./StaffModal";
 import { traceObserver } from "../config";
-import { errorMessagge, FlagMessage, flagMessages, buttonText } from "./config";
+import {
+  errorMessagge,
+  FlagMessage,
+  flagMessages,
+  buttonText,
+  decisions,
+} from "./config";
 import { errorObserver } from "../config";
 
 interface IICon {
@@ -44,7 +52,6 @@ function ToDo(props: ToDoProps) {
   const { icon, button, isMobile, id, user } = props;
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
-  const [toDo, setToDo] = useState<IToDo[]>([]);
   const [assignedStaff, setAssignedStaff] = useState({
     commercialManager: "",
     analyst: "",
@@ -55,41 +62,15 @@ function ToDo(props: ToDoProps) {
   });
 
   const [loading, setLoading] = useState(true);
+  const [taskData, setTaskData] = useState<IToDo | null>(null);
   const { addFlag } = useFlag();
 
   useEffect(() => {
     (async () => {
       setLoading(true);
       try {
-        const [staffResult, toDoResult] = await Promise.allSettled([
-          get("staff"),
-          getById<IToDo[]>("to-do", "credit_request_state_id", id!, true),
-        ]);
-
-        if (
-          staffResult.status === "fulfilled" &&
-          !(staffResult.value instanceof Error)
-        ) {
-          setStaff(staffResult.value as IStaff[]);
-        }
-
-        if (
-          toDoResult.status === "fulfilled" &&
-          !(toDoResult.value instanceof Error)
-        ) {
-          setToDo(toDoResult.value as IToDo[]);
-        } else {
-          if (
-            toDoResult.status === "rejected" ||
-            toDoResult.value instanceof Error
-          ) {
-            errorObserver.notify({
-              id: "Management",
-              message: "Error al obtener los datos de gestión.",
-            });
-          }
-          setToDo([]);
-        }
+        const data = await getToDoByCreditRequestId(id);
+        setTaskData(data);
       } catch (error) {
         console.log(error);
         errorObserver.notify({
@@ -107,19 +88,34 @@ function ToDo(props: ToDoProps) {
   };
 
   useEffect(() => {
-    if (toDo) {
-      const { account_manager_name = "", analyst_name = "" } = toDo[0] ?? {};
+    if (taskData && taskData.usersByCreditRequestResponse) {
+      const formattedStaff = taskData.usersByCreditRequestResponse.map(
+        (staffMember: IStaff) => ({
+          ...staffMember,
+          userName: capitalizeFirstLetterEachWord(staffMember.userName),
+        })
+      );
+      setStaff(formattedStaff);
+
+      const firstAccountManager = formattedStaff.find(
+        (staffMember) => staffMember.position === "Account_manager"
+      );
+
+      const firstAnalyst = formattedStaff.find(
+        (staffMember) => staffMember.position === "Analyst"
+      );
 
       setAssignedStaff({
-        commercialManager: account_manager_name,
-        analyst: analyst_name,
+        commercialManager: firstAccountManager?.userName || "",
+        analyst: firstAnalyst?.userName || "",
       });
+
       setTempStaff({
-        commercialManager: account_manager_name,
-        analyst: analyst_name,
+        commercialManager: firstAccountManager?.userName || "",
+        analyst: firstAnalyst?.userName || "",
       });
     }
-  }, [toDo]);
+  }, [taskData]);
 
   const handleToggleStaffModal = () => setShowStaffModal((prev) => !prev);
 
@@ -194,7 +190,7 @@ function ToDo(props: ToDoProps) {
         hasOverflow
         aspectRatio="1"
       >
-        {toDo.length === 0 ? (
+        {!taskData ? (
           <ItemNotFound
             image={userNotFound}
             title="No se encontraron tareas"
@@ -221,9 +217,9 @@ function ToDo(props: ToDoProps) {
               ) : (
                 <Text
                   size={isMobile ? "medium" : "large"}
-                  appearance={toDo?.[0]?.task_to_be_done ? "dark" : "gray"}
+                  appearance={taskData?.taskToBeDone ? "dark" : "gray"}
                 >
-                  {toDo?.[0]?.task_to_be_done ?? errorMessagge}
+                  {taskData?.taskToBeDone ?? errorMessagge}
                 </Text>
               )}
             </Stack>
@@ -241,9 +237,8 @@ function ToDo(props: ToDoProps) {
                   value={decisionValue.decision}
                   placeholder="Seleccione una opción"
                   size="compact"
-                  options={toDo?.[0]?.decisions ?? []}
+                  options={decisions}
                   onChange={onChangeDecision}
-                  disabled={toDo === undefined}
                   fullwidth={isMobile}
                 />
               </Stack>
@@ -251,7 +246,6 @@ function ToDo(props: ToDoProps) {
                 <Button
                   onClick={handleSend}
                   cursorHover
-                  disabled={toDo === undefined}
                   loading={button?.loading || false}
                   type="submit"
                   fullwidth={isMobile}

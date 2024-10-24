@@ -59,7 +59,7 @@ export function StaffModal(props: StaffModalProps) {
   const getOptions = (position: string) =>
     staff
       .filter((official) => official.position === position)
-      .map((official) => ({ id: official.id, label: official.name }));
+      .map((official) => ({ id: official.userId, label: official.userName }));
 
   return createPortal(
     <Blanket>
@@ -99,7 +99,7 @@ export function StaffModal(props: StaffModalProps) {
                   id="commercialManager"
                   label="Gestor Comercial"
                   placeholder="Seleccione una opción"
-                  options={getOptions("commercialManager")}
+                  options={getOptions("Account_manager")}
                   value={commercialManager}
                   onChange={onChange("commercialManager")}
                   fullwidth
@@ -108,7 +108,7 @@ export function StaffModal(props: StaffModalProps) {
                   name="analyst"
                   id="analyst"
                   label="Analista"
-                  options={getOptions("analyst")}
+                  options={getOptions("Analyst")}
                   value={analyst}
                   placeholder="Seleccione una opción"
                   onChange={onChange("analyst")}
