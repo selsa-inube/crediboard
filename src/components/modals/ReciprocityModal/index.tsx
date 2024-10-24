@@ -1,6 +1,5 @@
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
-
 import { Blanket } from "@inubekit/blanket";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -8,6 +7,7 @@ import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Divider } from "@inubekit/divider";
 import { Button } from "@inubekit/button";
+
 import { currencyFormat } from "@src/utils/formatData/currency";
 
 import { StyledContainerClose, StyledContainer } from "./styles";
