@@ -34,6 +34,7 @@ export const Fieldset = (props: IFieldsetProps) => {
     aspectRatio,
     descriptionTitle,
     activeButton,
+    hasTable = false,
     hasOverflow,
     isClickable,
   } = props;
@@ -87,6 +88,7 @@ export const Fieldset = (props: IFieldsetProps) => {
         $aspectRatio={aspectRatio}
         $isMobile={isMobile}
         $hasOverflow={hasOverflow}
+        $hasTable={hasTable}
         onClick={handleOnClick}
         $isSelected={isSelected}
       >

@@ -144,7 +144,11 @@ export const Management = (props: IManagementProps) => {
   };
 
   return (
-    <Fieldset title="Gestión" heightFieldset="340px" aspectRatio="1">
+    <Fieldset
+      title="Gestión"
+      heightFieldset="340px"
+      aspectRatio={isMobile ? "auto" : "1"}
+    >
       {error ? (
         <ItemNotFound
           image={userNotFound}
