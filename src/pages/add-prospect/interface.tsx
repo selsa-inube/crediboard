@@ -3,6 +3,10 @@ import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { LoanCondition } from "@components/inputs/LoanConditions";
+//mias
+import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
+import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
+
 import { IMessageState } from "./types/forms.types";
 
 import { stepsAddProspect } from "./config/addProspect.config";
@@ -75,6 +79,12 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.generalInformation.id && (
             <RequirementsNotMet />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.specialFertilizers.id && (
+            <ExtraordinaryInstallments
+              dataTable={extraordinaryInstallmentMock}
+            />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (

@@ -22,6 +22,7 @@ import {
 import { paymentMethodOptions, frequencyOptions } from "./config";
 
 import { AddSeriesModalProps, FormState } from "./type";
+//import { TableExtraordinaryInstallment } from "@src/components/data/TableExtraordinaryInstallment";
 
 export function AddSeriesModal(props: AddSeriesModalProps) {
   const {
@@ -122,9 +123,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
                 id="field2"
                 label="Valor"
                 iconBefore={
-                  <MdOutlineAttachMoney
-                    color={inube.palette.green.G400}
-                  />
+                  <MdOutlineAttachMoney color={inube.palette.green.G400} />
                 }
                 placeholder="Valor a pagar"
                 fullwidth
