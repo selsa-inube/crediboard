@@ -14,8 +14,8 @@ export function ProductSelection() {
   const [toggleChecked, setToggleChecked] = useState(true);
   const [toggles, setToggles] = useState([false, true, false]);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setToggleChecked(e.target.checked);
+  const onChange = () => {
+    setToggleChecked(!toggleChecked);
   };
 
   const onChanges = (index: number) => {

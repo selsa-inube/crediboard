@@ -13,6 +13,7 @@ interface IOptionsButton {
 }
 
 interface IFieldsetProps {
+  onSelectionChange?: () => void;
   children: JSX.Element | JSX.Element[];
   title?: string;
   aspectRatio?: string;
@@ -29,6 +30,7 @@ interface IFieldsetProps {
 
 export const Fieldset = (props: IFieldsetProps) => {
   const {
+    onSelectionChange,
     children,
     title,
     heightFieldset,
@@ -37,7 +39,7 @@ export const Fieldset = (props: IFieldsetProps) => {
     activeButton,
     hasOverflow,
     isClickable,
-    selectedState
+    selectedState,
   } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
@@ -47,8 +49,10 @@ export const Fieldset = (props: IFieldsetProps) => {
   const handleOnClick = () => {
     if (isClickable) {
       setIsSelected(!isSelected);
+      if (onSelectionChange) {
+        onSelectionChange();
+      }
     }
-    return;
   };
 
   return (

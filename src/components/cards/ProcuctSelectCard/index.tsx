@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -20,11 +20,17 @@ export function ProductSelectCard(props: IProductSelectCardProps) {
 
   const [isSelected, setIsSelected] = useState(false);
 
-  const handleCheckboxChange = () => {
+  const handleSelectionChange = () => {
     if (!disabled) {
       setIsSelected(!isSelected);
     }
   };
+
+  useEffect(() => {
+    if (disabled) {
+      setIsSelected(false);
+    }
+  }, [disabled]);
 
   return (
     <Stack width="100%" direction="column">
@@ -33,7 +39,7 @@ export function ProductSelectCard(props: IProductSelectCardProps) {
           type="checkbox"
           disabled={disabled}
           checked={isSelected}
-          onChange={handleCheckboxChange}
+          onChange={handleSelectionChange}
         />
         <Text
           type="title"
@@ -43,7 +49,11 @@ export function ProductSelectCard(props: IProductSelectCardProps) {
           {description}
         </Text>
       </Stack>
-      <Fieldset isClickable={!disabled} selectedState={isSelected}>
+      <Fieldset
+        isClickable={!disabled}
+        selectedState={isSelected}
+        onSelectionChange={handleSelectionChange}
+      >
         <Stack direction="column" gap="16px" padding="4px 16px">
           <Stack justifyContent="space-between">
             <Text
