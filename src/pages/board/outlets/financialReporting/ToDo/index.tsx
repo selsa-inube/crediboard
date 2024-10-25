@@ -192,7 +192,6 @@ function ToDo(props: ToDoProps) {
         descriptionTitle={assignedStaff.commercialManager}
         heightFieldset="277px"
         hasOverflow
-        aspectRatio="1"
       >
         {toDo.length === 0 ? (
           <ItemNotFound

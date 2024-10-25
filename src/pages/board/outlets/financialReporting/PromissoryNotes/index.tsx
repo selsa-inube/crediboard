@@ -145,7 +145,6 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
       <Fieldset
         title="Pagarés y Libranzas"
         heightFieldset="163px"
-        aspectRatio="1"
         hasOverflow
         hasTable
       >
