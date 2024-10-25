@@ -35,7 +35,7 @@ import { formatISODatetoCustomFormat } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
-import { menuOptions ,incomeOptions} from "./config/config";
+import { menuOptions, incomeOptions } from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
 
@@ -118,7 +118,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     });
   };
 
-  const handleGoBackOrCloseModal  = () => {
+  const handleGoBackOrCloseModal = () => {
     setOpenModal(null);
   };
 
@@ -324,7 +324,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <CreditLimit
             handleClose={handleCloseModal}
             title="Origen de cupo"
-            portalId="portal"
+            portalId="Origen de cupo"
             maxPaymentCapacity={50000000}
             maxReciprocity={40000000}
             maxDebtFRC={45000000}
@@ -340,8 +340,8 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "paymentCapacity" && (
           <PaymentCapacity
             title="Cupo máx. capacidad de pago"
-            portalId="portal"
-            handleClose={handleGoBackOrCloseModal }
+            portalId="Cupo máx"
+            handleClose={handleGoBackOrCloseModal}
             reportedIncomeSources={2000000}
             reportedFinancialObligations={6789000}
             subsistenceReserve={2000000}
@@ -353,7 +353,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "reciprocityModal" && (
           <ReciprocityModal
             portalId="portal"
-            handleClose={handleGoBackOrCloseModal }
+            handleClose={handleGoBackOrCloseModal}
             balanceOfContributions={maxReciprocity}
             accordingToRegulation={2}
             assignedQuota={1000000}
@@ -362,7 +362,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "scoreModal" && (
           <ScoreModal
             title="Score Details"
-            handleClose={handleGoBackOrCloseModal }
+            handleClose={handleGoBackOrCloseModal}
             subTitle="Your Financial Score"
             totalScore={150}
             seniority={150}
