@@ -238,7 +238,7 @@ function ToDo(props: ToDoProps) {
             >
               {isModalOpen && (
                 <TextAreaModal
-                title="Título del Modal"
+                title="Confirmar la decisión"
                 buttonText="Enviar"
                 secondaryButtonText="Cancelar"
                 inputLabel="Justificación"
