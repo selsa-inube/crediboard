@@ -43,7 +43,23 @@ const StyledCardsCredit = styled.div`
       theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
     border-radius: 8px;
   }
+
+  @media (max-width: 800px) {
+    height: 500px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 8px; 
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: ${({ theme }) =>
+        theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
+      border-radius: 8px;
+    }
+  }
 `;
+
 
 const StyledContainerIcon = styled.div`
   display: flex;

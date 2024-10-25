@@ -16,15 +16,22 @@ interface CardCommercialManagementProps {
   dataRef: React.RefObject<HTMLDivElement>;
 }
 
-export const CardCommercialManagement = (props: CardCommercialManagementProps) => {
+export const CardCommercialManagement = (
+  props: CardCommercialManagementProps
+) => {
   const { dataRef, id } = props;
-  const [prospectProducts, setProspectProducts] = useState<ICreditProductProspect[]>([]);
+  const [prospectProducts, setProspectProducts] = useState<
+    ICreditProductProspect[]
+  >([]);
 
   useEffect(() => {
     try {
       Promise.allSettled([getById("prospects", "public_code", id!, true)]).then(
         ([prospects]) => {
-          if (prospects.status === "fulfilled" && Array.isArray(prospects.value)) {
+          if (
+            prospects.status === "fulfilled" &&
+            Array.isArray(prospects.value)
+          ) {
             if (!(prospects.value instanceof Error)) {
               setProspectProducts(
                 prospects.value
@@ -51,22 +58,27 @@ export const CardCommercialManagement = (props: CardCommercialManagementProps) =
           padding="4px 8px 16px 8px"
           direction={isMobile ? "column" : "row"}
         >
-          {prospectProducts.map((entry) => (
-            <CreditProductCard
-              key={entry.credit_product_code}
-              lineOfCredit={entry.line_of_credit_abbreviated_name}
-              paymentMethod={entry.ordinary_installment_for_principal?.payment_channel_code || ""}
-              loanAmount={entry.loan_amount}
-              interestRate={entry.interest_rate}
-              termMonths={entry.loan_term}
-              periodicFee={entry.ordinary_installment_for_principal?.gradient_value || 0}
-              schedule={entry.schedule}
-              onEdit={() => {}}
-              onDelete={() => {}}
-            />
-          ))}
+            {prospectProducts.map((entry) => (
+              <CreditProductCard
+                key={entry.credit_product_code}
+                lineOfCredit={entry.line_of_credit_abbreviated_name}
+                paymentMethod={
+                  entry.ordinary_installment_for_principal
+                    ?.payment_channel_code || ""
+                }
+                loanAmount={entry.loan_amount}
+                interestRate={entry.interest_rate}
+                termMonths={entry.loan_term}
+                periodicFee={
+                  entry.ordinary_installment_for_principal?.gradient_value || 0
+                }
+                schedule={entry.schedule}
+                onEdit={() => {}}
+                onDelete={() => {}}
+              />
+            ))}
         </Stack>
-        {isMobile && <Divider />} 
+        {isMobile && <Divider />}
       </StyledCardsCredit>
       <Stack
         gap="24px"

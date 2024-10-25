@@ -10,15 +10,14 @@ interface IStyledContainerFieldset {
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
+  overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
   box-sizing: border-box;
-  overflow-x: hidden;
   border-radius: 8px;
   border: 1px solid;
   padding-top: ${({ $hasTable }) => !$hasTable && "16px"};
   padding-bottom: ${({ $hasTable }) => !$hasTable && "16px"};
   padding-right: ${({ $hasTable }) => !$hasTable && "8px"};
   padding-left: ${({ $hasTable }) => !$hasTable && "8px"};
-  overflow-x: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
   aspect-ratio: ${({ $aspectRatio }) => $aspectRatio};
   background-color: ${({ theme, $isSelected }) =>
     !$isSelected
