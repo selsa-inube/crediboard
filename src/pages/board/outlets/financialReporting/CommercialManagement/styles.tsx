@@ -32,6 +32,7 @@ const StyledFieldset = styled.div`
 
 const StyledCardsCredit = styled.div`
   overflow-x: auto;
+  align-items: center;
 
   &::-webkit-scrollbar {
     height: 8px;
