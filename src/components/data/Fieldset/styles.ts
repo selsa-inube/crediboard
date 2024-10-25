@@ -18,7 +18,7 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   padding-bottom: ${({ $isMobile }) => !$isMobile && "16px"};
   padding-right: ${({ $isMobile }) => !$isMobile && "8px"};
   padding-left: ${({ $isMobile }) => !$isMobile && "8px"};
-  overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
+  overflow-x: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
   aspect-ratio: ${({ $aspectRatio }) => $aspectRatio};
   background-color: ${({ theme, $isSelected }) =>
     !$isSelected
