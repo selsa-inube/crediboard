@@ -31,6 +31,8 @@ export interface TextAreaModalProps {
   readOnly?: boolean;
   hideCharCount?: boolean;
   disableTextarea?: boolean;
+  secondaryButtonText?: string;
+  onSecondaryButtonClick?: () => void;
 }
 
 export function TextAreaModal(props: TextAreaModalProps) {
@@ -45,7 +47,9 @@ export function TextAreaModal(props: TextAreaModalProps) {
     onCloseModal,
     readOnly = false,
     hideCharCount = false,
-    disableTextarea = false, 
+    disableTextarea = false,
+    secondaryButtonText = "Cancelar",
+    onSecondaryButtonClick,
   } = props;
 
   const validationSchema = Yup.object().shape({
@@ -116,7 +120,7 @@ export function TextAreaModal(props: TextAreaModalProps) {
                     fullwidth
                     readOnly={readOnly}
                     hideCharCount={hideCharCount}
-                    disabled={disableTextarea} 
+                    disabled={disableTextarea}
                     onBlur={(e: React.FocusEvent<HTMLTextAreaElement>) => {
                       setFieldTouched("textarea");
                       field.onBlur(e);
@@ -124,7 +128,15 @@ export function TextAreaModal(props: TextAreaModalProps) {
                   />
                 )}
               </Field>
-              <Stack justifyContent="flex-end" margin="s200 s0">
+              <Stack justifyContent="end" margin="s200 s0" gap="12px">
+                <Button
+                  type="button"
+                  variant="outlined"
+                  appearance="gray"
+                  onClick={onSecondaryButtonClick}
+                >
+                  {secondaryButtonText}
+                </Button>
                 <Button
                   type={readOnly ? "button" : "submit"}
                   onClick={readOnly ? onCloseModal : undefined}
