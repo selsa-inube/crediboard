@@ -1,17 +1,17 @@
-import {
-  Stack,
-  useMediaQuery,
-  Blanket,
-  Text,
-  Button,
-  inube,
-  Textarea,
-} from "@inube/design-system";
-import { Icon } from "@inubekit/icon";
-import { createPortal } from "react-dom";
-import { MdClear } from "react-icons/md";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
+import { MdClear } from "react-icons/md";
+
+import { Textarea } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
+import { Button } from "@inubekit/button";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Blanket } from "@inubekit/blanket";
+import { createPortal } from "react-dom";
+
+
 
 import { StyledModal, StyledContainerClose } from "./styles";
 
@@ -77,7 +77,7 @@ export function TextAreaModal(props: TextAreaModalProps) {
             {title}
           </Text>
           <StyledContainerClose onClick={onCloseModal}>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text>Cerrar</Text>
               <Icon
                 icon={<MdClear />}
@@ -128,7 +128,7 @@ export function TextAreaModal(props: TextAreaModalProps) {
                   />
                 )}
               </Field>
-              <Stack justifyContent="end" margin="s200 s0" gap="12px">
+              <Stack justifyContent="end" margin="12px 0px" gap="12px">
                 <Button
                   type="button"
                   variant="outlined"
