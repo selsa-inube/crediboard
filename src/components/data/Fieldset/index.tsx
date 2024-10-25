@@ -34,9 +34,9 @@ export const Fieldset = (props: IFieldsetProps) => {
     aspectRatio,
     descriptionTitle,
     activeButton,
-    hasTable = false,
     hasOverflow,
     isClickable,
+    hasTable = false,
   } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
