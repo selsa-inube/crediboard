@@ -320,6 +320,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             <>
               {isMobile && (
                 <Stack padding="0px 0px 10px">
+                  {prospectProducts?.ordinary_installment_for_principal && (
                   <Button
                     type="button"
                     appearance="primary"
@@ -338,6 +339,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   >
                     Pagos extras
                   </Button>
+                  )}
                 </Stack>
               )}
             </>
