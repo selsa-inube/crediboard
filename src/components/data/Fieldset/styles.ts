@@ -4,8 +4,9 @@ import { inube } from "@inubekit/foundations";
 interface IStyledContainerFieldset {
   $aspectRatio?: string;
   $isMobile: boolean;
-  $hasTable: boolean;
   $hasOverflow?: boolean;
+  $isSelected: boolean;
+  $hasTable: boolean;
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
