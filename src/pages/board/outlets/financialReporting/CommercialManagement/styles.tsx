@@ -5,7 +5,6 @@ interface IStyledCollapseIcon {
   $collapse: boolean;
 }
 
-
 const StyledIcon = styled.div`
   display: flex;
   align-items: center;
@@ -24,7 +23,6 @@ const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   transform: ${({ $collapse }) =>
     $collapse ? "rotate(-90deg)" : "rotate(90deg)"};
 `;
-
 
 const StyledFieldset = styled.div`
   padding: "4px";
@@ -48,9 +46,11 @@ const StyledCardsCredit = styled.div`
   @media (max-width: 800px) {
     height: 500px;
     overflow-y: auto;
-
+    display: flex;
+    justify-content: center;
+    
     &::-webkit-scrollbar {
-      width: 8px; 
+      width: 8px;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -61,13 +61,11 @@ const StyledCardsCredit = styled.div`
   }
 `;
 
-
 const StyledContainerIcon = styled.div`
   display: flex;
   gap: 8px;
   position: relative;
 `;
-
 
 const StyledVerticalDivider = styled.hr`
   margin: 0px 10px;

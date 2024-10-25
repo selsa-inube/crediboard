@@ -78,8 +78,8 @@ export const CardCommercialManagement = (
               />
             ))}
         </Stack>
-        {isMobile && <Divider />}
       </StyledCardsCredit>
+      {isMobile && <Divider />}
       <Stack
         gap="24px"
         margin="36px 16px 8px 8px"
