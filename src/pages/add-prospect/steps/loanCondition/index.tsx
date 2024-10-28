@@ -29,7 +29,7 @@ export function LoanCondition() {
           gap="16px"
           padding={isMobile ? "16px" : "0px 16px"}
         >
-          <Text>{loanData.title1}</Text>
+          <Text>{loanData.quotaCapTitle}</Text>
           <Stack gap="8px" alignItems="center">
             <Toggle
               checked={toggles.toggle1}
@@ -46,8 +46,8 @@ export function LoanCondition() {
             <Stack padding={isMobile ? "0px 10px" : "0px 40px"}>
               <Textfield
                 id="1"
-                label={loanData.label1}
-                placeholder={loanData.placeholder1}
+                label={loanData.quotaCapLabel}
+                placeholder={loanData.quotaCapPlaceholder}
                 size="compact"
                 type="number"
                 disabled={!toggles.toggle1}
@@ -58,7 +58,7 @@ export function LoanCondition() {
           {!toggles.toggle1 && (
             <Stack direction="column" gap="8px">
               <Divider dashed />
-              <Text>{loanData.title1}</Text>
+              <Text>{loanData.maximumTermTitle}</Text>
               <Stack gap="8px" alignItems="center">
                 <Toggle
                   checked={toggles.toggle2}
@@ -75,8 +75,8 @@ export function LoanCondition() {
                 <Stack padding={isMobile ? "0px 10px" : "0px 40px"}>
                   <Textfield
                     id="1"
-                    label={loanData.label2}
-                    placeholder={loanData.placeholder2}
+                    label={loanData.maximumTermLabel}
+                    placeholder={loanData.maximumTermPlaceholder}
                     size="compact"
                     type="number"
                     disabled={!toggles.toggle2}

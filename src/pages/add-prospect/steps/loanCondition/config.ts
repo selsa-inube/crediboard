@@ -1,10 +1,10 @@
 export const loanData = {
-    title1: "¿Tiene un tope para el valor de la cuota ordinaria?",
-    label1: "¿Cuánto?",
-    placeholder1: "Ej: 10.000.000",
-    title2: "¿Tiene un plazo máximo para el pago?",
-    label2: "¿Cuántos meses?",
-    placeholder2: "Ej: 12",
+    quotaCapTitle: "¿Tiene un tope para el valor de la cuota ordinaria?",
+    quotaCapLabel: "¿Cuánto?",
+    quotaCapPlaceholder: "Ej: 10.000.000",
+    maximumTermTitle: "¿Tiene un plazo máximo para el pago?",
+    maximumTermLabel: "¿Cuántos meses?",
+    maximumTermPlaceholder: "Ej: 12",
     yes: "SI",
     no: "NO",
 }
