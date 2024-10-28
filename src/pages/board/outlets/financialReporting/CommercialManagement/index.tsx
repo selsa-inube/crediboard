@@ -35,11 +35,11 @@ import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
-import { menuOptions, incomeOptions } from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
-import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
+import { ExtraordinaryPaymentModal } from "@pages/prospect/components/ExtraordinaryPaymentModal";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
+import { menuOptions, incomeOptions } from "./config/config";
 import {
   StyledCollapseIcon,
   StyledFieldset,
@@ -174,9 +174,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     appearance="gray"
                     padding={`0px 0px 0px 8px`}
                   >
-                    {(
-                      formatPrimaryDate(new Date(data.f_Prospe))
-                    )}
+                    {formatPrimaryDate(new Date(data.f_Prospe))}
                   </Text>
                 </Stack>
               </Stack>
