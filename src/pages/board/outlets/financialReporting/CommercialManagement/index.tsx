@@ -324,7 +324,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <CreditLimit
             handleClose={handleCloseModal}
             title="Origen de cupo"
-            portalId="Origen de cupo"
+            portalId="portal"
             maxPaymentCapacity={50000000}
             maxReciprocity={40000000}
             maxDebtFRC={45000000}
@@ -340,7 +340,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {openModal === "paymentCapacity" && (
           <PaymentCapacity
             title="Cupo máx. capacidad de pago"
-            portalId="Cupo máx"
+            portalId="portal"
             handleClose={handleGoBackOrCloseModal}
             reportedIncomeSources={2000000}
             reportedFinancialObligations={6789000}
