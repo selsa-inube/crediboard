@@ -2,7 +2,7 @@ import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
-import { LoanCondition } from "@components/inputs/LoanConditions";
+import { LoanCondition } from "./steps/loanCondition";
 import { IMessageState } from "./types/forms.types";
 
 import { stepsAddProspect } from "./config/addProspect.config";
