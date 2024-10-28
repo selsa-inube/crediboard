@@ -16,15 +16,15 @@ import { StyledContainer, StyledContainerClose } from "./styles";
 
 interface IncomeModalProps {
   form: {
-    deudor: string;
-    salarioMensual?: number;
-    otrosPagos?: number;
-    mesadaPensional?: number;
-    serviciosProfesionales?: number;
-    arrendamientos?: number;
-    dividendos?: number;
-    rendimientosFinancieros?: number;
-    gananciaPromedio?: number;
+    debtor: string;
+    monthly_salary?: number;
+    other_monthly_payments?: number;
+    pension_allowances?: number;
+    leases?: number;
+    dividends_or_shares?: number;
+    financial_returns?: number;
+    average_monthly_profit?: number;
+    monthly_fees?: number;
     total?: number;
   };
   onChange: (name: string, newValue: string) => void;
@@ -51,14 +51,15 @@ export function IncomeModal(props: IncomeModalProps) {
 
   useEffect(() => {
     const allFieldsFilled = [
-      form.deudor,
-      form.salarioMensual,
-      form.otrosPagos,
-      form.mesadaPensional,
-      form.arrendamientos,
-      form.dividendos,
-      form.rendimientosFinancieros,
-      form.gananciaPromedio,
+      form.debtor,
+      form.monthly_salary,
+      form.other_monthly_payments,
+      form.pension_allowances,
+      form.leases,
+      form.dividends_or_shares,
+      form.financial_returns,
+      form.average_monthly_profit,
+      form.monthly_fees,
     ].every((field) => field !== undefined && field !== "");
 
     setIsFormComplete(allFieldsFilled);
@@ -109,11 +110,11 @@ export function IncomeModal(props: IncomeModalProps) {
               <Stack width={!isMobile ? "317px" : "auto"}>
                 <Select
                   id="income"
-                  name="deudor"
+                  name="debtor"
                   label="Deudor"
                   placeholder="Seleccione una opción"
                   options={options}
-                  value={form.deudor}
+                  value={form.debtor}
                   onChange={(name, value) => onChange(name, value)}
                   size="compact"
                   fullwidth
@@ -147,9 +148,9 @@ export function IncomeModal(props: IncomeModalProps) {
             >
               <IncomeEmployment
                 values={[
-                  form.salarioMensual?.toString() ?? "",
-                  form.otrosPagos?.toString() ?? "",
-                  form.mesadaPensional?.toString() ?? "",
+                  form.monthly_salary?.toString() ?? "",
+                  form.other_monthly_payments?.toString() ?? "",
+                  form.pension_allowances?.toString() ?? "",
                 ]}
                 onChange={(index, newValue) =>
                   handleFieldChange(
@@ -161,9 +162,9 @@ export function IncomeModal(props: IncomeModalProps) {
               />
               <IncomeCapital
                 values={[
-                  form.arrendamientos?.toString() ?? "",
-                  form.dividendos?.toString() ?? "",
-                  form.rendimientosFinancieros?.toString() ?? "",
+                  form.leases?.toString() ?? "",
+                  form.dividends_or_shares?.toString() ?? "",
+                  form.financial_returns?.toString() ?? "",
                 ]}
                 onChange={(index, newValue) =>
                   handleFieldChange(
@@ -174,7 +175,10 @@ export function IncomeModal(props: IncomeModalProps) {
                 }
               />
               <MicroBusinesses
-                values={[form.gananciaPromedio?.toString() ?? ""]}
+                values={[
+                  form.average_monthly_profit?.toString() ?? "",
+                  form.monthly_fees?.toString() ?? "",
+                ]}
                 onChange={(index, newValue) =>
                   handleFieldChange(["gananciaPromedio"], index, newValue)
                 }
