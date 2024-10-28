@@ -1,30 +1,32 @@
-const mockMoneyDestinations = [
+import { IMoneyDestination } from "@services/types";
+
+const mockMoneyDestinations: IMoneyDestination[] = [
   {
-    id: "vacations",
-    name: "moneyDestination",
-    value: "vacations",
-    label: "Vacaciones",
+    money_destination_id: "vacations",
+    money_destination_unique_reference: "moneyDestination",
+    abbreviated_name: "Vacaciones",
+    description_use: "Uso para vacaciones",
     icon: "MdOutlineBeachAccess",
   },
   {
-    id: "vehicle",
-    name: "moneyDestination",
-    value: "vehicle",
-    label: "Compra de vehículo",
+    money_destination_id: "vehicle",
+    money_destination_unique_reference: "moneyDestination",
+    abbreviated_name: "Compra de vehículo",
+    description_use: "Uso para compra de vehículo",
     icon: "MdOutlineDirectionsCarFilled",
   },
   {
-    id: "house",
-    name: "moneyDestination",
-    value: "house",
-    label: "Compra de vivienda",
+    money_destination_id: "house",
+    money_destination_unique_reference: "moneyDestination",
+    abbreviated_name: "Compra de vivienda",
+    description_use: "Uso para compra de vivienda",
     icon: "MdOutlineHouse",
   },
   {
-    id: "investment",
-    name: "moneyDestination",
-    value: "investment",
-    label: "Libre inversión",
+    money_destination_id: "investment",
+    money_destination_unique_reference: "moneyDestination",
+    abbreviated_name: "Libre inversión",
+    description_use: "Uso para libre inversión",
     icon: "MdOutlineAttachMoney",
   },
 ];

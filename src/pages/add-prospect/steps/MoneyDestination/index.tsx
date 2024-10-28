@@ -3,14 +3,14 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { useEffect } from "react";
 
 import { get } from "@mocks/utils/dataMock.service";
-import { MoneyDestinationCardProps } from "@components/cards/MoneyDestinationCard";
+import { IMoneyDestination } from "@services/types";
 
 import { MoneyDestinationUI } from "./interface";
 
 function MoneyDestination() {
   const [selectedDestination, setSelectedDestination] = useState<string>("");
   const [moneyDestinations, setMoneyDestinations] =
-    useState<Omit<MoneyDestinationCardProps, "handleChange">[]>();
+    useState<IMoneyDestination[]>();
 
   useEffect(() => {
     get("money_destinations")

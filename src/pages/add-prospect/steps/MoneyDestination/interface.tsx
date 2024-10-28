@@ -1,10 +1,10 @@
 import { Stack } from "@inubekit/stack";
 
-import { MoneyDestinationCardProps } from "@components/cards/MoneyDestinationCard";
+import { IMoneyDestination } from "@src/services/types";
 import { MoneyDestinationCard } from "@components/cards/MoneyDestinationCard";
 
 interface MoneyDestinationUIProps {
-  destinations: Omit<MoneyDestinationCardProps, "handleChange">[] | undefined;
+  destinations: IMoneyDestination[] | undefined;
   isTablet: boolean;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -22,11 +22,11 @@ function MoneyDestinationUI(props: MoneyDestinationUIProps) {
       {destinations &&
         destinations.map((destination) => (
           <MoneyDestinationCard
-            key={destination.id}
-            id={destination.id}
-            name={destination.name}
-            value={destination.value}
-            label={destination.label}
+            key={destination.money_destination_id}
+            id={destination.money_destination_id}
+            name={destination.money_destination_unique_reference}
+            value={destination.description_use}
+            label={destination.abbreviated_name}
             icon={destination.icon}
             handleChange={handleChange}
           />
