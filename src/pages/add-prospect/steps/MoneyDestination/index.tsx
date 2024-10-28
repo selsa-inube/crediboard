@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMediaQuery } from "@inubekit/hooks";
-import { useEffect } from "react";
 
 import { get } from "@mocks/utils/dataMock.service";
 import { IMoneyDestination } from "@services/types";

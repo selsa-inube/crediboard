@@ -1,6 +1,6 @@
 import { Stack } from "@inubekit/stack";
 
-import { IMoneyDestination } from "@src/services/types";
+import { IMoneyDestination } from "@services/types";
 import { MoneyDestinationCard } from "@components/cards/MoneyDestinationCard";
 
 interface MoneyDestinationUIProps {
