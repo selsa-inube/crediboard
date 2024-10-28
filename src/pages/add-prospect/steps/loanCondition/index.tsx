@@ -43,7 +43,7 @@ export function LoanCondition() {
             >
               {toggles.toggle1 ? loanData.yes : loanData.no}
             </Text>
-            <Stack padding="0px 40px">
+            <Stack padding={isMobile ? "0px 10px" : "0px 40px"}>
               <Textfield
                 id="1"
                 label={loanData.label1}
@@ -51,6 +51,7 @@ export function LoanCondition() {
                 size="compact"
                 type="number"
                 disabled={!toggles.toggle1}
+                fullwidth={isMobile}
               />
             </Stack>
           </Stack>
@@ -71,7 +72,7 @@ export function LoanCondition() {
                 >
                   {toggles.toggle2 ? loanData.yes : loanData.no}
                 </Text>
-                <Stack padding="0px 40px">
+                <Stack padding={isMobile ? "0px 10px" : "0px 40px"}>
                   <Textfield
                     id="1"
                     label={loanData.label2}
@@ -79,6 +80,7 @@ export function LoanCondition() {
                     size="compact"
                     type="number"
                     disabled={!toggles.toggle2}
+                    fullwidth={isMobile}
                   />
                 </Stack>
               </Stack>
