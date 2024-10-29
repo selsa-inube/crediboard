@@ -12,9 +12,8 @@ import {
   paymentMethodOptions,
   frequencyOptions,
 } from "@components/modals/AddSeriesModal/config";
-
-import { TextLabels } from "./config/types";
 import { TableExtraordinaryInstallment } from "@components/data/TableExtraordinaryInstallment";
+import { TextLabels } from "@config/pages/add-prospect/ExtraordinaryInstallments/ExtraordinaryInstallments.config";
 
 export interface ExtraordinaryInstallmentsProps {
   dataTable: IExtraordinaryPayment[];
@@ -23,23 +22,18 @@ export interface ExtraordinaryInstallmentsProps {
   onClickEliminate?: (id: string) => void;
 }
 
-export const ExtraordinaryInstallments = (
+export function ExtraordinaryInstallments(
   props: ExtraordinaryInstallmentsProps
-) => {
+) {
   const { dataTable, onClickDetails, onClickEdit, onClickEliminate } = props;
   const isMobile = useMediaQuery("(max-width:880px)");
   const [isAddSeriesModalOpen, setAddSeriesModalOpen] = useState(false);
 
-  const openAddSeriesModal = () => {
-    setAddSeriesModalOpen(true);
+  const toggleAddSeriesModal = () => {
+    setAddSeriesModalOpen(!isAddSeriesModalOpen);
   };
-
-  const closeAddSeriesModal = () => {
-    setAddSeriesModalOpen(false);
-  };
-
   const handleSubmit = () => {
-    closeAddSeriesModal();
+    toggleAddSeriesModal();
   };
 
   const handleConfirm = () => {
@@ -52,9 +46,6 @@ export const ExtraordinaryInstallments = (
         <Stack gap="24px" direction="column">
           <Stack justifyContent="end">
             <Button
-              type="button"
-              appearance="primary"
-              spacing="wide"
               fullwidth={isMobile}
               iconBefore={
                 <Icon
@@ -64,7 +55,7 @@ export const ExtraordinaryInstallments = (
                   spacing="narrow"
                 />
               }
-              onClick={openAddSeriesModal}
+              onClick={toggleAddSeriesModal}
             >
               {TextLabels.addSeries}
             </Button>
@@ -78,7 +69,7 @@ export const ExtraordinaryInstallments = (
                 onClickEliminate={onClickEliminate}
               />
             ) : (
-              <Text size="large" type="label" appearance="gray" weight="bold">
+              <Text type="label" appearance="gray" weight="bold">
                 {TextLabels.NoData}
               </Text>
             )}
@@ -88,8 +79,8 @@ export const ExtraordinaryInstallments = (
       </Stack>
       {isAddSeriesModalOpen && (
         <AddSeriesModal
-          title="Nueva serie"
-          handleClose={closeAddSeriesModal}
+          title={TextLabels.title}
+          handleClose={toggleAddSeriesModal}
           onSubmit={handleSubmit}
           onConfirm={handleConfirm}
           buttonText="Cancelar"
@@ -102,4 +93,4 @@ export const ExtraordinaryInstallments = (
       )}
     </>
   );
-};
+}
