@@ -9,7 +9,6 @@ interface IStyledContainerFieldset {
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
-  cursor: pointer;
   box-sizing: border-box;
   overflow-x: hidden;
   border-radius: 8px;

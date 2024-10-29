@@ -21,7 +21,8 @@ export const stepsAddProspect = {
     id: 4,
     number: 4,
     name: "Abonos especiales",
-    description: "Programe abonos para disminuir el pago ordinario o recortar plazo.",
+    description:
+      "Programe abonos para disminuir el pago ordinario o recortar plazo.",
   },
   loanConditions: {
     id: 5,
@@ -35,11 +36,11 @@ export const stepsAddProspect = {
     name: "Obligaciones recogidas",
     description: "Una sus obligaciones financieras a una sola.",
   },
-  requestValue7: {
+  obligationsFinancial: {
     id: 7,
     number: 7,
-    name: "Valor de la solicitud",
-    description: "Detalles del valor de la solicitud",
+    name: "Obligaciones financieras",
+    description: "Verifique las obligaciones financieras reportadas.",
   },
   requestValue8: {
     id: 8,

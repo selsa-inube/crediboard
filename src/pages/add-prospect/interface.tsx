@@ -3,8 +3,8 @@ import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { LoanCondition } from "@components/inputs/LoanConditions";
-import { IMessageState } from "./types/forms.types";
 
+import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
 import {
   IFormAddPosition,
@@ -14,6 +14,7 @@ import {
 } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
+import { ObligationsFinancial } from "./steps/financialObligations";
 
 interface StepDetails {
   id: number;
@@ -75,6 +76,11 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.generalInformation.id && (
             <RequirementsNotMet />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsAddProspect.obligationsFinancial.id && (
+            <ObligationsFinancial />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
