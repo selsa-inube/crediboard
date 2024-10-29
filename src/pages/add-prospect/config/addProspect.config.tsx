@@ -46,6 +46,11 @@ export const stepsAddProspect = {
     number: 8,
     name: "Valor de la solicitud",
     description: "Detalles del valor de la solicitud",
-    isVerification: true,
+  },
+  loanAmount: {
+    id: 9,
+    number: 9,
+    name: "Valor de la solicitud",
+    description: "Detalles del valor de la solicitud",
   },
 };

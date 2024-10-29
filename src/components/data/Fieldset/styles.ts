@@ -11,7 +11,7 @@ interface IStyledContainerFieldset {
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   cursor: pointer;
   box-sizing: border-box;
-  overflow-x: hidden;
+  overflow-x: ${({ $hasOverflow }) => $hasOverflow && "visible"};
   border-radius: 8px;
   border: 1px solid;
   padding-top: ${({ $isMobile }) => !$isMobile && "16px"};

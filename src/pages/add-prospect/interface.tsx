@@ -14,6 +14,7 @@ import {
 } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
+import { LoanAmount } from "./steps/loanAmount";
 
 interface StepDetails {
   id: number;
@@ -49,6 +50,25 @@ export function AddProspectUI(props: AddPositionUIProps) {
 
   const smallScreen = useMediaQuery("(max-width:880px)");
 
+  const planData = [
+    { id: "1", label: "Nomina Colpensiones", value: "nomina-colpensiones" },
+    {
+      id: "2",
+      label: "Canales de recaudo individual(CRI)",
+      value: "canales-de-recaudo-individual-cri",
+    },
+    {
+      id: "3",
+      label: "Débito automático interno",
+      value: "débito-automático-interno",
+    },
+    {
+      id: "4",
+      label: "Débito automático en bancos",
+      value: "débito-automático-en-bancos",
+    },
+  ];
+
   return (
     <Stack
       direction="column"
@@ -79,6 +99,10 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
             <LoanCondition />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.loanAmount.id && (
+            <LoanAmount value={10000000} options={planData} />
           )}
         <Stack justifyContent="end" gap="20px">
           <Button
