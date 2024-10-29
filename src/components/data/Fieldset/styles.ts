@@ -7,11 +7,13 @@ interface IStyledContainerFieldset {
   $hasOverflow?: boolean;
   $isSelected: boolean;
   $hasTable: boolean;
+  $height?: string;
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
   box-sizing: border-box;
+  height: ${({ $height }) => $height};
   border-radius: 8px;
   border: 1px solid;
   padding-top: ${({ $hasTable }) => !$hasTable && "16px"};

@@ -91,6 +91,7 @@ export const Fieldset = (props: IFieldsetProps) => {
         $hasTable={hasTable}
         onClick={handleOnClick}
         $isSelected={isSelected}
+        $height={isMobile ? "auto" : heightFieldset}
       >
         {children}
       </StyledContainerFieldset>

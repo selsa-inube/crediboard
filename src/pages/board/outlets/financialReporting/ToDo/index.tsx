@@ -158,7 +158,7 @@ function ToDo(props: ToDoProps) {
       <Fieldset
         title="Por hacer"
         descriptionTitle={assignedStaff.commercialManager}
-        heightFieldset="277px"
+        heightFieldset="241px"
         hasOverflow
         aspectRatio={isMobile ? "auto" : "1"}
       >

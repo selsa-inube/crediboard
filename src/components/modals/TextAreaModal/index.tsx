@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { MdClear } from "react-icons/md";
@@ -9,9 +10,6 @@ import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
-import { createPortal } from "react-dom";
-
-
 
 import { StyledModal, StyledContainerClose } from "./styles";
 

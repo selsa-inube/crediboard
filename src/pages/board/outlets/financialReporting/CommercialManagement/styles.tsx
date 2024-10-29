@@ -46,8 +46,8 @@ const StyledCardsCredit = styled.div`
   @media (max-width: 800px) {
     height: 500px;
     overflow-y: auto;
-    display: flex;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     
     &::-webkit-scrollbar {
       width: 8px;
