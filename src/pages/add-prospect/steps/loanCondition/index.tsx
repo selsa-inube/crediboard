@@ -11,10 +11,10 @@ import { Fieldset } from "@components/data/Fieldset";
 import { loanData } from "./config";
 
 export function LoanCondition() {
-  const [toggles, setToggles] = useState({ toggle1: true, toggle2: false });
+  const [toggles, setToggles] = useState({ quotaCapToggle: true, maximumTermToggle: false });
 
   const handleToggleChange =
-    (toggleKey: "toggle1" | "toggle2") =>
+    (toggleKey: "quotaCapToggle" | "maximumTermToggle") =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setToggles((prev) => ({ ...prev, [toggleKey]: e.target.checked }));
     };
@@ -32,16 +32,16 @@ export function LoanCondition() {
           <Text>{loanData.quotaCapTitle}</Text>
           <Stack gap="8px" alignItems="center">
             <Toggle
-              checked={toggles.toggle1}
-              onChange={handleToggleChange("toggle1")}
+              checked={toggles.quotaCapToggle}
+              onChange={handleToggleChange("quotaCapToggle")}
             ></Toggle>
             <Text
               type="label"
               size="large"
               weight="bold"
-              appearance={toggles.toggle1 ? "success" : "danger"}
+              appearance={toggles.quotaCapToggle ? "success" : "danger"}
             >
-              {toggles.toggle1 ? loanData.yes : loanData.no}
+              {toggles.quotaCapToggle ? loanData.yes : loanData.no}
             </Text>
             <Stack padding={isMobile ? "0px 10px" : "0px 40px"}>
               <Textfield
@@ -50,27 +50,27 @@ export function LoanCondition() {
                 placeholder={loanData.quotaCapPlaceholder}
                 size="compact"
                 type="number"
-                disabled={!toggles.toggle1}
+                disabled={!toggles.quotaCapToggle}
                 fullwidth={isMobile}
               />
             </Stack>
           </Stack>
-          {!toggles.toggle1 && (
+          {!toggles.quotaCapToggle && (
             <Stack direction="column" gap="8px">
               <Divider dashed />
               <Text>{loanData.maximumTermTitle}</Text>
               <Stack gap="8px" alignItems="center">
                 <Toggle
-                  checked={toggles.toggle2}
-                  onChange={handleToggleChange("toggle2")}
+                  checked={toggles.maximumTermToggle}
+                  onChange={handleToggleChange("maximumTermToggle")}
                 ></Toggle>
                 <Text
                   type="label"
                   size="large"
                   weight="bold"
-                  appearance={toggles.toggle2 ? "success" : "danger"}
+                  appearance={toggles.maximumTermToggle ? "success" : "danger"}
                 >
-                  {toggles.toggle2 ? loanData.yes : loanData.no}
+                  {toggles.maximumTermToggle ? loanData.yes : loanData.no}
                 </Text>
                 <Stack padding={isMobile ? "0px 10px" : "0px 40px"}>
                   <Textfield
@@ -79,7 +79,7 @@ export function LoanCondition() {
                     placeholder={loanData.maximumTermPlaceholder}
                     size="compact"
                     type="number"
-                    disabled={!toggles.toggle2}
+                    disabled={!toggles.maximumTermToggle}
                     fullwidth={isMobile}
                   />
                 </Stack>
