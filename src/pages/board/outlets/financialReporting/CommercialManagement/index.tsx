@@ -39,7 +39,7 @@ import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInsta
 import { ExtraordinaryPaymentModal } from "@pages/prospect/components/ExtraordinaryPaymentModal";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
-import { menuOptions ,incomeOptions} from "./config/config";
+import { menuOptions, incomeOptions } from "./config/config";
 import {
   StyledCollapseIcon,
   StyledFieldset,
@@ -319,24 +319,24 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               {isMobile && (
                 <Stack padding="0px 0px 10px">
                   {prospectProducts?.ordinary_installment_for_principal && (
-                  <Button
-                    type="button"
-                    appearance="primary"
-                    spacing="compact"
-                    variant="outlined"
-                    fullwidth
-                    iconBefore={
-                      <Icon
-                        icon={<MdOutlinePayments />}
-                        appearance="primary"
-                        size="18px"
-                        spacing="narrow"
-                      />
-                    }
-                    onClick={() => handleOpenModal("extraPayments")}
-                  >
-                    Pagos extras
-                  </Button>
+                    <Button
+                      type="button"
+                      appearance="primary"
+                      spacing="compact"
+                      variant="outlined"
+                      fullwidth
+                      iconBefore={
+                        <Icon
+                          icon={<MdOutlinePayments />}
+                          appearance="primary"
+                          size="18px"
+                          spacing="narrow"
+                        />
+                      }
+                      onClick={() => handleOpenModal("extraPayments")}
+                    >
+                      Pagos extras
+                    </Button>
                   )}
                 </Stack>
               )}
@@ -497,7 +497,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             portalId="portal"
             handleClose={handleGoBackOrCloseModal}
             balanceOfContributions={maxReciprocity}
-            accordingToRegulation={1234500}
+            accordingToRegulation={2}
             assignedQuota={1000000}
           />
         )}
@@ -506,14 +506,14 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             title="Score Details"
             handleClose={handleGoBackOrCloseModal}
             subTitle="Your Financial Score"
-            totalScore={750}
+            totalScore={150}
             seniority={150}
             centralRisk={50}
             employmentStability={230}
             maritalStatus={30}
             economicActivity={118}
             monthlyIncome={3000000}
-            maxIndebtedness="50000000"
+            maxIndebtedness={50000000}
           />
         )}
         {currentModal === "IncomeModal" && (

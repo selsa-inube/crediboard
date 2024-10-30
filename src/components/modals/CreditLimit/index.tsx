@@ -1,5 +1,10 @@
 import { createPortal } from "react-dom";
-import { MdClear, MdOutlineVisibility, MdInfoOutline } from "react-icons/md";
+import {
+  MdClear,
+  MdOutlineVisibility,
+  MdInfoOutline,
+  MdCached,
+} from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
@@ -24,7 +29,7 @@ export interface ICreditLimitProps {
   currentPortfolio: number;
   maxUsableLimit: number;
   availableLimitWithoutGuarantee: number;
-  onOpenPaymentCapacityModal?: () => void; 
+  onOpenPaymentCapacityModal?: () => void;
   onOpenReciprocityModal?: () => void;
   onOpenFrcModal?: () => void;
 }
@@ -212,7 +217,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               spacing="narrow"
             />
             <Text margin="0px 5px" size="small">
-              {creditLimitTexts.maxUsableLimitNote}
+              {creditLimitTexts.maxUsableQuote}
             </Text>
           </Stack>
 
@@ -259,6 +264,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             variant="filled"
             appearance="primary"
             fullwidth={isMobile}
+            iconBefore={<MdCached />}
           >
             {creditLimitTexts.closeButton}
           </Button>
