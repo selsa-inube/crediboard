@@ -289,6 +289,19 @@ export interface ICreditProductProspect {
   acquired_cash_flow: IAcquiredCashFlow;
 }
 
+export interface IIncome {
+  debtor_id: string;
+  debtor: string,
+  monthly_salary: number,
+  other_monthly_payments: number,
+  pension_allowances: number,
+  leases: number,
+  dividends_or_shares: number,
+  financial_returns: number,
+  average_monthly_profit: number,
+  monthly_fees: number,
+}
+
 export interface IBorrowerProperty {
   property_name: (typeof BorrowerProperties)[keyof typeof BorrowerProperties];
   property_value: string;
