@@ -97,6 +97,7 @@ export const Fieldset = (props: IFieldsetProps) => {
         $hasTable={hasTable}
         onClick={handleOnClick}
         $isSelected={selectedState ?? isSelected}
+        $height={isMobile ? "auto" : heightFieldset}
         $isClickable={isClickable}
       >
         {children}

@@ -23,11 +23,9 @@ export const Container = styled.div<IStyledCollapseIcon>`
         theme?.palette?.neutralAlpha?.N40A ||
         inube?.palette?.neutralAlpha?.N40A};
   display: flex;
-  gap: ${({ $showIcon }) => ($showIcon ? "0px" : "64px")};
   padding: 4px;
   width: ${({ $showIcon }) => ($showIcon ? "auto" : "100%")};
 `;
-
 export const IconWrapper = styled.div`
   align-items: center;
   border-left: 1px solid
@@ -41,4 +39,10 @@ export const ContentWrapper = styled.div`
   flex-direction: row;
   flex-grow: 1;
   justify-content: space-around;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
 `;
