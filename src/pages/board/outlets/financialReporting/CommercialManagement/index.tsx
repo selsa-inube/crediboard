@@ -31,15 +31,15 @@ import {
   capitalizeFirstLetter,
   capitalizeFirstLetterEachWord,
 } from "@utils/formatData/text";
-import { formatISODatetoCustomFormat } from "@utils/formatData/date";
+import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
-import { menuOptions, incomeOptions } from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
-import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
+import { ExtraordinaryPaymentModal } from "@pages/prospect/components/ExtraordinaryPaymentModal";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
+import { menuOptions ,incomeOptions} from "./config/config";
 import {
   StyledCollapseIcon,
   StyledFieldset,
@@ -157,7 +157,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   return (
     <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
       <StyledFieldset>
-        <Stack direction="column" gap="12px">
+        <Stack direction="column" gap="6px">
           <Stack justifyContent="space-between" alignItems="center">
             <Stack direction="column">
               <Stack>
@@ -174,9 +174,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     appearance="gray"
                     padding={`0px 0px 0px 8px`}
                   >
-                    {capitalizeFirstLetter(
-                      formatISODatetoCustomFormat(data.f_Prospe)
-                    )}
+                    {formatPrimaryDate(new Date(data.f_Prospe))}
                   </Text>
                 </Stack>
               </Stack>
@@ -260,13 +258,131 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           {isMobile && (
             <Button
               type="link"
+              spacing="compact"
               path={`/extended-card/${id}/credit-profile`}
               fullwidth
             >
               Ver perfil crediticio
             </Button>
           )}
+          {isMobile && (
+            <Stack gap="16px" padding="12px 0px 12px 0px">
+              {isMobile && (
+                <Button
+                  spacing="compact"
+                  variant="outlined"
+                  fullwidth
+                  iconBefore={<MdOutlinePhone />}
+                >
+                  Llamada
+                </Button>
+              )}
+              {isMobile && (
+                <Button
+                  spacing="compact"
+                  variant="outlined"
+                  fullwidth
+                  iconBefore={<MdOutlineVideocam />}
+                >
+                  Videollamada
+                </Button>
+              )}
+            </Stack>
+          )}
           {collapse && <Divider />}
+          {collapse && (
+            <>
+              {isMobile && (
+                <Stack padding="10px 0px" width="100%">
+                  <Button
+                    type="button"
+                    appearance="primary"
+                    spacing="compact"
+                    fullwidth
+                    iconBefore={
+                      <Icon
+                        icon={<MdOutlineAdd />}
+                        appearance="light"
+                        size="18px"
+                        spacing="narrow"
+                      />
+                    }
+                  >
+                    Agregar producto
+                  </Button>
+                </Stack>
+              )}
+            </>
+          )}
+          {collapse && (
+            <>
+              {isMobile && (
+                <Stack padding="0px 0px 10px">
+                  {prospectProducts?.ordinary_installment_for_principal && (
+                  <Button
+                    type="button"
+                    appearance="primary"
+                    spacing="compact"
+                    variant="outlined"
+                    fullwidth
+                    iconBefore={
+                      <Icon
+                        icon={<MdOutlinePayments />}
+                        appearance="primary"
+                        size="18px"
+                        spacing="narrow"
+                      />
+                    }
+                    onClick={() => handleOpenModal("extraPayments")}
+                  >
+                    Pagos extras
+                  </Button>
+                  )}
+                </Stack>
+              )}
+            </>
+          )}
+          {collapse && (
+            <>
+              {isMobile && (
+                <Stack justifyContent="end">
+                  <StyledContainerIcon>
+                    <Icon
+                      icon={<MdOutlinePictureAsPdf />}
+                      appearance="primary"
+                      size="24px"
+                      disabled={isPrint}
+                      cursorHover
+                      onClick={print}
+                    />
+                    <Icon
+                      icon={<MdOutlineShare />}
+                      appearance="primary"
+                      size="24px"
+                      cursorHover
+                    />
+                    <Icon
+                      icon={<MdOutlineMoreVert />}
+                      appearance="primary"
+                      size="24px"
+                      cursorHover
+                      onClick={() => setShowMenu(!showMenu)}
+                    />
+                    {showMenu && (
+                      <MenuPropect
+                        options={menuOptions(
+                          handleOpenModal,
+                          !prospectProducts?.ordinary_installment_for_principal
+                        )}
+                        onMouseLeave={() => setShowMenu(false)}
+                      />
+                    )}
+                  </StyledContainerIcon>
+                </Stack>
+              )}
+            </>
+          )}
+          {collapse && <Stack>{isMobile && <Divider />}</Stack>}
           {collapse && (
             <Stack direction="column" gap="24px">
               {!isMobile && (
@@ -412,8 +528,11 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <ReportCreditsModal
             handleClose={handleCloseModal}
             portalId="portal"
-            totalBalance={100000}
-            totalFee={5000}
+            totalBalance={87000000}
+            totalFee={3300000}
+            options={incomeOptions}
+            onChange={onChanges}
+            debtor={form.debtor}
           />
         )}
         {currentModal === "extraPayments" && (
