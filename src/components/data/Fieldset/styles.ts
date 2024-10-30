@@ -6,19 +6,26 @@ interface IStyledContainerFieldset {
   $isMobile: boolean;
   $hasOverflow?: boolean;
   $isSelected: boolean;
+  $isClickable?: boolean;
+  $hasTable: boolean;
+  $height?: string;
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
-  cursor: pointer;
+  cursor: ${({ $isClickable }) => ($isClickable ? "pointer" : "auto")};
+  overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
   box-sizing: border-box;
-  overflow-x: hidden;
+  height: ${({ $height }) => $height};
   border-radius: 8px;
   border: 1px solid;
-  padding-top: ${({ $isMobile }) => !$isMobile && "16px"};
-  padding-bottom: ${({ $isMobile }) => !$isMobile && "16px"};
-  padding-right: ${({ $isMobile }) => !$isMobile && "8px"};
-  padding-left: ${({ $isMobile }) => !$isMobile && "8px"};
-  overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
+  padding-top: ${({ $hasTable }) => !$hasTable && "16px"};
+  padding-bottom: ${({ $hasTable }) => !$hasTable && "16px"};
+  padding-right: ${({ $hasTable }) => !$hasTable && "8px"};
+  padding-left: ${({ $hasTable }) => !$hasTable && "8px"};
+  padding-top: ${({ $hasTable }) => !$hasTable && "16px"};
+  padding-bottom: ${({ $hasTable }) => !$hasTable && "16px"};
+  padding-right: ${({ $hasTable }) => !$hasTable && "8px"};
+  padding-left: ${({ $hasTable }) => !$hasTable && "8px"};
   aspect-ratio: ${({ $aspectRatio }) => $aspectRatio};
   background-color: ${({ theme, $isSelected }) =>
     !$isSelected
@@ -42,7 +49,7 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
     !$isMobile &&
     `
     &::-webkit-scrollbar {
-      width: 16px; 
+      width: 8px; 
       border-radius: 8px;
     }
 
