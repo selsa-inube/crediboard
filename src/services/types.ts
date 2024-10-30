@@ -239,6 +239,16 @@ export interface IProspect {
   outlay: IOutlay[];
 }
 
+export interface ILineCredit {
+  line_of_credit_id: string;
+  line_of_credit_code: string;
+  abbreviated_name: string;
+  description_use: string;
+  loan_amount_limit: number;
+  loan_term_limit: number;
+  interest_rate: number;
+}
+
 export interface IConsolidatedCredit {
   consolidated_amount: number;
   consolidated_amount_type: string;
@@ -347,4 +357,12 @@ export interface IExtraordinaryPayment {
   datePayment: string;
   value: number;
   paymentMethod: string;
+}
+
+export interface IMoneyDestination {
+  money_destination_id: string;
+  money_destination_unique_reference: string;
+  abbreviated_name: string;
+  description_use: string;
+  icon: string;
 }

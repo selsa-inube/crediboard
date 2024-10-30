@@ -18,7 +18,7 @@ export const headers: {
   { label: "Saldo", key: "balance" },
   { label: "Cuota", key: "fee" },
   { label: "Entidad", key: "entity" },
-  { label: "Medio-pago", key: "payment" },
+  { label: "Medio de pago", key: "payment" },
   { label: "Id", key: "id" },
   { label: "Altura", key: "height" },
   { label: "Acciones", key: "actions", action: true },

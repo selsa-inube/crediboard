@@ -37,9 +37,9 @@ const formatPrimaryDate = (date: Date, withTime?: boolean): string => {
     "Dic",
   ];
 
-  const day = date.getDate().toString().padStart(2, "0"); 
-  const month = months[date.getMonth()];
-  const year = date.getFullYear();
+  const day = date.getUTCDate().toString().padStart(2, "0");
+  const month = months[date.getUTCMonth()];
+  const year = date.getUTCFullYear();
 
   if (withTime) {
     let hours = date.getHours(); 

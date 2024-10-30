@@ -39,7 +39,7 @@ import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInsta
 import { ExtraordinaryPaymentModal } from "@pages/prospect/components/ExtraordinaryPaymentModal";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
-import { menuOptions, incomeOptions } from "./config/config";
+import { menuOptions ,incomeOptions} from "./config/config";
 import {
   StyledCollapseIcon,
   StyledFieldset,
@@ -411,8 +411,11 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <ReportCreditsModal
             handleClose={handleCloseModal}
             portalId="portal"
-            totalBalance={100000}
-            totalFee={5000}
+            totalBalance={87000000}
+            totalFee={3300000}
+            options={incomeOptions}
+            onChange={onChanges}
+            debtor={form.debtor}
           />
         )}
         {currentModal === "extraPayments" && (

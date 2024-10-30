@@ -14,7 +14,7 @@ export const ChatContent = styled.div`
   margin-right: -8px;
 
   &::-webkit-scrollbar {
-    width: 16px;
+    width: 8px;
   }
 
   &::-webkit-scrollbar-thumb {

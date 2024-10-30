@@ -6,10 +6,12 @@ interface IStyledContainerFieldset {
   $isMobile: boolean;
   $hasOverflow?: boolean;
   $isSelected: boolean;
+  $isClickable?: boolean;
   $hasTable: boolean;
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
+  cursor: ${({ $isClickable }) => ($isClickable ? "pointer" : "auto")};
   overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
   box-sizing: border-box;
   border-radius: 8px;
@@ -41,7 +43,7 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
     !$isMobile &&
     `
     &::-webkit-scrollbar {
-      width: 16px; 
+      width: 8px; 
       border-radius: 8px;
     }
 

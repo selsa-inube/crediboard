@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { MdClear,  } from "react-icons/md";
+import { MdClear } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -77,7 +77,12 @@ export function IncomeModal(props: IncomeModalProps) {
   return createPortal(
     <Blanket>
       <StyledContainer $smallScreen={isMobile}>
-        <Stack direction="column" padding="16px 24px" gap="16px">
+        <Stack
+          direction="column"
+          padding="16px 24px"
+          gap="16px"
+          width={isMobile ? "auto" : "1002px"}
+        >
           <Stack justifyContent="space-between" alignItems="center">
             <Text size="small" type="headline">
               Fuentes de ingreso
@@ -119,6 +124,7 @@ export function IncomeModal(props: IncomeModalProps) {
                 width={!isMobile ? "end" : "auto"}
                 direction="column"
                 gap="8px"
+                alignItems="center"
               >
                 <Text
                   appearance="primary"
