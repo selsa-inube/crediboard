@@ -42,22 +42,4 @@ export const flagMessages: Record<string, FlagMessage> = {
   },
 };
 
-export const decisions = [
-  {
-    id: "accept",
-    label: "Aceptar",
-    value: "aceptar",
-  },
-  {
-    id: "decline",
-    label: "Rechazar",
-    value: "rechazar",
-  },
-  {
-    id: "pending",
-    label: "Pendiente",
-    value: "pendiente",
-  },
-];
-
 export const buttonText = "Enviar";

@@ -7,38 +7,22 @@ import { SkeletonLine } from "@inubekit/skeleton";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
-import { ItemNotFound } from "@components/layout/ItemNotFound";
+import { IOption } from "@inubekit/select";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo } from "@services/types";
-import { addItem } from "@mocks/utils/dataMock.service";
+import { addItem, get } from "@mocks/utils/dataMock.service";
 import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import userNotFound from "@assets/images/ItemNotFound.png";
+import { ItemNotFound } from "@components/layout/ItemNotFound";
 
 import { StaffModal } from "./StaffModal";
 import { traceObserver } from "../config";
-import {
-  errorMessagge,
-  FlagMessage,
-  flagMessages,
-  buttonText,
-  decisions,
-} from "./config";
+import { errorMessagge, FlagMessage, flagMessages, buttonText } from "./config";
 import { errorObserver } from "../config";
-
-interface IICon {
-  icon: JSX.Element;
-  onClick?: (e?: ChangeEvent) => void;
-}
-
-interface IButton {
-  label: string;
-  onClick: (e?: ChangeEvent) => void;
-  disabled: boolean;
-  loading?: boolean;
-}
+import { IICon, IButton } from "./types";
 
 interface ToDoProps {
   icon?: IICon;
@@ -50,8 +34,13 @@ interface ToDoProps {
 
 function ToDo(props: ToDoProps) {
   const { icon, button, isMobile, id, user } = props;
+
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
+  const [taskDecisions, setTaskDecisions] = useState<IOption[]>();
+  const [loading, setLoading] = useState(true);
+  const [taskData, setTaskData] = useState<IToDo | null>(null);
+  const [hasFetchedDecisions, setHasFetchedDecisions] = useState(false);
   const [assignedStaff, setAssignedStaff] = useState({
     commercialManager: "",
     analyst: "",
@@ -61,8 +50,6 @@ function ToDo(props: ToDoProps) {
     decision: "",
   });
 
-  const [loading, setLoading] = useState(true);
-  const [taskData, setTaskData] = useState<IToDo | null>(null);
   const { addFlag } = useFlag();
 
   useEffect(() => {
@@ -82,10 +69,6 @@ function ToDo(props: ToDoProps) {
       }
     })();
   }, [id]);
-
-  const handleRetry = () => {
-    setLoading(true);
-  };
 
   useEffect(() => {
     if (taskData && taskData.usersByCreditRequestResponse) {
@@ -116,6 +99,10 @@ function ToDo(props: ToDoProps) {
       });
     }
   }, [taskData]);
+
+  const handleRetry = () => {
+    setLoading(true);
+  };
 
   const handleToggleStaffModal = () => setShowStaffModal((prev) => !prev);
 
@@ -181,6 +168,23 @@ function ToDo(props: ToDoProps) {
     }
   };
 
+  const handleSelectOpen = async () => {
+    if (!hasFetchedDecisions) {
+      try {
+        const decisions = await get("decisions");
+        setTaskDecisions(decisions as IOption[] | undefined);
+      } catch (error) {
+        console.log(error);
+        errorObserver.notify({
+          id: "Management",
+          message: (error as Error).message.toString(),
+        });
+      } finally {
+        setHasFetchedDecisions(true);
+      }
+    }
+  };
+
   return (
     <>
       <Fieldset
@@ -237,8 +241,9 @@ function ToDo(props: ToDoProps) {
                   value={decisionValue.decision}
                   placeholder="Seleccione una opción"
                   size="compact"
-                  options={decisions}
+                  options={taskDecisions || []}
                   onChange={onChangeDecision}
+                  onClick={handleSelectOpen}
                   fullwidth={isMobile}
                 />
               </Stack>
@@ -313,7 +318,6 @@ function ToDo(props: ToDoProps) {
         <StaffModal
           commercialManager={tempStaff.commercialManager}
           analyst={tempStaff.analyst}
-          staff={staff}
           onChange={handleSelectOfficial}
           onSubmit={handleSubmit}
           onCloseModal={handleToggleStaffModal}

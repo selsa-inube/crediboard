@@ -5,6 +5,18 @@ import { mockRequests as mockRequestsCooservunal } from "@mocks/requests/Cooserv
 import { mockRequests as mockRequestsCorbanca } from "@mocks/requests/Corbanca/requests.mock";
 import { mockRequests as mockRequestsFondecom } from "@mocks/requests/Fondecom/requests.mock";
 
+import { mockAnalyst as mockAnalystDefault } from "@mocks/staff/staff.mock";
+import { mockAnalyst as mockAnalystPresente } from "@mocks/staff/Presente/staff.mock";
+import { mockAnalyst as mockAnalystCooservunal } from "@mocks/staff/Cooservunal/staff.mock";
+import { mockAnalyst as mockAnalystCorbanca } from "@mocks/staff/Corbanca/staff.mock";
+import { mockAnalyst as mockAnalystFondecom } from "@mocks/staff/Fondecom/staff.mock";
+
+import { mockAccountManager as mockAccountManagerDefault } from "@mocks/staff/staff.mock";
+import { mockAccountManager as mockAccountManagerPresente } from "@mocks/staff/Presente/staff.mock";
+import { mockAccountManager as mockAccountManagerCooservunal } from "@mocks/staff/Cooservunal/staff.mock";
+import { mockAccountManager as mockAccountManagerCorbanca } from "@mocks/staff/Corbanca/staff.mock";
+import { mockAccountManager as mockAccountManagerFondecom } from "@mocks/staff/Fondecom/staff.mock";
+
 import { approval_by_credit_request_Mock as approval_by_credit_request_MockDefault } from "@mocks/financialReporting/Approvals.mock";
 import { approval_by_credit_request_Mock as approval_by_credit_request_MockPresente } from "@mocks/financialReporting/Presente/Approvals.mock";
 import { approval_by_credit_request_Mock as approval_by_credit_request_MockCooservunal } from "@mocks/financialReporting/Cooservunal/Approvals.mock";
@@ -44,6 +56,28 @@ const mockRequestsMap: { [key: string]: Requests[] } = {
 
 export const mockRequests = (company: string): Requests[] =>
   mockRequestsMap[company] || mockRequestsMap.default;
+
+const mockAnalystMap: { [key: string]: typeof mockAnalystDefault } = {
+  Presente: mockAnalystPresente,
+  Cooservunal: mockAnalystCooservunal,
+  Corbanca: mockAnalystCorbanca,
+  Fondecom: mockAnalystFondecom,
+  default: mockAnalystDefault,
+};
+
+export const mockAnalyst = (company: string) =>
+  mockAnalystMap[company] || mockAnalystMap.default;
+
+const mockAccountManagerMap: { [key: string]: typeof mockAnalystDefault } = {
+  Presente: mockAccountManagerPresente,
+  Cooservunal: mockAccountManagerCooservunal,
+  Corbanca: mockAccountManagerCorbanca,
+  Fondecom: mockAccountManagerFondecom,
+  default: mockAccountManagerDefault,
+};
+
+export const mockAccountManager = (company: string) =>
+  mockAccountManagerMap[company] || mockAccountManagerMap.default;
 
 const approvalByCreditRequestMockMap: {
   [key: string]: typeof approval_by_credit_request_MockDefault;
