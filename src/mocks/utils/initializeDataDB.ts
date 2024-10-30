@@ -5,6 +5,7 @@ import { themes } from "@mocks/design/themes";
 import { mockRequests as mockRequestsDefault } from "@mocks/requests/requests.mock";
 import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
 import { mockAnalyst as mockAnalystDefault } from "@mocks/staff/staff.mock";
+import { mockAccountManager as mockAccountManagerDefault } from "@mocks/staff/staff.mock";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 import { promissory_note } from "@mocks/promissoryNotes/promissory_note.mock";
 import { payroll_discount_authorization } from "@mocks/promissoryNotes/payroll_discount_authorization.mock";
@@ -17,6 +18,7 @@ import { uncovered_wallet } from "@mocks/creditProfileInfo/uncoveredWallet.mock"
 import { payment_capacity } from "@mocks/creditProfileInfo/paymentCapacity.mock";
 import { credit_behavior } from "@mocks/creditProfileInfo/creditBehavior.mock";
 import { mockDecisions } from "@mocks/financialReporting/to-do/decisions.mock";
+import { mockMoneyDestinations } from "@mocks/add-prospect/money-destinations/moneydestinations.mock";
 import {
   mockRangeRequeredByTheBusinessUnit,
   mockRiskScoring,
@@ -51,7 +53,7 @@ export function initializeDataDB(company: string) {
     "analyst",
     mockAnalyst(company)
   );
-  intializedData<(typeof mockAnalystDefault)[number]>(
+  intializedData<(typeof mockAccountManagerDefault)[number]>(
     "account-manager",
     mockAccountManager(company)
   );
@@ -91,4 +93,5 @@ export function initializeDataDB(company: string) {
     mockRangeRequeredByTheBusinessUnit
   );
   intializedData("decisions", mockDecisions);
+  intializedData("money_destinations", mockMoneyDestinations);
 }
