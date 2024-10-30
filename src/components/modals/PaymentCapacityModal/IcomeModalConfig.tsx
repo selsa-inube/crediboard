@@ -30,4 +30,12 @@ export const incomeModalConfig = {
     close: "Cerrar",
     recalculate: "Recalcular",
   },
+  maxAmountQuote: (
+    <>
+      Monto máximo calculado para una cuota de
+      <strong> $1'500.000 </strong> y plazo de <strong>60 </strong>
+      meses.
+    </>
+  ),
+  maxAmount: "Monto máximo"
 };

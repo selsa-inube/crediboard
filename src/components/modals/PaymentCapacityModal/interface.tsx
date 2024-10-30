@@ -201,9 +201,7 @@ export const PaymentCapacityInterface = forwardRef<
               spacing="wide"
             />
             <Text margin="0px 5px" size="small" type="body">
-              Monto máximo calculado para una cuota de
-              <strong> $1'500.000 </strong> y plazo de <strong>60 </strong>
-              meses.
+              {incomeModalConfig.maxAmountQuote}
             </Text>
           </Stack>
 
@@ -220,7 +218,7 @@ export const PaymentCapacityInterface = forwardRef<
               appearance="gray"   
               size="small" 
             >
-              Monto máximo
+              {incomeModalConfig.maxAmount}
             </Text>
           </Stack>
         </Stack>

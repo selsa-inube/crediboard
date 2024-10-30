@@ -217,8 +217,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               spacing="narrow"
             />
             <Text margin="0px 5px" size="small">
-              El menor de los anteriores es su cupo <strong>máximo</strong>{" "}
-              utilizable.
+              {creditLimitTexts.maxUsableQuote}
             </Text>
           </Stack>
 
