@@ -1,49 +1,20 @@
-import { useState } from "react";
-import { MdOutlineEdit , MdDeleteOutline} from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
 
-import { ActionModal } from "../Actions";
+import { icons } from "./config";
 
-interface DetailProps {
-  onClickDetails?: () => void;
-  onClickEdit?: () => void;
-  onClickEliminate?: () => void;
-}
-
-export function Detail(props: DetailProps) {
-  const { onClickDetails, onClickEdit, onClickEliminate } = props;
-  const [ModalOpen, setModalOpen] = useState(false);
+export function Detail() {
   return (
-    <Stack justifyContent="center">
-      <Stack padding="0px 16px">
+    <Stack justifyContent="space-around" >
+      {icons.map((item, index) => (
         <Icon
-          icon={<MdOutlineEdit />}
+          key={index}
+          icon={item.icon}
           size="16px"
           cursorHover
-          appearance="dark"
-          onClick={() => setModalOpen(false)}
-          variant="empty"
+          appearance={item.appearance}
         />
-      </Stack>
-      <Stack padding="0px 16px">
-        <Icon
-          icon={<MdDeleteOutline />}
-          size="16px"
-          cursorHover
-          appearance="danger"
-          onClick={() => setModalOpen(false)}
-          variant="empty"
-        />
-      </Stack>
-      {ModalOpen && (
-        <ActionModal
-          onClose={() => setModalOpen(false)}
-          onClickDetails={onClickDetails}
-          onClickEdit={onClickEdit}
-          onClickEliminate={onClickEliminate}
-        />
-      )}
+      ))}
     </Stack>
   );
 }
