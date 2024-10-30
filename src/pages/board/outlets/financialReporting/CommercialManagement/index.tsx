@@ -31,7 +31,7 @@ import {
   capitalizeFirstLetter,
   capitalizeFirstLetterEachWord,
 } from "@utils/formatData/text";
-import { formatISODatetoCustomFormat } from "@utils/formatData/date";
+import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
@@ -174,9 +174,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     appearance="gray"
                     padding={`0px 0px 0px 8px`}
                   >
-                    {capitalizeFirstLetter(
-                      formatISODatetoCustomFormat(data.f_Prospe)
-                    )}
+                    {formatPrimaryDate(new Date(data.f_Prospe))}
                   </Text>
                 </Stack>
               </Stack>
@@ -260,6 +258,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           {isMobile && (
             <Button
               type="link"
+              spacing="compact"
               path={`/extended-card/${id}/credit-profile`}
               fullwidth
             >
