@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 import { SkeletonLine as OriginalSkeletonLine } from "@inubekit/skeleton";
 
 export const ChatContent = styled.div`
@@ -10,28 +10,29 @@ export const ChatContent = styled.div`
   color: #000000;
   font-family: Roboto;
   flex-direction: column;
+  padding-right: 10px;
+  margin-right: -8px;
 
   &::-webkit-scrollbar {
-    border-radius: 8px;
+    width: 8px;
   }
 
   &::-webkit-scrollbar-thumb {
     background-color: ${({ theme }) =>
-      theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular};
+      theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
     border-radius: 8px;
   }
 `;
 
-export const SkeletonContainer = styled.div<{ type: 'sent' | 'received' }>`
+export const SkeletonContainer = styled.div<{ type: "sent" | "received" }>`
   display: flex;
   flex-direction: column;
-  align-items: ${({ type }) => (type === 'sent' ? 'flex-end' : 'flex-start')};
+  align-items: ${({ type }) => (type === "sent" ? "flex-end" : "flex-start")};
   margin: 10px;
 `;
 
-
 export const SkeletonLine = styled(OriginalSkeletonLine)`
-  width: 20%;  
+  width: 20%;
   max-width: 100px;
-  margin-bottom: 8px;  
+  margin-bottom: 8px;
 `;

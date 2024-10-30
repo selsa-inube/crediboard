@@ -31,14 +31,15 @@ import {
   capitalizeFirstLetter,
   capitalizeFirstLetterEachWord,
 } from "@utils/formatData/text";
-import { formatISODatetoCustomFormat } from "@utils/formatData/date";
+import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
-import { menuOptions, incomeOptions } from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
-import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
+import { ExtraordinaryPaymentModal } from "@pages/prospect/components/ExtraordinaryPaymentModal";
+import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
+import { menuOptions, incomeOptions } from "./config/config";
 import {
   StyledCollapseIcon,
   StyledFieldset,
@@ -62,18 +63,43 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const [prospectProducts, setProspectProducts] =
     useState<ICreditProductProspect>();
   const maxReciprocity = 40000000;
+
+  const { id } = useParams();
   const [form, setForm] = useState({
-    deudor: "",
-    salarioMensual: undefined,
-    otrosPagos: undefined,
-    mesadaPensional: undefined,
-    serviciosProfesionales: undefined,
-    arrendamientos: undefined,
-    dividendos: undefined,
-    rendimientosFinancieros: undefined,
-    gananciaPromedio: undefined,
+    debtor: "",
+    monthly_salary: 0,
+    other_monthly_payments: 0,
+    pension_allowances: 0,
+    leases: 0,
+    dividends_or_shares: 0,
+    financial_returns: 0,
+    average_monthly_profit: 0,
+    monthly_fees: 0,
     total: undefined,
   });
+
+  useEffect(() => {
+    if (id) {
+      const foundProspect = mockProspectCredit.find(
+        (prospect) => prospect.public_code === id
+      );
+      if (foundProspect) {
+        const mockCredit = foundProspect.consolidated_credit[0];
+        setForm({
+          debtor: foundProspect.borrower[0].borrower_name,
+          monthly_salary: mockCredit.monthly_salary ?? 0,
+          other_monthly_payments: mockCredit.other_monthly_payments ?? 0,
+          pension_allowances: mockCredit.pension_allowances ?? 0,
+          leases: mockCredit.leases ?? 0,
+          dividends_or_shares: mockCredit.dividends_or_shares ?? 0,
+          financial_returns: mockCredit.financial_returns ?? 0,
+          average_monthly_profit: mockCredit.average_monthly_profit ?? 0,
+          monthly_fees: mockCredit.monthly_fees ?? 0,
+          total: undefined,
+        });
+      }
+    }
+  }, [id]);
 
   const onChanges = (name: string, newValue: string) => {
     setForm((prevForm) => ({
@@ -81,7 +107,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       [name]: newValue,
     }));
   };
-  const { id } = useParams();
+
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   const handleOpenModal = (modalName: string) => {
@@ -131,7 +157,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   return (
     <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
       <StyledFieldset>
-        <Stack direction="column" gap="12px">
+        <Stack direction="column" gap="6px">
           <Stack justifyContent="space-between" alignItems="center">
             <Stack direction="column">
               <Stack>
@@ -148,9 +174,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     appearance="gray"
                     padding={`0px 0px 0px 8px`}
                   >
-                    {capitalizeFirstLetter(
-                      formatISODatetoCustomFormat(data.f_Prospe)
-                    )}
+                    {formatPrimaryDate(new Date(data.f_Prospe))}
                   </Text>
                 </Stack>
               </Stack>
@@ -234,13 +258,131 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           {isMobile && (
             <Button
               type="link"
+              spacing="compact"
               path={`/extended-card/${id}/credit-profile`}
               fullwidth
             >
               Ver perfil crediticio
             </Button>
           )}
+          {isMobile && (
+            <Stack gap="16px" padding="12px 0px 12px 0px">
+              {isMobile && (
+                <Button
+                  spacing="compact"
+                  variant="outlined"
+                  fullwidth
+                  iconBefore={<MdOutlinePhone />}
+                >
+                  Llamada
+                </Button>
+              )}
+              {isMobile && (
+                <Button
+                  spacing="compact"
+                  variant="outlined"
+                  fullwidth
+                  iconBefore={<MdOutlineVideocam />}
+                >
+                  Videollamada
+                </Button>
+              )}
+            </Stack>
+          )}
           {collapse && <Divider />}
+          {collapse && (
+            <>
+              {isMobile && (
+                <Stack padding="10px 0px" width="100%">
+                  <Button
+                    type="button"
+                    appearance="primary"
+                    spacing="compact"
+                    fullwidth
+                    iconBefore={
+                      <Icon
+                        icon={<MdOutlineAdd />}
+                        appearance="light"
+                        size="18px"
+                        spacing="narrow"
+                      />
+                    }
+                  >
+                    Agregar producto
+                  </Button>
+                </Stack>
+              )}
+            </>
+          )}
+          {collapse && (
+            <>
+              {isMobile && (
+                <Stack padding="0px 0px 10px">
+                  {prospectProducts?.ordinary_installment_for_principal && (
+                    <Button
+                      type="button"
+                      appearance="primary"
+                      spacing="compact"
+                      variant="outlined"
+                      fullwidth
+                      iconBefore={
+                        <Icon
+                          icon={<MdOutlinePayments />}
+                          appearance="primary"
+                          size="18px"
+                          spacing="narrow"
+                        />
+                      }
+                      onClick={() => handleOpenModal("extraPayments")}
+                    >
+                      Pagos extras
+                    </Button>
+                  )}
+                </Stack>
+              )}
+            </>
+          )}
+          {collapse && (
+            <>
+              {isMobile && (
+                <Stack justifyContent="end">
+                  <StyledContainerIcon>
+                    <Icon
+                      icon={<MdOutlinePictureAsPdf />}
+                      appearance="primary"
+                      size="24px"
+                      disabled={isPrint}
+                      cursorHover
+                      onClick={print}
+                    />
+                    <Icon
+                      icon={<MdOutlineShare />}
+                      appearance="primary"
+                      size="24px"
+                      cursorHover
+                    />
+                    <Icon
+                      icon={<MdOutlineMoreVert />}
+                      appearance="primary"
+                      size="24px"
+                      cursorHover
+                      onClick={() => setShowMenu(!showMenu)}
+                    />
+                    {showMenu && (
+                      <MenuPropect
+                        options={menuOptions(
+                          handleOpenModal,
+                          !prospectProducts?.ordinary_installment_for_principal
+                        )}
+                        onMouseLeave={() => setShowMenu(false)}
+                      />
+                    )}
+                  </StyledContainerIcon>
+                </Stack>
+              )}
+            </>
+          )}
+          {collapse && <Stack>{isMobile && <Divider />}</Stack>}
           {collapse && (
             <Stack direction="column" gap="24px">
               {!isMobile && (
@@ -386,8 +528,11 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <ReportCreditsModal
             handleClose={handleCloseModal}
             portalId="portal"
-            totalBalance={100000}
-            totalFee={5000}
+            totalBalance={87000000}
+            totalFee={3300000}
+            options={incomeOptions}
+            onChange={onChanges}
+            debtor={form.debtor}
           />
         )}
         {currentModal === "extraPayments" && (

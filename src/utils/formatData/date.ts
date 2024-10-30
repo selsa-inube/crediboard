@@ -1,6 +1,6 @@
 function formatISODatetoCustomFormat(isoDateString: string) {
   const date = new Date(isoDateString);
-  const day = date.getDate();
+  const day = date.getDate().toString().padStart(2, "0"); 
   const month = date.toLocaleString("es-CO", { month: "long" });
   const year = date.getFullYear().toString().slice(-2);
 
@@ -9,7 +9,7 @@ function formatISODatetoCustomFormat(isoDateString: string) {
 
 function formatDateWithFullYear(dateString: string) {
   const date = new Date(dateString);
-  const day = date.getDate();
+  const day = date.getDate().toString().padStart(2, "0");
   const month = date.toLocaleString("es-CO", { month: "long" });
   const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
   const year = date.getFullYear();
@@ -42,8 +42,8 @@ const formatPrimaryDate = (date: Date, withTime?: boolean): string => {
   const year = date.getUTCFullYear();
 
   if (withTime) {
-    let hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+    let hours = date.getHours(); 
+    const minutes = date.getMinutes().toString().padStart(2, "0");
     const ampm = hours >= 12 ? "pm" : "am";
     hours = hours % 12;
     hours = hours ? hours : 12;
