@@ -1,18 +1,18 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { MdOutlineSend, MdAttachFile } from "react-icons/md";
+import localforage from "localforage";
 import { Icon } from "@inubekit/icon";
-import { Stack, inube } from "@inube/design-system";
+import { Stack } from "@inubekit/stack";
 import { Textfield } from "@inubekit/textfield";
 
-import localforage from "localforage";
-import { MdOutlineSend, MdAttachFile } from "react-icons/md";
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
 import { getById, updateActive } from "@mocks/utils/dataMock.service";
 import { TraceType } from "@services/types";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import userNotFound from "@assets/images/ItemNotFound.png";
-import { traceObserver } from "../config";
 
+import { traceObserver } from "../config";
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
 import { errorObserver } from "../config";
 
@@ -29,6 +29,8 @@ export const Management = (props: IManagementProps) => {
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const chatContentRef = useRef<HTMLDivElement>(null); 
 
   const fetchData = useCallback(async () => {
     if (!id) return;
@@ -88,6 +90,12 @@ export const Management = (props: IManagementProps) => {
   useEffect(() => {
     fetchData();
   }, [fetchData, updateData]);
+
+  useEffect(() => {
+    if (chatContentRef.current) {
+      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight; 
+    }
+  }, [traces]);
 
   const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -160,7 +168,7 @@ export const Management = (props: IManagementProps) => {
         />
       ) : (
         <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
-          <ChatContent>
+          <ChatContent ref={chatContentRef}> 
             {loading
               ? [...Array(5)].map((_, index) => (
                   <SkeletonContainer
@@ -180,7 +188,7 @@ export const Management = (props: IManagementProps) => {
                 ))}
           </ChatContent>
           <form>
-            <Stack alignItems="center" direction="row" gap={inube.spacing.s050}>
+            <Stack alignItems="center"  direction="row" gap="16px" margin="2px 4px">
               <Icon
                 appearance="primary"
                 cursorHover

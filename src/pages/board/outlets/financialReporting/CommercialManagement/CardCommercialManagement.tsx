@@ -8,6 +8,8 @@ import { SummaryProspect } from "@components/inputs/SummaryOnProspect";
 import { getById } from "@mocks/utils/dataMock.service";
 import { ICreditProductProspect } from "@services/types";
 import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
+import { DeleteModal } from "@components/modals/DeleteModal";
+import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.service";
 
 import { StyledCardsCredit } from "./styles";
 
@@ -23,6 +25,9 @@ export const CardCommercialManagement = (
   const [prospectProducts, setProspectProducts] = useState<
     ICreditProductProspect[]
   >([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState("")
+
 
   useEffect(() => {
     try {
@@ -49,6 +54,16 @@ export const CardCommercialManagement = (
 
   const isMobile = useMediaQuery("(max-width: 800px)");
 
+  const handleDelete = async () => {
+    await deleteCreditProductMock(id, selectedProductId, prospectProducts, setProspectProducts);
+    setShowDeleteModal(false);
+  };
+
+  const handleDeleteClick = (creditProductId: string) => {
+    setSelectedProductId(creditProductId);
+    setShowDeleteModal(true);
+  };
+
   return (
     <div ref={dataRef}>
       <StyledCardsCredit>
@@ -74,7 +89,7 @@ export const CardCommercialManagement = (
                 }
                 schedule={entry.schedule}
                 onEdit={() => {}}
-                onDelete={() => {}}
+                onDelete={() => handleDeleteClick(entry.credit_product_code)}
               />
             ))}
         </Stack>
@@ -94,6 +109,12 @@ export const CardCommercialManagement = (
           />
         ))}
       </Stack>
+      {showDeleteModal && (
+        <DeleteModal
+          handleClose={() => setShowDeleteModal(false)}
+          handleDelete={handleDelete}
+        />
+      )}
     </div>
   );
 };

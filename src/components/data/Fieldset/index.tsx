@@ -13,6 +13,7 @@ interface IOptionsButton {
 }
 
 interface IFieldsetProps {
+  onSelectionChange?: () => void;
   children: JSX.Element | JSX.Element[];
   title?: string;
   aspectRatio?: string;
@@ -24,10 +25,12 @@ interface IFieldsetProps {
   slim?: boolean;
   isMobile?: boolean;
   isClickable?: boolean;
+  selectedState?: boolean;
 }
 
 export const Fieldset = (props: IFieldsetProps) => {
   const {
+    onSelectionChange,
     children,
     title,
     heightFieldset,
@@ -37,17 +40,20 @@ export const Fieldset = (props: IFieldsetProps) => {
     hasTable = false,
     hasOverflow,
     isClickable,
+    selectedState,
   } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
-  const [isSelected, setIsSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState(selectedState || false);
 
   const handleOnClick = () => {
     if (isClickable) {
       setIsSelected(!isSelected);
+      if (onSelectionChange) {
+        onSelectionChange();
+      }
     }
-    return;
   };
 
   return (
@@ -90,8 +96,9 @@ export const Fieldset = (props: IFieldsetProps) => {
         $hasOverflow={hasOverflow}
         $hasTable={hasTable}
         onClick={handleOnClick}
-        $isSelected={isSelected}
+        $isSelected={selectedState ?? isSelected}
         $height={isMobile ? "auto" : heightFieldset}
+        $isClickable={isClickable}
       >
         {children}
       </StyledContainerFieldset>

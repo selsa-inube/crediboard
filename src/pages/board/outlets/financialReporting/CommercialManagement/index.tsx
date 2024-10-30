@@ -31,15 +31,15 @@ import {
   capitalizeFirstLetter,
   capitalizeFirstLetterEachWord,
 } from "@utils/formatData/text";
-import { formatISODatetoCustomFormat } from "@utils/formatData/date";
+import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
-import { menuOptions, incomeOptions } from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
-import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
+import { ExtraordinaryPaymentModal } from "@pages/prospect/components/ExtraordinaryPaymentModal";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
+import { menuOptions ,incomeOptions} from "./config/config";
 import {
   StyledCollapseIcon,
   StyledFieldset,
@@ -174,9 +174,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     appearance="gray"
                     padding={`0px 0px 0px 8px`}
                   >
-                    {capitalizeFirstLetter(
-                      formatISODatetoCustomFormat(data.f_Prospe)
-                    )}
+                    {formatPrimaryDate(new Date(data.f_Prospe))}
                   </Text>
                 </Stack>
               </Stack>
@@ -260,8 +258,8 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           {isMobile && (
             <Button
               type="link"
-              path={`/extended-card/${id}/credit-profile`}
               spacing="compact"
+              path={`/extended-card/${id}/credit-profile`}
               fullwidth
             >
               Ver perfil crediticio
@@ -530,8 +528,11 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <ReportCreditsModal
             handleClose={handleCloseModal}
             portalId="portal"
-            totalBalance={100000}
-            totalFee={5000}
+            totalBalance={87000000}
+            totalFee={3300000}
+            options={incomeOptions}
+            onChange={onChanges}
+            debtor={form.debtor}
           />
         )}
         {currentModal === "extraPayments" && (
