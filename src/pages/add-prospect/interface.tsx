@@ -16,6 +16,7 @@ import {
 } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
+import { ProductSelection } from "./steps/ProductSelection";
 
 interface StepDetails {
   id: number;
@@ -81,6 +82,10 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.destination.id && (
             <MoneyDestination />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.productSelection.id && (
+            <ProductSelection />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (

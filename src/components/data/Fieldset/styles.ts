@@ -6,10 +6,11 @@ interface IStyledContainerFieldset {
   $isMobile: boolean;
   $hasOverflow?: boolean;
   $isSelected: boolean;
+  $isClickable?: boolean;
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
-  cursor: pointer;
+  cursor: ${({ $isClickable }) => ($isClickable ? "pointer" : "auto")};
   box-sizing: border-box;
   overflow-x: hidden;
   border-radius: 8px;
