@@ -29,11 +29,11 @@ export const stepsAddProspect = {
     name: "Condiciones de préstamo",
     description: "Condiciones para amortizar el préstamo.",
   },
-  obligationsCollected: {
+  sourcesIncome: {
     id: 6,
     number: 6,
-    name: "Obligaciones recogidas",
-    description: "Una sus obligaciones financieras a una sola.",
+    name: "Fuentes de ingreso",
+    description: "Actualice sus fuentes de ingreso para soportar capacidad de pago.",
   },
   requestValue7: {
     id: 7,
@@ -47,5 +47,17 @@ export const stepsAddProspect = {
     name: "Valor de la solicitud",
     description: "Detalles del valor de la solicitud",
     isVerification: true,
+  },
+  loanAmount: {
+    id: 9,
+    number: 9,
+    name: "Valor de la solicitud",
+    description: "Detalles del valor de la solicitud",
+  },
+  obligationsCollected: {
+    id: 10,
+    number: 10,
+    name: "Obligaciones recogidas",
+    description: "Agrupe las obligaciones financieras.",
   },
 };

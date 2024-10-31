@@ -14,6 +14,7 @@ import {
 } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
+import { ConsolidatedCredit } from "./steps/consolidatedCredit";
 
 interface StepDetails {
   id: number;
@@ -79,6 +80,10 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
             <LoanCondition />
+          )}
+          {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.obligationsCollected.id && (
+            <ConsolidatedCredit />
           )}
         <Stack justifyContent="end" gap="20px">
           <Button
