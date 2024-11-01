@@ -1,17 +1,23 @@
 import { useState } from "react";
-
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Toggle } from "@inubekit/toggle";
 import { Textfield } from "@inubekit/textfield";
 import { Divider } from "@inubekit/divider";
 import { useMediaQuery } from "@inubekit/hooks";
+
 import { Fieldset } from "@components/data/Fieldset";
 
+import { currencyFormat } from "@utils/formatData/currency";
 import { loanData } from "./config";
 
 export function LoanCondition() {
-  const [toggles, setToggles] = useState({ quotaCapToggle: true, maximumTermToggle: false });
+  const [toggles, setToggles] = useState({
+    quotaCapToggle: true,
+    maximumTermToggle: false,
+  });
+  const [quotaCapValue, setQuotaCapValue] = useState("");
+  const isMobile = useMediaQuery("(max-width:880px)");
 
   const handleToggleChange =
     (toggleKey: "quotaCapToggle" | "maximumTermToggle") =>
@@ -19,7 +25,13 @@ export function LoanCondition() {
       setToggles((prev) => ({ ...prev, [toggleKey]: e.target.checked }));
     };
 
-  const isMobile = useMediaQuery("(max-width:880px)");
+  const handleCurrencyChange =
+    (setter: React.Dispatch<React.SetStateAction<string>>) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const inputValue = e.target.value.replace(/[^0-9]/g, "");
+      const formattedValue = currencyFormat(Number(inputValue));
+      setter(formattedValue);
+    };
 
   return (
     <Stack height={isMobile ? "320px" : "272px"}>
@@ -34,7 +46,7 @@ export function LoanCondition() {
             <Toggle
               checked={toggles.quotaCapToggle}
               onChange={handleToggleChange("quotaCapToggle")}
-            ></Toggle>
+            />
             <Text
               type="label"
               size="large"
@@ -45,13 +57,15 @@ export function LoanCondition() {
             </Text>
             <Stack padding={isMobile ? "0px 10px" : "0px 40px"}>
               <Textfield
-                id="1"
+                id="quotaCap"
                 label={loanData.quotaCapLabel}
                 placeholder={loanData.quotaCapPlaceholder}
                 size="compact"
-                type="number"
+                type="text"
                 disabled={!toggles.quotaCapToggle}
                 fullwidth={isMobile}
+                value={quotaCapValue}
+                onChange={handleCurrencyChange(setQuotaCapValue)}
               />
             </Stack>
           </Stack>
@@ -63,7 +77,7 @@ export function LoanCondition() {
                 <Toggle
                   checked={toggles.maximumTermToggle}
                   onChange={handleToggleChange("maximumTermToggle")}
-                ></Toggle>
+                />
                 <Text
                   type="label"
                   size="large"
@@ -74,7 +88,7 @@ export function LoanCondition() {
                 </Text>
                 <Stack padding={isMobile ? "0px 10px" : "0px 40px"}>
                   <Textfield
-                    id="1"
+                    id="maximumTerm"
                     label={loanData.maximumTermLabel}
                     placeholder={loanData.maximumTermPlaceholder}
                     size="compact"
