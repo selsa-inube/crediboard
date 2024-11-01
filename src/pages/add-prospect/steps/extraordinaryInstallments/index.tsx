@@ -12,7 +12,7 @@ import {
   paymentMethodOptions,
   frequencyOptions,
 } from "@components/modals/AddSeriesModal/config";
-import { TableExtraordinaryInstallment } from "@components/data/TableExtraordinaryInstallment";
+import { TableExtraordinaryInstallment } from "@pages/prospect/components/TableExtraordinaryInstallment";
 import { TextLabels } from "@config/pages/add-prospect/ExtraordinaryInstallments/ExtraordinaryInstallments.config";
 
 export interface ExtraordinaryInstallmentsProps {

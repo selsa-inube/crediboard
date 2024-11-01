@@ -37,7 +37,7 @@ import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
 import { menuOptions, incomeOptions } from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
-import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
+import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
 import {

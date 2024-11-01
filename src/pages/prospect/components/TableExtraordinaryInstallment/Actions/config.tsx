@@ -1,11 +1,15 @@
 import {
-    MdDeleteOutline,
-    MdOutlineEdit,
-    MdOutlineRemoveRedEye,
+  MdDeleteOutline,
+  MdOutlineEdit,
+  MdOutlineRemoveRedEye,
 } from "react-icons/md";
-import { IAction } from "./type";
+import { IAction } from "./types";
 
-export const Actions = (onClickDetails?:() => void, onClickEdit?:() => void , onClickEliminate?: () => void): IAction[] => {
+export const Actions = (
+  onClickDetails?: () => void,
+  onClickEdit?: () => void,
+  onClickEliminate?: () => void
+): IAction[] => {
   return [
     {
       icon: <MdOutlineRemoveRedEye />,
@@ -26,4 +30,4 @@ export const Actions = (onClickDetails?:() => void, onClickEdit?:() => void , on
       onClick: onClickEliminate,
     },
   ];
-}
+};
