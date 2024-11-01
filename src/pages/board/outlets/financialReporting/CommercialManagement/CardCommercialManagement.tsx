@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { Stack } from "@inubekit/stack";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Divider } from "@inubekit/divider";
 
 import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { SummaryProspect } from "@components/inputs/SummaryOnProspect";
 import { getById } from "@mocks/utils/dataMock.service";
 import { ICreditProductProspect } from "@services/types";
 import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
+import { DeleteModal } from "@components/modals/DeleteModal";
+import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.service";
 
 import { StyledCardsCredit } from "./styles";
 
@@ -21,6 +25,10 @@ export const CardCommercialManagement = (
   const [prospectProducts, setProspectProducts] = useState<
     ICreditProductProspect[]
   >([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState("")
+
+
   useEffect(() => {
     try {
       Promise.allSettled([getById("prospects", "public_code", id!, true)]).then(
@@ -44,12 +52,28 @@ export const CardCommercialManagement = (
     }
   }, [id]);
 
+  const isMobile = useMediaQuery("(max-width: 800px)");
+
+  const handleDelete = async () => {
+    await deleteCreditProductMock(id, selectedProductId, prospectProducts, setProspectProducts);
+    setShowDeleteModal(false);
+  };
+
+  const handleDeleteClick = (creditProductId: string) => {
+    setSelectedProductId(creditProductId);
+    setShowDeleteModal(true);
+  };
+
   return (
     <div ref={dataRef}>
       <StyledCardsCredit>
-        <Stack gap="24px" width="fit-content" padding="4px 8px 16px 8px">
-          {prospectProducts &&
-            prospectProducts.map((entry) => (
+        <Stack
+          gap="24px"
+          width="fit-content"
+          padding="4px 8px 16px 8px"
+          direction={isMobile ? "column" : "row"}
+        >
+            {prospectProducts.map((entry) => (
               <CreditProductCard
                 key={entry.credit_product_code}
                 lineOfCredit={entry.line_of_credit_abbreviated_name}
@@ -65,14 +89,16 @@ export const CardCommercialManagement = (
                 }
                 schedule={entry.schedule}
                 onEdit={() => {}}
-                onDelete={() => {}}
+                onDelete={() => handleDeleteClick(entry.credit_product_code)}
               />
             ))}
         </Stack>
       </StyledCardsCredit>
+      {isMobile && <Divider />}
       <Stack
         gap="24px"
         margin="36px 16px 8px 8px"
+        direction={isMobile ? "column" : "row"}
         justifyContent="space-between"
       >
         {SummaryProspectCredit.map((entry, index) => (
@@ -83,6 +109,12 @@ export const CardCommercialManagement = (
           />
         ))}
       </Stack>
+      {showDeleteModal && (
+        <DeleteModal
+          handleClose={() => setShowDeleteModal(false)}
+          handleDelete={handleDelete}
+        />
+      )}
     </div>
   );
 };

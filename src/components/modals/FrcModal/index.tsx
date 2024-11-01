@@ -1,12 +1,11 @@
 import { createPortal } from "react-dom";
-import { MdClear, MdQueryStats, MdOutlineAttachMoney } from "react-icons/md";
+import { MdClear, MdQueryStats } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
 import { Blanket } from "@inubekit/blanket";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
-import { Textfield } from "@inubekit/textfield";
 import { Divider } from "@inubekit/divider";
 import { currencyFormat } from "@utils/formatData/currency";
 
@@ -25,7 +24,7 @@ export interface ScoreModalProps {
   maritalStatus: number;
   economicActivity: number;
   monthlyIncome: number;
-  maxIndebtedness: string;
+  maxIndebtedness: number;
 }
 
 export const ScoreModal = (props: ScoreModalProps) => {
@@ -181,14 +180,6 @@ export const ScoreModal = (props: ScoreModalProps) => {
 
           <Divider />
 
-          <Stack justifyContent="space-between" alignItems="center">
-            <Text weight="bold" size="large" type="label">
-              {frcConfig.timesIncome}
-            </Text>
-            <Text weight="bold" type="body" size="large">
-              5
-            </Text>
-          </Stack>
           <Stack justifyContent="space-between">
             <Text weight="bold" size="large" type="label">
               {frcConfig.incomesLabel}
@@ -199,17 +190,31 @@ export const ScoreModal = (props: ScoreModalProps) => {
             </Stack>
           </Stack>
 
-          <Divider />
+          <Stack justifyContent="space-between" alignItems="center">
+            <Text weight="bold" size="large" type="label">
+              {frcConfig.timesIncome}
+            </Text>
+            <Text weight="bold" type="body" size="large">
+              5
+            </Text>
+          </Stack>
 
-          <Textfield
-            value={maxIndebtedness}
-            iconBefore={<MdOutlineAttachMoney />}
-            fullwidth={true}
-            id="id"
-            label={frcConfig.maxIndebtedness}
-            name="name"
-            placeholder="Enter the amount"
-          />
+          <Divider />
+          <Stack alignItems="center" direction="column" gap="8px">
+            <Text
+              appearance="primary"
+              weight="bold"
+              type="headline"
+              size="large"
+            >
+              ${currencyFormat(maxIndebtedness, false)}
+            </Text>
+            <Stack>
+              <Text appearance="gray" size="small" textAlign="center">
+                {frcConfig.maxIndebtedness}
+              </Text>
+            </Stack>
+          </Stack>
         </Stack>
 
         <Divider />

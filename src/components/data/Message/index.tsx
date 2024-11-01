@@ -1,4 +1,5 @@
 import { MessageWrapper, MessageContent, Timestamp } from "./styles";
+import { formatPrimaryDate } from '@utils/formatData/date'; 
 
 export interface MessageProps {
   type: "sent" | "received";
@@ -7,8 +8,7 @@ export interface MessageProps {
 }
 
 const formatDate = (timestamp: number | string) => {
-  const date = new Date(timestamp);
-  return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+  return formatPrimaryDate(new Date(timestamp),true); 
 };
 
 export const Message: React.FC<MessageProps> = ({

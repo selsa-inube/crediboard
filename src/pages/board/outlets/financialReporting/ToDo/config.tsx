@@ -15,26 +15,6 @@ export interface FlagMessage {
 }
 
 export const flagMessages: Record<string, FlagMessage> = {
-  success: {
-    title: "Enviado",
-    description: "Los datos han sido enviados exitosamente.",
-    appearance: "success",
-  },
-  error: {
-    title: "Rechazo Confirmado ",
-    description: "El rechazo se ha realizado correctamente",
-    appearance: "success",
-  },
-  pending: {
-    title: "Pendiente",
-    description: "La decisión está pendiente.",
-    appearance: "success",
-  },
-  default: {
-    title: "Acción requerida",
-    description: "Seleccione una opción para continuar.",
-    appearance: "danger",
-  },
   changeSuccess: {
     title: "Cambio realizado",
     description: "El cambio se realizó con éxito.",

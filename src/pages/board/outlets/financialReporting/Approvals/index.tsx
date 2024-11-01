@@ -151,7 +151,7 @@ export const Approvals = (props: IApprovalsProps) => {
         title="Aprobaciones"
         heightFieldset="277px"
         hasTable
-        aspectRatio="1"
+        aspectRatio={isMobile ? "auto" : "1"}
       >
         {showRetry ? (
           <ItemNotFound
