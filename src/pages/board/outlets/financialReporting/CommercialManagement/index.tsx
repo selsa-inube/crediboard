@@ -166,7 +166,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     No. Rad.:
                   </Text>
                   <Text type="title" size="small">
-                    {data.k_Prospe}
+                    {data.creditRequestCode}
                   </Text>
                   <Text
                     type="title"
@@ -174,16 +174,18 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     appearance="gray"
                     padding={`0px 0px 0px 8px`}
                   >
-                    {formatPrimaryDate(new Date(data.f_Prospe))}
+                    {formatPrimaryDate(
+                      new Date(data.creditRequestDateOfCreation)
+                    )}
                   </Text>
                 </Stack>
               </Stack>
               {isMobile && (
                 <Stack margin="4px 0px">
                   <Text type="title" size={!isMobile ? "large" : "medium"}>
-                    {data.nnasocia &&
+                    {data.clientName &&
                       capitalizeFirstLetterEachWord(
-                        truncateTextToMaxLength(data.nnasocia)
+                        truncateTextToMaxLength(data.clientName)
                       )}
                   </Text>
                 </Stack>
@@ -193,9 +195,9 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   Destino:
                 </Text>
                 <Text type="title" size="small">
-                  {data.nnasocia &&
+                  {data.clientName &&
                     capitalizeFirstLetter(
-                      truncateTextToMaxLength(data.k_Desdin, 60)
+                      truncateTextToMaxLength(data.moneyDestinationId, 60)
                     )}
                 </Text>
               </Stack>
@@ -204,7 +206,9 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   Valor:
                 </Text>
                 <Text type="title" size="small">
-                  {data.v_Monto === 0 ? "$ 0" : currencyFormat(data.v_Monto)}
+                  {data.loanAmount === 0
+                    ? "$ 0"
+                    : currencyFormat(data.loanAmount)}
                 </Text>
               </Stack>
             </Stack>
@@ -212,9 +216,9 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             {!isMobile && (
               <Stack gap="36px">
                 <Text type="title">
-                  {data.nnasocia &&
+                  {data.clientName &&
                     capitalizeFirstLetterEachWord(
-                      truncateTextToMaxLength(data.nnasocia)
+                      truncateTextToMaxLength(data.clientName)
                     )}
                 </Text>
               </Stack>
