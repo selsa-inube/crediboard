@@ -6,8 +6,8 @@ import { Divider } from "@inubekit/divider";
 import { Button } from "@inubekit/button";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { TableFinancialObligations } from "@components/data/TableObligationsFinancial";
-import { dataReport } from "@components/data/TableObligationsFinancial/config";
+import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
+import { dataReport } from "@pages/prospect/components/TableObligationsFinancial/config";
 
 export function ObligationsFinancial() {
   const isMobile = useMediaQuery("(max-width:880px)");
@@ -27,7 +27,7 @@ export function ObligationsFinancial() {
             </Text>
             <Stack justifyContent="end">
               <Button
-                children={dataReport.buttonText}
+                children={dataReport.addObligations}
                 iconBefore={<MdAdd />}
                 fullwidth={isMobile}
               />

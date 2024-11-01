@@ -80,10 +80,11 @@ export const data: RowData[] = [
 export const dataReport = {
   title: "Deudor",
   description: "Camilo Alberto Rincon Jaramillo",
-  buttonText: "Agregar obligaciones",
+  addObligations: "Agregar obligaciones",
   noData: "No existen obligaciones financieras",
   descriptionTotalFee: "Cuota total.",
   descriptionTotalBalance: "Saldo total.",
   totalFee: "$ 3.300.000",
   totalBalance: "$ 87.000.000",
+  close: "Cerrar",
 };

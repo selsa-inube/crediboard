@@ -6,26 +6,17 @@ import { Button } from "@inubekit/button";
 import { Divider } from "@inubekit/divider";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
-import {
-  Pagination,
-  Table,
-  Tbody,
-  Td,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
-} from "@inubekit/table";
+
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
 import { Blanket } from "@inubekit/blanket";
 import { useMediaQuery } from "@inubekit/hooks";
-import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
+import { SkeletonLine } from "@inubekit/skeleton";
 
-import { usePagination } from "./utils";
-import { headers, data, dataReport } from "./config";
+import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
+import { dataReport } from "@pages/prospect/components/TableObligationsFinancial/config";
+
 import { ActionModal } from "./Actions";
-import { Details } from "./Detail";
 import { StyledContainerClose, StyledContainer } from "./styles";
 
 export interface ReportCreditsModalProps {
@@ -37,16 +28,6 @@ export interface ReportCreditsModalProps {
 
 export function ReportCreditsModal(props: ReportCreditsModalProps) {
   const { portalId, handleClose, totalBalance, totalFee } = props;
-
-  const {
-    totalRecords,
-    handleStartPage,
-    handlePrevPage,
-    handleNextPage,
-    handleEndPage,
-    firstEntryInPage,
-    lastEntryInPage,
-  } = usePagination();
 
   const [loading, setLoading] = useState(true);
   const [ModalOpen, setModalOpen] = useState(false);
@@ -67,11 +48,6 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
   }
 
   const isMobile = useMediaQuery("(max-width:880px)");
-  const visibleHeaders = isMobile
-    ? headers.filter((header) =>
-        ["tipo", "saldo", "acciones"].includes(header.key)
-      )
-    : headers;
 
   return createPortal(
     <Blanket>
@@ -85,7 +61,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
         >
           <Stack justifyContent="space-between" alignItems="center" gap="15px">
             <Text size="small" type="headline">
-             {dataReport.title}
+              {dataReport.title}
             </Text>
             <StyledContainerClose onClick={handleClose}>
               <Stack alignItems="center" gap="8px">
@@ -111,100 +87,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
               />
             </Stack>
           )}
-          <Table tableLayout="auto">
-            <Thead>
-              <Tr>
-                {loading
-                  ? visibleHeaders.map((_, index) => (
-                      <Td key={index} type="custom">
-                        <SkeletonIcon />
-                      </Td>
-                    ))
-                  : visibleHeaders.map((header, index) => (
-                      <Th
-                        key={index}
-                        action={header.action}
-                        align={header.action ? "center" : "left"}
-                      >
-                        {header.label}
-                      </Th>
-                    ))}
-              </Tr>
-            </Thead>
-            <Tbody>
-              {(() => {
-                if (loading) {
-                  return (
-                    <Tr>
-                      {visibleHeaders.map((_, index) => (
-                        <Td key={index} type="custom">
-                          <SkeletonLine />
-                        </Td>
-                      ))}
-                    </Tr>
-                  );
-                } else if (data.length === 0) {
-                  return (
-                    <Tr>
-                      <Td
-                        colSpan={visibleHeaders.length}
-                        align="center"
-                        type="custom"
-                      >
-                        <Text
-                          size="large"
-                          type="label"
-                          appearance="gray"
-                          textAlign="center"
-                        >
-                          {dataReport.noData}
-                        </Text>
-                      </Td>
-                    </Tr>
-                  );
-                } else {
-                  return data.map((row, rowIndex) => (
-                    <Tr key={rowIndex}>
-                      {visibleHeaders.map((header, colIndex) => {
-                        const cellData = row[header.key];
-                        return (
-                          <Td
-                            key={colIndex}
-                            appearance={rowIndex % 2 === 0 ? "dark" : "light"}
-                            type={header.action ? "custom" : "text"}
-                            align={header.action ? "center" : "left"}
-                          >
-                            {header.action ? <Details /> : cellData}
-                          </Td>
-                        );
-                      })}
-                    </Tr>
-                  ));
-                }
-              })()}
-            </Tbody>
-            {!loading && data.length > 0 && (
-              <Tfoot>
-                <Tr border="bottom">
-                  <Td
-                    colSpan={visibleHeaders.length}
-                    type="custom"
-                    align="center"
-                  >
-                    <Pagination
-                      firstEntryInPage={firstEntryInPage}
-                      lastEntryInPage={lastEntryInPage}
-                      totalRecords={totalRecords}
-                      handleStartPage={handleStartPage}
-                      handlePrevPage={handlePrevPage}
-                      handleNextPage={handleNextPage}
-                      handleEndPage={handleEndPage}
-                    />
-                  </Td>
-                </Tr>
-              </Tfoot>
-            )}
-          </Table>
+          <TableFinancialObligations />
           <Stack gap="15px" direction={!isMobile ? "row" : "column"}>
             {loading ? (
               <SkeletonLine />
