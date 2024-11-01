@@ -3,8 +3,8 @@ import {
   MdClear,
   MdOutlineVisibility,
   MdInfoOutline,
-  MdOutlineAttachMoney,
   MdErrorOutline,
+  MdCached,
 } from "react-icons/md";
 import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
@@ -14,8 +14,6 @@ import { Divider } from "@inubekit/divider";
 import { SkeletonLine } from "@inubekit/skeleton";
 import { currencyFormat } from "@utils/formatData/currency";
 import { incomeModalConfig } from "./IcomeModalConfig";
-import { inube } from "@inubekit/foundations";
-import { Textfield } from "@inubekit/textfield";
 import { StyledContainerClose, StyledModal } from "./styles";
 
 interface PaymentCapacityInterfaceProps {
@@ -203,25 +201,25 @@ export const PaymentCapacityInterface = forwardRef<
               spacing="wide"
             />
             <Text margin="0px 5px" size="small" type="body">
-              {incomeModalConfig.infoText}
+              {incomeModalConfig.maxAmountQuote}
             </Text>
           </Stack>
 
-          <Stack justifyContent="space-between">
-            <Textfield
-              value={loading ? "loading..." : currencyFormat(maxAmount, false)}
-              iconBefore={
-                <MdOutlineAttachMoney
-                  color={inube.palette.neutral.N900}
-                />
-              }
-              fullwidth={true}
-              id="id"
-              label={incomeModalConfig.textfield.label}
-              name="name"
-              placeholder={incomeModalConfig.textfield.placeholder}
-              disabled={loading}
-            />
+          <Stack justifyContent="center" alignItems="center" width="100%" direction="column" gap="8px">
+            <Text
+              appearance="primary"
+              weight="bold"
+              type="headline"
+              size="large"
+            >
+              ${loading ? "Cargando..." : currencyFormat(maxAmount, false)}
+            </Text>
+            <Text
+              appearance="gray"   
+              size="small" 
+            >
+              {incomeModalConfig.maxAmount}
+            </Text>
           </Stack>
         </Stack>
       )}
@@ -242,6 +240,7 @@ export const PaymentCapacityInterface = forwardRef<
           variant="filled"
           appearance="primary"
           fullwidth={isMobile}
+          iconBefore={<MdCached />}
         >
           {incomeModalConfig.buttons.recalculate}
         </Button>

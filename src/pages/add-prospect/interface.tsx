@@ -2,10 +2,10 @@ import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
-import { LoanCondition } from "@components/inputs/LoanConditions";
-import { IMessageState } from "./types/forms.types";
 
+import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
+
 import {
   IFormAddPosition,
   IFormAddPositionRef,
@@ -15,6 +15,10 @@ import {
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { LoanAmount } from "./steps/loanAmount";
+import { ProductSelection } from "./steps/ProductSelection";
+import { SourcesOfIncome } from "./steps/sourcesOfIncome";
+import { MoneyDestination } from "./steps/MoneyDestination";
+import { LoanCondition } from "./steps/loanCondition";
 
 interface StepDetails {
   id: number;
@@ -95,6 +99,18 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.generalInformation.id && (
             <RequirementsNotMet />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.destination.id && (
+            <MoneyDestination />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.productSelection.id && (
+            <ProductSelection />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.sourcesIncome.id && (
+            <SourcesOfIncome />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
