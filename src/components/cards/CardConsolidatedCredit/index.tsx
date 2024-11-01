@@ -12,7 +12,7 @@ import { currencyFormat } from "@utils/formatData/currency";
 import { StyledContainer, StyledInput } from "./styles";
 import { dataConsolidatedCredit } from "./config";
 
-interface ICardConsolidatedCreditProps {
+export interface ICardConsolidatedCreditProps {
   onUpdateTotal: (oldValue: number, newValue: number) => void;
   title: string;
   code: string;

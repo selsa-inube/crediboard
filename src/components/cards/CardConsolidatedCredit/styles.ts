@@ -6,6 +6,7 @@ interface IStyledContainer {
 }
 
 const StyledContainer = styled.div<IStyledContainer>`
+  width: 296px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
