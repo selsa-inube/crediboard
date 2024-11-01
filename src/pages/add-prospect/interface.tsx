@@ -5,12 +5,12 @@ import { Button } from "@inubekit/button";
 
 import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
-
 import {
   IFormAddPosition,
   IFormAddPositionRef,
   IStep,
   titleButtonTextAssited,
+  StepDetails,
 } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
@@ -20,12 +20,6 @@ import { SourcesOfIncome } from "./steps/sourcesOfIncome";
 import { MoneyDestination } from "./steps/MoneyDestination";
 import { LoanCondition } from "./steps/loanCondition";
 
-interface StepDetails {
-  id: number;
-  number: number;
-  name: string;
-  description: string;
-}
 interface AddPositionUIProps {
   currentStep: number;
   steps: IStep[];
@@ -53,25 +47,6 @@ export function AddProspectUI(props: AddPositionUIProps) {
   } = props;
 
   const smallScreen = useMediaQuery("(max-width:880px)");
-
-  const planData = [
-    { id: "1", label: "Nomina Colpensiones", value: "nomina-colpensiones" },
-    {
-      id: "2",
-      label: "Canales de recaudo individual(CRI)",
-      value: "canales-de-recaudo-individual-cri",
-    },
-    {
-      id: "3",
-      label: "Débito automático interno",
-      value: "débito-automático-interno",
-    },
-    {
-      id: "4",
-      label: "Débito automático en bancos",
-      value: "débito-automático-en-bancos",
-    },
-  ];
 
   return (
     <Stack
@@ -118,7 +93,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanAmount.id && (
-            <LoanAmount value={10000000} options={planData} />
+            <LoanAmount value={10000000} />
           )}
         <Stack justifyContent="end" gap="20px">
           <Button

@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdInfoOutline, MdOutlineAttachMoney } from "react-icons/md";
-
 import { Divider } from "@inubekit/divider";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -10,20 +9,35 @@ import { Select } from "@inubekit/select";
 import { Icon } from "@inubekit/icon";
 import { inube } from "@inubekit/foundations";
 import { useMediaQuery } from "@inubekit/hooks";
+
 import { Fieldset } from "@components/data/Fieldset";
 import { currencyFormat } from "@utils/formatData/currency";
+import { get } from "@mocks/utils/dataMock.service";
+import { IRequestVelue } from "@services/types";
 
 import { dataAmount } from "./config";
 
 export interface ILoanAmountProps {
   value: number;
-  options: { id: string; label: string; value: string }[];
 }
 
 export function LoanAmount(props: ILoanAmountProps) {
-  const { value, options } = props;
+  const { value } = props;
   const [toggleChecked, setToggleChecked] = useState(false);
+  const [requestValue, setRequestValue] = useState<IRequestVelue[]>();
   const [form, setForm] = useState({ paymentPlan: "" });
+
+  useEffect(() => {
+    get("mockRequest_value")
+      .then((data) => {
+        if (data && Array.isArray(data)) {
+          setRequestValue(data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching money destinations data:", error.message);
+      });
+  }, []);
 
   const onChangeSelect = (name: string, newValue: string) => {
     setForm({ ...form, [name]: newValue });
@@ -92,7 +106,7 @@ export function LoanAmount(props: ILoanAmountProps) {
           </Text>
           <Select
             id="paymentPlan"
-            options={options}
+            options={requestValue || []}
             placeholder={dataAmount.selectOption}
             name="paymentPlan"
             onChange={onChangeSelect}

@@ -291,15 +291,15 @@ export interface ICreditProductProspect {
 
 export interface IIncome {
   debtor_id: string;
-  debtor: string,
-  monthly_salary: number,
-  other_monthly_payments: number,
-  pension_allowances: number,
-  leases: number,
-  dividends_or_shares: number,
-  financial_returns: number,
-  average_monthly_profit: number,
-  monthly_fees: number,
+  debtor: string;
+  monthly_salary: number;
+  other_monthly_payments: number;
+  pension_allowances: number;
+  leases: number;
+  dividends_or_shares: number;
+  financial_returns: number;
+  average_monthly_profit: number;
+  monthly_fees: number;
 }
 
 export interface IBorrowerProperty {
@@ -378,4 +378,10 @@ export interface IMoneyDestination {
   abbreviated_name: string;
   description_use: string;
   icon: string;
+}
+
+export interface IRequestVelue {
+  id: string;
+  label: string;
+  value: string;
 }

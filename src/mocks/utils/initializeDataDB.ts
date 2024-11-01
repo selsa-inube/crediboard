@@ -22,6 +22,7 @@ import { uncovered_wallet } from "@mocks/creditProfileInfo/uncoveredWallet.mock"
 import { payment_capacity } from "@mocks/creditProfileInfo/paymentCapacity.mock";
 import { credit_behavior } from "@mocks/creditProfileInfo/creditBehavior.mock";
 import { mockMoneyDestinations } from "@mocks/add-prospect/money-destinations/moneydestinations.mock";
+import { mockRequestValue } from "@mocks/add-prospect/request-value/requesvalue.mock";
 
 import {
   mockRequests,
@@ -88,4 +89,5 @@ export function initializeDataDB(company: string) {
     mockRangeRequeredByTheBusinessUnit
   );
   intializedData("money_destinations", mockMoneyDestinations);
+  intializedData("mockRequest_value", mockRequestValue);
 }
