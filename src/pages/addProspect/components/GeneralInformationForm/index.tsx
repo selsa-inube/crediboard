@@ -3,9 +3,9 @@ import { FormikProps, useFormik } from "formik";
 
 import * as Yup from "yup";
 import { validationMessages } from "@validations/validationMessages";
-import { IMessageState } from "@pages/add-prospect/types/forms.types";
-import { generalMessage } from "@pages/add-prospect/config/messages.config";
-import { IHandleUpdateDataSwitchstep } from "@pages/add-prospect/types";
+import { IMessageState } from "@src/pages/addProspect/types/forms.types";
+import { generalMessage } from "@src/pages/addProspect/config/messages.config";
+import { IHandleUpdateDataSwitchstep } from "@src/pages/addProspect/types";
 
 import { GeneralInformationFormUI } from "./interface";
 

@@ -1,5 +1,5 @@
-import { IncomeCard } from "@src/components/cards/IncomeCard";
-import { income } from "@src/mocks/income/income.mock";
+import { SourceIncome } from "@pages/prospect/components/SourceIncome";
+import { income } from "@src/mocks/add-prospect/income/income.mock";
 
 export function SourcesOfIncome() {
   const initialFormData = income[0];
@@ -14,7 +14,7 @@ export function SourcesOfIncome() {
   ];
 
   return (
-    <IncomeCard
+    <SourceIncome
       form={initialFormData}
       onChange={handleChange}
       options={options}

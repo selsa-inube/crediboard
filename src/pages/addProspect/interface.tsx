@@ -59,10 +59,12 @@ export function AddProspectUI(props: AddPositionUIProps) {
       alignItems={smallScreen ? "normal" : "center"}
       margin="20px 0px"
       padding="24px"
+      height="100%"
     >
       <Stack
-        gap="48px"
+        gap="24px"
         direction="column"
+        height="100%"
         width={smallScreen ? "-webkit-fill-available" : "min(100%,1440px)"}
       >
         <StyledContainerAssisted $cursorDisabled={!isCurrentFormValid}>
@@ -96,7 +98,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
             <LoanCondition />
           )}
-        <Stack justifyContent="end" gap="20px">
+        <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
           <Button
             variant="outlined"
             appearance="gray"

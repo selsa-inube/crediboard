@@ -6,7 +6,7 @@ import { Toggle } from "@inubekit/toggle";
 import { Divider } from "@inubekit/divider";
 import { ProductSelectCard } from "@components/cards/ProcuctSelectCard";
 import { Fieldset } from "@components/data/Fieldset";
-import { lineOfCredit } from "@mocks/line-of-credit/lineOfCredit.mock";
+import { lineOfCredit } from "@src/mocks/add-prospect/line-of-credit/lineOfCredit.mock";
 
 import { electionData } from "./config";
 

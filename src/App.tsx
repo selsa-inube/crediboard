@@ -15,7 +15,7 @@ import AppContextProvider, { AppContext } from "@context/AppContext";
 
 import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
-import { AddProspectRoutes } from "./routes/assistedRoutes";
+import { AddProspectRoutes } from "./routes/addProspect";
 import { GlobalStyles } from "./styles/global";
 import { enviroment } from "./config/environment";
 

@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { ErrorPage } from "@components/layout/ErrorPage";
 import { Board } from "@pages/board";
-import { AddProspect } from "@pages/add-prospect";
+import { AddProspect } from "@src/pages/addProspect";
 
 function AddProspectRoutes() {
   return (

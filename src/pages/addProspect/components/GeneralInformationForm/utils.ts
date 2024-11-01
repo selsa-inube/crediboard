@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { IPosition } from "@pages/add-prospect/types";
+import { IPosition } from "@src/pages/addProspect/types";
 
 const usePagination = (data: IPosition[], pagerecord: number) => {
   const pageLength = pagerecord;
