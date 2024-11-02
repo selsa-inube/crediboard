@@ -11,13 +11,14 @@ import { IOption } from "@inubekit/select";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
-import { IStaff, IToDo } from "@services/types";
+import { IStaff, IToDo, Requests } from "@services/types";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { get } from "@mocks/utils/dataMock.service";
 import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 
 import { StaffModal } from "./StaffModal";
 import { errorMessagge, buttonText } from "./config";
@@ -35,6 +36,7 @@ interface ToDoProps {
 function ToDo(props: ToDoProps) {
   const { icon, button, isMobile, id } = props;
 
+  const [requests, setRequests] = useState<Requests | null>(null);
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
   const [taskDecisions, setTaskDecisions] = useState<IOption[]>();
@@ -54,13 +56,34 @@ function ToDo(props: ToDoProps) {
   const { addFlag } = useFlag();
 
   useEffect(() => {
-    (async () => {
+    const fetchCreditRequest = async () => {
+      try {
+        const data = await getCreditRequestByCode(id);
+        setRequests(data[0] as Requests);
+      } catch (error) {
+        console.error(error);
+        errorObserver.notify({
+          id: "Management",
+          message: (error as Error).message.toString(),
+        });
+      }
+    };
+
+    if (id) {
+      fetchCreditRequest();
+    }
+  }, [id]);
+
+  useEffect(() => {
+    const fetchToDoData = async () => {
+      if (!requests?.creditRequestId) return;
+
       setLoading(true);
       try {
-        const data = await getToDoByCreditRequestId(id);
+        const data = await getToDoByCreditRequestId(requests.creditRequestId);
         setTaskData(data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         errorObserver.notify({
           id: "Management",
           message: (error as Error).message.toString(),
@@ -68,11 +91,13 @@ function ToDo(props: ToDoProps) {
       } finally {
         setLoading(false);
       }
-    })();
-  }, [id]);
+    };
+
+    fetchToDoData();
+  }, [requests?.creditRequestId]);
 
   useEffect(() => {
-    if (taskData && taskData.usersByCreditRequestResponse) {
+    if (taskData?.usersByCreditRequestResponse) {
       const formattedStaff = taskData.usersByCreditRequestResponse.map(
         (staffMember: IStaff) => ({
           ...staffMember,
@@ -89,20 +114,32 @@ function ToDo(props: ToDoProps) {
         (staffMember) => staffMember.position === "Analyst"
       );
 
-      setAssignedStaff({
+      const newStaffState = {
         commercialManager: firstAccountManager?.userName || "",
         analyst: firstAnalyst?.userName || "",
-      });
+      };
 
-      setTempStaff({
-        commercialManager: firstAccountManager?.userName || "",
-        analyst: firstAnalyst?.userName || "",
-      });
+      setAssignedStaff(newStaffState);
+      setTempStaff(newStaffState);
     }
   }, [taskData]);
 
-  const handleRetry = () => {
+  const handleRetry = async () => {
     setLoading(true);
+    if (requests?.creditRequestId) {
+      try {
+        const data = await getToDoByCreditRequestId(requests.creditRequestId);
+        setTaskData(data);
+      } catch (error) {
+        console.error(error);
+        errorObserver.notify({
+          id: "Management",
+          message: (error as Error).message.toString(),
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   const handleToggleStaffModal = () => setShowStaffModal((prev) => !prev);
@@ -129,7 +166,7 @@ function ToDo(props: ToDoProps) {
     });
   };
 
-  const handleSend = async () => {
+  const handleSend = () => {
     setIsModalOpen(true);
   };
 
@@ -143,7 +180,7 @@ function ToDo(props: ToDoProps) {
         const decisions = await get("decisions");
         setTaskDecisions(decisions as IOption[] | undefined);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         errorObserver.notify({
           id: "Management",
           message: (error as Error).message.toString(),

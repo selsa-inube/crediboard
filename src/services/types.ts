@@ -1,5 +1,6 @@
 import { Schedule, GracePeriodType, BorrowerProperties } from "@services/enums";
 interface Requests {
+  creditRequestId?: string;
   creditRequestCode: string;
   creditRequestDateOfCreation: string;
   loanAmount: number;
@@ -8,7 +9,7 @@ interface Requests {
   stage: DmEtapasPrs;
   moneyDestinationAbreviatedName: string;
   clientIdentificationNumber: string;
-  clientName: string; 
+  clientName: string;
   taskToBeDone: string;
 }
 
