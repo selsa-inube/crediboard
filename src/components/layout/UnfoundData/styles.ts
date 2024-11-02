@@ -1,8 +1,13 @@
 import styled from "styled-components";
 
-export const ResponsiveImage = styled.img<{ $smallScreen: boolean }>`
-  display: ${({ $smallScreen }) => ($smallScreen ? "block" : "none")};
-  max-width: 100%;
+interface ImageProps {
+  $smallScreen: boolean;
+}
+
+const StyledImage = styled.img<ImageProps>`
+  max-width: 152px;
   height: auto;
-  margin-top: 8px;
+  display: block;
 `;
+
+export { StyledImage };

@@ -1,17 +1,15 @@
 import { Schedule, GracePeriodType, BorrowerProperties } from "@services/enums";
 interface Requests {
-  k_Prospe: number;
-  n_Prospe: string;
-  f_Prospe: string;
-  v_Monto: number;
-  k_Idterc: number;
-  k_Desdin: string;
-  i_Estprs: DmEtapasPrs;
-  n_Desdin: string;
-  aanumnit: string;
-  nnasocia: string;
-  n_Descr_Etapa: string;
-  n_Descr_Tarea: string;
+  creditRequestCode: string;
+  creditRequestDateOfCreation: string;
+  loanAmount: number;
+  clientId: string;
+  moneyDestinationId: string;
+  stage: DmEtapasPrs;
+  moneyDestinationAbreviatedName: string;
+  clientIdentificationNumber: string;
+  clientName: string;
+  taskToBeDone: string;
 }
 
 interface IStaff {
@@ -23,7 +21,7 @@ interface IStaff {
 }
 
 interface PinnedRequest {
-  requestId: number;
+  requestId: string;
   isPinned: "Y" | "N";
 }
 
@@ -240,6 +238,16 @@ export interface IProspect {
   outlay: IOutlay[];
 }
 
+export interface ILineCredit {
+  line_of_credit_id: string;
+  line_of_credit_code: string;
+  abbreviated_name: string;
+  description_use: string;
+  loan_amount_limit: number;
+  loan_term_limit: number;
+  interest_rate: number;
+}
+
 export interface IConsolidatedCredit {
   consolidated_amount: number;
   consolidated_amount_type: string;
@@ -248,6 +256,14 @@ export interface IConsolidatedCredit {
   line_of_credit_description: string;
   borrower_id: string;
   consolidated_credit_schema: string;
+  monthly_salary?: number;
+  other_monthly_payments?: number;
+  pension_allowances?: number;
+  leases?: number;
+  dividends_or_shares?: number;
+  financial_returns?: number;
+  average_monthly_profit?: number;
+  monthly_fees?: number;
 }
 
 export interface IExtraordinaryInstallment {
@@ -270,6 +286,19 @@ export interface ICreditProductProspect {
   ordinary_installment_for_interest: IInstallmentsForInterest;
   extraordinary_installment: IExtraordinaryInstallment;
   acquired_cash_flow: IAcquiredCashFlow;
+}
+
+export interface IIncome {
+  debtor_id: string;
+  debtor: string;
+  monthly_salary: number;
+  other_monthly_payments: number;
+  pension_allowances: number;
+  leases: number;
+  dividends_or_shares: number;
+  financial_returns: number;
+  average_monthly_profit: number;
+  monthly_fees: number;
 }
 
 export interface IBorrowerProperty {
@@ -340,4 +369,12 @@ export interface IExtraordinaryPayment {
   datePayment: string;
   value: number;
   paymentMethod: string;
+}
+
+export interface IMoneyDestination {
+  money_destination_id: string;
+  money_destination_unique_reference: string;
+  abbreviated_name: string;
+  description_use: string;
+  icon: string;
 }

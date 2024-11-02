@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { LuPaperclip } from "react-icons/lu";
 import { MdOutlineSend } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
@@ -29,6 +29,8 @@ export const Management = (props: IManagementProps) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const chatContentRef = useRef<HTMLDivElement>(null);
+
   const fetchData = useCallback(async () => {
     if (!id) return;
 
@@ -36,16 +38,13 @@ export const Management = (props: IManagementProps) => {
     setError(null);
 
     try {
-      const data = await getTraceByCreditRequestId(id).catch(
-        () => {
-          errorObserver.notify({
+      const data = await getTraceByCreditRequestId(id).catch(() => {
+        errorObserver.notify({
           id: "Management",
           message: "Error al obtener los datos de gestión.",
         });
         setError("No se encontraron datos.");
-        }
-      );
-
+      });
 
       if (data || (Array.isArray(data) && data.length > 0)) {
         const flattenedData: TraceType[] = Array.isArray(data[0])
@@ -73,6 +72,12 @@ export const Management = (props: IManagementProps) => {
   useEffect(() => {
     fetchData();
   }, [fetchData, updateData]);
+
+  useEffect(() => {
+    if (chatContentRef.current) {
+      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
+    }
+  }, [traces]);
 
   const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -113,7 +118,11 @@ export const Management = (props: IManagementProps) => {
   };
 
   return (
-    <Fieldset title="Gestión" heightFieldset="340px" aspectRatio="1">
+    <Fieldset
+      title="Gestión"
+      heightFieldset="340px"
+      aspectRatio={isMobile ? "auto" : "1"}
+    >
       {error ? (
         <ItemNotFound
           image={userNotFound}
@@ -125,7 +134,7 @@ export const Management = (props: IManagementProps) => {
         />
       ) : (
         <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
-          <ChatContent>
+          <ChatContent ref={chatContentRef}>
             {loading
               ? [...Array(5)].map((_, index) => (
                   <SkeletonContainer
@@ -145,7 +154,12 @@ export const Management = (props: IManagementProps) => {
                 ))}
           </ChatContent>
           <form>
-            <Stack alignItems="center" direction="row" gap="4px">
+            <Stack
+              alignItems="center"
+              direction="row"
+              gap="16px"
+              margin="2px 4px"
+            >
               <Icon
                 appearance="primary"
                 cursorHover

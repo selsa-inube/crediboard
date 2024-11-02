@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { MdOutlineThumbUp } from "react-icons/md";
 import { Tag } from "@inubekit/tag";
-import { Flag } from "@inubekit/flag";
+import { useFlag } from "@inubekit/flag";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
@@ -23,7 +22,6 @@ import {
 import { getById } from "@mocks/utils/dataMock.service";
 import userNotFound from "@assets/images/ItemNotFound.png";
 
-import { StyledMessageContainer } from "../styles";
 import { errorObserver } from "../config";
 
 const appearanceTag = (label: string) => {
@@ -48,10 +46,10 @@ export const Approvals = (props: IApprovalsProps) => {
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
-  const [showFlag, setShowFlag] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showRetry, setShowRetry] = useState(false);
 
+  const { addFlag } = useFlag();
   const fetchApprovals = useCallback(() => {
     setLoading(true);
     setError(null);
@@ -131,7 +129,12 @@ export const Approvals = (props: IApprovalsProps) => {
   );
 
   const handleSubmit = () => {
-    setShowFlag(true);
+    addFlag({
+      title: "Solicitud enviada",
+      description: "La solicitud ha sido enviada exitosamente para su aprobación.",
+      appearance: "success",
+      duration: 5000,
+    });
     setShowNotificationModal(false);
   };
   const handleCloseNotificationModal = () => {
@@ -148,7 +151,7 @@ export const Approvals = (props: IApprovalsProps) => {
         title="Aprobaciones"
         heightFieldset="277px"
         hasTable
-        aspectRatio="1"
+        aspectRatio={isMobile ? "auto" : "1"}
       >
         {showRetry ? (
           <ItemNotFound
@@ -186,19 +189,6 @@ export const Approvals = (props: IApprovalsProps) => {
           handleClose={handleCloseNotificationModal}
           onSubmit={handleSubmit}
         />
-      )}
-      {showFlag && (
-        <StyledMessageContainer>
-          <Flag
-            title="Solicitud enviada"
-            description="La solicitud ha sido enviada exitosamente para su aprobación."
-            appearance="success"
-            duration={5000}
-            icon={<MdOutlineThumbUp />}
-            isMessageResponsive
-            closeFlag={() => setShowFlag(false)}
-          />
-        </StyledMessageContainer>
       )}
       {showErrorModal && selectedData && (
         <TextAreaModal
