@@ -1,5 +1,6 @@
 import { Schedule, GracePeriodType, BorrowerProperties } from "@services/enums";
 interface Requests {
+  creditRequestId?: string;
   creditRequestCode: string;
   creditRequestDateOfCreation: string;
   loanAmount: number;
@@ -8,7 +9,7 @@ interface Requests {
   stage: DmEtapasPrs;
   moneyDestinationAbreviatedName: string;
   clientIdentificationNumber: string;
-  clientName: string; 
+  clientName: string;
   taskToBeDone: string;
 }
 
@@ -124,17 +125,18 @@ export type {
   TraceType,
 };
 
-export interface payroll_discount_authorization {
-  credit_request_id: string;
-  payroll_discount_authorization_id: string;
-  description_use: string;
-  abbreviated_name: string;
-  credit_product_id: string;
-  borrower_id: string;
-  state: string;
-  obligation_unique_code: string;
-  document_unique_code: string;
-  image_unique_code: string;
+export interface IPayrollDiscountAuthorization {
+  creditRequestId: string;
+  payrollDiscountAuthorizationId: string;
+  payrollDiscountAuthorizationCode: string;
+  descriptionUse: string;
+  abbreviatedName: string;
+  borrowerId: string;
+  borrowerName: string;
+  documentState: string;
+  obligationCode: string;
+  documentCode: string;
+  imageCode: string;
 }
 
 export interface Ipayment_capacity {
@@ -164,16 +166,18 @@ export interface Iuncovered_wallet {
   };
 }
 
-export interface promissory_note {
-  credit_request_id: string;
-  promissory_note_id: string;
-  description_use: string;
-  abbreviated_name: string;
-  credit_product_id: string;
-  state: string;
-  obligation_unique_code: string;
-  document_unique_code: string;
-  image_unique_code: string;
+export interface IPromissoryNotes {
+  creditRequestId: string;
+  payrollDiscountAuthorizationId: string;
+  payrollDiscountAuthorizationCode: string;
+  descriptionUse: string;
+  abbreviatedName: string;
+  borrowerId: string;
+  borrowerName: string;
+  documentState: string;
+  obligationCode: string;
+  documentCode: string;
+  imageCode: string;
 }
 
 export interface approval_by_credit_request_Mock {
@@ -289,15 +293,15 @@ export interface ICreditProductProspect {
 
 export interface IIncome {
   debtor_id: string;
-  debtor: string,
-  monthly_salary: number,
-  other_monthly_payments: number,
-  pension_allowances: number,
-  leases: number,
-  dividends_or_shares: number,
-  financial_returns: number,
-  average_monthly_profit: number,
-  monthly_fees: number,
+  debtor: string;
+  monthly_salary: number;
+  other_monthly_payments: number;
+  pension_allowances: number;
+  leases: number;
+  dividends_or_shares: number;
+  financial_returns: number;
+  average_monthly_profit: number;
+  monthly_fees: number;
 }
 
 export interface IBorrowerProperty {
