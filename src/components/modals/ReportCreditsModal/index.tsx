@@ -17,26 +17,37 @@ import {
   Tr,
 } from "@inubekit/table";
 import { Text } from "@inubekit/text";
-import { Textfield } from "@inubekit/textfield";
 import { Blanket } from "@inubekit/blanket";
 import { useMediaQuery } from "@inubekit/hooks";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
+import { Select } from "@inubekit/select";
+import { Detail } from "@pages/prospect/components/TableExtraordinaryInstallment/Detail";
 
 import { usePagination } from "./utils";
 import { headers, data, dataReport } from "./config";
-import { ActionModal } from "./Actions";
-import { Details } from "./Detail";
 import { StyledContainerClose, StyledContainer } from "./styles";
+import { NewPrice } from "./components/newPrice";
 
 export interface ReportCreditsModalProps {
   handleClose: () => void;
+  onChange: (name: string, newValue: string) => void;
+  options: { id: string; label: string; value: string }[];
+  totalBalance: number;
+  totalFee: number;
+  debtor: string;
   portalId?: string;
-  totalBalance?: number;
-  totalFee?: number;
 }
 
 export function ReportCreditsModal(props: ReportCreditsModalProps) {
-  const { portalId, handleClose, totalBalance, totalFee } = props;
+  const {
+    portalId,
+    handleClose,
+    onChange,
+    options,
+    totalBalance,
+    totalFee,
+    debtor,
+  } = props;
 
   const {
     totalRecords,
@@ -49,7 +60,6 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
   } = usePagination();
 
   const [loading, setLoading] = useState(true);
-  const [ModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -85,7 +95,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
         >
           <Stack justifyContent="space-between" alignItems="center" gap="15px">
             <Text size="small" type="headline">
-             {dataReport.title}
+              {dataReport.title}
             </Text>
             <StyledContainerClose onClick={handleClose}>
               <Stack alignItems="center" gap="8px">
@@ -103,12 +113,24 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
           {loading ? (
             <></>
           ) : (
-            <Stack justifyContent="end">
-              <Button
-                children={dataReport.addObligations}
-                iconBefore={<MdAdd />}
-                fullwidth={isMobile}
+            <Stack justifyContent="space-between">
+              <Select
+                id="income"
+                name="deudor"
+                label="Deudor"
+                placeholder="Seleccione una opción"
+                options={options}
+                value={debtor}
+                onChange={(name, value) => onChange(name, value)}
+                size="compact"
               />
+              <Stack alignItems="end">
+                <Button
+                  children={dataReport.addObligations}
+                  iconBefore={<MdAdd />}
+                  fullwidth={isMobile}
+                />
+              </Stack>
             </Stack>
           )}
           <Table tableLayout="auto">
@@ -174,7 +196,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
                             type={header.action ? "custom" : "text"}
                             align={header.action ? "center" : "left"}
                           >
-                            {header.action ? <Details /> : cellData}
+                            {header.action ? <Detail /> : cellData}
                           </Td>
                         );
                       })}
@@ -205,35 +227,22 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
               </Tfoot>
             )}
           </Table>
-          <Stack gap="15px" direction={!isMobile ? "row" : "column"}>
+          <Stack
+            gap="48px"
+            direction={!isMobile ? "row" : "column"}
+            justifyContent="end"
+          >
             {loading ? (
               <SkeletonLine />
             ) : (
-              <Textfield
-                id="field1"
-                label={dataReport.totalFee}
-                placeholder="$0"
-                size="compact"
-                type="number"
-                value={totalFee}
-                fullwidth
-              />
+              <NewPrice value={totalFee} label={dataReport.totalFee} />
             )}
             {loading ? (
               <SkeletonLine />
             ) : (
-              <Textfield
-                id="field2"
-                label={dataReport.totalBalance}
-                placeholder="$0"
-                size="compact"
-                type="number"
-                value={totalBalance}
-                fullwidth
-              />
+              <NewPrice value={totalBalance} label={dataReport.totalBalance} />
             )}
           </Stack>
-          {ModalOpen && <ActionModal onClose={() => setModalOpen(false)} />}
         </Stack>
       </StyledContainer>
     </Blanket>,

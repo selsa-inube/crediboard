@@ -3,6 +3,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 
 import { get, updateActive } from "@mocks/utils/dataMock.service";
 import { PinnedRequest, Requests } from "@services/types";
+import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
 import { AppContext } from "@context/AppContext";
 
 import { BoardLayoutUI } from "./interface";
@@ -25,7 +26,7 @@ function BoardLayout() {
   });
 
   const [filteredRequests, setFilteredRequests] = useState<Requests[]>([]);
-  const [errorLoadingPins, setErrorLoadingPins] = useState(false)
+  const [errorLoadingPins, setErrorLoadingPins] = useState(false);
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
@@ -36,36 +37,18 @@ function BoardLayout() {
       boardOrientation: orientation,
     }));
   }, [isMobile]);
-
+  
   useEffect(() => {
-    get("requests")
+    getCreditRequestInProgress()
       .then((data) => {
-        if (data && Array.isArray(data)) {
-          setBoardData((prevState) => ({
-            ...prevState,
-            boardRequests: data,
-          }));
-          setFilteredRequests(data);
-        }
+        setBoardData((prevState) => ({
+          ...prevState,
+          boardRequests: data,
+        }));
+        setFilteredRequests(data);
       })
       .catch((error) => {
-        console.error("Error fetching requests data:", error.message);
-      });
-  },[user.company]);
-
-  useEffect(() => {
-    get("requests")
-      .then((data) => {
-        if (data && Array.isArray(data)) {
-          setBoardData((prevState) => ({
-            ...prevState,
-            boardRequests: data,
-          }));
-          setFilteredRequests(data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching requests data:", error.message);
+        console.error("Error fetching requests data:", error);
       });
     get("requests-pinned")
       .then((data) => {
@@ -77,7 +60,7 @@ function BoardLayout() {
         }
       })
       .catch((error) => {
-        setErrorLoadingPins(true)
+        setErrorLoadingPins(true);
         console.error("Error fetching requests pinned data:", error.message);
       });
   }, []);
@@ -85,17 +68,17 @@ function BoardLayout() {
   useEffect(() => {
     const filteredRequests = boardData.boardRequests.filter((request) => {
       const isSearchMatch =
-        request.nnasocia
+        request.clientName
           .toLowerCase()
           .includes(filters.searchRequestValue.toLowerCase()) ||
-        request.k_Prospe.toString().includes(filters.searchRequestValue);
+        request.creditRequestCode.toString().includes(filters.searchRequestValue);
 
       const isPinned =
         !filters.showPinnedOnly ||
         boardData.requestsPinned
           .filter((req) => req.isPinned === "Y")
           .map((req) => req.requestId)
-          .includes(request.k_Prospe);
+          .includes(request.creditRequestCode);
 
       return isSearchMatch && isPinned;
     });
@@ -115,17 +98,17 @@ function BoardLayout() {
               "VERIFICACION_APROBACION",
               "FORMALIZACION_GARANTIAS",
               "TRAMITE_DESEMBOLSO",
-            ].includes(request.i_Estprs);
+            ].includes(request.stage);
           case "3":
-            return request.i_Estprs === "GESTION_COMERCIAL";
+            return request.stage === "GESTION_COMERCIAL";
           case "4":
-            return request.i_Estprs === "VERIFICACION_APROBACION";
+            return request.stage === "VERIFICACION_APROBACION";
           case "5":
-            return request.i_Estprs === "FORMALIZACION_GARANTIAS";
+            return request.stage === "FORMALIZACION_GARANTIAS";
           case "6":
-            return request.i_Estprs === "TRAMITE_DESEMBOLSO";
+            return request.stage === "TRAMITE_DESEMBOLSO";
           case "7":
-            return request.i_Estprs === "CUMPLIMIENTO_REQUISITOS";
+            return request.stage === "CUMPLIMIENTO_REQUISITOS";
           default:
             return false;
         }
@@ -150,7 +133,7 @@ function BoardLayout() {
     }
   };
 
-  const handlePinRequest = async (requestId: number) => {
+  const handlePinRequest = async (requestId: string) => {
     setBoardData((prevState) => ({
       ...prevState,
       requestsPinned: prevState.requestsPinned.map((request) => {

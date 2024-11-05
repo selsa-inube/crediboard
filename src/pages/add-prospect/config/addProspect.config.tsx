@@ -24,11 +24,11 @@ export const stepsAddProspect = {
     description:
       "Programe abonos para disminuir el pago ordinario o recortar plazo.",
   },
-  loanConditions: {
+  sourcesIncome: {
     id: 5,
     number: 5,
-    name: "Condiciones de préstamo",
-    description: "Condiciones para amortizar el préstamo.",
+    name: "Fuentes de ingreso",
+    description: "Actualice sus fuentes de ingreso para soportar capacidad de pago.",
   },
   obligationsCollected: {
     id: 6,
@@ -42,11 +42,10 @@ export const stepsAddProspect = {
     name: "Valor de la solicitud",
     description: "Detalles del valor de la solicitud",
   },
-  requestValue8: {
+  loanConditions: {
     id: 8,
     number: 8,
-    name: "Valor de la solicitud",
-    description: "Detalles del valor de la solicitud",
-    isVerification: true,
+    name: "Condiciones de préstamo",
+    description: "Condiciones para amortizar el préstamo.",
   },
 };

@@ -4,7 +4,6 @@ import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
 import { Icon } from "@inubekit/icon";
-import { useMediaQuery } from "@inubekit/hooks";
 
 import { StyledContainer, StyledTextField, StyledSupport } from "./styles";
 
@@ -19,8 +18,6 @@ interface SourcesModalProps {
 export function Sources(props: SourcesModalProps) {
   const { title, labels, placeholders, values, onChange } = props;
 
-  const isMobile = useMediaQuery("(max-width:880px)");
-
   return (
     <StyledContainer>
       <Stack
@@ -28,7 +25,6 @@ export function Sources(props: SourcesModalProps) {
         padding="16px"
         height="318px"
         gap="8px"
-        width={!isMobile ? "285px" : "260px"}
       >
         <Text size="medium" type="title" weight="bold">
           {title}

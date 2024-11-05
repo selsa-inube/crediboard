@@ -33,7 +33,7 @@ interface BoardLayoutProps {
   showPinnedOnly: boolean;
   pinnedRequests: PinnedRequest[];
   handleSelectCheckChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handlePinRequest: (requestId: number) => void;
+  handlePinRequest: (requestId: string) => void;
   handleShowPinnedOnly: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
@@ -61,7 +61,6 @@ function BoardLayoutUI(props: BoardLayoutProps) {
   const [showErrorAlert, setShowErrorAlert] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const stackRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -106,29 +105,31 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           <Stack
             justifyContent="space-between"
             width={isMobile ? "100%" : "auto"}
-            margin={isMobile ? "s100 s0" : "auto"}
+            margin={isMobile ? "8px 0px" : "auto"}
           >
-            <StyledSearch
-              ref={stackRef}
-              $isMobile={isMobile}
-              $isExpanded={isExpanded}
-              onClick={() => {
-                if (!isExpanded) setIsExpanded(true);
-              }}
-            >
-              <Stack width="100%">
-                <Textfield
-                  id="SearchCards"
-                  name="SearchCards"
-                  placeholder={isMobile ? "" : "Buscar..."}
-                  size="compact"
-                  iconAfter={<MdSearch />}
-                  value={searchRequestValue}
-                  onChange={handleSearchRequestsValue}
-                  fullwidth
-                />
-              </Stack>
-            </StyledSearch>
+            {isMobile && (
+              <StyledSearch
+                ref={stackRef}
+                $isMobile={isMobile}
+                $isExpanded={isExpanded}
+                onClick={() => {
+                  if (!isExpanded) setIsExpanded(true);
+                }}
+              >
+                <Stack width="100%">
+                  <Textfield
+                    id="SearchCardsMobile"
+                    name="SearchCardsMobile"
+                    placeholder=""
+                    size="compact"
+                    iconAfter={<MdSearch />}
+                    value={searchRequestValue}
+                    onChange={handleSearchRequestsValue}
+                    fullwidth
+                  />
+                </Stack>
+              </StyledSearch>
+            )}
             {isMobile && (
               <Stack alignItems="center">
                 <Icon
@@ -151,53 +152,68 @@ function BoardLayoutUI(props: BoardLayoutProps) {
           <Stack
             width="100%"
             justifyContent={isMobile ? "end" : "space-between"}
-            alignItems="center"
-            margin={isMobile ? "s200 s0" : "auto"}
+            margin={isMobile ? "16px 0px" : "auto"}
           >
-            <Stack width={isMobile ? "100%" : "500px"}>
-              <Selectcheck {...selectProps} />
+            <Stack width={isMobile ? "100%" : "400px"}>
+              <Selectcheck size="compact" {...selectProps} />
             </Stack>
-            <Stack gap="16px">
-              {!isMobile && (
-                <Stack gap="8px" alignItems="center">
-                  <Icon
-                    icon={<MdOutlinePushPin />}
-                    appearance="dark"
-                    size="24px"
-                  />
-                  <Text type="label">{seePinned.viewPinned}</Text>
-                  <Toggle
-                    id="SeePinned"
-                    name="SeePinned"
-                    size="large"
-                    checked={showPinnedOnly}
-                    onChange={handleShowPinnedOnly}
-                    disabled={errorLoadingPins}
-                  />
-                </Stack>
-              )}
-              {!isMobile && (
-                <Stack gap="8px">
-                  <Icon
-                    icon={<RxDragHandleVertical />}
-                    appearance={
-                      boardOrientation === "vertical" ? "dark" : "gray"
-                    }
-                    size="24px"
-                    cursorHover
-                    onClick={() => onOrientationChange("vertical")}
-                  />
-                  <Icon
-                    icon={<RxDragHandleHorizontal />}
-                    appearance={
-                      boardOrientation === "horizontal" ? "dark" : "gray"
-                    }
-                    size="24px"
-                    cursorHover
-                    onClick={() => onOrientationChange("horizontal")}
-                  />
-                </Stack>
-              )}
+            {!isMobile && (
+              <Stack width="400px" alignItems="end">
+                <Textfield
+                  id="SearchCardsDesktop"
+                  name="SearchCardsDesktop"
+                  placeholder="Buscar..."
+                  size="compact"
+                  iconAfter={<MdSearch />}
+                  value={searchRequestValue}
+                  onChange={handleSearchRequestsValue}
+                  fullwidth
+                />
+              </Stack>
+            )}
+            <Stack alignItems="center" margin="25px 0px 0px">
+              <Stack gap="16px">
+                {!isMobile && (
+                  <Stack gap="8px">
+                    <Icon
+                      icon={<MdOutlinePushPin />}
+                      appearance="dark"
+                      size="24px"
+                    />
+                    <Text type="label">{seePinned.viewPinned}</Text>
+                    <Toggle
+                      id="SeePinned"
+                      name="SeePinned"
+                      size="large"
+                      checked={showPinnedOnly}
+                      onChange={handleShowPinnedOnly}
+                      disabled={errorLoadingPins}
+                    />
+                  </Stack>
+                )}
+                {!isMobile && (
+                  <Stack gap="8px">
+                    <Icon
+                      icon={<RxDragHandleVertical />}
+                      appearance={
+                        boardOrientation === "vertical" ? "dark" : "gray"
+                      }
+                      size="24px"
+                      cursorHover
+                      onClick={() => onOrientationChange("vertical")}
+                    />
+                    <Icon
+                      icon={<RxDragHandleHorizontal />}
+                      appearance={
+                        boardOrientation === "horizontal" ? "dark" : "gray"
+                      }
+                      size="24px"
+                      cursorHover
+                      onClick={() => onOrientationChange("horizontal")}
+                    />
+                  </Stack>
+                )}
+              </Stack>
             </Stack>
           </Stack>
         </StyledInputsContainer>
@@ -212,7 +228,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
               sectionBackground={column.sectionBackground}
               orientation={boardOrientation}
               sectionInformation={BoardRequests.filter(
-                (request) => request.i_Estprs === column.id
+                (request) => request.stage === column.id
               )}
               pinnedRequests={pinnedRequests}
               handlePinRequest={handlePinRequest}

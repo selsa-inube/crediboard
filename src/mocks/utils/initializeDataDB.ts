@@ -6,7 +6,10 @@ import { mockRequests as mockRequestsDefault } from "@mocks/requests/requests.mo
 import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
 import { mockStaff as mockStaffDefault } from "@mocks/staff/staff.mock";
 import { mockToDo } from "@mocks/financial-reporting/to-do/toDo.mock";
-import { mockRangeRequeredByTheBusinessUnit, mockRiskScoring } from "@mocks/credit-profile/risk-scoring/riskScoring.mock";
+import {
+  mockRangeRequeredByTheBusinessUnit,
+  mockRiskScoring,
+} from "@mocks/credit-profile/risk-scoring/riskScoring.mock";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 import { promissory_note } from "@mocks/promissoryNotes/promissory_note.mock";
 import { payroll_discount_authorization } from "@mocks/promissoryNotes/payroll_discount_authorization.mock";
@@ -18,6 +21,7 @@ import { credit_profileInfo } from "@mocks/creditProfileInfo/creditProfileInfo.m
 import { uncovered_wallet } from "@mocks/creditProfileInfo/uncoveredWallet.mock";
 import { payment_capacity } from "@mocks/creditProfileInfo/paymentCapacity.mock";
 import { credit_behavior } from "@mocks/creditProfileInfo/creditBehavior.mock";
+import { mockMoneyDestinations } from "@mocks/add-prospect/money-destinations/moneydestinations.mock";
 
 import {
   mockRequests,
@@ -79,5 +83,9 @@ export function initializeDataDB(company: string) {
   intializedData("credit_behavior", credit_behavior);
   intializedData("prospects", mockProspectCredit);
   intializedData("requirements", requirementsMock(company));
-  intializedData("range_requered_Business_Unit", mockRangeRequeredByTheBusinessUnit);
+  intializedData(
+    "range_requered_Business_Unit",
+    mockRangeRequeredByTheBusinessUnit
+  );
+  intializedData("money_destinations", mockMoneyDestinations);
 }

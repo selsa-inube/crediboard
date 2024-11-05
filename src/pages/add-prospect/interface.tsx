@@ -3,12 +3,13 @@ import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 
-import { LoanCondition } from "@components/inputs/LoanConditions";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 
 import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
+
 import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
+
 import {
   IFormAddPosition,
   IFormAddPositionRef,
@@ -17,6 +18,10 @@ import {
 } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
+import { ProductSelection } from "./steps/ProductSelection";
+import { SourcesOfIncome } from "./steps/sourcesOfIncome";
+import { MoneyDestination } from "./steps/MoneyDestination";
+import { LoanCondition } from "./steps/loanCondition";
 
 interface StepDetails {
   id: number;
@@ -85,6 +90,18 @@ export function AddProspectUI(props: AddPositionUIProps) {
             <ExtraordinaryInstallments
               dataTable={extraordinaryInstallmentMock}
             />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.destination.id && (
+            <MoneyDestination />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.productSelection.id && (
+            <ProductSelection />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.sourcesIncome.id && (
+            <SourcesOfIncome />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
