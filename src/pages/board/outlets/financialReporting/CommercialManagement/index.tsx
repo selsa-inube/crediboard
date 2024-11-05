@@ -39,8 +39,8 @@ import { ICreditProductProspect, Requests } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
 import { menuOptions, incomeOptions } from "./config/config";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
-import { addCreditProduct } from "@src/mocks/utils/addCreditProductMock.service"
-import { ExtraordinaryPaymentModal } from "@src/pages/prospect/components/ExtraordinaryPaymentModal";
+import { addCreditProduct } from "@mocks/utils/addCreditProductMock.service";
+import { ExtraordinaryPaymentModal } from "@pages/prospect/components/ExtraordinaryPaymentModal";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
 import {
@@ -61,6 +61,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const { data, children, print, isPrint } = props;
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [updatedChildren, setUpdatedChildren] = useState(children);
   const [openModal, setOpenModal] = useState<string | null>(null);
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [prospectProducts, setProspectProducts] =
@@ -133,6 +134,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       newHistory.pop();
       return newHistory;
     });
+    setUpdatedChildren(children);
   };
 
   const handleGoBackOrCloseModal = () => {
@@ -145,17 +147,17 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
 
   const handleConfirm = async (values: FormikValues) => {
     if (!id) {
-      console.error('ID no está definido');
+      console.error("ID no está definido");
       return;
     }
-  
+
     const result = await addCreditProduct(id, values, mockProspectCredit);
-  
+
     if (result) {
       handleCloseModal();
     }
   };
-  
+
   const currentModal = modalHistory[modalHistory.length - 1];
 
   return (
@@ -346,7 +348,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   </StyledContainerIcon>
                 </Stack>
               )}
-              <Stack direction="column">{children}</Stack>
+              <Stack direction="column">{updatedChildren}</Stack>
             </Stack>
           )}
         </Stack>
