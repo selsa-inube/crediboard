@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { MdOutlineThumbUp } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
-import { Flag } from "@inubekit/flag";
+import { useFlag } from "@inubekit/flag";
 import { Tag } from "@inubekit/tag";
 
 import { Fieldset } from "@components/data/Fieldset";
@@ -23,8 +22,8 @@ import {
   titlesFinanacialReporting,
   infoItems,
 } from "./config";
-import { StyledMessageContainer } from "../styles";
-import { errorObserver } from "../config"; 
+import userNotFound from "@assets/images/ItemNotFound.png";
+import { errorObserver } from "../config";
 
 interface IPromissoryNotesProps {
   user: string;
@@ -33,11 +32,11 @@ interface IPromissoryNotesProps {
 
 export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const { user, isMobile } = props;
+  const { addFlag } = useFlag();
 
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>([]);
-  const [showFlag, setShowFlag] = useState(false);
   const [showRetry, setShowRetry] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -66,7 +65,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
           if (result.status === "fulfilled") {
             return result.value as payroll_discount_authorization[];
           } else {
-            console.error(result.reason); 
+            console.error(result.reason);
             setErrorMessage("Error al obtener los datos de Pagarés y Libranzas");
           }
           return [];
@@ -91,22 +90,21 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
 
       setDataPromissoryNotes(dataPromissoryNotes);
       setLoading(false);
-      
     } catch (err) {
       if (err instanceof Error) {
-      errorObserver.notify({
-        id: "PromissoryNotes",
-        message: err.message,
-      });
+        errorObserver.notify({
+          id: "PromissoryNotes",
+          message: err.message,
+        });
 
-      setErrorMessage(errorMessage); 
-      setTimeout(() => {
-        setShowRetry(true);
-        setLoading(false);
-      }, 5000);
+        setErrorMessage(err.message); 
+        setTimeout(() => {
+          setShowRetry(true);
+          setLoading(false);
+        }, 5000);
+      }
     }
-  }
-  }, [user, errorMessage]);
+  }, [user]);
 
   useEffect(() => {
     fetchData();
@@ -124,7 +122,12 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   };
 
   const handleSubmit = () => {
-    setShowFlag(true);
+    addFlag({
+      title: "Datos enviados",
+      description: "Los datos del usuario han sido enviados exitosamente.",
+      appearance: "success",
+      duration: 5000,
+    });
     setShowModal(false);
   };
 
@@ -135,28 +138,31 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const handleRetry = () => {
     setLoading(true);
     setShowRetry(false);
-    fetchData(); 
+    fetchData();
   };
 
   return (
-    <>
       <Fieldset
         title="Pagarés y Libranzas"
-        heightFieldset="163px"
-        aspectRatio="1"
+        heightFieldset="127px"
+        aspectRatio={isMobile ? "auto" : "1"}
         hasOverflow
         hasTable
       >
-        <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
-          {showRetry ? (
-            <UnfoundData
-              title="Error al cargar datos"
-              description={errorMessage || "Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."}
-              buttonDescription="Volver a intentar"
-              route="/retry-path"
-              onRetry={handleRetry}
-            />
-          ) : (
+        {showRetry ? (
+          <UnfoundData
+            image={userNotFound}
+            title="Error al cargar datos"
+            description={
+              errorMessage ||
+              "Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."
+            }
+            buttonDescription="Volver a intentar"
+            route="/retry-path"
+            onRetry={handleRetry}
+          />
+        ) : (
+          <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
             <TableBoard
               id="promissoryNotes"
               titles={titlesFinanacialReporting}
@@ -165,7 +171,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
               actionMobile={tableBoardActionMobile}
               loading={loading}
               appearanceTable={{
-                widthTd: isMobile ? "23%" : undefined, 
+                widthTd: isMobile ? "23%" : undefined,
                 efectzebra: true,
                 title: "primary",
                 isStyleMobile: true,
@@ -173,32 +179,18 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
               isFirstTable={true}
               infoItems={infoItems}
             />
-          )}
 
-          {showModal && (
-            <PromissoryNotesModal
-              title="Confirma los datos del usuario"
-              buttonText="Enviar"
-              formValues={formValues}
-              handleClose={handleCloseModal}
-              onSubmit={handleSubmit}
-            />
-          )}
-          {showFlag && (
-            <StyledMessageContainer>
-              <Flag
-                title="Datos enviados"
-                description="Los datos del usuario han sido enviados exitosamente."
-                appearance="success"
-                duration={5000}
-                icon={<MdOutlineThumbUp />}
-                isMessageResponsive
-                closeFlag={() => setShowFlag(false)}
+            {showModal && (
+              <PromissoryNotesModal
+                title="Confirma los datos del usuario"
+                buttonText="Enviar"
+                formValues={formValues}
+                handleClose={handleCloseModal}
+                onSubmit={handleSubmit}
               />
-            </StyledMessageContainer>
-          )}
-        </Stack>
+            )}
+          </Stack>
+        )}
       </Fieldset>
-    </>
   );
 };

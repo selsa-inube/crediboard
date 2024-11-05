@@ -6,11 +6,12 @@ const enviroment = {
   CLIENT_SECRET: import.meta.env.VITE_AUTH0_CLIENT_SECRET,
   AUTH0_DOMAIN: import.meta.env.VITE_AUTH0_DOMAIN,
   REDIRECT_URI: IS_PRODUCTION ? AUTH_REDIRECT_URI : window.location.origin,
-  TEMP_BUSINESS_UNIT: import.meta.env.VITE_BUSINESS_UNIT,
+  TEMP_BUSINESS_UNIT: "test",
+  BUSINESS_UNIT: import.meta.env.VITE_BUSINESS_UNIT,
   ICOREBANKING_API_URL_QUERY: import.meta.env.VITE_ICOREBANKING_API_URL_QUERY,
 };
 
 const maxRetriesServices = 5;
 const fetchTimeoutServices = 3000;
 
-export { enviroment, maxRetriesServices, fetchTimeoutServices };
+export { enviroment, fetchTimeoutServices, maxRetriesServices };

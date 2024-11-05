@@ -1,6 +1,10 @@
-import { useState } from "react";
 import { createPortal } from "react-dom";
-import { MdClear, MdOutlineVisibility, MdInfoOutline } from "react-icons/md";
+import {
+  MdClear,
+  MdOutlineVisibility,
+  MdInfoOutline,
+  MdCached,
+} from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
@@ -10,7 +14,6 @@ import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
 
 import { currencyFormat } from "@utils/formatData/currency";
-import { PaymentCapacity } from "@src/components/modals/PaymentCapacityModal";
 
 import { creditLimitTexts } from "./creditLimitConfig";
 import { StyledContainerClose, StyledModal, StyledList } from "./styles";
@@ -26,6 +29,9 @@ export interface ICreditLimitProps {
   currentPortfolio: number;
   maxUsableLimit: number;
   availableLimitWithoutGuarantee: number;
+  onOpenPaymentCapacityModal?: () => void;
+  onOpenReciprocityModal?: () => void;
+  onOpenFrcModal?: () => void;
 }
 
 export const CreditLimit = (props: ICreditLimitProps) => {
@@ -40,6 +46,9 @@ export const CreditLimit = (props: ICreditLimitProps) => {
     currentPortfolio,
     maxUsableLimit,
     availableLimitWithoutGuarantee,
+    onOpenPaymentCapacityModal,
+    onOpenReciprocityModal,
+    onOpenFrcModal,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -50,16 +59,6 @@ export const CreditLimit = (props: ICreditLimitProps) => {
   }
 
   const isMobile = useMediaQuery("(max-width: 700px)");
-
-  const [isIncomeModalOpen, setIncomeModalOpen] = useState(false);
-
-  const openIncomeModal = () => {
-    setIncomeModalOpen(true);
-  };
-
-  const closeIncomeModal = () => {
-    setIncomeModalOpen(false);
-  };
 
   return createPortal(
     <Blanket>
@@ -104,12 +103,12 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                       <Icon
                         appearance="primary"
                         icon={<MdOutlineVisibility />}
-                        size="12px"
-                        spacing="none"
+                        size="16px"
+                        spacing="narrow"
                         cursorHover={true}
                         variant="filled"
                         shape="circle"
-                        onClick={openIncomeModal}
+                        onClick={onOpenPaymentCapacityModal}
                       />
                     </Stack>
                   </Stack>
@@ -135,11 +134,12 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                       <Icon
                         appearance="primary"
                         icon={<MdOutlineVisibility />}
-                        size="12px"
-                        spacing="none"
+                        size="16px"
+                        spacing="narrow"
                         cursorHover={true}
                         variant="filled"
                         shape="circle"
+                        onClick={onOpenReciprocityModal}
                       />
                     </Stack>
                   </Stack>
@@ -170,11 +170,12 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                       <Icon
                         appearance="primary"
                         icon={<MdOutlineVisibility />}
-                        size="12px"
-                        spacing="none"
+                        size="16px"
+                        spacing="narrow"
                         cursorHover
                         variant="filled"
                         shape="circle"
+                        onClick={onOpenFrcModal}
                       />
                     </Stack>
                   </Stack>
@@ -213,10 +214,10 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               appearance="primary"
               icon={<MdInfoOutline />}
               size="16px"
-              spacing="none"
+              spacing="narrow"
             />
             <Text margin="0px 5px" size="small">
-              {creditLimitTexts.maxUsableLimitNote}
+              {creditLimitTexts.maxUsableQuote}
             </Text>
           </Stack>
 
@@ -263,23 +264,11 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             variant="filled"
             appearance="primary"
             fullwidth={isMobile}
+            iconBefore={<MdCached />}
           >
             {creditLimitTexts.closeButton}
           </Button>
         </Stack>
-        {isIncomeModalOpen && (
-          <PaymentCapacity
-            title="Cupo máx. capacidad de pago"
-            portalId={portalId}
-            handleClose={closeIncomeModal}
-            reportedIncomeSources={2000000}
-            reportedFinancialObligations={6789000}
-            subsistenceReserve={2000000}
-            availableForNewCommitments={5000000}
-            maxVacationTerm={12}
-            maxAmount={1000000}
-          />
-        )}
       </StyledModal>
     </Blanket>,
     node

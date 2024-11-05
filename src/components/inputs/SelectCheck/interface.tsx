@@ -13,6 +13,7 @@ import { OptionItemChecked } from "./OptionItem";
 import { OptionList } from "./OptionList";
 import { Size } from "./types";
 import { StyledContainer, StyledInputContainer, StyledInput } from "./styles";
+import { textConfig } from "./config";
 import { ISelectcheckProps } from ".";
 
 export interface ISelectcheckUIProps extends ISelectcheckProps {
@@ -99,9 +100,9 @@ export const SelectcheckUI = forwardRef<HTMLDivElement, ISelectcheckUIProps>(
               {label}
             </Label>
 
-            {!disabled && (
+            {required && !disabled && (
               <Text type="body" size="small" appearance="dark">
-                (Requerido)
+                {textConfig.requiredText}
               </Text>
             )}
           </Stack>
@@ -138,7 +139,7 @@ export const SelectcheckUI = forwardRef<HTMLDivElement, ISelectcheckUIProps>(
               appearance="dark"
               icon={<MdOutlineArrowDropDown />}
               size="24px"
-              spacing="none"
+              spacing="narrow"
               disabled={disabled}
             />
           )}

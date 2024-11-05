@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react";
+import { FlagProvider } from "@inubekit/flag";
 import {
   Route,
   RouterProvider,
@@ -10,13 +11,14 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Login } from "@pages/login";
 import { initializeDataDB } from "@mocks/utils/initializeDataDB";
 import { ErrorPage } from "@components/layout/ErrorPage";
-import AppContextProvider, { AppContext } from "@context/AppContext";
+import { AppContext } from "@context/AppContext/AppContext";
+import AppContextProvider from "@context/AppContext";
 
 import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
+import { AddProspectRoutes } from "./routes/assistedRoutes";
 import { GlobalStyles } from "./styles/global";
 import { enviroment } from "./config/environment";
-
 
 function LogOut() {
   localStorage.clear();
@@ -37,6 +39,7 @@ const router = createBrowserRouter(
       <Route path="*" element={<FirstPage />} errorElement={<ErrorPage />} />
       <Route path="login/*" element={<LoginRoutes />} />
       <Route path="/*" element={<BoardRoutes />} />
+      <Route path="add-prospect/*" element={<AddProspectRoutes />} />
       <Route path="logout" element={<LogOut />} />
     </>
   )
@@ -56,8 +59,10 @@ function App() {
   }
   return (
     <AppContextProvider>
-      <GlobalStyles />
-      <RouterProvider router={router} />
+      <FlagProvider>
+        <GlobalStyles />
+        <RouterProvider router={router} />
+      </FlagProvider>
     </AppContextProvider>
   );
 }

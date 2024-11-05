@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { MdOutlineThumbUp } from "react-icons/md";
-import { Flag } from "@inubekit/flag";
+
+import { useFlag } from "@inubekit/flag";
 
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
@@ -26,7 +26,6 @@ import { enviroment } from "@config/environment";
 
 import { errorObserver } from "../config";
 import { IApprovals } from "./types";
-import { StyledMessageContainer } from "../styles";
 
 interface IApprovalsProps {
   user: string;
@@ -36,15 +35,20 @@ interface IApprovalsProps {
 export const Approvals = (props: IApprovalsProps) => {
   const { user, isMobile } = props;
   const [approvalsEntries, setApprovalsEntries] = useState<IEntries[]>([]);
-
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
-  const [showFlag, setShowFlag] = useState(false);
 
   const [retryFlag, setRetryFlag] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const { data, error, loading } = useFetch<IApprovals[]>(
+  const { addFlag } = useFlag();
+
+  const {
+    data,
+    error: fetchError,
+    loading,
+  } = useFetch<IApprovals[]>(
     `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/aprovals/97a2c93e-69a1-46bc-9203-99be56cd5047`,
     optionsFetch,
     retryFlag
@@ -56,13 +60,14 @@ export const Approvals = (props: IApprovalsProps) => {
       setApprovalsEntries(entries);
     }
 
-    if (error) {
+    if (fetchError) {
       errorObserver.notify({
         id: "Approvals",
-        message: error.toString(),
+        message: fetchError.toString(),
       });
+      setError(fetchError.toString());
     }
-  }, [data, user, error]);
+  }, [data, user, fetchError]);
 
   const handleNotificationClickBound = (data: IEntries) => {
     handleNotificationClick(data, setSelectedData, setShowNotificationModal);
@@ -85,9 +90,16 @@ export const Approvals = (props: IApprovalsProps) => {
   );
 
   const handleSubmit = () => {
-    setShowFlag(true);
+    addFlag({
+      title: "Solicitud enviada",
+      description:
+        "La solicitud ha sido enviada exitosamente para su aprobación.",
+      appearance: "success",
+      duration: 5000,
+    });
     setShowNotificationModal(false);
   };
+
   const handleCloseNotificationModal = () => {
     setShowNotificationModal(false);
   };
@@ -102,13 +114,13 @@ export const Approvals = (props: IApprovalsProps) => {
         title="Aprobaciones"
         heightFieldset="277px"
         hasTable
-        aspectRatio="1"
+        aspectRatio={isMobile ? "auto" : "1"}
       >
         {error ? (
           <ItemNotFound
             image={userNotFound}
             title="Error al cargar datos"
-            description={error.toString() || "No se encontraron datos."}
+            description={error}
             buttonDescription="Volver a intentar"
             route="/retry-path"
             onRetry={handleRetry}
@@ -140,19 +152,6 @@ export const Approvals = (props: IApprovalsProps) => {
           handleClose={handleCloseNotificationModal}
           onSubmit={handleSubmit}
         />
-      )}
-      {showFlag && (
-        <StyledMessageContainer>
-          <Flag
-            title="Solicitud enviada"
-            description="La solicitud ha sido enviada exitosamente para su aprobación."
-            appearance="success"
-            duration={5000}
-            icon={<MdOutlineThumbUp />}
-            isMessageResponsive
-            closeFlag={() => setShowFlag(false)}
-          />
-        </StyledMessageContainer>
       )}
       {showErrorModal && selectedData && (
         <TextAreaModal
