@@ -15,9 +15,11 @@
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
     "@inube/design-system": "^5.15.0",
+    "@inubekit/assisted": "^7.10.0",
     "@inubekit/avatar": "^2.9.1",
     "@inubekit/blanket": "^2.22.0",
     "@inubekit/button": "^4.19.0",
+    "@inubekit/datefield": "^2.39.0",
     "@inubekit/divider": "^0.2.0",
     "@inubekit/flag": "^7.6.0",
     "@inubekit/foundations": "^5.11.3",

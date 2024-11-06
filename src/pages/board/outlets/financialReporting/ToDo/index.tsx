@@ -12,12 +12,12 @@ import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo } from "@services/types";
-import { get, getById, addItem } from "@mocks/utils/dataMock.service";
+import { TextAreaModal } from "@components/modals/TextAreaModal";
+import { get, getById } from "@mocks/utils/dataMock.service";
 import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StaffModal } from "./StaffModal";
-import { traceObserver } from "../config";
-import { errorMessagge, FlagMessage, flagMessages, buttonText } from "./config";
+import { errorMessagge, buttonText } from "./config";
 import { errorObserver } from "../config";
 
 interface IICon {
@@ -41,10 +41,11 @@ interface ToDoProps {
 }
 
 function ToDo(props: ToDoProps) {
-  const { icon, button, isMobile, id, user } = props;
+  const { icon, button, isMobile, id } = props;
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
   const [toDo, setToDo] = useState<IToDo[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [assignedStaff, setAssignedStaff] = useState({
     commercialManager: "",
     analyst: "",
@@ -146,43 +147,10 @@ function ToDo(props: ToDoProps) {
   };
 
   const handleSend = async () => {
-    if (button?.onClick) button.onClick();
-
-    const flagMessagesMap: Record<string, FlagMessage> = {
-      Aceptar: flagMessages.success,
-      Rechazar: flagMessages.error,
-      Pendiente: flagMessages.pending,
-      Default: flagMessages.default,
-    };
-
-    const msgFlag =
-      flagMessagesMap[decisionValue.decision] || flagMessagesMap.Default;
-
-    addFlag({
-      title: msgFlag.title,
-      description: msgFlag.description,
-      appearance: msgFlag.appearance,
-      duration: 5000,
-    });
-
-    const trace = {
-      trace_value: "Decision_made",
-      credit_request_id: id,
-      use_case: "decision_made",
-      user_id: user,
-      execution_date: new Date().toISOString(),
-      justification: decisionValue.decision,
-      decision_taken_by_user: decisionValue.decision,
-      trace_type: "executed_task",
-      read_novelty: "",
-    };
-
-    try {
-      await addItem("trace", trace);
-      traceObserver.notify(trace);
-    } catch (error) {
-      console.error("Error al enviar la decisión:", error);
-    }
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -190,9 +158,9 @@ function ToDo(props: ToDoProps) {
       <Fieldset
         title="Por hacer"
         descriptionTitle={assignedStaff.commercialManager}
-        heightFieldset="277px"
+        heightFieldset="241px"
         hasOverflow
-        aspectRatio="1"
+        aspectRatio={isMobile ? "auto" : "1"}
       >
         {toDo.length === 0 ? (
           <ItemNotFound
@@ -268,6 +236,18 @@ function ToDo(props: ToDoProps) {
               alignItems="center"
               padding="8px 0px 0px 0px"
             >
+              {isModalOpen && (
+                <TextAreaModal
+                title="Confirmar la decisión"
+                buttonText="Enviar"
+                secondaryButtonText="Cancelar"
+                inputLabel="Justificación"
+                maxLength={120}
+                inputPlaceholder="Describa el motivo de su decisión."
+                onSecondaryButtonClick={handleCloseModal}
+                onCloseModal={handleCloseModal}
+              />
+              )}
               <Stack direction="column" width="100%" alignItems="end">
                 {icon && isMobile && (
                   <Icon
