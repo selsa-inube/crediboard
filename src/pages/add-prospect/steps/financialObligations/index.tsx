@@ -1,4 +1,4 @@
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdCached } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Text } from "@inubekit/text";
@@ -14,8 +14,8 @@ export function ObligationsFinancial() {
 
   return (
     <Fieldset>
-      <Stack direction="column" height="auto" gap="15px">
-        <Stack direction="column">
+      <Stack direction="column" height="auto" gap="20px" padding="16px">
+        <Stack direction="column" gap="8px">
           <Stack alignItems="center">
             <Text size="small" type="label" appearance="gray" weight="bold">
               {dataReport.title}
@@ -25,12 +25,23 @@ export function ObligationsFinancial() {
             <Text size="medium" type="title" appearance="dark">
               {dataReport.description}
             </Text>
-            <Stack justifyContent="end">
-              <Button
-                children={dataReport.addObligations}
-                iconBefore={<MdAdd />}
-                fullwidth={isMobile}
-              />
+            <Stack justifyContent="end" gap="16px">
+              <Stack>
+                <Button
+                  children="Restablecer"
+                  iconBefore={<MdCached />}
+                  fullwidth={isMobile}
+                  variant="outlined"
+                  spacing="wide"
+                />
+              </Stack>
+              <Stack>
+                <Button
+                  children={dataReport.addObligations}
+                  iconBefore={<MdAdd />}
+                  fullwidth={isMobile}
+                />
+              </Stack>
             </Stack>
           </Stack>
         </Stack>
