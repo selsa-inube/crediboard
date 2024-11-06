@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { cloneElement, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   MdOutlineAdd,
@@ -58,7 +58,7 @@ interface ComercialManagementProps {
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { data, children, print, isPrint } = props;
+  const { data, children = <Stack />, print, isPrint } = props;
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [updatedChildren, setUpdatedChildren] = useState(children);
@@ -134,7 +134,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       newHistory.pop();
       return newHistory;
     });
-    setUpdatedChildren(children);
+    setUpdatedChildren(cloneElement(children));
   };
 
   const handleGoBackOrCloseModal = () => {
