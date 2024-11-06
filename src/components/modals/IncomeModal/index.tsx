@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { MdClear,  } from "react-icons/md";
+import { MdClear } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Grid } from "@inubekit/grid";
 import { Button } from "@inubekit/button";
 import { Icon } from "@inubekit/icon";
-import { Select } from "@inubekit/select";
 import { Blanket } from "@inubekit/blanket";
 
-import { IncomeEmployment, IncomeCapital, MicroBusinesses } from "./config";
 import { StyledContainer, StyledContainerClose } from "./styles";
+import { IncomeCard } from "@src/components/cards/IncomeCard";
 
 interface IncomeModalProps {
   form: {
@@ -25,29 +23,17 @@ interface IncomeModalProps {
     financial_returns?: number;
     average_monthly_profit?: number;
     monthly_fees?: number;
-    total?: number;
   };
   onChange: (name: string, newValue: string) => void;
   options: { id: string; label: string; value: string }[];
   portalId?: string;
-  handleClose: () => void;
+  handleClose?: () => void;
 }
 
 export function IncomeModal(props: IncomeModalProps) {
   const { form, onChange, options, portalId, handleClose } = props;
 
   const [isFormComplete, setIsFormComplete] = useState(false);
-
-  const handleFieldChange = (
-    fields: string[],
-    index: number,
-    newValue: string
-  ) => {
-    const field = fields[index];
-    if (field) {
-      onChange(field, newValue);
-    }
-  };
 
   useEffect(() => {
     const allFieldsFilled = [
@@ -77,7 +63,12 @@ export function IncomeModal(props: IncomeModalProps) {
   return createPortal(
     <Blanket>
       <StyledContainer $smallScreen={isMobile}>
-        <Stack direction="column" padding="16px 24px" gap="16px">
+        <Stack
+          direction="column"
+          padding="16px 24px"
+          gap="16px"
+          width={isMobile ? "auto" : "1002px"}
+        >
           <Stack justifyContent="space-between" alignItems="center">
             <Text size="small" type="headline">
               Fuentes de ingreso
@@ -95,90 +86,7 @@ export function IncomeModal(props: IncomeModalProps) {
             </StyledContainerClose>
           </Stack>
           <Divider />
-          <Stack direction="column">
-            <Stack
-              width={!isMobile ? "auto" : "auto"}
-              justifyContent="space-between"
-              gap="24px"
-              direction={!isMobile ? "row" : "column"}
-            >
-              <Stack width={!isMobile ? "317px" : "auto"}>
-                <Select
-                  id="income"
-                  name="debtor"
-                  label="Deudor"
-                  placeholder="Seleccione una opción"
-                  options={options}
-                  value={form.debtor}
-                  onChange={(name, value) => onChange(name, value)}
-                  size="compact"
-                  fullwidth
-                />
-              </Stack>
-              <Stack
-                width={!isMobile ? "end" : "auto"}
-                direction="column"
-                gap="8px"
-              >
-                <Text
-                  appearance="primary"
-                  type="headline"
-                  size="large"
-                  weight="bold"
-                >
-                  $ 9’000.000
-                </Text>
-                <Text size="small" appearance="gray" weight="normal">
-                  Total ingresos mensuales.
-                </Text>
-              </Stack>
-            </Stack>
-          </Stack>
-          <Stack direction="column">
-            <Grid
-              templateColumns={!isMobile ? "repeat(3,1fr)" : "1fr"}
-              gap="16px"
-              autoRows="auto"
-            >
-              <IncomeEmployment
-                values={[
-                  form.monthly_salary?.toString() ?? "",
-                  form.other_monthly_payments?.toString() ?? "",
-                  form.pension_allowances?.toString() ?? "",
-                ]}
-                onChange={(index, newValue) =>
-                  handleFieldChange(
-                    ["salarioMensual", "otrosPagos", "mesadaPensional"],
-                    index,
-                    newValue
-                  )
-                }
-              />
-              <IncomeCapital
-                values={[
-                  form.leases?.toString() ?? "",
-                  form.dividends_or_shares?.toString() ?? "",
-                  form.financial_returns?.toString() ?? "",
-                ]}
-                onChange={(index, newValue) =>
-                  handleFieldChange(
-                    ["arrendamientos", "dividendos", "rendimientosFinancieros"],
-                    index,
-                    newValue
-                  )
-                }
-              />
-              <MicroBusinesses
-                values={[
-                  form.average_monthly_profit?.toString() ?? "",
-                  form.monthly_fees?.toString() ?? "",
-                ]}
-                onChange={(index, newValue) =>
-                  handleFieldChange(["gananciaPromedio"], index, newValue)
-                }
-              />
-            </Grid>
-          </Stack>
+          <IncomeCard form={form} onChange={onChange} options={options}/>
           <Divider />
           <Stack
             padding="10px 0px"

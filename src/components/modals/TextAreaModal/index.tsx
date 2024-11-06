@@ -1,17 +1,15 @@
-import {
-  Stack,
-  useMediaQuery,
-  Blanket,
-  Text,
-  Button,
-  inube,
-  Textarea,
-} from "@inube/design-system";
-import { Icon } from "@inubekit/icon";
 import { createPortal } from "react-dom";
-import { MdClear } from "react-icons/md";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
+import { MdClear } from "react-icons/md";
+
+import { Textarea } from "@inube/design-system";
+import { Icon } from "@inubekit/icon";
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
+import { Button } from "@inubekit/button";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Blanket } from "@inubekit/blanket";
 
 import { StyledModal, StyledContainerClose } from "./styles";
 
@@ -31,6 +29,8 @@ export interface TextAreaModalProps {
   readOnly?: boolean;
   hideCharCount?: boolean;
   disableTextarea?: boolean;
+  secondaryButtonText?: string;
+  onSecondaryButtonClick?: () => void;
 }
 
 export function TextAreaModal(props: TextAreaModalProps) {
@@ -45,7 +45,9 @@ export function TextAreaModal(props: TextAreaModalProps) {
     onCloseModal,
     readOnly = false,
     hideCharCount = false,
-    disableTextarea = false, 
+    disableTextarea = false,
+    secondaryButtonText = "Cancelar",
+    onSecondaryButtonClick,
   } = props;
 
   const validationSchema = Yup.object().shape({
@@ -73,7 +75,7 @@ export function TextAreaModal(props: TextAreaModalProps) {
             {title}
           </Text>
           <StyledContainerClose onClick={onCloseModal}>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text>Cerrar</Text>
               <Icon
                 icon={<MdClear />}
@@ -116,7 +118,7 @@ export function TextAreaModal(props: TextAreaModalProps) {
                     fullwidth
                     readOnly={readOnly}
                     hideCharCount={hideCharCount}
-                    disabled={disableTextarea} 
+                    disabled={disableTextarea}
                     onBlur={(e: React.FocusEvent<HTMLTextAreaElement>) => {
                       setFieldTouched("textarea");
                       field.onBlur(e);
@@ -124,7 +126,15 @@ export function TextAreaModal(props: TextAreaModalProps) {
                   />
                 )}
               </Field>
-              <Stack justifyContent="flex-end" margin="s200 s0">
+              <Stack justifyContent="end" margin="12px 0px" gap="12px">
+                <Button
+                  type="button"
+                  variant="outlined"
+                  appearance="gray"
+                  onClick={onSecondaryButtonClick}
+                >
+                  {secondaryButtonText}
+                </Button>
                 <Button
                   type={readOnly ? "button" : "submit"}
                   onClick={readOnly ? onCloseModal : undefined}
