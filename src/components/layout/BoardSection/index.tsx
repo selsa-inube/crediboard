@@ -9,7 +9,7 @@ import {
 import { MdOutlineChevronRight } from "react-icons/md";
 
 import { SummaryCard } from "@components/cards/SummaryCard";
-import { PinnedRequest, Requests } from "@services/types";
+import { ICreditRequestPin, Requests } from "@services/types";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
@@ -19,7 +19,7 @@ interface BoardSectionProps {
   sectionBackground: SectionBackground;
   orientation: SectionOrientation;
   sectionInformation: Requests[];
-  pinnedRequests: PinnedRequest[];
+  pinnedRequests: ICreditRequestPin[];
   handlePinRequest: (requestId: string) => void;
   errorLoadingPins: boolean;
 }
@@ -32,7 +32,7 @@ function BoardSection(props: BoardSectionProps) {
     sectionInformation,
     pinnedRequests,
     handlePinRequest,
-    errorLoadingPins
+    errorLoadingPins,
   } = props;
   const disabledCollapse = sectionInformation.length === 0;
 
@@ -47,12 +47,15 @@ function BoardSection(props: BoardSectionProps) {
     }
   };
 
-  function isRequestPinned(creditRequestCode: string, pinnedRequests: PinnedRequest[]) {
+  function isRequestPinned(
+    creditRequestId: string | undefined,
+    pinnedRequests: ICreditRequestPin[]
+  ) {
     const pinnedRequest = pinnedRequests.find(
-      (pinnedRequest) => pinnedRequest.requestId === creditRequestCode
+      (pinnedRequest) => pinnedRequest.creditRequestId === creditRequestId
     );
 
-    return pinnedRequest && pinnedRequest.isPinned === "Y" ? true : false;
+    return pinnedRequest && pinnedRequest.isPin === "Y" ? true : false;
   }
 
   return (
@@ -118,7 +121,10 @@ function BoardSection(props: BoardSectionProps) {
               value={request.loanAmount}
               toDo={request.taskToBeDone}
               path={`extended-card/${request.creditRequestCode}`}
-              isPinned={isRequestPinned(request.creditRequestCode, pinnedRequests)}
+              isPinned={isRequestPinned(
+                request.creditRequestId,
+                pinnedRequests
+              )}
               hasMessage
               onPinChange={() => {
                 handlePinRequest(request.creditRequestCode);

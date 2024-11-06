@@ -3,7 +3,6 @@ import localforage from "localforage";
 import { intializedData } from "@mocks/utils/dataMock.service";
 import { themes } from "@mocks/design/themes";
 import { mockRequests as mockRequestsDefault } from "@mocks/requests/requests.mock";
-import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
 import { mockStaff as mockStaffDefault } from "@mocks/staff/staff.mock";
 import { mockToDo } from "@mocks/financial-reporting/to-do/toDo.mock";
 import {
@@ -41,11 +40,6 @@ export function initializeDataDB(company: string) {
   intializedData<(typeof mockRequestsDefault)[number]>(
     "requests",
     mockRequests(company)
-  );
-
-  intializedData<(typeof mockRequestsPinned)[number]>(
-    "requests-pinned",
-    mockRequestsPinned
   );
   intializedData<(typeof mockStaffDefault)[number]>(
     "staff",
