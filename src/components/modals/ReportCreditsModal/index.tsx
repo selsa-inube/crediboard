@@ -21,7 +21,7 @@ import { Blanket } from "@inubekit/blanket";
 import { useMediaQuery } from "@inubekit/hooks";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
 import { Select } from "@inubekit/select";
-import { Detail } from "@components/data/TableExtraordinaryInstallment/Detail";
+import { Detail } from "@pages/prospect/components/TableExtraordinaryInstallment/Detail";
 
 import { usePagination } from "./utils";
 import { headers, data, dataReport } from "./config";
@@ -125,11 +125,11 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
                 size="compact"
               />
               <Stack alignItems="end">
-              <Button
-                children={dataReport.addObligations}
-                iconBefore={<MdAdd />}
-                fullwidth={isMobile}
-              />
+                <Button
+                  children={dataReport.addObligations}
+                  iconBefore={<MdAdd />}
+                  fullwidth={isMobile}
+                />
               </Stack>
             </Stack>
           )}
