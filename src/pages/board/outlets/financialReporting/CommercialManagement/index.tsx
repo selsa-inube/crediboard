@@ -442,22 +442,15 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       size="24px"
                       cursorHover
                     />
-                    <Icon
-                      icon={<MdOutlineMoreVert />}
-                      appearance="primary"
-                      size="24px"
-                      cursorHover
-                      onClick={() => setShowMenu(!showMenu)}
+                    <StyledVerticalDivider />
+                    <MenuPropect
+                      only
+                      options={menuOptions(
+                        handleOpenModal,
+                        !prospectProducts?.ordinary_installment_for_principal
+                      )}
+                      onMouseLeave={() => setShowMenu(false)}
                     />
-                    {showMenu && (
-                      <MenuPropect
-                        options={menuOptions(
-                          handleOpenModal,
-                          !prospectProducts?.ordinary_installment_for_principal
-                        )}
-                        onMouseLeave={() => setShowMenu(false)}
-                      />
-                    )}
                   </StyledContainerIcon>
                 </Stack>
               )}

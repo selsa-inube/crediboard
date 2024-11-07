@@ -1,29 +1,61 @@
 import { Icon } from "@inubekit/icon";
 import { Text } from "@inubekit/text";
-import { StyledMenu, StyledContainerLabel } from "./styles";
+import { Stack } from "@inubekit/stack";
+
+import { StyledMenu, StyledContainerLabel, StyledA } from "./styles";
 import { IOptions } from "./types";
 
 interface MenuPropectProps {
   options: IOptions[];
   onMouseLeave: () => void;
+  only?: boolean;
 }
 
 export const MenuPropect = (props: MenuPropectProps) => {
-  const { options, onMouseLeave } = props;
+  const { options, onMouseLeave, only } = props;
 
   return (
-    <StyledMenu onMouseLeave={onMouseLeave}>
-      {options &&
-        options.map((option,index) => (
-          option.visible &&
-          <StyledContainerLabel key={index} onClick={option.onClick}>
-            <Icon icon={option.icon} appearance="primary" size="24px"></Icon>
-            <Text size="small" weight="normal">
-              {option.title}
-            </Text>
-          </StyledContainerLabel>
-        ))}
-    </StyledMenu>
+    <Stack>
+      {only && (
+        <Stack>
+          {options &&
+            options.map(
+              (option, index) =>
+                option.visible && (
+                  <StyledA key={index} title={option.title}>
+                    <StyledContainerLabel onClick={option.onClick} $only={only}>
+                      <Icon
+                        icon={option.icon}
+                        appearance="primary"
+                        size="24px"
+                      ></Icon>
+                    </StyledContainerLabel>
+                  </StyledA>
+                )
+            )}
+        </Stack>
+      )}
+      {!only && (
+        <StyledMenu onMouseLeave={onMouseLeave}>
+          {options &&
+            options.map(
+              (option, index) =>
+                option.visible && (
+                  <StyledContainerLabel key={index} onClick={option.onClick}>
+                    <Icon
+                      icon={option.icon}
+                      appearance="primary"
+                      size="24px"
+                    ></Icon>
+                    <Text size="small" weight="normal">
+                      {option.title}
+                    </Text>
+                  </StyledContainerLabel>
+                )
+            )}
+        </StyledMenu>
+      )}
+    </Stack>
   );
 };
 export type { MenuPropectProps };
