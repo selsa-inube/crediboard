@@ -2,9 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { Requests } from "@services/types";
-import { getCreditRequestPin } from "@services/is_pin";
+import { getCreditRequestPin } from "@services/isPinned";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
-import { AppContext } from "@context/AppContext";
+import { AppContext } from "@context/AppContext/AppContext";
 
 import { BoardLayoutUI } from "./interface";
 import { selectCheckOptions } from "./config/select";
