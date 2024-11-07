@@ -1,5 +1,6 @@
 import { Schedule, GracePeriodType, BorrowerProperties } from "@services/enums";
 interface Requests {
+  creditRequestId?: string;
   creditRequestCode: string;
   creditRequestDateOfCreation: string;
   loanAmount: number;
@@ -99,7 +100,7 @@ type DmDecisions =
   | "DECLINAR_OBLIGACIONES_DE_CARTERA";
 
 interface TraceType {
-  creditRequestId: string;
+  creditRequestId?: string;
   excecutionDate: string;
   traceId: string;
   traceType: string;

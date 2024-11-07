@@ -11,6 +11,9 @@ import { TraceType } from "@services/types";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { getTraceByCreditRequestId } from "@services/trace/getTraceByCreditRequestId";
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { registerNewsToCreditRequest } from "@services/trace/registerNewsToCreditRequest";
+import { Requests } from "@services/types";
 
 import { traceObserver, errorObserver } from "../config";
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
@@ -24,34 +27,42 @@ interface IManagementProps {
 export const Management = (props: IManagementProps) => {
   const { id, isMobile, updateData } = props;
 
+  const [requests, setRequests] = useState<Requests | null>(null);
   const [traces, setTraces] = useState<TraceType[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   const chatContentRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const fetchCreditRequest = async () => {
+      try {
+        const data = await getCreditRequestByCode(id);
+        setRequests(data[0] as Requests);
+      } catch (error) {
+        console.error(error);
+        errorObserver.notify({
+          id: "Management",
+          message: (error as Error).message.toString(),
+        });
+      }
+    };
+
+    if (id) {
+      fetchCreditRequest();
+    }
+  }, [id]);
+
   const fetchData = useCallback(async () => {
-    if (!id) return;
+    if (!requests?.creditRequestId) return;
 
     setLoading(true);
     setError(null);
 
     try {
-      const data = await getTraceByCreditRequestId(id).catch(() => {
-        errorObserver.notify({
-          id: "Management",
-          message: "Error al obtener los datos de gestión.",
-        });
-        setError("No se encontraron datos.");
-      });
-
-      if (data || (Array.isArray(data) && data.length > 0)) {
-        const flattenedData: TraceType[] = Array.isArray(data[0])
-          ? ((data as TraceType[]).flat() as TraceType[])
-          : (data as TraceType[]);
-
-        setTraces(flattenedData);
+      const data = await getTraceByCreditRequestId(requests.creditRequestId);
+      if (data && Array.isArray(data)) {
+        setTraces(data.flat());
       }
     } catch (err) {
       errorObserver.notify({
@@ -62,16 +73,18 @@ export const Management = (props: IManagementProps) => {
     } finally {
       setLoading(false);
     }
-    traceObserver.subscribe(fetchData);
-
-    return () => {
-      traceObserver.unsubscribe(fetchData);
-    };
-  }, [id]);
+  }, [requests?.creditRequestId]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData, updateData]);
+
+  useEffect(() => {
+    traceObserver.subscribe(fetchData);
+    return () => {
+      traceObserver.unsubscribe(fetchData);
+    };
+  }, [fetchData]);
 
   useEffect(() => {
     if (chatContentRef.current) {
@@ -88,22 +101,25 @@ export const Management = (props: IManagementProps) => {
     if (newMessage.trim() !== "") {
       const newTrace: TraceType = {
         traceId: crypto.randomUUID(),
-        traceValue: newMessage,
-        creditRequestId: id ?? "default",
-        useCase: "message",
-        userId: "user_001",
-        excecutionDate: new Date().toISOString(),
-        traceType: "message",
+        useCase: "Novelty",
         userName: "Usuario de Prueba",
+        creditRequestId: requests?.creditRequestId,
+        traceValue: newMessage,
+        userId: "user_001",
+        traceType: "Novelty",
+        excecutionDate: new Date().toISOString(),
       };
 
-      const updatedTraces = [...traces, newTrace];
-      setTraces(updatedTraces);
-
       try {
+        await registerNewsToCreditRequest(newTrace);
+        setTraces((prevTraces) => [...prevTraces, newTrace]);
         setNewMessage("");
-      } catch (err) {
-        console.error("Error al guardar el mensaje:", err);
+      } catch (error) {
+        console.error("Error al enviar el mensaje:", error);
+        errorObserver.notify({
+          id: "Management",
+          message: "Error al enviar el mensaje. Intente nuevamente.",
+        });
       }
     }
   };
