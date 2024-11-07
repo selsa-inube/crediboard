@@ -3,11 +3,9 @@ import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 
-import { LoanCondition } from "@components/inputs/LoanConditions";
-
 import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
-import { MoneyDestination } from "./steps/MoneyDestination";
+
 import {
   IFormAddPosition,
   IFormAddPositionRef,
@@ -18,6 +16,8 @@ import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { ProductSelection } from "./steps/ProductSelection";
 import { SourcesOfIncome } from "./steps/sourcesOfIncome";
+import { MoneyDestination } from "./steps/MoneyDestination";
+import { LoanCondition } from "./steps/loanCondition";
 
 interface StepDetails {
   id: number;
