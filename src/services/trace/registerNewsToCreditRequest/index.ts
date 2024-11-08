@@ -3,65 +3,59 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { ICreditRequest } from "@src/services/types";
-import { mapCreditRequestToEntities } from "./mapper";
+import { ITraceType } from "@services/types";
 
-export const getCreditRequestByCode = async (
-  creditRequestCode: string
-): Promise<ICreditRequest[]> => {
+export const registerNewsToCreditRequest = async (
+  payload: ITraceType
+): Promise<void> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
+
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      const queryParams = new URLSearchParams({
-        creditRequestCode: creditRequestCode,
-      });
+
       const options: RequestInit = {
-        method: "GET",
+        method: "PATCH",
         headers: {
-          "X-Action": "SearchAllCreditRequestsInProgress",
+          "X-Action": "RegisterNewsToACreditRequest",
           "X-Business-Unit": enviroment.BUSINESS_UNIT,
+          "X-User-Name": "cualquiera",
           "Content-type": "application/json; charset=UTF-8",
         },
+        body: JSON.stringify(payload),
         signal: controller.signal,
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests?${queryParams.toString()}`,
+        `${enviroment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
         options
       );
 
       clearTimeout(timeoutId);
 
       if (res.status === 204) {
-        return [];
+        return;
       }
 
       const data = await res.json();
 
       if (!res.ok) {
         throw {
-          message: "Error al obtener los ",
+          message: "Error al actualizar la solicitud de crédito",
           status: res.status,
           data,
         };
       }
 
-      const normalizedCredit = Array.isArray(data)
-        ? mapCreditRequestToEntities(data)
-        : [];
-
-      return normalizedCredit;
+      return;
     } catch (error) {
       if (attempt === maxRetries) {
         throw new Error(
-          "Todos los intentos fallaron. No se pudieron obtener los procesos de consulta."
+          "Todos los intentos fallaron. No se pudo registrar la novedad en la solicitud de crédito."
         );
       }
     }
   }
-
-  return [];
 };

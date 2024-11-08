@@ -3,25 +3,22 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { ICreditRequest } from "@src/services/types";
-import { mapCreditRequestToEntities } from "./mapper";
+import { ITraceType } from "@src/services/types";
 
-export const getCreditRequestByCode = async (
-  creditRequestCode: string
-): Promise<ICreditRequest[]> => {
+export const getTraceByCreditRequestId = async (
+  creditRequestId: string
+): Promise<ITraceType[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      const queryParams = new URLSearchParams({
-        creditRequestCode: creditRequestCode,
-      });
+
       const options: RequestInit = {
         method: "GET",
         headers: {
-          "X-Action": "SearchAllCreditRequestsInProgress",
+          "X-Action": "SearchAllTracesById",
           "X-Business-Unit": enviroment.BUSINESS_UNIT,
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -29,7 +26,7 @@ export const getCreditRequestByCode = async (
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests?${queryParams.toString()}`,
+        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/traces/${creditRequestId}`,
         options
       );
 
@@ -49,11 +46,7 @@ export const getCreditRequestByCode = async (
         };
       }
 
-      const normalizedCredit = Array.isArray(data)
-        ? mapCreditRequestToEntities(data)
-        : [];
-
-      return normalizedCredit;
+      return data;
     } catch (error) {
       if (attempt === maxRetries) {
         throw new Error(

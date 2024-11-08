@@ -1,4 +1,4 @@
-import { Requests } from "@services/types";
+import { ICreditRequest } from "@services/types";
 import { mockRequests as mockRequestsDefault } from "@mocks/requests/requests.mock";
 import { mockRequests as mockRequestsPresente } from "@mocks/requests/Presente/requests.mock";
 import { mockRequests as mockRequestsCooservunal } from "@mocks/requests/Cooservunal/requests.mock";
@@ -46,7 +46,7 @@ import { requirementsMock as requirementsMockCooservunal } from "@mocks/financia
 import { requirementsMock as requirementsMockCorbanca } from "@mocks/financialReporting/Corbanca/requirements.mock";
 import { requirementsMock as requirementsMockFondecom } from "@mocks/financialReporting/Presente/requirements.mock";
 
-const mockRequestsMap: { [key: string]: Requests[] } = {
+const mockRequestsMap: { [key: string]: ICreditRequest[] } = {
   Presente: mockRequestsPresente,
   Cooservunal: mockRequestsCooservunal,
   Corbanca: mockRequestsCorbanca,
@@ -54,7 +54,7 @@ const mockRequestsMap: { [key: string]: Requests[] } = {
   default: mockRequestsDefault,
 };
 
-export const mockRequests = (company: string): Requests[] =>
+export const mockRequests = (company: string): ICreditRequest[] =>
   mockRequestsMap[company] || mockRequestsMap.default;
 
 const mockAnalystMap: { [key: string]: typeof mockAnalystDefault } = {
