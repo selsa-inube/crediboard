@@ -11,8 +11,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Login } from "@pages/login";
 import { initializeDataDB } from "@mocks/utils/initializeDataDB";
 import { ErrorPage } from "@components/layout/ErrorPage";
-import { AppContext } from "@context/AppContext/AppContext";
 import AppContextProvider from "@context/AppContext";
+import { AppContext } from "@context/AppContext/AppContext";
 
 import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
