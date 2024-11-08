@@ -3,10 +3,10 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { TraceType } from "@services/types";
+import { ITraceType } from "@services/types";
 
 export const registerNewsToCreditRequest = async (
-  payload: TraceType
+  payload: ITraceType
 ): Promise<void> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;

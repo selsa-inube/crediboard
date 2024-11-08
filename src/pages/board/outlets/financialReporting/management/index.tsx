@@ -1,19 +1,18 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { LuPaperclip } from "react-icons/lu";
-import { MdOutlineSend } from "react-icons/md";
+import { MdOutlineSend, MdAttachFile } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { Textfield } from "@inubekit/textfield";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
-import { TraceType } from "@services/types";
+import { ITraceType } from "@services/types";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { getTraceByCreditRequestId } from "@services/trace/getTraceByCreditRequestId";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { registerNewsToCreditRequest } from "@services/trace/registerNewsToCreditRequest";
-import { Requests } from "@services/types";
+import { ICreditRequest } from "@services/types";
 
 import { traceObserver, errorObserver } from "../config";
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
@@ -24,56 +23,52 @@ interface IManagementProps {
   updateData?: boolean;
 }
 
-export const Management = (props: IManagementProps) => {
-  const { id, isMobile, updateData } = props;
-
-  const [requests, setRequests] = useState<Requests | null>(null);
-  const [traces, setTraces] = useState<TraceType[]>([]);
+export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
+  const [creditRequest, setCreditRequest] = useState<ICreditRequest | null>(
+    null
+  );
+  const [traces, setTraces] = useState<ITraceType[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const chatContentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const fetchCreditRequest = async () => {
-      try {
-        const data = await getCreditRequestByCode(id);
-        setRequests(data[0] as Requests);
-      } catch (error) {
-        console.error(error);
-        errorObserver.notify({
-          id: "Management",
-          message: (error as Error).message.toString(),
-        });
-      }
-    };
+  const notifyError = useCallback((message: string) => {
+    errorObserver.notify({ id: "Management", message });
+  }, []);
 
-    if (id) {
-      fetchCreditRequest();
+  const fetchCreditRequest = useCallback(async () => {
+    try {
+      const data = await getCreditRequestByCode(id);
+      setCreditRequest(data[0] as ICreditRequest);
+    } catch (error) {
+      console.error(error);
+      notifyError((error as Error).message);
     }
-  }, [id]);
+  }, [id, notifyError]);
+
+  useEffect(() => {
+    if (id) fetchCreditRequest();
+  }, [fetchCreditRequest, id]);
 
   const fetchData = useCallback(async () => {
-    if (!requests?.creditRequestId) return;
+    if (!creditRequest?.creditRequestId) return;
 
     setLoading(true);
     setError(null);
 
     try {
-      const data = await getTraceByCreditRequestId(requests.creditRequestId);
-      if (data && Array.isArray(data)) {
-        setTraces(data.flat());
-      }
+      const data = await getTraceByCreditRequestId(
+        creditRequest.creditRequestId
+      );
+      setTraces(Array.isArray(data) ? data.flat() : []);
     } catch (err) {
-      errorObserver.notify({
-        id: "Management",
-        message: (err as Error).message.toString(),
-      });
+      notifyError((err as Error).message);
       setError("Error al intentar conectar con el servicio de trazabilidad.");
     } finally {
       setLoading(false);
     }
-  }, [requests?.creditRequestId]);
+  }, [creditRequest?.creditRequestId, notifyError]);
 
   useEffect(() => {
     fetchData();
@@ -81,9 +76,7 @@ export const Management = (props: IManagementProps) => {
 
   useEffect(() => {
     traceObserver.subscribe(fetchData);
-    return () => {
-      traceObserver.unsubscribe(fetchData);
-    };
+    return () => traceObserver.unsubscribe(fetchData);
   }, [fetchData]);
 
   useEffect(() => {
@@ -92,36 +85,33 @@ export const Management = (props: IManagementProps) => {
     }
   }, [traces]);
 
+  const sendMessage = async () => {
+    if (!newMessage.trim()) return;
+
+    const newTrace: ITraceType = {
+      useCase: "Novelty",
+      userName: "Usuario de Prueba",
+      creditRequestId: creditRequest?.creditRequestId,
+      traceValue: newMessage,
+      userId: "user_001",
+      traceType: "Novelty",
+      decision_of_concept: "decision",
+      excecutionDate: new Date().toISOString(),
+    };
+
+    try {
+      await registerNewsToCreditRequest(newTrace);
+      setTraces((prev) => [...prev, newTrace]);
+      setNewMessage("");
+    } catch (error) {
+      console.error("Error al enviar el mensaje:", error);
+      notifyError("Error al enviar el mensaje. Intente nuevamente.");
+    }
+  };
+
   const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
     sendMessage();
-  };
-
-  const sendMessage = async () => {
-    if (newMessage.trim() !== "") {
-      const newTrace: TraceType = {
-        traceId: crypto.randomUUID(),
-        useCase: "Novelty",
-        userName: "Usuario de Prueba",
-        creditRequestId: requests?.creditRequestId,
-        traceValue: newMessage,
-        userId: "user_001",
-        traceType: "Novelty",
-        excecutionDate: new Date().toISOString(),
-      };
-
-      try {
-        await registerNewsToCreditRequest(newTrace);
-        setTraces((prevTraces) => [...prevTraces, newTrace]);
-        setNewMessage("");
-      } catch (error) {
-        console.error("Error al enviar el mensaje:", error);
-        errorObserver.notify({
-          id: "Management",
-          message: "Error al enviar el mensaje. Intente nuevamente.",
-        });
-      }
-    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,6 +122,26 @@ export const Management = (props: IManagementProps) => {
     setError(null);
     fetchData();
   };
+
+  const renderSkeletons = () =>
+    [...Array(5)].map((_, index) => (
+      <SkeletonContainer
+        key={index}
+        type={index % 2 === 0 ? "sent" : "received"}
+      >
+        <SkeletonLine width="30%" animated={true} />
+      </SkeletonContainer>
+    ));
+
+  const renderMessages = () =>
+    traces.map((trace, index) => (
+      <Message
+        key={index}
+        type="sent"
+        timestamp={trace.excecutionDate}
+        message={trace.traceValue}
+      />
+    ));
 
   return (
     <Fieldset
@@ -151,23 +161,7 @@ export const Management = (props: IManagementProps) => {
       ) : (
         <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
           <ChatContent ref={chatContentRef}>
-            {loading
-              ? [...Array(5)].map((_, index) => (
-                  <SkeletonContainer
-                    key={index}
-                    type={index % 2 === 0 ? "sent" : "received"}
-                  >
-                    <SkeletonLine width="30%" animated={true} />
-                  </SkeletonContainer>
-                ))
-              : traces.map((trace) => (
-                  <Message
-                    key={trace.traceId}
-                    type="sent"
-                    timestamp={trace.excecutionDate}
-                    message={trace.traceValue}
-                  />
-                ))}
+            {loading ? renderSkeletons() : renderMessages()}
           </ChatContent>
           <form>
             <Stack
@@ -180,7 +174,7 @@ export const Management = (props: IManagementProps) => {
                 appearance="primary"
                 cursorHover
                 size="24px"
-                icon={<LuPaperclip />}
+                icon={<MdAttachFile />}
               />
               <Textfield
                 id="text"
@@ -189,15 +183,13 @@ export const Management = (props: IManagementProps) => {
                 value={newMessage}
                 onChange={handleInputChange}
               />
-              <Stack>
-                <Icon
-                  appearance="primary"
-                  cursorHover
-                  size="24px"
-                  icon={<MdOutlineSend />}
-                  onClick={handleFormSubmit}
-                />
-              </Stack>
+              <Icon
+                appearance="primary"
+                cursorHover
+                size="24px"
+                icon={<MdOutlineSend />}
+                onClick={handleFormSubmit}
+              />
             </Stack>
           </form>
         </Stack>

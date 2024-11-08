@@ -33,7 +33,7 @@ import {
 } from "@utils/formatData/text";
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
-import { ICreditProductProspect, Requests } from "@services/types";
+import { ICreditProductProspect, ICreditRequest } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
@@ -48,7 +48,7 @@ import {
 } from "./styles";
 
 interface ComercialManagementProps {
-  data: Requests;
+  data: ICreditRequest;
   children?: JSX.Element;
   print: () => void;
   isPrint?: boolean;
