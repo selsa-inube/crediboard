@@ -1,5 +1,6 @@
 import { Schedule, GracePeriodType, BorrowerProperties } from "@services/enums";
 interface Requests {
+  creditRequestId?: string;
   creditRequestCode: string;
   creditRequestDateOfCreation: string;
   loanAmount: number;
@@ -8,15 +9,15 @@ interface Requests {
   stage: DmEtapasPrs;
   moneyDestinationAbreviatedName: string;
   clientIdentificationNumber: string;
-  clientName: string; 
+  clientName: string;
   taskToBeDone: string;
 }
 
 interface IStaff {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
+  userId: string;
+  userName: string;
+  identificationType: string;
+  identificationNumber: string;
   position: string;
 }
 
@@ -26,11 +27,13 @@ interface PinnedRequest {
 }
 
 interface IToDo {
-  credit_request_state_id: string;
-  task_to_be_done: string;
-  account_manager_name: string;
-  analyst_name: string;
-  decisions: { id: string; label: string; value: string }[];
+  creditRequestId: string;
+  creditRequestCode: string;
+  CreditRequestStateId: string;
+  creditRequestStateAbbreviatedName: string;
+  stage: string;
+  taskToBeDone: string;
+  usersByCreditRequestResponse: IStaff[];
 }
 
 interface IKeyRiskScoring {
@@ -289,15 +292,15 @@ export interface ICreditProductProspect {
 
 export interface IIncome {
   debtor_id: string;
-  debtor: string,
-  monthly_salary: number,
-  other_monthly_payments: number,
-  pension_allowances: number,
-  leases: number,
-  dividends_or_shares: number,
-  financial_returns: number,
-  average_monthly_profit: number,
-  monthly_fees: number,
+  debtor: string;
+  monthly_salary: number;
+  other_monthly_payments: number;
+  pension_allowances: number;
+  leases: number;
+  dividends_or_shares: number;
+  financial_returns: number;
+  average_monthly_profit: number;
+  monthly_fees: number;
 }
 
 export interface IBorrowerProperty {
@@ -369,7 +372,6 @@ export interface IExtraordinaryPayment {
   value: number;
   paymentMethod: string;
 }
-
 export interface IMoneyDestination {
   money_destination_id: string;
   money_destination_unique_reference: string;

@@ -4,7 +4,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { get, updateActive } from "@mocks/utils/dataMock.service";
 import { PinnedRequest, Requests } from "@services/types";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
-import { AppContext } from "@context/AppContext";
+import { AppContext } from "@context/AppContext/AppContext";
 
 import { BoardLayoutUI } from "./interface";
 import { selectCheckOptions } from "./config/select";
@@ -37,7 +37,7 @@ function BoardLayout() {
       boardOrientation: orientation,
     }));
   }, [isMobile]);
-  
+
   useEffect(() => {
     getCreditRequestInProgress()
       .then((data) => {
@@ -71,7 +71,9 @@ function BoardLayout() {
         request.clientName
           .toLowerCase()
           .includes(filters.searchRequestValue.toLowerCase()) ||
-        request.creditRequestCode.toString().includes(filters.searchRequestValue);
+        request.creditRequestCode
+          .toString()
+          .includes(filters.searchRequestValue);
 
       const isPinned =
         !filters.showPinnedOnly ||
