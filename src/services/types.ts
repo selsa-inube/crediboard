@@ -14,10 +14,10 @@ interface Requests {
 }
 
 interface IStaff {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
+  userId: string;
+  userName: string;
+  identificationType: string;
+  identificationNumber: string;
   position: string;
 }
 
@@ -27,11 +27,13 @@ interface PinnedRequest {
 }
 
 interface IToDo {
-  credit_request_state_id: string;
-  task_to_be_done: string;
-  account_manager_name: string;
-  analyst_name: string;
-  decisions: { id: string; label: string; value: string }[];
+  creditRequestId: string;
+  creditRequestCode: string;
+  CreditRequestStateId: string;
+  creditRequestStateAbbreviatedName: string;
+  stage: string;
+  taskToBeDone: string;
+  usersByCreditRequestResponse: IStaff[];
 }
 
 interface IKeyRiskScoring {
@@ -371,7 +373,6 @@ export interface IExtraordinaryPayment {
   value: number;
   paymentMethod: string;
 }
-
 export interface IMoneyDestination {
   money_destination_id: string;
   money_destination_unique_reference: string;

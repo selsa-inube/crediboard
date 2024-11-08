@@ -3,6 +3,10 @@ import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 
+import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
+
+import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
+
 import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
 
@@ -79,6 +83,13 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.generalInformation.id && (
             <RequirementsNotMet />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsAddProspect.extraordinaryInstallments.id && (
+            <ExtraordinaryInstallments
+              dataTable={extraordinaryInstallmentMock}
+            />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.destination.id && (

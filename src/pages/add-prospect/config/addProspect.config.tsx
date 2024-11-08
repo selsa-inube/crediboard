@@ -17,11 +17,12 @@ export const stepsAddProspect = {
     name: "Elección del producto",
     description: "Seleccione el destino del dinero.",
   },
-  specialFertilizers: {
+  extraordinaryInstallments: {
     id: 4,
     number: 4,
     name: "Abonos especiales",
-    description: "Programe abonos para disminuir el pago ordinario o recortar plazo.",
+    description:
+      "Programe abonos para disminuir el pago ordinario o recortar plazo.",
   },
   sourcesIncome: {
     id: 5,
