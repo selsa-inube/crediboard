@@ -15,7 +15,7 @@ import { getPromissoryNotesById } from "@services/promissory_notes";
 import {
   IPayrollDiscountAuthorization,
   IPromissoryNotes,
-  Requests,
+  ICreditRequest,
 } from "@services/types";
 
 import { errorObserver } from "../config";
@@ -36,7 +36,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const { id, isMobile } = props;
   const { addFlag } = useFlag();
 
-  const [requests, setRequests] = useState<Requests | null>(null);
+  const [creditRequets, setCreditRequests] = useState<ICreditRequest | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
@@ -49,7 +49,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     const fetchCreditRequest = async () => {
       try {
         const data = await getCreditRequestByCode(id);
-        setRequests(data[0] as Requests);
+        setCreditRequests(data[0] as ICreditRequest);
       } catch (error) {
         errorObserver.notify({
           id: "Management",
@@ -64,18 +64,18 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     setLoading(true);
     setShowRetry(false);
 
-    if (!requests?.creditRequestId) return;
+    if (!creditRequets?.creditRequestId) return;
 
     try {
       const [payrollDiscountResult, promissoryNotesResult] =
         await Promise.allSettled([
-          getPayrollDiscountAuthorizationById(requests.creditRequestId),
-          getPromissoryNotesById(requests.creditRequestId),
+          getPayrollDiscountAuthorizationById(creditRequets.creditRequestId),
+          getPromissoryNotesById(creditRequets.creditRequestId),
         ]);
 
       const processResult = (
         result: PromiseSettledResult<
-          IPayrollDiscountAuthorization[] | IPromissoryNotes[]
+        IPayrollDiscountAuthorization[] | IPromissoryNotes[]
         >,
         observerId: string,
         sourceType: "payroll" | "promissory_note"
@@ -119,11 +119,11 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     } finally {
       setLoading(false);
     }
-  }, [requests]);
+  }, [creditRequets]);
 
   useEffect(() => {
-    if (requests?.creditRequestId) fetchData();
-  }, [fetchData, requests]);
+    if (creditRequets?.creditRequestId) fetchData();
+  }, [fetchData, creditRequets]);
 
   const handleRetry = () => {
     setLoading(true);

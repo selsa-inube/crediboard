@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { get, updateActive } from "@mocks/utils/dataMock.service";
-import { PinnedRequest, Requests } from "@services/types";
+import { PinnedRequest, ICreditRequest } from "@services/types";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
 import { AppContext } from "@context/AppContext/AppContext";
 
@@ -25,7 +25,9 @@ function BoardLayout() {
     boardOrientation: user.preferences.boardOrientation || "vertical",
   });
 
-  const [filteredRequests, setFilteredRequests] = useState<Requests[]>([]);
+  const [filteredRequests, setFilteredRequests] = useState<ICreditRequest[]>(
+    []
+  );
   const [errorLoadingPins, setErrorLoadingPins] = useState(false);
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
