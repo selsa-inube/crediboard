@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { CheckingCredentialsUI } from "./interface";
 import { useCallback, useContext, useEffect } from "react";
-import { AppContext } from "@context/AppContext";
+import { AppContext } from "@context/AppContext/AppContext";
 import { IClient } from "@context/AppContext/types";
 
 function CheckingCredentials({ clients }: { clients: IClient[] }) {

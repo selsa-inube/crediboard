@@ -1,5 +1,6 @@
 import { Schedule, GracePeriodType, BorrowerProperties } from "@services/enums";
 interface Requests {
+  creditRequestId?: string;
   creditRequestCode: string;
   creditRequestDateOfCreation: string;
   loanAmount: number;
@@ -8,7 +9,7 @@ interface Requests {
   stage: DmEtapasPrs;
   moneyDestinationAbreviatedName: string;
   clientIdentificationNumber: string;
-  clientName: string; 
+  clientName: string;
   taskToBeDone: string;
 }
 
@@ -20,9 +21,9 @@ interface IStaff {
   position: string;
 }
 
-interface PinnedRequest {
-  requestId: string;
-  isPinned: "Y" | "N";
+export interface ICreditRequestPin {
+  creditRequestId: string;
+  isPin: string;
 }
 
 interface IToDo {
@@ -120,7 +121,6 @@ export type {
   DmTareasPrs,
   DmConceptos,
   DmDecisions,
-  PinnedRequest,
   TraceType,
 };
 
@@ -289,15 +289,15 @@ export interface ICreditProductProspect {
 
 export interface IIncome {
   debtor_id: string;
-  debtor: string,
-  monthly_salary: number,
-  other_monthly_payments: number,
-  pension_allowances: number,
-  leases: number,
-  dividends_or_shares: number,
-  financial_returns: number,
-  average_monthly_profit: number,
-  monthly_fees: number,
+  debtor: string;
+  monthly_salary: number;
+  other_monthly_payments: number;
+  pension_allowances: number;
+  leases: number;
+  dividends_or_shares: number;
+  financial_returns: number;
+  average_monthly_profit: number;
+  monthly_fees: number;
 }
 
 export interface IBorrowerProperty {
