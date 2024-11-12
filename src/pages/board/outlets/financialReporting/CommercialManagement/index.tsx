@@ -34,7 +34,7 @@ import {
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, Requests } from "@services/types";
-import { MenuPropect } from "@components/navigation/MenuPropect";
+import { MenuProspect } from "@components/navigation/MenuProspect";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { ExtraordinaryPaymentModal } from "@pages/prospect/components/ExtraordinaryPaymentModal";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
@@ -373,7 +373,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       onClick={() => setShowMenu(!showMenu)}
                     />
                     {showMenu && (
-                      <MenuPropect
+                      <MenuProspect
                         options={menuOptions(
                           handleOpenModal,
                           !prospectProducts?.ordinary_installment_for_principal
@@ -443,7 +443,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       cursorHover
                     />
                     <StyledVerticalDivider />
-                    <MenuPropect
+                    <MenuProspect
                       only
                       options={menuOptions(
                         handleOpenModal,

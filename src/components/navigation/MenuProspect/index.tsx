@@ -5,13 +5,13 @@ import { Stack } from "@inubekit/stack";
 import { StyledMenu, StyledContainerLabel, StyledA } from "./styles";
 import { IOptions } from "./types";
 
-interface MenuPropectProps {
+interface MenuProspectProps {
   options: IOptions[];
   onMouseLeave: () => void;
   only?: boolean;
 }
 
-export const MenuPropect = (props: MenuPropectProps) => {
+export const MenuProspect = (props: MenuProspectProps) => {
   const { options, onMouseLeave, only } = props;
 
   return (
@@ -58,4 +58,4 @@ export const MenuPropect = (props: MenuPropectProps) => {
     </Stack>
   );
 };
-export type { MenuPropectProps };
+export type { MenuProspectProps };
