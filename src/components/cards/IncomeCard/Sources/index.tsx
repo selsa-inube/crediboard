@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Divider } from "@inubekit/divider";
@@ -11,12 +12,22 @@ interface SourcesModalProps {
   title: string;
   labels: string[];
   placeholders: string[];
-  values: string[]; 
-  onChange: (index: number, newValue: string) => void; 
+  values: string[];
+  onChange: (index: number, newValue: string) => void;
 }
 
 export function Sources(props: SourcesModalProps) {
   const { title, labels, placeholders, values, onChange } = props;
+
+  const [localValues, setLocalValues] = useState(values);
+
+  const handleChange = (index: number, newValue: string) => {
+    const updatedValues = [...localValues];
+    updatedValues[index] = newValue;
+    setLocalValues(updatedValues);
+
+    onChange(index, newValue);
+  };
 
   return (
     <StyledContainer>
@@ -37,8 +48,8 @@ export function Sources(props: SourcesModalProps) {
                 id={`field${index}`}
                 label={label}
                 placeholder={placeholders[index]}
-                value={values[index]} 
-                onChange={(e) => onChange(index, e.target.value)} 
+                value={localValues[index]} 
+                onChange={(e) => handleChange(index, e.target.value)} 
                 size="compact"
                 type="number"
                 fullwidth

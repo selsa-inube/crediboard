@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Toggle } from "@inubekit/toggle";
@@ -7,31 +6,49 @@ import { Divider } from "@inubekit/divider";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { Fieldset } from "@components/data/Fieldset";
-
 import { currencyFormat } from "@utils/formatData/currency";
-import { loanData } from "./config";
 
-export function LoanCondition() {
-  const [toggles, setToggles] = useState({
-    quotaCapToggle: true,
-    maximumTermToggle: false,
-  });
-  const [quotaCapValue, setQuotaCapValue] = useState("");
+import { loanData } from "./config";
+import { LoanConditionState } from "../../types/forms.types";
+
+interface ILoanCondition {
+  loanConditionState: LoanConditionState;
+  onChange: (newState: LoanConditionState) => void;
+}
+
+export function LoanCondition(props: ILoanCondition) {
+  const { loanConditionState, onChange } = props;
+
+  const { toggles, quotaCapValue, maximumTermValue } = loanConditionState;
   const isMobile = useMediaQuery("(max-width:880px)");
 
   const handleToggleChange =
     (toggleKey: "quotaCapToggle" | "maximumTermToggle") =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setToggles((prev) => ({ ...prev, [toggleKey]: e.target.checked }));
+      onChange({
+        ...loanConditionState,
+        toggles: {
+          ...loanConditionState.toggles,
+          [toggleKey]: e.target.checked,
+        },
+      });
     };
 
-  const handleCurrencyChange =
-    (setter: React.Dispatch<React.SetStateAction<string>>) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const inputValue = e.target.value.replace(/[^0-9]/g, "");
-      const formattedValue = currencyFormat(Number(inputValue));
-      setter(formattedValue);
-    };
+  const handleCurrencyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value.replace(/[^0-9]/g, "");
+    const formattedValue = currencyFormat(Number(inputValue));
+    onChange({
+      ...loanConditionState,
+      quotaCapValue: formattedValue,
+    });
+  };
+
+  const handleMaximumTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange({
+      ...loanConditionState,
+      maximumTermValue: e.target.value,
+    });
+  };
 
   return (
     <Stack height={isMobile ? "320px" : "272px"}>
@@ -65,7 +82,7 @@ export function LoanCondition() {
                 disabled={!toggles.quotaCapToggle}
                 fullwidth={isMobile}
                 value={quotaCapValue}
-                onChange={handleCurrencyChange(setQuotaCapValue)}
+                onChange={handleCurrencyChange}
               />
             </Stack>
           </Stack>
@@ -95,6 +112,8 @@ export function LoanCondition() {
                     type="number"
                     disabled={!toggles.maximumTermToggle}
                     fullwidth={isMobile}
+                    value={maximumTermValue}
+                    onChange={handleMaximumTermChange}
                   />
                 </Stack>
               </Stack>

@@ -6,11 +6,12 @@ import { MoneyDestinationCard } from "@components/cards/MoneyDestinationCard";
 interface MoneyDestinationUIProps {
   destinations: IMoneyDestination[] | undefined;
   isTablet: boolean;
+  selectedDestination: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function MoneyDestinationUI(props: MoneyDestinationUIProps) {
-  const { destinations, isTablet, handleChange } = props;
+  const { destinations, isTablet, handleChange, selectedDestination } = props;
 
   return (
     <Stack
@@ -29,6 +30,7 @@ function MoneyDestinationUI(props: MoneyDestinationUIProps) {
             label={destination.abbreviated_name}
             icon={destination.icon}
             handleChange={handleChange}
+            isSelected={selectedDestination === destination.description_use}
           />
         ))}
     </Stack>

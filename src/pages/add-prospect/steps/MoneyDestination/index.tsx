@@ -6,8 +6,14 @@ import { IMoneyDestination } from "@services/types";
 
 import { MoneyDestinationUI } from "./interface";
 
-function MoneyDestination() {
-  const [selectedDestination, setSelectedDestination] = useState<string>("");
+interface IMoneyDestinationProps {
+  selectedDestination: string;
+  setSelectedDestination: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function MoneyDestination(props: IMoneyDestinationProps) {
+  const { selectedDestination, setSelectedDestination } = props;
+
   const [moneyDestinations, setMoneyDestinations] =
     useState<IMoneyDestination[]>();
 
@@ -23,8 +29,6 @@ function MoneyDestination() {
       });
   }, []);
 
-  console.log(selectedDestination);
-
   const isTablet = useMediaQuery("(max-width: 1482px)");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,6 +40,7 @@ function MoneyDestination() {
       destinations={moneyDestinations}
       isTablet={isTablet}
       handleChange={handleChange}
+      selectedDestination={selectedDestination}
     />
   );
 }

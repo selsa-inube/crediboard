@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -10,19 +10,38 @@ import { lineOfCredit } from "@mocks/line-of-credit/lineOfCredit.mock";
 
 import { electionData } from "./config";
 
-export function ProductSelection() {
-  const [toggleChecked, setToggleChecked] = useState(true);
-  const [toggles, setToggles] = useState([false, true, false]);
+interface IProductSelectionProps {
+  selectedProducts: string[];
+  setSelectedProducts: React.Dispatch<React.SetStateAction<string[]>>;
+  generalToggleChecked: boolean;
+  onGeneralToggleChange: () => void;
+  togglesState: boolean[];
+  onToggleChange: (index: number) => void;
+}
 
-  const onChange = () => {
-    setToggleChecked(!toggleChecked);
+export function ProductSelection(props: IProductSelectionProps) {
+  const {
+    selectedProducts,
+    setSelectedProducts,
+    togglesState,
+    onToggleChange,
+    generalToggleChecked,
+    onGeneralToggleChange,
+  } = props;
+
+  const handleCardSelect = (id: string) => {
+    setSelectedProducts((prev) =>
+      prev.includes(id)
+        ? prev.filter((productId) => productId !== id)
+        : [...prev, id]
+    );
   };
 
-  const onChanges = (index: number) => {
-    const newToggles = [...toggles];
-    newToggles[index] = !newToggles[index];
-    setToggles(newToggles);
-  };
+  useEffect(() => {
+    if (generalToggleChecked) {
+      setSelectedProducts([]);
+    }
+  }, [generalToggleChecked, setSelectedProducts]);
 
   const questions = Object.entries(electionData.data);
   const limitedLineOfCredit = lineOfCredit.slice(0, 3);
@@ -34,14 +53,17 @@ export function ProductSelection() {
           {electionData.title}
         </Text>
         <Stack gap="8px">
-          <Toggle checked={toggleChecked} onChange={onChange} />
+          <Toggle
+            checked={generalToggleChecked}
+            onChange={onGeneralToggleChange}
+          />
           <Text
             type="label"
             size="large"
             weight="bold"
-            appearance={toggleChecked ? "success" : "danger"}
+            appearance={generalToggleChecked ? "success" : "danger"}
           >
-            {toggleChecked ? electionData.yes : electionData.no}
+            {generalToggleChecked ? electionData.yes : electionData.no}
           </Text>
         </Stack>
       </Stack>
@@ -53,7 +75,9 @@ export function ProductSelection() {
             rate={credit.interest_rate}
             term={credit.loan_term_limit}
             description={credit.description_use}
-            disabled={toggleChecked}
+            disabled={generalToggleChecked}
+            isSelected={selectedProducts.includes(credit.line_of_credit_id)}
+            onSelect={() => handleCardSelect(credit.line_of_credit_id)}
           />
         ))}
       </Stack>
@@ -65,16 +89,16 @@ export function ProductSelection() {
             </Text>
             <Stack gap="8px">
               <Toggle
-                checked={toggles[index]}
-                onChange={() => onChanges(index)}
+                checked={togglesState[index]}
+                onChange={() => onToggleChange(index)}
               />
               <Text
                 type="label"
                 size="large"
                 weight="bold"
-                appearance={toggles[index] ? "success" : "danger"}
+                appearance={togglesState[index] ? "success" : "danger"}
               >
-                {toggles[index] ? electionData.yes : electionData.no}
+                {togglesState[index] ? electionData.yes : electionData.no}
               </Text>
             </Stack>
             {index < questions.length - 1 && <Divider dashed />}

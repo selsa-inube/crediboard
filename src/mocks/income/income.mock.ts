@@ -2,6 +2,10 @@ import { IIncome } from "@services/types";
 
 export const income: IIncome[] = [
   {
+    debtors: [
+      { id: "1", label: "Maria Lopez", value: "Maria Lopez" },
+      { id: "2", label: "Alfonso Gomez", value: "Alfonso Gomez" },
+    ],
     debtor_id: "100",
     debtor: "Maria Lopez",
     monthly_salary: 1800000,
@@ -14,6 +18,10 @@ export const income: IIncome[] = [
     monthly_fees: 0,
   },
   {
+    debtors: [
+      { id: "1", label: "Maria Lopez", value: "Maria Lopez" },
+      { id: "2", label: "Alfonso Gomez", value: "Alfonso Gomez" },
+    ],
     debtor_id: "200",
     debtor: "Alfonso Gomez",
     monthly_salary: 1800000,
@@ -26,6 +34,10 @@ export const income: IIncome[] = [
     monthly_fees: 0,
   },
   {
+    debtors: [
+      { id: "1", label: "Maria Lopez", value: "Maria Lopez" },
+      { id: "2", label: "Alfonso Gomez", value: "Alfonso Gomez" },
+    ],
     debtor_id: "300",
     debtor: "Luis Ramirez",
     monthly_salary: 1300000,
@@ -38,6 +50,10 @@ export const income: IIncome[] = [
     monthly_fees: 30000,
   },
   {
+    debtors: [
+      { id: "1", label: "Maria Lopez", value: "Maria Lopez" },
+      { id: "2", label: "Alfonso Gomez", value: "Alfonso Gomez" },
+    ],
     debtor_id: "400",
     debtor: "Carlos Martinez",
     monthly_salary: 2000000,
@@ -50,6 +66,10 @@ export const income: IIncome[] = [
     monthly_fees: 0,
   },
   {
+    debtors: [
+      { id: "1", label: "Maria Lopez", value: "Maria Lopez" },
+      { id: "2", label: "Alfonso Gomez", value: "Alfonso Gomez" },
+    ],
     debtor_id: "500",
     debtor: "Ana Torres",
     monthly_salary: 1700000,

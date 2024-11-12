@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 
+import { income } from "@mocks/income/income.mock";
+
 import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
-
 import {
   IFormAddPosition,
   IFormAddPositionRef,
@@ -51,6 +53,46 @@ export function AddProspectUI(props: AddPositionUIProps) {
     handlePreviousStep,
   } = props;
 
+  const [selectedDestination, setSelectedDestination] = useState<string>("");
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+  const [loanConditionState, setLoanConditionState] = useState({
+    toggles: {
+      quotaCapToggle: true,
+      maximumTermToggle: false,
+    },
+    quotaCapValue: "",
+    maximumTermValue: "",
+  });
+  const [generalToggleChecked, setGeneralToggleChecked] = useState(true);
+  const [togglesState, setTogglesState] = useState([false, true, false]);
+  const [incomeData, setIncomeData] = useState(() => income[0]);
+
+  const incomeDebtors = income[0].debtors;
+
+  const handleIncome = (name: string, newValue: string) => {
+    setIncomeData((prevValues) => ({
+      ...prevValues,
+      [name]: newValue,
+    }));
+    console.log("a")
+  };
+
+  const handleToggleCheckedChange = () => {
+    setGeneralToggleChecked(!generalToggleChecked);
+  };
+
+  const handleToggleChange = (index: number) => {
+    const newToggles = [...togglesState];
+    newToggles[index] = !newToggles[index];
+    setTogglesState(newToggles);
+  };
+
+  const handleLoanConditionChange = (
+    newState: Partial<typeof loanConditionState>
+  ) => {
+    setLoanConditionState((prevState) => ({ ...prevState, ...newState }));
+  };
+
   const smallScreen = useMediaQuery("(max-width:880px)");
 
   return (
@@ -82,19 +124,36 @@ export function AddProspectUI(props: AddPositionUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.destination.id && (
-            <MoneyDestination />
+            <MoneyDestination
+              selectedDestination={selectedDestination}
+              setSelectedDestination={setSelectedDestination}
+            />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.productSelection.id && (
-            <ProductSelection />
+            <ProductSelection
+              selectedProducts={selectedProducts}
+              setSelectedProducts={setSelectedProducts}
+              generalToggleChecked={generalToggleChecked}
+              onGeneralToggleChange={handleToggleCheckedChange}
+              togglesState={togglesState}
+              onToggleChange={handleToggleChange}
+            />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.sourcesIncome.id && (
-            <SourcesOfIncome />
+            <SourcesOfIncome
+              incomeData={incomeData}
+              onChange={handleIncome}
+              options={incomeDebtors}
+            />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
-            <LoanCondition />
+            <LoanCondition
+              loanConditionState={loanConditionState}
+              onChange={handleLoanConditionChange}
+            />
           )}
         <Stack justifyContent="end" gap="20px">
           <Button

@@ -1,23 +1,23 @@
-import { IncomeCard } from "@src/components/cards/IncomeCard";
-import { income } from "@src/mocks/income/income.mock";
+import { IncomeCard } from "@components/cards/IncomeCard";
 
-export function SourcesOfIncome() {
-  const initialFormData = income[0];
-
-  const handleChange = (name: string, newValue: string) => {
-    console.log(`${name}: ${newValue}`);
+interface ISourcesOfIncomeProps {
+  onChange: (name: string, newValue: string) => void;
+  incomeData: {
+    debtor: string;
+    monthly_salary?: number;
+    other_monthly_payments?: number;
+    pension_allowances?: number;
+    leases?: number;
+    dividends_or_shares?: number;
+    financial_returns?: number;
+    average_monthly_profit?: number;
+    monthly_fees?: number;
   };
+  options: { id: string; label: string; value: string }[];
+}
 
-  const options: { id: string; label: string; value: string }[] = [
-    { id: "1", label: "Maria Lopez", value: "Maria Lopez" },
-    { id: "2", label: "Alfonso Gomez", value: "Alfonso Gomez" },
-  ];
+export function SourcesOfIncome(props: ISourcesOfIncomeProps) {
+  const { incomeData, onChange, options } = props;
 
-  return (
-    <IncomeCard
-      form={initialFormData}
-      onChange={handleChange}
-      options={options}
-    />
-  );
+  return <IncomeCard form={incomeData} onChange={onChange} options={options} />;
 }
