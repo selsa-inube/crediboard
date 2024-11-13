@@ -9,11 +9,12 @@ import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
 import { get, getById } from "@mocks/utils/dataMock.service";
-import { Requests, IRiskScoring } from "@services/types";
+import { ICreditRequest, IRiskScoring } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { CreditBehavior } from "./CreditBehaviorCard";
 import { Guarantees } from "./Guarantees";
 import { JobStabilityCard } from "./JobStabilityCard";
@@ -36,7 +37,7 @@ const margins = {
 };
 
 export const CreditProfileInfo = () => {
-  const [requests, setRequests] = useState({} as Requests);
+  const [requests, setRequests] = useState({} as ICreditRequest);
   const [riskScoring, setRiskScoring] = useState<IRiskScoring["risk_scoring"]>({
     total_score: 0,
     minimum_score: 0,
@@ -97,13 +98,13 @@ export const CreditProfileInfo = () => {
 
   const { "(max-width: 1200px)": isTablet, "(max-width: 751px)": isMobile } =
     useMediaQueries(["(max-width: 1200px)", "(max-width: 751px)"]);
+
   useEffect(() => {
     (async () => {
       setLoading(true);
 
       try {
         const [
-          request,
           riskScoring,
           credit_profileInfo,
           payment_capacity,
@@ -111,7 +112,7 @@ export const CreditProfileInfo = () => {
           uncovered_wallet,
           riskScoringMaximum,
         ] = await Promise.allSettled([
-          getById("requests", "k_Prospe", id!),
+          getById("requests", "creditRequestCode", id!),
           getById<IRiskScoring>("risk-scoring", "credit_request_id", id!, true),
           getById("credit_profileInfo", "credit_request_id", id!, true),
           getById("payment_capacity", "credit_request_id", id!, true),
@@ -119,10 +120,6 @@ export const CreditProfileInfo = () => {
           getById("uncovered_wallet", "credit_request_id", id!, true),
           get("range_requered_Business_Unit"),
         ]);
-
-        if (request.status === "fulfilled") {
-          setRequests(request.value as Requests);
-        }
 
         if (
           riskScoring.status === "fulfilled" &&
@@ -200,6 +197,14 @@ export const CreditProfileInfo = () => {
         setLoading(false);
       }
     })();
+
+    getCreditRequestByCode(id!)
+      .then((data) => {
+        setRequests(data[0] as ICreditRequest);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, [
     id,
     dataWereObtained,
@@ -245,8 +250,8 @@ export const CreditProfileInfo = () => {
                     appearance="gray"
                     weight="normal"
                   >
-                    {requests.nnasocia
-                      ? capitalizeFirstLetterEachWord(requests.nnasocia)
+                    {requests.clientName
+                      ? capitalizeFirstLetterEachWord(requests.clientName)
                       : ""}
                   </Text>
                 </StyledLi>
@@ -257,12 +262,12 @@ export const CreditProfileInfo = () => {
                     appearance="gray"
                     weight="normal"
                   >
-                    {`CC: ${requests.aanumnit}`}
+                    {`CC: ${requests.clientIdentificationNumber}`}
                   </Text>
                 </StyledLi>
               </StyledUl>
               <Text type="title" size="medium" appearance="gray" weight="bold">
-                {currencyFormat(requests.v_Monto)}
+                {currencyFormat(requests.loanAmount)}
               </Text>
             </>
           )}
@@ -296,8 +301,8 @@ export const CreditProfileInfo = () => {
                     appearance="gray"
                     weight="normal"
                   >
-                    {requests.nnasocia
-                      ? capitalizeFirstLetterEachWord(requests.nnasocia)
+                    {requests.clientName
+                      ? capitalizeFirstLetterEachWord(requests.clientName)
                       : ""}
                   </Text>
                 </StyledLi>
@@ -308,12 +313,12 @@ export const CreditProfileInfo = () => {
                     appearance="gray"
                     weight="normal"
                   >
-                    {`CC: ${requests.aanumnit}`}
+                    {`CC: ${requests.clientIdentificationNumber}`}
                   </Text>
                 </StyledLi>
               </StyledUl>
               <Text type="title" size="medium" appearance="gray" weight="bold">
-                {currencyFormat(requests.v_Monto)}
+                {currencyFormat(requests.loanAmount)}
               </Text>
             </Stack>
           </>
