@@ -10,7 +10,7 @@ import { Divider } from "@inubekit/divider";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { BoardSection } from "@components/layout/BoardSection";
-import { PinnedRequest, Requests } from "@services/types";
+import { PinnedRequest, ICreditRequest } from "@services/types";
 import { Selectcheck } from "@components/inputs/SelectCheck";
 import { IOptionItemCheckedProps } from "@components/inputs/SelectCheck/OptionItem";
 import { ErrorAlert } from "@components/ErrorAlert";
@@ -28,12 +28,12 @@ interface BoardLayoutProps {
   isMobile: boolean;
   selectOptions: IOptionItemCheckedProps[];
   boardOrientation: SectionOrientation;
-  BoardRequests: Requests[];
+  BoardRequests: ICreditRequest[];
   searchRequestValue: string;
   showPinnedOnly: boolean;
   pinnedRequests: PinnedRequest[];
   handleSelectCheckChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handlePinRequest: (requestId: number) => void;
+  handlePinRequest: (requestId: string) => void;
   handleShowPinnedOnly: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
@@ -61,7 +61,6 @@ function BoardLayoutUI(props: BoardLayoutProps) {
   const [showErrorAlert, setShowErrorAlert] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const stackRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -229,7 +228,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
               sectionBackground={column.sectionBackground}
               orientation={boardOrientation}
               sectionInformation={BoardRequests.filter(
-                (request) => request.i_Estprs === column.id
+                (request) => request.stage === column.id
               )}
               pinnedRequests={pinnedRequests}
               handlePinRequest={handlePinRequest}

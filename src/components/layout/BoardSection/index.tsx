@@ -9,7 +9,7 @@ import {
 import { MdOutlineChevronRight } from "react-icons/md";
 
 import { SummaryCard } from "@components/cards/SummaryCard";
-import { PinnedRequest, Requests } from "@services/types";
+import { PinnedRequest, ICreditRequest } from "@services/types";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
@@ -18,9 +18,9 @@ interface BoardSectionProps {
   sectionTitle: string;
   sectionBackground: SectionBackground;
   orientation: SectionOrientation;
-  sectionInformation: Requests[];
+  sectionInformation: ICreditRequest[];
   pinnedRequests: PinnedRequest[];
-  handlePinRequest: (requestId: number) => void;
+  handlePinRequest: (requestId: string) => void;
   errorLoadingPins: boolean;
 }
 
@@ -32,7 +32,7 @@ function BoardSection(props: BoardSectionProps) {
     sectionInformation,
     pinnedRequests,
     handlePinRequest,
-    errorLoadingPins
+    errorLoadingPins,
   } = props;
   const disabledCollapse = sectionInformation.length === 0;
 
@@ -47,9 +47,12 @@ function BoardSection(props: BoardSectionProps) {
     }
   };
 
-  function isRequestPinned(k_Prospe: number, pinnedRequests: PinnedRequest[]) {
+  function isRequestPinned(
+    creditRequestCode: string,
+    pinnedRequests: PinnedRequest[]
+  ) {
     const pinnedRequest = pinnedRequests.find(
-      (pinnedRequest) => pinnedRequest.requestId === k_Prospe
+      (pinnedRequest) => pinnedRequest.requestId === creditRequestCode
     );
 
     return pinnedRequest && pinnedRequest.isPinned === "Y" ? true : false;
@@ -111,17 +114,20 @@ function BoardSection(props: BoardSectionProps) {
           {sectionInformation.map((request, index) => (
             <SummaryCard
               key={index}
-              rad={request.k_Prospe}
-              date={request.f_Prospe}
-              name={request.nnasocia}
-              destination={request.k_Desdin}
-              value={request.v_Monto}
-              toDo={request.n_Descr_Tarea}
-              path={`extended-card/${request.k_Prospe}`}
-              isPinned={isRequestPinned(request.k_Prospe, pinnedRequests)}
+              rad={request.creditRequestCode}
+              date={request.creditRequestDateOfCreation}
+              name={request.clientName}
+              destination={request.moneyDestinationAbreviatedName}
+              value={request.loanAmount}
+              toDo={request.taskToBeDone}
+              path={`extended-card/${request.creditRequestCode}`}
+              isPinned={isRequestPinned(
+                request.creditRequestCode,
+                pinnedRequests
+              )}
               hasMessage
               onPinChange={() => {
-                handlePinRequest(request.k_Prospe);
+                handlePinRequest(request.creditRequestCode);
               }}
               errorLoadingPins={errorLoadingPins}
             />

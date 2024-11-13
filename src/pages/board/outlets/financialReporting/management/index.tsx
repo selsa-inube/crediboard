@@ -1,20 +1,21 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { MdOutlineSend, MdAttachFile } from "react-icons/md";
-import localforage from "localforage";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { Textfield } from "@inubekit/textfield";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
-import { getById, updateActive } from "@mocks/utils/dataMock.service";
-import { TraceType } from "@services/types";
+import { ITraceType } from "@services/types";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import userNotFound from "@assets/images/ItemNotFound.png";
+import { getTraceByCreditRequestId } from "@services/trace/getTraceByCreditRequestId";
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { registerNewsToCreditRequest } from "@services/trace/registerNewsToCreditRequest";
+import { ICreditRequest } from "@services/types";
 
-import { traceObserver } from "../config";
+import { traceObserver, errorObserver } from "../config";
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
-import { errorObserver } from "../config";
 
 interface IManagementProps {
   id: string;
@@ -22,124 +23,95 @@ interface IManagementProps {
   updateData?: boolean;
 }
 
-export const Management = (props: IManagementProps) => {
-  const { id, isMobile, updateData } = props;
-
-  const [traces, setTraces] = useState<TraceType[]>([]);
+export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
+  const [creditRequest, setCreditRequest] = useState<ICreditRequest | null>(
+    null
+  );
+  const [traces, setTraces] = useState<ITraceType[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const chatContentRef = useRef<HTMLDivElement>(null);
 
-  const chatContentRef = useRef<HTMLDivElement>(null); 
+  const notifyError = useCallback((message: string) => {
+    errorObserver.notify({ id: "Management", message });
+  }, []);
+
+  const fetchCreditRequest = useCallback(async () => {
+    try {
+      const data = await getCreditRequestByCode(id);
+      setCreditRequest(data[0] as ICreditRequest);
+    } catch (error) {
+      console.error(error);
+      notifyError((error as Error).message);
+    }
+  }, [id, notifyError]);
+
+  useEffect(() => {
+    if (id) fetchCreditRequest();
+  }, [fetchCreditRequest, id]);
 
   const fetchData = useCallback(async () => {
-    if (!id) return;
+    if (!creditRequest?.creditRequestId) return;
 
     setLoading(true);
     setError(null);
 
-    const timer = setTimeout(() => {
-      setError(
-        "No se pudo cargar la información. Intente nuevamente más tarde."
-      );
-      setLoading(false);
-    }, 5000);
-
     try {
-      const data = await getById<TraceType[]>(
-        "trace",
-        "credit_request_id",
-        id,
-        true
+      const data = await getTraceByCreditRequestId(
+        creditRequest.creditRequestId
       );
-
-      clearTimeout(timer);
-
-      if (!data || (Array.isArray(data) && data.length === 0)) {
-        errorObserver.notify({
-          id: "Management",
-          message: "Error al obtener los datos de gestión.",
-        });
-        setError("No se encontraron datos.");
-      } else if (data instanceof Error) {
-        setError("Error al obtener los datos de gestión.");
-      } else {
-        const flattenedData: TraceType[] = Array.isArray(data[0])
-          ? ((data as TraceType[]).flat() as TraceType[])
-          : (data as TraceType[]);
-
-        setTraces(flattenedData);
-      }
+      setTraces(Array.isArray(data) ? data.flat() : []);
     } catch (err) {
-      clearTimeout(timer);
-      errorObserver.notify({
-        id: "Management",
-        message: (err as Error).message.toString(),
-      });
+      notifyError((err as Error).message);
       setError("Error al intentar conectar con el servicio de trazabilidad.");
     } finally {
       setLoading(false);
     }
-    traceObserver.subscribe(fetchData);
-
-    return () => {
-      traceObserver.unsubscribe(fetchData);
-    };
-  }, [id]);
+  }, [creditRequest?.creditRequestId, notifyError]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData, updateData]);
 
   useEffect(() => {
+    traceObserver.subscribe(fetchData);
+    return () => traceObserver.unsubscribe(fetchData);
+  }, [fetchData]);
+
+  useEffect(() => {
     if (chatContentRef.current) {
-      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight; 
+      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
     }
   }, [traces]);
+
+  const sendMessage = async () => {
+    if (!newMessage.trim()) return;
+
+    const newTrace: ITraceType = {
+      useCase: "Novelty",
+      userName: "Usuario de Prueba",
+      creditRequestId: creditRequest?.creditRequestId,
+      traceValue: newMessage,
+      userId: "user_001",
+      traceType: "Novelty",
+      decision_of_concept: "decision",
+      excecutionDate: new Date().toISOString(),
+    };
+
+    try {
+      await registerNewsToCreditRequest(newTrace);
+      setTraces((prev) => [...prev, newTrace]);
+      setNewMessage("");
+    } catch (error) {
+      console.error("Error al enviar el mensaje:", error);
+      notifyError("Error al enviar el mensaje. Intente nuevamente.");
+    }
+  };
 
   const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
     sendMessage();
-  };
-
-  const sendMessage = async () => {
-    if (newMessage.trim() !== "") {
-      const newTrace: TraceType = {
-        trace_id: crypto.randomUUID(),
-        trace_value: newMessage,
-        credit_request_id: id ?? "default",
-        use_case: "message",
-        user_id: "user_001",
-        execution_date: new Date().toISOString(),
-      };
-
-      const updatedTraces = [...traces, newTrace];
-      setTraces(updatedTraces);
-
-      try {
-        await localforage.setItem("trace", updatedTraces);
-        await updateActive({
-          key: "trace_id",
-          nameDB: "trace",
-          identifier: newTrace.trace_id,
-          editData: {
-            trace_id: newTrace.trace_id,
-            trace_value: newTrace.trace_value,
-            credit_request_id: newTrace.credit_request_id,
-            use_case: newTrace.use_case,
-            user_id: newTrace.user_id,
-            execution_date: newTrace.execution_date as string,
-            justification: newTrace.justification ?? "",
-            decision_taken_by_user: newTrace.decision_taken_by_user ?? "",
-            trace_type: newTrace.trace_type ?? "",
-            read_novelty: newTrace.read_novelty ?? "",
-          },
-        });
-        setNewMessage("");
-      } catch (err) {
-        console.error("Error al guardar el mensaje:", err);
-      }
-    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,6 +122,26 @@ export const Management = (props: IManagementProps) => {
     setError(null);
     fetchData();
   };
+
+  const renderSkeletons = () =>
+    [...Array(5)].map((_, index) => (
+      <SkeletonContainer
+        key={index}
+        type={index % 2 === 0 ? "sent" : "received"}
+      >
+        <SkeletonLine width="30%" animated={true} />
+      </SkeletonContainer>
+    ));
+
+  const renderMessages = () =>
+    traces.map((trace, index) => (
+      <Message
+        key={index}
+        type="sent"
+        timestamp={trace.excecutionDate}
+        message={trace.traceValue}
+      />
+    ));
 
   return (
     <Fieldset
@@ -168,27 +160,16 @@ export const Management = (props: IManagementProps) => {
         />
       ) : (
         <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
-          <ChatContent ref={chatContentRef}> 
-            {loading
-              ? [...Array(5)].map((_, index) => (
-                  <SkeletonContainer
-                    key={index}
-                    type={index % 2 === 0 ? "sent" : "received"}
-                  >
-                    <SkeletonLine width="30%" animated={true} />
-                  </SkeletonContainer>
-                ))
-              : traces.map((trace) => (
-                  <Message
-                    key={trace.trace_id}
-                    type="sent"
-                    timestamp={trace.execution_date}
-                    message={trace.trace_value}
-                  />
-                ))}
+          <ChatContent ref={chatContentRef}>
+            {loading ? renderSkeletons() : renderMessages()}
           </ChatContent>
           <form>
-            <Stack alignItems="center"  direction="row" gap="16px" margin="2px 4px">
+            <Stack
+              alignItems="center"
+              direction="row"
+              gap="16px"
+              margin="2px 4px"
+            >
               <Icon
                 appearance="primary"
                 cursorHover
@@ -201,7 +182,6 @@ export const Management = (props: IManagementProps) => {
                 fullwidth
                 value={newMessage}
                 onChange={handleInputChange}
-                size="compact"
               />
               <Icon
                 appearance="primary"
