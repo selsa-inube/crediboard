@@ -367,3 +367,9 @@ export interface IMoneyDestination {
   description_use: string;
   icon: string;
 }
+
+export interface IPaymentChannel {
+  id: string;
+  label: string;
+  value: string;
+}
