@@ -368,7 +368,7 @@ export interface IMoneyDestination {
   icon: string;
 }
 
-export interface IRequestVelue {
+export interface IPaymentChannel {
   id: string;
   label: string;
   value: string;

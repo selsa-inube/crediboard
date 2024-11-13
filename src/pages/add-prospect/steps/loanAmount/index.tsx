@@ -9,11 +9,11 @@ import { Select } from "@inubekit/select";
 import { Icon } from "@inubekit/icon";
 import { inube } from "@inubekit/foundations";
 import { useMediaQuery } from "@inubekit/hooks";
-
+  
 import { Fieldset } from "@components/data/Fieldset";
 import { currencyFormat } from "@utils/formatData/currency";
 import { get } from "@mocks/utils/dataMock.service";
-import { IRequestVelue } from "@services/types";
+import { IPaymentChannel } from "@services/types";
 
 import { dataAmount } from "./config";
 
@@ -24,8 +24,9 @@ export interface ILoanAmountProps {
 export function LoanAmount(props: ILoanAmountProps) {
   const { value } = props;
   const [toggleChecked, setToggleChecked] = useState(false);
-  const [requestValue, setRequestValue] = useState<IRequestVelue[]>();
+  const [requestValue, setRequestValue] = useState<IPaymentChannel[]>();
   const [form, setForm] = useState({ paymentPlan: "" });
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     get("mockRequest_value")
@@ -45,6 +46,11 @@ export function LoanAmount(props: ILoanAmountProps) {
 
   const onChangeToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setToggleChecked(e.target.checked);
+  };
+
+  const onChangeTextfield = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = parseFloat(e.target.value.replace(/[^0-9]/g, "")) || 0;
+    setInputValue(currencyFormat(rawValue, false));
   };
 
   const isMobile = useMediaQuery("(max-width:880px)");
@@ -78,8 +84,10 @@ export function LoanAmount(props: ILoanAmountProps) {
             iconBefore={
               <MdOutlineAttachMoney color={inube.palette.green.G400} />
             }
-            type="number"
-            fullwidth
+            type="text"
+            fullwidth={true}
+            value={inputValue}
+            onChange={onChangeTextfield}
           />
         </Stack>
         <Divider dashed />
@@ -111,7 +119,7 @@ export function LoanAmount(props: ILoanAmountProps) {
             name="paymentPlan"
             onChange={onChangeSelect}
             value={form["paymentPlan"]}
-            fullwidth
+            fullwidth={true}
           />
         </Stack>
       </Stack>

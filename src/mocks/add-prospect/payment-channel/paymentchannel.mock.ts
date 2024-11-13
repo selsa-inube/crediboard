@@ -1,6 +1,6 @@
-import { IRequestVelue } from "@services/types";
+import { IPaymentChannel } from "@services/types";
 
-export const mockRequestValue: IRequestVelue[] = [
+export const mockPaymentChannel: IPaymentChannel[] = [
   { id: "1", label: "Nomina Colpensiones", value: "nomina-colpensiones" },
   {
     id: "2",
