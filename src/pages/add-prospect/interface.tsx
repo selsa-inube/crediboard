@@ -3,29 +3,28 @@ import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 
+import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
+
+import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
+
 import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
-
 import {
   IFormAddPosition,
   IFormAddPositionRef,
   IStep,
   titleButtonTextAssited,
+  StepDetails,
 } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
+import { LoanAmount } from "./steps/loanAmount";
 import { ConsolidatedCredit } from "./steps/consolidatedCredit";
 import { ProductSelection } from "./steps/ProductSelection";
 import { SourcesOfIncome } from "./steps/sourcesOfIncome";
 import { MoneyDestination } from "./steps/MoneyDestination";
 import { LoanCondition } from "./steps/loanCondition";
 
-interface StepDetails {
-  id: number;
-  number: number;
-  name: string;
-  description: string;
-}
 interface AddPositionUIProps {
   currentStep: number;
   steps: IStep[];
@@ -82,6 +81,13 @@ export function AddProspectUI(props: AddPositionUIProps) {
             <RequirementsNotMet />
           )}
         {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsAddProspect.extraordinaryInstallments.id && (
+            <ExtraordinaryInstallments
+              dataTable={extraordinaryInstallmentMock}
+            />
+          )}
+        {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.destination.id && (
             <MoneyDestination />
           )}
@@ -96,6 +102,10 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
             <LoanCondition />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.loanAmount.id && (
+            <LoanAmount value={10000000} />
           )}
           {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.obligationsCollected.id && (
