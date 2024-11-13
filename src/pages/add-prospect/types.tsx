@@ -40,6 +40,22 @@ export interface IPosition {
   n_roles?: string[];
 }
 
+export interface StepDetails {
+  id: number;
+  number: number;
+  name: string;
+  description: string;
+}
+
+export interface LoanConditionState {
+  toggles: {
+    quotaCapToggle: boolean;
+    maximumTermToggle: boolean;
+  };
+  quotaCapValue: string;
+  maximumTermValue: string;
+}
+
 export interface IFormAddPosition {
   generalInformation: { isValid: boolean; values: IGeneralInformationEntry };
 }

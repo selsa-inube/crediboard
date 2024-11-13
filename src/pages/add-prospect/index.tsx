@@ -1,8 +1,10 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FormikProps } from "formik";
+import { useMediaQuery } from "@inubekit/hooks";
 
 import { Consulting } from "@components/modals/Consulting";
+import { income } from "@mocks/income/income.mock";
 
 import { IMessageState } from "./types/forms.types";
 import { IGeneralInformationEntry } from "./components/GeneralInformationForm";
@@ -21,7 +23,44 @@ export function AddProspect() {
     visible: false,
   });
   const [showConsultingModal, setShowConsultingModal] = useState(false);
+  const [selectedDestination, setSelectedDestination] = useState<string>("");
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+  const [loanConditionState, setLoanConditionState] = useState({
+    toggles: {
+      quotaCapToggle: true,
+      maximumTermToggle: false,
+    },
+    quotaCapValue: "",
+    maximumTermValue: "",
+  });
+  const [generalToggleChecked, setGeneralToggleChecked] = useState(true);
+  const [togglesState, setTogglesState] = useState([false, true, false]);
+  const [incomeData, setIncomeData] = useState(() => income[0]);
 
+  const handleIncome = (name: string, newValue: string) => {
+    setIncomeData((prevValues) => ({
+      ...prevValues,
+      [name]: newValue,
+    }));
+  };
+
+  const handleToggleCheckedChange = () => {
+    setGeneralToggleChecked(!generalToggleChecked);
+  };
+
+  const handleToggleChange = (index: number) => {
+    const newToggles = [...togglesState];
+    newToggles[index] = !newToggles[index];
+    setTogglesState(newToggles);
+  };
+
+  const handleLoanConditionChange = (
+    newState: Partial<typeof loanConditionState>
+  ) => {
+    setLoanConditionState((prevState) => ({ ...prevState, ...newState }));
+  };
+
+  const smallScreen = useMediaQuery("(max-width:880px)");
   const steps = Object.values(stepsAddProspect);
   const navigate = useNavigate();
 
@@ -109,22 +148,35 @@ export function AddProspect() {
 
   return (
     <>
-    <AddProspectUI
-      steps={steps}
-      currentStep={currentStep}
-      isCurrentFormValid={isCurrentFormValid}
-      dataAddPositionLinixForm={dataAddPositionLinixForm}
-      formReferences={formReferences}
-      message={message}
-      setIsCurrentFormValid={setIsCurrentFormValid}
-      handleNextStep={handleNextStep}
-      handlePreviousStep={handlePreviousStep}
-      setCurrentStep={setCurrentStep}
-      handleCloseSectionMessage={handleCloseSectionMessage}
-      currentStepsNumber={currentStepsNumber}
-      handleSubmitClick={handleSubmitClick}
-    />
-    {showConsultingModal && <Consulting/>}
+      <AddProspectUI
+        steps={steps}
+        currentStep={currentStep}
+        isCurrentFormValid={isCurrentFormValid}
+        dataAddPositionLinixForm={dataAddPositionLinixForm}
+        formReferences={formReferences}
+        message={message}
+        setIsCurrentFormValid={setIsCurrentFormValid}
+        handleNextStep={handleNextStep}
+        handlePreviousStep={handlePreviousStep}
+        setCurrentStep={setCurrentStep}
+        handleCloseSectionMessage={handleCloseSectionMessage}
+        currentStepsNumber={currentStepsNumber}
+        handleSubmitClick={handleSubmitClick}
+        selectedDestination={selectedDestination}
+        setSelectedDestination={setSelectedDestination}
+        selectedProducts={selectedProducts}
+        setSelectedProducts={setSelectedProducts}
+        loanConditionState={loanConditionState}
+        generalToggleChecked={generalToggleChecked}
+        togglesState={togglesState}
+        incomeData={incomeData}
+        handleIncome={handleIncome}
+        handleToggleCheckedChange={handleToggleCheckedChange}
+        handleToggleChange={handleToggleChange}
+        handleLoanConditionChange={handleLoanConditionChange}
+        smallScreen={smallScreen}
+      />
+      {showConsultingModal && <Consulting />}
     </>
   );
 }

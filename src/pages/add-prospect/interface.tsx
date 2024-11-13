@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
-import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 
 import { income } from "@mocks/income/income.mock";
@@ -12,6 +10,8 @@ import {
   IFormAddPosition,
   IFormAddPositionRef,
   IStep,
+  LoanConditionState,
+  StepDetails,
   titleButtonTextAssited,
 } from "./types";
 import { StyledContainerAssisted } from "./styles";
@@ -21,12 +21,6 @@ import { SourcesOfIncome } from "./steps/sourcesOfIncome";
 import { MoneyDestination } from "./steps/MoneyDestination";
 import { LoanCondition } from "./steps/loanCondition";
 
-interface StepDetails {
-  id: number;
-  number: number;
-  name: string;
-  description: string;
-}
 interface AddPositionUIProps {
   currentStep: number;
   steps: IStep[];
@@ -41,6 +35,26 @@ interface AddPositionUIProps {
   handleCloseSectionMessage: () => void;
   handleSubmitClick: () => void;
   currentStepsNumber?: StepDetails;
+  selectedDestination: string;
+  setSelectedDestination: React.Dispatch<React.SetStateAction<string>>;
+  selectedProducts: string[];
+  setSelectedProducts: React.Dispatch<React.SetStateAction<string[]>>;
+  loanConditionState: {
+    toggles: {
+      quotaCapToggle: boolean;
+      maximumTermToggle: boolean;
+    };
+    quotaCapValue: string;
+    maximumTermValue: string;
+  };
+  generalToggleChecked: boolean;
+  togglesState: boolean[];
+  incomeData: (typeof income)[0];
+  handleIncome: (name: string, newValue: string) => void;
+  handleToggleCheckedChange: () => void;
+  handleToggleChange: (index: number) => void;
+  handleLoanConditionChange: (newState: Partial<LoanConditionState>) => void;
+  smallScreen: boolean;
 }
 
 export function AddProspectUI(props: AddPositionUIProps) {
@@ -51,49 +65,20 @@ export function AddProspectUI(props: AddPositionUIProps) {
     isCurrentFormValid,
     handleNextStep,
     handlePreviousStep,
+    selectedDestination,
+    setSelectedDestination,
+    selectedProducts,
+    setSelectedProducts,
+    generalToggleChecked,
+    togglesState,
+    incomeData,
+    handleIncome,
+    handleToggleCheckedChange,
+    handleToggleChange,
+    handleLoanConditionChange,
+    loanConditionState,
+    smallScreen,
   } = props;
-
-  const [selectedDestination, setSelectedDestination] = useState<string>("");
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
-  const [loanConditionState, setLoanConditionState] = useState({
-    toggles: {
-      quotaCapToggle: true,
-      maximumTermToggle: false,
-    },
-    quotaCapValue: "",
-    maximumTermValue: "",
-  });
-  const [generalToggleChecked, setGeneralToggleChecked] = useState(true);
-  const [togglesState, setTogglesState] = useState([false, true, false]);
-  const [incomeData, setIncomeData] = useState(() => income[0]);
-
-  const incomeDebtors = income[0].debtors;
-
-  const handleIncome = (name: string, newValue: string) => {
-    setIncomeData((prevValues) => ({
-      ...prevValues,
-      [name]: newValue,
-    }));
-    console.log("a")
-  };
-
-  const handleToggleCheckedChange = () => {
-    setGeneralToggleChecked(!generalToggleChecked);
-  };
-
-  const handleToggleChange = (index: number) => {
-    const newToggles = [...togglesState];
-    newToggles[index] = !newToggles[index];
-    setTogglesState(newToggles);
-  };
-
-  const handleLoanConditionChange = (
-    newState: Partial<typeof loanConditionState>
-  ) => {
-    setLoanConditionState((prevState) => ({ ...prevState, ...newState }));
-  };
-
-  const smallScreen = useMediaQuery("(max-width:880px)");
 
   return (
     <Stack
@@ -145,7 +130,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
             <SourcesOfIncome
               incomeData={incomeData}
               onChange={handleIncome}
-              options={incomeDebtors}
+              options={incomeData.debtors}
             />
           )}
         {currentStepsNumber &&
