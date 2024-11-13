@@ -2,7 +2,10 @@ import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
 
+import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { income } from "@mocks/income/income.mock";
+
+import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
 
 import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
@@ -16,6 +19,7 @@ import {
 } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
+import { LoanAmount } from "./steps/loanAmount";
 import { ProductSelection } from "./steps/ProductSelection";
 import { SourcesOfIncome } from "./steps/sourcesOfIncome";
 import { MoneyDestination } from "./steps/MoneyDestination";
@@ -108,6 +112,13 @@ export function AddProspectUI(props: AddPositionUIProps) {
             <RequirementsNotMet />
           )}
         {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsAddProspect.extraordinaryInstallments.id && (
+            <ExtraordinaryInstallments
+              dataTable={extraordinaryInstallmentMock}
+            />
+          )}
+        {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.destination.id && (
             <MoneyDestination
               selectedDestination={selectedDestination}
@@ -139,6 +150,10 @@ export function AddProspectUI(props: AddPositionUIProps) {
               loanConditionState={loanConditionState}
               onChange={handleLoanConditionChange}
             />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.loanAmount.id && (
+            <LoanAmount value={10000000} />
           )}
         <Stack justifyContent="end" gap="20px">
           <Button

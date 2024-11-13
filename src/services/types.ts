@@ -1,5 +1,6 @@
 import { Schedule, GracePeriodType, BorrowerProperties } from "@services/enums";
-interface Requests {
+export interface ICreditRequest {
+  creditRequestId?: string;
   creditRequestCode: string;
   creditRequestDateOfCreation: string;
   loanAmount: number;
@@ -8,32 +9,34 @@ interface Requests {
   stage: DmEtapasPrs;
   moneyDestinationAbreviatedName: string;
   clientIdentificationNumber: string;
-  clientName: string; 
+  clientName: string;
   taskToBeDone: string;
 }
 
-interface IStaff {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
+export interface IStaff {
+  userId: string;
+  userName: string;
+  identificationType: string;
+  identificationNumber: string;
   position: string;
 }
 
-interface PinnedRequest {
+export interface PinnedRequest {
   requestId: string;
   isPinned: "Y" | "N";
 }
 
-interface IToDo {
-  credit_request_state_id: string;
-  task_to_be_done: string;
-  account_manager_name: string;
-  analyst_name: string;
-  decisions: { id: string; label: string; value: string }[];
+export interface IToDo {
+  creditRequestId: string;
+  creditRequestCode: string;
+  CreditRequestStateId: string;
+  creditRequestStateAbbreviatedName: string;
+  stage: string;
+  taskToBeDone: string;
+  usersByCreditRequestResponse: IStaff[];
 }
 
-interface IKeyRiskScoring {
+export interface IKeyRiskScoring {
   total_score: number;
   minimum_score: number;
   seniority: number;
@@ -48,12 +51,12 @@ interface IKeyRiskScoring {
   economic_activity_score: number;
 }
 
-interface IRiskScoring {
+export interface IRiskScoring {
   credit_request_id: string;
   risk_scoring: IKeyRiskScoring;
 }
 
-type DmEtapasPrs =
+export type DmEtapasPrs =
   | "CUMPLIMIENTO_REQUISITOS"
   | "FORMALIZACION_GARANTIAS"
   | "GESTION_COMERCIAL"
@@ -61,7 +64,7 @@ type DmEtapasPrs =
   | "TRAMITE_DESEMBOLSO"
   | "VERIFICACION_APROBACION";
 
-type DmTareasPrs =
+export type DmTareasPrs =
   | "ASESORAR_CLIENTE"
   | "CONFIRMAR_APROBACION"
   | "CONFIRMAR_DESEMBOLSO"
@@ -70,7 +73,7 @@ type DmTareasPrs =
   | "VALIDAR_SOPORTES_JURIDICOS"
   | "INTERFACE_CARTERA";
 
-type DmConceptos =
+export type DmConceptos =
   | "APROBAR_SOLICITUD"
   | "AUTOMATICA"
   | "GESTION_COMERCIAL"
@@ -80,7 +83,7 @@ type DmConceptos =
   | "APROBACION_HUMANA"
   | "RECHAZO_HUMANO";
 
-type DmDecisions =
+export type DmDecisions =
   | "ANALISIS_RIESGO"
   | "ANULAR_SOLICITUD"
   | "APROBAR_SOLICITUD"
@@ -98,31 +101,19 @@ type DmDecisions =
   | "CREAR_OBLIGACIONES_DE_CARTERA"
   | "DECLINAR_OBLIGACIONES_DE_CARTERA";
 
-interface TraceType {
-  trace_id: string;
-  trace_value: string;
-  credit_request_id: string;
-  use_case: string;
-  user_id: string;
-  execution_date: string;
+export interface ITraceType {
+  creditRequestId?: string;
+  excecutionDate: string;
+  traceType: string;
+  traceValue: string;
+  userId: string;
+  userName: string;
+  decision_of_concept?: string;
+  decisionTakenByUser?: string;
   justification?: string;
-  decision_taken_by_user?: string;
-  trace_type?: string;
-  read_novelty?: string;
+  readNovelty?: string;
+  useCase?: string;
 }
-
-export type {
-  Requests,
-  IStaff,
-  IToDo,
-  IRiskScoring,
-  DmEtapasPrs,
-  DmTareasPrs,
-  DmConceptos,
-  DmDecisions,
-  PinnedRequest,
-  TraceType,
-};
 
 export interface payroll_discount_authorization {
   credit_request_id: string;
@@ -296,15 +287,15 @@ interface IDebtor {
 export interface IIncome {
   debtors: IDebtor[],
   debtor_id: string;
-  debtor: string,
-  monthly_salary: number,
-  other_monthly_payments: number,
-  pension_allowances: number,
-  leases: number,
-  dividends_or_shares: number,
-  financial_returns: number,
-  average_monthly_profit: number,
-  monthly_fees: number,
+  debtor: string;
+  monthly_salary: number;
+  other_monthly_payments: number;
+  pension_allowances: number;
+  leases: number;
+  dividends_or_shares: number;
+  financial_returns: number;
+  average_monthly_profit: number;
+  monthly_fees: number;
 }
 
 export interface IBorrowerProperty {
@@ -376,11 +367,16 @@ export interface IExtraordinaryPayment {
   value: number;
   paymentMethod: string;
 }
-
 export interface IMoneyDestination {
   money_destination_id: string;
   money_destination_unique_reference: string;
   abbreviated_name: string;
   description_use: string;
   icon: string;
+}
+
+export interface IPaymentChannel {
+  id: string;
+  label: string;
+  value: string;
 }

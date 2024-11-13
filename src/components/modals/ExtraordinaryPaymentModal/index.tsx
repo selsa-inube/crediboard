@@ -9,17 +9,16 @@ import { Icon } from "@inubekit/icon";
 import { Button } from "@inubekit/button";
 import { useMediaQuery } from "@inubekit/hooks";
 
-import { TableExtraordinaryInstallment } from "@src/components/data/TableExtraordinaryInstallment";
-import { IExtraordinaryPayment } from "@src/services/types";
-import { StyledContainerClose, StyledContainerContent } from "./styles";
-import { TextLabels } from "./config";
+import { TableExtraordinaryInstallment } from "@pages/prospect/components/TableExtraordinaryInstallment";
+import { IExtraordinaryPayment } from "@services/types";
 import { AddSeriesModal } from "@components/modals/AddSeriesModal";
-
 import {
   paymentMethodOptions,
   frequencyOptions,
 } from "@components/modals/AddSeriesModal/config";
 
+import { StyledContainerClose, StyledContainerContent } from "./styles";
+import { TextLabels } from "./config";
 export interface ExtraordinaryPaymentModalProps {
   dataTable: IExtraordinaryPayment[];
   portalId: string;
@@ -54,7 +53,6 @@ export const ExtraordinaryPaymentModal = (
   const handleConfirm = () => {
     console.log("Confirmar acción");
   };
-  
 
   const openAddSeriesModal = () => {
     setAddSeriesModalOpen(true);
@@ -143,7 +141,7 @@ export const ExtraordinaryPaymentModal = (
           buttonText="Cancelar"
           secondButtonText="Agregar"
           formValues={{ field1: 0, field2: 0 }}
-          initialValues={{ field1: 0, field2: 0 }} 
+          initialValues={{ field1: 0, field2: 0 }}
           paymentMethodOptions={paymentMethodOptions}
           frequencyOptions={frequencyOptions}
           portalId={portalId}
