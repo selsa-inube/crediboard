@@ -9,7 +9,7 @@ import {
 import { MdOutlineChevronRight } from "react-icons/md";
 
 import { SummaryCard } from "@components/cards/SummaryCard";
-import { PinnedRequest, Requests } from "@services/types";
+import { PinnedRequest, ICreditRequest } from "@services/types";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
@@ -18,7 +18,7 @@ interface BoardSectionProps {
   sectionTitle: string;
   sectionBackground: SectionBackground;
   orientation: SectionOrientation;
-  sectionInformation: Requests[];
+  sectionInformation: ICreditRequest[];
   pinnedRequests: PinnedRequest[];
   handlePinRequest: (requestId: string) => void;
   errorLoadingPins: boolean;
@@ -32,7 +32,7 @@ function BoardSection(props: BoardSectionProps) {
     sectionInformation,
     pinnedRequests,
     handlePinRequest,
-    errorLoadingPins
+    errorLoadingPins,
   } = props;
   const disabledCollapse = sectionInformation.length === 0;
 
@@ -47,7 +47,10 @@ function BoardSection(props: BoardSectionProps) {
     }
   };
 
-  function isRequestPinned(creditRequestCode: string, pinnedRequests: PinnedRequest[]) {
+  function isRequestPinned(
+    creditRequestCode: string,
+    pinnedRequests: PinnedRequest[]
+  ) {
     const pinnedRequest = pinnedRequests.find(
       (pinnedRequest) => pinnedRequest.requestId === creditRequestCode
     );
@@ -118,7 +121,10 @@ function BoardSection(props: BoardSectionProps) {
               value={request.loanAmount}
               toDo={request.taskToBeDone}
               path={`extended-card/${request.creditRequestCode}`}
-              isPinned={isRequestPinned(request.creditRequestCode, pinnedRequests)}
+              isPinned={isRequestPinned(
+                request.creditRequestCode,
+                pinnedRequests
+              )}
               hasMessage
               onPinChange={() => {
                 handlePinRequest(request.creditRequestCode);
