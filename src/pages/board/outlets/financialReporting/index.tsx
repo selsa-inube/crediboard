@@ -16,7 +16,7 @@ import { MobileMenu } from "@components/modals/MobileMenu";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
-import { Ierror_issued, IErrorService, Requests } from "@services/types";
+import { Ierror_issued, IErrorService, ICreditRequest } from "@services/types";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
@@ -80,7 +80,7 @@ const removeErrorByIdServices = (
 };
 
 export const FinancialReporting = () => {
-  const [data, setData] = useState({} as Requests);
+  const [data, setData] = useState({} as ICreditRequest);
 
   const [showAttachments, setShowAttachments] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);

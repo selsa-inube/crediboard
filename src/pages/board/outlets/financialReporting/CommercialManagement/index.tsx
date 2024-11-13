@@ -35,11 +35,11 @@ import {
 } from "@utils/formatData/text";
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
-import { ICreditProductProspect, Requests } from "@services/types";
+import { ICreditProductProspect, ICreditRequest } from "@services/types";
 import { MenuPropect } from "@components/navigation/MenuPropect";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { addCreditProduct } from "@mocks/utils/addCreditProductMock.service";
-import { ExtraordinaryPaymentModal } from "@pages/prospect/components/ExtraordinaryPaymentModal";
+import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
 import { menuOptions, incomeOptions } from "./config/config";
@@ -51,7 +51,7 @@ import {
 } from "./styles";
 
 interface ComercialManagementProps {
-  data: Requests;
+  data: ICreditRequest;
   children?: JSX.Element;
   print: () => void;
   isPrint?: boolean;

@@ -1,6 +1,6 @@
-import { Requests } from "@services/types";
+import { ICreditRequest } from "@services/types";
 
-export const mockRequests: Requests[] = [
+export const mockRequests: ICreditRequest[] = [
   {
     creditRequestCode: "999996",
     creditRequestDateOfCreation: "2022-03-08T00:00:00-05:00",
@@ -11,8 +11,7 @@ export const mockRequests: Requests[] = [
     moneyDestinationAbreviatedName: "LIBRE GNR TEST",
     clientIdentificationNumber: "1000970876",
     clientName: "MATEO GOMEZ RODRIGUEZ",
-    taskToBeDone:
-      "Confirmar que la Formalización de garantías se ha efectuado",
+    taskToBeDone: "Confirmar que la Formalización de garantías se ha efectuado",
   },
   {
     creditRequestCode: "999997",
@@ -24,8 +23,7 @@ export const mockRequests: Requests[] = [
     moneyDestinationAbreviatedName: "LIBRE GNR TEST",
     clientIdentificationNumber: "1000970877",
     clientName: "MARIA ALEJANDRA GUTIERREZ RUIZ",
-    taskToBeDone:
-      "Confirmar que la Formalización de garantías se ha efectuado",
+    taskToBeDone: "Confirmar que la Formalización de garantías se ha efectuado",
   },
   {
     creditRequestCode: "999998",
@@ -37,7 +35,6 @@ export const mockRequests: Requests[] = [
     moneyDestinationAbreviatedName: "LIBRE GNR TEST",
     clientIdentificationNumber: "1000970878",
     clientName: "ANDRES FELIPE SANCHEZ LOPEZ",
-    taskToBeDone:
-      "Confirmar que la Formalización de garantías se ha efectuado",
+    taskToBeDone: "Confirmar que la Formalización de garantías se ha efectuado",
   },
 ];
