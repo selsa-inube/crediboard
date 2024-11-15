@@ -7,7 +7,7 @@ import { currencyFormat } from "@utils/formatData/currency";
 
 import { selectData } from "./config";
 
-interface IProductSelectCardProps {
+export interface IProductSelectCardProps {
   amount: number;
   rate: number;
   term: number;

@@ -1,4 +1,4 @@
-import { Sources } from "./Sources";
+import { IncomeCard } from "@components/cards/IncomeCard";
 
 interface IncomeProps {
   values: string[];
@@ -7,7 +7,7 @@ interface IncomeProps {
 
 function IncomeCapital({ values, onChange }: IncomeProps) {
   return (
-    <Sources
+    <IncomeCard
       title="Rentas de capital"
       labels={[
         "Arrendamientos",
@@ -23,7 +23,7 @@ function IncomeCapital({ values, onChange }: IncomeProps) {
 
 function IncomeEmployment({ values, onChange }: IncomeProps) {
   return (
-    <Sources
+    <IncomeCard
       title="Rentas de trabajo"
       labels={[
         "Salario mensual",
@@ -43,7 +43,7 @@ function IncomeEmployment({ values, onChange }: IncomeProps) {
 
 function MicroBusinesses({ values, onChange }: IncomeProps) {
   return (
-    <Sources
+    <IncomeCard
       title="Otros ingresos variables"
       labels={["Ganancia promedio mensual", "Honorarios mensuales"]}
       placeholders={["Ganancias/mes", "Honorarios/mes"]}
@@ -55,7 +55,7 @@ function MicroBusinesses({ values, onChange }: IncomeProps) {
 
 function ProfessionalServices({ values, onChange }: IncomeProps) {
   return (
-    <Sources
+    <IncomeCard
       title="Servicios profesionales"
       labels={["Honorarios mensuales"]}
       placeholders={["Honorarios/mes"]}

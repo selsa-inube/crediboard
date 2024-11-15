@@ -4,7 +4,7 @@ import { Grid } from "@inubekit/grid";
 import { Textfield } from "@inubekit/textfield";
 import { RenderMessage } from "@components/feedback/RenderMessage";
 import { FormButtons } from "@components/forms/submit/FormButtons";
-import { IMessageState } from "@pages/add-prospect/types/forms.types";
+import { IMessageState } from "@src/pages/addProspect/types/forms.types";
 
 import { IGeneralInformationEntry } from ".";
 
