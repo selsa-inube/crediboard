@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-
 import {
   Pagination,
   Table,
@@ -14,7 +13,7 @@ import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
 
-import { Detail } from "@components/data/TableExtraordinaryInstallment/Detail";
+import { Detail } from "@pages/prospect/components/TableExtraordinaryInstallment/Detail";
 
 import { headers, data, dataReport } from "./config";
 import { usePagination } from "./utils";

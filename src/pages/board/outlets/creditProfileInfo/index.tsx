@@ -9,7 +9,7 @@ import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
 import { get, getById } from "@mocks/utils/dataMock.service";
-import { Requests, IRiskScoring } from "@services/types";
+import { ICreditRequest, IRiskScoring } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
@@ -37,7 +37,7 @@ const margins = {
 };
 
 export const CreditProfileInfo = () => {
-  const [requests, setRequests] = useState({} as Requests);
+  const [requests, setRequests] = useState({} as ICreditRequest);
   const [riskScoring, setRiskScoring] = useState<IRiskScoring["risk_scoring"]>({
     total_score: 0,
     minimum_score: 0,
@@ -200,7 +200,7 @@ export const CreditProfileInfo = () => {
 
     getCreditRequestByCode(id!)
       .then((data) => {
-        setRequests(data[0] as Requests);
+        setRequests(data[0] as ICreditRequest);
       })
       .catch((error) => {
         console.error(error);

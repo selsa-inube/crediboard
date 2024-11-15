@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { ClientsUI } from "./interface";
 import { IClientState } from "./types";
 import { useNavigate } from "react-router-dom";
-import { AppContext } from "@context/AppContext";
+import { AppContext } from "@context/AppContext/AppContext";
 import { IClient } from "@context/AppContext/types";
 import { IClients } from "@src/routes/login";
 
