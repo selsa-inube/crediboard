@@ -36,11 +36,11 @@ export const stepsAddProspect = {
     name: "Fuentes de ingreso",
     description: "Actualice sus fuentes de ingreso para soportar capacidad de pago.",
   },
-  requestValue7: {
+  obligationsFinancial: {
     id: 7,
     number: 7,
-    name: "Valor de la solicitud",
-    description: "Detalles del valor de la solicitud",
+    name: "Obligaciones financieras",
+    description: "Verifique las obligaciones financieras reportadas.",
   },
   loanConditions: {
     id: 8,
