@@ -36,6 +36,18 @@ export function AddProspect() {
   const [generalToggleChecked, setGeneralToggleChecked] = useState(true);
   const [togglesState, setTogglesState] = useState([false, true, false]);
   const [incomeData, setIncomeData] = useState(() => income[0]);
+  const [loanAmountState, setLoanAmountState] = useState({
+    inputValue: "",
+    toggleChecked: false,
+    paymentPlan: "",
+  });
+
+  const handleLoanAmountChange = (newData: Partial<typeof loanAmountState>) => {
+    setLoanAmountState((prevState) => ({
+      ...prevState,
+      ...newData,
+    }));
+  };
 
   const handleIncome = (name: string, newValue: string) => {
     setIncomeData((prevValues) => ({
@@ -174,6 +186,8 @@ export function AddProspect() {
         handleToggleCheckedChange={handleToggleCheckedChange}
         handleToggleChange={handleToggleChange}
         handleLoanConditionChange={handleLoanConditionChange}
+        loanAmountState={loanAmountState}
+        handleLoanAmountChange={handleLoanAmountChange}
         smallScreen={smallScreen}
       />
       {showConsultingModal && <Consulting />}

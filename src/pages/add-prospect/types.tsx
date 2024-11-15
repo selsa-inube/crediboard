@@ -63,6 +63,12 @@ export interface LoanConditionState {
   maximumTermValue: string;
 }
 
+export interface LoanAmountState {
+  inputValue: string;
+  toggleChecked: boolean;
+  paymentPlan: string;
+}
+
 export interface IFormAddPosition {
   generalInformation: { isValid: boolean; values: IGeneralInformationEntry };
 }

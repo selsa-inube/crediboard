@@ -13,6 +13,7 @@ import {
   IFormAddPosition,
   IFormAddPositionRef,
   IStep,
+  LoanAmountState,
   LoanConditionState,
   StepDetails,
   titleButtonTextAssited,
@@ -58,6 +59,8 @@ interface AddPositionUIProps {
   handleToggleCheckedChange: () => void;
   handleToggleChange: (index: number) => void;
   handleLoanConditionChange: (newState: Partial<LoanConditionState>) => void;
+  loanAmountState: LoanAmountState;
+  handleLoanAmountChange: (newData: Partial<LoanAmountState>) => void;
   smallScreen: boolean;
 }
 
@@ -81,6 +84,8 @@ export function AddProspectUI(props: AddPositionUIProps) {
     handleToggleChange,
     handleLoanConditionChange,
     loanConditionState,
+    loanAmountState,
+    handleLoanAmountChange,
     smallScreen,
   } = props;
 
@@ -153,7 +158,11 @@ export function AddProspectUI(props: AddPositionUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanAmount.id && (
-            <LoanAmount value={10000000} />
+            <LoanAmount
+              value={10000000}
+              loanAmountState={loanAmountState}
+              onLoanAmountChange={handleLoanAmountChange}
+            />
           )}
         <Stack justifyContent="end" gap="20px">
           <Button

@@ -9,7 +9,7 @@ import { Select } from "@inubekit/select";
 import { Icon } from "@inubekit/icon";
 import { inube } from "@inubekit/foundations";
 import { useMediaQuery } from "@inubekit/hooks";
-  
+
 import { Fieldset } from "@components/data/Fieldset";
 import { currencyFormat } from "@utils/formatData/currency";
 import { get } from "@mocks/utils/dataMock.service";
@@ -19,14 +19,19 @@ import { dataAmount } from "./config";
 
 export interface ILoanAmountProps {
   value: number;
+  loanAmountState: {
+    inputValue: string;
+    toggleChecked: boolean;
+    paymentPlan: string;
+  };
+  onLoanAmountChange: (
+    newData: Partial<ILoanAmountProps["loanAmountState"]>
+  ) => void;
 }
 
 export function LoanAmount(props: ILoanAmountProps) {
-  const { value } = props;
-  const [toggleChecked, setToggleChecked] = useState(false);
+  const { value, loanAmountState, onLoanAmountChange } = props;
   const [requestValue, setRequestValue] = useState<IPaymentChannel[]>();
-  const [form, setForm] = useState({ paymentPlan: "" });
-  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     get("mockRequest_value")
@@ -40,17 +45,17 @@ export function LoanAmount(props: ILoanAmountProps) {
       });
   }, []);
 
-  const onChangeSelect = (name: string, newValue: string) => {
-    setForm({ ...form, [name]: newValue });
+  const onChangeSelect = (newValue: string) => {
+    onLoanAmountChange({ paymentPlan: newValue });
   };
 
   const onChangeToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setToggleChecked(e.target.checked);
+    onLoanAmountChange({ toggleChecked: e.target.checked });
   };
 
   const onChangeTextfield = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = parseFloat(e.target.value.replace(/[^0-9]/g, "")) || 0;
-    setInputValue(currencyFormat(rawValue, false));
+    onLoanAmountChange({ inputValue: currencyFormat(rawValue, false) });
   };
 
   const isMobile = useMediaQuery("(max-width:880px)");
@@ -86,7 +91,7 @@ export function LoanAmount(props: ILoanAmountProps) {
             }
             type="text"
             fullwidth={true}
-            value={inputValue}
+            value={loanAmountState.inputValue}
             onChange={onChangeTextfield}
           />
         </Stack>
@@ -96,14 +101,17 @@ export function LoanAmount(props: ILoanAmountProps) {
             {dataAmount.currentObligations}
           </Text>
           <Stack gap="8px" alignItems="center">
-            <Toggle onChange={onChangeToggle} checked={toggleChecked} />
+            <Toggle
+              onChange={onChangeToggle}
+              checked={loanAmountState.toggleChecked}
+            />
             <Text
               type="label"
               size="large"
               weight="bold"
-              appearance={toggleChecked ? "success" : "danger"}
+              appearance={loanAmountState.toggleChecked ? "success" : "danger"}
             >
-              {toggleChecked ? "SI" : "NO"}
+              {loanAmountState.toggleChecked ? "SI" : "NO"}
             </Text>
           </Stack>
         </Stack>
@@ -118,7 +126,7 @@ export function LoanAmount(props: ILoanAmountProps) {
             placeholder={dataAmount.selectOption}
             name="paymentPlan"
             onChange={onChangeSelect}
-            value={form["paymentPlan"]}
+            value={loanAmountState.paymentPlan}
             fullwidth={true}
           />
         </Stack>
