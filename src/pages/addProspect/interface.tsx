@@ -19,9 +19,11 @@ import {
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { LoanAmount } from "./steps/loanAmount";
+import { ConsolidatedCredit } from "./steps/consolidatedCredit";
 import { ProductSelection } from "./steps/ProductSelection";
 import { SourcesOfIncome } from "./steps/sourcesOfIncome";
 import { MoneyDestination } from "./steps/MoneyDestination";
+import { ObligationsFinancial } from "./steps/financialObligations";
 import { LoanCondition } from "./steps/loanCondition";
 
 interface AddPositionUIProps {
@@ -101,12 +103,21 @@ export function AddProspectUI(props: AddPositionUIProps) {
             <SourcesOfIncome />
           )}
         {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsAddProspect.obligationsFinancial.id && (
+            <ObligationsFinancial />
+          )}
+        {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
             <LoanCondition />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanAmount.id && (
             <LoanAmount value={10000000} />
+          )}
+          {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.obligationsCollected.id && (
+            <ConsolidatedCredit />
           )}
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
           <Button
@@ -118,7 +129,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
             {titleButtonTextAssited.goBackText}
           </Button>
           <Button onClick={handleNextStep}>
-            {currentStepsNumber === steps[7]
+            {currentStepsNumber === steps[9]
               ? titleButtonTextAssited.submitText
               : titleButtonTextAssited.goNextText}
           </Button>
