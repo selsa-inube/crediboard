@@ -72,7 +72,6 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
           <Stack justifyContent="space-between" alignItems="center" gap="15px">
             <Text size="small" type="headline">
               {dataReport.title}
-              {dataReport.title}
             </Text>
             <StyledContainerClose onClick={handleClose}>
               <Stack alignItems="center" gap="8px">
