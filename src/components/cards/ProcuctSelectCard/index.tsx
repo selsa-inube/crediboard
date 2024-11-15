@@ -6,14 +6,14 @@ import { currencyFormat } from "@utils/formatData/currency";
 
 import { selectData } from "./config";
 
-interface IProductSelectCardProps {
+export interface IProductSelectCardProps {
   amount: number;
   rate: number;
   term: number;
   description: string;
   disabled?: boolean;
-  isSelected: boolean;
-  onSelect: () => void;
+  isSelected?: boolean;
+  onSelect?: () => void;
 }
 
 export function ProductSelectCard(props: IProductSelectCardProps) {

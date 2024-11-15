@@ -9,8 +9,9 @@ import { Button } from "@inubekit/button";
 import { Icon } from "@inubekit/icon";
 import { Blanket } from "@inubekit/blanket";
 
+import { SourceIncome } from "@pages/prospect/components/SourceIncome";
+
 import { StyledContainer, StyledContainerClose } from "./styles";
-import { IncomeCard } from "@src/components/cards/IncomeCard";
 
 interface IncomeModalProps {
   form: {
@@ -86,7 +87,7 @@ export function IncomeModal(props: IncomeModalProps) {
             </StyledContainerClose>
           </Stack>
           <Divider />
-          <IncomeCard form={form} onChange={onChange} options={options}/>
+          <SourceIncome form={form} onChange={onChange} options={options} />
           <Divider />
           <Stack
             padding="10px 0px"
