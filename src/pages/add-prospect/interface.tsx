@@ -22,6 +22,7 @@ import { LoanAmount } from "./steps/loanAmount";
 import { ProductSelection } from "./steps/ProductSelection";
 import { SourcesOfIncome } from "./steps/sourcesOfIncome";
 import { MoneyDestination } from "./steps/MoneyDestination";
+import { ObligationsFinancial } from "./steps/financialObligations";
 import { LoanCondition } from "./steps/loanCondition";
 
 interface AddPositionUIProps {
@@ -97,6 +98,11 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.sourcesIncome.id && (
             <SourcesOfIncome />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsAddProspect.obligationsFinancial.id && (
+            <ObligationsFinancial />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (

@@ -36,11 +36,11 @@ export const stepsAddProspect = {
     name: "Obligaciones recogidas",
     description: "Una sus obligaciones financieras a una sola.",
   },
-  requestValue7: {
+  obligationsFinancial: {
     id: 7,
     number: 7,
-    name: "Valor de la solicitud",
-    description: "Detalles del valor de la solicitud",
+    name: "Obligaciones financieras",
+    description: "Verifique las obligaciones financieras reportadas.",
   },
   loanConditions: {
     id: 8,
