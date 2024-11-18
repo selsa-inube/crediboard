@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Toggle } from "@inubekit/toggle";
@@ -11,22 +10,28 @@ import { lineOfCredit } from "@src/mocks/add-prospect/line-of-credit/lineOfCredi
 import { electionData } from "./config";
 
 interface IProductSelectionProps {
-  selectedProducts: string[];
-  setSelectedProducts: React.Dispatch<React.SetStateAction<string[]>>;
-  generalToggleChecked: boolean;
-  onGeneralToggleChange: () => void;
-  togglesState: boolean[];
-  onToggleChange: (index: number) => void;
+  initialValues: {
+    selectedProducts: string[];
+    generalToggleChecked: boolean;
+    togglesState: boolean[];
+  };
+  handleOnChange: {
+    setSelectedProducts: React.Dispatch<React.SetStateAction<string[]>>;
+    onGeneralToggleChange: () => void;
+    onToggleChange: (index: number) => void;
+  };
+  onFormValid: (isValid: boolean) => void; 
 }
 
 export function ProductSelection(props: IProductSelectionProps) {
   const {
-    selectedProducts,
-    setSelectedProducts,
-    togglesState,
-    onToggleChange,
-    generalToggleChecked,
-    onGeneralToggleChange,
+    initialValues: { selectedProducts, generalToggleChecked, togglesState },
+    handleOnChange: {
+      setSelectedProducts,
+      onGeneralToggleChange,
+      onToggleChange,
+    },
+    onFormValid, 
   } = props;
 
   const handleCardSelect = (id: string) => {
@@ -41,7 +46,9 @@ export function ProductSelection(props: IProductSelectionProps) {
     if (generalToggleChecked) {
       setSelectedProducts([]);
     }
-  }, [generalToggleChecked, setSelectedProducts]);
+    const isValid = generalToggleChecked || selectedProducts.length > 0;
+    onFormValid(isValid); 
+  }, [generalToggleChecked, selectedProducts, setSelectedProducts, onFormValid]);
 
   const questions = Object.entries(electionData.data);
   const limitedLineOfCredit = lineOfCredit.slice(0, 3);

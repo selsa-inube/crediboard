@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useFormik } from "formik";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { get } from "@mocks/utils/dataMock.service";
@@ -6,14 +7,22 @@ import { IMoneyDestination } from "@services/types";
 
 import { MoneyDestinationUI } from "./interface";
 
+const validate = (values: { selectedDestination: string }) => {
+  const errors: { selectedDestination?: string } = {};
+  if (!values.selectedDestination) {
+    errors.selectedDestination = "Este campo es obligatorio";
+  }
+  return errors;
+};
+
 interface IMoneyDestinationProps {
-  selectedDestination: string;
-  setSelectedDestination: React.Dispatch<React.SetStateAction<string>>;
+  initialValues: string;
+  handleOnChange: (newDestination: string) => void;
+  onFormValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function MoneyDestination(props: IMoneyDestinationProps) {
-  const { selectedDestination, setSelectedDestination } = props;
-
+  const { initialValues, handleOnChange, onFormValid } = props;
   const [moneyDestinations, setMoneyDestinations] =
     useState<IMoneyDestination[]>();
 
@@ -29,10 +38,29 @@ function MoneyDestination(props: IMoneyDestinationProps) {
       });
   }, []);
 
+  const formik = useFormik({
+    initialValues: {
+      selectedDestination: initialValues || "",
+    },
+    validate,
+    onSubmit: (values) => {
+      console.log("Formulario enviado", values);
+    },
+  });
+
+  useEffect(() => {
+    if (formik.values.selectedDestination) {
+      handleOnChange(formik.values.selectedDestination);
+      onFormValid(true);
+    } else {
+      onFormValid(false);
+    }
+  }, [formik.values.selectedDestination, handleOnChange, onFormValid]);
+
   const isTablet = useMediaQuery("(max-width: 1482px)");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDestination(e.target.value);
+  const handleChange = (value: string) => {
+    formik.setFieldValue("selectedDestination", value);
   };
 
   return (
@@ -40,8 +68,9 @@ function MoneyDestination(props: IMoneyDestinationProps) {
       destinations={moneyDestinations}
       isTablet={isTablet}
       handleChange={handleChange}
-      selectedDestination={selectedDestination}
+      selectedDestination={formik.values.selectedDestination}
     />
   );
 }
+
 export { MoneyDestination };

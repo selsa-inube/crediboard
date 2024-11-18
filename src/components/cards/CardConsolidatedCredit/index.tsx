@@ -21,6 +21,7 @@ export interface ICardConsolidatedCreditProps {
   fullPayment: number;
   arrears?: boolean;
   date: Date;
+  initialValue?: number;
 }
 
 export function CardConsolidatedCredit(props: ICardConsolidatedCreditProps) {
@@ -33,10 +34,13 @@ export function CardConsolidatedCredit(props: ICardConsolidatedCreditProps) {
     fullPayment,
     arrears,
     date = new Date(),
+    initialValue,
   } = props;
 
-  const [isRadioSelected, setIsRadioSelected] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<number | null>(null);
+  const [isRadioSelected, setIsRadioSelected] = useState(initialValue || false);
+  const [selectedValue, setSelectedValue] = useState<number | null>(
+    initialValue || null
+  );
   const radioRefs = useRef<HTMLInputElement[]>([]);
 
   const paymentOptions = [

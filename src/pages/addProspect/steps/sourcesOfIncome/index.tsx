@@ -1,8 +1,8 @@
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 
 interface ISourcesOfIncomeProps {
-  onChange: (name: string, newValue: string) => void;
-  incomeData: {
+  handleOnChange: (name: string, newValue: string) => void;
+  initialValues: {
     debtor: string;
     monthly_salary?: number;
     other_monthly_payments?: number;
@@ -17,7 +17,7 @@ interface ISourcesOfIncomeProps {
 }
 
 export function SourcesOfIncome(props: ISourcesOfIncomeProps) {
-  const { incomeData, onChange, options } = props;
+  const { initialValues, handleOnChange, options } = props;
 
-  return <SourceIncome form={incomeData} onChange={onChange} options={options} />;
+  return <SourceIncome form={initialValues} onChange={handleOnChange} options={options} />;
 }

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Toggle } from "@inubekit/toggle";
@@ -12,23 +13,36 @@ import { loanData } from "./config";
 import { LoanConditionState } from "../../types/forms.types";
 
 interface ILoanCondition {
-  loanConditionState: LoanConditionState;
-  onChange: (newState: LoanConditionState) => void;
+  initialValues: LoanConditionState;
+  handleOnChange: (newState: LoanConditionState) => void;
+  onFormValid: (isValid: boolean) => void;
 }
 
 export function LoanCondition(props: ILoanCondition) {
-  const { loanConditionState, onChange } = props;
+  const { initialValues, handleOnChange, onFormValid } = props;
 
-  const { toggles, quotaCapValue, maximumTermValue } = loanConditionState;
+  const { toggles, quotaCapValue, maximumTermValue } = initialValues;
   const isMobile = useMediaQuery("(max-width:880px)");
+
+  useEffect(() => {
+    const isQuotaCapValid =
+      !toggles.quotaCapToggle ||
+      (toggles.quotaCapToggle && quotaCapValue.trim() !== "");
+
+    const isMaximumTermValid =
+      !toggles.maximumTermToggle ||
+      (toggles.maximumTermToggle && maximumTermValue.trim() !== "");
+
+    onFormValid(isQuotaCapValid && isMaximumTermValid);
+  }, [toggles, quotaCapValue, maximumTermValue, onFormValid]);
 
   const handleToggleChange =
     (toggleKey: "quotaCapToggle" | "maximumTermToggle") =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      onChange({
-        ...loanConditionState,
+      handleOnChange({
+        ...initialValues,
         toggles: {
-          ...loanConditionState.toggles,
+          ...initialValues.toggles,
           [toggleKey]: e.target.checked,
         },
       });
@@ -37,15 +51,15 @@ export function LoanCondition(props: ILoanCondition) {
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.replace(/[^0-9]/g, "");
     const formattedValue = currencyFormat(Number(inputValue));
-    onChange({
-      ...loanConditionState,
+    handleOnChange({
+      ...initialValues,
       quotaCapValue: formattedValue,
     });
   };
 
   const handleMaximumTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange({
-      ...loanConditionState,
+    handleOnChange({
+      ...initialValues,
       maximumTermValue: e.target.value,
     });
   };

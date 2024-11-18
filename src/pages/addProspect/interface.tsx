@@ -3,18 +3,16 @@ import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
 
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
-import { income } from "@mocks/add-prospect/income/income.mock";
 
 import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
 
 import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
 import {
+  FormData,
   IFormAddPosition,
   IFormAddPositionRef,
   IStep,
-  LoanAmountState,
-  LoanConditionState,
   StepDetails,
   titleButtonTextAssited,
 } from "./types";
@@ -42,27 +40,12 @@ interface AddPositionUIProps {
   handleCloseSectionMessage: () => void;
   handleSubmitClick: () => void;
   currentStepsNumber?: StepDetails;
-  selectedDestination: string;
-  setSelectedDestination: React.Dispatch<React.SetStateAction<string>>;
+  formData: FormData;
   selectedProducts: string[];
   setSelectedProducts: React.Dispatch<React.SetStateAction<string[]>>;
-  loanConditionState: {
-    toggles: {
-      quotaCapToggle: boolean;
-      maximumTermToggle: boolean;
-    };
-    quotaCapValue: string;
-    maximumTermValue: string;
-  };
-  generalToggleChecked: boolean;
-  togglesState: boolean[];
-  incomeData: (typeof income)[0];
-  handleIncome: (name: string, newValue: string) => void;
-  handleToggleCheckedChange: () => void;
-  handleToggleChange: (index: number) => void;
-  handleLoanConditionChange: (newState: Partial<LoanConditionState>) => void;
-  loanAmountState: LoanAmountState;
-  handleLoanAmountChange: (newData: Partial<LoanAmountState>) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleFormDataChange: (field: string, newValue: any) => void;
+  handleConsolidatedCreditChange: (creditId: string, oldValue: number, newValue: number) => void;
   smallScreen: boolean;
 }
 
@@ -72,22 +55,14 @@ export function AddProspectUI(props: AddPositionUIProps) {
     handleSubmitClick,
     steps,
     isCurrentFormValid,
+    setIsCurrentFormValid,
     handleNextStep,
     handlePreviousStep,
-    selectedDestination,
-    setSelectedDestination,
+    formData,
+    handleFormDataChange,
     selectedProducts,
     setSelectedProducts,
-    generalToggleChecked,
-    togglesState,
-    incomeData,
-    handleIncome,
-    handleToggleCheckedChange,
-    handleToggleChange,
-    handleLoanConditionChange,
-    loanConditionState,
-    loanAmountState,
-    handleLoanAmountChange,
+    handleConsolidatedCreditChange,
     smallScreen,
   } = props;
 
@@ -113,6 +88,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
             onNextClick={handleNextStep}
             controls={titleButtonTextAssited}
             onSubmitClick={handleSubmitClick}
+            disableNext={!isCurrentFormValid}
             size={smallScreen ? "small" : "large"}
           />
         </StyledContainerAssisted>
@@ -130,27 +106,48 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.destination.id && (
             <MoneyDestination
-              selectedDestination={selectedDestination}
-              setSelectedDestination={setSelectedDestination}
+              initialValues={formData.selectedDestination}
+              handleOnChange={(newDestination) =>
+                handleFormDataChange("selectedDestination", newDestination)
+              }
+              onFormValid={setIsCurrentFormValid}
             />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.productSelection.id && (
             <ProductSelection
-              selectedProducts={selectedProducts}
-              setSelectedProducts={setSelectedProducts}
-              generalToggleChecked={generalToggleChecked}
-              onGeneralToggleChange={handleToggleCheckedChange}
-              togglesState={togglesState}
-              onToggleChange={handleToggleChange}
+              initialValues={{
+                selectedProducts,
+                generalToggleChecked: formData.generalToggleChecked,
+                togglesState: formData.togglesState,
+              }}
+              handleOnChange={{
+                setSelectedProducts,
+                onGeneralToggleChange: () =>
+                  handleFormDataChange(
+                    "generalToggleChecked",
+                    !formData.generalToggleChecked
+                  ),
+                onToggleChange: (index: number) => {
+                  const newToggles = [...formData.togglesState];
+                  newToggles[index] = !newToggles[index];
+                  handleFormDataChange("togglesState", newToggles);
+                },
+              }}
+              onFormValid={setIsCurrentFormValid}
             />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.sourcesIncome.id && (
             <SourcesOfIncome
-              incomeData={incomeData}
-              onChange={handleIncome}
-              options={incomeData.debtors}
+              initialValues={formData.incomeData}
+              handleOnChange={(name: string, value: string) =>
+                handleFormDataChange("incomeData", {
+                  ...formData.incomeData,
+                  [name]: value,
+                })
+              }
+              options={formData.incomeData.debtors}
             />
           )}
         {currentStepsNumber &&
@@ -161,21 +158,41 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
             <LoanCondition
-              loanConditionState={loanConditionState}
-              onChange={handleLoanConditionChange}
+              initialValues={formData.loanConditionState}
+              handleOnChange={(
+                newState: Partial<typeof formData.loanConditionState>
+              ) =>
+                handleFormDataChange("loanConditionState", {
+                  ...formData.loanConditionState,
+                  ...newState,
+                })
+              }
+              onFormValid={setIsCurrentFormValid}
             />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanAmount.id && (
             <LoanAmount
               value={10000000}
-              loanAmountState={loanAmountState}
-              onLoanAmountChange={handleLoanAmountChange}
+              initialValues={formData.loanAmountState}
+              handleOnChange={(
+                newData: Partial<typeof formData.loanAmountState>
+              ) =>
+                handleFormDataChange("loanAmountState", {
+                  ...formData.loanAmountState,
+                  ...newData,
+                })
+              }
+              onFormValid={setIsCurrentFormValid}
             />
           )}
-          {currentStepsNumber &&
-          currentStepsNumber.id === stepsAddProspect.obligationsCollected.id && (
-            <ConsolidatedCredit />
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsAddProspect.obligationsCollected.id && (
+            <ConsolidatedCredit
+              initialValues={formData.consolidatedCreditSelections}
+              handleOnChange={handleConsolidatedCreditChange}
+            />
           )}
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
           <Button
@@ -186,7 +203,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
           >
             {titleButtonTextAssited.goBackText}
           </Button>
-          <Button onClick={handleNextStep}>
+          <Button onClick={handleNextStep} disabled={!isCurrentFormValid}>
             {currentStepsNumber === steps[9]
               ? titleButtonTextAssited.submitText
               : titleButtonTextAssited.goNextText}

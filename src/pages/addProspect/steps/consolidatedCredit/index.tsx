@@ -9,11 +9,32 @@ import { mockConsolidatedCredit } from "@mocks/add-prospect/consolidates-credit/
 
 import { dataConsolidated } from "./config";
 
-export function ConsolidatedCredit() {
-  const [totalCollected, setTotalCollected] = useState(0);
+interface IConsolidatedCreditProps {
+  initialValues: {
+    totalCollected: number;
+    selectedValues: Record<string, number>;
+  };
+  handleOnChange: (
+    creditId: string,
+    oldValue: number,
+    newValue: number
+  ) => void;
+}
 
-  const handleUpdateTotal = (oldValue: number, newValue: number) => {
+export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
+  const { initialValues, handleOnChange } = props;
+
+  const [totalCollected, setTotalCollected] = useState(
+    initialValues.totalCollected
+  );
+
+  const handleUpdateTotal = (
+    creditId: string,
+    oldValue: number,
+    newValue: number
+  ) => {
     setTotalCollected((prevTotal) => prevTotal - oldValue + newValue);
+    handleOnChange(creditId, oldValue, newValue);
   };
 
   const debtorData = mockConsolidatedCredit[0];
@@ -52,8 +73,19 @@ export function ConsolidatedCredit() {
             nextDueDate={creditData.next_due_date}
             fullPayment={creditData.full_payment}
             date={new Date(creditData.date)}
-            onUpdateTotal={handleUpdateTotal}
+            onUpdateTotal={(oldValue, newValue) =>
+              handleUpdateTotal(
+                creditData.consolidated_credit_id,
+                oldValue,
+                newValue
+              )
+            }
             arrears={creditData.arrears === "Y"}
+            initialValue={
+              initialValues.selectedValues[
+                creditData.consolidated_credit_id
+              ]
+            }
           />
         ))}
       </Stack>

@@ -4,12 +4,12 @@ import { FormikProps } from "formik";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { Consulting } from "@components/modals/Consulting";
-import { income } from "@mocks/add-prospect/income/income.mock";
+import { income } from "@src/mocks/add-prospect/income/income.mock";
 
 import { IMessageState } from "./types/forms.types";
 import { IGeneralInformationEntry } from "./components/GeneralInformationForm";
 import { stepsAddProspect } from "./config/addProspect.config";
-import { IFormAddPosition, IFormAddPositionRef } from "./types";
+import { FormData, IFormAddPosition, IFormAddPositionRef } from "./types";
 import { initalValuesPositions } from "./config/initialValues";
 import { addPositionStepsRules } from "./utils";
 import { AddProspectUI } from "./interface";
@@ -23,58 +23,70 @@ export function AddProspect() {
     visible: false,
   });
   const [showConsultingModal, setShowConsultingModal] = useState(false);
-  const [selectedDestination, setSelectedDestination] = useState<string>("");
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
-  const [loanConditionState, setLoanConditionState] = useState({
-    toggles: {
-      quotaCapToggle: true,
-      maximumTermToggle: false,
-    },
-    quotaCapValue: "",
-    maximumTermValue: "",
-  });
-  const [generalToggleChecked, setGeneralToggleChecked] = useState(true);
-  const [togglesState, setTogglesState] = useState([false, true, false]);
-  const [incomeData, setIncomeData] = useState(() => income[0]);
-  const [loanAmountState, setLoanAmountState] = useState({
-    inputValue: "",
-    toggleChecked: false,
-    paymentPlan: "",
-  });
-
-  const handleLoanAmountChange = (newData: Partial<typeof loanAmountState>) => {
-    setLoanAmountState((prevState) => ({
-      ...prevState,
-      ...newData,
-    }));
-  };
-
-  const handleIncome = (name: string, newValue: string) => {
-    setIncomeData((prevValues) => ({
-      ...prevValues,
-      [name]: newValue,
-    }));
-  };
-
-  const handleToggleCheckedChange = () => {
-    setGeneralToggleChecked(!generalToggleChecked);
-  };
-
-  const handleToggleChange = (index: number) => {
-    const newToggles = [...togglesState];
-    newToggles[index] = !newToggles[index];
-    setTogglesState(newToggles);
-  };
-
-  const handleLoanConditionChange = (
-    newState: Partial<typeof loanConditionState>
-  ) => {
-    setLoanConditionState((prevState) => ({ ...prevState, ...newState }));
-  };
 
   const smallScreen = useMediaQuery("(max-width:880px)");
   const steps = Object.values(stepsAddProspect);
   const navigate = useNavigate();
+
+  
+  const [formData, setFormData] = useState<FormData>({
+    selectedDestination: "",
+    selectedProducts: [],
+    loanConditionState: {
+      toggles: {
+        quotaCapToggle: true,
+        maximumTermToggle: false,
+      },
+      quotaCapValue: "",
+      maximumTermValue: "",
+    },
+    generalToggleChecked: true,
+    togglesState: [false, true, false],
+    incomeData: income[0],
+    loanAmountState: {
+      inputValue: "",
+      toggleChecked: false,
+      paymentPlan: "",
+    },
+    consolidatedCreditSelections: {
+      totalCollected: 0,
+      selectedValues: {},
+    },
+  });
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+
+  const handleFormDataChange = (field: string, newValue: string | number | boolean) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [field]: newValue,
+    }));
+  };
+
+  const handleConsolidatedCreditChange = (
+    creditId: string,
+    oldValue: number,
+    newValue: number
+  ) => {
+    setFormData((prevState) => {
+      const updatedSelections = {
+        ...prevState.consolidatedCreditSelections.selectedValues,
+        [creditId]: newValue,
+      };
+
+      const newTotalCollected =
+        prevState.consolidatedCreditSelections.totalCollected -
+        oldValue +
+        newValue;
+
+      return {
+        ...prevState,
+        consolidatedCreditSelections: {
+          totalCollected: newTotalCollected,
+          selectedValues: updatedSelections,
+        },
+      };
+    });
+  };
 
   const currentStepsNumber = steps.find(
     (step: { number: number }) => step.number === currentStep
@@ -174,20 +186,11 @@ export function AddProspect() {
         handleCloseSectionMessage={handleCloseSectionMessage}
         currentStepsNumber={currentStepsNumber}
         handleSubmitClick={handleSubmitClick}
-        selectedDestination={selectedDestination}
-        setSelectedDestination={setSelectedDestination}
+        formData={formData}
         selectedProducts={selectedProducts}
         setSelectedProducts={setSelectedProducts}
-        loanConditionState={loanConditionState}
-        generalToggleChecked={generalToggleChecked}
-        togglesState={togglesState}
-        incomeData={incomeData}
-        handleIncome={handleIncome}
-        handleToggleCheckedChange={handleToggleCheckedChange}
-        handleToggleChange={handleToggleChange}
-        handleLoanConditionChange={handleLoanConditionChange}
-        loanAmountState={loanAmountState}
-        handleLoanAmountChange={handleLoanAmountChange}
+        handleFormDataChange={handleFormDataChange}
+        handleConsolidatedCreditChange={handleConsolidatedCreditChange}
         smallScreen={smallScreen}
       />
       {showConsultingModal && <Consulting />}

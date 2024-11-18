@@ -7,7 +7,7 @@ interface MoneyDestinationUIProps {
   destinations: IMoneyDestination[] | undefined;
   isTablet: boolean;
   selectedDestination: string;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (value: string) => void; 
 }
 
 function MoneyDestinationUI(props: MoneyDestinationUIProps) {
@@ -29,7 +29,9 @@ function MoneyDestinationUI(props: MoneyDestinationUIProps) {
             value={destination.description_use}
             label={destination.abbreviated_name}
             icon={destination.icon}
-            handleChange={handleChange}
+            handleChange={() =>
+              handleChange(destination.description_use)
+            }
             isSelected={selectedDestination === destination.description_use}
           />
         ))}
