@@ -20,7 +20,7 @@ interface IProductSelectionProps {
     onGeneralToggleChange: () => void;
     onToggleChange: (index: number) => void;
   };
-  onFormValid: (isValid: boolean) => void; 
+  onFormValid: (isValid: boolean) => void;
 }
 
 export function ProductSelection(props: IProductSelectionProps) {
@@ -31,7 +31,7 @@ export function ProductSelection(props: IProductSelectionProps) {
       onGeneralToggleChange,
       onToggleChange,
     },
-    onFormValid, 
+    onFormValid,
   } = props;
 
   const handleCardSelect = (id: string) => {
@@ -43,12 +43,12 @@ export function ProductSelection(props: IProductSelectionProps) {
   };
 
   useEffect(() => {
-    if (generalToggleChecked) {
+    if (generalToggleChecked && selectedProducts.length > 0) {
       setSelectedProducts([]);
     }
     const isValid = generalToggleChecked || selectedProducts.length > 0;
-    onFormValid(isValid); 
-  }, [generalToggleChecked, selectedProducts, setSelectedProducts, onFormValid]);
+    onFormValid(isValid);
+  }, [generalToggleChecked, selectedProducts, onFormValid, setSelectedProducts]);  
 
   const questions = Object.entries(electionData.data);
   const limitedLineOfCredit = lineOfCredit.slice(0, 3);

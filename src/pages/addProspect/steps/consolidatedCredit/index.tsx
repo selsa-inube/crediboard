@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Stack } from "@inubekit/stack";
 import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
@@ -19,14 +19,22 @@ interface IConsolidatedCreditProps {
     oldValue: number,
     newValue: number
   ) => void;
+  onFormValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
-  const { initialValues, handleOnChange } = props;
+  const { initialValues, handleOnChange, onFormValid } = props;
 
   const [totalCollected, setTotalCollected] = useState(
     initialValues.totalCollected
   );
+
+  useEffect(() => {
+    const hasSelectedValues = Object.values(initialValues.selectedValues).some(
+      (value) => value > 0
+    );
+    onFormValid(hasSelectedValues);
+  }, [initialValues.selectedValues, onFormValid]);
 
   const handleUpdateTotal = (
     creditId: string,
@@ -35,9 +43,14 @@ export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
   ) => {
     setTotalCollected((prevTotal) => prevTotal - oldValue + newValue);
     handleOnChange(creditId, oldValue, newValue);
+
+    const isFormValid = newValue > 0 || Object.values(initialValues.selectedValues).some(
+      (value) => value > 0 && value !== oldValue
+    );
+    onFormValid(isFormValid);
   };
 
-  const debtorData = mockConsolidatedCredit[0];
+  const debtorData = mockConsolidatedCredit[0]; 
 
   return (
     <Stack direction="column" gap="24px">
@@ -50,7 +63,7 @@ export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
             {dataConsolidated.debtor}
           </Text>
           <Text type="title" size="medium">
-            {mockConsolidatedCredit[0].name}
+            {debtorData.name}
           </Text>
         </Stack>
         <Stack direction="column" alignItems="center">

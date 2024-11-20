@@ -89,6 +89,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
             controls={titleButtonTextAssited}
             onSubmitClick={handleSubmitClick}
             disableNext={!isCurrentFormValid}
+            disableSubmit={!isCurrentFormValid}
             size={smallScreen ? "small" : "large"}
           />
         </StyledContainerAssisted>
@@ -192,6 +193,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
             <ConsolidatedCredit
               initialValues={formData.consolidatedCreditSelections}
               handleOnChange={handleConsolidatedCreditChange}
+              onFormValid={setIsCurrentFormValid}
             />
           )}
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
