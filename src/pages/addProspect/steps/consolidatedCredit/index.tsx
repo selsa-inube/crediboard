@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Stack } from "@inubekit/stack";
 import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
+import { useMediaQuery } from "@inubekit/hooks";
 
 import { CardConsolidatedCredit } from "@components/cards/CardConsolidatedCredit";
 import { currencyFormat } from "@utils/formatData/currency";
@@ -51,6 +52,7 @@ export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
   };
 
   const debtorData = mockConsolidatedCredit[0]; 
+  const isMobile = useMediaQuery("(max-width:880px)");
 
   return (
     <Stack direction="column" gap="24px">
@@ -76,7 +78,7 @@ export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
         </Stack>
       </Stack>
       <Divider />
-      <Stack gap="16px">
+      <Stack gap="16px" wrap="wrap" justifyContent={isMobile ? "center" : "initial"}>
         {debtorData.data_card.map((creditData) => (
           <CardConsolidatedCredit
             key={creditData.consolidated_credit_id}

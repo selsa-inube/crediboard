@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Formik } from "formik";
+import * as Yup from "yup";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { get } from "@mocks/utils/dataMock.service";
@@ -38,25 +40,34 @@ function MoneyDestination(props: IMoneyDestinationProps) {
     }
   }, [initialValues, onFormValid]);
 
+  const MoneyDestinationSchema = Yup.object().shape({
+    selectedDestination: Yup.string().required("Este campo es obligatorio"),
+  });
+
   const isTablet = useMediaQuery("(max-width: 1482px)");
 
-  const handleChange = (value: string) => {
-    handleOnChange(value);
-
-    if (value) {
-      onFormValid(true);
-    } else {
-      onFormValid(false);
-    }
-  };
-
   return (
-    <MoneyDestinationUI
-      destinations={moneyDestinations}
-      isTablet={isTablet}
-      handleChange={handleChange}
-      selectedDestination={initialValues}
-    />
+    <Formik
+      initialValues={{ selectedDestination: initialValues }}
+      validationSchema={MoneyDestinationSchema}
+      onSubmit={(values) => {
+        handleOnChange(values.selectedDestination);
+        onFormValid(true);
+      }}
+    >
+      {({ values, setFieldValue }) => (
+        <MoneyDestinationUI
+          destinations={moneyDestinations}
+          isTablet={isTablet}
+          selectedDestination={values.selectedDestination}
+          handleChange={(value: string) => {
+            setFieldValue("selectedDestination", value);
+            handleOnChange(value);
+            onFormValid(Boolean(value));
+          }}
+        />
+      )}
+    </Formik>
   );
 }
 
