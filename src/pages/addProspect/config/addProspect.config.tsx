@@ -24,13 +24,13 @@ export const stepsAddProspect = {
     description:
       "Programe abonos para disminuir el pago ordinario o recortar plazo.",
   },
-  sourcesIncome: {
+  extraDebtors: {
     id: 5,
     number: 5,
-    name: "Fuentes de ingreso",
-    description: "Actualice sus fuentes de ingreso para soportar capacidad de pago.",
+    name: "Deudores extra",
+    description: "Actualice los deudores extra",
   },
-  sourcesIncom: {
+  sourcesIncome: {
     id: 6,
     number: 6,
     name: "Fuentes de ingreso",

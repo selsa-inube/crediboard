@@ -5,7 +5,6 @@ import { Button } from "@inubekit/button";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 
 import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
-
 import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
 import {
@@ -137,6 +136,11 @@ export function AddProspectUI(props: AddPositionUIProps) {
               }}
               onFormValid={setIsCurrentFormValid}
             />
+          )}
+          {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsAddProspect.extraDebtors.id && (
+            <Stack />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.sourcesIncome.id && (
