@@ -9,7 +9,6 @@ import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
 import {
   FormData,
-  IFormAddPosition,
   IFormAddPositionRef,
   IStep,
   StepDetails,
@@ -29,7 +28,6 @@ interface AddPositionUIProps {
   currentStep: number;
   steps: IStep[];
   isCurrentFormValid: boolean;
-  dataAddPositionLinixForm: IFormAddPosition;
   formReferences: IFormAddPositionRef;
   message: IMessageState;
   setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;

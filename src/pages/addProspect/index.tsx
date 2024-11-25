@@ -4,14 +4,12 @@ import { FormikProps } from "formik";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { Consulting } from "@components/modals/Consulting";
-import { income } from "@src/mocks/add-prospect/income/income.mock";
+import { income } from "@mocks/add-prospect/income/income.mock";
 
 import { IMessageState } from "./types/forms.types";
 import { IGeneralInformationEntry } from "./components/GeneralInformationForm";
 import { stepsAddProspect } from "./config/addProspect.config";
-import { FormData, IFormAddPosition, IFormAddPositionRef } from "./types";
-import { initalValuesPositions } from "./config/initialValues";
-import { addPositionStepsRules } from "./utils";
+import { FormData, IFormAddPositionRef } from "./types";
 import { AddProspectUI } from "./interface";
 
 export function AddProspect() {
@@ -28,7 +26,6 @@ export function AddProspect() {
   const steps = Object.values(stepsAddProspect);
   const navigate = useNavigate();
 
-  
   const [formData, setFormData] = useState<FormData>({
     selectedDestination: "",
     selectedProducts: [],
@@ -55,7 +52,10 @@ export function AddProspect() {
   });
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
-  const handleFormDataChange = (field: string, newValue: string | number | boolean) => {
+  const handleFormDataChange = (
+    field: string,
+    newValue: string | number | boolean
+  ) => {
     setFormData((prevState) => ({
       ...prevState,
       [field]: newValue,
@@ -92,14 +92,6 @@ export function AddProspect() {
     (step: { number: number }) => step.number === currentStep
   );
 
-  const [dataAddPositionLinixForm, setDataAddPositionLinixForm] =
-    useState<IFormAddPosition>({
-      generalInformation: {
-        isValid: false,
-        values: initalValuesPositions.generalInformation,
-      },
-    });
-
   const generalInformationRef =
     useRef<FormikProps<IGeneralInformationEntry>>(null);
 
@@ -107,49 +99,57 @@ export function AddProspect() {
     generalInformation: generalInformationRef,
   };
 
-  const handleStepChange = (stepId: number) => {
-    const newAddPosition = addPositionStepsRules(
-      currentStep,
-      dataAddPositionLinixForm,
-      formReferences,
-      isCurrentFormValid
-    );
-
-    setDataAddPositionLinixForm(newAddPosition);
-
-    const changeStepKey = Object.entries(stepsAddProspect).find(
-      ([, config]) => config.id === currentStep
-    )?.[0];
-
-    if (!changeStepKey) return;
-
-    const changeIsVerification = stepId === steps.length;
-
-    setIsCurrentFormValid(
-      changeIsVerification ||
-        newAddPosition[changeStepKey as keyof IFormAddPosition]?.isValid ||
-        true
-    );
-
-    setCurrentStep(stepId);
-
-    document.getElementsByTagName("main")[0].scrollTo(0, 0);
-  };
-
   const handleNextStep = () => {
-    if (currentStep === steps.length) {
-      handleSubmitClick();
-    }
-    if (currentStep === stepsAddProspect.loanConditions.id) {
+    const { togglesState } = formData;
+
+    const dynamicSteps = [
+      togglesState[0]
+        ? stepsAddProspect.extraordinaryInstallments.id
+        : undefined,
+      togglesState[1] ? stepsAddProspect.extraDebtors.id : undefined,
+      togglesState[2] ? stepsAddProspect.sourcesIncome.id : undefined,
+      stepsAddProspect.obligationsFinancial.id,
+    ].filter((step): step is number => step !== undefined);
+
+    const currentStepIndex = dynamicSteps.indexOf(currentStep);
+
+    if (currentStep === stepsAddProspect.productSelection.id) {
+      setCurrentStep(dynamicSteps[0]);
+    } else if (
+      currentStepIndex !== -1 &&
+      currentStepIndex + 1 < dynamicSteps.length
+    ) {
+      setCurrentStep(dynamicSteps[currentStepIndex + 1]);
+    } else if (currentStep === stepsAddProspect.loanConditions.id) {
       showConsultingForFiveSeconds();
-    }
-    if (currentStep + 1 <= steps.length && isCurrentFormValid) {
-      handleStepChange(currentStep + 1);
+    } else if (currentStep + 1 <= steps.length && isCurrentFormValid) {
+      setCurrentStep(currentStep + 1);
+    } else if (currentStep === steps.length) {
+      handleSubmitClick();
     }
   };
 
   const handlePreviousStep = () => {
-    handleStepChange(currentStep - 1);
+    const { togglesState } = formData;
+
+    const dynamicSteps = [
+      togglesState[0]
+        ? stepsAddProspect.extraordinaryInstallments.id
+        : undefined,
+      togglesState[1] ? stepsAddProspect.extraDebtors.id : undefined,
+      togglesState[2] ? stepsAddProspect.sourcesIncome.id : undefined,
+      stepsAddProspect.obligationsFinancial.id,
+    ].filter((step): step is number => step !== undefined);
+
+    const currentStepIndex = dynamicSteps.indexOf(currentStep);
+
+    if (currentStepIndex > 0) {
+      setCurrentStep(dynamicSteps[currentStepIndex - 1]);
+    } else if (currentStepIndex === 0) {
+      setCurrentStep(stepsAddProspect.productSelection.id);
+    } else if (currentStep - 1 >= steps[0].id) {
+      setCurrentStep(currentStep - 1);
+    }
   };
 
   const handleCloseSectionMessage = () => {
@@ -176,7 +176,6 @@ export function AddProspect() {
         steps={steps}
         currentStep={currentStep}
         isCurrentFormValid={isCurrentFormValid}
-        dataAddPositionLinixForm={dataAddPositionLinixForm}
         formReferences={formReferences}
         message={message}
         setIsCurrentFormValid={setIsCurrentFormValid}
