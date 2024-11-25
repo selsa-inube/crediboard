@@ -1,14 +1,15 @@
-import { useState, useEffect, useCallback } from "react";
-import { Tag } from "@inubekit/tag";
+import { useState, useEffect } from "react";
+
 import { useFlag } from "@inubekit/flag";
 
+import userNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
-
+import { useFetch } from "@services/financialReporting/getApprovals/useFetch";
 import {
   actionMobileApprovals,
   titlesApprovals,
@@ -18,21 +19,13 @@ import {
   desktopActions,
   getMobileActionsConfig,
   infoItems,
-} from "./config";
-import { getById } from "@mocks/utils/dataMock.service";
-import userNotFound from "@assets/images/ItemNotFound.png";
+  entriesApprovals,
+  optionsFetch,
+} from "@config/pages/board/oulet/financialReporting/configApprovals";
+import { enviroment } from "@config/environment";
 
 import { errorObserver } from "../config";
-
-const appearanceTag = (label: string) => {
-  if (label === "Pendiente") {
-    return "warning";
-  }
-  if (label === "Aprobado") {
-    return "success";
-  }
-  return "danger";
-};
+import { IApprovals } from "./types";
 
 interface IApprovalsProps {
   user: string;
@@ -41,72 +34,40 @@ interface IApprovalsProps {
 
 export const Approvals = (props: IApprovalsProps) => {
   const { user, isMobile } = props;
-  const [entriesApprovals, setEntriesApprovals] = useState<IEntries[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [approvalsEntries, setApprovalsEntries] = useState<IEntries[]>([]);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
+
+  const [retryFlag, setRetryFlag] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showRetry, setShowRetry] = useState(false);
 
   const { addFlag } = useFlag();
-  const fetchApprovals = useCallback(() => {
-    setLoading(true);
-    setError(null);
-    setShowRetry(false);
 
-    getById("approval", "credit_request_id", user, true)
-      .then((data) => {
-        if (!data || data instanceof Error) {
-          throw new Error("Error al obtener los datos de aprobaciones.");
-        }
-        if (Array.isArray(data)) {
-          const entries = data.map((entry) => ({
-            id: entry.approval_id.toString(),
-            usuarios: entry.approver_name,
-            error: entry.error,
-            tag: (
-              <Tag
-                label={entry.concept}
-                appearance={appearanceTag(entry.concept)}
-                weight="strong"
-              />
-            ),
-          }));
-          setEntriesApprovals(entries);
-          setLoading(false);
-        } else {
-          setEntriesApprovals([]);
-          setError("No se encontraron datos.");
-          setLoading(false);
-          setShowRetry(true);
-        }
-      })
-      .catch(() => {
-        errorObserver.notify({
-          id: "Approvals",
-          message: "Error al conectar con el servicio de aprobaciones.",
-        });
-        setEntriesApprovals([]);
-        setError("Error al intentar conectar con el servicio de aprobaciones.");
-      });
-  }, [user]);
+  const {
+    data,
+    error: fetchError,
+    loading,
+  } = useFetch<IApprovals[]>(
+    `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/aprovals/97a2c93e-69a1-46bc-9203-99be56cd5047`,
+    optionsFetch,
+    retryFlag
+  );
 
   useEffect(() => {
-    if (loading) {
-      const retryTimer = setTimeout(() => {
-        setShowRetry(true);
-      }, 5000);
-
-      return () => clearTimeout(retryTimer);
-    } else {
-      setShowRetry(false);
+    if (data) {
+      const entries: IEntries[] = entriesApprovals(data);
+      setApprovalsEntries(entries);
     }
-  }, [loading]);
 
-  useEffect(() => {
-    fetchApprovals();
-  }, [fetchApprovals]);
+    if (fetchError) {
+      errorObserver.notify({
+        id: "Approvals",
+        message: fetchError.toString(),
+      });
+      setError(fetchError.toString());
+    }
+  }, [data, user, fetchError]);
 
   const handleNotificationClickBound = (data: IEntries) => {
     handleNotificationClick(data, setSelectedData, setShowNotificationModal);
@@ -131,18 +92,20 @@ export const Approvals = (props: IApprovalsProps) => {
   const handleSubmit = () => {
     addFlag({
       title: "Solicitud enviada",
-      description: "La solicitud ha sido enviada exitosamente para su aprobación.",
+      description:
+        "La solicitud ha sido enviada exitosamente para su aprobación.",
       appearance: "success",
       duration: 5000,
     });
     setShowNotificationModal(false);
   };
+
   const handleCloseNotificationModal = () => {
     setShowNotificationModal(false);
   };
 
   const handleRetry = () => {
-    fetchApprovals();
+    setRetryFlag((prev) => !prev);
   };
 
   return (
@@ -153,11 +116,11 @@ export const Approvals = (props: IApprovalsProps) => {
         hasTable
         aspectRatio={isMobile ? "auto" : "1"}
       >
-        {showRetry ? (
+        {error ? (
           <ItemNotFound
             image={userNotFound}
             title="Error al cargar datos"
-            description={error || "No se encontraron datos."}
+            description={error}
             buttonDescription="Volver a intentar"
             route="/retry-path"
             onRetry={handleRetry}
@@ -166,7 +129,7 @@ export const Approvals = (props: IApprovalsProps) => {
           <TableBoard
             id="usuarios"
             titles={titlesApprovals}
-            entries={entriesApprovals}
+            entries={approvalsEntries}
             actions={desktopActionsConfig}
             actionMobile={mobileActions}
             loading={loading}
