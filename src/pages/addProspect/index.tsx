@@ -113,6 +113,9 @@ export function AddProspect() {
 
     const currentStepIndex = dynamicSteps.indexOf(currentStep);
 
+    if (currentStep === stepsAddProspect.loanConditions.id) {
+      showConsultingForFiveSeconds();
+    }
     if (currentStep === stepsAddProspect.productSelection.id) {
       setCurrentStep(dynamicSteps[0]);
     } else if (
@@ -120,8 +123,6 @@ export function AddProspect() {
       currentStepIndex + 1 < dynamicSteps.length
     ) {
       setCurrentStep(dynamicSteps[currentStepIndex + 1]);
-    } else if (currentStep === stepsAddProspect.loanConditions.id) {
-      showConsultingForFiveSeconds();
     } else if (currentStep + 1 <= steps.length && isCurrentFormValid) {
       setCurrentStep(currentStep + 1);
     } else if (currentStep === steps.length) {

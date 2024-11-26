@@ -58,7 +58,7 @@ export function ProductSelection(props: IProductSelectionProps) {
 
   useEffect(() => {
     if (generalToggleChecked) {
-      setSelectedProducts([]); 
+      setSelectedProducts([]);
     }
   }, [generalToggleChecked, setSelectedProducts]);
 
@@ -66,6 +66,7 @@ export function ProductSelection(props: IProductSelectionProps) {
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
+      enableReinitialize
       onSubmit={() => {}}
     >
       {({ values, setFieldValue }) => (
@@ -80,13 +81,10 @@ export function ProductSelection(props: IProductSelectionProps) {
                   {({ field }: { field: { value: boolean; name: string } }) => (
                     <Toggle
                       {...field}
-                      value={field.value.toString()} 
+                      value={field.value.toString()}
                       checked={field.value}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        setFieldValue(
-                          "generalToggleChecked",
-                          e.target.checked
-                        );
+                        setFieldValue("generalToggleChecked", e.target.checked);
                         onGeneralToggleChange();
                       }}
                     />
@@ -121,66 +119,65 @@ export function ProductSelection(props: IProductSelectionProps) {
                       ? values.selectedProducts.filter(
                           (id) => id !== credit.line_of_credit_id
                         )
-                      : [
-                          ...values.selectedProducts,
-                          credit.line_of_credit_id,
-                        ];
+                      : [...values.selectedProducts, credit.line_of_credit_id];
                     setFieldValue("selectedProducts", newSelected);
-                    setSelectedProducts(newSelected); 
+                    setSelectedProducts(newSelected);
                   }}
                 />
               ))}
             </Stack>
             <Fieldset>
-              {Object.entries(electionData.data).map(([key, question], index) => (
-                <Stack
-                  direction="column"
-                  key={key}
-                  gap="16px"
-                  padding="4px 10px"
-                >
-                  <Text type="body" size="medium">
-                    {question}
-                  </Text>
-                  <Stack gap="8px">
-                    <Field name={`togglesState[${index}]`}>
-                      {({
-                        field,
-                      }: {
-                        field: { value: boolean; name: string };
-                      }) => (
-                        <Toggle
-                          {...field}
-                          value={field.value.toString()} 
-                          checked={field.value}
-                          onChange={() => {
-                            onToggleChange(index);
-                            setFieldValue(
-                              `togglesState[${index}]`,
-                              !field.value
-                            );
-                          }}
-                        />
-                      )}
-                    </Field>
-                    <Text
-                      type="label"
-                      size="large"
-                      weight="bold"
-                      appearance={
-                        values.togglesState[index] ? "success" : "danger"
-                      }
-                    >
-                      {values.togglesState[index]
-                        ? electionData.yes
-                        : electionData.no}
+              {Object.entries(electionData.data).map(
+                ([key, question], index) => (
+                  <Stack
+                    direction="column"
+                    key={key}
+                    gap="16px"
+                    padding="4px 10px"
+                  >
+                    <Text type="body" size="medium">
+                      {question}
                     </Text>
+                    <Stack gap="8px">
+                      <Field name={`togglesState[${index}]`}>
+                        {({
+                          field,
+                        }: {
+                          field: { value: boolean; name: string };
+                        }) => (
+                          <Toggle
+                            {...field}
+                            value={field.value.toString()}
+                            checked={field.value}
+                            onChange={() => {
+                              onToggleChange(index);
+                              setFieldValue(
+                                `togglesState[${index}]`,
+                                !field.value
+                              );
+                            }}
+                          />
+                        )}
+                      </Field>
+                      <Text
+                        type="label"
+                        size="large"
+                        weight="bold"
+                        appearance={
+                          values.togglesState[index] ? "success" : "danger"
+                        }
+                      >
+                        {values.togglesState[index]
+                          ? electionData.yes
+                          : electionData.no}
+                      </Text>
+                    </Stack>
+                    {index < Object.entries(electionData.data).length - 1 && (
+                      <Divider dashed />
+                    )}
                   </Stack>
-                  {index < Object.entries(electionData.data).length - 1 && (
-                    <Divider dashed />
-                  )}
-                </Stack>
-              ))}
+                )
+              )}
             </Fieldset>
           </Stack>
         </Form>
