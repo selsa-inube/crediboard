@@ -1,0 +1,48 @@
+import { dataTableExtraDebtors } from "@pages/prospect/components/TableExtraDebtors/config";
+
+export const mockExtraDebtors:dataTableExtraDebtors[] = [
+  {
+    id: "101",
+    docType: "Cedula",
+    docNumber: "1021365993",
+    name: "Camilo",
+    lastName: "Rincon",
+    email: "camilo@inube.com",
+    phoneNumber: "3123654470",
+    gender: "Masculino",
+    actions: "",
+  },
+  {
+    id: "102",
+    docType: "Pasaporte",
+    docNumber: "52365175",
+    name: "Juan",
+    lastName: "Peréz",
+    email: "juanp@inube.com",
+    phoneNumber: "3123654470",
+    gender: "Masculino",
+    actions: "",
+  },
+  {
+    id: "103",
+    docType: "Cedula",
+    docNumber: "1003612366",
+    name: "Sofia",
+    lastName: "Romero",
+    email: "Sofiromero@gmail.com",
+    phoneNumber: "3123654470",
+    gender: "Masculino",
+    actions: "",
+  },
+  {
+    id: "104",
+    docType: "Cedula",
+    docNumber: "51364223",
+    name: "Andres",
+    lastName: "Sanchez",
+    email: "sanchez01@gmail.com",
+    phoneNumber: "3123654470",
+    gender: "Masculino",
+    actions: "",
+  },
+];
