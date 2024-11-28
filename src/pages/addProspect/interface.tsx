@@ -43,7 +43,11 @@ interface AddPositionUIProps {
   setSelectedProducts: React.Dispatch<React.SetStateAction<string[]>>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleFormDataChange: (field: string, newValue: any) => void;
-  handleConsolidatedCreditChange: (creditId: string, oldValue: number, newValue: number) => void;
+  handleConsolidatedCreditChange: (
+    creditId: string,
+    oldValue: number,
+    newValue: number
+  ) => void;
   smallScreen: boolean;
 }
 
@@ -136,9 +140,8 @@ export function AddProspectUI(props: AddPositionUIProps) {
               onFormValid={setIsCurrentFormValid}
             />
           )}
-          {currentStepsNumber &&
-          currentStepsNumber.id ===
-            stepsAddProspect.extraDebtors.id && (
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.extraDebtors.id && (
             <ExtraDebtors />
           )}
         {currentStepsNumber &&
@@ -196,7 +199,6 @@ export function AddProspectUI(props: AddPositionUIProps) {
             <ConsolidatedCredit
               initialValues={formData.consolidatedCreditSelections}
               handleOnChange={handleConsolidatedCreditChange}
-              onFormValid={setIsCurrentFormValid}
             />
           )}
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">

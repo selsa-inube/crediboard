@@ -12,15 +12,22 @@ export interface IIncomeCardProps {
   labels: string[];
   placeholders: string[];
   values: string[];
+  noShowSupport?: boolean;
   onChange: (index: number, newValue: string) => void;
 }
 
 export function IncomeCard(props: IIncomeCardProps) {
-  const { title, labels, placeholders, values, onChange } = props;
+  const { title, labels, placeholders, values, onChange, noShowSupport } =
+    props;
 
   return (
     <StyledContainer>
-      <Stack direction="column" padding="16px" height="318px" gap="8px">
+      <Stack
+        direction="column"
+        padding="16px"
+        height={noShowSupport ? "auto" : "318px"}
+        gap="8px"
+      >
         <Text size="medium" type="title" weight="bold">
           {title}
         </Text>
@@ -41,22 +48,24 @@ export function IncomeCard(props: IIncomeCardProps) {
             </StyledTextField>
           ))}
         </Stack>
-        <Stack justifyContent="end" margin="auto 12px 5px 0px">
-          <StyledSupport onClick={() => console.log("Ver soporte")}>
-            <Stack gap="8px" alignItems="center">
-              <Text appearance="primary" type="label" size="large">
-                Ver soporte
-              </Text>
-              <Icon
-                icon={<MdOutlineRemoveRedEye />}
-                size="15px"
-                appearance="primary"
-                variant="filled"
-                shape="circle"
-              />
-            </Stack>
-          </StyledSupport>
-        </Stack>
+        {!noShowSupport && (
+          <Stack justifyContent="end" margin="auto 12px 5px 0px">
+            <StyledSupport onClick={() => console.log("Ver soporte")}>
+              <Stack gap="8px" alignItems="center">
+                <Text appearance="primary" type="label" size="large">
+                  Ver soporte
+                </Text>
+                <Icon
+                  icon={<MdOutlineRemoveRedEye />}
+                  size="15px"
+                  appearance="primary"
+                  variant="filled"
+                  shape="circle"
+                />
+              </Stack>
+            </StyledSupport>
+          </Stack>
+        )}
       </Stack>
     </StyledContainer>
   );

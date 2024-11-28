@@ -44,13 +44,15 @@ export function LoanCondition(props: ILoanCondition) {
       initialValues={initialValues}
       validationSchema={validationSchema}
       validate={(values) => {
+        const quotaCapNumericValue =
+          parseFloat(values.quotaCapValue.replace(/[^0-9]/g, "")) || 0;
+        const maximumTermNumericValue =
+          parseFloat(String(values.maximumTermValue).replace(/[^0-9]/g, "")) ||
+          0;
         const isValid =
-          (!values.toggles.quotaCapToggle ||
-            values.quotaCapValue.trim() !== "") &&
-          (!values.toggles.maximumTermToggle ||
-            String(values.maximumTermValue).trim() !== "");
+          (!values.toggles.quotaCapToggle || quotaCapNumericValue > 0) &&
+          (!values.toggles.maximumTermToggle || maximumTermNumericValue > 0);
         onFormValid(isValid);
-        return {};
       }}
       validateOnMount={true}
       onSubmit={() => {}}

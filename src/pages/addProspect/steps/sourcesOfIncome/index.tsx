@@ -1,4 +1,5 @@
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
+import { Fieldset } from "@src/components/data/Fieldset";
 
 interface ISourcesOfIncomeProps {
   handleOnChange: (name: string, newValue: string) => void;
@@ -19,5 +20,15 @@ interface ISourcesOfIncomeProps {
 export function SourcesOfIncome(props: ISourcesOfIncomeProps) {
   const { initialValues, handleOnChange, options } = props;
 
-  return <SourceIncome form={initialValues} onChange={handleOnChange} options={options} />;
+  return (
+    <Fieldset>
+      <SourceIncome
+        form={initialValues}
+        onChange={handleOnChange}
+        options={options}
+        noShowSupport={true}
+        onlyDebtor
+      />
+    </Fieldset>
+  );
 }
