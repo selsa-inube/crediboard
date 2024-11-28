@@ -106,8 +106,8 @@ export function AddProspect() {
       togglesState[0]
         ? stepsAddProspect.extraordinaryInstallments.id
         : undefined,
-      togglesState[1] ? stepsAddProspect.extraDebtors.id : undefined,
-      togglesState[2] ? stepsAddProspect.sourcesIncome.id : undefined,
+      togglesState[2] ? stepsAddProspect.extraDebtors.id : undefined,
+      togglesState[1] ? stepsAddProspect.sourcesIncome.id : undefined,
       stepsAddProspect.obligationsFinancial.id,
     ].filter((step): step is number => step !== undefined);
 
@@ -137,8 +137,8 @@ export function AddProspect() {
       togglesState[0]
         ? stepsAddProspect.extraordinaryInstallments.id
         : undefined,
-      togglesState[1] ? stepsAddProspect.extraDebtors.id : undefined,
-      togglesState[2] ? stepsAddProspect.sourcesIncome.id : undefined,
+      togglesState[2] ? stepsAddProspect.extraDebtors.id : undefined,
+      togglesState[1] ? stepsAddProspect.sourcesIncome.id : undefined,
       stepsAddProspect.obligationsFinancial.id,
     ].filter((step): step is number => step !== undefined);
 
@@ -151,6 +151,7 @@ export function AddProspect() {
     } else if (currentStep - 1 >= steps[0].id) {
       setCurrentStep(currentStep - 1);
     }
+    setIsCurrentFormValid(true);
   };
 
   const handleCloseSectionMessage = () => {

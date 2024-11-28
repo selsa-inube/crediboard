@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Formik, Field, Form, FieldProps } from "formik";
+import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { MdInfoOutline, MdOutlineAttachMoney } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
@@ -65,12 +65,11 @@ export function LoanAmount(props: ILoanAmountProps) {
       <Formik
         initialValues={initialValues}
         validationSchema={LoanAmountValidationSchema}
-        onSubmit={(values) => {
-          console.log("Submitted values:", values);
-        }}
+        onSubmit={() => {}}
         validate={(values) => {
-          const isValid =
-            values.inputValue.trim() !== "" && values.paymentPlan.trim() !== "";
+          const numericValue =
+            parseFloat(values.inputValue.replace(/[^0-9]/g, "")) || 0;
+          const isValid = numericValue > 0 && values.paymentPlan.trim() !== "";
           onFormValid(isValid);
         }}
         validateOnMount={true}
@@ -168,17 +167,17 @@ export function LoanAmount(props: ILoanAmountProps) {
                   {dataAmount.ordinaryPayment}
                 </Text>
                 <Field name="paymentPlan">
-                  {({ field, form }: FieldProps) => (
+                  {() => (
                     <Select
                       id="paymentPlan"
                       options={requestValue || []}
                       placeholder={dataAmount.selectOption}
-                      name={field.name}
-                      value={field.value}
-                      onChange={(newValue) => {
-                        form.setFieldValue(field.name, newValue);
+                      name="paymentPlan"
+                      onChange={(_, newValue: string) => {
+                        setFieldValue("paymentPlan", newValue);
                         handleOnChange({ paymentPlan: newValue });
                       }}
+                      value={values.paymentPlan}
                       fullwidth={true}
                     />
                   )}
