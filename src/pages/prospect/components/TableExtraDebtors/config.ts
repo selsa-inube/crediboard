@@ -4,6 +4,8 @@ export interface dataTableExtraDebtors {
   docNumber: string;
   name: string;
   lastName: string;
+  income: string;
+  expenses: string;
   email: string;
   phoneNumber: string;
   actions: string;
@@ -19,6 +21,8 @@ export const headers: {
   { label: "Numero de documento", key: "docNumber" },
   { label: "Nombres", key: "name" },
   { label: "Apellidos", key: "lastName" },
+  { label: "Ingresos", key: "income" },
+  { label: "Egresos", key: "expenses" },
   // { label: "Email ", key: "email" },
   // { label: "Número de teléfono ", key: "phoneNumber" },
   // { label: "Genero ", key: "gender" },
@@ -27,5 +31,6 @@ export const headers: {
 ];
 
 export const dataReport = {
-  noData: "Aún no hay adeudores extra registrados. Presione “Agregar deudor extra” para empezar.",
+  noData:
+    "Aún no hay adeudores extra registrados. Presione “Agregar deudor extra” para empezar.",
 };

@@ -61,6 +61,8 @@ function ExtraDebtorModal(props: ExtraDebtorModalProps) {
     documentNumber: Yup.number().required("Campo requerido"),
     names: Yup.string().required("Campo requerido"),
     lastName: Yup.string().required("Campo requerido"),
+    income: Yup.string().required("Campo requerido"),
+    expenses: Yup.string().required("Campo requerido"),
     email: Yup.string().required("Campo requerido"),
     phone: Yup.number().required("Campo requerido"),
     gender: Yup.string().required("Campo requerido"),
@@ -142,6 +144,28 @@ function ExtraDebtorModal(props: ExtraDebtorModalProps) {
                 size="compact"
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
+                fullwidth
+              />
+              <Textfield
+                label="Ingresos"
+                name="income"
+                id="income"
+                placeholder="Ej.: 1.300.000"
+                value={validateCurrencyField("income", formik, false)}
+                size="compact"
+                onBlur={formik.handleBlur}
+                onChange={(e) => handleChangeWithCurrency(formik, e)}
+                fullwidth
+              />
+              <Textfield
+                label="Egresos"
+                name="expenses"
+                id="expenses"
+                placeholder="Ej.: 390.000"
+                value={validateCurrencyField("expenses", formik, false)}
+                size="compact"
+                onBlur={formik.handleBlur}
+                onChange={(e) => handleChangeWithCurrency(formik, e)}
                 fullwidth
               />
               <Textfield

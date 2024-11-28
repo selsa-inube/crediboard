@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FormikProps } from "formik";
 import { useMediaQuery } from "@inubekit/hooks";
 
+import { ListModal } from "@components/modals/ListModal";
 import { Consulting } from "@components/modals/Consulting";
 import { income } from "@mocks/add-prospect/income/income.mock";
 
@@ -21,6 +22,7 @@ export function AddProspect() {
     visible: false,
   });
   const [showConsultingModal, setShowConsultingModal] = useState(false);
+  const [showDebtorModal, setShowDebtorModal] = useState(false);
 
   const smallScreen = useMediaQuery("(max-width:880px)");
   const steps = Object.values(stepsAddProspect);
@@ -116,6 +118,10 @@ export function AddProspect() {
     if (currentStep === stepsAddProspect.loanConditions.id) {
       showConsultingForFiveSeconds();
     }
+    if (currentStep === stepsAddProspect.extraDebtors.id) {
+      setShowDebtorModal(true);
+      return;
+    }
     if (currentStep === stepsAddProspect.productSelection.id) {
       setCurrentStep(dynamicSteps[0]);
     } else if (
@@ -194,6 +200,20 @@ export function AddProspect() {
         smallScreen={smallScreen}
       />
       {showConsultingModal && <Consulting />}
+      {showDebtorModal && (
+        <ListModal
+          title="Deudor extra"
+          handleClose={() => setShowDebtorModal(false)}
+          handleSubmit={() => {
+            setCurrentStep(stepsAddProspect.sourcesIncome.id);
+            setShowDebtorModal(false);
+          }}
+          onSubmit={() => setShowDebtorModal(false)}
+          buttonLabel="Si"
+          content="Desea agrega otro deudor extra."
+          cancelButton="No"
+        />
+      )}
     </>
   );
 }
