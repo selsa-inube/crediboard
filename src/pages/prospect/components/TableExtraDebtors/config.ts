@@ -1,15 +1,16 @@
 export interface dataTableExtraDebtors {
   id: string;
-  docType: string;
-  docNumber: string;
-  name: string;
+  documentType: string;
+  documentNumber: number;
+  names: string;
   lastName: string;
-  income: string;
-  expenses: string;
+  income: number;
+  expenses: number;
   email: string;
-  phoneNumber: string;
+  phone: number;
   actions?: string;
   gender: string;
+  trace_id?: string;
 }
 
 export const headers: {
@@ -17,9 +18,9 @@ export const headers: {
   key: keyof dataTableExtraDebtors;
   action?: boolean;
 }[] = [
-  { label: "Tipo de documento", key: "docType" },
-  { label: "Numero de documento", key: "docNumber" },
-  { label: "Nombres", key: "name" },
+  { label: "Tipo de documento", key: "documentType" },
+  { label: "Numero de documento", key: "documentNumber" },
+  { label: "Nombres", key: "names" },
   { label: "Apellidos", key: "lastName" },
   { label: "Ingresos", key: "income" },
   { label: "Egresos", key: "expenses" },

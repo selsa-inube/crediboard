@@ -1,17 +1,18 @@
 import { dataTableExtraDebtors } from "@pages/prospect/components/TableExtraDebtors/config";
 
-export const mockExtraDebtors:dataTableExtraDebtors[] = [
+export const mockExtraDebtors: dataTableExtraDebtors[] = [
   {
-    id: "101",
-    docType: "Cedula",
-    docNumber: "1.021.365.993",
-    name: "Camilo",
+    id: crypto.randomUUID(),
+    documentType: "Cedula",
+    documentNumber: 1021365993,
+    names: "Camilo",
     lastName: "Rincon",
-    income: "5.000.000",
-    expenses: "1.500.000",
+    income: 5000000,
+    expenses: 1500000,
     email: "camilo@inube.com",
-    phoneNumber: "3123654470",
+    phone: 3123654470,
     gender: "Masculino",
     actions: "",
+    trace_id: crypto.randomUUID(),
   },
 ];

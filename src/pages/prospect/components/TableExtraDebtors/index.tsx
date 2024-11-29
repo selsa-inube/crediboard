@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import localforage from "localforage";
+import { MdCached, MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
 import {
   Pagination,
   Table,
@@ -12,14 +13,16 @@ import {
 } from "@inubekit/table";
 import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
+import { Stack } from "@inubekit/stack";
+import { Icon } from "@inubekit/icon";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
 
-import { Detail } from "@pages/prospect/components/TableExtraordinaryInstallment/Detail";
+import { ExtraDebtorModal } from "@components/modals/extraDebtorModal";
 
 import { headers, dataReport } from "./config";
 import { usePagination } from "./utils";
 
-interface ExtraDebtor {
+export interface ExtraDebtor {
   docNumber?: string;
   name?: string;
   actions?: boolean;
@@ -31,6 +34,15 @@ export function TableExtraDebtors(props: ExtraDebtor) {
   const { refreshKey } = props;
   const [loading, setLoading] = useState(true);
   const [extraDebtors, setExtraDebtors] = useState<ExtraDebtor[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDebtor, setSelectedDebtor] = useState<ExtraDebtor | null>(
+    null
+  );
+
+  const handleEdit = (debtor: ExtraDebtor) => {
+    setSelectedDebtor(debtor);
+    setIsModalOpen(true);
+  };
 
   const {
     totalRecords,
@@ -135,7 +147,26 @@ export function TableExtraDebtors(props: ExtraDebtor) {
                           : "center"
                       }
                     >
-                      {header.action ? <Detail /> : cellData}
+                      {header.action ? (
+                        <Stack justifyContent="space-around">
+                          <Icon
+                            icon={<MdOutlineEdit />}
+                            appearance="dark"
+                            size="16px"
+                            onClick={() => handleEdit(row)}
+                            cursorHover
+                          />
+                          <Icon
+                            icon={<MdDeleteOutline />}
+                            appearance="danger"
+                            size="16px"
+                            onClick={() => console.log("delete")}
+                            cursorHover
+                          />
+                        </Stack>
+                      ) : (
+                        cellData
+                      )}
                     </Td>
                   );
                 })}
@@ -160,6 +191,18 @@ export function TableExtraDebtors(props: ExtraDebtor) {
             </Td>
           </Tr>
         </Tfoot>
+      )}
+      {isModalOpen && selectedDebtor && (
+        <ExtraDebtorModal
+          title="Editar Deudor"
+          confirmButtonText="Actualizar"
+          iconBefore={<MdCached />}
+          initialValues={selectedDebtor}
+          onCloseModal={() => setIsModalOpen(false)}
+          onConfirm={() => {
+            setIsModalOpen(false);
+          }}
+        />
       )}
     </Table>
   );

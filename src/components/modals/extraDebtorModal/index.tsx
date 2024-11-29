@@ -1,5 +1,6 @@
 import { Formik, FormikValues } from "formik";
 import * as Yup from "yup";
+import localforage from "localforage";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
 import { Textfield } from "@inubekit/textfield";
@@ -12,6 +13,7 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
 
+import { ExtraDebtor } from "@pages/prospect/components/TableExtraDebtors";
 import { truncateTextToMaxLength } from "@utils/formatData/text";
 import {
   handleChangeWithCurrency,
@@ -20,10 +22,7 @@ import {
 import { addItem } from "@mocks/utils/dataMock.service";
 
 import { StyledModal, StyledContainerClose } from "./styles";
-import {
-  typeDocument,
-  genderOptions
-} from "./config";
+import { typeDocument, genderOptions } from "./config";
 
 interface ExtraDebtorModalProps {
   portalId?: string;
@@ -70,31 +69,33 @@ function ExtraDebtorModal(props: ExtraDebtorModalProps) {
 
   const handleConfirm = async (values: FormikValues) => {
     try {
-      await addItem("extra_debtors", {
-        id: crypto.randomUUID(),
-        docType: values.documentType,
-        docNumber: values.documentNumber,
-        name: values.names,
-        lastName: values.lastName,
-        income: values.income,
-        expenses: values.expenses,
-        email: values.email,
-        phoneNumber: values.phone,
-        gender: values.gender,
-        actions: "",
-      });
+      const storedData =
+        (await localforage.getItem<ExtraDebtor[]>("extra_debtors")) || [];
+
+      if (values.id) {
+        const updatedData = storedData.map((debtor) =>
+          debtor.id === values.id ? { ...debtor, ...values } : debtor
+        );
+        await localforage.setItem("extra_debtors", updatedData);
+      } else {
+        await addItem("extra_debtors", {
+          id: crypto.randomUUID(),
+          ...values,
+        });
+      }
+
       onCloseModal();
     } catch (error) {
-      console.error("Error adding data to localforage:", error);
+      console.error("Error updating data in localforage:", error);
     }
   };
 
   return createPortal(
     <Formik
-    initialValues={initialValues}
-    validationSchema={validationSchema}
-    onSubmit={handleConfirm}
-  >
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleConfirm}
+    >
       {(formik) => (
         <Blanket>
           <StyledModal $smallScreen={isMobile}>
