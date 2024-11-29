@@ -5,14 +5,6 @@ import { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@inubekit/button";
 import { action } from "@storybook/addon-actions";
 
-import {
-  Schedule,
-  CreditLine,
-  PaymentMethod,
-  AmortizationType,
-  RateType,
-} from "@services/enums";
-
 import { props, parameters } from "./props";
 import { ExtraDebtorModal, ExtraDebtorModalProps } from "..";
 
@@ -28,15 +20,16 @@ type Story = StoryObj<typeof ExtraDebtorModal>;
 export const Create: Story = (args: ExtraDebtorModalProps) => {
   const [showModal, setShowModal] = useState(false);
   const initialValues: FormikValues = {
-    creditLine: "",
-    creditAmount: "",
-    paymentMethod: "",
-    paymentCycle: "",
-    firstPaymentCycle: "",
-    termInMonths: "",
-    amortizationType: "",
-    interestRate: "",
-    rateType: "",
+    documentType: "",
+    documentNumber: "",
+    names: "",
+    lastName: "",
+    income: "",
+    expenses: "",
+    email: "",
+    phone: "",
+    gender: "",
+    actions: "",
   };
 
   return (
@@ -66,21 +59,22 @@ Create.args = {
   portalId: "portal",
   title: "Agregar deudor extra",
   confirmButtonText: "Agregar",
-  iconBefore: <MdAdd/>,
+  iconBefore: <MdAdd />,
 };
 
 export const Edit: Story = (args: ExtraDebtorModalProps) => {
   const [showModal, setShowModal] = useState(false);
   const initialValues: FormikValues = {
-    creditLine: CreditLine.Vacation,
-    creditAmount: 10000000,
-    paymentMethod: PaymentMethod.MonthlyPayroll,
-    paymentCycle: Schedule.Biweekly,
-    firstPaymentCycle: "ciclo1",
-    termInMonths: "48",
-    amortizationType: AmortizationType.FixedIntegralPayments,
-    interestRate: 2.15,
-    rateType: RateType.Fixed,
+    documentType: "Cedula",
+    documentNumber: 1023632335,
+    names: "Camilo",
+    lastName: "Rincon",
+    income: 5000000,
+    expenses: 1500000,
+    email: "camilo@inube.com",
+    phone: 3123604555,
+    gender: "Masculino",
+    actions: "",
   };
 
   return (

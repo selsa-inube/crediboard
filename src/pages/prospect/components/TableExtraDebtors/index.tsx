@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import localforage from "localforage";
 import {
   Pagination,
   Table,
@@ -14,13 +15,22 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
 
 import { Detail } from "@pages/prospect/components/TableExtraordinaryInstallment/Detail";
-import { mockExtraDebtors } from "@mocks/add-prospect/extra-debtors/extradebtors.mock";
 
 import { headers, dataReport } from "./config";
 import { usePagination } from "./utils";
 
-export function TableExtraDebtors() {
+interface ExtraDebtor {
+  docNumber?: string;
+  name?: string;
+  actions?: boolean;
+  [key: string]: React.ReactNode;
+  refreshKey: number;
+}
+
+export function TableExtraDebtors(props: ExtraDebtor) {
+  const { refreshKey } = props;
   const [loading, setLoading] = useState(true);
+  const [extraDebtors, setExtraDebtors] = useState<ExtraDebtor[]>([]);
 
   const {
     totalRecords,
@@ -39,6 +49,16 @@ export function TableExtraDebtors() {
 
     return () => clearTimeout(timeout);
   }, []);
+
+  useEffect(() => {
+    const loadExtraDebtors = async () => {
+      const storedData =
+        (await localforage.getItem<ExtraDebtor[]>("extra_debtors")) || [];
+      setExtraDebtors(storedData);
+    };
+
+    loadExtraDebtors();
+  }, [refreshKey]);
 
   const isMobile = useMediaQuery("(max-width:880px)");
   const visibleHeaders = isMobile
@@ -76,7 +96,7 @@ export function TableExtraDebtors() {
                 ))}
               </Tr>
             );
-          } else if (mockExtraDebtors.length === 0) {
+          } else if (extraDebtors.length === 0) {
             return (
               <Tr>
                 <Td
@@ -96,20 +116,22 @@ export function TableExtraDebtors() {
               </Tr>
             );
           } else {
-            return mockExtraDebtors.map((row, rowIndex) => (
+            return extraDebtors.map((row, rowIndex) => (
               <Tr key={rowIndex}>
                 {visibleHeaders.map((header, colIndex) => {
-                  const cellData = row[header.key];
+                  const cellData = row[header.key] as
+                    | string
+                    | number
+                    | undefined;
                   return (
                     <Td
-                    width="100px"
                       key={colIndex}
                       appearance={rowIndex % 2 === 0 ? "light" : "dark"}
                       type={header.action ? "custom" : "text"}
                       align={
                         typeof cellData === "number" ||
                         (typeof cellData === "string" && cellData.includes("$"))
-                          ? "right"
+                          ? "center"
                           : "center"
                       }
                     >
@@ -122,7 +144,7 @@ export function TableExtraDebtors() {
           }
         })()}
       </Tbody>
-      {!loading && mockExtraDebtors.length > 0 && (
+      {!loading && extraDebtors.length > 0 && (
         <Tfoot>
           <Tr border="bottom">
             <Td colSpan={visibleHeaders.length} type="custom" align="center">

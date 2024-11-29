@@ -8,7 +8,7 @@ export interface dataTableExtraDebtors {
   expenses: string;
   email: string;
   phoneNumber: string;
-  actions: string;
+  actions?: string;
   gender: string;
 }
 
@@ -23,10 +23,6 @@ export const headers: {
   { label: "Apellidos", key: "lastName" },
   { label: "Ingresos", key: "income" },
   { label: "Egresos", key: "expenses" },
-  // { label: "Email ", key: "email" },
-  // { label: "Número de teléfono ", key: "phoneNumber" },
-  // { label: "Genero ", key: "gender" },
-  // { label: "Fecha de nacimiento", key: "date" },
   { label: "Acciones", key: "actions", action: true },
 ];
 

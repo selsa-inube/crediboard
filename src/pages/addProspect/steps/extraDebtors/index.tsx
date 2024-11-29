@@ -10,6 +10,8 @@ import { ExtraDebtorModal } from "@components/modals/extraDebtorModal";
 
 export function ExtraDebtors() {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+
   const initialValues: FormikValues = {
     documentType: "",
     documentNumber: "",
@@ -18,6 +20,11 @@ export function ExtraDebtors() {
     email: "",
     phone: "",
     gender: "",
+  };
+
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
+    setRefreshKey((prevKey) => prevKey + 1);
   };
 
   return (
@@ -36,12 +43,12 @@ export function ExtraDebtors() {
           onClick={() => setIsOpenModal(true)}
         />
       </Stack>
-      <TableExtraDebtors />
+      <TableExtraDebtors refreshKey={refreshKey} />
       {isOpenModal && (
         <ExtraDebtorModal
           title="Agregar deudor extra"
           initialValues={initialValues}
-          onCloseModal={() => setIsOpenModal(false)}
+          onCloseModal={handleCloseModal}
           onConfirm={() => console.log("ok")}
           confirmButtonText="Agregar"
           iconBefore={<MdAdd />}

@@ -17,6 +17,7 @@ import {
   handleChangeWithCurrency,
   validateCurrencyField,
 } from "@utils/formatData/currency";
+import { addItem } from "@mocks/utils/dataMock.service";
 
 import { StyledModal, StyledContainerClose } from "./styles";
 import {
@@ -44,7 +45,6 @@ function ExtraDebtorModal(props: ExtraDebtorModalProps) {
     iconBefore,
     iconAfter,
     onCloseModal,
-    onConfirm,
   } = props;
 
   const isMobile = useMediaQuery("(max-width: 550px)");
@@ -68,12 +68,33 @@ function ExtraDebtorModal(props: ExtraDebtorModalProps) {
     gender: Yup.string().required("Campo requerido"),
   });
 
+  const handleConfirm = async (values: FormikValues) => {
+    try {
+      await addItem("extra_debtors", {
+        id: crypto.randomUUID(),
+        docType: values.documentType,
+        docNumber: values.documentNumber,
+        name: values.names,
+        lastName: values.lastName,
+        income: values.income,
+        expenses: values.expenses,
+        email: values.email,
+        phoneNumber: values.phone,
+        gender: values.gender,
+        actions: "",
+      });
+      onCloseModal();
+    } catch (error) {
+      console.error("Error adding data to localforage:", error);
+    }
+  };
+
   return createPortal(
     <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={() => onConfirm()}
-    >
+    initialValues={initialValues}
+    validationSchema={validationSchema}
+    onSubmit={handleConfirm}
+  >
       {(formik) => (
         <Blanket>
           <StyledModal $smallScreen={isMobile}>
@@ -215,7 +236,7 @@ function ExtraDebtorModal(props: ExtraDebtorModalProps) {
                 Cancelar
               </Button>
               <Button
-                onClick={onConfirm}
+                onClick={formik.submitForm}
                 disabled={!formik.dirty || !formik.isValid}
                 appearance="primary"
                 iconBefore={iconBefore}
