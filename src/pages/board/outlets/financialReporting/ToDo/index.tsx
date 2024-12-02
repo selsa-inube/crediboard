@@ -12,13 +12,13 @@ import { IOption } from "@inubekit/select";
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo, ICreditRequest } from "@services/types";
-import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { get } from "@mocks/utils/dataMock.service";
+import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
 import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { getSearchDecisionByTaskToBeDone } from "@src/services/todo/getSearchDecisionByTaskToBeDone";
 
 import { StaffModal } from "./StaffModal";
 import { errorMessagge, buttonText } from "./config";
@@ -39,11 +39,14 @@ function ToDo(props: ToDoProps) {
   const [requests, setRequests] = useState<ICreditRequest | null>(null);
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
-  const [taskDecisions, setTaskDecisions] = useState<IOption[]>();
+  const [taskDecisions, setTaskDecisions] = useState<IOption[]>([]);
+  const [selectedDecision, setSelectedDecision] = useState<IOption | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
   const [taskData, setTaskData] = useState<IToDo | null>(null);
-  const [hasFetchedDecisions, setHasFetchedDecisions] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [assignedStaff, setAssignedStaff] = useState({
     commercialManager: "",
     analyst: "",
@@ -77,7 +80,6 @@ function ToDo(props: ToDoProps) {
   useEffect(() => {
     const fetchToDoData = async () => {
       if (!requests?.creditRequestId) return;
-
       setLoading(true);
       try {
         const data = await getToDoByCreditRequestId(requests.creditRequestId);
@@ -152,6 +154,11 @@ function ToDo(props: ToDoProps) {
 
   const onChangeDecision = (name: string, newValue: string) => {
     setDecisionValue({ ...decisionValue, [name]: newValue });
+
+    const selected = taskDecisions.find(
+      (decision) => decision.value === newValue
+    );
+    setSelectedDecision(selected || null);
   };
 
   const handleSubmit = () => {
@@ -175,10 +182,21 @@ function ToDo(props: ToDoProps) {
   };
 
   const handleSelectOpen = async () => {
-    if (!hasFetchedDecisions) {
+    setLoading(true);
+    if (requests?.creditRequestId) {
       try {
-        const decisions = await get("decisions");
-        setTaskDecisions(decisions as IOption[] | undefined);
+        const decision = await getSearchDecisionByTaskToBeDone(
+          requests.creditRequestId
+        );
+        const formattedDecisions = Array.isArray(decision)
+          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            decision.map((decisions: any, index: number) => ({
+              id: `decision-${index}`,
+              label: decisions.decision,
+              value: decisions.value,
+            }))
+          : [];
+        setTaskDecisions(formattedDecisions);
       } catch (error) {
         console.error(error);
         errorObserver.notify({
@@ -186,9 +204,47 @@ function ToDo(props: ToDoProps) {
           message: (error as Error).message.toString(),
         });
       } finally {
-        setHasFetchedDecisions(true);
+        setLoading(false);
       }
     }
+  };
+
+  const getXAction = (executedTask: string, humanDecision: string): string => {
+    if (
+      executedTask === "ASESORAR_CLIENTE" &&
+      humanDecision === "VIABILIZAR_SOLICITUD"
+    ) {
+      return "PrequalifyCreditRequest";
+    } else if (
+      executedTask === "ASESORAR_CLIENTE" &&
+      humanDecision === "RECHAZAR_SOLICITUD"
+    ) {
+      return "";
+    } else if (
+      executedTask === "ASESORAR_CLIENTE" &&
+      humanDecision === "CANCELAR_SOLICITUD"
+    ) {
+      return "";
+    } else if (
+      executedTask === "ASESORAR_CLIENTE" &&
+      humanDecision === "CONFIRMACION_CLIENTE"
+    ) {
+      return "";
+    }
+    return "";
+  };
+
+  const data = {
+    creditRequestId: requests?.creditRequestId || "",
+    executedTask: requests?.taskToBeDone || "",
+    executionDate: "",
+    humanDecision: selectedDecision?.label || "",
+    humanDecisionDescripcion: selectedDecision?.value || "",
+    justification: "",
+    xAction: getXAction(
+      requests?.taskToBeDone || "",
+      selectedDecision?.label || ""
+    ),
   };
 
   return (
@@ -274,7 +330,7 @@ function ToDo(props: ToDoProps) {
               padding="8px 0px 0px 0px"
             >
               {isModalOpen && (
-                <TextAreaModal
+                <DecisionModal
                   title="Confirmar la decisión"
                   buttonText="Enviar"
                   secondaryButtonText="Cancelar"
@@ -283,6 +339,7 @@ function ToDo(props: ToDoProps) {
                   inputPlaceholder="Describa el motivo de su decisión."
                   onSecondaryButtonClick={handleCloseModal}
                   onCloseModal={handleCloseModal}
+                  data={data}
                 />
               )}
               <Stack direction="column" width="100%" alignItems="end">

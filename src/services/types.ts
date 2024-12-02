@@ -373,3 +373,18 @@ export interface IPaymentChannel {
   label: string;
   value: string;
 }
+export interface IDecisionsToDo {
+  id: number | string;
+  label: string;
+  value: string;
+}
+
+export interface IPrequalifyCreditRequest {
+  creditRequestId: string;
+  executedTask: string;
+  executionDate: string;
+  humanDecision: string;
+  humanDecisionDescripcion: string;
+  justification: string;
+  xAction: string;
+}
