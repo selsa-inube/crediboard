@@ -5,7 +5,6 @@ import { Text } from "@inubekit/text";
 import { Toggle } from "@inubekit/toggle";
 import { Textfield } from "@inubekit/textfield";
 import { Divider } from "@inubekit/divider";
-import { useMediaQuery } from "@inubekit/hooks";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { currencyFormat } from "@utils/formatData/currency";
@@ -17,24 +16,23 @@ interface ILoanCondition {
   initialValues: LoanConditionState;
   handleOnChange: (newState: LoanConditionState) => void;
   onFormValid: (isValid: boolean) => void;
+  isMobile: boolean
 }
 
 export function LoanCondition(props: ILoanCondition) {
-  const { initialValues, handleOnChange, onFormValid } = props;
-
-  const isMobile = useMediaQuery("(max-width:880px)");
+  const { initialValues, handleOnChange, onFormValid, isMobile } = props;
 
   const validationSchema = Yup.object().shape({
     quotaCapValue: Yup.string().when(
       "toggles.quotaCapToggle",
       (quotaCapToggle, schema) =>
-        quotaCapToggle ? schema.required("Este campo es obligatorio") : schema
+        quotaCapToggle ? schema.required("") : schema
     ),
     maximumTermValue: Yup.string().when(
       "toggles.maximumTermToggle",
       (maximumTermToggle, schema) =>
         maximumTermToggle
-          ? schema.required("Este campo es obligatorio")
+          ? schema.required("")
           : schema
     ),
   });

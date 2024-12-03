@@ -47,7 +47,7 @@ interface AddPositionUIProps {
     oldValue: number,
     newValue: number
   ) => void;
-  smallScreen: boolean;
+  isMobile: boolean;
 }
 
 export function AddProspectUI(props: AddPositionUIProps) {
@@ -64,13 +64,13 @@ export function AddProspectUI(props: AddPositionUIProps) {
     selectedProducts,
     setSelectedProducts,
     handleConsolidatedCreditChange,
-    smallScreen,
+    isMobile,
   } = props;
 
   return (
     <Stack
       direction="column"
-      alignItems={smallScreen ? "normal" : "center"}
+      alignItems={isMobile ? "normal" : "center"}
       margin="20px 0px"
       padding="24px"
       height="100%"
@@ -79,7 +79,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
         gap="24px"
         direction="column"
         height="100%"
-        width={smallScreen ? "-webkit-fill-available" : "min(100%,1440px)"}
+        width={isMobile ? "-webkit-fill-available" : "min(100%,1440px)"}
       >
         <StyledContainerAssisted $cursorDisabled={!isCurrentFormValid}>
           <Assisted
@@ -91,18 +91,19 @@ export function AddProspectUI(props: AddPositionUIProps) {
             onSubmitClick={handleSubmitClick}
             disableNext={!isCurrentFormValid}
             disableSubmit={!isCurrentFormValid}
-            size={smallScreen ? "small" : "large"}
+            size={isMobile ? "small" : "large"}
           />
         </StyledContainerAssisted>
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.generalInformation.id && (
-            <RequirementsNotMet />
+            <RequirementsNotMet isMobile={isMobile}/>
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
             stepsAddProspect.extraordinaryInstallments.id && (
             <ExtraordinaryInstallments
               dataTable={extraordinaryInstallmentMock}
+              isMobile={isMobile}
             />
           )}
         {currentStepsNumber &&
@@ -113,6 +114,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
                 handleFormDataChange("selectedDestination", newDestination)
               }
               onFormValid={setIsCurrentFormValid}
+              isMobile={isMobile}
             />
           )}
         {currentStepsNumber &&
@@ -140,7 +142,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
             />
           )}
         {currentStepsNumber &&
-          currentStepsNumber.id === stepsAddProspect.extraDebtors.id && (
+          currentStepsNumber.id === stepsAddProspect.extraBorrowers.id && (
             <Stack />
           )}
         {currentStepsNumber &&
@@ -153,13 +155,13 @@ export function AddProspectUI(props: AddPositionUIProps) {
                   [name]: value,
                 })
               }
-              options={formData.incomeData.debtors}
+              options={formData.incomeData.borrowers}
             />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
             stepsAddProspect.obligationsFinancial.id && (
-            <ObligationsFinancial />
+            <ObligationsFinancial isMobile={isMobile}/>
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
@@ -174,12 +176,12 @@ export function AddProspectUI(props: AddPositionUIProps) {
                 })
               }
               onFormValid={setIsCurrentFormValid}
+              isMobile={isMobile}
             />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanAmount.id && (
             <LoanAmount
-              value={10000000}
               initialValues={formData.loanAmountState}
               handleOnChange={(
                 newData: Partial<typeof formData.loanAmountState>
@@ -190,6 +192,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
                 })
               }
               onFormValid={setIsCurrentFormValid}
+              isMobile={isMobile}
             />
           )}
         {currentStepsNumber &&
@@ -198,6 +201,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
             <ConsolidatedCredit
               initialValues={formData.consolidatedCreditSelections}
               handleOnChange={handleConsolidatedCreditChange}
+              isMobile={isMobile}
             />
           )}
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">

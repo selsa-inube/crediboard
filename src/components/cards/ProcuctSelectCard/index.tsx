@@ -7,9 +7,9 @@ import { currencyFormat } from "@utils/formatData/currency";
 import { selectData } from "./config";
 
 export interface IProductSelectCardProps {
-  amount: number;
-  rate: number;
-  term: number;
+  amount?: number;
+  rate?: number;
+  term?: number;
   description: string;
   disabled?: boolean;
   isSelected?: boolean;
@@ -17,8 +17,15 @@ export interface IProductSelectCardProps {
 }
 
 export function ProductSelectCard(props: IProductSelectCardProps) {
-  const { amount, rate, term, description, disabled, onSelect, isSelected } =
-    props;
+  const {
+    amount = 10000000,
+    rate = 1,
+    term = 12,
+    description,
+    disabled,
+    onSelect,
+    isSelected,
+  } = props;
 
   return (
     <Stack width="100%" direction="column">

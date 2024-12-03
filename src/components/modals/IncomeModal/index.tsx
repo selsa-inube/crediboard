@@ -15,7 +15,7 @@ import { StyledContainer, StyledContainerClose } from "./styles";
 
 interface IncomeModalProps {
   form: {
-    debtor: string;
+    borrower: string;
     monthly_salary?: number;
     other_monthly_payments?: number;
     pension_allowances?: number;
@@ -38,7 +38,7 @@ export function IncomeModal(props: IncomeModalProps) {
 
   useEffect(() => {
     const allFieldsFilled = [
-      form.debtor,
+      form.borrower,
       form.monthly_salary,
       form.other_monthly_payments,
       form.pension_allowances,
@@ -87,7 +87,12 @@ export function IncomeModal(props: IncomeModalProps) {
             </StyledContainerClose>
           </Stack>
           <Divider />
-          <SourceIncome form={form} onChange={onChange} options={options} />
+          <SourceIncome
+            form={form}
+            onChange={onChange}
+            options={options}
+            ShowSupport
+          />
           <Divider />
           <Stack
             padding="10px 0px"

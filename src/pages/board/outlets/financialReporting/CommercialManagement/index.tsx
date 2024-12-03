@@ -66,7 +66,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
 
   const { id } = useParams();
   const [form, setForm] = useState({
-    debtor: "",
+    borrower: "",
     monthly_salary: 0,
     other_monthly_payments: 0,
     pension_allowances: 0,
@@ -86,7 +86,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       if (foundProspect) {
         const mockCredit = foundProspect.consolidated_credit[0];
         setForm({
-          debtor: foundProspect.borrower[0].borrower_name,
+          borrower: foundProspect.borrower[0].borrower_name,
           monthly_salary: mockCredit.monthly_salary ?? 0,
           other_monthly_payments: mockCredit.other_monthly_payments ?? 0,
           pension_allowances: mockCredit.pension_allowances ?? 0,
@@ -536,7 +536,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             totalFee={3300000}
             options={incomeOptions}
             onChange={onChanges}
-            debtor={form.debtor}
+            debtor={form.borrower}
           />
         )}
         {currentModal === "extraPayments" && (

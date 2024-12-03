@@ -4,7 +4,6 @@ import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
 import { Button } from "@inubekit/button";
 import { Text } from "@inubekit/text";
-import { useMediaQuery } from "@inubekit/hooks";
 
 import { AddSeriesModal } from "@components/modals/AddSeriesModal";
 import { IExtraordinaryPayment } from "@services/types";
@@ -20,13 +19,13 @@ export interface ExtraordinaryInstallmentsProps {
   onClickDetails?: (id: string) => void;
   onClickEdit?: (id: string) => void;
   onClickEliminate?: (id: string) => void;
+  isMobile: boolean;
 }
 
 export function ExtraordinaryInstallments(
   props: ExtraordinaryInstallmentsProps
 ) {
-  const { dataTable, onClickDetails, onClickEdit, onClickEliminate } = props;
-  const isMobile = useMediaQuery("(max-width:880px)");
+  const { dataTable, onClickDetails, onClickEdit, onClickEliminate, isMobile } = props;
   const [isAddSeriesModalOpen, setAddSeriesModalOpen] = useState(false);
 
   const toggleAddSeriesModal = () => {

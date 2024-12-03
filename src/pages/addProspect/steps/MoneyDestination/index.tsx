@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useMediaQuery } from "@inubekit/hooks";
 
 import { get } from "@mocks/utils/dataMock.service";
 import { IMoneyDestination } from "@services/types";
@@ -10,12 +9,13 @@ import { MoneyDestinationUI } from "./interface";
 
 interface IMoneyDestinationProps {
   initialValues: string;
+  isMobile: boolean;
   handleOnChange: React.Dispatch<React.SetStateAction<string>>;
   onFormValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function MoneyDestination(props: IMoneyDestinationProps) {
-  const { initialValues, handleOnChange, onFormValid } = props;
+  const { initialValues, isMobile, handleOnChange, onFormValid } = props;
 
   const [moneyDestinations, setMoneyDestinations] =
     useState<IMoneyDestination[]>();
@@ -41,10 +41,8 @@ function MoneyDestination(props: IMoneyDestinationProps) {
   }, [initialValues, onFormValid]);
 
   const MoneyDestinationSchema = Yup.object().shape({
-    selectedDestination: Yup.string().required("Este campo es obligatorio"),
+    selectedDestination: Yup.string().required(""),
   });
-
-  const isTablet = useMediaQuery("(max-width: 1482px)");
 
   return (
     <Formik
@@ -58,7 +56,7 @@ function MoneyDestination(props: IMoneyDestinationProps) {
       {({ values, setFieldValue }) => (
         <MoneyDestinationUI
           destinations={moneyDestinations}
-          isTablet={isTablet}
+          isTablet={isMobile}
           selectedDestination={values.selectedDestination}
           handleChange={(value: string) => {
             setFieldValue("selectedDestination", value);

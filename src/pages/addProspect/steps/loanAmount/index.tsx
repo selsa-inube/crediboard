@@ -10,7 +10,6 @@ import { Toggle } from "@inubekit/toggle";
 import { Select } from "@inubekit/select";
 import { Icon } from "@inubekit/icon";
 import { inube } from "@inubekit/foundations";
-import { useMediaQuery } from "@inubekit/hooks";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditLimit } from "@components/modals/CreditLimit";
@@ -25,18 +24,25 @@ import { IPaymentChannel } from "@services/types";
 import { dataAmount } from "./config";
 
 export interface ILoanAmountProps {
-  value: number;
+  value?: number;
   initialValues: {
     inputValue: string;
     toggleChecked: boolean;
     paymentPlan: string;
   };
+  isMobile: boolean;
   handleOnChange: (newData: Partial<ILoanAmountProps["initialValues"]>) => void;
   onFormValid: (isValid: boolean) => void;
 }
 
 export function LoanAmount(props: ILoanAmountProps) {
-  const { value, initialValues, handleOnChange, onFormValid } = props;
+  const {
+    value = 10000000,
+    initialValues,
+    isMobile,
+    handleOnChange,
+    onFormValid,
+  } = props;
   const [requestValue, setRequestValue] = useState<IPaymentChannel[]>();
   const [openModal, setOpenModal] = useState<string | null>(null);
   const [creditModal, setCreditModal] = useState(false);
@@ -54,11 +60,9 @@ export function LoanAmount(props: ILoanAmountProps) {
   }, []);
 
   const LoanAmountValidationSchema = Yup.object({
-    inputValue: Yup.string().required("Este campo es obligatorio"),
-    paymentPlan: Yup.string().required("Este campo es obligatorio"),
+    inputValue: Yup.string().required(""),
+    paymentPlan: Yup.string().required(""),
   });
-
-  const isMobile = useMediaQuery("(max-width:880px)");
 
   return (
     <Fieldset hasOverflow>

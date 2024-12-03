@@ -6,26 +6,26 @@ import { Textfield } from "@inubekit/textfield";
 import { Icon } from "@inubekit/icon";
 
 import { StyledContainer, StyledTextField, StyledSupport } from "./styles";
+import { incomeCardData } from "./config";
 
 export interface IIncomeCardProps {
   title: string;
   labels: string[];
   placeholders: string[];
   values: string[];
-  noShowSupport?: boolean;
+  ShowSupport?: boolean;
   onChange: (index: number, newValue: string) => void;
 }
 
 export function IncomeCard(props: IIncomeCardProps) {
-  const { title, labels, placeholders, values, onChange, noShowSupport } =
-    props;
+  const { title, labels, placeholders, values, onChange, ShowSupport } = props;
 
   return (
     <StyledContainer>
       <Stack
         direction="column"
         padding="16px"
-        height={noShowSupport ? "auto" : "318px"}
+        height={!ShowSupport ? "auto" : "318px"}
         gap="8px"
       >
         <Text size="medium" type="title" weight="bold">
@@ -48,12 +48,12 @@ export function IncomeCard(props: IIncomeCardProps) {
             </StyledTextField>
           ))}
         </Stack>
-        {!noShowSupport && (
+        {ShowSupport && (
           <Stack justifyContent="end" margin="auto 12px 5px 0px">
             <StyledSupport onClick={() => console.log("Ver soporte")}>
               <Stack gap="8px" alignItems="center">
                 <Text appearance="primary" type="label" size="large">
-                  Ver soporte
+                  {incomeCardData.support}
                 </Text>
                 <Icon
                   icon={<MdOutlineRemoveRedEye />}

@@ -22,7 +22,7 @@ export function AddProspect() {
   });
   const [showConsultingModal, setShowConsultingModal] = useState(false);
 
-  const smallScreen = useMediaQuery("(max-width:880px)");
+  const isMobile = useMediaQuery("(max-width:880px)");
   const steps = Object.values(stepsAddProspect);
   const navigate = useNavigate();
 
@@ -106,7 +106,7 @@ export function AddProspect() {
       togglesState[0]
         ? stepsAddProspect.extraordinaryInstallments.id
         : undefined,
-      togglesState[2] ? stepsAddProspect.extraDebtors.id : undefined,
+      togglesState[2] ? stepsAddProspect.extraBorrowers.id : undefined,
       togglesState[1] ? stepsAddProspect.sourcesIncome.id : undefined,
       stepsAddProspect.obligationsFinancial.id,
     ].filter((step): step is number => step !== undefined);
@@ -137,7 +137,7 @@ export function AddProspect() {
       togglesState[0]
         ? stepsAddProspect.extraordinaryInstallments.id
         : undefined,
-      togglesState[2] ? stepsAddProspect.extraDebtors.id : undefined,
+      togglesState[2] ? stepsAddProspect.extraBorrowers.id : undefined,
       togglesState[1] ? stepsAddProspect.sourcesIncome.id : undefined,
       stepsAddProspect.obligationsFinancial.id,
     ].filter((step): step is number => step !== undefined);
@@ -192,7 +192,7 @@ export function AddProspect() {
         setSelectedProducts={setSelectedProducts}
         handleFormDataChange={handleFormDataChange}
         handleConsolidatedCreditChange={handleConsolidatedCreditChange}
-        smallScreen={smallScreen}
+        isMobile={isMobile}
       />
       {showConsultingModal && <Consulting />}
     </>

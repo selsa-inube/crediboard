@@ -26,7 +26,7 @@ const options = [
 
 export const Default: StoryFn<IncomeModalProps> = (args) => {
   const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({ debtor: "" });
+  const [form, setForm] = useState({ borrower: "" });
 
   const onChange = (name: string, newValue: string) => {
     setForm({ ...form, [name]: newValue });

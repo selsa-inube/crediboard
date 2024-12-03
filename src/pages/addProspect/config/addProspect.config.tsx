@@ -24,7 +24,7 @@ export const stepsAddProspect = {
     description:
       "Programe abonos para disminuir el pago ordinario o recortar plazo.",
   },
-  extraDebtors: {
+  extraBorrowers: {
     id: 5,
     number: 5,
     name: "Deudores extra",
