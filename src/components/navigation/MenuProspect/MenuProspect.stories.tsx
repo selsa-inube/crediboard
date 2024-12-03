@@ -2,11 +2,11 @@ import { MdAndroid } from "react-icons/md";
 import { BrowserRouter } from "react-router-dom";
 import { Meta, StoryFn, StoryObj } from "@storybook/react";
 
-import { MenuPropect, MenuPropectProps } from ".";
+import { MenuProspect, MenuProspectProps } from ".";
 
-const meta: Meta<typeof MenuPropect> = {
-  title: "components/navigation/MenuPropect",
-  component: MenuPropect,
+const meta: Meta<typeof MenuProspect> = {
+  title: "components/navigation/MenuProspect",
+  component: MenuProspect,
   decorators: [
     (Story: StoryFn) => (
       <BrowserRouter>
@@ -16,9 +16,9 @@ const meta: Meta<typeof MenuPropect> = {
   ],
 };
 
-type Story = StoryObj<typeof MenuPropect>;
+type Story = StoryObj<typeof MenuProspect>;
 
-export const Default: Story = (args: MenuPropectProps) => <MenuPropect {...args} />;
+export const Default: Story = (args: MenuProspectProps) => <MenuProspect {...args} />;
 Default.args = {
   options: [
     {

@@ -36,7 +36,7 @@ import {
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, ICreditRequest } from "@services/types";
-import { MenuPropect } from "@components/navigation/MenuPropect";
+import { MenuProspect } from "@components/navigation/MenuProspect";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { addCreditProduct } from "@mocks/utils/addCreditProductMock.service";
 import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
@@ -404,7 +404,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       onClick={() => setShowMenu(!showMenu)}
                     />
                     {showMenu && (
-                      <MenuPropect
+                      <MenuProspect
                         options={menuOptions(
                           handleOpenModal,
                           !prospectProducts?.ordinary_installment_for_principal
@@ -474,22 +474,15 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       size="24px"
                       cursorHover
                     />
-                    <Icon
-                      icon={<MdOutlineMoreVert />}
-                      appearance="primary"
-                      size="24px"
-                      cursorHover
-                      onClick={() => setShowMenu(!showMenu)}
+                    <StyledVerticalDivider />
+                    <MenuProspect
+                      only
+                      options={menuOptions(
+                        handleOpenModal,
+                        !prospectProducts?.ordinary_installment_for_principal
+                      )}
+                      onMouseLeave={() => setShowMenu(false)}
                     />
-                    {showMenu && (
-                      <MenuPropect
-                        options={menuOptions(
-                          handleOpenModal,
-                          !prospectProducts?.ordinary_installment_for_principal
-                        )}
-                        onMouseLeave={() => setShowMenu(false)}
-                      />
-                    )}
                   </StyledContainerIcon>
                 </Stack>
               )}
