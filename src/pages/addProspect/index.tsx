@@ -110,7 +110,7 @@ export function AddProspect() {
         : undefined,
       togglesState[2] ? stepsAddProspect.extraDebtors.id : undefined,
       togglesState[1] ? stepsAddProspect.sourcesIncome.id : undefined,
-      stepsAddProspect.obligationsFinancial.id,
+      stepsAddProspect.loanConditions.id,
     ].filter((step): step is number => step !== undefined);
 
     const currentStepIndex = dynamicSteps.indexOf(currentStep);
@@ -122,6 +122,10 @@ export function AddProspect() {
       setShowDebtorModal(true);
       return;
     }
+    if (currentStep === stepsAddProspect.sourcesIncome.id) {
+      setCurrentStep(stepsAddProspect.obligationsFinancial.id);
+      return;
+    }  
     if (currentStep === stepsAddProspect.productSelection.id) {
       setCurrentStep(dynamicSteps[0]);
     } else if (
@@ -145,11 +149,15 @@ export function AddProspect() {
         : undefined,
       togglesState[2] ? stepsAddProspect.extraDebtors.id : undefined,
       togglesState[1] ? stepsAddProspect.sourcesIncome.id : undefined,
-      stepsAddProspect.obligationsFinancial.id,
+      stepsAddProspect.loanConditions.id,
     ].filter((step): step is number => step !== undefined);
 
     const currentStepIndex = dynamicSteps.indexOf(currentStep);
 
+    if (currentStep === stepsAddProspect.obligationsFinancial.id) {
+      setCurrentStep(stepsAddProspect.sourcesIncome.id);
+      return;
+    }  
     if (currentStepIndex > 0) {
       setCurrentStep(dynamicSteps[currentStepIndex - 1]);
     } else if (currentStepIndex === 0) {
