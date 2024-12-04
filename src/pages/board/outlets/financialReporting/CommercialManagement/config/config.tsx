@@ -9,7 +9,7 @@ import { Text } from "@inubekit/text";
 
 import { TableBoard } from "@components/data/TableBoard";
 import { Schedule } from "@services/enums";
-import { IOptions } from "@src/components/navigation/MenuPropect/types";
+import { IOptions } from "@src/components/navigation/MenuProspect/types";
 
 export const titlesCommercialManagementAccordion = [
   {

@@ -1,4 +1,4 @@
-import { Formik, FormikValues } from "formik";
+import { Formik, FormikValues ,FormikHelpers} from "formik";
 import * as Yup from "yup";
 import { createPortal } from "react-dom";
 import { MdAttachMoney, MdPercent, MdClear } from "react-icons/md";
@@ -18,7 +18,11 @@ import {
   validateCurrencyField,
 } from "@utils/formatData/currency";
 
-import { StyledModal, StyledContainerClose } from "./styles";
+import {
+  StyledModal,
+  StyledContainerClose,
+  ScrollableContainer,
+} from "./styles";
 import {
   creditLineOptions,
   paymentMethodOptions,
@@ -29,6 +33,7 @@ import {
   rateTypeOptions,
 } from "./config";
 
+
 interface EditProductModalProps {
   portalId: string;
   title: string;
@@ -37,7 +42,7 @@ interface EditProductModalProps {
   iconBefore?: React.JSX.Element;
   iconAfter?: React.JSX.Element;
   onCloseModal: () => void;
-  onConfirm: () => void;
+  onConfirm: (values: FormikValues) => void;
 }
 
 function EditProductModal(props: EditProductModalProps) {
@@ -75,11 +80,15 @@ function EditProductModal(props: EditProductModalProps) {
     rateType: Yup.string().required("Campo requerido"),
   });
 
+
   return createPortal(
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={() => onConfirm()}
+      onSubmit={(values: FormikValues, formikHelpers: FormikHelpers<FormikValues>) => {
+        onConfirm(values);
+        formikHelpers.setSubmitting(false); 
+      }}
     >
       {(formik) => (
         <Blanket>
@@ -108,132 +117,135 @@ function EditProductModal(props: EditProductModalProps) {
             </Stack>
 
             <Divider />
-            <Stack direction="column" gap="24px" width="100%">
-              <Select
-                label="Línea de crédito"
-                name="creditLine"
-                id="creditLine"
-                size="compact"
-                placeholder="Seleccione una opción"
-                options={creditLineOptions}
-                onBlur={formik.handleBlur}
-                onChange={(name, value) => formik.setFieldValue(name, value)}
-                value={formik.values.creditLine}
-                fullwidth
-              />
-              <Textfield
-                label="Monto del crédito"
-                name="creditAmount"
-                id="creditAmount"
-                placeholder="Monto solicitado"
-                value={validateCurrencyField("creditAmount", formik, false)}
-                iconBefore={
-                  <Icon
-                    icon={<MdAttachMoney />}
-                    appearance="success"
-                    size="18px"
-                    spacing="narrow"
-                  />
-                }
-                size="compact"
-                onBlur={formik.handleBlur}
-                onChange={(e) => handleChangeWithCurrency(formik, e)}
-                fullwidth
-              />
-              <Select
-                label="Medio de pago"
-                name="paymentMethod"
-                id="paymentMethod"
-                size="compact"
-                placeholder="Seleccione una opción"
-                options={paymentMethodOptions}
-                onBlur={formik.handleBlur}
-                onChange={(name, value) => formik.setFieldValue(name, value)}
-                value={formik.values.paymentMethod}
-                fullwidth
-              />
-              <Select
-                label="Ciclo de pagos"
-                name="paymentCycle"
-                id="paymentCycle"
-                size="compact"
-                placeholder="Seleccione una opción"
-                options={paymentCycleOptions}
-                onBlur={formik.handleBlur}
-                onChange={(name, value) => formik.setFieldValue(name, value)}
-                value={formik.values.paymentCycle}
-                fullwidth
-              />
-              <Select
-                label="Primer ciclo de pago"
-                name="firstPaymentCycle"
-                id="firstPaymentCycle"
-                size="compact"
-                placeholder="Seleccione una opción"
-                options={firstPaymentCycleOptions}
-                onBlur={formik.handleBlur}
-                onChange={(name, value) => formik.setFieldValue(name, value)}
-                value={formik.values.firstPaymentCycle}
-                fullwidth
-              />
-              <Select
-                label="Plazo en meses"
-                name="termInMonths"
-                id="termInMonths"
-                size="compact"
-                placeholder="Seleccione una opción"
-                options={termInMonthsOptions}
-                onBlur={formik.handleBlur}
-                onChange={(name, value) => formik.setFieldValue(name, value)}
-                value={formik.values.termInMonths}
-                fullwidth
-              />
-              <Select
-                label="Tipo de amortización"
-                name="amortizationType"
-                id="amortizationType"
-                size="compact"
-                placeholder="Seleccione una opción"
-                options={amortizationTypeOptions}
-                onBlur={formik.handleBlur}
-                onChange={(name, value) => formik.setFieldValue(name, value)}
-                value={formik.values.amortizationType}
-                fullwidth
-              />
-              <Textfield
-                label="Tasa de interés"
-                name="interestRate"
-                id="interestRate"
-                placeholder="Ej: 0.9"
-                value={formik.values.interestRate}
-                iconAfter={
-                  <Icon
-                    icon={<MdPercent />}
-                    appearance="dark"
-                    size="18px"
-                    spacing="narrow"
-                  />
-                }
-                type="number"
-                size="compact"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                fullwidth
-              />
-              <Select
-                label="Tipo de tasa"
-                name="rateType"
-                id="rateType"
-                size="compact"
-                placeholder="Seleccione una opción"
-                options={rateTypeOptions}
-                onBlur={formik.handleBlur}
-                onChange={(name, value) => formik.setFieldValue(name, value)}
-                value={formik.values.rateType}
-                fullwidth
-              />
-              <Divider />
-            </Stack>
+
+            <ScrollableContainer>
+              <Stack direction="column" gap="24px" width="100%">
+                <Select
+                  label="Línea de crédito"
+                  name="creditLine"
+                  id="creditLine"
+                  size="compact"
+                  placeholder="Seleccione una opción"
+                  options={creditLineOptions}
+                  onBlur={formik.handleBlur}
+                  onChange={(name, value) => formik.setFieldValue(name, value)}
+                  value={formik.values.creditLine}
+                  fullwidth
+                />
+                <Textfield
+                  label="Monto del crédito"
+                  name="creditAmount"
+                  id="creditAmount"
+                  placeholder="Monto solicitado"
+                  value={validateCurrencyField("creditAmount", formik, false)}
+                  iconBefore={
+                    <Icon
+                      icon={<MdAttachMoney />}
+                      appearance="success"
+                      size="18px"
+                      spacing="narrow"
+                    />
+                  }
+                  size="compact"
+                  onBlur={formik.handleBlur}
+                  onChange={(e) => handleChangeWithCurrency(formik, e)}
+                  fullwidth
+                />
+                <Select
+                  label="Medio de pago"
+                  name="paymentMethod"
+                  id="paymentMethod"
+                  size="compact"
+                  placeholder="Seleccione una opción"
+                  options={paymentMethodOptions}
+                  onBlur={formik.handleBlur}
+                  onChange={(name, value) => formik.setFieldValue(name, value)}
+                  value={formik.values.paymentMethod}
+                  fullwidth
+                />
+                <Select
+                  label="Ciclo de pagos"
+                  name="paymentCycle"
+                  id="paymentCycle"
+                  size="compact"
+                  placeholder="Seleccione una opción"
+                  options={paymentCycleOptions}
+                  onBlur={formik.handleBlur}
+                  onChange={(name, value) => formik.setFieldValue(name, value)}
+                  value={formik.values.paymentCycle}
+                  fullwidth
+                />
+                <Select
+                  label="Primer ciclo de pago"
+                  name="firstPaymentCycle"
+                  id="firstPaymentCycle"
+                  size="compact"
+                  placeholder="Seleccione una opción"
+                  options={firstPaymentCycleOptions}
+                  onBlur={formik.handleBlur}
+                  onChange={(name, value) => formik.setFieldValue(name, value)}
+                  value={formik.values.firstPaymentCycle}
+                  fullwidth
+                />
+                <Select
+                  label="Plazo en meses"
+                  name="termInMonths"
+                  id="termInMonths"
+                  size="compact"
+                  placeholder="Seleccione una opción"
+                  options={termInMonthsOptions}
+                  onBlur={formik.handleBlur}
+                  onChange={(name, value) => formik.setFieldValue(name, value)}
+                  value={formik.values.termInMonths}
+                  fullwidth
+                />
+                <Select
+                  label="Tipo de amortización"
+                  name="amortizationType"
+                  id="amortizationType"
+                  size="compact"
+                  placeholder="Seleccione una opción"
+                  options={amortizationTypeOptions}
+                  onBlur={formik.handleBlur}
+                  onChange={(name, value) => formik.setFieldValue(name, value)}
+                  value={formik.values.amortizationType}
+                  fullwidth
+                />
+                <Textfield
+                  label="Tasa de interés"
+                  name="interestRate"
+                  id="interestRate"
+                  placeholder="Ej: 0.9"
+                  value={formik.values.interestRate}
+                  iconAfter={
+                    <Icon
+                      icon={<MdPercent />}
+                      appearance="dark"
+                      size="18px"
+                      spacing="narrow"
+                    />
+                  }
+                  type="number"
+                  size="compact"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  fullwidth
+                />
+                <Select
+                  label="Tipo de tasa"
+                  name="rateType"
+                  id="rateType"
+                  size="compact"
+                  placeholder="Seleccione una opción"
+                  options={rateTypeOptions}
+                  onBlur={formik.handleBlur}
+                  onChange={(name, value) => formik.setFieldValue(name, value)}
+                  value={formik.values.rateType}
+                  fullwidth
+                />
+              </Stack>
+            </ScrollableContainer>
+            <Divider />
 
             <Stack gap="24px" justifyContent="flex-end">
               <Button
@@ -244,7 +256,7 @@ function EditProductModal(props: EditProductModalProps) {
                 Cancelar
               </Button>
               <Button
-                onClick={onConfirm}
+                onClick={formik.submitForm}
                 disabled={!formik.dirty || !formik.isValid}
                 appearance="primary"
                 iconBefore={iconBefore}

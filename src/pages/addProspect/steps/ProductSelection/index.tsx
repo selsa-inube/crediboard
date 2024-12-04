@@ -40,7 +40,7 @@ export function ProductSelection(props: IProductSelectionProps) {
   const validationSchema = Yup.object().shape({
     selectedProducts: Yup.array().when("generalToggleChecked", {
       is: (value: boolean) => value === false,
-      then: (schema) => schema.min(1, "Debes seleccionar al menos un producto"),
+      then: (schema) => schema.min(1, ""),
       otherwise: (schema) => schema.notRequired(),
     }),
   });

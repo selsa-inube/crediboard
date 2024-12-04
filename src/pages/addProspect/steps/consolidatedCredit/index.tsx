@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Stack } from "@inubekit/stack";
 import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
-import { useMediaQuery } from "@inubekit/hooks";
 
 import { CardConsolidatedCredit } from "@components/cards/CardConsolidatedCredit";
 import { currencyFormat } from "@utils/formatData/currency";
@@ -15,6 +14,7 @@ interface IConsolidatedCreditProps {
     totalCollected: number;
     selectedValues: Record<string, number>;
   };
+  isMobile: boolean;
   handleOnChange: (
     creditId: string,
     oldValue: number,
@@ -23,7 +23,7 @@ interface IConsolidatedCreditProps {
 }
 
 export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
-  const { initialValues, handleOnChange } = props;
+  const { initialValues, isMobile, handleOnChange } = props;
 
   const [totalCollected, setTotalCollected] = useState(
     initialValues.totalCollected
@@ -39,7 +39,6 @@ export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
   };
 
   const debtorData = mockConsolidatedCredit[0];
-  const isMobile = useMediaQuery("(max-width:880px)");
 
   return (
     <Stack direction="column" gap="24px">

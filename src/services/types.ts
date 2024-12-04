@@ -285,9 +285,9 @@ interface IDebtor {
 }
 
 export interface IIncome {
-  debtors: IDebtor[],
-  debtor_id: string;
-  debtor: string;
+  borrowers: IDebtor[],
+  borrower_id: string;
+  borrower: string;
   monthly_salary: number;
   other_monthly_payments: number;
   pension_allowances: number;

@@ -3,10 +3,10 @@ import { IncomeCard } from "@components/cards/IncomeCard";
 interface IncomeProps {
   values: string[];
   onChange: (index: number, newValue: string) => void;
-  noShowSupport?: boolean;
+  ShowSupport?: boolean;
 }
 
-function IncomeCapital({ values, onChange, noShowSupport }: IncomeProps) {
+function IncomeCapital({ values, onChange, ShowSupport }: IncomeProps) {
   return (
     <IncomeCard
       title="Rentas de capital"
@@ -18,12 +18,12 @@ function IncomeCapital({ values, onChange, noShowSupport }: IncomeProps) {
       placeholders={["Arrendamiento/mes", "Utilidades/mes", "Rendimientos/mes"]}
       values={values}
       onChange={onChange}
-      noShowSupport={noShowSupport}
+      ShowSupport={ShowSupport}
     />
   );
 }
 
-function IncomeEmployment({ values, onChange, noShowSupport }: IncomeProps) {
+function IncomeEmployment({ values, onChange, ShowSupport }: IncomeProps) {
   return (
     <IncomeCard
       title="Rentas de trabajo"
@@ -39,12 +39,12 @@ function IncomeEmployment({ values, onChange, noShowSupport }: IncomeProps) {
       ]}
       values={values}
       onChange={onChange}
-      noShowSupport={noShowSupport}
+      ShowSupport={ShowSupport}
     />
   );
 }
 
-function MicroBusinesses({ values, onChange, noShowSupport }: IncomeProps) {
+function MicroBusinesses({ values, onChange, ShowSupport }: IncomeProps) {
   return (
     <IncomeCard
       title="Otros ingresos variables"
@@ -52,16 +52,12 @@ function MicroBusinesses({ values, onChange, noShowSupport }: IncomeProps) {
       placeholders={["Ganancias/mes", "Honorarios/mes"]}
       values={values}
       onChange={onChange}
-      noShowSupport={noShowSupport}
+      ShowSupport={ShowSupport}
     />
   );
 }
 
-function ProfessionalServices({
-  values,
-  onChange,
-  noShowSupport,
-}: IncomeProps) {
+function ProfessionalServices({ values, onChange, ShowSupport }: IncomeProps) {
   return (
     <IncomeCard
       title="Servicios profesionales"
@@ -69,7 +65,7 @@ function ProfessionalServices({
       placeholders={["Honorarios/mes"]}
       values={values}
       onChange={onChange}
-      noShowSupport={noShowSupport}
+      ShowSupport={ShowSupport}
     />
   );
 }

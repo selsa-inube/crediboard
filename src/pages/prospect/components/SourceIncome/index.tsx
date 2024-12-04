@@ -13,7 +13,7 @@ import { MdCached } from "react-icons/md";
 interface ISourceIncomeProps {
   onChange: (name: string, newValue: string) => void;
   form: {
-    debtor: string;
+    borrower: string;
     monthly_salary?: number;
     other_monthly_payments?: number;
     pension_allowances?: number;
@@ -24,12 +24,12 @@ interface ISourceIncomeProps {
     monthly_fees?: number;
   };
   options: { id: string; label: string; value: string }[];
-  noShowSupport?: boolean;
+  ShowSupport?: boolean;
   onlyDebtor?: boolean;
 }
 
 export function SourceIncome(props: ISourceIncomeProps) {
-  const { form, onChange, options, noShowSupport, onlyDebtor } = props;
+  const { form, onChange, options, ShowSupport, onlyDebtor } = props;
 
   const handleFieldChange = (
     fields: string[],
@@ -72,11 +72,11 @@ export function SourceIncome(props: ISourceIncomeProps) {
               <Stack width={!isMobile ? "317px" : "auto"}>
                 <Select
                   id="income"
-                  name="debtor"
+                  name="borrower"
                   label="Deudor"
                   placeholder="Seleccione una opción"
                   options={options}
-                  value={form.debtor}
+                  value={form.borrower}
                   onChange={(name, value) => onChange(name, value)}
                   size="compact"
                   fullwidth
@@ -89,7 +89,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   Deudor
                 </Text>
                 <Text type="title" size="medium">
-                  {form.debtor}
+                  {form.borrower}
                 </Text>
               </Stack>
             )}
@@ -139,7 +139,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   newValue
                 )
               }
-              noShowSupport={noShowSupport}
+              ShowSupport={ShowSupport}
             />
             <IncomeCapital
               values={[
@@ -154,7 +154,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   newValue
                 )
               }
-              noShowSupport={noShowSupport}
+              ShowSupport={ShowSupport}
             />
             <MicroBusinesses
               values={[
@@ -164,7 +164,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
               onChange={(index, newValue) =>
                 handleFieldChange(["gananciaPromedio"], index, newValue)
               }
-              noShowSupport={noShowSupport}
+              ShowSupport={ShowSupport}
             />
           </Grid>
         </Stack>

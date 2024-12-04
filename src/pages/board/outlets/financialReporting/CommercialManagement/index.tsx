@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { cloneElement, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   MdOutlineAdd,
@@ -10,6 +10,7 @@ import {
   MdOutlineVideocam,
   MdOutlinePayments,
 } from "react-icons/md";
+import { FormikValues } from "formik";
 
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -26,6 +27,7 @@ import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
 import { ReciprocityModal } from "@components/modals/ReciprocityModal";
 import { ReportCreditsModal } from "@components/modals/ReportCreditsModal";
 import { ScoreModal } from "@components/modals/FrcModal";
+import { EditProductModal } from "@components/modals/ProspectProductModal";
 import {
   truncateTextToMaxLength,
   capitalizeFirstLetter,
@@ -34,8 +36,9 @@ import {
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { ICreditProductProspect, ICreditRequest } from "@services/types";
-import { MenuPropect } from "@components/navigation/MenuPropect";
+import { MenuProspect } from "@components/navigation/MenuProspect";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
+import { addCreditProduct } from "@mocks/utils/addCreditProductMock.service";
 import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 
@@ -55,9 +58,10 @@ interface ComercialManagementProps {
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { data, children, print, isPrint } = props;
+  const { data, children = <Stack />, print, isPrint } = props;
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [updatedChildren, setUpdatedChildren] = useState(children);
   const [openModal, setOpenModal] = useState<string | null>(null);
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [prospectProducts, setProspectProducts] =
@@ -66,7 +70,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
 
   const { id } = useParams();
   const [form, setForm] = useState({
-    debtor: "",
+    borrower: "",
     monthly_salary: 0,
     other_monthly_payments: 0,
     pension_allowances: 0,
@@ -78,6 +82,19 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     total: undefined,
   });
 
+
+  const initialValues: FormikValues = {
+    creditLine: "",
+    creditAmount: "",
+    paymentMethod: "",
+    paymentCycle: "",
+    firstPaymentCycle: "",
+    termInMonths: "",
+    amortizationType: "",
+    interestRate: "",
+    rateType: "",
+  };
+
   useEffect(() => {
     if (id) {
       const foundProspect = mockProspectCredit.find(
@@ -86,7 +103,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       if (foundProspect) {
         const mockCredit = foundProspect.consolidated_credit[0];
         setForm({
-          debtor: foundProspect.borrower[0].borrower_name,
+          borrower: foundProspect.borrower[0].borrower_name,
           monthly_salary: mockCredit.monthly_salary ?? 0,
           other_monthly_payments: mockCredit.other_monthly_payments ?? 0,
           pension_allowances: mockCredit.pension_allowances ?? 0,
@@ -142,6 +159,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       newHistory.pop();
       return newHistory;
     });
+    setUpdatedChildren(cloneElement(children));
   };
 
   const handleGoBackOrCloseModal = () => {
@@ -150,6 +168,19 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
 
   const handleCollapse = () => {
     setCollapse(!collapse);
+  };
+
+  const handleConfirm = async (values: FormikValues) => {
+    if (!id) {
+      console.error("ID no está definido");
+      return;
+    }
+
+    const result = await addCreditProduct(id, values, mockProspectCredit);
+
+    if (result) {
+      handleCloseModal();
+    }
   };
 
   const currentModal = modalHistory[modalHistory.length - 1];
@@ -373,7 +404,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       onClick={() => setShowMenu(!showMenu)}
                     />
                     {showMenu && (
-                      <MenuPropect
+                      <MenuProspect
                         options={menuOptions(
                           handleOpenModal,
                           !prospectProducts?.ordinary_installment_for_principal
@@ -403,6 +434,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                         spacing="narrow"
                       />
                     }
+                    onClick={() => handleOpenModal("editProductModal")}
                   >
                     Agregar producto
                   </Button>
@@ -442,26 +474,19 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       size="24px"
                       cursorHover
                     />
-                    <Icon
-                      icon={<MdOutlineMoreVert />}
-                      appearance="primary"
-                      size="24px"
-                      cursorHover
-                      onClick={() => setShowMenu(!showMenu)}
+                    <StyledVerticalDivider />
+                    <MenuProspect
+                      only
+                      options={menuOptions(
+                        handleOpenModal,
+                        !prospectProducts?.ordinary_installment_for_principal
+                      )}
+                      onMouseLeave={() => setShowMenu(false)}
                     />
-                    {showMenu && (
-                      <MenuPropect
-                        options={menuOptions(
-                          handleOpenModal,
-                          !prospectProducts?.ordinary_installment_for_principal
-                        )}
-                        onMouseLeave={() => setShowMenu(false)}
-                      />
-                    )}
                   </StyledContainerIcon>
                 </Stack>
               )}
-              <Stack direction="column">{children}</Stack>
+              <Stack direction="column">{updatedChildren}</Stack>
             </Stack>
           )}
         </Stack>
@@ -520,6 +545,28 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             maxIndebtedness={50000000}
           />
         )}
+        {currentModal === "editProductModal" && (
+          <EditProductModal
+            portalId="portal"
+            title="Agregar producto"
+            confirmButtonText="Guardar"
+            initialValues={initialValues}
+            iconBefore={<MdOutlineAdd />}
+            onCloseModal={handleCloseModal}
+            onConfirm={handleConfirm}
+          />
+        )}
+        {currentModal === "editProductModal" && (
+          <EditProductModal
+            portalId="portal"
+            title="Agregar producto"
+            confirmButtonText="Guardar"
+            initialValues={initialValues}
+            iconBefore={<MdOutlineAdd />}
+            onCloseModal={handleCloseModal}
+            onConfirm={handleConfirm}
+          />
+        )}
         {currentModal === "IncomeModal" && (
           <IncomeModal
             onChange={onChanges}
@@ -536,7 +583,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             totalFee={3300000}
             options={incomeOptions}
             onChange={onChanges}
-            debtor={form.debtor}
+            debtor={form.borrower}
           />
         )}
         {currentModal === "extraPayments" && (
@@ -550,3 +597,4 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     </Fieldset>
   );
 };
+
