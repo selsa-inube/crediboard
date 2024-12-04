@@ -1,13 +1,22 @@
-import { useState, useEffect } from "react";
-import { useMediaQuery } from "@inubekit/hooks";
+import { useEffect, useState } from "react";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
 import { get } from "@mocks/utils/dataMock.service";
 import { IMoneyDestination } from "@services/types";
 
 import { MoneyDestinationUI } from "./interface";
 
-function MoneyDestination() {
-  const [selectedDestination, setSelectedDestination] = useState<string>("");
+interface IMoneyDestinationProps {
+  initialValues: string;
+  isTablet: boolean;
+  handleOnChange: React.Dispatch<React.SetStateAction<string>>;
+  onFormValid: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function MoneyDestination(props: IMoneyDestinationProps) {
+  const { initialValues, isTablet, handleOnChange, onFormValid } = props;
+
   const [moneyDestinations, setMoneyDestinations] =
     useState<IMoneyDestination[]>();
 
@@ -23,20 +32,41 @@ function MoneyDestination() {
       });
   }, []);
 
-  console.log(selectedDestination);
+  useEffect(() => {
+    if (!initialValues) {
+      onFormValid(false);
+    } else {
+      onFormValid(true);
+    }
+  }, [initialValues, onFormValid]);
 
-  const isTablet = useMediaQuery("(max-width: 1482px)");
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDestination(e.target.value);
-  };
+  const MoneyDestinationSchema = Yup.object().shape({
+    selectedDestination: Yup.string().required(""),
+  });
 
   return (
-    <MoneyDestinationUI
-      destinations={moneyDestinations}
-      isTablet={isTablet}
-      handleChange={handleChange}
-    />
+    <Formik
+      initialValues={{ selectedDestination: initialValues }}
+      validationSchema={MoneyDestinationSchema}
+      onSubmit={(values) => {
+        handleOnChange(values.selectedDestination);
+        onFormValid(true);
+      }}
+    >
+      {({ values, setFieldValue }) => (
+        <MoneyDestinationUI
+          destinations={moneyDestinations}
+          isTablet={isTablet}
+          selectedDestination={values.selectedDestination}
+          handleChange={(value: string) => {
+            setFieldValue("selectedDestination", value);
+            handleOnChange(value);
+            onFormValid(Boolean(value));
+          }}
+        />
+      )}
+    </Formik>
   );
 }
+
 export { MoneyDestination };

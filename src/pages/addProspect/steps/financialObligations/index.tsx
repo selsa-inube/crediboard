@@ -1,6 +1,5 @@
 import { MdAdd, MdCached } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
-import { useMediaQuery } from "@inubekit/hooks";
 import { Text } from "@inubekit/text";
 import { Divider } from "@inubekit/divider";
 import { Button } from "@inubekit/button";
@@ -9,8 +8,12 @@ import { Fieldset } from "@components/data/Fieldset";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 import { dataReport } from "@pages/prospect/components/TableObligationsFinancial/config";
 
-export function ObligationsFinancial() {
-  const isMobile = useMediaQuery("(max-width:880px)");
+interface IObligationsFinancialProps {
+  isMobile: boolean;
+}
+
+export function ObligationsFinancial(props: IObligationsFinancialProps) {
+  const { isMobile } = props;
 
   return (
     <Fieldset>

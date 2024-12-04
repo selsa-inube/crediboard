@@ -278,9 +278,16 @@ export interface ICreditProductProspect {
   acquired_cash_flow: IAcquiredCashFlow;
 }
 
+interface IDebtor {
+  id: string;
+  label: string;
+  value: string;
+}
+
 export interface IIncome {
-  debtor_id: string;
-  debtor: string;
+  borrowers: IDebtor[],
+  borrower_id: string;
+  borrower: string;
   monthly_salary: number;
   other_monthly_payments: number;
   pension_allowances: number;
