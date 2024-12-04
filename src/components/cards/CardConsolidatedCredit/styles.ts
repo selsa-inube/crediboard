@@ -2,7 +2,7 @@ import { inube } from "@inubekit/foundations";
 import styled from "styled-components";
 
 interface IStyledContainer {
-  disabled?: boolean | number;
+  disabled?: boolean;
 }
 
 const StyledContainer = styled.div<IStyledContainer>`

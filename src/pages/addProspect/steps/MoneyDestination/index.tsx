@@ -9,13 +9,13 @@ import { MoneyDestinationUI } from "./interface";
 
 interface IMoneyDestinationProps {
   initialValues: string;
-  isMobile: boolean;
+  isTablet: boolean;
   handleOnChange: React.Dispatch<React.SetStateAction<string>>;
   onFormValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function MoneyDestination(props: IMoneyDestinationProps) {
-  const { initialValues, isMobile, handleOnChange, onFormValid } = props;
+  const { initialValues, isTablet, handleOnChange, onFormValid } = props;
 
   const [moneyDestinations, setMoneyDestinations] =
     useState<IMoneyDestination[]>();
@@ -56,7 +56,7 @@ function MoneyDestination(props: IMoneyDestinationProps) {
       {({ values, setFieldValue }) => (
         <MoneyDestinationUI
           destinations={moneyDestinations}
-          isTablet={isMobile}
+          isTablet={isTablet}
           selectedDestination={values.selectedDestination}
           handleChange={(value: string) => {
             setFieldValue("selectedDestination", value);

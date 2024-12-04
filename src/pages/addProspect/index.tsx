@@ -23,6 +23,8 @@ export function AddProspect() {
   const [showConsultingModal, setShowConsultingModal] = useState(false);
 
   const isMobile = useMediaQuery("(max-width:880px)");
+  const isTablet = useMediaQuery("(max-width: 1482px)");
+
   const steps = Object.values(stepsAddProspect);
   const navigate = useNavigate();
 
@@ -193,6 +195,7 @@ export function AddProspect() {
         handleFormDataChange={handleFormDataChange}
         handleConsolidatedCreditChange={handleConsolidatedCreditChange}
         isMobile={isMobile}
+        isTablet={isTablet}
       />
       {showConsultingModal && <Consulting />}
     </>

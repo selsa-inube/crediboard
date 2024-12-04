@@ -48,6 +48,7 @@ interface AddPositionUIProps {
     newValue: number
   ) => void;
   isMobile: boolean;
+  isTablet: boolean;
 }
 
 export function AddProspectUI(props: AddPositionUIProps) {
@@ -65,6 +66,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
     setSelectedProducts,
     handleConsolidatedCreditChange,
     isMobile,
+    isTablet
   } = props;
 
   return (
@@ -114,7 +116,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
                 handleFormDataChange("selectedDestination", newDestination)
               }
               onFormValid={setIsCurrentFormValid}
-              isMobile={isMobile}
+              isTablet={isTablet}
             />
           )}
         {currentStepsNumber &&

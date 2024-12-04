@@ -37,10 +37,13 @@ export function CardConsolidatedCredit(props: ICardConsolidatedCreditProps) {
     initialValue,
   } = props;
 
-  const [isRadioSelected, setIsRadioSelected] = useState(initialValue || false);
+  const hasInitialValue = initialValue !== undefined && initialValue > 0;
+
+  const [isRadioSelected, setIsRadioSelected] = useState(hasInitialValue);
   const [selectedValue, setSelectedValue] = useState<number | null>(
-    initialValue || null
+    hasInitialValue ? initialValue : null
   );
+
   const radioRefs = useRef<HTMLInputElement[]>([]);
 
   const paymentOptions = [
