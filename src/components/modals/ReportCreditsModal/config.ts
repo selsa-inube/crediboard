@@ -7,6 +7,7 @@ export interface IFinancialObligation {
   height: string;
   actions: string;
   id: string;
+  idUser: string;
 }
 
 export const headers: {
@@ -19,16 +20,16 @@ export const headers: {
   { label: "Cuota", key: "fee" },
   { label: "Entidad", key: "entity" },
   { label: "Medio de pago", key: "payment" },
-  { label: "Id", key: "id" },
+  { label: "Id", key: "idUser" },
   { label: "Altura", key: "height" },
   { label: "Acciones", key: "actions", action: true },
 ];
 
 export const dataReport = {
-    title: "Obligaciones financieras",
-    close: "Cerrar",
-    addObligations: "Agregar obligaciones",
-    noData: "¡Ups! No se encontraron obligaciones financieras vigentes.",
-    totalFee: "Cuota Total",
-    totalBalance: "Saldo Total"
-}
+  title: "Obligaciones financieras",
+  close: "Cerrar",
+  addObligations: "Agregar obligaciones",
+  noData: "¡Ups! No se encontraron obligaciones financieras vigentes.",
+  totalFee: "Cuota Total",
+  totalBalance: "Saldo Total",
+};

@@ -16,6 +16,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
+import { FinancialObligationModal } from "@components/modals/financialObligationModal";
 
 import { headers, dataReport } from "./config";
 import { usePagination } from "./utils";
@@ -25,10 +26,22 @@ export interface ITableFinancialObligationsProps {
   refreshKey?: number;
 }
 
-export function TableFinancialObligations(props: ITableFinancialObligationsProps) {
+export function TableFinancialObligations(
+  props: ITableFinancialObligationsProps
+) {
   const { refreshKey } = props;
   const [loading, setLoading] = useState(true);
-  const [extraDebtors, setExtraDebtors] = useState<ITableFinancialObligationsProps[]>([]);
+  const [extraDebtors, setExtraDebtors] = useState<
+    ITableFinancialObligationsProps[]
+  >([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDebtor, setSelectedDebtor] =
+    useState<ITableFinancialObligationsProps | null>(null);
+
+  const handleEdit = (debtor: ITableFinancialObligationsProps) => {
+    setSelectedDebtor(debtor);
+    setIsModalOpen(true);
+  };
 
   const {
     totalRecords,
@@ -50,21 +63,33 @@ export function TableFinancialObligations(props: ITableFinancialObligationsProps
 
   const isMobile = useMediaQuery("(max-width:880px)");
   const visibleHeaders = isMobile
-    ? headers.filter((header) =>
-        ["type", "balance", "actions"].includes(header.key)
-      )
+    ? headers.filter((header) => ["type", "actions"].includes(header.key))
     : headers;
 
   useEffect(() => {
     const loadExtraDebtors = async () => {
       const storedData =
-        (await localforage.getItem<ITableFinancialObligationsProps[]>("financial_obligation")) ||
-        [];
+        (await localforage.getItem<ITableFinancialObligationsProps[]>(
+          "financial_obligation"
+        )) || [];
       setExtraDebtors(storedData);
     };
 
     loadExtraDebtors();
   }, [refreshKey]);
+
+  const handleDelete = async (id: string) => {
+    try {
+      const updatedDebtors = extraDebtors.filter((debtor) => debtor.id !== id);
+      setExtraDebtors(updatedDebtors);
+
+      await localforage.setItem("financial_obligation", updatedDebtors);
+
+      console.log(`Debtor with ID ${id} deleted successfully.`);
+    } catch (error) {
+      console.error("Failed to delete debtor:", error);
+    }
+  };
 
   return (
     <Table tableLayout="auto">
@@ -137,14 +162,14 @@ export function TableFinancialObligations(props: ITableFinancialObligationsProps
                             icon={<MdOutlineEdit />}
                             appearance="dark"
                             size="16px"
-                            onClick={() => console.log("add")}
+                            onClick={() => handleEdit(row)}
                             cursorHover
                           />
                           <Icon
                             icon={<MdDeleteOutline />}
                             appearance="danger"
                             size="16px"
-                            onClick={() => console.log("delete")}
+                            onClick={() => handleDelete(row.id as string)}
                             cursorHover
                           />
                         </Stack>
@@ -175,6 +200,17 @@ export function TableFinancialObligations(props: ITableFinancialObligationsProps
             </Td>
           </Tr>
         </Tfoot>
+      )}
+      {isModalOpen && selectedDebtor && (
+        <FinancialObligationModal
+          title="Agregar Obligacion"
+          onCloseModal={() => setIsModalOpen(false)}
+          onConfirm={() => {
+            setIsModalOpen(false);
+          }}
+          initialValues={selectedDebtor}
+          confirmButtonText="Agregar"
+        />
       )}
     </Table>
   );

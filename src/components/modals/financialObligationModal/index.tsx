@@ -1,4 +1,5 @@
 import { Formik, FormikValues } from "formik";
+import localforage from "localforage";
 import * as Yup from "yup";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
@@ -12,6 +13,7 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
 
+import { ITableFinancialObligationsProps } from "@pages/prospect/components/TableObligationsFinancial";
 import { truncateTextToMaxLength } from "@utils/formatData/text";
 import {
   handleChangeWithCurrency,
@@ -28,8 +30,6 @@ import {
   entityOptions,
   meansPaymentOptions,
 } from "./config";
-import { addItem } from "@src/mocks/utils/dataMock.service";
-
 
 interface FinancialObligationModalProps {
   portalId?: string;
@@ -64,27 +64,36 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
   }
 
   const validationSchema = Yup.object({
-    obligationType: Yup.string().required("Campo requerido"),
+    type: Yup.string().required("Campo requerido"),
     balance: Yup.number().required("Campo requerido"),
     fee: Yup.number().required("Campo requerido"),
     entity: Yup.string().required("Campo requerido"),
-    meansPayment: Yup.string().required("Campo requerido"),
-    quota: Yup.string().required("Campo requerido"),
+    payment: Yup.string().required("Campo requerido"),
   });
 
   const handleFormSubmit = async (values: FormikValues) => {
-    await addItem("financial_obligation", {
-      type: values.obligationType,
-      balance: values.balance,
-      fee: values.fee,
-      entity: values.entity,
-      payment: values.meansPayment,
-      id: values.id,
-      height: values.quota,
-      actions: "", 
-    });
+    const storedData =
+      (await localforage.getItem<ITableFinancialObligationsProps[]>(
+        "financial_obligation"
+      )) || [];
 
-    onConfirm(values); 
+    if (values.id) {
+      const updatedData = storedData.map((item) =>
+        item.id === values.id ? { ...item, ...values } : item
+      );
+      await localforage.setItem("financial_obligation", updatedData);
+    } else {
+      const newItem = {
+        ...values,
+        id: Date.now(),
+      };
+      await localforage.setItem("financial_obligation", [
+        ...storedData,
+        newItem,
+      ]);
+    }
+
+    onConfirm(values);
   };
 
   return createPortal(
@@ -127,14 +136,14 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
               <Stack direction="column" gap="24px" width="100%">
                 <Select
                   label="Tipo"
-                  name="obligationType"
-                  id="obligationType"
+                  name="type"
+                  id="type"
                   size="compact"
                   placeholder="Seleccione una opción"
                   options={obligationTypeOptions}
                   onBlur={formik.handleBlur}
                   onChange={(name, value) => formik.setFieldValue(name, value)}
-                  value={formik.values.obligationType}
+                  value={formik.values.type}
                   fullwidth
                 />
                 <Textfield
@@ -173,22 +182,22 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
                 />
                 <Select
                   label="Medio de pago"
-                  name="meansPayment"
-                  id="meansPayment"
+                  name="payment"
+                  id="payment"
                   size="compact"
                   placeholder="Seleccione una opción"
                   options={meansPaymentOptions}
                   onBlur={formik.handleBlur}
                   onChange={(name, value) => formik.setFieldValue(name, value)}
-                  value={formik.values.meansPayment}
+                  value={formik.values.payment}
                   fullwidth
                 />
                 <Textfield
                   label="Id"
-                  name="id"
-                  id="id"
+                  name="idUser"
+                  id="idUser"
                   placeholder="Monto solicitado"
-                  value={formik.values.id}
+                  value={formik.values.idUser}
                   size="compact"
                   onBlur={formik.handleBlur}
                   onChange={(e) => handleChangeWithCurrency(formik, e)}
@@ -196,10 +205,10 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
                 />
                 <Textfield
                   label="Altura"
-                  name="quota"
-                  id="quota"
+                  name="height"
+                  id="height"
                   placeholder="Monto solicitado"
-                  value={formik.values.quota}
+                  value={formik.values.height}
                   size="compact"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
@@ -233,7 +242,6 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
     node
   );
 }
-
 
 export { FinancialObligationModal };
 export type { FinancialObligationModalProps };
