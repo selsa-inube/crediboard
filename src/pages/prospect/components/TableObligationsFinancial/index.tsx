@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import localforage from "localforage";
+import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
 import {
   Pagination,
   Table,
@@ -11,15 +13,22 @@ import {
 } from "@inubekit/table";
 import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
+import { Stack } from "@inubekit/stack";
+import { Icon } from "@inubekit/icon";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
 
-import { Detail } from "@pages/prospect/components/TableExtraordinaryInstallment/Detail";
-
-import { headers, data, dataReport } from "./config";
+import { headers, dataReport } from "./config";
 import { usePagination } from "./utils";
 
-export function TableFinancialObligations() {
+export interface ITableFinancialObligationsProps {
+  [key: string]: React.ReactNode;
+  refreshKey?: number;
+}
+
+export function TableFinancialObligations(props: ITableFinancialObligationsProps) {
+  const { refreshKey } = props;
   const [loading, setLoading] = useState(true);
+  const [extraDebtors, setExtraDebtors] = useState<ITableFinancialObligationsProps[]>([]);
 
   const {
     totalRecords,
@@ -45,6 +54,17 @@ export function TableFinancialObligations() {
         ["type", "balance", "actions"].includes(header.key)
       )
     : headers;
+
+  useEffect(() => {
+    const loadExtraDebtors = async () => {
+      const storedData =
+        (await localforage.getItem<ITableFinancialObligationsProps[]>("financial_obligation")) ||
+        [];
+      setExtraDebtors(storedData);
+    };
+
+    loadExtraDebtors();
+  }, [refreshKey]);
 
   return (
     <Table tableLayout="auto">
@@ -75,7 +95,7 @@ export function TableFinancialObligations() {
                 ))}
               </Tr>
             );
-          } else if (data.length === 0) {
+          } else if (extraDebtors.length === 0) {
             return (
               <Tr>
                 <Td
@@ -95,7 +115,7 @@ export function TableFinancialObligations() {
               </Tr>
             );
           } else {
-            return data.map((row, rowIndex) => (
+            return extraDebtors.map((row, rowIndex) => (
               <Tr key={rowIndex}>
                 {visibleHeaders.map((header, colIndex) => {
                   const cellData = row[header.key];
@@ -107,11 +127,30 @@ export function TableFinancialObligations() {
                       align={
                         typeof cellData === "number" ||
                         (typeof cellData === "string" && cellData.includes("$"))
-                          ? "right"
+                          ? "center"
                           : "center"
                       }
                     >
-                      {header.action ? <Detail /> : cellData}
+                      {header.action ? (
+                        <Stack justifyContent="space-around">
+                          <Icon
+                            icon={<MdOutlineEdit />}
+                            appearance="dark"
+                            size="16px"
+                            onClick={() => console.log("add")}
+                            cursorHover
+                          />
+                          <Icon
+                            icon={<MdDeleteOutline />}
+                            appearance="danger"
+                            size="16px"
+                            onClick={() => console.log("delete")}
+                            cursorHover
+                          />
+                        </Stack>
+                      ) : (
+                        cellData
+                      )}
                     </Td>
                   );
                 })}
@@ -120,7 +159,7 @@ export function TableFinancialObligations() {
           }
         })()}
       </Tbody>
-      {!loading && data.length > 0 && (
+      {!loading && extraDebtors.length > 0 && (
         <Tfoot>
           <Tr border="bottom">
             <Td colSpan={visibleHeaders.length} type="custom" align="center">

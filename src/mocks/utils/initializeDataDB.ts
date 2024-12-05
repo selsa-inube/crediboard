@@ -20,6 +20,7 @@ import { credit_behavior } from "@mocks/creditProfileInfo/creditBehavior.mock";
 import { mockDecisions } from "@mocks/financialReporting/to-do/decisions.mock";
 import { mockMoneyDestinations } from "@mocks/add-prospect/money-destinations/moneydestinations.mock";
 import { mockPaymentChannel } from "@mocks/add-prospect/payment-channel/paymentchannel.mock";
+import { mockFinancialObligation } from "@mocks/add-prospect/financial-obligation/financialobligation.mock";
 import {
   mockRangeRequeredByTheBusinessUnit,
   mockRiskScoring,
@@ -96,4 +97,5 @@ export function initializeDataDB(company: string) {
   intializedData("decisions", mockDecisions);
   intializedData("money_destinations", mockMoneyDestinations);
   intializedData("mockRequest_value", mockPaymentChannel);
+  intializedData("financial_obligation", mockFinancialObligation);
 }
