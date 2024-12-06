@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { data } from "./config";
+import { mockFinancialObligation } from "@mocks/add-prospect/financial-obligation/financialobligation.mock";
 
 export const usePagination = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const pageLength = 5;
-  const totalRecords = data.length;
+  const totalRecords = mockFinancialObligation.length;
   const totalPages = Math.ceil(totalRecords / pageLength);
 
   const handleStartPage = () => setCurrentPage(0);
@@ -17,7 +17,7 @@ export const usePagination = () => {
   const firstEntryInPage = currentPage * pageLength;
   const lastEntryInPage = Math.min(firstEntryInPage + pageLength, totalRecords);
 
-  const currentData = data.slice(firstEntryInPage, lastEntryInPage);
+  const currentData = mockFinancialObligation.slice(firstEntryInPage, lastEntryInPage);
 
   return {
     currentPage,
