@@ -45,7 +45,11 @@ export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
       <Text type="body" size="medium">
         {dataConsolidated.select}
       </Text>
-      <Stack justifyContent="space-between" alignItems="end">
+      <Stack
+        justifyContent="space-between"
+        alignItems={isMobile ? "initial" : "end"}
+        direction={isMobile ? "column" : "row"}
+      >
         <Stack direction="column">
           <Text type="body" size="small" weight="bold" appearance="gray">
             {dataConsolidated.debtor}

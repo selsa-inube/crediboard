@@ -66,7 +66,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
     setSelectedProducts,
     handleConsolidatedCreditChange,
     isMobile,
-    isTablet
+    isTablet,
   } = props;
 
   return (
@@ -75,7 +75,6 @@ export function AddProspectUI(props: AddPositionUIProps) {
       alignItems={isMobile ? "normal" : "center"}
       margin="20px 0px"
       padding="24px"
-      height="100%"
     >
       <Stack
         gap="24px"
@@ -98,15 +97,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
         </StyledContainerAssisted>
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.generalInformation.id && (
-            <RequirementsNotMet isMobile={isMobile}/>
-          )}
-        {currentStepsNumber &&
-          currentStepsNumber.id ===
-            stepsAddProspect.extraordinaryInstallments.id && (
-            <ExtraordinaryInstallments
-              dataTable={extraordinaryInstallmentMock}
-              isMobile={isMobile}
-            />
+            <RequirementsNotMet isMobile={isMobile} />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.destination.id && (
@@ -141,6 +132,15 @@ export function AddProspectUI(props: AddPositionUIProps) {
                 },
               }}
               onFormValid={setIsCurrentFormValid}
+              isMobile={isMobile}
+            />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsAddProspect.extraordinaryInstallments.id && (
+            <ExtraordinaryInstallments
+              dataTable={extraordinaryInstallmentMock}
+              isMobile={isMobile}
             />
           )}
         {currentStepsNumber &&
@@ -158,12 +158,13 @@ export function AddProspectUI(props: AddPositionUIProps) {
                 })
               }
               options={formData.incomeData.borrowers}
+              isMobile={isMobile}
             />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
             stepsAddProspect.obligationsFinancial.id && (
-            <ObligationsFinancial isMobile={isMobile}/>
+            <ObligationsFinancial isMobile={isMobile} />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (

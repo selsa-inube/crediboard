@@ -59,7 +59,11 @@ export function SourceIncome(props: ISourceIncomeProps) {
 
   return (
     <StyledContainer $smallScreen={isMobile}>
-      <Stack direction="column" padding="16px 24px" gap="16px">
+      <Stack
+        direction="column"
+        padding={isMobile ? "none" : "16px 24px"}
+        gap="16px"
+      >
         <Stack direction="column">
           <Stack
             width={!isMobile ? "auto" : "auto"}
@@ -113,7 +117,11 @@ export function SourceIncome(props: ISourceIncomeProps) {
             </Stack>
             {onlyDebtor && (
               <Stack alignItems="end">
-                <Button variant="outlined" iconBefore={<MdCached />}>
+                <Button
+                  variant="outlined"
+                  iconBefore={<MdCached />}
+                  fullwidth={isMobile}
+                >
                   Restablecer
                 </Button>
               </Stack>
