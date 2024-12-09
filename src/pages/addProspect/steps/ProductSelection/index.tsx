@@ -24,6 +24,7 @@ interface IProductSelectionProps {
     onToggleChange: (index: number) => void;
   };
   onFormValid: (isValid: boolean) => void;
+  isMobile: boolean;
 }
 
 export function ProductSelection(props: IProductSelectionProps) {
@@ -35,6 +36,7 @@ export function ProductSelection(props: IProductSelectionProps) {
       onToggleChange,
     },
     onFormValid,
+    isMobile,
   } = props;
 
   const validationSchema = Yup.object().shape({
@@ -100,32 +102,42 @@ export function ProductSelection(props: IProductSelectionProps) {
                 </Text>
               </Stack>
             </Stack>
-            <Stack gap="16px">
-              {lineOfCredit.slice(0, 3).map((credit) => (
-                <ProductSelectCard
-                  key={credit.line_of_credit_id}
-                  amount={credit.loan_amount_limit}
-                  rate={credit.interest_rate}
-                  term={credit.loan_term_limit}
-                  description={credit.description_use}
-                  disabled={generalToggleChecked}
-                  isSelected={values.selectedProducts.includes(
-                    credit.line_of_credit_id
-                  )}
-                  onSelect={() => {
-                    const newSelected = values.selectedProducts.includes(
+            <Fieldset>
+              <Stack
+                gap="16px"
+                padding={isMobile ? "0px 6px" : "0px 12px"}
+                height={isMobile ? "380px" : "auto"}
+                wrap="wrap"
+              >
+                {lineOfCredit.slice(0, 3).map((credit) => (
+                  <ProductSelectCard
+                    key={credit.line_of_credit_id}
+                    amount={credit.loan_amount_limit}
+                    rate={credit.interest_rate}
+                    term={credit.loan_term_limit}
+                    description={credit.description_use}
+                    disabled={generalToggleChecked}
+                    isSelected={values.selectedProducts.includes(
                       credit.line_of_credit_id
-                    )
-                      ? values.selectedProducts.filter(
-                          (id) => id !== credit.line_of_credit_id
-                        )
-                      : [...values.selectedProducts, credit.line_of_credit_id];
-                    setFieldValue("selectedProducts", newSelected);
-                    setSelectedProducts(newSelected);
-                  }}
-                />
-              ))}
-            </Stack>
+                    )}
+                    onSelect={() => {
+                      const newSelected = values.selectedProducts.includes(
+                        credit.line_of_credit_id
+                      )
+                        ? values.selectedProducts.filter(
+                            (id) => id !== credit.line_of_credit_id
+                          )
+                        : [
+                            ...values.selectedProducts,
+                            credit.line_of_credit_id,
+                          ];
+                      setFieldValue("selectedProducts", newSelected);
+                      setSelectedProducts(newSelected);
+                    }}
+                  />
+                ))}
+              </Stack>
+            </Fieldset>
             <Fieldset>
               {Object.entries(electionData.data).map(
                 ([key, question], index) => (

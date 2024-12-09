@@ -28,7 +28,7 @@ export function ProductSelectCard(props: IProductSelectCardProps) {
   } = props;
 
   return (
-    <Stack width="100%" direction="column">
+    <Stack width="455px" direction="column">
       <Stack gap="4px">
         <input
           type="checkbox"

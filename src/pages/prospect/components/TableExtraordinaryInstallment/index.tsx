@@ -13,6 +13,8 @@ import {
   Tr,
 } from "@inubekit/table";
 import { useMediaQuery } from "@inubekit/hooks";
+
+import { ActionMobile } from "@components/feedback/ActionMobile";
 import { IExtraordinaryPayment } from "@services/types";
 
 import {
@@ -142,25 +144,28 @@ export const TableExtraordinaryInstallment = (
             </Tr>
           )
         }
-        {!loading && currentData &&
-          currentData.length > 0 &&
-          currentData.map((row, indx) => (
-            <Tr key={row.id} zebra={indx % 2 !== 0}>
-              {visbleHeaders.map((header) => (
-                <Td key={header.key} align="left">
-                  {header.mask ? header.mask(row[header.key]) : row[header.key]}
-                </Td>
-              ))}
-              {visbleActions &&
-                visbleActions.length > 0 &&
-                visbleActions.map((action) => (
-                  <Td key={action.key} type="custom">
-                    {action.container(
-                    )}
-                  </Td>
-                ))}
-            </Tr>
-          ))}
+       {!loading && currentData &&
+  currentData.length > 0 &&
+  currentData.map((row, indx) => (
+    <Tr key={row.id} zebra={indx % 2 !== 0}>
+      {visbleHeaders.map((header) => (
+        <Td key={header.key} align="left">
+          {header.mask ? header.mask(row[header.key]) : row[header.key]}
+        </Td>
+      ))}
+      {visbleActions &&
+        visbleActions.length > 0 &&
+        visbleActions.map((action) => (
+          <Td key={action.key} type="custom">
+            {isMobile ? (
+              <ActionMobile />
+            ) : (
+              action.container()
+            )}
+          </Td>
+        ))}
+    </Tr>
+  ))}
         {!loading && currentData.length === 0  && (
           <Tr>
             <Td
