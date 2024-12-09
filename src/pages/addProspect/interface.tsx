@@ -75,6 +75,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
       alignItems={isMobile ? "normal" : "center"}
       margin="20px 0px"
       padding="24px"
+      height={isMobile ? "2000px" : "100%"}
     >
       <Stack
         gap="24px"

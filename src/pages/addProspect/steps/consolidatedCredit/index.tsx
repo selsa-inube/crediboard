@@ -3,11 +3,14 @@ import { Stack } from "@inubekit/stack";
 import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
 
+import { Fieldset } from "@components/data/Fieldset";
+import { CardBorrower } from "@components/cards/CardBorrower";
 import { CardConsolidatedCredit } from "@components/cards/CardConsolidatedCredit";
 import { currencyFormat } from "@utils/formatData/currency";
 import { mockConsolidatedCredit } from "@mocks/add-prospect/consolidates-credit/consolidatedcredit.mock";
 
 import { dataConsolidated } from "./config";
+import { StyledCards } from "./style";
 
 interface IConsolidatedCreditProps {
   initialValues: {
@@ -41,61 +44,81 @@ export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
   const debtorData = mockConsolidatedCredit[0];
 
   return (
-    <Stack direction="column" gap="24px">
-      <Text type="body" size="medium">
-        {dataConsolidated.select}
-      </Text>
-      <Stack
-        justifyContent="space-between"
-        alignItems={isMobile ? "initial" : "end"}
-        direction={isMobile ? "column" : "row"}
-      >
-        <Stack direction="column">
-          <Text type="body" size="small" weight="bold" appearance="gray">
-            {dataConsolidated.debtor}
-          </Text>
-          <Text type="title" size="medium">
-            {debtorData.name}
-          </Text>
+    <Fieldset heightFieldset="100%">
+      <Stack direction="column" gap="24px">
+        <Text type="body" size="medium">
+          {dataConsolidated.select}
+        </Text>
+        <Stack
+          justifyContent="space-between"
+          alignItems={isMobile ? "initial" : "end"}
+          direction={isMobile ? "column" : "row"}
+        >
+          {!isMobile && (
+            <Stack direction="column">
+              <Text type="body" size="small" weight="bold" appearance="gray">
+                {dataConsolidated.debtor}
+              </Text>
+              <Text type="title" size="medium">
+                {debtorData.name}
+              </Text>
+            </Stack>
+          )}
+          {isMobile && <CardBorrower name={debtorData.name} />}
+          <Stack
+            direction="column"
+            alignItems="center"
+            margin={isMobile ? "10px 0px 0px 0px" : "0px"}
+          >
+            <Text
+              type="headline"
+              size="large"
+              weight="bold"
+              appearance="primary"
+            >
+              {currencyFormat(totalCollected)}
+            </Text>
+            <Text type="body" size="small" appearance="gray">
+              {dataConsolidated.totalvalue}
+            </Text>
+          </Stack>
         </Stack>
-        <Stack direction="column" alignItems="center">
-          <Text type="headline" size="large" weight="bold" appearance="primary">
-            {currencyFormat(totalCollected)}
-          </Text>
-          <Text type="body" size="small" appearance="gray">
-            {dataConsolidated.totalvalue}
-          </Text>
-        </Stack>
+        <Divider />
+        <StyledCards>
+          <Stack
+            gap="16px"
+            wrap="wrap"
+            justifyContent={isMobile ? "center" : "initial"}
+            height={isMobile ? "400px" : "100%"}
+            margin={isMobile ? "10px 0px" : "10px 5px"}
+          >
+            {debtorData.data_card.map((creditData) => (
+              <CardConsolidatedCredit
+                key={creditData.consolidated_credit_id}
+                title={creditData.consolidated_credit_title}
+                code={creditData.consolidated_credit_code}
+                expiredValue={creditData.expired_value}
+                nextDueDate={creditData.next_due_date}
+                fullPayment={creditData.full_payment}
+                date={new Date(creditData.date)}
+                onUpdateTotal={(oldValue, newValue) =>
+                  handleUpdateTotal(
+                    creditData.consolidated_credit_id,
+                    oldValue,
+                    newValue
+                  )
+                }
+                arrears={creditData.arrears === "Y"}
+                initialValue={
+                  initialValues.selectedValues[
+                    creditData.consolidated_credit_id
+                  ]
+                }
+              />
+            ))}
+          </Stack>
+        </StyledCards>
       </Stack>
-      <Divider />
-      <Stack
-        gap="16px"
-        wrap="wrap"
-        justifyContent={isMobile ? "center" : "initial"}
-      >
-        {debtorData.data_card.map((creditData) => (
-          <CardConsolidatedCredit
-            key={creditData.consolidated_credit_id}
-            title={creditData.consolidated_credit_title}
-            code={creditData.consolidated_credit_code}
-            expiredValue={creditData.expired_value}
-            nextDueDate={creditData.next_due_date}
-            fullPayment={creditData.full_payment}
-            date={new Date(creditData.date)}
-            onUpdateTotal={(oldValue, newValue) =>
-              handleUpdateTotal(
-                creditData.consolidated_credit_id,
-                oldValue,
-                newValue
-              )
-            }
-            arrears={creditData.arrears === "Y"}
-            initialValue={
-              initialValues.selectedValues[creditData.consolidated_credit_id]
-            }
-          />
-        ))}
-      </Stack>
-    </Stack>
+    </Fieldset>
   );
 }
