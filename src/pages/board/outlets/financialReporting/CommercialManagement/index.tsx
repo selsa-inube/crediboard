@@ -49,6 +49,7 @@ import {
   StyledContainerIcon,
   StyledVerticalDivider,
 } from "./styles";
+import { CreditProspect } from "./creditProspect";
 
 interface ComercialManagementProps {
   data: ICreditRequest;
@@ -81,7 +82,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     monthly_fees: 0,
     total: undefined,
   });
-
 
   const initialValues: FormikValues = {
     creditLine: "",
@@ -419,75 +419,13 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           )}
           {collapse && <Stack>{isMobile && <Divider />}</Stack>}
           {collapse && (
-            <Stack direction="column" gap="24px">
-              {!isMobile && (
-                <Stack gap="16px" justifyContent="end" alignItems="center">
-                  <Button
-                    type="button"
-                    appearance="primary"
-                    spacing="compact"
-                    iconBefore={
-                      <Icon
-                        icon={<MdOutlineAdd />}
-                        appearance="light"
-                        size="18px"
-                        spacing="narrow"
-                      />
-                    }
-                    onClick={() => handleOpenModal("editProductModal")}
-                  >
-                    Agregar producto
-                  </Button>
-                  {prospectProducts?.ordinary_installment_for_principal && (
-                    <Button
-                      type="button"
-                      appearance="primary"
-                      spacing="compact"
-                      variant="outlined"
-                      iconBefore={
-                        <Icon
-                          icon={<MdOutlinePayments />}
-                          appearance="primary"
-                          size="18px"
-                          spacing="narrow"
-                        />
-                      }
-                      onClick={() => handleOpenModal("extraPayments")}
-                    >
-                      Pagos extras
-                    </Button>
-                  )}
-
-                  <StyledVerticalDivider />
-                  <StyledContainerIcon>
-                    <Icon
-                      icon={<MdOutlinePictureAsPdf />}
-                      appearance="primary"
-                      size="24px"
-                      disabled={isPrint}
-                      cursorHover
-                      onClick={print}
-                    />
-                    <Icon
-                      icon={<MdOutlineShare />}
-                      appearance="primary"
-                      size="24px"
-                      cursorHover
-                    />
-                    <StyledVerticalDivider />
-                    <MenuProspect
-                      only
-                      options={menuOptions(
-                        handleOpenModal,
-                        !prospectProducts?.ordinary_installment_for_principal
-                      )}
-                      onMouseLeave={() => setShowMenu(false)}
-                    />
-                  </StyledContainerIcon>
-                </Stack>
-              )}
-              <Stack direction="column">{updatedChildren}</Stack>
-            </Stack>
+            <CreditProspect
+              isMobile={isMobile}
+              isPrint={isPrint}
+              showMenu={() => setShowMenu(false)}
+              children={updatedChildren}
+              showPrint
+            />
           )}
         </Stack>
 
@@ -597,4 +535,3 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     </Fieldset>
   );
 };
-

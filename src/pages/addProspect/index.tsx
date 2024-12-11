@@ -1,15 +1,12 @@
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FormikProps } from "formik";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { Consulting } from "@components/modals/Consulting";
 import { income } from "@mocks/add-prospect/income/income.mock";
 
-import { IMessageState } from "./types/forms.types";
-import { IGeneralInformationEntry } from "./components/GeneralInformationForm";
 import { stepsAddProspect } from "./config/addProspect.config";
-import { FormData, IFormAddPositionRef } from "./types";
+import { FormData } from "./types";
 import { AddProspectUI } from "./interface";
 
 export function AddProspect() {
@@ -17,9 +14,6 @@ export function AddProspect() {
     stepsAddProspect.generalInformation.id
   );
   const [isCurrentFormValid, setIsCurrentFormValid] = useState(true);
-  const [message, setMessage] = useState<IMessageState>({
-    visible: false,
-  });
   const [showConsultingModal, setShowConsultingModal] = useState(false);
 
   const isMobile = useMediaQuery("(max-width:880px)");
@@ -27,6 +21,7 @@ export function AddProspect() {
 
   const steps = Object.values(stepsAddProspect);
   const navigate = useNavigate();
+  const { id } = useParams();  
 
   const [formData, setFormData] = useState<FormData>({
     selectedDestination: "",
@@ -94,13 +89,6 @@ export function AddProspect() {
     (step: { number: number }) => step.number === currentStep
   );
 
-  const generalInformationRef =
-    useRef<FormikProps<IGeneralInformationEntry>>(null);
-
-  const formReferences: IFormAddPositionRef = {
-    generalInformation: generalInformationRef,
-  };
-
   const handleNextStep = () => {
     const { togglesState } = formData;
 
@@ -156,16 +144,11 @@ export function AddProspect() {
     setIsCurrentFormValid(true);
   };
 
-  const handleCloseSectionMessage = () => {
-    setMessage({
-      visible: false,
-    });
-    navigate("/credit/positions");
+  const handleSubmitClick = () => {
+    if (id) {
+      navigate(`/edit-prospect/${id}`);
+    }
   };
-
-  function handleSubmitClick() {
-    console.log("Enviar paso: ", currentStep);
-  }
 
   const showConsultingForFiveSeconds = () => {
     setShowConsultingModal(true);
@@ -180,13 +163,10 @@ export function AddProspect() {
         steps={steps}
         currentStep={currentStep}
         isCurrentFormValid={isCurrentFormValid}
-        formReferences={formReferences}
-        message={message}
         setIsCurrentFormValid={setIsCurrentFormValid}
         handleNextStep={handleNextStep}
         handlePreviousStep={handlePreviousStep}
         setCurrentStep={setCurrentStep}
-        handleCloseSectionMessage={handleCloseSectionMessage}
         currentStepsNumber={currentStepsNumber}
         handleSubmitClick={handleSubmitClick}
         formData={formData}
