@@ -303,7 +303,7 @@ export const FinancialReporting = () => {
                 <Management id={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
-                <PromissoryNotes user={id!} isMobile={isMobile} />
+                <PromissoryNotes id={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
                 <Postingvouchers />
