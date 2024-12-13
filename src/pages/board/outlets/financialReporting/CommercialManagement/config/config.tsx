@@ -3,6 +3,8 @@ import {
   MdOutlineMonetizationOn,
   MdOutlineBalance,
   MdOutlineAccountBalanceWallet,
+  MdOutlineEdit,
+  MdOutlineRemoveRedEye,
 } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -350,16 +352,36 @@ export const entriesCommercialManagementCard = [
 
 export const SummaryProspectCredit = [
   {
-    item: [{ title: "Obligaciones recogidas", amount: "5000000" }],
+    item: [
+      { title: "Obligaciones recogidas", amount: "5000000", miniIcon: false, operation: "" },
+    ],
     iconEdit: true,
   },
   {
     item: [
-      { title: "Monto prestamo", amount: "16000000" },
-      { title: "Obligaciones recogidas", amount: "5000000" },
-      { title: "Gastos decontables", amount: "1000000" },
-      { title: "Neto a girar", amount: "10000000" },
-      { title: "Cuota ordinaria", amount: "1200000" },
+      { title: "Monto préstamo", amount: "16000000", miniIcon: false, operation:"-" },
+      {
+        title: "Obligaciones recogidas",
+        amount: "5000000",
+        miniIcon: true,
+        icon: <MdOutlineEdit />,
+        operation:"-"
+      },
+      {
+        title: "Gastos descontables",
+        amount: "1000000",
+        miniIcon: true,
+        icon: <MdOutlineRemoveRedEye />,
+        operation:"="
+      },
+      { title: "Neto a girar", amount: "10000000", miniIcon: false },
+      {
+        title: "Cuota ordinaria",
+        amount: "1200000",
+        miniIcon: true,
+        icon: <MdOutlineRemoveRedEye />,
+        operation:""
+      },
     ],
     iconEdit: false,
   },
@@ -379,7 +401,10 @@ export const incomeOptions = [
   },
 ];
 
-export const menuOptions = (handleOpenModal: (modalName: string) => void, visibleExtraPayments: boolean): IOptions[] => [
+export const menuOptions = (
+  handleOpenModal: (modalName: string) => void,
+  visibleExtraPayments: boolean
+): IOptions[] => [
   {
     title: "Origen de cupo",
     onClick: () => handleOpenModal("creditLimit"),
@@ -400,7 +425,9 @@ export const menuOptions = (handleOpenModal: (modalName: string) => void, visibl
   },
   {
     title: "Pagos extras",
-    onClick: () => {handleOpenModal("extraPayments")},
+    onClick: () => {
+      handleOpenModal("extraPayments");
+    },
     icon: <MdOutlinePayments />,
     visible: visibleExtraPayments,
   },

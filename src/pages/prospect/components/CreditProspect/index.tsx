@@ -1,4 +1,4 @@
-import { cloneElement, useState } from "react";
+import { cloneElement, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FormikValues } from "formik";
 import {
@@ -25,9 +25,16 @@ import { ICreditProductProspect } from "@services/types";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { addCreditProduct } from "@mocks/utils/addCreditProductMock.service";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
+import {
+  incomeOptions,
+  menuOptions,
+} from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
+import {
+  StyledContainerIcon,
+  StyledVerticalDivider,
+} from "@pages/board/outlets/financialReporting/CommercialManagement/styles";
 
-import { incomeOptions, menuOptions } from "./config/config";
-import { StyledContainerIcon, StyledVerticalDivider } from "./styles";
+import { dataCreditProspect } from "./config";
 
 interface ICreditProspectProps {
   isMobile: boolean;
@@ -68,6 +75,29 @@ export function CreditProspect(props: ICreditProspectProps) {
   const [prospectProducts, setProspectProducts] =
     useState<ICreditProductProspect>();
 
+  useEffect(() => {
+    if (id) {
+      const foundProspect = mockProspectCredit.find(
+        (prospect) => prospect.public_code === id
+      );
+      if (foundProspect) {
+        const mockCredit = foundProspect.consolidated_credit[0];
+        setForm({
+          borrower: foundProspect.borrower[0].borrower_name,
+          monthly_salary: mockCredit.monthly_salary ?? 0,
+          other_monthly_payments: mockCredit.other_monthly_payments ?? 0,
+          pension_allowances: mockCredit.pension_allowances ?? 0,
+          leases: mockCredit.leases ?? 0,
+          dividends_or_shares: mockCredit.dividends_or_shares ?? 0,
+          financial_returns: mockCredit.financial_returns ?? 0,
+          average_monthly_profit: mockCredit.average_monthly_profit ?? 0,
+          monthly_fees: mockCredit.monthly_fees ?? 0,
+          total: undefined,
+        });
+      }
+    }
+  }, [id]);
+
   const [form, setForm] = useState({
     borrower: "",
     monthly_salary: 0,
@@ -103,7 +133,7 @@ export function CreditProspect(props: ICreditProspectProps) {
   const handleConfirm = async (values: FormikValues) => {
     if (!id) {
       console.error("ID no está definido");
-      setProspectProducts
+      setProspectProducts;
       return;
     }
 
@@ -132,7 +162,7 @@ export function CreditProspect(props: ICreditProspectProps) {
             }
             onClick={() => handleOpenModal("editProductModal")}
           >
-            Agregar producto
+            {dataCreditProspect.addProduct}
           </Button>
           {prospectProducts?.ordinary_installment_for_principal && (
             <Button
@@ -150,7 +180,7 @@ export function CreditProspect(props: ICreditProspectProps) {
               }
               onClick={() => handleOpenModal("extraPayments")}
             >
-              Pagos extras
+              {dataCreditProspect.extraPayment}
             </Button>
           )}
           <StyledVerticalDivider />

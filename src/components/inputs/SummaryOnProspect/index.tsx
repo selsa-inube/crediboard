@@ -4,42 +4,79 @@ import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
 
 import { parseCunstomFormat } from "@utils/formatData/currency";
-import { Container, IconWrapper, ContentWrapper } from "./styles";
+import {
+  Container,
+  IconWrapper,
+  ContentWrapper,
+  StyledHorizontalDivider,
+  StyledText,
+} from "./styles";
 
 export interface SummaryProspectProps {
-  items: { title: string; amount: string }[];
+  items: {
+    title: string;
+    amount: string;
+    operation?: string;
+    miniIcon?: boolean;
+    icon?: React.ReactNode;
+  }[];
   showIcon?: boolean;
+  isMobile: boolean;
   onIconClick?: () => void;
+  showSummaryFirstItem?: boolean;
 }
 
 export function SummaryProspect(props: SummaryProspectProps) {
-  const { items, showIcon = true, onIconClick } = props;
+  const { items, showIcon = true, onIconClick, isMobile, showSummaryFirstItem } = props;
 
   return (
     <Container $showIcon={showIcon}>
       <ContentWrapper>
         {items.map((item, index) => (
-          <Stack
-            key={index}
-            direction="column"
-            margin="4px"
-            padding="0px 12px"
-            gap="2px"
-            alignItems={showIcon ? "start" : "center"}
-          >
-            <Text
-              size="small"
-              weight="bold"
-              type="body"
-              appearance="gray"
-              padding="0px 0px 4px"
-              ellipsis
+          <Stack alignItems="center" key={index}>
+            <Stack
+              direction="column"
+              margin="4px"
+              padding="0px 12px"
+              gap="2px"
+              alignItems={showIcon ? "start" : "center"}
             >
-              {item.title}
-            </Text>
-            <Text size="large" weight="bold" appearance="dark" type="body">
-              {parseCunstomFormat(item.amount)}
-            </Text>
+              <Text
+                size="small"
+                weight="bold"
+                type="body"
+                appearance="gray"
+                padding="0px 0px 4px"
+                ellipsis
+              >
+                {item.title}
+              </Text>
+              <Stack gap="8px" alignItems="center">
+                <Text size="large" weight="bold" appearance="dark" type="body">
+                  {parseCunstomFormat(item.amount)}
+                </Text>
+                {item.miniIcon && (
+                  <Icon
+                    appearance="primary"
+                    icon={item.icon}
+                    cursorHover
+                    size="16px"
+                  />
+                )}
+              </Stack>
+            </Stack>
+            {!isMobile && (
+              <Stack>
+                {item.operation && (
+                  <StyledText $left={showSummaryFirstItem}>
+                    <Text type="title" size="large" appearance="gray">
+                      {item.operation}
+                    </Text>
+                  </StyledText>
+                )}
+                {item.title === "Neto a girar" && <StyledHorizontalDivider $left={showSummaryFirstItem}/>}
+              </Stack>
+            )}
           </Stack>
         ))}
       </ContentWrapper>

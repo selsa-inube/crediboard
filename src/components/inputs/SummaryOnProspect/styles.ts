@@ -6,6 +6,10 @@ interface IStyledCollapseIcon {
   theme?: typeof inube;
 }
 
+interface IStyledText {
+  $left?: boolean;
+}
+
 export const Container = styled.div<IStyledCollapseIcon>`
   align-items: center;
   background-color: ${({ theme }) =>
@@ -45,4 +49,19 @@ export const ContentWrapper = styled.div`
     gap: 16px;
     align-items: flex-start;
   }
+`;
+
+export const StyledHorizontalDivider = styled.hr<IStyledText>`
+  position: relative;
+  left: ${({ $left }) => ($left ? "25px" : "52px")};
+  width: 2px;
+  border: 2px;
+  height: 40px;
+  background-color: ${({ theme }) =>
+    theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
+`;
+
+export const StyledText = styled.div<IStyledText>`
+  position: relative;
+  left: ${({ $left }) => ($left ? "25px" : "52px")};
 `;
