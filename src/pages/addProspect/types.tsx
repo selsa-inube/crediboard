@@ -1,8 +1,4 @@
-import { FormikProps } from "formik";
-
 import { IIncome } from "@services/types";
-
-import { IGeneralInformationEntry } from "./components/GeneralInformationForm";
 
 export const titleButtonTextAssited = {
   goBackText: "Anterior",
@@ -97,13 +93,3 @@ export interface FormData {
     selectedValues: Record<string, any>;
   };
 }
-
-export interface IFormAddPosition {
-  generalInformation: { isValid: boolean; values: IGeneralInformationEntry };
-}
-
-export interface IFormAddPositionRef {
-  generalInformation: React.RefObject<FormikProps<IGeneralInformationEntry>>;
-}
-
-export type IHandleUpdateDataSwitchstep = IGeneralInformationEntry;

@@ -19,6 +19,7 @@ import { BoardRoutes } from "./routes/board";
 import { AddProspectRoutes } from "./routes/addProspect";
 import { GlobalStyles } from "./styles/global";
 import { enviroment } from "./config/environment";
+import { EditProspectRoutes } from "./routes/editProspect";
 
 function LogOut() {
   localStorage.clear();
@@ -40,6 +41,7 @@ const router = createBrowserRouter(
       <Route path="login/*" element={<LoginRoutes />} />
       <Route path="/*" element={<BoardRoutes />} />
       <Route path="add-prospect/*" element={<AddProspectRoutes />} />
+      <Route path="edit-prospect/*" element={<EditProspectRoutes />} />
       <Route path="logout" element={<LogOut />} />
     </>
   )
