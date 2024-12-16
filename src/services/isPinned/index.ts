@@ -26,7 +26,7 @@ export const getCreditRequestPin = async (): Promise<ICreditRequestPin[]> => {
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/{AC:SearchAllCreditRequestPinned}`,
+        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/`,
         options
       );
 

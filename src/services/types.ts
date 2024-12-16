@@ -23,7 +23,7 @@ interface IStaff {
 
 export interface ICreditRequestPin {
   creditRequestId: string;
-  isPin: string;
+  isPinned: string;
 }
 
 interface IToDo {

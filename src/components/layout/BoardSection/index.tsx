@@ -54,8 +54,7 @@ function BoardSection(props: BoardSectionProps) {
     const pinnedRequest = pinnedRequests.find(
       (pinnedRequest) => pinnedRequest.creditRequestId === creditRequestId
     );
-
-    return pinnedRequest && pinnedRequest.isPin === "Y" ? true : false;
+    return pinnedRequest && pinnedRequest.isPinned === "Y" ? true : false;
   }
 
   return (

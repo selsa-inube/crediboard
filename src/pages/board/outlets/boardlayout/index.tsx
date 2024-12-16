@@ -74,11 +74,12 @@ function BoardLayout() {
           .toString()
           .includes(filters.searchRequestValue);
 
-      const isPinned = filters.showPinnedOnly
-        ? boardData.requestsPinned.some(
-            (pinned) => pinned.creditRequestId === request.creditRequestId
-          )
-        : true;
+      const isPinned =
+        !filters.showPinnedOnly ||
+        boardData.requestsPinned
+          .filter((req) => req.isPinned === "Y")
+          .map((req) => req.creditRequestId)
+          .includes(request.creditRequestId as string);
 
       return isSearchMatch && isPinned;
     });
