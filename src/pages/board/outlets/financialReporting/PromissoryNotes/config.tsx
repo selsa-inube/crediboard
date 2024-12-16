@@ -46,7 +46,7 @@ export const actionsFinanacialReporting = [
         cursorHover
         size="22px"
         variant="empty"
-        icon={<MdOutlineShare  />}
+        icon={<MdOutlineShare />}
         onClick={() => entrySelection(data)}
         spacing="narrow"
       />
@@ -89,8 +89,12 @@ interface TagElement {
 }
 
 export const infoItems = [
-  { icon: <MdOutlineShare  />, text: "Reenviar", appearance: "primary" },
-  { icon: <MdOutlineRemoveRedEye />, text: "Ver Imagen", appearance: "primary" },
+  { icon: <MdOutlineShare />, text: "Reenviar", appearance: "primary" },
+  {
+    icon: <MdOutlineRemoveRedEye />,
+    text: "Ver Imagen",
+    appearance: "primary",
+  },
 ];
 
 const isValidTagElement = (element: unknown): element is TagElement => {
@@ -129,7 +133,7 @@ export const actionMobile = [
         size="22px"
         spacing="narrow"
         cursorHover
-        icon={<MdOutlineShare  />}
+        icon={<MdOutlineShare />}
         onClick={() => entrySelection(data)}
       />
     ),
@@ -150,14 +154,16 @@ export const actionMobile = [
   },
 ];
 
-const appearance: { [key: string]: string } = {
-  Firmado: "success",
-  "En trámite": "warning",
-  "Con error": "danger",
-};
+export const appearanceTag = (
+  tag: string
+): "success" | "warning" | "danger" => {
+  const appearance: Record<string, "success" | "warning" | "danger"> = {
+    Firmado: "success",
+    "En tramite": "warning",
+    "Con error": "danger",
+  };
 
-export const appearanceTag = (tag: string) => {
-  return appearance?.[tag] as "success" | "warning" | "danger";
+  return appearance[tag] || "danger";
 };
 
 export const firstWord = (text: string) => text.split(" ")[0];
