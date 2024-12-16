@@ -2,8 +2,8 @@ export const stepsAddProspect = {
   generalInformation: {
     id: 1,
     number: 1,
-    name: "title",
-    description: "Datos de contacto para esta solicitud.",
+    name: "Requisitos no cumplidos",
+    description: "Aspectos que deberían cambiar.",
   },
   step2: {
     id: 2,
@@ -21,7 +21,8 @@ export const stepsAddProspect = {
     id: 4,
     number: 4,
     name: "title",
-    description: "Programe abonos para disminuir el pago ordinario o recortar plazo.",
+    description:
+      "Programe abonos para disminuir el pago ordinario o recortar plazo.",
   },
   step5: {
     id: 5,
