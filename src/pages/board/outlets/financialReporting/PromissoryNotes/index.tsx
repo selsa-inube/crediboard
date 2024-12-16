@@ -15,7 +15,7 @@ import { getPromissoryNotesById } from "@services/promissory_notes";
 import {
   IPayrollDiscountAuthorization,
   IPromissoryNotes,
-  Requests,
+  ICreditRequest,
 } from "@services/types";
 
 import { errorObserver } from "../config";
@@ -36,7 +36,9 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const { id, isMobile } = props;
   const { addFlag } = useFlag();
 
-  const [creditRequets, setCreditRequests] = useState<Requests | null>(null);
+  const [creditRequets, setCreditRequests] = useState<ICreditRequest | null>(
+    null
+  );
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
@@ -49,7 +51,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     const fetchCreditRequest = async () => {
       try {
         const data = await getCreditRequestByCode(id);
-        setCreditRequests(data[0] as Requests);
+        setCreditRequests(data[0] as ICreditRequest);
       } catch (error) {
         errorObserver.notify({
           id: "Management",

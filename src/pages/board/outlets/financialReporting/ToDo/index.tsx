@@ -11,7 +11,7 @@ import { IOption } from "@inubekit/select";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
-import { IStaff, IToDo, Requests } from "@services/types";
+import { IStaff, IToDo, ICreditRequest } from "@services/types";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { get } from "@mocks/utils/dataMock.service";
 import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
@@ -36,7 +36,7 @@ interface ToDoProps {
 function ToDo(props: ToDoProps) {
   const { icon, button, isMobile, id } = props;
 
-  const [requests, setRequests] = useState<Requests | null>(null);
+  const [requests, setRequests] = useState<ICreditRequest | null>(null);
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
   const [taskDecisions, setTaskDecisions] = useState<IOption[]>();
@@ -59,7 +59,7 @@ function ToDo(props: ToDoProps) {
     const fetchCreditRequest = async () => {
       try {
         const data = await getCreditRequestByCode(id);
-        setRequests(data[0] as Requests);
+        setRequests(data[0] as ICreditRequest);
       } catch (error) {
         console.error(error);
         errorObserver.notify({

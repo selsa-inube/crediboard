@@ -1,6 +1,6 @@
-import { Requests } from "@services/types";
+import { ICreditRequest } from "@services/types";
 
-export const mockRequests: Requests[] = [
+export const mockRequests: ICreditRequest[] = [
   {
     creditRequestCode: "999999",
     creditRequestDateOfCreation: "2022-10-01T00:00:00-05:00",

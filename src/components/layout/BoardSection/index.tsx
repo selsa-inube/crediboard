@@ -9,7 +9,7 @@ import {
 import { MdOutlineChevronRight } from "react-icons/md";
 
 import { SummaryCard } from "@components/cards/SummaryCard";
-import { ICreditRequestPin, Requests } from "@services/types";
+import { ICreditRequestPin, ICreditRequest } from "@services/types";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
@@ -18,7 +18,7 @@ interface BoardSectionProps {
   sectionTitle: string;
   sectionBackground: SectionBackground;
   orientation: SectionOrientation;
-  sectionInformation: Requests[];
+  sectionInformation: ICreditRequest[];
   pinnedRequests: ICreditRequestPin[];
   handlePinRequest: (requestId: string) => void;
   errorLoadingPins: boolean;

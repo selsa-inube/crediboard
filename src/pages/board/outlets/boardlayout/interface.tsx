@@ -10,7 +10,7 @@ import { Divider } from "@inubekit/divider";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { BoardSection } from "@components/layout/BoardSection";
-import { ICreditRequestPin, Requests } from "@services/types";
+import { ICreditRequestPin, ICreditRequest } from "@services/types";
 import { Selectcheck } from "@components/inputs/SelectCheck";
 import { IOptionItemCheckedProps } from "@components/inputs/SelectCheck/OptionItem";
 import { ErrorAlert } from "@components/ErrorAlert";
@@ -28,7 +28,7 @@ interface BoardLayoutProps {
   isMobile: boolean;
   selectOptions: IOptionItemCheckedProps[];
   boardOrientation: SectionOrientation;
-  BoardRequests: Requests[];
+  BoardRequests: ICreditRequest[];
   searchRequestValue: string;
   showPinnedOnly: boolean;
   pinnedRequests: ICreditRequestPin[];

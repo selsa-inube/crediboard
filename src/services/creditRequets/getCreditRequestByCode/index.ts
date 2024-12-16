@@ -3,12 +3,12 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { Requests } from "@src/services/types";
+import { ICreditRequest } from "@src/services/types";
 import { mapCreditRequestToEntities } from "./mapper";
 
 export const getCreditRequestByCode = async (
   creditRequestCode: string
-): Promise<Requests[]> => {
+): Promise<ICreditRequest[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
   for (let attempt = 1; attempt <= maxRetries; attempt++) {

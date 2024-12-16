@@ -12,7 +12,7 @@ import userNotFound from "@assets/images/ItemNotFound.png";
 import { getTraceByCreditRequestId } from "@services/trace/getTraceByCreditRequestId";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { registerNewsToCreditRequest } from "@services/trace/registerNewsToCreditRequest";
-import { Requests } from "@services/types";
+import { ICreditRequest } from "@services/types";
 
 import { traceObserver, errorObserver } from "../config";
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
@@ -24,7 +24,9 @@ interface IManagementProps {
 }
 
 export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
-  const [creditRequest, setCreditRequest] = useState<Requests | null>(null);
+  const [creditRequest, setCreditRequest] = useState<ICreditRequest | null>(
+    null
+  );
   const [traces, setTraces] = useState<ITraceType[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
@@ -38,7 +40,7 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
   const fetchCreditRequest = useCallback(async () => {
     try {
       const data = await getCreditRequestByCode(id);
-      setCreditRequest(data[0] as Requests);
+      setCreditRequest(data[0] as ICreditRequest);
     } catch (error) {
       console.error(error);
       notifyError((error as Error).message);
