@@ -2,35 +2,31 @@ import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
 
-import {
-  IStep,
-  StepDetails,
-  titleButtonTextAssited,
-} from "./types";
+import { IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { StyledContainerAssisted } from "./styles";
 
 interface AddPositionUIProps {
   currentStep: number;
+  currentStepsNumber: StepDetails;
   steps: IStep[];
   isCurrentFormValid: boolean;
-  setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;
+  isMobile: boolean;
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   handleNextStep: () => void;
   handlePreviousStep: () => void;
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   handleSubmitClick: () => void;
-  currentStepsNumber?: StepDetails;
-  isMobile: boolean;
+  setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function FilingApplicationUI(props: AddPositionUIProps) {
   const {
     currentStepsNumber,
-    handleSubmitClick,
     steps,
     isCurrentFormValid,
+    isMobile,
     handleNextStep,
     handlePreviousStep,
-    isMobile,
+    handleSubmitClick,
   } = props;
 
   return (

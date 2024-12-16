@@ -16,7 +16,7 @@ export function FilingApplication() {
 
   const currentStepsNumber = steps.find(
     (step: { number: number }) => step.number === currentStep
-  );
+  ) || { id: 0, number: 0, name: "", description: "" };
 
   const handleNextStep = () => {
     if (currentStep < steps.length) {
