@@ -35,8 +35,7 @@ export const mockRequests: Requests[] = [
     moneyDestinationAbreviatedName: "LIBRE GNR TEST",
     clientIdentificationNumber: "1000970881",
     clientName: "SARA LOPEZ JIMENEZ",
-    taskToBeDone:
-      "Confirmar que el cumplimiento de requisitos se ha efectuado",
+    taskToBeDone: "Confirmar que el cumplimiento de requisitos se ha efectuado",
   },
   {
     creditRequestCode: "1000002",
@@ -48,8 +47,7 @@ export const mockRequests: Requests[] = [
     moneyDestinationAbreviatedName: "LIBRE GNR TEST",
     clientIdentificationNumber: "1000970882",
     clientName: "RICARDO CASTRO SANTOS",
-    taskToBeDone:
-      "Confirmar que el cumplimiento de requisitos se ha efectuado",
+    taskToBeDone: "Confirmar que el cumplimiento de requisitos se ha efectuado",
   },
   {
     creditRequestCode: "1000003",
@@ -61,8 +59,7 @@ export const mockRequests: Requests[] = [
     moneyDestinationAbreviatedName: "LIBRE GNR TEST",
     clientIdentificationNumber: "1000970883",
     clientName: "MARIA GONZALEZ RAMIREZ",
-    taskToBeDone:
-      "Confirmar que el cumplimiento de requisitos se ha efectuado",
+    taskToBeDone: "Confirmar que el cumplimiento de requisitos se ha efectuado",
   },
   {
     creditRequestCode: "1000004",
@@ -74,8 +71,7 @@ export const mockRequests: Requests[] = [
     moneyDestinationAbreviatedName: "LIBRE GNR TEST",
     clientIdentificationNumber: "1000970884",
     clientName: "JUAN MARTINEZ LOPEZ",
-    taskToBeDone:
-      "Confirmar que el cumplimiento de requisitos se ha efectuado",
+    taskToBeDone: "Confirmar que el cumplimiento de requisitos se ha efectuado",
   },
   {
     creditRequestCode: "1000005",
@@ -87,8 +83,7 @@ export const mockRequests: Requests[] = [
     moneyDestinationAbreviatedName: "LIBRE GNR TEST",
     clientIdentificationNumber: "1000970885",
     clientName: "ANA RUIZ FERNANDEZ",
-    taskToBeDone:
-      "Confirmar que el cumplimiento de requisitos se ha efectuado",
+    taskToBeDone: "Confirmar que el cumplimiento de requisitos se ha efectuado",
   },
   {
     creditRequestCode: "1000006",
@@ -100,7 +95,6 @@ export const mockRequests: Requests[] = [
     moneyDestinationAbreviatedName: "LIBRE GNR TEST",
     clientIdentificationNumber: "1000970886",
     clientName: "PEDRO SANCHEZ GARCIA",
-    taskToBeDone:
-      "Confirmar que el cumplimiento de requisitos se ha efectuado",
+    taskToBeDone: "Confirmar que el cumplimiento de requisitos se ha efectuado",
   },
 ];

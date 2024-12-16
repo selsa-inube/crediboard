@@ -8,132 +8,122 @@ import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 import { UnfoundData } from "@components/layout/UnfoundData";
-
-import { getById } from "@mocks/utils/dataMock.service";
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import userNotFound from "@assets/images/ItemNotFound.png";
+import { getPayrollDiscountAuthorizationById } from "@services/payroll_discount_authorizations";
+import { getPromissoryNotesById } from "@services/promissory_notes";
 import {
-  payroll_discount_authorization,
-  promissory_note,
+  IPayrollDiscountAuthorization,
+  IPromissoryNotes,
+  Requests,
 } from "@services/types";
+
+import { errorObserver } from "../config";
 import {
   appearanceTag,
-  firstWord,
   getTableBoardActionMobile,
   getTableBoardActions,
   titlesFinanacialReporting,
   infoItems,
 } from "./config";
-import userNotFound from "@assets/images/ItemNotFound.png";
-import { errorObserver } from "../config";
 
 interface IPromissoryNotesProps {
-  user: string;
+  id: string;
   isMobile: boolean;
 }
 
 export const PromissoryNotes = (props: IPromissoryNotesProps) => {
-  const { user, isMobile } = props;
+  const { id, isMobile } = props;
   const { addFlag } = useFlag();
 
+  const [creditRequets, setCreditRequests] = useState<Requests | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>([]);
+  const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
+    []
+  );
   const [showRetry, setShowRetry] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+  useEffect(() => {
+    const fetchCreditRequest = async () => {
+      try {
+        const data = await getCreditRequestByCode(id);
+        setCreditRequests(data[0] as Requests);
+      } catch (error) {
+        errorObserver.notify({
+          id: "Management",
+          message: (error as Error).message,
+        });
+      }
+    };
+    if (id) fetchCreditRequest();
+  }, [id]);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     setShowRetry(false);
 
+    if (!creditRequets?.creditRequestId) return;
+
     try {
-      const results = await Promise.allSettled([
-        getById<payroll_discount_authorization[]>(
-          "payroll_discount_authorization",
-          "credit_request_id",
-          user!,
-          true
-        ),
-        getById<promissory_note[]>(
-          "promissory_note",
-          "credit_request_id",
-          user!,
-          true
-        ),
-      ]);
+      const [payrollDiscountResult, promissoryNotesResult] =
+        await Promise.allSettled([
+          getPayrollDiscountAuthorizationById(creditRequets.creditRequestId),
+          getPromissoryNotesById(creditRequets.creditRequestId),
+        ]);
 
-      const dataPromissoryNotes = results
-        .flatMap((result) => {
-          if (result.status === "fulfilled") {
-            return result.value as payroll_discount_authorization[];
-          } else {
-            console.error(result.reason);
-            setErrorMessage("Error al obtener los datos de Pagarés y Libranzas");
-          }
-          return [];
-        })
-        .map((entry) => ({
-          id: entry.credit_product_id,
-          "No. de Obligación": entry.obligation_unique_code,
-          "No. de Documento": entry.document_unique_code,
-          Tipo: firstWord(entry.abbreviated_name),
-          tag: (
-            <Tag
-              label={entry.state}
-              appearance={appearanceTag(entry.state)}
-              weight="strong"
-            />
-          ),
-        }));
+      const processResult = (
+        result: PromiseSettledResult<
+          IPayrollDiscountAuthorization[] | IPromissoryNotes[]
+        >,
+        observerId: string,
+        sourceType: "payroll" | "promissory_note"
+      ) =>
+        result.status === "fulfilled"
+          ? result.value.map((entry) => ({
+              id: entry.payrollDiscountAuthorizationId,
+              "No. de Obligación": entry.obligationCode,
+              "No. de Documento": entry.documentCode,
+              Tipo: sourceType === "payroll" ? "Libranza" : "Pagaré",
+              tag: (
+                <Tag
+                  label={entry.documentState}
+                  appearance={appearanceTag(entry.documentState)}
+                  weight="strong"
+                />
+              ),
+            }))
+          : (errorObserver.notify({
+              id: observerId,
+              message: result.reason.message,
+            }),
+            []);
 
-      if (dataPromissoryNotes.length === 0) {
+      const combinedData = [
+        ...processResult(payrollDiscountResult, "PayrollDiscount", "payroll"),
+        ...processResult(
+          promissoryNotesResult,
+          "PromissoryNotes",
+          "promissory_note"
+        ),
+      ];
+
+      if (!combinedData.length)
         throw new Error("No se encontraron datos en la base de datos");
-      }
 
-      setDataPromissoryNotes(dataPromissoryNotes);
+      setDataPromissoryNotes(combinedData);
+    } catch (error) {
+      setErrorMessage((error as Error).message);
+      setShowRetry(true);
+    } finally {
       setLoading(false);
-    } catch (err) {
-      if (err instanceof Error) {
-        errorObserver.notify({
-          id: "PromissoryNotes",
-          message: err.message,
-        });
-
-        setErrorMessage(err.message); 
-        setTimeout(() => {
-          setShowRetry(true);
-          setLoading(false);
-        }, 5000);
-      }
     }
-  }, [user]);
+  }, [creditRequets]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  const tableBoardActions = getTableBoardActions(() => setShowModal(true));
-  const tableBoardActionMobile = getTableBoardActionMobile(() =>
-    setShowModal(true)
-  );
-
-  const formValues = {
-    field1: "usuario@inube.com",
-    field2: "3122638128",
-    field3: "3122638128",
-  };
-
-  const handleSubmit = () => {
-    addFlag({
-      title: "Datos enviados",
-      description: "Los datos del usuario han sido enviados exitosamente.",
-      appearance: "success",
-      duration: 5000,
-    });
-    setShowModal(false);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+    if (creditRequets?.creditRequestId) fetchData();
+  }, [fetchData, creditRequets]);
 
   const handleRetry = () => {
     setLoading(true);
@@ -142,55 +132,67 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   };
 
   return (
-      <Fieldset
-        title="Pagarés y Libranzas"
-        heightFieldset="127px"
-        aspectRatio={isMobile ? "auto" : "1"}
-        hasOverflow
-        hasTable
-      >
-        {showRetry ? (
-          <UnfoundData
-            image={userNotFound}
-            title="Error al cargar datos"
-            description={
-              errorMessage ||
-              "Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."
-            }
-            buttonDescription="Volver a intentar"
-            route="/retry-path"
-            onRetry={handleRetry}
+    <Fieldset
+      title="Pagarés y Libranzas"
+      heightFieldset="163px"
+      aspectRatio={isMobile ? "auto" : "1"}
+      hasTable
+    >
+      {showRetry ? (
+        <UnfoundData
+          image={userNotFound}
+          title="Error al cargar datos"
+          description={
+            errorMessage ||
+            "Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."
+          }
+          buttonDescription="Volver a intentar"
+          route="/retry-path"
+          onRetry={handleRetry}
+        />
+      ) : (
+        <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
+          <TableBoard
+            id="promissoryNotes"
+            titles={titlesFinanacialReporting}
+            entries={dataPromissoryNotes}
+            actions={getTableBoardActions(() => setShowModal(true))}
+            actionMobile={getTableBoardActionMobile(() => setShowModal(true))}
+            loading={loading}
+            appearanceTable={{
+              widthTd: isMobile ? "23%" : undefined,
+              efectzebra: true,
+              title: "primary",
+              isStyleMobile: true,
+            }}
+            isFirstTable
+            infoItems={infoItems}
           />
-        ) : (
-          <Stack direction="column" height={!isMobile ? "100%" : "auto"}>
-            <TableBoard
-              id="promissoryNotes"
-              titles={titlesFinanacialReporting}
-              entries={dataPromissoryNotes}
-              actions={tableBoardActions}
-              actionMobile={tableBoardActionMobile}
-              loading={loading}
-              appearanceTable={{
-                widthTd: isMobile ? "23%" : undefined,
-                efectzebra: true,
-                title: "primary",
-                isStyleMobile: true,
-              }}
-              isFirstTable={true}
-              infoItems={infoItems}
-            />
 
-            {showModal && (
-              <PromissoryNotesModal
-                title="Confirma los datos del usuario"
-                buttonText="Enviar"
-                formValues={formValues}
-                handleClose={handleCloseModal}
-                onSubmit={handleSubmit}
-              />
-            )}
-          </Stack>
-        )}
-      </Fieldset>
+          {showModal && (
+            <PromissoryNotesModal
+              title="Confirma los datos del usuario"
+              buttonText="Enviar"
+              formValues={{
+                field1: "usuario@inube.com",
+                field2: "3122638128",
+                field3: "3122638128",
+              }}
+              handleClose={() => setShowModal(false)}
+              onSubmit={() => {
+                addFlag({
+                  title: "Datos enviados",
+                  description:
+                    "Los datos del usuario han sido enviados exitosamente.",
+                  appearance: "success",
+                  duration: 5000,
+                });
+                setShowModal(false);
+              }}
+            />
+          )}
+        </Stack>
+      )}
+    </Fieldset>
   );
 };

@@ -11,8 +11,7 @@ export const mockRequests: Requests[] = [
     moneyDestinationAbreviatedName: "LIBRE GNR TEST",
     clientIdentificationNumber: "1000970876",
     clientName: "MATEO GOMEZ RODRIGUEZ",
-    taskToBeDone:
-      "Confirmar que la Formalización de garantías se ha efectuado",
+    taskToBeDone: "Confirmar que la Formalización de garantías se ha efectuado",
   },
   {
     creditRequestCode: "999997",
@@ -24,8 +23,7 @@ export const mockRequests: Requests[] = [
     moneyDestinationAbreviatedName: "LIBRE GNR TEST",
     clientIdentificationNumber: "1000970877",
     clientName: "MARIA ALEJANDRA GUTIERREZ RUIZ",
-    taskToBeDone:
-      "Confirmar que la Formalización de garantías se ha efectuado",
+    taskToBeDone: "Confirmar que la Formalización de garantías se ha efectuado",
   },
   {
     creditRequestCode: "999998",
@@ -37,7 +35,6 @@ export const mockRequests: Requests[] = [
     moneyDestinationAbreviatedName: "LIBRE GNR TEST",
     clientIdentificationNumber: "1000970878",
     clientName: "ANDRES FELIPE SANCHEZ LOPEZ",
-    taskToBeDone:
-      "Confirmar que la Formalización de garantías se ha efectuado",
+    taskToBeDone: "Confirmar que la Formalización de garantías se ha efectuado",
   },
 ];

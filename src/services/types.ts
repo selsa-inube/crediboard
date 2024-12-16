@@ -14,10 +14,10 @@ interface Requests {
 }
 
 interface IStaff {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
+  userId: string;
+  userName: string;
+  identificationType: string;
+  identificationNumber: string;
   position: string;
 }
 
@@ -27,11 +27,13 @@ export interface ICreditRequestPin {
 }
 
 interface IToDo {
-  credit_request_state_id: string;
-  task_to_be_done: string;
-  account_manager_name: string;
-  analyst_name: string;
-  decisions: { id: string; label: string; value: string }[];
+  creditRequestId: string;
+  creditRequestCode: string;
+  CreditRequestStateId: string;
+  creditRequestStateAbbreviatedName: string;
+  stage: string;
+  taskToBeDone: string;
+  usersByCreditRequestResponse: IStaff[];
 }
 
 interface IKeyRiskScoring {
@@ -99,17 +101,18 @@ type DmDecisions =
   | "CREAR_OBLIGACIONES_DE_CARTERA"
   | "DECLINAR_OBLIGACIONES_DE_CARTERA";
 
-interface TraceType {
-  trace_id: string;
-  trace_value: string;
-  credit_request_id: string;
-  use_case: string;
-  user_id: string;
-  execution_date: string;
+interface ITraceType {
+  creditRequestId?: string;
+  excecutionDate: string;
+  traceType: string;
+  traceValue: string;
+  userId: string;
+  userName: string;
+  decision_of_concept?: string;
+  decisionTakenByUser?: string;
   justification?: string;
-  decision_taken_by_user?: string;
-  trace_type?: string;
-  read_novelty?: string;
+  readNovelty?: string;
+  useCase?: string;
 }
 
 export type {
@@ -121,20 +124,21 @@ export type {
   DmTareasPrs,
   DmConceptos,
   DmDecisions,
-  TraceType,
+  ITraceType,
 };
 
-export interface payroll_discount_authorization {
-  credit_request_id: string;
-  payroll_discount_authorization_id: string;
-  description_use: string;
-  abbreviated_name: string;
-  credit_product_id: string;
-  borrower_id: string;
-  state: string;
-  obligation_unique_code: string;
-  document_unique_code: string;
-  image_unique_code: string;
+export interface IPayrollDiscountAuthorization {
+  creditRequestId: string;
+  payrollDiscountAuthorizationId: string;
+  payrollDiscountAuthorizationCode: string;
+  descriptionUse: string;
+  abbreviatedName: string;
+  borrowerId: string;
+  borrowerName: string;
+  documentState: string;
+  obligationCode: string;
+  documentCode: string;
+  imageCode: string;
 }
 
 export interface Ipayment_capacity {
@@ -164,16 +168,18 @@ export interface Iuncovered_wallet {
   };
 }
 
-export interface promissory_note {
-  credit_request_id: string;
-  promissory_note_id: string;
-  description_use: string;
-  abbreviated_name: string;
-  credit_product_id: string;
-  state: string;
-  obligation_unique_code: string;
-  document_unique_code: string;
-  image_unique_code: string;
+export interface IPromissoryNotes {
+  creditRequestId: string;
+  payrollDiscountAuthorizationId: string;
+  payrollDiscountAuthorizationCode: string;
+  descriptionUse: string;
+  abbreviatedName: string;
+  borrowerId: string;
+  borrowerName: string;
+  documentState: string;
+  obligationCode: string;
+  documentCode: string;
+  imageCode: string;
 }
 
 export interface approval_by_credit_request_Mock {
@@ -287,9 +293,16 @@ export interface ICreditProductProspect {
   acquired_cash_flow: IAcquiredCashFlow;
 }
 
+interface IDebtor {
+  id: string;
+  label: string;
+  value: string;
+}
+
 export interface IIncome {
-  debtor_id: string;
-  debtor: string;
+  borrowers: IDebtor[];
+  borrower_id: string;
+  borrower: string;
   monthly_salary: number;
   other_monthly_payments: number;
   pension_allowances: number;
@@ -299,7 +312,6 @@ export interface IIncome {
   average_monthly_profit: number;
   monthly_fees: number;
 }
-
 export interface IBorrowerProperty {
   property_name: (typeof BorrowerProperties)[keyof typeof BorrowerProperties];
   property_value: string;
@@ -369,11 +381,16 @@ export interface IExtraordinaryPayment {
   value: number;
   paymentMethod: string;
 }
-
 export interface IMoneyDestination {
   money_destination_id: string;
   money_destination_unique_reference: string;
   abbreviated_name: string;
   description_use: string;
   icon: string;
+}
+
+export interface IPaymentChannel {
+  id: string;
+  label: string;
+  value: string;
 }

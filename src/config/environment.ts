@@ -9,6 +9,8 @@ const enviroment = {
   TEMP_BUSINESS_UNIT: "public",
   BUSINESS_UNIT: import.meta.env.VITE_BUSINESS_UNIT,
   ICOREBANKING_API_URL_QUERY: import.meta.env.VITE_ICOREBANKING_API_URL_QUERY,
+  ICOREBANKING_API_URL_PERSISTENCE: import.meta.env
+    .VITE_ICOREBANKING_API_URL_PERSISTENCE,
 };
 
 const maxRetriesServices = 5;

@@ -3,12 +3,8 @@ import localforage from "localforage";
 import { intializedData } from "@mocks/utils/dataMock.service";
 import { themes } from "@mocks/design/themes";
 import { mockRequests as mockRequestsDefault } from "@mocks/requests/requests.mock";
-import { mockStaff as mockStaffDefault } from "@mocks/staff/staff.mock";
-import { mockToDo } from "@mocks/financial-reporting/to-do/toDo.mock";
-import {
-  mockRangeRequeredByTheBusinessUnit,
-  mockRiskScoring,
-} from "@mocks/credit-profile/risk-scoring/riskScoring.mock";
+import { mockAnalyst as mockAnalystDefault } from "@mocks/staff/staff.mock";
+import { mockAccountManager as mockAccountManagerDefault } from "@mocks/staff/staff.mock";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 import { promissory_note } from "@mocks/promissoryNotes/promissory_note.mock";
 import { payroll_discount_authorization } from "@mocks/promissoryNotes/payroll_discount_authorization.mock";
@@ -20,18 +16,26 @@ import { credit_profileInfo } from "@mocks/creditProfileInfo/creditProfileInfo.m
 import { uncovered_wallet } from "@mocks/creditProfileInfo/uncoveredWallet.mock";
 import { payment_capacity } from "@mocks/creditProfileInfo/paymentCapacity.mock";
 import { credit_behavior } from "@mocks/creditProfileInfo/creditBehavior.mock";
+import { mockDecisions } from "@mocks/financialReporting/to-do/decisions.mock";
 import { mockMoneyDestinations } from "@mocks/add-prospect/money-destinations/moneydestinations.mock";
+import { mockPaymentChannel } from "@mocks/add-prospect/payment-channel/paymentchannel.mock";
+import { mockExtraDebtors } from "@mocks/add-prospect/extra-debtors/extradebtors.mock";
+import {
+  mockRangeRequeredByTheBusinessUnit,
+  mockRiskScoring,
+} from "@mocks/credit-profile/risk-scoring/riskScoring.mock";
+import { IRiskScoring } from "@services/types";
 
 import {
   mockRequests,
-  mockStaff,
+  mockAnalyst,
+  mockAccountManager,
   approvalByCreditRequestMock,
   documents,
   errorIssued,
   traceMock,
   requirementsMock,
 } from "./importDataDb";
-import { IRiskScoring } from "@services/types";
 
 export function initializeDataDB(company: string) {
   localforage.clear();
@@ -41,9 +45,13 @@ export function initializeDataDB(company: string) {
     "requests",
     mockRequests(company)
   );
-  intializedData<(typeof mockStaffDefault)[number]>(
-    "staff",
-    mockStaff(company)
+  intializedData<(typeof mockAnalystDefault)[number]>(
+    "analyst",
+    mockAnalyst(company)
+  );
+  intializedData<(typeof mockAccountManagerDefault)[number]>(
+    "account-manager",
+    mockAccountManager(company)
   );
   intializedData<(typeof approval_by_credit_request_Mock)[number]>(
     "approval",
@@ -53,7 +61,6 @@ export function initializeDataDB(company: string) {
     "trace",
     traceMock(company)
   );
-  intializedData<(typeof mockToDo)[number]>("to-do", mockToDo);
   intializedData<IRiskScoring>("risk-scoring", mockRiskScoring);
   intializedData<(typeof documentsDefault)[number]>(
     "document",
@@ -81,5 +88,8 @@ export function initializeDataDB(company: string) {
     "range_requered_Business_Unit",
     mockRangeRequeredByTheBusinessUnit
   );
+  intializedData("decisions", mockDecisions);
   intializedData("money_destinations", mockMoneyDestinations);
+  intializedData("mockRequest_value", mockPaymentChannel);
+  intializedData("extra_debtors", mockExtraDebtors);
 }

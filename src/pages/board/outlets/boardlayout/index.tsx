@@ -73,6 +73,7 @@ function BoardLayout() {
         request.creditRequestCode
           .toString()
           .includes(filters.searchRequestValue);
+      request.creditRequestCode.toString().includes(filters.searchRequestValue);
 
       const isPinned =
         !filters.showPinnedOnly ||

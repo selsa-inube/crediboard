@@ -43,6 +43,7 @@ Default.args = {
   value: "Value",
   label: "Label",
   icon: "MdAndroid",
+  isSelected: false,
   handleChange: action("handleChange"),
 } satisfies MoneyDestinationCardProps;
 
