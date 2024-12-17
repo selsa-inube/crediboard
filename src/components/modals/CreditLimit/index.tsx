@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import {
   MdClear,
@@ -12,6 +13,7 @@ import { Blanket } from "@inubekit/blanket";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
+import { SkeletonLine } from "@inubekit/skeleton";
 
 import { currencyFormat } from "@utils/formatData/currency";
 
@@ -50,6 +52,14 @@ export const CreditLimit = (props: ICreditLimitProps) => {
     onOpenReciprocityModal,
     onOpenFrcModal,
   } = props;
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -96,9 +106,13 @@ export const CreditLimit = (props: ICreditLimitProps) => {
 
                   <Stack alignItems="center">
                     <Text appearance="success">$</Text>
-                    <Text type="body" size="medium" appearance="dark">
-                      {currencyFormat(maxPaymentCapacity, false)}
-                    </Text>
+                    {loading ? (
+                      <SkeletonLine width="70px" animated={true} />
+                    ) : (
+                      <Text type="body" size="medium" appearance="dark">
+                        {currencyFormat(maxPaymentCapacity, false)}
+                      </Text>
+                    )}
                     <Stack margin="0px 0px 0px 5px">
                       <Icon
                         appearance="primary"
@@ -124,12 +138,15 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                   >
                     {creditLimitTexts.maxReciprocity}
                   </Text>
-
                   <Stack alignItems="center">
                     <Text appearance="success">$</Text>
-                    <Text type="body" size="medium" appearance="dark">
-                      {currencyFormat(maxReciprocity, false)}
-                    </Text>
+                    {loading ? (
+                      <SkeletonLine width="70px" animated={true} />
+                    ) : (
+                      <Text type="body" size="medium" appearance="dark">
+                        {currencyFormat(maxReciprocity, false)}
+                      </Text>
+                    )}
                     <Stack margin="0px 0px 0px 5px">
                       <Icon
                         appearance="primary"
@@ -155,17 +172,20 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                   >
                     {creditLimitTexts.maxDebtFRC}
                   </Text>
-
                   <Stack alignItems="center">
                     <Text appearance="success">$</Text>
-                    <Text
-                      weight="bold"
-                      type="body"
-                      size="medium"
-                      appearance="dark"
-                    >
-                      {currencyFormat(maxDebtFRC, false)}
-                    </Text>
+                    {loading ? (
+                      <SkeletonLine width="70px" animated={true} />
+                    ) : (
+                      <Text
+                        weight="bold"
+                        type="body"
+                        size="medium"
+                        appearance="dark"
+                      >
+                        {currencyFormat(maxDebtFRC, false)}
+                      </Text>
+                    )}
                     <Stack margin="0px 0px 0px 5px">
                       <Icon
                         appearance="primary"
@@ -193,22 +213,24 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                   </Text>
                   <Stack alignItems="center" gap="4px">
                     <Text appearance="success">$</Text>
-                    <Text
-                      weight="bold"
-                      type="body"
-                      size="medium"
-                      appearance="dark"
-                    >
-                      {currencyFormat(assignedLimit, false)}
-                    </Text>
+                    {loading ? (
+                      <SkeletonLine width="70px" animated={true} />
+                    ) : (
+                      <Text
+                        weight="bold"
+                        type="body"
+                        size="medium"
+                        appearance="dark"
+                      >
+                        {currencyFormat(assignedLimit, false)}
+                      </Text>
+                    )}
                   </Stack>
                 </Stack>
               </li>
             </Stack>
           </StyledList>
-
           <Divider />
-
           <Stack alignItems="center">
             <Icon
               appearance="primary"
@@ -220,7 +242,6 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               {creditLimitTexts.maxUsableQuote}
             </Text>
           </Stack>
-
           <Stack direction="column" gap="12px">
             <Stack justifyContent="space-between">
               <Text weight="bold" type="label">
@@ -228,9 +249,13 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               </Text>
               <Stack alignItems="center">
                 <Text appearance="success">$</Text>
-                <Text type="body" size="medium" appearance="dark">
-                  {currencyFormat(maxUsableLimit, false)}
-                </Text>
+                {loading ? (
+                  <SkeletonLine width="70px" animated={true} />
+                ) : (
+                  <Text type="body" size="medium" appearance="dark">
+                    {currencyFormat(maxUsableLimit, false)}
+                  </Text>
+                )}
               </Stack>
             </Stack>
             <Stack justifyContent="space-between">
@@ -239,9 +264,13 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               </Text>
               <Stack alignItems="center">
                 <Text appearance="success">$</Text>
-                <Text type="body" size="medium" appearance="dark">
-                  {currencyFormat(currentPortfolio, false)}
-                </Text>
+                {loading ? (
+                  <SkeletonLine width="70px" animated={true} />
+                ) : (
+                  <Text type="body" size="medium" appearance="dark">
+                    {currencyFormat(currentPortfolio, false)}
+                  </Text>
+                )}
               </Stack>
             </Stack>
           </Stack>
@@ -251,9 +280,13 @@ export const CreditLimit = (props: ICreditLimitProps) => {
             </Text>
             <Stack justifyContent="space-between" alignItems="center">
               <Text appearance="success">$</Text>
-              <Text weight="bold" type="body" size="medium" appearance="dark">
-                {currencyFormat(availableLimitWithoutGuarantee, false)}
-              </Text>
+              {loading ? (
+                <SkeletonLine width="70px" animated={true} />
+              ) : (
+                <Text weight="bold" type="body" size="medium" appearance="dark">
+                  {currencyFormat(availableLimitWithoutGuarantee, false)}
+                </Text>
+              )}
             </Stack>
           </Stack>
         </Stack>

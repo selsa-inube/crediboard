@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { MdClear, MdQueryStats } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -7,6 +8,8 @@ import { Blanket } from "@inubekit/blanket";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
+import { SkeletonLine } from "@inubekit/skeleton";
+
 import { currencyFormat } from "@utils/formatData/currency";
 
 import { frcConfig } from "./FrcConfig";
@@ -41,6 +44,14 @@ export const ScoreModal = (props: ScoreModalProps) => {
     maxIndebtedness,
   } = props;
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
     throw new Error("Portal node not found.");
@@ -67,9 +78,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
             </Stack>
           </StyledContainerClose>
         </Stack>
-
         <Divider />
-
         <Stack direction="column" gap="16px">
           <Stack direction="column" gap="12px">
             <Stack gap="8px" alignItems="center">
@@ -83,132 +92,163 @@ export const ScoreModal = (props: ScoreModalProps) => {
                 {frcConfig.subTitle}
               </Text>
             </Stack>
-
             <Divider />
-
             <Stack justifyContent="space-between" alignItems="center">
               <Text appearance="dark" size="large" weight="bold" type="label">
                 {frcConfig.totalScoreLabel}
               </Text>
-              <Stack>
-                <Text
-                  appearance="primary"
-                  weight="bold"
-                  type="body"
-                  size="large"
-                >
-                  {totalScore}
-                </Text>
-                <Text weight="bold" type="body" size="large">
-                  {frcConfig.totalScoreMax}
-                </Text>
-              </Stack>
+              {loading ? (
+                <SkeletonLine width="70px" animated={true} />
+              ) : (
+                <Stack>
+                  <Text
+                    appearance="primary"
+                    weight="bold"
+                    type="body"
+                    size="large"
+                  >
+                    {totalScore}
+                  </Text>
+                  <Text weight="bold" type="body" size="large">
+                    {frcConfig.totalScoreMax}
+                  </Text>
+                </Stack>
+              )}
             </Stack>
-
             <Divider />
-
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
                 {frcConfig.seniorityLabel}
               </Text>
-              <Stack>
-                <Text appearance="primary" weight="bold" size="large">
-                  {seniority}
-                </Text>
-                <Text weight="bold" type="body" size="large">
-                  {frcConfig.seniorityMax}
-                </Text>
-              </Stack>
+              {loading ? (
+                <SkeletonLine width="70px" animated={true} />
+              ) : (
+                <Stack>
+                  <Text appearance="primary" weight="bold" size="large">
+                    {seniority}
+                  </Text>
+                  <Text weight="bold" type="body" size="large">
+                    {frcConfig.seniorityMax}
+                  </Text>
+                </Stack>
+              )}
             </Stack>
-
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
                 {frcConfig.centralRiskLabel}
               </Text>
-              <Stack>
-                <Text appearance="primary" weight="bold" size="large">
-                  {centralRisk}
-                </Text>
-                <Text weight="bold" type="body" size="large">
-                  {frcConfig.centralRiskMax}
-                </Text>
-              </Stack>
+              {loading ? (
+                <SkeletonLine width="70px" animated={true} />
+              ) : (
+                <Stack>
+                  <Text appearance="primary" weight="bold" size="large">
+                    {centralRisk}
+                  </Text>
+                  <Text weight="bold" type="body" size="large">
+                    {frcConfig.centralRiskMax}
+                  </Text>
+                </Stack>
+              )}
             </Stack>
-
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
                 {frcConfig.employmentStabilityLabel}
               </Text>
-              <Stack>
-                <Text appearance="primary" weight="bold" size="large">
-                  {employmentStability}
-                </Text>
-                <Text weight="bold" type="body" size="large">
-                  {frcConfig.employmentStabilityMax}
-                </Text>
-              </Stack>
+              {loading ? (
+                <SkeletonLine width="70px" animated={true} />
+              ) : (
+                <Stack>
+                  <Text appearance="primary" weight="bold" size="large">
+                    {employmentStability}
+                  </Text>
+                  <Text weight="bold" type="body" size="large">
+                    {frcConfig.employmentStabilityMax}
+                  </Text>
+                </Stack>
+              )}
             </Stack>
-
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
                 {frcConfig.maritalStatusLabel}
               </Text>
-              <Stack>
-                <Text appearance="primary" weight="bold" size="large">
-                  {maritalStatus}
-                </Text>
-                <Text weight="bold" type="body" size="large">
-                  {frcConfig.maritalStatusMax}
-                </Text>
-              </Stack>
+              {loading ? (
+                <SkeletonLine width="70px" animated={true} />
+              ) : (
+                <Stack>
+                  <Text appearance="primary" weight="bold" size="large">
+                    {maritalStatus}
+                  </Text>
+                  <Text weight="bold" type="body" size="large">
+                    {frcConfig.maritalStatusMax}
+                  </Text>
+                </Stack>
+              )}
             </Stack>
-
             <Stack justifyContent="space-between" alignItems="center">
               <Text weight="bold" size="large" type="label">
                 {frcConfig.economicActivityLabel}
               </Text>
-              <Stack>
-                <Text appearance="primary" weight="bold" size="large">
-                  {economicActivity}
-                </Text>
-                <Text weight="bold" type="body" size="large">
-                  {frcConfig.economicActivityMax}
-                </Text>
-              </Stack>
+              {loading ? (
+                <SkeletonLine width="70px" animated={true} />
+              ) : (
+                <Stack>
+                  <Text appearance="primary" weight="bold" size="large">
+                    {economicActivity}
+                  </Text>
+                  <Text weight="bold" type="body" size="large">
+                    {frcConfig.economicActivityMax}
+                  </Text>
+                </Stack>
+              )}
             </Stack>
           </Stack>
-
           <Divider />
-
           <Stack justifyContent="space-between">
             <Text weight="bold" size="large" type="label">
               {frcConfig.incomesLabel}
             </Text>
             <Stack>
               <Text appearance="success">$</Text>
-              <Text>{currencyFormat(monthlyIncome, false)}</Text>
+              {loading ? (
+                <SkeletonLine width="70px" animated={true} />
+              ) : (
+                <Text>{currencyFormat(monthlyIncome, false)}</Text>
+              )}
             </Stack>
           </Stack>
-
           <Stack justifyContent="space-between" alignItems="center">
             <Text weight="bold" size="large" type="label">
               {frcConfig.timesIncome}
             </Text>
-            <Text weight="bold" type="body" size="large">
-              5
-            </Text>
+            {loading ? (
+              <SkeletonLine width="70px" animated={true} />
+            ) : (
+              <Text weight="bold" type="body" size="large">
+                5
+              </Text>
+            )}
           </Stack>
-
           <Divider />
           <Stack alignItems="center" direction="column" gap="8px">
-            <Text
-              appearance="primary"
-              weight="bold"
-              type="headline"
-              size="large"
-            >
-              ${currencyFormat(maxIndebtedness, false)}
-            </Text>
+            {loading ? (
+              <Text
+                appearance="primary"
+                weight="bold"
+                type="headline"
+                size="large"
+              >
+                {frcConfig.loading}
+              </Text>
+            ) : (
+              <Text
+                appearance="primary"
+                weight="bold"
+                type="headline"
+                size="large"
+              >
+                ${currencyFormat(maxIndebtedness, false)}
+              </Text>
+            )}
             <Stack>
               <Text appearance="gray" size="small" textAlign="center">
                 {frcConfig.maxIndebtedness}
@@ -216,9 +256,7 @@ export const ScoreModal = (props: ScoreModalProps) => {
             </Stack>
           </Stack>
         </Stack>
-
         <Divider />
-
         <Stack gap="8px" justifyContent="end">
           <Button
             onClick={handleClose}

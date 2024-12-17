@@ -16,5 +16,6 @@ export const frcConfig = {
   incomesLabel: "Ingresos mensuales",
   timesIncome: "No. de veces el ingreso para este scoring",
   maxIndebtedness: "Endeudamiento máximo",
-  closeBtn: "Cerrar"
+  closeBtn: "Cerrar",
+  loading: "Cargando..."
 };
