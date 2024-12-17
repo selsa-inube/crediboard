@@ -36,7 +36,9 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   const { id, isMobile } = props;
   const { addFlag } = useFlag();
 
-  const [creditRequets, setCreditRequests] = useState<ICreditRequest | null>(null);
+  const [creditRequets, setCreditRequests] = useState<ICreditRequest | null>(
+    null
+  );
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dataPromissoryNotes, setDataPromissoryNotes] = useState<IEntries[]>(
@@ -75,7 +77,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
 
       const processResult = (
         result: PromiseSettledResult<
-        IPayrollDiscountAuthorization[] | IPromissoryNotes[]
+          IPayrollDiscountAuthorization[] | IPromissoryNotes[]
         >,
         observerId: string,
         sourceType: "payroll" | "promissory_note"

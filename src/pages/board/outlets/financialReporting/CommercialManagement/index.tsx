@@ -82,7 +82,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     total: undefined,
   });
 
-
   const initialValues: FormikValues = {
     creditLine: "",
     creditAmount: "",
@@ -597,4 +596,3 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     </Fieldset>
   );
 };
-

@@ -21,9 +21,9 @@ export interface IStaff {
   position: string;
 }
 
-export interface PinnedRequest {
-  requestId: string;
-  isPinned: "Y" | "N";
+export interface ICreditRequestPinned {
+  creditRequestId: string;
+  isPinned: string;
 }
 
 export interface IToDo {
@@ -288,7 +288,7 @@ interface IDebtor {
 }
 
 export interface IIncome {
-  borrowers: IDebtor[],
+  borrowers: IDebtor[];
   borrower_id: string;
   borrower: string;
   monthly_salary: number;
