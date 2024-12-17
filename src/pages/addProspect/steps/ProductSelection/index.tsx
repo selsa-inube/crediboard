@@ -6,7 +6,7 @@ import { Text } from "@inubekit/text";
 import { Toggle } from "@inubekit/toggle";
 import { Divider } from "@inubekit/divider";
 
-import { ProductSelectCard } from "@components/cards/ProcuctSelectCard";
+import { CardProductSelection } from "@components/cards/CardProductSelection";
 import { Fieldset } from "@components/data/Fieldset";
 import { lineOfCredit } from "@mocks/add-prospect/line-of-credit/lineOfCredit.mock";
 
@@ -110,7 +110,7 @@ export function ProductSelection(props: IProductSelectionProps) {
                 wrap="wrap"
               >
                 {lineOfCredit.slice(0, 3).map((credit) => (
-                  <ProductSelectCard
+                  <CardProductSelection
                     key={credit.line_of_credit_id}
                     amount={credit.loan_amount_limit}
                     rate={credit.interest_rate}

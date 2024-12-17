@@ -1,6 +1,7 @@
-import { Icon } from "@inubekit/icon";
 import { useState } from "react";
 import { MdOutlineMoreVert } from "react-icons/md";
+import { Icon } from "@inubekit/icon";
+
 import { ActionModal } from "./Actions";
 
 export interface ActionMobileProps {
@@ -16,7 +17,7 @@ export function ActionMobile(props: ActionMobileProps) {
     handleDelete = () => {},
   } = props;
 
-  const [ModalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <>
       <Icon
@@ -28,7 +29,7 @@ export function ActionMobile(props: ActionMobileProps) {
         shape="circle"
         variant="filled"
       />
-      {ModalOpen && (
+      {modalOpen && (
         <ActionModal
           onClose={() => setModalOpen(false)}
           handleDelete={handleDelete}

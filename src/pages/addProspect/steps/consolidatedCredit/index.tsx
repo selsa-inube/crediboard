@@ -114,6 +114,7 @@ export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
                     creditData.consolidated_credit_id
                   ]
                 }
+                isMobile={isMobile}
               />
             ))}
           </Stack>

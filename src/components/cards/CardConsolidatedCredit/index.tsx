@@ -11,7 +11,6 @@ import { currencyFormat } from "@utils/formatData/currency";
 
 import { StyledContainer, StyledInput } from "./styles";
 import { dataConsolidatedCredit } from "./config";
-import { useMediaQuery } from "@inubekit/hooks";
 
 export interface ICardConsolidatedCreditProps {
   onUpdateTotal: (oldValue: number, newValue: number) => void;
@@ -20,8 +19,9 @@ export interface ICardConsolidatedCreditProps {
   expiredValue: number;
   nextDueDate: number;
   fullPayment: number;
-  arrears?: boolean;
   date: Date;
+  isMobile?: boolean;
+  arrears?: boolean;
   initialValue?: number;
 }
 
@@ -33,13 +33,13 @@ export function CardConsolidatedCredit(props: ICardConsolidatedCreditProps) {
     expiredValue,
     nextDueDate,
     fullPayment,
+    isMobile,
     arrears,
     date = new Date(),
     initialValue,
   } = props;
 
   const hasInitialValue = initialValue !== undefined && initialValue > 0;
-  const isMobile = useMediaQuery("(max-width:880px)");
 
   const [isRadioSelected, setIsRadioSelected] = useState(hasInitialValue);
   const [selectedValue, setSelectedValue] = useState<number | null>(
@@ -84,7 +84,7 @@ export function CardConsolidatedCredit(props: ICardConsolidatedCreditProps) {
   };
 
   return (
-    <StyledContainer disabled={isRadioSelected} $isMobile={isMobile}>
+    <StyledContainer disabled={isRadioSelected} isMobile={isMobile}>
       <Stack
         direction="column"
         padding={isMobile ? "16px 10px" : "16px 20px"}

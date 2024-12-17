@@ -3,11 +3,11 @@ import styled from "styled-components";
 
 interface IStyledContainer {
   disabled?: boolean;
-  $isMobile?: boolean;
+  isMobile?: boolean;
 }
 
 const StyledContainer = styled.div<IStyledContainer>`
-  width: ${({ $isMobile }) => ($isMobile ? "276px" : "296px")};
+  width: ${({ isMobile }) => (isMobile ? "276px" : "296px")};
   display: flex;
   flex-direction: column;
   overflow: hidden;

@@ -1,12 +1,7 @@
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
-import {
-  MdClose,
-  MdDeleteOutline,
-  MdOutlineEdit,
-  MdOutlineRemoveRedEye,
-} from "react-icons/md";
+import { MdClose } from "react-icons/md";
 
 import {
   StyledContainer,
@@ -15,40 +10,17 @@ import {
   StyledActions,
   StyledContainerClose,
 } from "./styles";
-
-interface Action {
-  icon: React.ReactNode;
-  appearance:
-    | "primary"
-    | "success"
-    | "warning"
-    | "danger"
-    | "help"
-    | "dark"
-    | "gray"
-    | "light";
-  label: string;
-}
+import { dataActions } from "./types";
 
 interface ActionModalProps {
-  onClose?: () => void;
+  handleDelete: () => void;
   handleEdit: () => void;
   handleView: () => void;
-  handleDelete: () => void;
+  onClose?: () => void;
 }
 
-const actions: Action[] = [
-  {
-    icon: <MdOutlineRemoveRedEye />,
-    appearance: "dark",
-    label: "Ver detalles",
-  },
-  { icon: <MdOutlineEdit />, appearance: "dark", label: "Editar" },
-  { icon: <MdDeleteOutline />, appearance: "danger", label: "Eliminar" },
-];
-
 export function ActionModal(props: ActionModalProps) {
-  const { onClose, handleEdit, handleView, handleDelete } = props;
+  const { handleDelete, handleEdit, handleView, onClose } = props;
 
   return (
     <StyledContainer>
@@ -63,7 +35,7 @@ export function ActionModal(props: ActionModalProps) {
             />
           </StyledContainerClose>
           <StyledUl>
-            {actions.map((item, index) => (
+            {dataActions.map((item, index) => (
               <StyledLi
                 key={index}
                 onClick={() => {
