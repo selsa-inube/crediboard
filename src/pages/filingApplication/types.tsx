@@ -17,3 +17,10 @@ export interface IStep {
   number?: number;
   name?: string;
 }
+
+export interface FormData {
+  contactInformation: {
+    email: string;
+    phone: string;
+  };
+}
