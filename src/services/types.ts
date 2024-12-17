@@ -21,7 +21,7 @@ export interface IStaff {
   position: string;
 }
 
-export interface ICreditRequestPin {
+export interface ICreditRequestPinned {
   creditRequestId: string;
   isPinned: string;
 }

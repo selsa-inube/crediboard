@@ -4,9 +4,11 @@ import {
   maxRetriesServices,
 } from "@config/environment";
 
-import { ICreditRequestPin } from "../types";
+import { ICreditRequestPinned } from "../types";
 
-export const getCreditRequestPin = async (): Promise<ICreditRequestPin[]> => {
+export const getCreditRequestPin = async (): Promise<
+  ICreditRequestPinned[]
+> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -36,7 +38,7 @@ export const getCreditRequestPin = async (): Promise<ICreditRequestPin[]> => {
         throw new Error("No hay datos disponibles.");
       }
 
-      const data: ICreditRequestPin[] = await res.json();
+      const data: ICreditRequestPinned[] = await res.json();
 
       if (!res.ok) {
         throw {

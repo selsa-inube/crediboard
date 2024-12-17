@@ -9,7 +9,7 @@ import {
 import { MdOutlineChevronRight } from "react-icons/md";
 
 import { SummaryCard } from "@components/cards/SummaryCard";
-import { ICreditRequestPin, ICreditRequest } from "@services/types";
+import { ICreditRequestPinned, ICreditRequest } from "@services/types";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
@@ -19,7 +19,7 @@ interface BoardSectionProps {
   sectionBackground: SectionBackground;
   orientation: SectionOrientation;
   sectionInformation: ICreditRequest[];
-  pinnedRequests: ICreditRequestPin[];
+  pinnedRequests: ICreditRequestPinned[];
   handlePinRequest: (requestId: string) => void;
   errorLoadingPins: boolean;
 }
@@ -49,7 +49,7 @@ function BoardSection(props: BoardSectionProps) {
 
   function isRequestPinned(
     creditRequestId: string | undefined,
-    pinnedRequests: ICreditRequestPin[]
+    pinnedRequests: ICreditRequestPinned[]
   ) {
     const pinnedRequest = pinnedRequests.find(
       (pinnedRequest) => pinnedRequest.creditRequestId === creditRequestId
