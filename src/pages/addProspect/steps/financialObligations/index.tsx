@@ -4,6 +4,7 @@ import { Text } from "@inubekit/text";
 import { Divider } from "@inubekit/divider";
 import { Button } from "@inubekit/button";
 
+import { CardBorrower } from "@components/cards/CardBorrower";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 import { dataReport } from "@pages/prospect/components/TableObligationsFinancial/config";
@@ -17,18 +18,41 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
 
   return (
     <Fieldset>
-      <Stack direction="column" height="auto" gap="20px" padding="16px">
+      <Stack
+        direction="column"
+        height="auto"
+        gap="20px"
+        padding={isMobile ? "8px" : "16px"}
+      >
         <Stack direction="column">
           <Stack alignItems="center">
-            <Text size="small" type="label" appearance="gray" weight="bold">
-              {dataReport.title}
-            </Text>
+            {!isMobile && (
+              <Text size="small" type="label" appearance="gray" weight="bold">
+                {dataReport.title}
+              </Text>
+            )}
           </Stack>
-          <Stack justifyContent="space-between" alignItems="end">
-            <Text size="medium" type="title" appearance="dark">
-              {dataReport.description}
-            </Text>
-            <Stack justifyContent="end" gap="16px">
+          <Stack
+            justifyContent="space-between"
+            alignItems={isMobile ? "normal" : "end"}
+            direction={isMobile ? "column" : "row"}
+          >
+            {!isMobile && (
+              <Text size="medium" type="title" appearance="dark">
+                {dataReport.description}
+              </Text>
+            )}
+            {isMobile && (
+              <Stack padding="0px 0px 10px 0px">
+                <CardBorrower label={dataReport.title} placeHolder={dataReport.description} />
+              </Stack>
+            )}
+            <Stack
+              justifyContent="end"
+              gap="16px"
+              direction={isMobile ? "column" : "row"}
+              width={isMobile ? "100%" : "auto"}
+            >
               <Stack>
                 <Button
                   children="Restablecer"
@@ -49,7 +73,11 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
           </Stack>
         </Stack>
         <Divider />
-        <Stack width="auto" justifyContent="center" margin="16px">
+        <Stack
+          width="auto"
+          justifyContent="center"
+          margin={isMobile ? "none" : "16px"}
+        >
           <TableFinancialObligations />
         </Stack>
       </Stack>
