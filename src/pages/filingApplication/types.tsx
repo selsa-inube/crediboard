@@ -18,9 +18,11 @@ export interface IStep {
   name?: string;
 }
 
+interface ContactInformation {
+  email: string;
+  phone: string;
+}
+
 export interface FormData {
-  contactInformation: {
-    email: string;
-    phone: string;
-  };
+  contactInformation: ContactInformation;
 }
