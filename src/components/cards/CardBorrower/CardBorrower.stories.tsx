@@ -2,7 +2,7 @@ import { CardBorrower, ICardBorrowerProps } from "./index";
 
 const story = {
   components: [CardBorrower],
-  title: "pages/propect/components/CardBorrower",
+  title: "components/cards/CardBorrower",
 };
 
 const CardBorrowerDefault = (args: ICardBorrowerProps) => (

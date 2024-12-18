@@ -27,7 +27,9 @@ export function CardBorrower(props: ICardBorrowerProps) {
             {placeHolder}
           </Text>
         </Stack>
-        <Text>{data}</Text>
+        <Text type="body" size="medium" appearance="gray">
+          {data}
+        </Text>
       </Stack>
     </StyledContainer>
   );

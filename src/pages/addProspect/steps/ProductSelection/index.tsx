@@ -6,7 +6,7 @@ import { Text } from "@inubekit/text";
 import { Toggle } from "@inubekit/toggle";
 import { Divider } from "@inubekit/divider";
 
-import { CardProductSelection } from "@pages/prospect/components/CardProductSelection";
+import { CardProductSelection } from "@pages/addProspect/components/CardProductSelection";
 import { Fieldset } from "@components/data/Fieldset";
 import { lineOfCredit } from "@mocks/add-prospect/line-of-credit/lineOfCredit.mock";
 

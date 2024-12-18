@@ -84,7 +84,7 @@ export function CardConsolidatedCredit(props: ICardConsolidatedCreditProps) {
   };
 
   return (
-    <StyledContainer disabled={isRadioSelected} isMobile={isMobile}>
+    <StyledContainer disabled={isRadioSelected} $isMobile={isMobile}>
       <Stack
         direction="column"
         padding={isMobile ? "16px 10px" : "16px 20px"}

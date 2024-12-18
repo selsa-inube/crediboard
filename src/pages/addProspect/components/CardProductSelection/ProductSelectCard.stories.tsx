@@ -2,7 +2,7 @@ import { CardProductSelection, ICardProductSelectionProps } from "./index";
 
 const story = {
   components: [CardProductSelection],
-  title: "components/Cards/CardProductSelection",
+  title: "pages/addProspect/components/CardProductSelection",
   argTypes: {
     amount: {
       control: { type: "number" },
