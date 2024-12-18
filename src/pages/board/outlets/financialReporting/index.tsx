@@ -290,7 +290,7 @@ export const FinancialReporting = () => {
                 />
               </Stack>
               <Stack direction="column">
-                <Approvals user={id!} isMobile={isMobile} />
+                <Approvals user={id!} isMobile={isMobile} id={id!} />
               </Stack>
               <Stack direction="column">
                 <Requirements
