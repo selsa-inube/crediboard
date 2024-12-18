@@ -34,7 +34,7 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
           </Stack>
           <Stack
             justifyContent="space-between"
-            alignItems="end"
+            alignItems={isMobile ? "normal" : "end"}
             direction={isMobile ? "column" : "row"}
           >
             {!isMobile && (
@@ -44,7 +44,7 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
             )}
             {isMobile && (
               <Stack padding="0px 0px 10px 0px">
-                <CardBorrower name={dataReport.description} />
+                <CardBorrower label={dataReport.title} placeHolder={dataReport.description} />
               </Stack>
             )}
             <Stack

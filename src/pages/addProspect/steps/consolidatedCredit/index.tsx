@@ -64,7 +64,12 @@ export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
               </Text>
             </Stack>
           )}
-          {isMobile && <CardBorrower name={debtorData.name} />}
+          {isMobile && (
+            <CardBorrower
+              label={dataConsolidated.debtor}
+              placeHolder={debtorData.name}
+            />
+          )}
           <Stack
             direction="column"
             alignItems="center"
@@ -89,7 +94,6 @@ export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
             gap="16px"
             wrap="wrap"
             justifyContent={isMobile ? "center" : "initial"}
-            height={isMobile ? "400px" : "100%"}
             margin={isMobile ? "10px 0px" : "10px 5px"}
           >
             {debtorData.data_card.map((creditData) => (

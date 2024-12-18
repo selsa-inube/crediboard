@@ -6,7 +6,7 @@ import { Text } from "@inubekit/text";
 import { Toggle } from "@inubekit/toggle";
 import { Divider } from "@inubekit/divider";
 
-import { CardProductSelection } from "@components/cards/CardProductSelection";
+import { CardProductSelection } from "@pages/prospect/components/CardProductSelection";
 import { Fieldset } from "@components/data/Fieldset";
 import { lineOfCredit } from "@mocks/add-prospect/line-of-credit/lineOfCredit.mock";
 
@@ -106,7 +106,6 @@ export function ProductSelection(props: IProductSelectionProps) {
               <Stack
                 gap="16px"
                 padding={isMobile ? "0px 6px" : "0px 12px"}
-                height={isMobile ? "380px" : "auto"}
                 wrap="wrap"
               >
                 {lineOfCredit.slice(0, 3).map((credit) => (

@@ -100,7 +100,9 @@ export function SourceIncome(props: ISourceIncomeProps) {
                 </Text>
               </Stack>
             )}
-            {onlyDebtor && isMobile && <CardBorrower name={form.borrower} />}
+            {onlyDebtor && isMobile && (
+              <CardBorrower label="Deudor" placeHolder={form.borrower} />
+            )}
             <Stack
               width={!isMobile ? "end" : "auto"}
               direction="column"

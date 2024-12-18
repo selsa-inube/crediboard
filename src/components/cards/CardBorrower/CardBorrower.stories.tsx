@@ -2,21 +2,19 @@ import { CardBorrower, ICardBorrowerProps } from "./index";
 
 const story = {
   components: [CardBorrower],
-  title: "components/Cards/CardBorrower",
-  argTypes: {
-    name: {
-      control: { type: "text" },
-      description: "Nombre del prestatario que se mostrará en el card.",
-    },
-  },
+  title: "pages/propect/components/CardBorrower",
 };
 
-const Default = (args: ICardBorrowerProps) => <CardBorrower {...args} />;
+const CardBorrowerDefault = (args: ICardBorrowerProps) => (
+  <CardBorrower {...args} />
+);
 
-Default.args = {
-  name: "Camilo Rincón",
-} satisfies ICardBorrowerProps;
+CardBorrowerDefault.args = {
+  label: "Correo electrónico",
+  placeHolder: "daniel.rodriguez98@hotmail.com",
+  data: "Cédula de ciudadanía",
+};
 
 export default story;
 
-export { Default };
+export { CardBorrowerDefault };
