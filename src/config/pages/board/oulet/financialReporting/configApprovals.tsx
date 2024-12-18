@@ -10,20 +10,10 @@ import { Icon } from "@inubekit/icon";
 import { Tag } from "@inubekit/tag";
 
 import { IEntries } from "@components/data/TableBoard/types";
-import { enviroment } from "@config/environment";
 import { IApprovals } from "@pages/board/outlets/financialReporting/Approvals/types";
 
 const handleData = (data: IEntries) => {
-  console.log(data, "function that receives data");
-};
-
-export const optionsFetch = {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json; charset=utf-8",
-    "X-Action": "SearchAllAprovalsById",
-    "X-Business-Unit": enviroment.TEMP_BUSINESS_UNIT,
-  },
+  console.log("function that receives data", data);
 };
 
 export const titlesApprovals = [
@@ -248,6 +238,7 @@ export const entriesApprovals = (data: IApprovals[]) => {
   return data.map((entry) => ({
     id: entry?.approverName?.toString(),
     usuarios: entry?.approverName,
+    concept: entry?.concept,
     tag: (
       <Tag
         label={entry.concept}
@@ -255,5 +246,6 @@ export const entriesApprovals = (data: IApprovals[]) => {
         weight="strong"
       />
     ),
+    error: entry.error,
   }));
 };

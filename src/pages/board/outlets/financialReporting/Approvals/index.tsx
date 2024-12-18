@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { useFlag } from "@inubekit/flag";
-
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
@@ -9,7 +8,9 @@ import { IEntries } from "@components/data/TableBoard/types";
 import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
-import { useFetch } from "@services/financialReporting/getApprovals/useFetch";
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { getAprovalsById } from "@services/financialReporting/getApprovals";
+import { ICreditRequest } from "@services/types";
 import {
   actionMobileApprovals,
   titlesApprovals,
@@ -20,54 +21,71 @@ import {
   getMobileActionsConfig,
   infoItems,
   entriesApprovals,
-  optionsFetch,
 } from "@config/pages/board/oulet/financialReporting/configApprovals";
-import { enviroment } from "@config/environment";
 
 import { errorObserver } from "../config";
-import { IApprovals } from "./types";
-
 interface IApprovalsProps {
   user: string;
   isMobile: boolean;
+  id: string;
 }
 
 export const Approvals = (props: IApprovalsProps) => {
-  const { user, isMobile } = props;
+  const { isMobile, id } = props;
+  const [requests, setRequests] = useState<ICreditRequest | null>(null);
+  const [loading, setLoading] = useState(true);
   const [approvalsEntries, setApprovalsEntries] = useState<IEntries[]>([]);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
-
-  const [retryFlag, setRetryFlag] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const { addFlag } = useFlag();
 
-  const {
-    data,
-    error: fetchError,
-    loading,
-  } = useFetch<IApprovals[]>(
-    `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/aprovals/97a2c93e-69a1-46bc-9203-99be56cd5047`,
-    optionsFetch,
-    retryFlag
-  );
+  const fetchCreditRequest = useCallback(async () => {
+    try {
+      const data = await getCreditRequestByCode(id);
+      setRequests(data[0] as ICreditRequest);
+    } catch (error) {
+      console.error(error);
+      errorObserver.notify({
+        id: "Management",
+        message: (error as Error).message.toString(),
+      });
+    }
+  }, [id]);
 
   useEffect(() => {
-    if (data) {
-      const entries: IEntries[] = entriesApprovals(data);
-      setApprovalsEntries(entries);
-    }
+    if (id) fetchCreditRequest();
+  }, [fetchCreditRequest, id]);
 
-    if (fetchError) {
+  const fetchAprovalsData = useCallback(async () => {
+    if (!requests?.creditRequestId) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await getAprovalsById(requests.creditRequestId);
+      if (data && Array.isArray(data)) {
+        const entries: IEntries[] = entriesApprovals(data).map((entry) => ({
+          ...entry,
+          error: entry.concept === "Pendiente",
+        }));
+        setApprovalsEntries(entries);
+      }
+    } catch (error) {
+      console.error(error);
       errorObserver.notify({
-        id: "Approvals",
-        message: fetchError.toString(),
+        id: "Aprovals",
+        message: (error as Error).message.toString(),
       });
-      setError(fetchError.toString());
+      setError((error as Error).message);
+    } finally {
+      setLoading(false);
     }
-  }, [data, user, fetchError]);
+  }, [requests?.creditRequestId]);
+
+  useEffect(() => {
+    fetchAprovalsData();
+  }, [fetchAprovalsData]);
 
   const handleNotificationClickBound = (data: IEntries) => {
     handleNotificationClick(data, setSelectedData, setShowNotificationModal);
@@ -105,7 +123,7 @@ export const Approvals = (props: IApprovalsProps) => {
   };
 
   const handleRetry = () => {
-    setRetryFlag((prev) => !prev);
+    fetchAprovalsData();
   };
 
   return (
