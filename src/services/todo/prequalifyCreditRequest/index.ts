@@ -7,7 +7,14 @@ import { IPrequalifyCreditRequest } from "@services/types";
 
 export const registerNewsPrequalify = async (
   prequalify: IPrequalifyCreditRequest
-): Promise<void> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> => {
+  if (!prequalify.xAction) {
+    throw new Error(
+      "No se definido una acción valida para registrar la calificación de la solicitud de crédito"
+    );
+  }
+
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -32,11 +39,11 @@ export const registerNewsPrequalify = async (
         `${enviroment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
         options
       );
-      console.log("respuesta----> ", { res });
+
       clearTimeout(timeoutId);
 
       if (res.status === 204) {
-        return;
+        return res;
       }
 
       const data = await res.json();
@@ -49,8 +56,7 @@ export const registerNewsPrequalify = async (
           data,
         };
       }
-
-      return;
+      return { ...data, statusServices: res.status };
     } catch (error) {
       if (attempt === maxRetries) {
         throw new Error(
@@ -59,4 +65,5 @@ export const registerNewsPrequalify = async (
       }
     }
   }
+  throw new Error("No se pudo completar la solicitud.");
 };

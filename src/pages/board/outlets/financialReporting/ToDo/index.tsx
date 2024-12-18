@@ -21,9 +21,10 @@ import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequest
 import { getSearchDecisionByTaskToBeDone } from "@src/services/todo/getSearchDecisionByTaskToBeDone";
 
 import { StaffModal } from "./StaffModal";
-import { errorMessagge, buttonText } from "./config";
-import { errorObserver } from "../config";
+import { errorMessagge, txtLabels, txtLabelsNoData } from "./config";
 import { IICon, IButton } from "./types";
+import { getXAction } from "./util/utils";
+import { errorObserver } from "../config";
 
 interface ToDoProps {
   icon?: IICon;
@@ -192,7 +193,7 @@ function ToDo(props: ToDoProps) {
           ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
             decision.map((decisions: any, index: number) => ({
               id: `decision-${index}`,
-              label: decisions.decision,
+              label: decisions.decision + ": " + decisions.value,
               value: decisions.value,
             }))
           : [];
@@ -209,35 +210,9 @@ function ToDo(props: ToDoProps) {
     }
   };
 
-  const getXAction = (executedTask: string, humanDecision: string): string => {
-    if (
-      executedTask === "ASESORAR_CLIENTE" &&
-      humanDecision === "VIABILIZAR_SOLICITUD"
-    ) {
-      return "PrequalifyCreditRequest";
-    } else if (
-      executedTask === "ASESORAR_CLIENTE" &&
-      humanDecision === "RECHAZAR_SOLICITUD"
-    ) {
-      return "";
-    } else if (
-      executedTask === "ASESORAR_CLIENTE" &&
-      humanDecision === "CANCELAR_SOLICITUD"
-    ) {
-      return "";
-    } else if (
-      executedTask === "ASESORAR_CLIENTE" &&
-      humanDecision === "CONFIRMACION_CLIENTE"
-    ) {
-      return "";
-    }
-    return "";
-  };
-
   const data = {
     creditRequestId: requests?.creditRequestId || "",
     executedTask: requests?.taskToBeDone || "",
-    executionDate: "",
     humanDecision: selectedDecision?.label || "",
     humanDecisionDescripcion: selectedDecision?.value || "",
     justification: "",
@@ -259,10 +234,10 @@ function ToDo(props: ToDoProps) {
         {!taskData ? (
           <ItemNotFound
             image={userNotFound}
-            title="No se encontraron tareas"
-            description="Parece que no hay tareas disponibles para mostrar."
-            buttonDescription="volver a intentar"
-            route="/retry-path"
+            title={txtLabelsNoData.title}
+            description={txtLabelsNoData.description}
+            buttonDescription={txtLabelsNoData.buttonDescription}
+            route={txtLabelsNoData.route}
             onRetry={handleRetry}
           />
         ) : (
@@ -318,7 +293,7 @@ function ToDo(props: ToDoProps) {
                   fullwidth={isMobile}
                   spacing="compact"
                 >
-                  {button?.label || buttonText}
+                  {button?.label || txtLabels.buttonText}
                 </Button>
               </Stack>
             </Stack>
@@ -331,12 +306,11 @@ function ToDo(props: ToDoProps) {
             >
               {isModalOpen && (
                 <DecisionModal
-                  title="Confirmar la decisión"
-                  buttonText="Enviar"
-                  secondaryButtonText="Cancelar"
-                  inputLabel="Justificación"
-                  maxLength={120}
-                  inputPlaceholder="Describa el motivo de su decisión."
+                  title={txtLabels.title}
+                  buttonText={txtLabels.buttonText}
+                  secondaryButtonText={txtLabels.secondaryButtonText}
+                  inputLabel={txtLabels.inputLabel}
+                  inputPlaceholder={txtLabels.inputPlaceholder}
                   onSecondaryButtonClick={handleCloseModal}
                   onCloseModal={handleCloseModal}
                   data={data}

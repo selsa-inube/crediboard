@@ -382,7 +382,6 @@ export interface IDecisionsToDo {
 export interface IPrequalifyCreditRequest {
   creditRequestId: string;
   executedTask: string;
-  executionDate: string;
   humanDecision: string;
   humanDecisionDescripcion: string;
   justification: string;

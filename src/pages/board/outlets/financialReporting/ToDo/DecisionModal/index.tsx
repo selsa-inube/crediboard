@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom";
+import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { MdClear } from "react-icons/md";
@@ -10,8 +11,10 @@ import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
+import { useFlag } from "@inubekit/flag";
 import { registerNewsPrequalify } from "@services/todo/prequalifyCreditRequest";
 import { IPrequalifyCreditRequest } from "@services/types";
+import { validationMessages } from "@src/validations/validationMessages";
 
 import {
   StyledModal,
@@ -19,11 +22,14 @@ import {
   StyledContainerTextField,
 } from "./styles";
 
+import { txtFlags, txtOthersOptions } from "./../config";
+
 interface FormValues {
   textarea: string;
 }
 
 export interface DecisionModalProps {
+  data: IPrequalifyCreditRequest;
   title: string;
   buttonText: string;
   inputLabel: string;
@@ -37,7 +43,6 @@ export interface DecisionModalProps {
   disableTextarea?: boolean;
   secondaryButtonText?: string;
   onSecondaryButtonClick?: () => void;
-  data: IPrequalifyCreditRequest;
 }
 
 export function DecisionModal(props: DecisionModalProps) {
@@ -61,29 +66,57 @@ export function DecisionModal(props: DecisionModalProps) {
     textarea: readOnly
       ? Yup.string()
       : Yup.string()
-          .max(maxLength, "El número de caracteres es demasiado largo")
-          .required("Este campo es obligatorio"),
+          .max(maxLength, validationMessages.maxCharacters(maxLength))
+          .required(validationMessages.required),
   });
 
   const isMobile = useMediaQuery("(max-width: 700px)");
   const node = document.getElementById(portalId);
 
-  const sendData = (value: string) => {
-    registerNewsPrequalify({
-      creditRequestId: data.creditRequestId,
-      executedTask: data.executedTask,
-      executionDate: new Date().toISOString(),
-      humanDecision: data.humanDecision,
-      humanDecisionDescripcion: data.humanDecisionDescripcion,
-      justification: value,
-      xAction: data.xAction,
-    });
+  const navigate = useNavigate();
+  const { addFlag } = useFlag();
+
+  const sendData = async (value: string) => {
+    try {
+      const response = await registerNewsPrequalify({
+        creditRequestId: data.creditRequestId,
+        executedTask: data.executedTask,
+        humanDecision: data.humanDecision,
+        humanDecisionDescripcion: data.humanDecisionDescripcion,
+        justification: value,
+        xAction: data.xAction,
+      });
+      console.log({ response });
+      if (response.statusServices === 200) {
+        navigate("/");
+        addFlag({
+          title: txtFlags.titleSuccess,
+          description: `${txtFlags.descriptionSuccess} ${response.status}`,
+          appearance: "success",
+          duration: txtFlags.duration,
+        });
+      } else {
+        addFlag({
+          title: txtFlags.titleWarning,
+          description: `${txtFlags.descriptionWarning} ${response.statusServices}`,
+          appearance: "warning",
+          duration: txtFlags.duration,
+        });
+      }
+    } catch (error) {
+      addFlag({
+        title: txtFlags.titleDanger,
+        description: txtFlags.descriptionDanger,
+        appearance: "danger",
+        duration: txtFlags.duration,
+      });
+    } finally {
+      onCloseModal?.();
+    }
   };
 
   if (!node) {
-    throw new Error(
-      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
-    );
+    throw new Error(validationMessages.errorNodo);
   }
 
   return createPortal(
@@ -95,7 +128,7 @@ export function DecisionModal(props: DecisionModalProps) {
           </Text>
           <StyledContainerClose onClick={onCloseModal}>
             <Stack alignItems="center" gap="8px">
-              <Text>Cerrar</Text>
+              <Text>{txtOthersOptions.optionClose}</Text>
               <Icon
                 icon={<MdClear />}
                 size="24px"
@@ -114,11 +147,10 @@ export function DecisionModal(props: DecisionModalProps) {
           ) => {
             onSubmit?.(values);
             setSubmitting(false);
-            onCloseModal?.();
             sendData(values.textarea);
           }}
         >
-          {({ errors, touched, isSubmitting }) => (
+          {({ errors, touched }) => (
             <Form>
               <StyledContainerTextField $smallScreen={isMobile}>
                 <Stack direction="column">
@@ -128,7 +160,7 @@ export function DecisionModal(props: DecisionModalProps) {
                     appearance="dark"
                     weight="bold"
                   >
-                    Decisión
+                    {txtOthersOptions.txtDecision}
                   </Text>
                   <Text
                     type="body"
@@ -137,9 +169,9 @@ export function DecisionModal(props: DecisionModalProps) {
                     weight="normal"
                     textAlign="justify"
                   >
-                    {data
+                    {data.humanDecision
                       ? data.humanDecisionDescripcion
-                      : "No se seleccionó una decisión disponible"}
+                      : txtOthersOptions.txtNoSelect}
                   </Text>
                 </Stack>
               </StyledContainerTextField>
@@ -180,7 +212,7 @@ export function DecisionModal(props: DecisionModalProps) {
                 <Button
                   type={readOnly ? "button" : "submit"}
                   onClick={readOnly ? onCloseModal : undefined}
-                  disabled={isSubmitting && !readOnly}
+                  disabled={data.humanDecision ? false : true}
                 >
                   {buttonText}
                 </Button>
