@@ -9,7 +9,8 @@ export const stepsFilingApplication = {
     id: 2,
     number: 2,
     name: "Datos de contacto",
-    description: "Registre la información de contacto con la cual se realizará seguimiento a esta solicitud.",
+    description:
+      "Registre la información de contacto con la cual se realizará seguimiento a esta solicitud.",
   },
   step3: {
     id: 3,
@@ -17,11 +18,11 @@ export const stepsFilingApplication = {
     name: "title",
     description: "Registre el inmueble ofrecido como garantía.",
   },
-  step4: {
+  propertyOffered: {
     id: 4,
     number: 4,
-    name: "title",
-    description: "Programe abonos para disminuir el pago ordinario o recortar plazo.",
+    name: "Inmueble ofrecido como garantía",
+    description: "Registre el inmueble ofrecido como garantía.",
   },
   step5: {
     id: 5,

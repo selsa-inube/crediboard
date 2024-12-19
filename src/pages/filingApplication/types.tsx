@@ -23,6 +23,15 @@ interface ContactInformation {
   phone: string;
 }
 
+export interface IPropertyOffered {
+  antique: string;
+  estimated: string;
+  type: string;
+  state: string;
+  description: string;
+}
+
 export interface FormData {
   contactInformation: ContactInformation;
+  propertyOffered: IPropertyOffered;
 }
