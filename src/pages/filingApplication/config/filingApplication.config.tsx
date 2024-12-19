@@ -1,15 +1,16 @@
-export const stepsAddProspect = {
+export const stepsFilingApplication = {
   generalInformation: {
     id: 1,
     number: 1,
     name: "title",
     description: "Datos de contacto para esta solicitud.",
   },
-  step2: {
+  contactInformation: {
     id: 2,
     number: 2,
-    name: "title",
-    description: "Datos generales los dedudores (codeudores).",
+    name: "Datos de contacto",
+    description:
+      "Registre la información de contacto con la cual se realizará seguimiento a esta solicitud.",
   },
   step3: {
     id: 3,
@@ -17,11 +18,11 @@ export const stepsAddProspect = {
     name: "title",
     description: "Registre el inmueble ofrecido como garantía.",
   },
-  step4: {
+  propertyOffered: {
     id: 4,
     number: 4,
-    name: "title",
-    description: "Programe abonos para disminuir el pago ordinario o recortar plazo.",
+    name: "Inmueble ofrecido como garantía",
+    description: "Registre el inmueble ofrecido como garantía.",
   },
   step5: {
     id: 5,

@@ -17,3 +17,21 @@ export interface IStep {
   number?: number;
   name?: string;
 }
+
+interface ContactInformation {
+  email: string;
+  phone: string;
+}
+
+export interface IPropertyOffered {
+  antique: string;
+  estimated: string;
+  type: string;
+  state: string;
+  description: string;
+}
+
+export interface FormData {
+  contactInformation: ContactInformation;
+  propertyOffered: IPropertyOffered;
+}
