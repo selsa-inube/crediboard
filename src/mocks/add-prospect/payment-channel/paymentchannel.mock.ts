@@ -18,3 +18,21 @@ export const mockPaymentChannel: IPaymentChannel[] = [
     value: "débito-automático-en-bancos",
   },
 ];
+
+export const mockPeriodicity = [
+  {
+    id: "1",
+    label: "Mensual pagado en día 30",
+    value: "mensual-pagado-en-dí-30",
+  },
+  {
+    id: "2",
+    label: "Mensual pagado en día 15",
+    value: "mensual-pagado-en-dí-15",
+  },
+];
+
+export const mockPayAmount = [
+  { id: "1", label: "15/Dic/2024", value: "15/Dic/2024" },
+  { id: "2", label: "30/Dic/2024", value: "30/Dic/2024" },
+];

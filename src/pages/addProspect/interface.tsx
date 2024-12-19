@@ -67,7 +67,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
     setSelectedProducts,
     handleConsolidatedCreditChange,
     isMobile,
-    isTablet
+    isTablet,
   } = props;
 
   return (
@@ -99,7 +99,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
         </StyledContainerAssisted>
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.generalInformation.id && (
-            <RequirementsNotMet isMobile={isMobile}/>
+            <RequirementsNotMet isMobile={isMobile} />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
@@ -164,7 +164,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id ===
             stepsAddProspect.obligationsFinancial.id && (
-            <ObligationsFinancial isMobile={isMobile}/>
+            <ObligationsFinancial isMobile={isMobile} />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
