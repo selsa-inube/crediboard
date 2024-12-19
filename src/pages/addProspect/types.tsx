@@ -90,6 +90,8 @@ export interface FormData {
     inputValue: string;
     toggleChecked: boolean;
     paymentPlan: string;
+    periodicity: string;
+    payAmount: string;
   };
   consolidatedCreditSelections: {
     totalCollected: number;

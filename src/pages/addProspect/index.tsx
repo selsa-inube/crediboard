@@ -48,6 +48,8 @@ export function AddProspect() {
       inputValue: "",
       toggleChecked: false,
       paymentPlan: "",
+      periodicity: "",
+      payAmount: "",
     },
     consolidatedCreditSelections: {
       totalCollected: 0,
@@ -127,7 +129,7 @@ export function AddProspect() {
     if (currentStep === stepsAddProspect.sourcesIncome.id) {
       setCurrentStep(stepsAddProspect.obligationsFinancial.id);
       return;
-    }  
+    }
     if (currentStep === stepsAddProspect.productSelection.id) {
       setCurrentStep(dynamicSteps[0]);
     } else if (
@@ -159,7 +161,7 @@ export function AddProspect() {
     if (currentStep === stepsAddProspect.obligationsFinancial.id) {
       setCurrentStep(stepsAddProspect.sourcesIncome.id);
       return;
-    }  
+    }
     if (currentStepIndex > 0) {
       setCurrentStep(dynamicSteps[currentStepIndex - 1]);
     } else if (currentStepIndex === 0) {
