@@ -22,6 +22,12 @@ export function FilingApplication() {
       state: "",
       description: "",
     },
+    vehicleOffered: {
+      state: "",
+      model: "",
+      value: "",
+      description: "",
+    },
   });
 
   const isMobile = useMediaQuery("(max-width:880px)");

@@ -24,11 +24,11 @@ export const stepsFilingApplication = {
     name: "Inmueble ofrecido como garantía",
     description: "Registre el inmueble ofrecido como garantía.",
   },
-  step5: {
+  vehicleOffered: {
     id: 5,
     number: 5,
-    name: "title",
-    description: "Fianza.",
+    name: "Vehículo ofrecido como garantía",
+    description: "Registre el vehículo ofrecido como garantía.",
   },
   step6: {
     id: 6,

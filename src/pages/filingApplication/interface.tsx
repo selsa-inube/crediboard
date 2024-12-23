@@ -7,6 +7,7 @@ import { StyledContainerAssisted } from "./styles";
 import { stepsFilingApplication } from "./config/filingApplication.config";
 import { ContactInformation } from "./steps/contactInformation";
 import { PropertyOffered } from "./steps/propertyOffered";
+import { VehicleOffered } from "./steps/vehicleOffered";
 
 interface AddPositionUIProps {
   currentStep: number;
@@ -85,6 +86,18 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
               initialValues={formData.propertyOffered}
               handleOnChange={(values) =>
                 handleFormChange({ propertyOffered: values })
+              }
+            />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsFilingApplication.vehicleOffered.id && (
+            <VehicleOffered
+              isMobile={isMobile}
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.vehicleOffered}
+              handleOnChange={(values) =>
+                handleFormChange({ vehicleOffered: values })
               }
             />
           )}
