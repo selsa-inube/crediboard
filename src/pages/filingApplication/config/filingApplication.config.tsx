@@ -11,11 +11,11 @@ export const stepsFilingApplication = {
     name: "Datos de contacto",
     description: "Registre la información de contacto con la cual se realizará seguimiento a esta solicitud.",
   },
-  step3: {
+  implementBorrowedData: {
     id: 3,
     number: 3,
-    name: "title",
-    description: "Registre el inmueble ofrecido como garantía.",
+    name: "Datos de deudor/es",
+    description: "Agregue o actualice a los deudores.",
   },
   step4: {
     id: 4,

@@ -15,6 +15,13 @@ export function FilingApplication() {
       email: "",
       phone: "",
     },
+    deptorData: {
+      name: "",
+      lastName: "",
+      email: "",
+      income: 0,
+      obligations: 0,
+    },
   });
 
   const isMobile = useMediaQuery("(max-width:880px)");

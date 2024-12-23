@@ -23,4 +23,11 @@ export interface FormData {
     email: string;
     phone: string;
   };
+  deptorData: {
+    name: string;
+    lastName: string;
+    email: string;
+    income: number;
+    obligations: number;
+  }
 }
