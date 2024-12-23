@@ -8,6 +8,7 @@ import { stepsFilingApplication } from "./config/filingApplication.config";
 import { ContactInformation } from "./steps/contactInformation";
 import { PropertyOffered } from "./steps/propertyOffered";
 import { VehicleOffered } from "./steps/vehicleOffered";
+import { Bail } from "./steps/bail";
 
 interface AddPositionUIProps {
   currentStep: number;
@@ -99,6 +100,14 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
               handleOnChange={(values) =>
                 handleFormChange({ vehicleOffered: values })
               }
+            />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsFilingApplication.bail.id && (
+            <Bail
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.bail}
+              handleOnChange={(values) => handleFormChange({ bail: values })}
             />
           )}
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">

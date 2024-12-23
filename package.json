@@ -19,6 +19,7 @@
     "@inubekit/avatar": "^2.9.1",
     "@inubekit/blanket": "^2.22.0",
     "@inubekit/button": "^4.19.0",
+    "@inubekit/checkbox": "^0.2.2",
     "@inubekit/datefield": "^2.39.0",
     "@inubekit/divider": "^0.2.0",
     "@inubekit/flag": "^7.6.0",
