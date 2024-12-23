@@ -13,6 +13,7 @@ interface MoneyDestinationCardProps {
   value: string;
   label: string;
   icon: string;
+  isSelected: boolean;
   handleChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
@@ -22,7 +23,7 @@ const getIconComponent = (iconName: string): IconType | null => {
 };
 
 function MoneyDestinationCard(props: MoneyDestinationCardProps) {
-  const { id, name, value, label, icon, handleChange } = props;
+  const { id, name, value, label, icon, isSelected, handleChange } = props;
   const IconComponent = getIconComponent(icon);
 
   return (
@@ -41,6 +42,7 @@ function MoneyDestinationCard(props: MoneyDestinationCardProps) {
           id={id}
           value={value}
           onChange={handleChange}
+          checked={isSelected}
         />
         <Stack gap="12px">
           <Icon

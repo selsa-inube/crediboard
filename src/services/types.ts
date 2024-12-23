@@ -21,9 +21,9 @@ export interface IStaff {
   position: string;
 }
 
-export interface PinnedRequest {
-  requestId: string;
-  isPinned: "Y" | "N";
+export interface ICreditRequestPinned {
+  creditRequestId: string;
+  isPinned: string;
 }
 
 export interface IToDo {
@@ -115,17 +115,18 @@ export interface ITraceType {
   useCase?: string;
 }
 
-export interface payroll_discount_authorization {
-  credit_request_id: string;
-  payroll_discount_authorization_id: string;
-  description_use: string;
-  abbreviated_name: string;
-  credit_product_id: string;
-  borrower_id: string;
-  state: string;
-  obligation_unique_code: string;
-  document_unique_code: string;
-  image_unique_code: string;
+export interface IPayrollDiscountAuthorization {
+  creditRequestId: string;
+  payrollDiscountAuthorizationId: string;
+  payrollDiscountAuthorizationCode: string;
+  descriptionUse: string;
+  abbreviatedName: string;
+  borrowerId: string;
+  borrowerName: string;
+  documentState: string;
+  obligationCode: string;
+  documentCode: string;
+  imageCode: string;
 }
 
 export interface Ipayment_capacity {
@@ -155,16 +156,18 @@ export interface Iuncovered_wallet {
   };
 }
 
-export interface promissory_note {
-  credit_request_id: string;
-  promissory_note_id: string;
-  description_use: string;
-  abbreviated_name: string;
-  credit_product_id: string;
-  state: string;
-  obligation_unique_code: string;
-  document_unique_code: string;
-  image_unique_code: string;
+export interface IPromissoryNotes {
+  creditRequestId: string;
+  payrollDiscountAuthorizationId: string;
+  payrollDiscountAuthorizationCode: string;
+  descriptionUse: string;
+  abbreviatedName: string;
+  borrowerId: string;
+  borrowerName: string;
+  documentState: string;
+  obligationCode: string;
+  documentCode: string;
+  imageCode: string;
 }
 
 export interface approval_by_credit_request_Mock {
@@ -278,9 +281,16 @@ export interface ICreditProductProspect {
   acquired_cash_flow: IAcquiredCashFlow;
 }
 
+interface IDebtor {
+  id: string;
+  label: string;
+  value: string;
+}
+
 export interface IIncome {
-  debtor_id: string;
-  debtor: string;
+  borrowers: IDebtor[];
+  borrower_id: string;
+  borrower: string;
   monthly_salary: number;
   other_monthly_payments: number;
   pension_allowances: number;

@@ -3,9 +3,10 @@ import { IncomeCard } from "@components/cards/IncomeCard";
 interface IncomeProps {
   values: string[];
   onChange: (index: number, newValue: string) => void;
+  ShowSupport?: boolean;
 }
 
-function IncomeCapital({ values, onChange }: IncomeProps) {
+function IncomeCapital({ values, onChange, ShowSupport }: IncomeProps) {
   return (
     <IncomeCard
       title="Rentas de capital"
@@ -17,11 +18,12 @@ function IncomeCapital({ values, onChange }: IncomeProps) {
       placeholders={["Arrendamiento/mes", "Utilidades/mes", "Rendimientos/mes"]}
       values={values}
       onChange={onChange}
+      ShowSupport={ShowSupport}
     />
   );
 }
 
-function IncomeEmployment({ values, onChange }: IncomeProps) {
+function IncomeEmployment({ values, onChange, ShowSupport }: IncomeProps) {
   return (
     <IncomeCard
       title="Rentas de trabajo"
@@ -37,11 +39,12 @@ function IncomeEmployment({ values, onChange }: IncomeProps) {
       ]}
       values={values}
       onChange={onChange}
+      ShowSupport={ShowSupport}
     />
   );
 }
 
-function MicroBusinesses({ values, onChange }: IncomeProps) {
+function MicroBusinesses({ values, onChange, ShowSupport }: IncomeProps) {
   return (
     <IncomeCard
       title="Otros ingresos variables"
@@ -49,11 +52,12 @@ function MicroBusinesses({ values, onChange }: IncomeProps) {
       placeholders={["Ganancias/mes", "Honorarios/mes"]}
       values={values}
       onChange={onChange}
+      ShowSupport={ShowSupport}
     />
   );
 }
 
-function ProfessionalServices({ values, onChange }: IncomeProps) {
+function ProfessionalServices({ values, onChange, ShowSupport }: IncomeProps) {
   return (
     <IncomeCard
       title="Servicios profesionales"
@@ -61,6 +65,7 @@ function ProfessionalServices({ values, onChange }: IncomeProps) {
       placeholders={["Honorarios/mes"]}
       values={values}
       onChange={onChange}
+      ShowSupport={ShowSupport}
     />
   );
 }

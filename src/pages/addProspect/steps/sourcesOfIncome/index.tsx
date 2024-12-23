@@ -1,23 +1,33 @@
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
-import { income } from "@src/mocks/add-prospect/income/income.mock";
+import { Fieldset } from "@components/data/Fieldset";
 
-export function SourcesOfIncome() {
-  const initialFormData = income[0];
-
-  const handleChange = (name: string, newValue: string) => {
-    console.log(`${name}: ${newValue}`);
+interface ISourcesOfIncomeProps {
+  handleOnChange: (name: string, newValue: string) => void;
+  initialValues: {
+    borrower: string;
+    monthly_salary?: number;
+    other_monthly_payments?: number;
+    pension_allowances?: number;
+    leases?: number;
+    dividends_or_shares?: number;
+    financial_returns?: number;
+    average_monthly_profit?: number;
+    monthly_fees?: number;
   };
+  options: { id: string; label: string; value: string }[];
+}
 
-  const options: { id: string; label: string; value: string }[] = [
-    { id: "1", label: "Maria Lopez", value: "Maria Lopez" },
-    { id: "2", label: "Alfonso Gomez", value: "Alfonso Gomez" },
-  ];
+export function SourcesOfIncome(props: ISourcesOfIncomeProps) {
+  const { initialValues, handleOnChange, options } = props;
 
   return (
-    <SourceIncome
-      form={initialFormData}
-      onChange={handleChange}
-      options={options}
-    />
+    <Fieldset>
+      <SourceIncome
+        form={initialValues}
+        onChange={handleOnChange}
+        options={options}
+        onlyDebtor
+      />
+    </Fieldset>
   );
 }

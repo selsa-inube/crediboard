@@ -7,11 +7,13 @@ import { currencyFormat } from "@utils/formatData/currency";
 
 import { IncomeEmployment, IncomeCapital, MicroBusinesses } from "./config";
 import { StyledContainer } from "./styles";
+import { Button } from "@inubekit/button";
+import { MdCached } from "react-icons/md";
 
 interface ISourceIncomeProps {
   onChange: (name: string, newValue: string) => void;
   form: {
-    debtor: string;
+    borrower: string;
     monthly_salary?: number;
     other_monthly_payments?: number;
     pension_allowances?: number;
@@ -22,10 +24,12 @@ interface ISourceIncomeProps {
     monthly_fees?: number;
   };
   options: { id: string; label: string; value: string }[];
+  ShowSupport?: boolean;
+  onlyDebtor?: boolean;
 }
 
 export function SourceIncome(props: ISourceIncomeProps) {
-  const { form, onChange, options } = props;
+  const { form, onChange, options, ShowSupport, onlyDebtor } = props;
 
   const handleFieldChange = (
     fields: string[],
@@ -60,22 +64,35 @@ export function SourceIncome(props: ISourceIncomeProps) {
           <Stack
             width={!isMobile ? "auto" : "auto"}
             justifyContent="space-between"
+            alignItems={isMobile ? "center" : "normal"}
             gap="24px"
             direction={!isMobile ? "row" : "column"}
           >
-            <Stack width={!isMobile ? "317px" : "auto"}>
-              <Select
-                id="income"
-                name="debtor"
-                label="Deudor"
-                placeholder="Seleccione una opción"
-                options={options}
-                value={form.debtor}
-                onChange={(name, value) => onChange(name, value)}
-                size="compact"
-                fullwidth
-              />
-            </Stack>
+            {!onlyDebtor && (
+              <Stack width={!isMobile ? "317px" : "auto"}>
+                <Select
+                  id="income"
+                  name="borrower"
+                  label="Deudor"
+                  placeholder="Seleccione una opción"
+                  options={options}
+                  value={form.borrower}
+                  onChange={(name, value) => onChange(name, value)}
+                  size="compact"
+                  fullwidth
+                />
+              </Stack>
+            )}
+            {onlyDebtor && (
+              <Stack direction="column" gap="8px">
+                <Text type="body" size="small" weight="bold" appearance="gray">
+                  Deudor
+                </Text>
+                <Text type="title" size="medium">
+                  {form.borrower}
+                </Text>
+              </Stack>
+            )}
             <Stack
               width={!isMobile ? "end" : "auto"}
               direction="column"
@@ -94,6 +111,13 @@ export function SourceIncome(props: ISourceIncomeProps) {
                 Total ingresos mensuales.
               </Text>
             </Stack>
+            {onlyDebtor && (
+              <Stack alignItems="end">
+                <Button variant="outlined" iconBefore={<MdCached />}>
+                  Restablecer
+                </Button>
+              </Stack>
+            )}
           </Stack>
         </Stack>
         <Stack direction="column">
@@ -115,6 +139,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   newValue
                 )
               }
+              ShowSupport={ShowSupport}
             />
             <IncomeCapital
               values={[
@@ -129,6 +154,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   newValue
                 )
               }
+              ShowSupport={ShowSupport}
             />
             <MicroBusinesses
               values={[
@@ -138,6 +164,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
               onChange={(index, newValue) =>
                 handleFieldChange(["gananciaPromedio"], index, newValue)
               }
+              ShowSupport={ShowSupport}
             />
           </Grid>
         </Stack>

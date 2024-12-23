@@ -27,4 +27,13 @@ interface IMessageState {
   type?: string;
 }
 
-export type { IFormsInvitation, IAssignmentFormEntry, IMessageState, IMessage };
+interface LoanConditionState {
+  toggles: {
+    quotaCapToggle: boolean;
+    maximumTermToggle: boolean;
+  };
+  quotaCapValue: string;
+  maximumTermValue: string;
+}
+
+export type { IFormsInvitation, IAssignmentFormEntry, IMessageState, IMessage, LoanConditionState };

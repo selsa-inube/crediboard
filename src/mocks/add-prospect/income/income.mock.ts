@@ -2,8 +2,12 @@ import { IIncome } from "@services/types";
 
 export const income: IIncome[] = [
   {
-    debtor_id: "100",
-    debtor: "Maria Lopez",
+    borrowers: [
+      { id: "1", label: "Maria Lopez", value: "Maria Lopez" },
+      { id: "2", label: "Alfonso Gomez", value: "Alfonso Gomez" },
+    ],
+    borrower_id: "100",
+    borrower: "Maria Lopez",
     monthly_salary: 1800000,
     other_monthly_payments: 0,
     pension_allowances: 0,
@@ -14,8 +18,12 @@ export const income: IIncome[] = [
     monthly_fees: 0,
   },
   {
-    debtor_id: "200",
-    debtor: "Alfonso Gomez",
+    borrowers: [
+      { id: "1", label: "Maria Lopez", value: "Maria Lopez" },
+      { id: "2", label: "Alfonso Gomez", value: "Alfonso Gomez" },
+    ],
+    borrower_id: "200",
+    borrower: "Alfonso Gomez",
     monthly_salary: 1800000,
     other_monthly_payments: 0,
     pension_allowances: 0,
@@ -26,8 +34,12 @@ export const income: IIncome[] = [
     monthly_fees: 0,
   },
   {
-    debtor_id: "300",
-    debtor: "Luis Ramirez",
+    borrowers: [
+      { id: "1", label: "Maria Lopez", value: "Maria Lopez" },
+      { id: "2", label: "Alfonso Gomez", value: "Alfonso Gomez" },
+    ],
+    borrower_id: "300",
+    borrower: "Luis Ramirez",
     monthly_salary: 1300000,
     other_monthly_payments: 240000,
     pension_allowances: 100000,
@@ -38,8 +50,12 @@ export const income: IIncome[] = [
     monthly_fees: 30000,
   },
   {
-    debtor_id: "400",
-    debtor: "Carlos Martinez",
+    borrowers: [
+      { id: "1", label: "Maria Lopez", value: "Maria Lopez" },
+      { id: "2", label: "Alfonso Gomez", value: "Alfonso Gomez" },
+    ],
+    borrower_id: "400",
+    borrower: "Carlos Martinez",
     monthly_salary: 2000000,
     other_monthly_payments: 240000,
     pension_allowances: 0,
@@ -50,8 +66,12 @@ export const income: IIncome[] = [
     monthly_fees: 0,
   },
   {
-    debtor_id: "500",
-    debtor: "Ana Torres",
+    borrowers: [
+      { id: "1", label: "Maria Lopez", value: "Maria Lopez" },
+      { id: "2", label: "Alfonso Gomez", value: "Alfonso Gomez" },
+    ],
+    borrower_id: "500",
+    borrower: "Ana Torres",
     monthly_salary: 1700000,
     other_monthly_payments: 160000,
     pension_allowances: 20000,
