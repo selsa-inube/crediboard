@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
 import { SkeletonLine } from "@inubekit/skeleton";
@@ -21,6 +20,7 @@ export interface ReciprocityModalProps {
   balanceOfContributions: number;
   accordingToRegulation: number;
   assignedQuota: number;
+  loading?: boolean;
 }
 
 export function ReciprocityModal(props: ReciprocityModalProps) {
@@ -30,15 +30,8 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
     balanceOfContributions,
     accordingToRegulation,
     assignedQuota,
+    loading,
   } = props;
-
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
 
   const isMobile = useMediaQuery("(max-width:880px)");
 

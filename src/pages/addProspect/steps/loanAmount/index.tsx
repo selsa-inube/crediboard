@@ -34,6 +34,24 @@ export function LoanAmount(props: ILoanAmountProps) {
   const [inputValue, setInputValue] = useState("");
   const [openModal, setOpenModal] = useState<string | null>(null);
   const [creditModal, setCreditModal] = useState(false);
+  const [loadingCredit, setLoadingCredit] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleOpenModal = () => {
+    setCreditModal(true);
+    setLoadingCredit(true);
+    setTimeout(() => {
+      setLoadingCredit(false);
+    }, 2000);
+  };
+
+  const handleOpenModals = (modalName: string) => {
+    setOpenModal(modalName);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
 
   useEffect(() => {
     get("mockRequest_value")
@@ -81,7 +99,7 @@ export function LoanAmount(props: ILoanAmountProps) {
               icon={<MdInfoOutline />}
               appearance="primary"
               size="16px"
-              onClick={() => setCreditModal(true)}
+              onClick={handleOpenModal}
               cursorHover={true}
             />
           </Stack>
@@ -141,16 +159,10 @@ export function LoanAmount(props: ILoanAmountProps) {
           handleClose={() => setCreditModal(false)}
           title="Origen de cupo"
           portalId="portal"
-          maxPaymentCapacity={50000000}
-          maxReciprocity={40000000}
-          maxDebtFRC={45000000}
-          assignedLimit={0}
-          currentPortfolio={10000000}
-          maxUsableLimit={20000000}
-          availableLimitWithoutGuarantee={15000000}
-          onOpenPaymentCapacityModal={() => setOpenModal("paymentCapacity")}
-          onOpenReciprocityModal={() => setOpenModal("reciprocityModal")}
-          onOpenFrcModal={() => setOpenModal("scoreModal")}
+          loading={loadingCredit}
+          onOpenPaymentCapacityModal={() => handleOpenModals("paymentCapacity")}
+          onOpenReciprocityModal={() => handleOpenModals("reciprocityModal")}
+          onOpenFrcModal={() => handleOpenModals("scoreModal")}
         />
       ) : (
         <></>
@@ -159,6 +171,7 @@ export function LoanAmount(props: ILoanAmountProps) {
         <PaymentCapacity
           title="Cupo máx. capacidad de pago"
           portalId="portal"
+          loading={loading}
           handleClose={() => setOpenModal(null)}
           reportedIncomeSources={2000000}
           reportedFinancialObligations={6789000}
@@ -174,6 +187,7 @@ export function LoanAmount(props: ILoanAmountProps) {
       {openModal === "reciprocityModal" ? (
         <ReciprocityModal
           portalId="portal"
+          loading={loading}
           handleClose={() => setOpenModal(null)}
           balanceOfContributions={40000000}
           accordingToRegulation={2}
@@ -187,6 +201,7 @@ export function LoanAmount(props: ILoanAmountProps) {
           title="Score Details"
           handleClose={() => setOpenModal(null)}
           subTitle="Your Financial Score"
+          loading={loading}
           totalScore={150}
           seniority={150}
           centralRisk={50}

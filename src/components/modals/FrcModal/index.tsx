@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { MdClear, MdQueryStats } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -28,6 +27,7 @@ export interface ScoreModalProps {
   economicActivity: number;
   monthlyIncome: number;
   maxIndebtedness: number;
+  loading?: boolean;
 }
 
 export const ScoreModal = (props: ScoreModalProps) => {
@@ -42,15 +42,8 @@ export const ScoreModal = (props: ScoreModalProps) => {
     economicActivity,
     monthlyIncome,
     maxIndebtedness,
+    loading,
   } = props;
-
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
