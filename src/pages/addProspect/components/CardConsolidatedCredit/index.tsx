@@ -19,8 +19,9 @@ export interface ICardConsolidatedCreditProps {
   expiredValue: number;
   nextDueDate: number;
   fullPayment: number;
-  arrears?: boolean;
   date: Date;
+  isMobile?: boolean;
+  arrears?: boolean;
   initialValue?: number;
 }
 
@@ -32,6 +33,7 @@ export function CardConsolidatedCredit(props: ICardConsolidatedCreditProps) {
     expiredValue,
     nextDueDate,
     fullPayment,
+    isMobile,
     arrears,
     date = new Date(),
     initialValue,
@@ -82,8 +84,13 @@ export function CardConsolidatedCredit(props: ICardConsolidatedCreditProps) {
   };
 
   return (
-    <StyledContainer disabled={isRadioSelected}>
-      <Stack direction="column" padding="16px 20px" gap="16px" width="256px">
+    <StyledContainer disabled={isRadioSelected} $isMobile={isMobile}>
+      <Stack
+        direction="column"
+        padding={isMobile ? "16px 10px" : "16px 20px"}
+        gap="16px"
+        width="256px"
+      >
         <Text type="label" size="large" weight="bold">
           {title}
         </Text>

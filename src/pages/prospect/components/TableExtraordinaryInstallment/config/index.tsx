@@ -16,7 +16,7 @@ export const rowsActions = [
 
 export const headersTableExtraordinaryInstallment: IHeaders[] = [
   {
-    label: "Fecha de pago",
+    label: "Fecha",
     key: "datePayment",
   },
   {
