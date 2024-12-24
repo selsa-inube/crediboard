@@ -4,6 +4,8 @@ import { Button } from "@inubekit/button";
 
 import { IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { StyledContainerAssisted } from "./styles";
+import { stepsAddProspect } from "./config/addProspect.config";
+import { RequirementsNotMet } from "./steps/requirementsNotMet";
 
 interface AddPositionUIProps {
   currentStep: number;
@@ -35,7 +37,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
       alignItems={isMobile ? "normal" : "center"}
       margin="20px 0px"
       padding="24px"
-      height="100%"
+      height={isMobile ? "2000px" : "100%"}
     >
       <Stack
         gap="24px"
@@ -56,6 +58,10 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             size={isMobile ? "small" : "large"}
           />
         </StyledContainerAssisted>
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddProspect.generalInformation.id && (
+            <RequirementsNotMet isMobile={isMobile} />
+          )}
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
           <Button
             variant="outlined"
