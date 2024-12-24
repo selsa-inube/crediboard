@@ -379,7 +379,7 @@ export interface IDecisionsToDo {
   value: string;
 }
 
-export interface IPrequalifyCreditRequest {
+export interface IMakeDecisionsCreditRequest {
   creditRequestId: string;
   executedTask: string;
   humanDecision: string;

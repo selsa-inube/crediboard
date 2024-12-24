@@ -3,13 +3,13 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { IPrequalifyCreditRequest } from "@services/types";
+import { IMakeDecisionsCreditRequest } from "@services/types";
 
-export const registerNewsPrequalify = async (
-  prequalify: IPrequalifyCreditRequest
+export const makeDecisions = async (
+  makeDecisions: IMakeDecisionsCreditRequest
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> => {
-  if (!prequalify.xAction) {
+  if (!makeDecisions.xAction) {
     throw new Error(
       "No se definido una acción valida para registrar la calificación de la solicitud de crédito"
     );
@@ -26,12 +26,12 @@ export const registerNewsPrequalify = async (
       const options: RequestInit = {
         method: "PATCH",
         headers: {
-          "X-Action": prequalify.xAction,
+          "X-Action": makeDecisions.xAction,
           "X-Business-Unit": enviroment.BUSINESS_UNIT,
           "X-User-Name": "Erg",
           "Content-type": "application/json; charset=UTF-8",
         },
-        body: JSON.stringify(prequalify),
+        body: JSON.stringify(makeDecisions),
         signal: controller.signal,
       };
 

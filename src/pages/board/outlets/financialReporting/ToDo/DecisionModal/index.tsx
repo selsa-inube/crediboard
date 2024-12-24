@@ -12,8 +12,8 @@ import { Button } from "@inubekit/button";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
 import { useFlag } from "@inubekit/flag";
-import { registerNewsPrequalify } from "@services/todo/prequalifyCreditRequest";
-import { IPrequalifyCreditRequest } from "@services/types";
+import { makeDecisions } from "@src/services/todo/makeDecisions";
+import { IMakeDecisionsCreditRequest } from "@services/types";
 import { validationMessages } from "@src/validations/validationMessages";
 
 import {
@@ -29,7 +29,7 @@ interface FormValues {
 }
 
 export interface DecisionModalProps {
-  data: IPrequalifyCreditRequest;
+  data: IMakeDecisionsCreditRequest;
   title: string;
   buttonText: string;
   inputLabel: string;
@@ -78,7 +78,7 @@ export function DecisionModal(props: DecisionModalProps) {
 
   const sendData = async (value: string) => {
     try {
-      const response = await registerNewsPrequalify({
+      const response = await makeDecisions({
         creditRequestId: data.creditRequestId,
         executedTask: data.executedTask,
         humanDecision: data.humanDecision,

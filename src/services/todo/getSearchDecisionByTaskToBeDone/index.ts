@@ -16,7 +16,9 @@ export const getSearchDecisionByTaskToBeDone = async (
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-
+      const queryParams = new URLSearchParams({
+        sort: "decision",
+      });
       const options: RequestInit = {
         method: "GET",
         headers: {
@@ -28,7 +30,7 @@ export const getSearchDecisionByTaskToBeDone = async (
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/${creditRequestId}`,
+        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/${creditRequestId}?${queryParams.toString()}`,
         options
       );
 

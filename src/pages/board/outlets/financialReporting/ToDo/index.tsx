@@ -213,12 +213,12 @@ function ToDo(props: ToDoProps) {
   const data = {
     creditRequestId: requests?.creditRequestId || "",
     executedTask: requests?.taskToBeDone || "",
-    humanDecision: selectedDecision?.label || "",
-    humanDecisionDescripcion: selectedDecision?.value || "",
+    humanDecision: selectedDecision?.label.split(":")[0] || "",
+    humanDecisionDescripcion: selectedDecision?.label || "",
     justification: "",
     xAction: getXAction(
       requests?.taskToBeDone || "",
-      selectedDecision?.label || ""
+      selectedDecision?.label.split(":")[0] || ""
     ),
   };
 
