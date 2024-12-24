@@ -21,7 +21,7 @@ import {
   getMobileActionsConfig,
   infoItems,
   entriesApprovals,
-} from "@config/pages/board/oulet/financialReporting/configApprovals";
+} from "@config/pages/board/outlet/financialReporting/configApprovals";
 
 import { errorObserver } from "../config";
 interface IApprovalsProps {

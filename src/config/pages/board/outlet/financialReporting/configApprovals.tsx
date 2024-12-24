@@ -85,11 +85,17 @@ interface TagElement {
 }
 
 export const infoItems = [
-  { icon: <MdCheck />, text: "Aprobado" },
-  { icon: <MdClose />, text: "Rechazado" },
-  { icon: <MdRemove />, text: "Pendiente" },
+  { icon: <MdCheck />, text: "Aprobado", appearance: "success" },
+  { icon: <MdClose />, text: "Rechazado", appearance: "danger" },
+  { icon: <MdRemove />, text: "Pendiente", appearance: "warning" },
+  { icon: <MdRemove />, text: "GESTION_COMERCIAL", appearance: "help" },
+  { icon: <MdRemove />, text: "ANALISIS_RIESGO", appearance: "dark" },
   { icon: <MdWarningAmber />, text: "Error", appearance: "danger" },
-  { icon: <MdNotificationsNone />, text: "Notificaciones", appearance: "help" },
+  {
+    icon: <MdNotificationsNone />,
+    text: "Notificaciones",
+    appearance: "help",
+  },
 ];
 
 const isValidTagElement = (element: unknown): element is TagElement => {
@@ -114,6 +120,7 @@ export const actionMobileApprovals = [
         cursorHover
         variant="filled"
         shape="circle"
+        size="20px"
       />
     ),
   },
@@ -225,11 +232,17 @@ export const getMobileActionsConfig = (
 };
 
 const appearanceTag = (label: string) => {
+  if (label === "Aprobado") {
+    return "success";
+  }
   if (label === "Pendiente") {
     return "warning";
   }
-  if (label === "Aprobado") {
-    return "success";
+  if (label === "GESTION_COMERCIAL") {
+    return "help";
+  }
+  if (label === "ANALISIS_RIESGO") {
+    return "dark";
   }
   return "danger";
 };
