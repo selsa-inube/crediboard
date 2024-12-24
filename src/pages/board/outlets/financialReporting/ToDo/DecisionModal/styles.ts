@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 
 interface IStyledModal {
   $smallScreen: boolean;
@@ -10,15 +10,13 @@ const StyledModal = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) =>
-    theme?.color?.surface?.light?.clear || inube.color.surface.light.clear};
+    theme?.color?.surface?.light?.clear || inube.palette.neutral.N0};
   max-height: "382px"
   height: ${({ $smallScreen }) => ($smallScreen ? "340px" : "448px")};
   width: ${({ $smallScreen }) => ($smallScreen ? "350px" : "500px")};
-  padding: ${({ $smallScreen }) =>
-    $smallScreen ? inube.spacing.s200 : inube.spacing.s300};
-  gap: ${({ $smallScreen }) =>
-    $smallScreen ? inube.spacing.s200 : inube.spacing.s300};
-  border-radius: ${inube.spacing.s100};
+  padding: ${({ $smallScreen }) => ($smallScreen ? "16px" : "24px")};
+  gap: ${({ $smallScreen }) => ($smallScreen ? "16px" : "24px")};
+  border-radius: "8px";
 `;
 
 const StyledContainerClose = styled.div`
@@ -34,7 +32,7 @@ const StyledContainerTextField = styled.div<IStyledModal>`
   margin: 0 0 24px 0;
   overflow-y: auto;
   background-color: ${({ theme }) =>
-    theme?.color?.surface?.gray?.clear || inube.color.surface.gray.clear};
+    theme?.color?.surface?.gray?.clear || inube.palette.neutral.N10};
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -43,7 +41,7 @@ const StyledContainerTextField = styled.div<IStyledModal>`
 
   &::-webkit-scrollbar-thumb {
     background-color: ${({ theme }) =>
-      theme?.color?.surface?.light?.clear || inube.color.surface.gray.regular};
+      theme?.color?.surface?.light?.clear || inube.palette.neutral.N30};
     border-radius: 8px;
   }
 `;
