@@ -1,25 +1,28 @@
 import { IStaff } from "@services/types";
 
-export const mockStaff: IStaff[] = [
+export const mockAnalyst: IStaff[] = [
   {
-    id: "12345678",
-    name: "Juan Carlos Pérez Gómez",
-    email: "juan.perez@example.com",
-    phone: "3001234567",
-    position: "analyst",
+    userId: "12345678",
+    userName: "Juan Carlos Pérez Gómez",
+    identificationType: "C",
+    identificationNumber: "3001234567",
+    position: "Analyst",
   },
   {
-    id: "23456789",
-    name: "María Fernanda López Rodríguez",
-    email: "maria.lopez@example.com",
-    phone: "3002345678",
-    position: "analyst",
+    userId: "23456789",
+    userName: "María Fernanda López Rodríguez",
+    identificationType: "C",
+    identificationNumber: "3002345678",
+    position: "Analyst",
   },
+];
+
+export const mockAccountManager: IStaff[] = [
   {
-    id: "90123456",
-    name: "Ricardo José Fernández Muñoz",
-    email: "ricardo.fernandez@example.com",
-    phone: "3009012345",
-    position: "commercialManager",
+    userId: "90123456",
+    userName: "Ricardo José Fernández Muñoz",
+    identificationType: "C",
+    identificationNumber: "3009012345",
+    position: "Account_manager",
   },
 ];

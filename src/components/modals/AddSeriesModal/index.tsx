@@ -122,9 +122,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
                 id="field2"
                 label="Valor"
                 iconBefore={
-                  <MdOutlineAttachMoney
-                    color={inube.palette.green.G400}
-                  />
+                  <MdOutlineAttachMoney color={inube.palette.green.G400} />
                 }
                 placeholder="Valor a pagar"
                 fullwidth

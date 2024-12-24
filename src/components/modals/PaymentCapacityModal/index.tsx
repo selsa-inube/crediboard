@@ -14,6 +14,7 @@ export interface PaymentCapacityProps {
   availableForNewCommitments: number;
   maxVacationTerm: number;
   maxAmount: number;
+  iconVisible?: boolean;
 }
 
 export const PaymentCapacity = (props: PaymentCapacityProps) => {
@@ -27,6 +28,7 @@ export const PaymentCapacity = (props: PaymentCapacityProps) => {
     availableForNewCommitments,
     maxVacationTerm,
     maxAmount,
+    iconVisible
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -62,6 +64,7 @@ export const PaymentCapacity = (props: PaymentCapacityProps) => {
         availableForNewCommitments={availableForNewCommitments}
         maxVacationTerm={maxVacationTerm}
         maxAmount={maxAmount}
+        iconVisible={iconVisible}
       />
     </Blanket>,
     node
