@@ -4,7 +4,7 @@ import { MdCheck } from "react-icons/md";
 
 import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
-import { AppContext } from "@context/AppContext";
+import { AppContext } from "@context/AppContext/AppContext";
 import { IClient } from "@context/AppContext/types";
 
 import {

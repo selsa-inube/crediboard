@@ -1,7 +1,7 @@
 import { SummaryCardUI } from "./interface";
 
 interface SummaryCardProps {
-  rad: number;
+  rad: string;
   date: string;
   name: string;
   destination: string;

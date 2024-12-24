@@ -5,7 +5,7 @@ import { Button } from "@inubekit/button";
 
 const meta: Meta<typeof Consulting> = {
     component: Consulting,
-    title: "Components/modal/Consulting",
+    title: "Components/modals/Consulting",
 }
 
 const Default = () => {

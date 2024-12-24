@@ -6,7 +6,7 @@ import { Icon } from "@inubekit/icon";
 import { Header } from "@inubekit/header";
 import { Text } from "@inubekit/text";
 
-import { AppContext } from "@context/AppContext";
+import { AppContext } from "@context/AppContext/AppContext";
 import { MenuSection } from "@components/navigation/MenuSection";
 import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
@@ -136,11 +136,7 @@ function AppPage() {
           <StyledMain>
             <Outlet />
             <StyledFooter>
-              <Text
-                appearance="gray"
-                textAlign="center"
-                size="medium"
-              >
+              <Text appearance="gray" textAlign="center" size="medium">
                 © 2024 Inube
               </Text>
             </StyledFooter>

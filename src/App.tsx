@@ -11,11 +11,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Login } from "@pages/login";
 import { initializeDataDB } from "@mocks/utils/initializeDataDB";
 import { ErrorPage } from "@components/layout/ErrorPage";
-import AppContextProvider, { AppContext } from "@context/AppContext";
+import AppContextProvider from "@context/AppContext";
+import { AppContext } from "@context/AppContext/AppContext";
 
 import { LoginRoutes } from "./routes/login";
 import { BoardRoutes } from "./routes/board";
-import { AddProspectRoutes } from "./routes/assistedRoutes";
+import { AddProspectRoutes } from "./routes/addProspect";
+import { FilingApplicationRoutes } from "./routes/filingApplication";
 import { GlobalStyles } from "./styles/global";
 import { enviroment } from "./config/environment";
 
@@ -39,6 +41,7 @@ const router = createBrowserRouter(
       <Route path="login/*" element={<LoginRoutes />} />
       <Route path="/*" element={<BoardRoutes />} />
       <Route path="add-prospect/*" element={<AddProspectRoutes />} />
+      <Route path="filing-application/*" element={<FilingApplicationRoutes />} />
       <Route path="logout" element={<LogOut />} />
     </>
   )

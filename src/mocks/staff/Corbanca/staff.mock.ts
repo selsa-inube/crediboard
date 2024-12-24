@@ -1,11 +1,13 @@
 import { IStaff } from "@services/types";
 
-export const mockStaff: IStaff[] = [
+export const mockAnalyst: IStaff[] = [
   {
-    id: "34567890",
-    name: "Carlos Andrés Martínez Torres",
-    email: "carlos.martinez@example.com",
-    phone: "3003456789",
-    position: "analyst",
+    userId: "34567890",
+    userName: "Carlos Andrés Martínez Torres",
+    identificationType: "C",
+    identificationNumber: "3003456789",
+    position: "Analyst",
   },
 ];
+
+export const mockAccountManager: IStaff[] = [];
