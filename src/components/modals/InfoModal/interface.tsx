@@ -1,15 +1,17 @@
 import { Icon } from "@inubekit/icon";
 import { Text } from "@inube/design-system";
 import { StyledLi } from "./styles";
-import { InfoItem } from './index'; 
+import { InfoItem } from "./index";
 
 interface InfoItemComponentProps {
   item: InfoItem;
 }
 
-export const InfoItemComponent: React.FC<InfoItemComponentProps> = ({ item }) => {
-  const size = item.shape === "circle" ? "16px" : "20px";
-  const variant = item.shape === "circle" ? "filled" : "outlined";
+export const InfoItemComponent: React.FC<InfoItemComponentProps> = ({
+  item,
+}) => {
+  const size = item.shape === "circle" ? "20px" : "20px";
+  const variant = item.shape === "circle" ? "filled" : "empty";
 
   return (
     <StyledLi>
