@@ -1,8 +1,11 @@
 import { useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Grid } from "@inubekit/grid";
 
-
+import { CardBorrower } from "@src/components/cards/CardBorrower";
+import { Fieldset } from "@src/components/data/Fieldset";
+import { dataImplementBorrowedData } from "./config";
 
 interface IBorrowedDataProps {
   isMobile: boolean;
@@ -25,7 +28,6 @@ interface IBorrowedDataProps {
 export function ImplementBorrowedData(props: IBorrowedDataProps) {
   const { isMobile, initialValues, onFormValid, handleOnChange } = props;
 
-
   const validationSchema = Yup.object({
     name: Yup.string().required(),
     lastName: Yup.string().required(),
@@ -38,7 +40,7 @@ export function ImplementBorrowedData(props: IBorrowedDataProps) {
     initialValues: initialValues,
     validationSchema,
     validateOnMount: true,
-    onSubmit: () => { },
+    onSubmit: () => {},
   });
 
   const prevValues = useRef(formik.values);
@@ -59,8 +61,23 @@ export function ImplementBorrowedData(props: IBorrowedDataProps) {
       prevValues.current = formik.values;
     }
   }, [formik.values, handleOnChange]);
-
+  const cards = dataImplementBorrowedData.map((item, index) => (
+    <CardBorrower key={index} label={item.borrower} placeHolder={item.name} />
+  ));
   return (
-    isMobile ? (<div></div>) : null
+    <Fieldset>
+      <Grid
+        templateColumns={
+          isMobile
+            ? "1fr"
+            : `repeat(${dataImplementBorrowedData.length}, 200PX)`
+        }
+        autoRows="auto"
+        padding={isMobile ? "4px 10px" : "10px 16px"}
+        gap="20px"
+      >
+        {cards}
+      </Grid>
+    </Fieldset>
   );
 }
