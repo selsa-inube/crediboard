@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { MdClear } from "react-icons/md";
-
 import { Textarea } from "@inubekit/textarea";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
@@ -12,16 +11,17 @@ import { Button } from "@inubekit/button";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
 import { useFlag } from "@inubekit/flag";
+
 import { makeDecisions } from "@src/services/todo/makeDecisions";
-import { IMakeDecisionsCreditRequest } from "@services/types";
 import { validationMessages } from "@src/validations/validationMessages";
+
+import { IMakeDecisionsCreditRequestWithXAction } from "./types";
 
 import {
   StyledModal,
   StyledContainerClose,
   StyledContainerTextField,
 } from "./styles";
-
 import { txtFlags, txtOthersOptions } from "./../config";
 
 interface FormValues {
@@ -29,38 +29,42 @@ interface FormValues {
 }
 
 export interface DecisionModalProps {
-  data: IMakeDecisionsCreditRequest;
+  data: IMakeDecisionsCreditRequestWithXAction;
   title: string;
   buttonText: string;
   inputLabel: string;
   inputPlaceholder: string;
   maxLength?: number;
   portalId?: string;
-  onSubmit?: (values: { textarea: string }) => void;
-  onCloseModal?: () => void;
   readOnly?: boolean;
   hideCharCount?: boolean;
   disableTextarea?: boolean;
   secondaryButtonText?: string;
+  onSubmit?: (values: { textarea: string }) => void;
+  onCloseModal?: () => void;
   onSecondaryButtonClick?: () => void;
 }
 
 export function DecisionModal(props: DecisionModalProps) {
   const {
+    data,
     title,
     buttonText,
     inputLabel,
     inputPlaceholder,
     maxLength = 200,
     portalId = "portal",
-    onSubmit,
-    onCloseModal,
     readOnly = false,
     disableTextarea = false,
     secondaryButtonText = "Cancelar",
+    onSubmit,
+    onCloseModal,
     onSecondaryButtonClick,
-    data,
   } = props;
+
+  const navigate = useNavigate();
+  const { addFlag } = useFlag();
+  const isMobile = useMediaQuery("(max-width: 700px)");
 
   const validationSchema = Yup.object().shape({
     textarea: readOnly
@@ -70,23 +74,18 @@ export function DecisionModal(props: DecisionModalProps) {
           .required(validationMessages.required),
   });
 
-  const isMobile = useMediaQuery("(max-width: 700px)");
   const node = document.getElementById(portalId);
-
-  const navigate = useNavigate();
-  const { addFlag } = useFlag();
 
   const sendData = async (value: string) => {
     try {
-      const response = await makeDecisions({
-        creditRequestId: data.creditRequestId,
-        executedTask: data.executedTask,
-        humanDecision: data.humanDecision,
-        humanDecisionDescripcion: data.humanDecisionDescripcion,
-        justification: value,
-        xAction: data.xAction,
-      });
-      console.log({ response });
+      const response = await makeDecisions(
+        {
+          creditRequestId: data.makeDecision.creditRequestId,
+          humanDecision: data.makeDecision.humanDecision,
+          justification: value,
+        },
+        data.xAction
+      );
       if (response.statusServices === 200) {
         navigate("/");
         addFlag({
@@ -169,8 +168,8 @@ export function DecisionModal(props: DecisionModalProps) {
                     weight="normal"
                     textAlign="justify"
                   >
-                    {data.humanDecision
-                      ? data.humanDecisionDescripcion
+                    {data.humanDecisionDescription
+                      ? data.humanDecisionDescription
                       : txtOthersOptions.txtNoSelect}
                   </Text>
                 </Stack>
@@ -212,7 +211,7 @@ export function DecisionModal(props: DecisionModalProps) {
                 <Button
                   type={readOnly ? "button" : "submit"}
                   onClick={readOnly ? onCloseModal : undefined}
-                  disabled={data.humanDecision ? false : true}
+                  disabled={data.makeDecision.humanDecision ? false : true}
                 >
                   {buttonText}
                 </Button>

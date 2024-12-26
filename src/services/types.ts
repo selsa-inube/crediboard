@@ -381,9 +381,6 @@ export interface IDecisionsToDo {
 
 export interface IMakeDecisionsCreditRequest {
   creditRequestId: string;
-  executedTask: string;
   humanDecision: string;
-  humanDecisionDescripcion: string;
   justification: string;
-  xAction: string;
 }

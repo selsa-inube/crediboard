@@ -6,12 +6,13 @@ import {
 import { IMakeDecisionsCreditRequest } from "@services/types";
 
 export const makeDecisions = async (
-  makeDecisions: IMakeDecisionsCreditRequest
+  makeDecisions: IMakeDecisionsCreditRequest,
+  xAction: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> => {
-  if (!makeDecisions.xAction) {
+  if (!xAction) {
     throw new Error(
-      "No se definido una acción valida para registrar la calificación de la solicitud de crédito"
+      "No se ha definido una acción valida para registrar la calificación de la solicitud de crédito"
     );
   }
 
@@ -26,7 +27,7 @@ export const makeDecisions = async (
       const options: RequestInit = {
         method: "PATCH",
         headers: {
-          "X-Action": makeDecisions.xAction,
+          "X-Action": xAction,
           "X-Business-Unit": enviroment.BUSINESS_UNIT,
           "X-User-Name": "Erg",
           "Content-type": "application/json; charset=UTF-8",

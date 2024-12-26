@@ -6,7 +6,7 @@ import {
 
 import { IDecisionsToDo } from "@services/types";
 
-export const getSearchDecisionByTaskToBeDone = async (
+export const getSearchDecisionById = async (
   creditRequestId: string
 ): Promise<IDecisionsToDo> => {
   const maxRetries = maxRetriesServices;
@@ -37,14 +37,14 @@ export const getSearchDecisionByTaskToBeDone = async (
       clearTimeout(timeoutId);
 
       if (res.status === 204) {
-        throw new Error("No hay tarea disponible.");
+        throw new Error("No hay decisiones disponibles a tomar.");
       }
 
       const data = await res.json();
 
       if (!res.ok) {
         throw {
-          message: "Error al obtener la tarea.",
+          message: "Error al obtener las decisiones disponbiles.",
           status: res.status,
           data,
         };
@@ -55,11 +55,13 @@ export const getSearchDecisionByTaskToBeDone = async (
       console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
         throw new Error(
-          "Todos los intentos fallaron. No se pudo obtener la tarea."
+          "Todos los intentos fallaron. No se pudo obtener el listado de decisiones."
         );
       }
     }
   }
 
-  throw new Error("No se pudo obtener la tarea después de varios intentos.");
+  throw new Error(
+    "No se lograron obtener las decisiones después de varios intentos."
+  );
 };

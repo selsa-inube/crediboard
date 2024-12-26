@@ -18,7 +18,7 @@ import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
-import { getSearchDecisionByTaskToBeDone } from "@src/services/todo/getSearchDecisionByTaskToBeDone";
+import { getSearchDecisionById } from "@src/services/todo/SearchDecisionById";
 
 import { StaffModal } from "./StaffModal";
 import { errorMessagge, txtLabels, txtLabelsNoData } from "./config";
@@ -186,9 +186,7 @@ function ToDo(props: ToDoProps) {
     setLoading(true);
     if (requests?.creditRequestId) {
       try {
-        const decision = await getSearchDecisionByTaskToBeDone(
-          requests.creditRequestId
-        );
+        const decision = await getSearchDecisionById(requests.creditRequestId);
         const formattedDecisions = Array.isArray(decision)
           ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
             decision.map((decisions: any, index: number) => ({
@@ -211,15 +209,17 @@ function ToDo(props: ToDoProps) {
   };
 
   const data = {
-    creditRequestId: requests?.creditRequestId || "",
-    executedTask: requests?.taskToBeDone || "",
-    humanDecision: selectedDecision?.label.split(":")[0] || "",
-    humanDecisionDescripcion: selectedDecision?.label || "",
-    justification: "",
+    makeDecision: {
+      creditRequestId: requests?.creditRequestId || "",
+      humanDecision: selectedDecision?.label.split(":")[0] || "",
+      justification: "",
+    },
+
     xAction: getXAction(
       requests?.taskToBeDone || "",
       selectedDecision?.label.split(":")[0] || ""
     ),
+    humanDecisionDescription: selectedDecision?.label || "",
   };
 
   return (
