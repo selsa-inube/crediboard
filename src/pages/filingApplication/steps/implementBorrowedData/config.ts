@@ -1,10 +1,18 @@
 export const dataImplementBorrowedData = [
   {
     borrower: "Deudor",
-    name: "Nombre",
-    lastName: "Apellido",
-    email: "Correo electrónico",
-    income: "Fuente de ingresos",
-    obligations: "Obligaciones financieras",
+    name: "Camilo Alberto",
+    lastName: "Rincon Jaramillo",
+    email: "camilo.jaramillo@gmail.com",
+    income: "12.000.000",
+    obligations: "9.950.000",
+  },
+  {
+    borrower: "Deudor",
+    name: "Daniel Rodrigo",
+    lastName: "Rodriguez Velandia",
+    email: "daniel.rodriguez98@hotmail.com",
+    income: "4.500.000",
+    obligations: "1.950.000",
   },
 ];

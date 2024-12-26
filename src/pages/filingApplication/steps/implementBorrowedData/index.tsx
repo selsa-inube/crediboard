@@ -3,9 +3,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Grid } from "@inubekit/grid";
 
-import { CardBorrower } from "@src/components/cards/CardBorrower";
 import { Fieldset } from "@src/components/data/Fieldset";
 import { dataImplementBorrowedData } from "./config";
+import { CardBorrowerNewData } from "@src/components/cards/cardNewBorrower";
 
 interface IBorrowedDataProps {
   isMobile: boolean;
@@ -61,22 +61,30 @@ export function ImplementBorrowedData(props: IBorrowedDataProps) {
       prevValues.current = formik.values;
     }
   }, [formik.values, handleOnChange]);
-  const cards = dataImplementBorrowedData.map((item, index) => (
-    <CardBorrower key={index} label={item.borrower} placeHolder={item.name} />
-  ));
+
   return (
     <Fieldset>
       <Grid
         templateColumns={
           isMobile
             ? "1fr"
-            : `repeat(${dataImplementBorrowedData.length}, 200PX)`
+            : `repeat(${dataImplementBorrowedData.length + 1}, 317px)`
         }
         autoRows="auto"
         padding={isMobile ? "4px 10px" : "10px 16px"}
         gap="20px"
       >
-        {cards}
+        {dataImplementBorrowedData.map((item, index) => (
+          <CardBorrowerNewData
+            key={index}
+            title={item.borrower + ` ${index + 1}`}
+            name={item.name}
+            lastName={item.lastName}
+            email={item.email}
+            income={item.income}
+            obligations={item.obligations}
+          />
+        ))}
       </Grid>
     </Fieldset>
   );

@@ -10,7 +10,6 @@ export const StyledContainer = styled.div<IStyledContainer>`
   height: 388px;
   display: flex;
   flex-direction: column;
-
   border-radius: 8px;
   outline: 2px solid
     ${({ theme }) => theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};

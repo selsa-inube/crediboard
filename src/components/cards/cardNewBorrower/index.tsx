@@ -21,7 +21,7 @@ export interface ICardNewBorrowerProps {
   obligations: string;
 }
 
-export function CardBorrower(props: ICardNewBorrowerProps) {
+export function CardBorrowerNewData(props: ICardNewBorrowerProps) {
   const { title, name, lastName, email, income, obligations } = props;
 
   return (
@@ -95,20 +95,20 @@ export function CardBorrower(props: ICardNewBorrowerProps) {
         <Stack gap="10px" justifyContent="flex-end" padding="15px 0px">
           <Icon
             icon={<IoEyeOutline />}
-            appearance="dark"
+            appearance={"primary"}
             size="20px"
             cursorHover
           />
 
           <Icon
             icon={<MdOutlineModeEditOutline />}
-            appearance={"dark"}
+            appearance={"primary"}
             size="20px"
             cursorHover
           />
           <Icon
             icon={<MdOutlineDelete />}
-            appearance={"dark"}
+            appearance={"primary"}
             size="20px"
             cursorHover
           />

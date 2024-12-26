@@ -1,7 +1,7 @@
-import { CardBorrower, ICardNewBorrowerProps } from "./index";
+import { CardBorrowerNewData, ICardNewBorrowerProps } from "./index";
 
 const story = {
-  components: [CardBorrower],
+  components: [CardBorrowerNewData],
   title: "components/Cards/CardNewBorrower",
   argTypes: {
     name: {
@@ -11,7 +11,9 @@ const story = {
   },
 };
 
-const Default = (args: ICardNewBorrowerProps) => <CardBorrower {...args} />;
+const Default = (args: ICardNewBorrowerProps) => (
+  <CardBorrowerNewData {...args} />
+);
 
 Default.args = {
   title: `Deudor 1`,
