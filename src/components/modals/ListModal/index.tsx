@@ -28,7 +28,7 @@ export interface IOptionButtons {
 export interface IListModalProps {
   title: string;
   handleClose: () => void;
-  onSubmit?: () => void; 
+  onSubmit?: () => void;
   buttonLabel: string;
   portalId?: string;
   content?: JSX.Element | JSX.Element[] | string;

@@ -5,7 +5,7 @@ import { Grid } from "@inubekit/grid";
 
 import { Fieldset } from "@src/components/data/Fieldset";
 import { dataImplementBorrowedData } from "./config";
-import { CardBorrowerNewData } from "@src/components/cards/cardNewBorrower";
+import { CardBorrowerNewData } from "@src/pages/prospect/components/cardNewBorrower";
 
 interface IBorrowedDataProps {
   isMobile: boolean;
@@ -40,7 +40,7 @@ export function ImplementBorrowedData(props: IBorrowedDataProps) {
     initialValues: initialValues,
     validationSchema,
     validateOnMount: true,
-    onSubmit: () => {},
+    onSubmit: () => { },
   });
 
   const prevValues = useRef(formik.values);
@@ -85,6 +85,9 @@ export function ImplementBorrowedData(props: IBorrowedDataProps) {
             obligations={item.obligations}
           />
         ))}
+        <CardBorrowerNewData
+          hasData
+        />
       </Grid>
     </Fieldset>
   );
