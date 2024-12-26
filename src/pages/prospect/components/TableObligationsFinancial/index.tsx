@@ -13,6 +13,7 @@ import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
 
+import { ActionMobile } from "@components/feedback/ActionMobile";
 import { Detail } from "@pages/prospect/components/TableExtraordinaryInstallment/Detail";
 
 import { headers, data, dataReport } from "./config";
@@ -45,6 +46,10 @@ export function TableFinancialObligations() {
         ["type", "balance", "actions"].includes(header.key)
       )
     : headers;
+
+  function Action() {
+    return isMobile ? <ActionMobile /> : <Detail />;
+  }
 
   return (
     <Table tableLayout="auto">
@@ -111,7 +116,7 @@ export function TableFinancialObligations() {
                           : "center"
                       }
                     >
-                      {header.action ? <Detail /> : cellData}
+                      {header.action ? <Action /> : cellData}
                     </Td>
                   );
                 })}
