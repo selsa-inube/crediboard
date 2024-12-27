@@ -1,18 +1,25 @@
 import { useState } from "react";
 import { useMediaQuery } from "@inubekit/hooks";
 
-import { stepsAddProspect } from "./config/addProspect.config";
+import { stepsFilingApplication } from "./config/filingApplication.config";
 import { FilingApplicationUI } from "./interface";
+import { FormData } from "./types";
 
 export function FilingApplication() {
   const [currentStep, setCurrentStep] = useState<number>(
-    stepsAddProspect.generalInformation.id
+    stepsFilingApplication.generalInformation.id
   );
   const [isCurrentFormValid, setIsCurrentFormValid] = useState(true);
+  const [formData, setFormData] = useState<FormData>({
+    contactInformation: {
+      email: "",
+      phone: "",
+    },
+  });
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
-  const steps = Object.values(stepsAddProspect);
+  const steps = Object.values(stepsFilingApplication);
 
   const currentStepsNumber = steps.find(
     (step: { number: number }) => step.number === currentStep
@@ -27,12 +34,20 @@ export function FilingApplication() {
   const handlePreviousStep = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+      setIsCurrentFormValid(true);
     }
   };
 
   function handleSubmitClick() {
     console.log("Enviar paso: ", currentStep);
   }
+
+  const handleFormChange = (updatedValues: Partial<FormData>) => {
+    setFormData((prev) => ({
+      ...prev,
+      ...updatedValues,
+    }));
+  };
 
   return (
     <>
@@ -41,6 +56,8 @@ export function FilingApplication() {
         currentStep={currentStep}
         isCurrentFormValid={isCurrentFormValid}
         setIsCurrentFormValid={setIsCurrentFormValid}
+        formData={formData}
+        handleFormChange={handleFormChange}
         handleNextStep={handleNextStep}
         handlePreviousStep={handlePreviousStep}
         setCurrentStep={setCurrentStep}
