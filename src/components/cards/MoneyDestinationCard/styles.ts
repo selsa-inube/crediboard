@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
 
 const StyledMoneyDestinationCard = styled.label`
-  min-width: 470px;
+  width: 455px;
+  min-width: 290px;
   & div:nth-child(1) {
     border-radius: 8px;
     box-sizing: border-box;
