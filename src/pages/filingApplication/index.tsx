@@ -15,6 +15,13 @@ export function FilingApplication() {
       email: "",
       phone: "",
     },
+    propertyOffered: {
+      antique: "",
+      estimated: "",
+      type: "",
+      state: "",
+      description: "",
+    },
   });
 
   const isMobile = useMediaQuery("(max-width:880px)");
