@@ -1,7 +1,7 @@
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Divider } from "@inubekit/divider";
-import { StyledContainer } from "./styles";
+import { StyledContainer, StyledNewBorrower } from "./styles";
 import { newBorrowedDAta } from "./config";
 import { Icon } from "@inubekit/icon";
 import {
@@ -11,6 +11,7 @@ import {
 } from "react-icons/md";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa6";
+import { IoIosAdd } from "react-icons/io";
 
 export interface ICardNewBorrowerProps {
   title?: string;
@@ -119,7 +120,18 @@ export function CardBorrowerNewData(props: ICardNewBorrowerProps) {
           </Stack>
         </Stack>
       )}
-      {hasData && (<Text type="label" size="large" weight="bold"> agregar nuevo deudor</Text>)}
+      {hasData && (
+        <StyledNewBorrower>
+          <Icon
+            icon={<IoIosAdd />}
+            appearance={"gray"}
+            size="40px"
+            cursorHover
+          />
+          <Text type="title" size="medium" weight="bold" appearance="gray">
+            Agregar deudor
+          </Text>
+        </StyledNewBorrower>)}
     </StyledContainer>
   );
 }

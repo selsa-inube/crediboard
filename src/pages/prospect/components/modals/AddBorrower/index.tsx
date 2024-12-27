@@ -17,19 +17,10 @@ import {
 } from "./styles";
 import { Textfield } from "@inubekit/textfield";
 import { Grid } from "@inubekit/grid";
+import { useEffect, useState } from "react";
 
 
-interface FormValues {
-    field1: string;
-    field2: string;
-    field3: string;
-    field4: string;
-    field5: string;
-    field6: string;
-    field7: string;
-    field8: string;
-    field9: string;
-}
+
 export interface IOptionButtons {
     label: string;
     variant: "filled" | "outlined" | "none";
@@ -37,18 +28,47 @@ export interface IOptionButtons {
     fullwidth?: boolean;
     onClick?: () => void;
 }
-
 export interface IAddBorrowedProps {
-    title: string;
-    handleClose: () => void;
-    onSubmit?: () => void;
-    buttonLabel: string;
+    form: {
+        tipeOfDocument: string;
+        names: string;
+        email: string;
+        biologicalSex: string;
+        relationship: string;
+        document: string;
+        lastNames: string;
+        phone: string;
+        age: string;
+    };
+    onChange: (name: string, newValue: string) => void;
+    options: { id: string; label: string; value: string }[];
     portalId?: string;
-    formValues: FormValues;
+    handleClose?: () => void;
+    onSubmit?: () => void;
+    title: string;
 }
 
 export const AddBorrower = (props: IAddBorrowedProps) => {
-    const { title, handleClose, onSubmit, buttonLabel, portalId, formValues } = props;
+    const { title, handleClose, onSubmit, portalId, form } = props;
+
+    const [isFormComplete, setIsFormComplete] = useState(false);
+    useEffect(() => {
+        const allFieldsFilled = [
+            form.tipeOfDocument,
+            form.names,
+            form.email,
+            form.biologicalSex,
+            form.relationship,
+            form.document,
+            form.lastNames,
+            form.phone,
+            form.age,
+        ].every((field) => field !== undefined && field !== "");
+
+        setIsFormComplete(allFieldsFilled);
+    }, [form]);
+
+
 
     const node = document.getElementById(portalId ?? "portal");
     if (!node) {
@@ -78,113 +98,132 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
                         </Stack>
                     </StyledContainerClose>
                 </StyledContainerTitle>
-                <Grid templateColumns="repeat(2, 1fr)">
-                    <Stack>
-                        <Textfield
-                            id="field1"
-                            value={formValues.field1}
-                            label="Tipo de Documento"
-                            iconBefore={
-                                <MdOutlineEmail color={inube.color.stroke.dark.regular} />
-                            }
-                            placeholder="Seleccione una opción"
-                            disabled
-                            fullwidth
-                        />
-                        <Textfield
-                            id="field2"
-                            value={formValues.field2}
-                            label="Tipo de Documento"
-                            iconBefore={
-                                <MdOutlineEmail color={inube.color.stroke.dark.regular} />
-                            }
-                            placeholder="Seleccione una opción"
-                            disabled
-                            fullwidth
-                        />
-                        <Textfield
-                            id="field1"
-                            value={formValues.field1}
-                            label="Tipo de Documento"
-                            iconBefore={
-                                <MdOutlineEmail color={inube.color.stroke.dark.regular} />
-                            }
-                            placeholder="Seleccione una opción"
-                            disabled
-                            fullwidth
-                        />
-                        <Textfield
-                            id="field1"
-                            value={formValues.field1}
-                            label="Tipo de Documento"
-                            iconBefore={
-                                <MdOutlineEmail color={inube.color.stroke.dark.regular} />
-                            }
-                            placeholder="Seleccione una opción"
-                            disabled
-                            fullwidth
-                        />
-                        <Textfield
-                            id="field1"
-                            value={formValues.field1}
-                            label="Tipo de Documento"
-                            iconBefore={
-                                <MdOutlineEmail color={inube.color.stroke.dark.regular} />
-                            }
-                            placeholder="Seleccione una opción"
-                            disabled
-                            fullwidth
-                        />
-                    </Stack>
-                    <Stack>
-                        <Textfield
-                            id="field1"
-                            value={formValues.field1}
-                            label="Tipo de Documento"
-                            iconBefore={
-                                <MdOutlineEmail color={inube.color.stroke.dark.regular} />
-                            }
-                            placeholder="Seleccione una opción"
-                            disabled
-                            fullwidth
-                        />
-                        <Textfield
-                            id="field1"
-                            value={formValues.field1}
-                            label="Tipo de Documento"
-                            iconBefore={
-                                <MdOutlineEmail color={inube.color.stroke.dark.regular} />
-                            }
-                            placeholder="Seleccione una opción"
-                            disabled
-                            fullwidth
-                        />
-                        <Textfield
-                            id="field1"
-                            value={formValues.field1}
-                            label="Tipo de Documento"
-                            iconBefore={
-                                <MdOutlineEmail color={inube.color.stroke.dark.regular} />
-                            }
-                            placeholder="Seleccione una opción"
-                            disabled
-                            fullwidth
-                        />
-                        <Textfield
-                            id="field1"
-                            value={formValues.field1}
-                            label="Tipo de Documento"
-                            iconBefore={
-                                <MdOutlineEmail color={inube.color.stroke.dark.regular} />
-                            }
-                            placeholder="Seleccione una opción"
-                            disabled
-                            fullwidth
-                        />
-                    </Stack>
+                <Grid
+                    templateColumns="repeat(2, 1fr)"
+                    gap="28px"
+                    templateRows="auto"
+                    justifyItems="start"
+                    alignItems="start"
+                    justifyContent="flex-start"
+                    alignContent="flex-start"
+                    margin="0px"
+                    padding="0px"
+                    height="auto"
+                    width="auto"
+                >
+
+                    <Textfield
+                        id="field1"
+                        value={form.tipeOfDocument}
+                        label="Tipo de Documento"
+                        iconBefore={
+                            <MdOutlineEmail color={inube.color.stroke.dark.regular} />
+                        }
+                        placeholder="Seleccione una opción"
+                        disabled
+                        fullwidth
+                    />
+                    <Textfield
+                        id="field2"
+                        value={form.names}
+                        label="nombre"
+                        iconBefore={
+                            <MdOutlineEmail color={inube.color.stroke.dark.regular} />
+                        }
+                        placeholder="Seleccione una opción"
+                        disabled
+                        fullwidth
+                    />
+                    <Textfield
+                        id="field1"
+                        value={form.email}
+                        label="correo"
+                        iconBefore={
+                            <MdOutlineEmail color={inube.color.stroke.dark.regular} />
+                        }
+                        placeholder="Seleccione una opción"
+                        disabled
+                        fullwidth
+                    />
+                    <Textfield
+                        id="field1"
+                        value={form.biologicalSex}
+                        label="sexo"
+                        iconBefore={
+                            <MdOutlineEmail color={inube.color.stroke.dark.regular} />
+                        }
+                        placeholder="Seleccione una opción"
+                        disabled
+                        fullwidth
+                    />
+                    <Textfield
+                        id="field1"
+                        value={form.relationship}
+                        label="parentesco"
+                        iconBefore={
+                            <MdOutlineEmail color={inube.color.stroke.dark.regular} />
+                        }
+                        placeholder="Seleccione una opción"
+                        disabled
+                        fullwidth
+                    />
+                    <Textfield
+                        id="field1"
+                        value={form.document}
+                        label="numero de documento"
+                        iconBefore={
+                            <MdOutlineEmail color={inube.color.stroke.dark.regular} />
+                        }
+                        placeholder="Seleccione una opción"
+                        disabled
+                        fullwidth
+                    />
+                    <Textfield
+                        id="field1"
+                        value={form.lastNames}
+                        label="apellidos"
+                        iconBefore={
+                            <MdOutlineEmail color={inube.color.stroke.dark.regular} />
+                        }
+                        placeholder="Seleccione una opción"
+                        disabled
+                        fullwidth
+                    />
+                    <Textfield
+                        id="field1"
+                        value={form.phone}
+                        label="celular"
+                        iconBefore={
+                            <MdOutlineEmail color={inube.color.stroke.dark.regular} />
+                        }
+                        placeholder="Seleccione una opción"
+                        disabled
+                        fullwidth
+                    />
+                    <Textfield
+                        id="field1"
+                        value={form.age}
+                        label="edad"
+                        iconBefore={
+                            <MdOutlineEmail color={inube.color.stroke.dark.regular} />
+                        }
+                        placeholder="Seleccione una opción"
+                        disabled
+                        fullwidth
+                    />
                 </Grid>
-                <Stack justifyContent="flex-end" margin="s200 s0">
-                    <Button onClick={onSubmit ?? handleClose}>{buttonLabel}</Button>
+                <Stack justifyContent="flex-end" margin="s200 s0" gap="20px">
+                    <Button
+                        children="Cancelar"
+                        appearance={isFormComplete ? "primary" : "gray"}
+                        disabled={!isFormComplete}
+                        onClick={handleClose}
+                    />
+                    <Button children="Siguiente"
+                        appearance={isFormComplete ? "primary" : "gray"}
+                        disabled={!isFormComplete}
+                        onClick={onSubmit}
+                    />
                 </Stack>
 
             </StyledModal>

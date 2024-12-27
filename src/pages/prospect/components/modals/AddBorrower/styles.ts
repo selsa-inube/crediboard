@@ -9,8 +9,7 @@ export const StyledModal = styled.div<IStyledModal>`
   overflow: auto;
   display: flex;
   flex-direction: column;
-  max-height: ${({ $smallScreen }) => ($smallScreen ? "398px" : "382px")};
-  width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "493px")};
+  height: ${({ $smallScreen }) => ($smallScreen ? "100%" : "800px")};
   background-color: ${({ theme }) =>
     theme.color?.surface?.light?.clear || inube.color.surface.light.clear};
   padding: ${({ $smallScreen }) =>

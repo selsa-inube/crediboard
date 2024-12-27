@@ -21,4 +21,11 @@ export const StyledContainer = styled.div<IStyledContainer>`
       disabled
         ? theme?.palette?.blue?.B400 || inube.palette.blue.B400
         : theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
+  justify-content: center;
+`;
+export const StyledNewBorrower = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 `;
