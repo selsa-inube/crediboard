@@ -19,6 +19,10 @@ import { ScoreModal } from "@components/modals/FrcModal";
 
 import { currencyFormat } from "@utils/formatData/currency";
 import { get } from "@mocks/utils/dataMock.service";
+import {
+  mockPayAmount,
+  mockPeriodicity,
+} from "@mocks/add-prospect/payment-channel/paymentchannel.mock";
 import { IPaymentChannel } from "@services/types";
 
 import { dataAmount } from "./config";
@@ -29,6 +33,8 @@ export interface ILoanAmountProps {
     inputValue: string;
     toggleChecked: boolean;
     paymentPlan: string;
+    periodicity: string;
+    payAmount: string;
   };
   isMobile: boolean;
   handleOnChange: (newData: Partial<ILoanAmountProps["initialValues"]>) => void;
@@ -80,6 +86,8 @@ export function LoanAmount(props: ILoanAmountProps) {
   const LoanAmountValidationSchema = Yup.object({
     inputValue: Yup.string().required(""),
     paymentPlan: Yup.string().required(""),
+    periodicity: Yup.string().required(""),
+    payAmount: Yup.string().required(""),
   });
 
   return (
@@ -91,7 +99,11 @@ export function LoanAmount(props: ILoanAmountProps) {
         validate={(values) => {
           const numericValue =
             parseFloat(values.inputValue.replace(/[^0-9]/g, "")) || 0;
-          const isValid = numericValue > 0 && values.paymentPlan.trim() !== "";
+          const isValid =
+            numericValue > 0 &&
+            values.paymentPlan.trim() !== "" &&
+            values.periodicity.trim() !== "" &&
+            values.payAmount.trim() !== "";
           onFormValid(isValid);
         }}
         validateOnMount={true}
@@ -184,26 +196,78 @@ export function LoanAmount(props: ILoanAmountProps) {
                 </Stack>
               </Stack>
               <Divider dashed />
-              <Stack direction="column">
-                <Text type="label" size="medium" weight="bold">
-                  {dataAmount.ordinaryPayment}
-                </Text>
-                <Field name="paymentPlan">
-                  {() => (
-                    <Select
-                      id="paymentPlan"
-                      options={requestValue || []}
-                      placeholder={dataAmount.selectOption}
-                      name="paymentPlan"
-                      onChange={(_, newValue: string) => {
-                        setFieldValue("paymentPlan", newValue);
-                        handleOnChange({ paymentPlan: newValue });
-                      }}
-                      value={values.paymentPlan}
-                      fullwidth={true}
-                    />
-                  )}
-                </Field>
+              <Stack direction={isMobile ? "column" : "row"} gap="16px">
+                <Stack direction="column" width="100%">
+                  <Text type="label" size="medium" weight="bold">
+                    {dataAmount.ordinaryPayment}
+                  </Text>
+                  <Field name="paymentPlan">
+                    {() => (
+                      <Select
+                        id="paymentPlan"
+                        options={requestValue || []}
+                        placeholder={dataAmount.selectOption}
+                        name="paymentPlan"
+                        onChange={(_, newValue: string) => {
+                          setFieldValue("paymentPlan", newValue);
+                          handleOnChange({ paymentPlan: newValue });
+                        }}
+                        value={values.paymentPlan}
+                        size="compact"
+                        fullwidth={true}
+                      />
+                    )}
+                  </Field>
+                </Stack>
+                <Stack direction="column" width="100%">
+                  <Stack gap="4px">
+                    <Text type="label" size="medium" weight="bold">
+                      {dataAmount.Periodicity}
+                    </Text>
+                    <Text type="label" size="small" appearance="danger">
+                      {dataAmount.Requested}
+                    </Text>
+                  </Stack>
+                  <Field name="periodicity">
+                    {() => (
+                      <Select
+                        id="periodicity"
+                        options={mockPeriodicity}
+                        placeholder={dataAmount.selectOption}
+                        name="periodicity"
+                        onChange={(_, newValue: string) => {
+                          setFieldValue("periodicity", newValue);
+                          handleOnChange({ periodicity: newValue });
+                        }}
+                        value={values.periodicity}
+                        size="compact"
+                        fullwidth={true}
+                      />
+                    )}
+                  </Field>
+                </Stack>
+                <Stack direction="column" width="100%">
+                  <Text type="label" size="medium" weight="bold">
+                    {dataAmount.paymentDate}
+                  </Text>
+                  <Field name="payAmount">
+                    {() => (
+                      <Select
+                        id="payAmount"
+                        options={mockPayAmount}
+                        placeholder={dataAmount.selectOption}
+                        name="payAmount"
+                        onChange={(_, newValue: string) => {
+                          setFieldValue("payAmount", newValue);
+                          handleOnChange({ payAmount: newValue });
+                        }}
+                        value={values.payAmount}
+                        size="compact"
+                        fullwidth={true}
+                      />
+                    )}
+                  </Field>
+                </Stack>
               </Stack>
             </Stack>
             {creditModal ? (
