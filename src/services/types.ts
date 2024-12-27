@@ -383,3 +383,14 @@ export interface IPaymentChannel {
   label: string;
   value: string;
 }
+export interface IDecisionsToDo {
+  id: number | string;
+  label: string;
+  value: string;
+}
+
+export interface IMakeDecisionsCreditRequest {
+  creditRequestId: string;
+  humanDecision: string;
+  justification: string;
+}

@@ -2,15 +2,22 @@ import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
 
-import { IStep, StepDetails, titleButtonTextAssited } from "./types";
+import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { StyledContainerAssisted } from "./styles";
+import { RequirementsNotMet } from "./steps/requirementsNotMet";
+import { stepsFilingApplication } from "./config/filingApplication.config";
+import { ContactInformation } from "./steps/contactInformation";
+import { PropertyOffered } from "./steps/propertyOffered";
+import { VehicleOffered } from "./steps/vehicleOffered";
 
 interface AddPositionUIProps {
   currentStep: number;
   currentStepsNumber: StepDetails;
   steps: IStep[];
   isCurrentFormValid: boolean;
+  formData: FormData;
   isMobile: boolean;
+  handleFormChange: (updatedValues: Partial<FormData>) => void;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   handleNextStep: () => void;
   handlePreviousStep: () => void;
@@ -23,10 +30,13 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
     currentStepsNumber,
     steps,
     isCurrentFormValid,
+    formData,
     isMobile,
+    handleFormChange,
     handleNextStep,
     handlePreviousStep,
     handleSubmitClick,
+    setIsCurrentFormValid,
   } = props;
 
   return (
@@ -35,7 +45,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
       alignItems={isMobile ? "normal" : "center"}
       margin="20px 0px"
       padding="24px"
-      height="100%"
+      height={isMobile ? "2000px" : "100%"}
     >
       <Stack
         gap="24px"
@@ -56,6 +66,47 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             size={isMobile ? "small" : "large"}
           />
         </StyledContainerAssisted>
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsFilingApplication.generalInformation.id && (
+            <RequirementsNotMet isMobile={isMobile} />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsFilingApplication.contactInformation.id && (
+            <ContactInformation
+              isMobile={isMobile}
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.contactInformation}
+              handleOnChange={(values) =>
+                handleFormChange({ contactInformation: values })
+              }
+            />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsFilingApplication.propertyOffered.id && (
+            <PropertyOffered
+              isMobile={isMobile}
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.propertyOffered}
+              handleOnChange={(values) =>
+                handleFormChange({ propertyOffered: values })
+              }
+            />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsFilingApplication.vehicleOffered.id && (
+            <VehicleOffered
+              isMobile={isMobile}
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.vehicleOffered}
+              handleOnChange={(values) =>
+                handleFormChange({ vehicleOffered: values })
+              }
+            />
+          )}
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
           <Button
             variant="outlined"

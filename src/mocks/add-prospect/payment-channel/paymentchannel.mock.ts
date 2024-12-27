@@ -23,12 +23,12 @@ export const mockPeriodicity = [
   {
     id: "1",
     label: "Mensual pagado en día 30",
-    value: "mensual-pagado-en-dí-30",
+    value: "mensual-pagado-en-día-30",
   },
   {
     id: "2",
     label: "Mensual pagado en día 15",
-    value: "mensual-pagado-en-dí-15",
+    value: "mensual-pagado-en-día-15",
   },
 ];
 
