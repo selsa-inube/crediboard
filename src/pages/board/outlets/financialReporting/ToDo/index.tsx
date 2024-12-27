@@ -215,10 +215,7 @@ function ToDo(props: ToDoProps) {
       justification: "",
     },
 
-    xAction: getXAction(
-      requests?.taskToBeDone || "",
-      selectedDecision?.label.split(":")[0] || ""
-    ),
+    xAction: getXAction(selectedDecision?.label.split(":")[0] || ""),
     humanDecisionDescription: selectedDecision?.label || "",
   };
 
