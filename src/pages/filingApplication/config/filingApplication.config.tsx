@@ -42,16 +42,10 @@ export const stepsFilingApplication = {
     name: "title",
     description: "Desembolso.",
   },
-  step8: {
+  attachedDocuments: {
     id: 8,
     number: 8,
-    name: "title",
-    description: "Listado de documentos adjuntos.",
-  },
-  step9: {
-    id: 9,
-    number: 9,
-    name: "title",
-    description: "Description.",
+    name: "Listado de documentos adjuntos",
+    description: "Adjunte los documentos solicitados a continuación.",
   },
 };
