@@ -82,7 +82,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     total: undefined,
   });
 
-
   const initialValues: FormikValues = {
     creditLine: "",
     creditAmount: "",
@@ -496,13 +495,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             handleClose={handleCloseModal}
             title="Origen de cupo"
             portalId="portal"
-            maxPaymentCapacity={50000000}
-            maxReciprocity={40000000}
-            maxDebtFRC={45000000}
-            assignedLimit={0}
-            currentPortfolio={10000000}
-            maxUsableLimit={20000000}
-            availableLimitWithoutGuarantee={15000000}
             onOpenPaymentCapacityModal={() => setOpenModal("paymentCapacity")}
             onOpenReciprocityModal={() => setOpenModal("reciprocityModal")}
             onOpenFrcModal={() => setOpenModal("scoreModal")}
@@ -597,4 +589,3 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     </Fieldset>
   );
 };
-

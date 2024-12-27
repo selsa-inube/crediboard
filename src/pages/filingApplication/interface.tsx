@@ -4,6 +4,7 @@ import { Button } from "@inubekit/button";
 
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { StyledContainerAssisted } from "./styles";
+import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { stepsFilingApplication } from "./config/filingApplication.config";
 import { ContactInformation } from "./steps/contactInformation";
 
@@ -42,7 +43,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
       alignItems={isMobile ? "normal" : "center"}
       margin="20px 0px"
       padding="24px"
-      height="100%"
+      height={isMobile ? "2000px" : "100%"}
     >
       <Stack
         gap="24px"
@@ -63,6 +64,11 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             size={isMobile ? "small" : "large"}
           />
         </StyledContainerAssisted>
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsFilingApplication.generalInformation.id && (
+            <RequirementsNotMet isMobile={isMobile} />
+          )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
             stepsFilingApplication.contactInformation.id && (

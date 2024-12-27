@@ -1,5 +1,6 @@
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 import { Fieldset } from "@components/data/Fieldset";
+import { Stack } from "@inubekit/stack";
 
 interface ISourcesOfIncomeProps {
   handleOnChange: (name: string, newValue: string) => void;
@@ -15,19 +16,22 @@ interface ISourcesOfIncomeProps {
     monthly_fees?: number;
   };
   options: { id: string; label: string; value: string }[];
+  isMobile: boolean;
 }
 
 export function SourcesOfIncome(props: ISourcesOfIncomeProps) {
-  const { initialValues, handleOnChange, options } = props;
+  const { initialValues, handleOnChange, options, isMobile } = props;
 
   return (
     <Fieldset>
-      <SourceIncome
-        form={initialValues}
-        onChange={handleOnChange}
-        options={options}
-        onlyDebtor
-      />
+      <Stack padding={isMobile ? "6px" : "0px"} justifyContent="center">
+        <SourceIncome
+          form={initialValues}
+          onChange={handleOnChange}
+          options={options}
+          onlyDebtor
+        />
+      </Stack>
     </Fieldset>
   );
 }
