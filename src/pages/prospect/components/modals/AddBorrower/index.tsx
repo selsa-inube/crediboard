@@ -33,7 +33,7 @@ export interface IAddBorrowedProps {
         phone: string;
         age: string;
     };
-    onChange: (name: string, newValue: string) => void;
+
     options: { id: string; label: string; value: string }[];
     portalId?: string;
     handleClose?: () => void;
@@ -42,9 +42,13 @@ export interface IAddBorrowedProps {
 }
 
 export const AddBorrower = (props: IAddBorrowedProps) => {
-    const { title, handleClose, onSubmit, portalId, form, options, onChange } = props;
+    const { title, handleClose, onSubmit, portalId, form, options } = props;
     const [isFormComplete, setIsFormComplete] = useState(false);
+    const [forms, setForm] = useState({ name: "" });
 
+    const onChange = (name: string, newValue: string) => {
+        setForm({ ...forms, [name]: newValue });
+    };
     useEffect(() => {
         const allFieldsFilled = [
             form.tipeOfDocument,
@@ -96,10 +100,11 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
                 </StyledContainerTitle>
                 <Divider></Divider>
                 <Grid
-                    templateColumns="1fr 1fr"
+                    templateColumns="repeat(2,1fr)"
                     gap="20px"
                     height="auto"
                     width="auto"
+                    autoRows="auto"
                 >
                     <Select
                         id="id"
@@ -108,12 +113,12 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
                         options={options}
                         placeholder="Seleccione una opción"
                         size="wide"
-                        value={form.tipeOfDocument}
+                        value={forms.name}
                         onChange={onChange}
                     />
                     <Textfield
                         id="field2"
-                        value={form.document}
+                        name="documentNumber"
                         label="Numeo de documento"
                         placeholder="Ej 1010477949"
                         fullwidth
