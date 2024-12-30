@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { Consulting } from "@components/modals/Consulting";
@@ -21,7 +21,6 @@ export function AddProspect() {
 
   const steps = Object.values(stepsAddProspect);
   const navigate = useNavigate();
-  const { id } = useParams();  
 
   const [formData, setFormData] = useState<FormData>({
     selectedDestination: "",
@@ -145,9 +144,7 @@ export function AddProspect() {
   };
 
   const handleSubmitClick = () => {
-    if (id) {
-      navigate(`/edit-prospect/${id}`);
-    }
+    navigate(`/edit-prospect/999990`);
   };
 
   const showConsultingForFiveSeconds = () => {

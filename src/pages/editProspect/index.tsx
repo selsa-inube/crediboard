@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { MdOutlineBeachAccess, MdOutlineShare } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
@@ -10,13 +10,11 @@ import { Button } from "@inubekit/button";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
-import { CardCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/CardCommercialManagement";
 
 import { dataEditProspect } from "./config";
 
 export function EditProspect() {
   const [showMenu, setShowMenu] = useState(false);
-  const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
 
   const isMobile = useMediaQuery("(max-width:880px)");
   const { id } = useParams();
@@ -96,13 +94,6 @@ export function EditProspect() {
           <CreditProspect
             isMobile={isMobile}
             showMenu={() => setShowMenu(false)}
-            children={
-              <CardCommercialManagement
-                id={id!}
-                dataRef={dataCommercialManagementRef}
-                showSummaryFirstItem={false}
-              />
-            }
           />
         </Fieldset>
         <Stack gap="20px" justifyContent="end">

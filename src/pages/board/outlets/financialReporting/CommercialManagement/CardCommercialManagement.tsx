@@ -2,14 +2,16 @@ import { useCallback, useEffect, useState } from "react";
 import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Divider } from "@inubekit/divider";
+
 import { CreditProductCard } from "@components/cards/CreditProductCard";
-import { SummaryProspect } from "@components/inputs/SummaryOnProspect";
+import { CardValues } from "@components/cards/cardValues";
+import { DeleteModal } from "@components/modals/DeleteModal";
 import { ICreditProductProspect } from "@services/types";
 import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
-import { DeleteModal } from "@components/modals/DeleteModal";
 import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.service";
-import { StyledCardsCredit } from "./styles";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
+
+import { StyledCardsCredit } from "./styles";
 
 interface CardCommercialManagementProps {
   id: string;
@@ -98,7 +100,7 @@ export const CardCommercialManagement = (
         {SummaryProspectCredit.filter((_, index) =>
           index === 0 ? showSummaryFirstItem : true
         ).map((entry, index) => (
-          <SummaryProspect
+          <CardValues
             key={index}
             items={entry.item}
             showIcon={entry.iconEdit}

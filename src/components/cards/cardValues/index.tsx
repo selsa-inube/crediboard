@@ -12,7 +12,7 @@ import {
   StyledText,
 } from "./styles";
 
-export interface SummaryProspectProps {
+export interface CardValuesProps {
   items: {
     title: string;
     amount: string;
@@ -20,14 +20,20 @@ export interface SummaryProspectProps {
     miniIcon?: boolean;
     icon?: React.ReactNode;
   }[];
-  showIcon?: boolean;
   isMobile: boolean;
   onIconClick?: () => void;
+  showIcon?: boolean;
   showSummaryFirstItem?: boolean;
 }
 
-export function SummaryProspect(props: SummaryProspectProps) {
-  const { items, showIcon = true, onIconClick, isMobile, showSummaryFirstItem } = props;
+export function CardValues(props: CardValuesProps) {
+  const {
+    items,
+    onIconClick,
+    isMobile,
+    showIcon = true,
+    showSummaryFirstItem,
+  } = props;
 
   return (
     <Container $showIcon={showIcon}>
@@ -74,7 +80,9 @@ export function SummaryProspect(props: SummaryProspectProps) {
                     </Text>
                   </StyledText>
                 )}
-                {item.title === "Neto a girar" && <StyledHorizontalDivider $left={showSummaryFirstItem}/>}
+                {item.title === "Neto a girar" && (
+                  <StyledHorizontalDivider $left={showSummaryFirstItem} />
+                )}
               </Stack>
             )}
           </Stack>

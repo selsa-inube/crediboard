@@ -10,7 +10,6 @@ import {
   MdOutlineVideocam,
   MdOutlinePayments,
 } from "react-icons/md";
-
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
@@ -27,7 +26,6 @@ import {
 import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
 import { Fieldset } from "@components/data/Fieldset";
-
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { getById } from "@mocks/utils/dataMock.service";
 import { formatPrimaryDate } from "@utils/formatData/date";
@@ -44,13 +42,12 @@ import {
 
 interface ComercialManagementProps {
   data: ICreditRequest;
-  children?: JSX.Element;
   print: () => void;
   isPrint?: boolean;
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { data, children = <Stack />, print, isPrint } = props;
+  const { data, print, isPrint } = props;
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [modalHistory, setModalHistory] = useState<string[]>([]);
@@ -339,7 +336,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               isMobile={isMobile}
               isPrint={isPrint}
               showMenu={() => setShowMenu(false)}
-              children={children}
+              firstItem={true}
               showPrint
             />
           )}

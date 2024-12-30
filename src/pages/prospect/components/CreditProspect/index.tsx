@@ -1,4 +1,4 @@
-import { cloneElement, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FormikValues } from "formik";
 import {
@@ -33,27 +33,21 @@ import {
   StyledContainerIcon,
   StyledVerticalDivider,
 } from "@pages/board/outlets/financialReporting/CommercialManagement/styles";
+import { CardCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/CardCommercialManagement";
 
 import { dataCreditProspect } from "./config";
 
 interface ICreditProspectProps {
+  showMenu: () => void;
   isMobile: boolean;
   isPrint?: boolean | undefined;
-  showMenu: () => void;
-  children?: JSX.Element;
   showPrint?: boolean;
+  firstItem?: boolean;
 }
 
 export function CreditProspect(props: ICreditProspectProps) {
-  const {
-    isMobile,
-    isPrint,
-    showMenu,
-    showPrint,
-    children = <Stack />,
-  } = props;
+  const { showMenu, isMobile, isPrint, showPrint, firstItem = false } = props;
 
-  const [updatedChildren, setUpdatedChildren] = useState(children);
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [openModal, setOpenModal] = useState<string | null>(null);
   const handleOpenModal = (modalName: string) => {
@@ -67,13 +61,13 @@ export function CreditProspect(props: ICreditProspectProps) {
       newHistory.pop();
       return newHistory;
     });
-    setUpdatedChildren(cloneElement(children));
   };
 
   const { id } = useParams();
 
   const [prospectProducts, setProspectProducts] =
     useState<ICreditProductProspect>();
+  const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (id) {
@@ -215,7 +209,13 @@ export function CreditProspect(props: ICreditProspectProps) {
           </StyledContainerIcon>
         </Stack>
       )}
-      <Stack direction="column">{updatedChildren}</Stack>
+      <Stack direction="column">
+        <CardCommercialManagement
+          id={id!}
+          dataRef={dataCommercialManagementRef}
+          showSummaryFirstItem={firstItem}
+        />
+      </Stack>
       {currentModal === "creditLimit" && (
         <CreditLimit
           handleClose={handleCloseModal}
