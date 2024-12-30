@@ -3,7 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@inube/design-system";
 
 import { IAddBorrowedProps, AddBorrower } from "..";
-import { parameters, props } from "./props";
+import { parameters, props, TipeOfDocument } from "./props";
 
 const meta: Meta<typeof AddBorrower> = {
     title: "components/modals/AddBorrower",
@@ -25,18 +25,19 @@ export const Default: Story = (args: IAddBorrowedProps) => {
     );
 };
 Default.args = {
-    title: "Title",
+    title: "Agregar deudor",
     form: {
-        tipeOfDocument: "cc",
-        names: "jose",
-        email: "jose@gmal",
-        biologicalSex: "woman",
-        relationship: "friend",
-        document: "12345",
-        lastNames: "perez",
-        phone: "123456",
-        age: "25",
+        tipeOfDocument: "",
+        names: "",
+        email: "",
+        biologicalSex: "",
+        relationship: "",
+        document: "",
+        lastNames: "",
+        phone: "",
+        age: "",
     },
+    options: TipeOfDocument,
 };
 
 export default meta;
