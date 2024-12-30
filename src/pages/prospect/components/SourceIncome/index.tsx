@@ -1,14 +1,17 @@
+import { MdCached } from "react-icons/md";
+
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Grid } from "@inubekit/grid";
 import { Select } from "@inubekit/select";
+import { Button } from "@inubekit/button";
+
+import { CardBorrower } from "@components/cards/CardBorrower";
 import { currencyFormat } from "@utils/formatData/currency";
 
 import { IncomeEmployment, IncomeCapital, MicroBusinesses } from "./config";
 import { StyledContainer } from "./styles";
-import { Button } from "@inubekit/button";
-import { MdCached } from "react-icons/md";
 
 interface ISourceIncomeProps {
   onChange: (name: string, newValue: string) => void;
@@ -59,7 +62,11 @@ export function SourceIncome(props: ISourceIncomeProps) {
 
   return (
     <StyledContainer $smallScreen={isMobile}>
-      <Stack direction="column" padding="16px 24px" gap="16px">
+      <Stack
+        direction="column"
+        padding={isMobile ? "none" : "16px 24px"}
+        gap="16px"
+      >
         <Stack direction="column">
           <Stack
             width={!isMobile ? "auto" : "auto"}
@@ -83,7 +90,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
                 />
               </Stack>
             )}
-            {onlyDebtor && (
+            {onlyDebtor && !isMobile && (
               <Stack direction="column" gap="8px">
                 <Text type="body" size="small" weight="bold" appearance="gray">
                   Deudor
@@ -92,6 +99,9 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   {form.borrower}
                 </Text>
               </Stack>
+            )}
+            {onlyDebtor && isMobile && (
+              <CardBorrower label="Deudor" placeHolder={form.borrower} />
             )}
             <Stack
               width={!isMobile ? "end" : "auto"}
@@ -112,8 +122,12 @@ export function SourceIncome(props: ISourceIncomeProps) {
               </Text>
             </Stack>
             {onlyDebtor && (
-              <Stack alignItems="end">
-                <Button variant="outlined" iconBefore={<MdCached />}>
+              <Stack alignItems="end" width={isMobile ? "100%" : "auto"}>
+                <Button
+                  variant="outlined"
+                  iconBefore={<MdCached />}
+                  fullwidth={isMobile}
+                >
                   Restablecer
                 </Button>
               </Stack>

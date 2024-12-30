@@ -9,7 +9,7 @@ import {
 import { MdOutlineChevronRight } from "react-icons/md";
 
 import { SummaryCard } from "@components/cards/SummaryCard";
-import { PinnedRequest, ICreditRequest } from "@services/types";
+import { ICreditRequestPinned, ICreditRequest } from "@services/types";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
@@ -19,7 +19,7 @@ interface BoardSectionProps {
   sectionBackground: SectionBackground;
   orientation: SectionOrientation;
   sectionInformation: ICreditRequest[];
-  pinnedRequests: PinnedRequest[];
+  pinnedRequests: ICreditRequestPinned[];
   handlePinRequest: (requestId: string) => void;
   errorLoadingPins: boolean;
 }
@@ -48,13 +48,12 @@ function BoardSection(props: BoardSectionProps) {
   };
 
   function isRequestPinned(
-    creditRequestCode: string,
-    pinnedRequests: PinnedRequest[]
+    creditRequestId: string | undefined,
+    pinnedRequests: ICreditRequestPinned[]
   ) {
     const pinnedRequest = pinnedRequests.find(
-      (pinnedRequest) => pinnedRequest.requestId === creditRequestCode
+      (pinnedRequest) => pinnedRequest.creditRequestId === creditRequestId
     );
-
     return pinnedRequest && pinnedRequest.isPinned === "Y" ? true : false;
   }
 
@@ -122,7 +121,7 @@ function BoardSection(props: BoardSectionProps) {
               toDo={request.taskToBeDone}
               path={`extended-card/${request.creditRequestCode}`}
               isPinned={isRequestPinned(
-                request.creditRequestCode,
+                request.creditRequestId,
                 pinnedRequests
               )}
               hasMessage

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
 
+import { ListModal } from "@components/modals/ListModal";
 import { Consulting } from "@components/modals/Consulting";
 import { income } from "@mocks/add-prospect/income/income.mock";
 
@@ -15,6 +16,7 @@ export function AddProspect() {
   );
   const [isCurrentFormValid, setIsCurrentFormValid] = useState(true);
   const [showConsultingModal, setShowConsultingModal] = useState(false);
+  const [showDebtorModal, setShowDebtorModal] = useState(false);
 
   const isMobile = useMediaQuery("(max-width:880px)");
   const isTablet = useMediaQuery("(max-width: 1482px)");
@@ -40,6 +42,8 @@ export function AddProspect() {
       inputValue: "",
       toggleChecked: false,
       paymentPlan: "",
+      periodicity: "",
+      payAmount: "",
     },
     consolidatedCreditSelections: {
       totalCollected: 0,
@@ -97,13 +101,21 @@ export function AddProspect() {
         : undefined,
       togglesState[2] ? stepsAddProspect.extraBorrowers.id : undefined,
       togglesState[1] ? stepsAddProspect.sourcesIncome.id : undefined,
-      stepsAddProspect.obligationsFinancial.id,
+      stepsAddProspect.loanConditions.id,
     ].filter((step): step is number => step !== undefined);
 
     const currentStepIndex = dynamicSteps.indexOf(currentStep);
 
     if (currentStep === stepsAddProspect.loanConditions.id) {
       showConsultingForFiveSeconds();
+    }
+    if (currentStep === stepsAddProspect.extraBorrowers.id) {
+      setShowDebtorModal(true);
+      return;
+    }
+    if (currentStep === stepsAddProspect.sourcesIncome.id) {
+      setCurrentStep(stepsAddProspect.obligationsFinancial.id);
+      return;
     }
     if (currentStep === stepsAddProspect.productSelection.id) {
       setCurrentStep(dynamicSteps[0]);
@@ -128,11 +140,15 @@ export function AddProspect() {
         : undefined,
       togglesState[2] ? stepsAddProspect.extraBorrowers.id : undefined,
       togglesState[1] ? stepsAddProspect.sourcesIncome.id : undefined,
-      stepsAddProspect.obligationsFinancial.id,
+      stepsAddProspect.loanConditions.id,
     ].filter((step): step is number => step !== undefined);
 
     const currentStepIndex = dynamicSteps.indexOf(currentStep);
 
+    if (currentStep === stepsAddProspect.obligationsFinancial.id) {
+      setCurrentStep(stepsAddProspect.sourcesIncome.id);
+      return;
+    }
     if (currentStepIndex > 0) {
       setCurrentStep(dynamicSteps[currentStepIndex - 1]);
     } else if (currentStepIndex === 0) {
@@ -175,6 +191,20 @@ export function AddProspect() {
         isTablet={isTablet}
       />
       {showConsultingModal && <Consulting />}
+      {showDebtorModal && (
+        <ListModal
+          title="Deudor extra"
+          handleClose={() => setShowDebtorModal(false)}
+          handleSubmit={() => {
+            setCurrentStep(stepsAddProspect.sourcesIncome.id);
+            setShowDebtorModal(false);
+          }}
+          onSubmit={() => setShowDebtorModal(false)}
+          buttonLabel="Si"
+          content="Desea agrega otro deudor extra."
+          cancelButton="No"
+        />
+      )}
     </>
   );
 }

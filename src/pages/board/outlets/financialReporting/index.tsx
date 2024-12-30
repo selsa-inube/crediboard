@@ -279,7 +279,7 @@ export const FinancialReporting = () => {
                 />
               </Stack>
               <Stack direction="column">
-                <Approvals user={id!} isMobile={isMobile} />
+                <Approvals user={id!} isMobile={isMobile} id={id!} />
               </Stack>
               <Stack direction="column">
                 <Requirements
@@ -292,7 +292,7 @@ export const FinancialReporting = () => {
                 <Management id={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
-                <PromissoryNotes user={id!} isMobile={isMobile} />
+                <PromissoryNotes id={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
                 <Postingvouchers />
