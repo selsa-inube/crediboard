@@ -20,7 +20,7 @@ interface BoardSectionProps {
   orientation: SectionOrientation;
   sectionInformation: ICreditRequest[];
   pinnedRequests: ICreditRequestPinned[];
-  handlePinRequest: (requestId: string) => void;
+  handlePinRequest: (requestId: string, isPinned: string) => void;
   errorLoadingPins: boolean;
 }
 
@@ -126,7 +126,14 @@ function BoardSection(props: BoardSectionProps) {
               )}
               hasMessage
               onPinChange={() => {
-                handlePinRequest(request.creditRequestCode);
+                if (request.creditRequestId) {
+                  handlePinRequest(
+                    request.creditRequestId,
+                    isRequestPinned(request.creditRequestId, pinnedRequests)
+                      ? "N"
+                      : "Y"
+                  );
+                }
               }}
               errorLoadingPins={errorLoadingPins}
             />

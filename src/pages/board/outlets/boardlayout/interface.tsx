@@ -33,7 +33,7 @@ interface BoardLayoutProps {
   showPinnedOnly: boolean;
   pinnedRequests: ICreditRequestPinned[];
   handleSelectCheckChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handlePinRequest: (requestId: string) => void;
+  handlePinRequest: (requestId: string, isPinned: string) => void;
   handleShowPinnedOnly: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
