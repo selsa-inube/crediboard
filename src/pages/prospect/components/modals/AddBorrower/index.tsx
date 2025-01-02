@@ -17,12 +17,13 @@ import {
 } from "./styles";
 import { Textfield } from "@inubekit/textfield";
 import { Grid } from "@inubekit/grid";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Select } from "@inubekit/select";
 import { Divider } from "@inubekit/divider";
-
+import { useFormik } from "formik";
+import * as Yup from "yup";
 export interface IAddBorrowedProps {
-    form: {
+    initialValues: {
         tipeOfDocument: string;
         names: string;
         email: string;
@@ -33,37 +34,71 @@ export interface IAddBorrowedProps {
         phone: string;
         age: string;
     };
-
+    optionsFamily: { id: string; label: string; value: string }[];
+    optionsSex: { id: string; label: string; value: string }[];
     options: { id: string; label: string; value: string }[];
     portalId?: string;
     handleClose?: () => void;
     onSubmit?: () => void;
+    onFormValid: (isValid: boolean) => void;
     title: string;
+    handleOnChange: (values: {
+        names: string;
+        email: string;
+        document: string;
+        lastNames: string;
+        phone: string;
+        age: string;
+    }) => void;
 }
 
 export const AddBorrower = (props: IAddBorrowedProps) => {
-    const { title, handleClose, onSubmit, portalId, form, options } = props;
-    const [isFormComplete, setIsFormComplete] = useState(false);
-    const [forms, setForm] = useState({ name: "" });
+    const { title, handleClose, onSubmit, handleOnChange, onFormValid, portalId, initialValues, options, optionsSex, optionsFamily } = props;
+    const [form, setForm] = useState({ name: "" });
 
     const onChange = (name: string, newValue: string) => {
-        setForm({ ...forms, [name]: newValue });
+        setForm({ ...form, [name]: newValue });
     };
-    useEffect(() => {
-        const allFieldsFilled = [
-            form.tipeOfDocument,
-            form.names,
-            form.email,
-            form.biologicalSex,
-            form.relationship,
-            form.document,
-            form.lastNames,
-            form.phone,
-            form.age,
-        ].every((field) => field !== undefined && field !== "");
 
-        setIsFormComplete(allFieldsFilled);
-    }, [form]);
+    const validationSchema = Yup.object({
+
+        document: Yup.string().required("Número de documento requerido"),
+        names: Yup.string().required("Nombre requerido"),
+        lastNames: Yup.string().required("Apellidos requeridos"),
+        email: Yup.string().email("Correo no válido").required("Correo requerido"),
+        phone: Yup.string().required("Número de teléfono requerido"),
+        age: Yup.number()
+            .min(0, "Debe ser mayor o igual a 0")
+            .required("Edad requerida"),
+    });
+
+
+    const formik = useFormik({
+        initialValues: initialValues,
+        validationSchema,
+        validateOnMount: true,
+        onSubmit: () => { },
+    });
+
+    const prevValues = useRef(formik.values);
+
+    useEffect(() => {
+        onFormValid(formik.isValid);
+    }, [formik.isValid, onFormValid]);
+
+    useEffect(() => {
+        if (
+            prevValues.current.document !== formik.values.document ||
+            prevValues.current.names !== formik.values.names ||
+            prevValues.current.lastNames !== formik.values.lastNames ||
+            prevValues.current.email !== formik.values.email ||
+            prevValues.current.phone !== formik.values.phone ||
+            prevValues.current.age !== formik.values.age
+        ) {
+            handleOnChange(formik.values);
+            prevValues.current = formik.values;
+        }
+    }, [formik.values, handleOnChange]);
 
 
 
@@ -98,7 +133,7 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
                     </StyledContainerClose>
 
                 </StyledContainerTitle>
-                <Divider></Divider>
+                <Divider />
                 <Grid
                     templateColumns="repeat(2,1fr)"
                     gap="20px"
@@ -108,12 +143,12 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
                 >
                     <Select
                         id="id"
-                        label="Label"
+                        label="Tipo de documento"
                         name="name"
                         options={options}
                         placeholder="Seleccione una opción"
                         size="wide"
-                        value={forms.name}
+                        value={form.name}
                         onChange={onChange}
                     />
                     <Textfield
@@ -122,24 +157,25 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
                         label="Numeo de documento"
                         placeholder="Ej 1010477949"
                         fullwidth
+                        onChange={handleClose}
                     />
                     <Textfield
                         id="field3"
-                        value={form.names}
+
                         label="Nombre"
                         placeholder="Ej: Daniel Rodrigo"
                         fullwidth
                     />
                     <Textfield
                         id="field4"
-                        value={form.lastNames}
+
                         label="apellidos"
                         placeholder="Ej: Rodriguez Velandia"
                         fullwidth
                     />
                     <Textfield
                         id="field5"
-                        value={form.email}
+
                         label="correo"
                         placeholder="micorreo@mail.com"
                         fullwidth
@@ -147,43 +183,49 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
 
                     <Textfield
                         id="field6"
-                        value={form.phone}
+
                         label="Numer de telefono"
                         placeholder="3102330109"
                         fullwidth
                     />
-                    <Textfield
-                        id="field7"
-                        value={form.biologicalSex}
-                        label="Sexo"
+                    <Select
+                        id="id"
+                        label="Sexo biológico"
+                        name="name"
+                        options={optionsSex}
                         placeholder="Seleccione una opción"
-                        fullwidth
+                        size="wide"
+                        value={form.name}
+                        onChange={onChange}
                     />
                     <Textfield
                         id="field8"
-                        value={form.age}
+
                         label="edad"
                         placeholder="Seleccione una opción"
                         fullwidth
                     />
-                    <Textfield
-                        id="field9"
-                        value={form.relationship}
-                        label="relacion"
+                    <Select
+                        id="id"
+                        label="Parentesco"
+                        name="name"
+                        options={optionsFamily}
                         placeholder="Seleccione una opción"
-                        fullwidth
+                        size="wide"
+                        value={form.name}
+                        onChange={onChange}
                     />
                 </Grid>
                 <Stack justifyContent="flex-end" padding="30px 0px">
                     <Button
                         children="Cancelar"
-                        appearance={isFormComplete ? "primary" : "gray"}
-                        disabled={!isFormComplete}
+                        appearance={"gray"}
+
                         onClick={handleClose}
                     />
                     <Button children="Siguiente"
-                        appearance={isFormComplete ? "primary" : "gray"}
-                        disabled={!isFormComplete}
+                        appearance={"gray"}
+
                         onClick={onSubmit}
                     />
                 </Stack>
