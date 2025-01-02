@@ -4,8 +4,9 @@ import * as Yup from "yup";
 import { Grid } from "@inubekit/grid";
 
 import { Fieldset } from "@src/components/data/Fieldset";
-import { dataImplementBorrowedData } from "./config";
 import { CardBorrowerNewData } from "@src/pages/prospect/components/cardNewBorrower";
+
+import { dataImplementBorrowedData } from "./config";
 
 interface IBorrowedDataProps {
   isMobile: boolean;
@@ -40,7 +41,7 @@ export function ImplementBorrowedData(props: IBorrowedDataProps) {
     initialValues: initialValues,
     validationSchema,
     validateOnMount: true,
-    onSubmit: () => { },
+    onSubmit: () => {},
   });
 
   const prevValues = useRef(formik.values);
@@ -85,9 +86,7 @@ export function ImplementBorrowedData(props: IBorrowedDataProps) {
             obligations={item.obligations}
           />
         ))}
-        <CardBorrowerNewData
-          hasData
-        />
+        <CardBorrowerNewData hasData />
       </Grid>
     </Fieldset>
   );
