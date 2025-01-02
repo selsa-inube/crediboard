@@ -29,6 +29,11 @@ export interface IVehicleOffered {
   value: string;
   description: string;
 }
+export interface IDataInternalYes {
+  value: string;
+  state: string;
+  description: string;
+}
 export interface IPropertyOffered {
   antique: string;
   estimated: string;
@@ -41,4 +46,5 @@ export interface FormData {
   contactInformation: ContactInformation;
   propertyOffered: IPropertyOffered;
   vehicleOffered: IVehicleOffered;
+  dataInternalYes: IDataInternalYes;
 }

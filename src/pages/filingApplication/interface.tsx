@@ -9,6 +9,7 @@ import { stepsFilingApplication } from "./config/filingApplication.config";
 import { ContactInformation } from "./steps/contactInformation";
 import { PropertyOffered } from "./steps/propertyOffered";
 import { VehicleOffered } from "./steps/vehicleOffered";
+import { DataInternalYes } from "./steps/disbursementInternalYes";
 
 interface AddPositionUIProps {
   currentStep: number;
@@ -68,12 +69,12 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
         </StyledContainerAssisted>
         {currentStepsNumber &&
           currentStepsNumber.id ===
-            stepsFilingApplication.generalInformation.id && (
+          stepsFilingApplication.generalInformation.id && (
             <RequirementsNotMet isMobile={isMobile} />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-            stepsFilingApplication.contactInformation.id && (
+          stepsFilingApplication.contactInformation.id && (
             <ContactInformation
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
@@ -85,7 +86,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-            stepsFilingApplication.propertyOffered.id && (
+          stepsFilingApplication.propertyOffered.id && (
             <PropertyOffered
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
@@ -97,13 +98,25 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-            stepsFilingApplication.vehicleOffered.id && (
+          stepsFilingApplication.vehicleOffered.id && (
             <VehicleOffered
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
               initialValues={formData.vehicleOffered}
               handleOnChange={(values) =>
                 handleFormChange({ vehicleOffered: values })
+              }
+            />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+          stepsFilingApplication.disbursement.id && (
+            <DataInternalYes
+              isMobile={isMobile}
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.dataInternalYes}
+              handleOnChange={(values) =>
+                handleFormChange({ dataInternalYes: values })
               }
             />
           )}

@@ -28,6 +28,11 @@ export function FilingApplication() {
       value: "",
       description: "",
     },
+    dataInternalYes: {
+      value: "",
+      state: "",
+      description: "",
+    },
   });
 
   const isMobile = useMediaQuery("(max-width:880px)");

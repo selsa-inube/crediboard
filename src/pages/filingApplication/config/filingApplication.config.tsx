@@ -36,11 +36,11 @@ export const stepsFilingApplication = {
     name: "title",
     description: "Description.",
   },
-  step7: {
+  disbursement: {
     id: 7,
     number: 7,
-    name: "title",
-    description: "Desembolso.",
+    name: "Desembolso",
+    description: "configure todos los tipos de desembolso.",
   },
   step8: {
     id: 8,
