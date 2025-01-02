@@ -92,7 +92,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
             )}
             {onlyDebtor && !isMobile && (
               <Stack direction="column" gap="8px">
-                <Text type="body" size="small" weight="bold" appearance="gray">
+                <Text type="body" size="small" weight="bold" appearance="dark">
                   Deudor
                 </Text>
                 <Text type="title" size="medium">

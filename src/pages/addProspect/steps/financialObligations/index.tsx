@@ -27,7 +27,7 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
         <Stack direction="column">
           <Stack alignItems="center">
             {!isMobile && (
-              <Text size="small" type="label" appearance="gray" weight="bold">
+              <Text size="medium" type="label" weight="bold">
                 {dataReport.title}
               </Text>
             )}
@@ -44,7 +44,11 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
             )}
             {isMobile && (
               <Stack padding="0px 0px 10px 0px">
-                <CardBorrower label={dataReport.title} placeHolder={dataReport.description} />
+                <CardBorrower
+                  label={dataReport.title}
+                  placeHolder={dataReport.description}
+                  isMobile={true}
+                />
               </Stack>
             )}
             <Stack
@@ -81,21 +85,27 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
           <TableFinancialObligations />
         </Stack>
       </Stack>
-      <Stack
-        gap="15px"
-        direction={!isMobile ? "row" : "column"}
-        justifyContent="center"
-      >
-        <Stack direction="column" alignItems="center">
-          <Text size="small" type="headline" appearance="gray">
+      <Stack gap="15px" justifyContent="center">
+        <Stack direction="column" alignItems="center" gap="8px">
+          <Text
+            size={isMobile ? "medium" : "small"}
+            type={isMobile ? "title" : "headline"}
+            weight={isMobile ? "bold" : "normal"}
+            appearance="gray"
+          >
             {dataReport.totalBalance}
           </Text>
           <Text size="small" type="body" appearance="gray">
             {dataReport.descriptionTotalBalance}
           </Text>
         </Stack>
-        <Stack direction="column" alignItems="center">
-          <Text size="small" type="headline" appearance="gray">
+        <Stack direction="column" alignItems="center" gap="8px">
+          <Text
+            size={isMobile ? "medium" : "small"}
+            type={isMobile ? "title" : "headline"}
+            weight={isMobile ? "bold" : "normal"}
+            appearance="gray"
+          >
             {dataReport.totalFee}
           </Text>
           <Text size="small" type="body" appearance="gray">
