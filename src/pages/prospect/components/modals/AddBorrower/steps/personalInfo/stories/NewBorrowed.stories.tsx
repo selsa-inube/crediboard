@@ -39,7 +39,7 @@ Default.args = {
     email: "",
     biologicalSex: "",
     relationship: "",
-    document: "",
+    documentNumber: "",
     lastNames: "",
     phone: "",
     age: "",

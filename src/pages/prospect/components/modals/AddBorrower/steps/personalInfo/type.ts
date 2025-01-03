@@ -1,8 +1,8 @@
 import { FormikValues } from "formik";
 
 export interface FormValues {
-  field1: number;
   field2: number;
+  field3: string;
 }
 
 export interface Option {
@@ -26,12 +26,12 @@ export interface IAddBorrowedProps {
 
 export interface FormState {
   tipeOfDocument: string;
-  documentNumber: number;
+  documentNumber: string;
   firstName: string;
   lastName: string;
   email: string;
-  phone: number;
+  phone: string;
   sex: string;
-  age: number;
+  age: string;
   relation: string;
 }
