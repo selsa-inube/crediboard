@@ -22,6 +22,19 @@ export function FilingApplication() {
       income: 0,
       obligations: 0,
     },
+    propertyOffered: {
+      antique: "",
+      estimated: "",
+      type: "",
+      state: "",
+      description: "",
+    },
+    vehicleOffered: {
+      state: "",
+      model: "",
+      value: "",
+      description: "",
+    },
   });
 
   const isMobile = useMediaQuery("(max-width:880px)");

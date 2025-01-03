@@ -1,23 +1,39 @@
-import { CardBorrower, ICardBorrowerProps } from "./index";
+import { Meta, StoryObj } from "@storybook/react";
+import { CardBorrower } from ".";
 
-const story = {
-  components: [CardBorrower],
-  title: "components/Cards/CardBorrower",
+type Story = StoryObj<typeof CardBorrower>;
+
+const cardBorrower: Meta<typeof CardBorrower> = {
+  component: CardBorrower,
+  title: "components/cards/CardBorrower",
   argTypes: {
-    name: {
-      control: { type: "text" },
-      description: "Nombre del prestatario que se mostrará en el card.",
+    label: {
+      control: {
+        type: "text",
+      },
+      description: "label",
+    },
+    placeHolder: {
+      control: {
+        type: "text",
+      },
+      description: "placeholder",
+    },
+    data: {
+      control: {
+        type: "text",
+      },
+      description: "data",
     },
   },
 };
 
-const Default = (args: ICardBorrowerProps) => <CardBorrower {...args} />;
+export const Default: Story = {
+  args: {
+    label: "Correo electrónico",
+    placeHolder: "daniel.rodriguez98@hotmail.com",
+    data: "Cédula de ciudadanía",
+  },
+};
 
-Default.args = {
-  label: "Deudor",
-  placeHolder: "Camilo Rincón"
-} satisfies ICardBorrowerProps;
-
-export default story;
-
-export { Default };
+export default cardBorrower;

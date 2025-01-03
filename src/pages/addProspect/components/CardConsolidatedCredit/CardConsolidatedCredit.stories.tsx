@@ -3,7 +3,7 @@ import { CardConsolidatedCredit, ICardConsolidatedCreditProps } from "./index";
 
 const story = {
   components: [CardConsolidatedCredit],
-  title: "components/Cards/CardConsolidatedCredit",
+  title: "pages/addProspect/components/CardConsolidatedCredit",
   argTypes: {
     onUpdateTotal: {
       action: "onUpdateTotal",

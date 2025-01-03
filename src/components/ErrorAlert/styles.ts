@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 
 const slideDown = keyframes`
  
@@ -55,9 +55,9 @@ export const AlertContainer = styled.div`
   padding: 7px;
   border-radius: 4px;
   background-color: ${({ theme }) =>
-    theme?.color?.stroke?.gray?.regular || inube.color.surface.warning.clear};
+    theme?.color?.stroke?.gray?.regular || inube.palette.yellow.Y50};
   border: 1px solid
     ${({ theme }) =>
-      theme?.color?.stroke?.gray?.regular || inube.color.surface.gray.regular};
+      theme?.color?.stroke?.gray?.regular || inube.palette.neutral.N30};
   animation: ${slideDown} 2s ease-in-out;
 `;

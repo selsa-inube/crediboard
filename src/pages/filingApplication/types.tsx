@@ -18,16 +18,34 @@ export interface IStep {
   name?: string;
 }
 
+interface ContactInformation {
+  email: string;
+  phone: string;
+}
+
+export interface IVehicleOffered {
+  state: string;
+  model: string;
+  value: string;
+  description: string;
+}
+export interface IPropertyOffered {
+  antique: string;
+  estimated: string;
+  type: string;
+  state: string;
+  description: string;
+}
+
 export interface FormData {
-  contactInformation: {
-    email: string;
-    phone: string;
-  };
+  contactInformation: ContactInformation;
+  propertyOffered: IPropertyOffered;
+  vehicleOffered: IVehicleOffered;
   deptorData: {
     name: string;
     lastName: string;
     email: string;
     income: number;
     obligations: number;
-  }
+  };
 }

@@ -4,9 +4,12 @@ import { Button } from "@inubekit/button";
 
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { StyledContainerAssisted } from "./styles";
+import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { stepsFilingApplication } from "./config/filingApplication.config";
 import { ContactInformation } from "./steps/contactInformation";
 import { ImplementBorrowedData } from "./steps/implementBorrowedData";
+import { PropertyOffered } from "./steps/propertyOffered";
+import { VehicleOffered } from "./steps/vehicleOffered";
 
 interface AddPositionUIProps {
   currentStep: number;
@@ -43,7 +46,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
       alignItems={isMobile ? "normal" : "center"}
       margin="20px 0px"
       padding="24px"
-      height="100%"
+      height={isMobile ? "2000px" : "100%"}
     >
       <Stack
         gap="24px"
@@ -67,7 +70,12 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
 
         {currentStepsNumber &&
           currentStepsNumber.id ===
-          stepsFilingApplication.contactInformation.id && (
+            stepsFilingApplication.generalInformation.id && (
+            <RequirementsNotMet isMobile={isMobile} />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsFilingApplication.contactInformation.id && (
             <ContactInformation
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
@@ -76,17 +84,64 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
                 handleFormChange({ contactInformation: values })
               }
             />
-          )
-        }
+          )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-          stepsFilingApplication.implementBorrowedData.id && (
+            stepsFilingApplication.implementBorrowedData.id && (
             <ImplementBorrowedData
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
               initialValues={formData.deptorData}
               handleOnChange={(values) =>
                 handleFormChange({ deptorData: values })
+              }
+            />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsFilingApplication.propertyOffered.id && (
+            <PropertyOffered
+              isMobile={isMobile}
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.propertyOffered}
+              handleOnChange={(values) =>
+                handleFormChange({ propertyOffered: values })
+              }
+            />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsFilingApplication.vehicleOffered.id && (
+            <VehicleOffered
+              isMobile={isMobile}
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.vehicleOffered}
+              handleOnChange={(values) =>
+                handleFormChange({ vehicleOffered: values })
+              }
+            />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsFilingApplication.propertyOffered.id && (
+            <PropertyOffered
+              isMobile={isMobile}
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.propertyOffered}
+              handleOnChange={(values) =>
+                handleFormChange({ propertyOffered: values })
+              }
+            />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsFilingApplication.vehicleOffered.id && (
+            <VehicleOffered
+              isMobile={isMobile}
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.vehicleOffered}
+              handleOnChange={(values) =>
+                handleFormChange({ vehicleOffered: values })
               }
             />
           )}
