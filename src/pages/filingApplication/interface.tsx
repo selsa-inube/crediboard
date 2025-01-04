@@ -9,7 +9,7 @@ import { stepsFilingApplication } from "./config/filingApplication.config";
 import { ContactInformation } from "./steps/contactInformation";
 import { PropertyOffered } from "./steps/propertyOffered";
 import { VehicleOffered } from "./steps/vehicleOffered";
-import { DataInternalYes } from "./steps/disbursementInternalYes";
+import { DisbursementWithInternalAccount } from "./steps/disbursementWithInternalAccount";
 
 interface AddPositionUIProps {
   currentStep: number;
@@ -111,12 +111,12 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id ===
           stepsFilingApplication.disbursement.id && (
-            <DataInternalYes
+            <DisbursementWithInternalAccount
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
-              initialValues={formData.dataInternalYes}
+              initialValues={formData.disbursementWithInternalAccount}
               handleOnChange={(values) =>
-                handleFormChange({ dataInternalYes: values })
+                handleFormChange({ disbursementWithInternalAccount: values })
               }
             />
           )}

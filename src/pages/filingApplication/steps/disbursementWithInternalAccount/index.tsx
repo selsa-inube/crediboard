@@ -9,26 +9,27 @@ import { Select } from "@inubekit/select";
 import { Stack } from "@inubekit/stack";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
+import { Text } from "@inubekit/text";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { optionsOfferedstate } from "@mocks/filing-application/property-offered/propertyoffered.mock";
+import { optionTodisburseMoney } from "@mocks/filing-application/domestic-disbursement/domesticdisbursement";
 import {
     handleChangeWithCurrency,
     validateCurrencyField,
 } from "@utils/formatData/currency";
 
-import { IDataInternalYes } from "../../types";
-import { dataInternalYes } from "./config";
+import { IDisbursementWithInternalAccount } from "../../types";
+import { disbursementWithInternalAccount } from "./config";
 import { disbursementln } from "./config";
 
-interface IDataInternalYesProps {
+interface IDisbursementWithInternalAccountProps {
     isMobile: boolean;
-    initialValues: IDataInternalYes;
+    initialValues: IDisbursementWithInternalAccount;
     onFormValid: (isValid: boolean) => void;
-    handleOnChange: (values: IDataInternalYes) => void;
+    handleOnChange: (values: IDisbursementWithInternalAccount) => void;
 }
 
-export function DataInternalYes(props: IDataInternalYesProps) {
+export function DisbursementWithInternalAccount(props: IDisbursementWithInternalAccountProps) {
     const { isMobile, initialValues, onFormValid, handleOnChange } = props;
 
     const [isFeatureEnabled, setIsFeatureEnabled] = useState(false);
@@ -38,7 +39,7 @@ export function DataInternalYes(props: IDataInternalYesProps) {
 
     const validationSchema = Yup.object({
         state: Yup.string().required(),
-        value: Yup.number().required(),
+        amount: Yup.number().required(),
         description: Yup.string().required(),
     });
 
@@ -58,7 +59,7 @@ export function DataInternalYes(props: IDataInternalYesProps) {
     useEffect(() => {
         if (
             prevValues.current.state !== formik.values.state ||
-            prevValues.current.value !== formik.values.value ||
+            prevValues.current.amount !== formik.values.amount ||
             prevValues.current.description !== formik.values.description
         ) {
             handleOnChange(formik.values);
@@ -98,12 +99,12 @@ export function DataInternalYes(props: IDataInternalYesProps) {
                 />
 
                 <Textfield
-                    name="value"
-                    id="value"
-                    label={dataInternalYes.labelDisbursement}
-                    placeholder={dataInternalYes.placeDisbursement}
+                    name="amount"
+                    id="amount"
+                    label={disbursementWithInternalAccount.labelDisbursement}
+                    placeholder={disbursementWithInternalAccount.placeDisbursement}
                     size="compact"
-                    value={validateCurrencyField("value", formik)}
+                    value={validateCurrencyField("amount", formik)}
                     onChange={(e) => handleChangeWithCurrency(formik, e)}
                     onBlur={formik.handleBlur}
                     fullwidth
@@ -118,8 +119,9 @@ export function DataInternalYes(props: IDataInternalYesProps) {
                     onChange={handleCheckboxChange}
                     value={"featureCheckbox"}
                 />
-
                 <Divider dashed />
+
+                <Text>{disbursementWithInternalAccount.text}</Text>
 
                 <Toggle
                     checked={toggleChecked}
@@ -137,10 +139,10 @@ export function DataInternalYes(props: IDataInternalYesProps) {
                 <Select
                     name="state"
                     id="state"
-                    label={dataInternalYes.labelAccount}
-                    placeholder={dataInternalYes.placeHolderState}
+                    label={disbursementWithInternalAccount.labelAccount}
+                    placeholder={disbursementWithInternalAccount.placeHolderState}
                     size="compact"
-                    options={optionsOfferedstate}
+                    options={optionTodisburseMoney}
                     onBlur={formik.handleBlur}
                     onChange={(name, value) => formik.setFieldValue(name, value)}
                     value={formik.values.state}
@@ -150,8 +152,8 @@ export function DataInternalYes(props: IDataInternalYesProps) {
                 <Textarea
                     name="description"
                     id="description"
-                    label={dataInternalYes.labelDescription}
-                    placeholder={dataInternalYes.placeDescription}
+                    label={disbursementWithInternalAccount.labelDescription}
+                    placeholder={disbursementWithInternalAccount.placeDescription}
                     value={formik.values.description}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}

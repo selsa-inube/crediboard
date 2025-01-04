@@ -6,7 +6,7 @@ export const disbursementln = [
     { id: "cash", disabled: false, label: "Dinero en efectivo" },
   ];
   
-export const dataInternalYes = {
+export const disbursementWithInternalAccount = {
     labelDisbursement: "Valor a girar con esta forma de desembolso",
     placeDisbursement: "Ej: 1.000.000",
     labelBalance: "El valor a girar con esta forma de desembolso es igual al saldo pendiente por desembolsar.",
@@ -15,6 +15,7 @@ export const dataInternalYes = {
     placeHolderState: "seleccione una opción",
     labelDescription: "Observaciones",
     placeDescription: "Cosas extra que deben tenerse en cuenta.",
+    text:"¿El desembolso es a nombre propio?",
  }
  
   

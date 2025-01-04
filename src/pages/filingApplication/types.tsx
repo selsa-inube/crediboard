@@ -29,8 +29,8 @@ export interface IVehicleOffered {
   value: string;
   description: string;
 }
-export interface IDataInternalYes {
-  value: string;
+export interface IDisbursementWithInternalAccount {
+  amount: string;
   state: string;
   description: string;
 }
@@ -46,5 +46,5 @@ export interface FormData {
   contactInformation: ContactInformation;
   propertyOffered: IPropertyOffered;
   vehicleOffered: IVehicleOffered;
-  dataInternalYes: IDataInternalYes;
+  disbursementWithInternalAccount: IDisbursementWithInternalAccount;
 }

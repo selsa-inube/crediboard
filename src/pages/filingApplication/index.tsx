@@ -28,8 +28,9 @@ export function FilingApplication() {
       value: "",
       description: "",
     },
-    dataInternalYes: {
-      value: "",
+    disbursementWithInternalAccount: {
+      amount: "",
+      // value: "",
       state: "",
       description: "",
     },
