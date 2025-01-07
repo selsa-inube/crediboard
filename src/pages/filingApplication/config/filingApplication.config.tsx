@@ -2,8 +2,8 @@ export const stepsFilingApplication = {
   generalInformation: {
     id: 1,
     number: 1,
-    name: "title",
-    description: "Datos de contacto para esta solicitud.",
+    name: "Requisitos no cumplidos",
+    description: "Aspectos que deberían cambiar.",
   },
   contactInformation: {
     id: 2,

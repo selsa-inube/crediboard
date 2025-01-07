@@ -12,18 +12,19 @@ import { IOption } from "@inubekit/select";
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { IStaff, IToDo, ICreditRequest } from "@services/types";
-import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { get } from "@mocks/utils/dataMock.service";
+import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
 import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { getSearchDecisionById } from "@src/services/todo/SearchDecisionById";
 
 import { StaffModal } from "./StaffModal";
-import { errorMessagge, buttonText } from "./config";
-import { errorObserver } from "../config";
+import { errorMessagge, txtLabels, txtLabelsNoData } from "./config";
 import { IICon, IButton } from "./types";
+import { getXAction } from "./util/utils";
+import { errorObserver } from "../config";
 
 interface ToDoProps {
   icon?: IICon;
@@ -39,11 +40,14 @@ function ToDo(props: ToDoProps) {
   const [requests, setRequests] = useState<ICreditRequest | null>(null);
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
-  const [taskDecisions, setTaskDecisions] = useState<IOption[]>();
+  const [taskDecisions, setTaskDecisions] = useState<IOption[]>([]);
+  const [selectedDecision, setSelectedDecision] = useState<IOption | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
   const [taskData, setTaskData] = useState<IToDo | null>(null);
-  const [hasFetchedDecisions, setHasFetchedDecisions] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [assignedStaff, setAssignedStaff] = useState({
     commercialManager: "",
     analyst: "",
@@ -77,7 +81,6 @@ function ToDo(props: ToDoProps) {
   useEffect(() => {
     const fetchToDoData = async () => {
       if (!requests?.creditRequestId) return;
-
       setLoading(true);
       try {
         const data = await getToDoByCreditRequestId(requests.creditRequestId);
@@ -152,6 +155,11 @@ function ToDo(props: ToDoProps) {
 
   const onChangeDecision = (name: string, newValue: string) => {
     setDecisionValue({ ...decisionValue, [name]: newValue });
+
+    const selected = taskDecisions.find(
+      (decision) => decision.value === newValue
+    );
+    setSelectedDecision(selected || null);
   };
 
   const handleSubmit = () => {
@@ -175,10 +183,19 @@ function ToDo(props: ToDoProps) {
   };
 
   const handleSelectOpen = async () => {
-    if (!hasFetchedDecisions) {
+    setLoading(true);
+    if (requests?.creditRequestId) {
       try {
-        const decisions = await get("decisions");
-        setTaskDecisions(decisions as IOption[] | undefined);
+        const decision = await getSearchDecisionById(requests.creditRequestId);
+        const formattedDecisions = Array.isArray(decision)
+          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            decision.map((decisions: any, index: number) => ({
+              id: `decision-${index}`,
+              label: decisions.decision + ": " + decisions.value,
+              value: decisions.value,
+            }))
+          : [];
+        setTaskDecisions(formattedDecisions);
       } catch (error) {
         console.error(error);
         errorObserver.notify({
@@ -186,9 +203,23 @@ function ToDo(props: ToDoProps) {
           message: (error as Error).message.toString(),
         });
       } finally {
-        setHasFetchedDecisions(true);
+        setLoading(false);
       }
     }
+  };
+
+  const data = {
+    makeDecision: {
+      creditRequestId: requests?.creditRequestId || "",
+      humanDecision: selectedDecision?.label.split(":")[0] || "",
+      justification: "",
+    },
+
+    xAction: getXAction(
+      requests?.taskToBeDone || "",
+      selectedDecision?.label.split(":")[0] || ""
+    ),
+    humanDecisionDescription: selectedDecision?.label || "",
   };
 
   return (
@@ -203,10 +234,10 @@ function ToDo(props: ToDoProps) {
         {!taskData ? (
           <ItemNotFound
             image={userNotFound}
-            title="No se encontraron tareas"
-            description="Parece que no hay tareas disponibles para mostrar."
-            buttonDescription="volver a intentar"
-            route="/retry-path"
+            title={txtLabelsNoData.title}
+            description={txtLabelsNoData.description}
+            buttonDescription={txtLabelsNoData.buttonDescription}
+            route={txtLabelsNoData.route}
             onRetry={handleRetry}
           />
         ) : (
@@ -262,7 +293,7 @@ function ToDo(props: ToDoProps) {
                   fullwidth={isMobile}
                   spacing="compact"
                 >
-                  {button?.label || buttonText}
+                  {button?.label || txtLabels.buttonText}
                 </Button>
               </Stack>
             </Stack>
@@ -274,15 +305,15 @@ function ToDo(props: ToDoProps) {
               padding="8px 0px 0px 0px"
             >
               {isModalOpen && (
-                <TextAreaModal
-                  title="Confirmar la decisión"
-                  buttonText="Enviar"
-                  secondaryButtonText="Cancelar"
-                  inputLabel="Justificación"
-                  maxLength={120}
-                  inputPlaceholder="Describa el motivo de su decisión."
+                <DecisionModal
+                  title={txtLabels.title}
+                  buttonText={txtLabels.buttonText}
+                  secondaryButtonText={txtLabels.secondaryButtonText}
+                  inputLabel={txtLabels.inputLabel}
+                  inputPlaceholder={txtLabels.inputPlaceholder}
                   onSecondaryButtonClick={handleCloseModal}
                   onCloseModal={handleCloseModal}
+                  data={data}
                 />
               )}
               <Stack direction="column" width="100%" alignItems="end">
