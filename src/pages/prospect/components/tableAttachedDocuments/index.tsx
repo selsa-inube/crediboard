@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
 import {
+  MdAttachFile,
+  MdOutlineFileDownload,
+  MdOutlineHighlightOff,
+} from "react-icons/md";
+import {
   Pagination,
   Table,
   Tbody,
@@ -10,21 +15,22 @@ import {
   Tr,
 } from "@inubekit/table";
 import { Text } from "@inubekit/text";
-import { useMediaQuery } from "@inubekit/hooks";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
+import { Icon } from "@inubekit/icon";
+
+import { get } from "@mocks/utils/dataMock.service";
+import { mockAttachedDocuments } from "@mocks/filing-application/attached-documents/attacheddocuments.mock";
 
 import { headers, dataReport } from "./config";
 import { usePagination } from "./utils";
-import {
-  MdAttachFile,
-  MdOutlineFileDownload,
-  MdOutlineHighlightOff,
-} from "react-icons/md";
-import { Icon } from "@inubekit/icon";
-import { get } from "@src/mocks/utils/dataMock.service";
-import { mockAttachedDocuments } from "@src/mocks/filing-application/attached-documents/attacheddocuments.mock";
 
-export function TableAttachedDocuements() {
+interface ITableAttachedDocumentsProps {
+  isMobile: boolean;
+}
+
+export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
+  const { isMobile } = props;
+
   const [loading, setLoading] = useState(true);
 
   const {
@@ -61,7 +67,6 @@ export function TableAttachedDocuements() {
     return () => clearTimeout(timeout);
   }, []);
 
-  const isMobile = useMediaQuery("(max-width:880px)");
   const visibleHeaders = isMobile
     ? headers.filter((header) =>
         ["borrower", "attach", "download", "remove"].includes(header.key)
@@ -88,34 +93,26 @@ export function TableAttachedDocuements() {
       <Tbody>
         {(() => {
           if (loading) {
-            return (
-              <Tr>
-                {visibleHeaders.map((_, index) => (
-                  <Td key={index} type="custom">
-                    <SkeletonLine />
-                  </Td>
-                ))}
-              </Tr>
-            );
-          } else if (attachedDocuements.length === 0) {
-            return (
-              <Tr>
-                <Td
-                  colSpan={visibleHeaders.length}
-                  align="center"
-                  type="custom"
-                >
-                  <Text
-                    size="large"
-                    type="label"
-                    appearance="gray"
-                    textAlign="center"
-                  >
-                    {dataReport.noData}
-                  </Text>
+            <Tr>
+              {visibleHeaders.map((_, index) => (
+                <Td key={index} type="custom">
+                  <SkeletonLine />
                 </Td>
-              </Tr>
-            );
+              ))}
+            </Tr>;
+          } else if (attachedDocuements.length === 0) {
+            <Tr>
+              <Td colSpan={visibleHeaders.length} align="center" type="custom">
+                <Text
+                  size="large"
+                  type="label"
+                  appearance="gray"
+                  textAlign="center"
+                >
+                  {dataReport.noData}
+                </Text>
+              </Td>
+            </Tr>;
           } else {
             return attachedDocuements.map((row, rowIndex) => (
               <Tr key={rowIndex}>

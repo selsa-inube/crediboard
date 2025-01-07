@@ -114,7 +114,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id ===
             stepsFilingApplication.attachedDocuments.id && (
-            <AttachedDocuments />
+            <AttachedDocuments isMobile={isMobile} />
           )}
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
           <Button

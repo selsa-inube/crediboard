@@ -1,13 +1,19 @@
 import { Stack } from "@inubekit/stack";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { TableAttachedDocuements } from "@pages/prospect/components/tableAttachedDocuements";
+import { TableAttachedDocuments } from "@pages/prospect/components/tableAttachedDocuments";
 
-export function AttachedDocuments() {
+interface IAttachedDocumentsProps {
+  isMobile: boolean;
+}
+
+export function AttachedDocuments(props: IAttachedDocumentsProps) {
+  const { isMobile } = props;
+
   return (
     <Fieldset>
       <Stack padding="16px">
-        <TableAttachedDocuements />
+        <TableAttachedDocuments isMobile={isMobile} />
       </Stack>
     </Fieldset>
   );
