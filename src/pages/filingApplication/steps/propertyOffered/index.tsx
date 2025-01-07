@@ -33,7 +33,9 @@ export function PropertyOffered(props: IPropertyOfferedProps) {
   const validationSchema = Yup.object({
     type: Yup.string().required(),
     state: Yup.string().required(),
-    antique: Yup.number(),
+    antique: Yup.lazy((_, { parent }) =>
+      parent.state === "nuevo" ? Yup.number() : Yup.number().required("")
+    ),
     estimated: Yup.number().required(),
     description: Yup.string().required(),
   });

@@ -7,10 +7,11 @@ export interface ICardBorrowerProps {
   label: string;
   placeHolder?: string;
   data?: string;
+  isMobile?: boolean;
 }
 
 export function CardBorrower(props: ICardBorrowerProps) {
-  const { label, placeHolder, data } = props;
+  const { label, placeHolder = "", data = "", isMobile } = props;
 
   return (
     <StyledContainer>
@@ -20,14 +21,18 @@ export function CardBorrower(props: ICardBorrowerProps) {
         padding="10px 16px"
       >
         <Stack direction="column">
-          <Text type="label" weight="bold" size="large">
+          <Text type="label" weight="bold" size="medium">
             {label}
           </Text>
           <Text type="body" size="large">
             {placeHolder}
           </Text>
         </Stack>
-        <Text type="body" size="medium" appearance="gray">
+        <Text
+          type="body"
+          size={isMobile ? "large" : "medium"}
+          appearance={isMobile ? "dark" : "gray"}
+        >
           {data}
         </Text>
       </Stack>

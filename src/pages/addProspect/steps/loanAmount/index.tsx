@@ -19,6 +19,10 @@ import { ScoreModal } from "@components/modals/FrcModal";
 
 import { currencyFormat } from "@utils/formatData/currency";
 import { get } from "@mocks/utils/dataMock.service";
+import {
+  mockPayAmount,
+  mockPeriodicity,
+} from "@mocks/add-prospect/payment-channel/paymentchannel.mock";
 import { IPaymentChannel } from "@services/types";
 
 import { dataAmount } from "./config";
@@ -29,6 +33,8 @@ export interface ILoanAmountProps {
     inputValue: string;
     toggleChecked: boolean;
     paymentPlan: string;
+    periodicity: string;
+    payAmount: string;
   };
   isMobile: boolean;
   handleOnChange: (newData: Partial<ILoanAmountProps["initialValues"]>) => void;
@@ -46,6 +52,24 @@ export function LoanAmount(props: ILoanAmountProps) {
   const [requestValue, setRequestValue] = useState<IPaymentChannel[]>();
   const [openModal, setOpenModal] = useState<string | null>(null);
   const [creditModal, setCreditModal] = useState(false);
+  const [loadingCredit, setLoadingCredit] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleOpenModal = () => {
+    setCreditModal(true);
+    setLoadingCredit(true);
+    setTimeout(() => {
+      setLoadingCredit(false);
+    }, 2000);
+  };
+
+  const handleOpenModals = (modalName: string) => {
+    setOpenModal(modalName);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
 
   useEffect(() => {
     get("mockRequest_value")
@@ -62,6 +86,8 @@ export function LoanAmount(props: ILoanAmountProps) {
   const LoanAmountValidationSchema = Yup.object({
     inputValue: Yup.string().required(""),
     paymentPlan: Yup.string().required(""),
+    periodicity: Yup.string().required(""),
+    payAmount: Yup.string().required(""),
   });
 
   return (
@@ -73,7 +99,11 @@ export function LoanAmount(props: ILoanAmountProps) {
         validate={(values) => {
           const numericValue =
             parseFloat(values.inputValue.replace(/[^0-9]/g, "")) || 0;
-          const isValid = numericValue > 0 && values.paymentPlan.trim() !== "";
+          const isValid =
+            numericValue > 0 &&
+            values.paymentPlan.trim() !== "" &&
+            values.periodicity.trim() !== "" &&
+            values.payAmount.trim() !== "";
           onFormValid(isValid);
         }}
         validateOnMount={true}
@@ -89,7 +119,7 @@ export function LoanAmount(props: ILoanAmountProps) {
                 <Text
                   appearance="primary"
                   type="headline"
-                  size="large"
+                  size={isMobile ? "medium" : "large"}
                   weight="bold"
                 >
                   {currencyFormat(value)}
@@ -106,7 +136,7 @@ export function LoanAmount(props: ILoanAmountProps) {
                     icon={<MdInfoOutline />}
                     appearance="primary"
                     size="16px"
-                    onClick={() => setCreditModal(true)}
+                    onClick={handleOpenModal}
                     cursorHover={true}
                   />
                 </Stack>
@@ -166,26 +196,78 @@ export function LoanAmount(props: ILoanAmountProps) {
                 </Stack>
               </Stack>
               <Divider dashed />
-              <Stack direction="column">
-                <Text type="label" size="medium" weight="bold">
-                  {dataAmount.ordinaryPayment}
-                </Text>
-                <Field name="paymentPlan">
-                  {() => (
-                    <Select
-                      id="paymentPlan"
-                      options={requestValue || []}
-                      placeholder={dataAmount.selectOption}
-                      name="paymentPlan"
-                      onChange={(_, newValue: string) => {
-                        setFieldValue("paymentPlan", newValue);
-                        handleOnChange({ paymentPlan: newValue });
-                      }}
-                      value={values.paymentPlan}
-                      fullwidth={true}
-                    />
-                  )}
-                </Field>
+              <Stack direction={isMobile ? "column" : "row"} gap="16px">
+                <Stack direction="column" width="100%">
+                  <Text type="label" size="medium" weight="bold">
+                    {dataAmount.ordinaryPayment}
+                  </Text>
+                  <Field name="paymentPlan">
+                    {() => (
+                      <Select
+                        id="paymentPlan"
+                        options={requestValue || []}
+                        placeholder={dataAmount.selectOption}
+                        name="paymentPlan"
+                        onChange={(_, newValue: string) => {
+                          setFieldValue("paymentPlan", newValue);
+                          handleOnChange({ paymentPlan: newValue });
+                        }}
+                        value={values.paymentPlan}
+                        size="compact"
+                        fullwidth={true}
+                      />
+                    )}
+                  </Field>
+                </Stack>
+                <Stack direction="column" width="100%">
+                  <Stack gap="4px">
+                    <Text type="label" size="medium" weight="bold">
+                      {dataAmount.Periodicity}
+                    </Text>
+                    <Text type="label" size="small" appearance="danger">
+                      {dataAmount.Requested}
+                    </Text>
+                  </Stack>
+                  <Field name="periodicity">
+                    {() => (
+                      <Select
+                        id="periodicity"
+                        options={mockPeriodicity}
+                        placeholder={dataAmount.selectOption}
+                        name="periodicity"
+                        onChange={(_, newValue: string) => {
+                          setFieldValue("periodicity", newValue);
+                          handleOnChange({ periodicity: newValue });
+                        }}
+                        value={values.periodicity}
+                        size="compact"
+                        fullwidth={true}
+                      />
+                    )}
+                  </Field>
+                </Stack>
+                <Stack direction="column" width="100%">
+                  <Text type="label" size="medium" weight="bold">
+                    {dataAmount.paymentDate}
+                  </Text>
+                  <Field name="payAmount">
+                    {() => (
+                      <Select
+                        id="payAmount"
+                        options={mockPayAmount}
+                        placeholder={dataAmount.selectOption}
+                        name="payAmount"
+                        onChange={(_, newValue: string) => {
+                          setFieldValue("payAmount", newValue);
+                          handleOnChange({ payAmount: newValue });
+                        }}
+                        value={values.payAmount}
+                        size="compact"
+                        fullwidth={true}
+                      />
+                    )}
+                  </Field>
+                </Stack>
               </Stack>
             </Stack>
             {creditModal ? (
@@ -193,18 +275,14 @@ export function LoanAmount(props: ILoanAmountProps) {
                 handleClose={() => setCreditModal(false)}
                 title="Origen de cupo"
                 portalId="portal"
-                maxPaymentCapacity={50000000}
-                maxReciprocity={40000000}
-                maxDebtFRC={45000000}
-                assignedLimit={0}
-                currentPortfolio={10000000}
-                maxUsableLimit={20000000}
-                availableLimitWithoutGuarantee={15000000}
+                loading={loadingCredit}
                 onOpenPaymentCapacityModal={() =>
-                  setOpenModal("paymentCapacity")
+                  handleOpenModals("paymentCapacity")
                 }
-                onOpenReciprocityModal={() => setOpenModal("reciprocityModal")}
-                onOpenFrcModal={() => setOpenModal("scoreModal")}
+                onOpenReciprocityModal={() =>
+                  handleOpenModals("reciprocityModal")
+                }
+                onOpenFrcModal={() => handleOpenModals("scoreModal")}
               />
             ) : (
               <></>
@@ -213,6 +291,7 @@ export function LoanAmount(props: ILoanAmountProps) {
               <PaymentCapacity
                 title="Cupo máx. capacidad de pago"
                 portalId="portal"
+                loading={loading}
                 handleClose={() => setOpenModal(null)}
                 reportedIncomeSources={2000000}
                 reportedFinancialObligations={6789000}
@@ -228,6 +307,7 @@ export function LoanAmount(props: ILoanAmountProps) {
             {openModal === "reciprocityModal" ? (
               <ReciprocityModal
                 portalId="portal"
+                loading={loading}
                 handleClose={() => setOpenModal(null)}
                 balanceOfContributions={40000000}
                 accordingToRegulation={2}
@@ -241,6 +321,7 @@ export function LoanAmount(props: ILoanAmountProps) {
                 title="Score Details"
                 handleClose={() => setOpenModal(null)}
                 subTitle="Your Financial Score"
+                loading={loading}
                 totalScore={150}
                 seniority={150}
                 centralRisk={50}

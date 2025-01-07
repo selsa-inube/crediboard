@@ -1,7 +1,7 @@
 import { createPortal } from "react-dom";
-import { useMediaQuery } from "@inubekit/hooks";
 import { MdClear } from "react-icons/md";
-
+import { SkeletonLine } from "@inubekit/skeleton";
+import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -20,6 +20,7 @@ export interface ReciprocityModalProps {
   balanceOfContributions: number;
   accordingToRegulation: number;
   assignedQuota: number;
+  loading?: boolean;
 }
 
 export function ReciprocityModal(props: ReciprocityModalProps) {
@@ -29,6 +30,7 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
     balanceOfContributions,
     accordingToRegulation,
     assignedQuota,
+    loading,
   } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
@@ -75,9 +77,13 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
                 <Text type="body" size="medium" appearance="success">
                   $
                 </Text>
-                <Text type="body" size="medium">
-                  {currencyFormat(balanceOfContributions, false)}
-                </Text>
+                {loading ? (
+                  <SkeletonLine width="70px" animated={true} />
+                ) : (
+                  <Text type="body" size="medium">
+                    {currencyFormat(balanceOfContributions, false)}
+                  </Text>
+                )}
               </Stack>
             </Stack>
             <Stack justifyContent="space-between">
@@ -85,22 +91,37 @@ export function ReciprocityModal(props: ReciprocityModalProps) {
                 {dataReciprocity.timesPossible}
               </Text>
               <Stack>
-                <Text type="body" size="medium">
-                  {currencyFormat(accordingToRegulation, false)}
-                </Text>
+                {loading ? (
+                  <SkeletonLine width="70px" animated={true} />
+                ) : (
+                  <Text type="body" size="medium">
+                    {currencyFormat(accordingToRegulation, false)}
+                  </Text>
+                )}
               </Stack>
             </Stack>
           </Stack>
           <Divider />
           <Stack alignItems="center" direction="column" gap="8px">
-            <Text
-              appearance="primary"
-              weight="bold"
-              type="headline"
-              size="large"
-            >
-              ${currencyFormat(assignedQuota, false)}
-            </Text>
+            {loading ? (
+              <Text
+                appearance="primary"
+                weight="bold"
+                type="headline"
+                size="large"
+              >
+                {dataReciprocity.loading}
+              </Text>
+            ) : (
+              <Text
+                appearance="primary"
+                weight="bold"
+                type="headline"
+                size="large"
+              >
+                ${currencyFormat(assignedQuota, false)}
+              </Text>
+            )}
             <Stack>
               <Text appearance="gray" size="small" textAlign="center">
                 {dataReciprocity.assignedQuota}

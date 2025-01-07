@@ -3,7 +3,6 @@ import localforage from "localforage";
 import { intializedData } from "@mocks/utils/dataMock.service";
 import { themes } from "@mocks/design/themes";
 import { mockRequests as mockRequestsDefault } from "@mocks/requests/requests.mock";
-import { mockRequestsPinned } from "@mocks/requests/requestsPinned.mock";
 import { mockAnalyst as mockAnalystDefault } from "@mocks/staff/staff.mock";
 import { mockAccountManager as mockAccountManagerDefault } from "@mocks/staff/staff.mock";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
@@ -20,6 +19,7 @@ import { credit_behavior } from "@mocks/creditProfileInfo/creditBehavior.mock";
 import { mockDecisions } from "@mocks/financialReporting/to-do/decisions.mock";
 import { mockMoneyDestinations } from "@mocks/add-prospect/money-destinations/moneydestinations.mock";
 import { mockPaymentChannel } from "@mocks/add-prospect/payment-channel/paymentchannel.mock";
+import { mockExtraDebtors } from "@mocks/add-prospect/extra-debtors/extradebtors.mock";
 import {
   mockRangeRequeredByTheBusinessUnit,
   mockRiskScoring,
@@ -45,11 +45,6 @@ export function initializeDataDB(company: string) {
   intializedData<(typeof mockRequestsDefault)[number]>(
     "requests",
     mockRequests(company)
-  );
-
-  intializedData<(typeof mockRequestsPinned)[number]>(
-    "requests-pinned",
-    mockRequestsPinned
   );
   intializedData<(typeof mockAnalystDefault)[number]>(
     "analyst",
@@ -97,5 +92,6 @@ export function initializeDataDB(company: string) {
   intializedData("decisions", mockDecisions);
   intializedData("money_destinations", mockMoneyDestinations);
   intializedData("mockRequest_value", mockPaymentChannel);
+  intializedData("extra_debtors", mockExtraDebtors);
   intializedData("attached_documents", mockAttachedDocuments);
 }

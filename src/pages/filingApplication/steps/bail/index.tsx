@@ -11,6 +11,7 @@ import { Fieldset } from "@components/data/Fieldset";
 
 import { dataBail } from "./config";
 import { IBail } from "../../types";
+import { bailMock } from "@src/mocks/filing-application/bail/bail.mock";
 
 interface IBailProps {
   initialValues: IBail;
@@ -50,7 +51,7 @@ export function Bail(props: IBailProps) {
       <Stack direction="column" alignItems="center" padding="12px" gap="20px">
         <Stack direction="column" gap="8px">
           <Text type="headline" weight="bold" size="large" appearance="primary">
-            $ 260.450
+            $ {bailMock.value}
           </Text>
           <Text type="body" size="small" appearance="gray">
             {dataBail.bail}

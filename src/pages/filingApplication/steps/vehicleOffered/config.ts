@@ -3,7 +3,7 @@ export const dataVehicule = {
   placeHolderState: "Seleccione una opción",
   labelModel: "Modelo (año)",
   placeHolderModel: "Ej: 2021",
-  labelValue: "alor estimado",
+  labelValue: "Valor estimado",
   placeHolderValue: "Ej: 30.000.000",
   labelDescription: "Descripción del vehículo",
   placeDescription: "Ej: Renault Kwid.",
