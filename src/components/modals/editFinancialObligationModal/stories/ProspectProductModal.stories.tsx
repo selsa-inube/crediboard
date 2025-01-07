@@ -1,40 +1,37 @@
 import { useState } from "react";
 import { FormikValues } from "formik";
 import { Meta, StoryObj } from "@storybook/react";
-import { Button } from "@inubekit/button";
 import { action } from "@storybook/addon-actions";
+import { Button } from "@inubekit/button";
 import { MdAdd, MdCached } from "react-icons/md";
 
 import { props, parameters } from "./props";
-import { FinancialObligationModal, FinancialObligationModalProps } from "..";
+import {
+  EditFinancialObligationModal,
+  IEditFinancialObligationModalProps,
+} from "..";
 
-const financialObligationModal: Meta<typeof FinancialObligationModal> = {
-  title: "components/modals/financialObligationModal",
-  component: FinancialObligationModal,
+const editFinancialObligationModal: Meta<typeof EditFinancialObligationModal> = {
+  title: "components/modals/editFinancialObligationModal",
+  component: EditFinancialObligationModal,
   parameters: parameters,
   argTypes: props,
 };
 
-type Story = StoryObj<typeof FinancialObligationModal>;
+type Story = StoryObj<typeof EditFinancialObligationModal>;
 
-export const Create: Story = (args: FinancialObligationModalProps) => {
+export const Create: Story = (args: IEditFinancialObligationModalProps) => {
   const [showModal, setShowModal] = useState(false);
   const initialValues: FormikValues = {
-    type: "",
-    entity: "",
     fee: "",
     balance: "",
-    payment: "",
-    idUser: "",
-    feePaid: "",
-    term: "",
   };
 
   return (
     <>
       <Button onClick={() => setShowModal(true)}>Abrir Modal</Button>
       {showModal && (
-        <FinancialObligationModal
+        <EditFinancialObligationModal
           {...args}
           initialValues={initialValues}
           onCloseModal={() => {
@@ -60,24 +57,18 @@ Create.args = {
   iconBefore: <MdAdd />,
 };
 
-export const Edit: Story = (args: FinancialObligationModalProps) => {
+export const Edit: Story = (args: IEditFinancialObligationModalProps) => {
   const [showModal, setShowModal] = useState(false);
   const initialValues: FormikValues = {
-    type: "Consumo",
-    entity: "Bancolombia",
     fee: 600000,
     balance: 10000000,
-    payment: "Caja",
-    idUser: 12546,
-    feePaid: "5",
-    term: "60",
   };
 
   return (
     <>
       <Button onClick={() => setShowModal(true)}>Abrir Modal</Button>
       {showModal && (
-        <FinancialObligationModal
+        <EditFinancialObligationModal
           {...args}
           initialValues={initialValues}
           onCloseModal={() => {
@@ -103,4 +94,4 @@ Edit.args = {
   iconAfter: <MdCached />,
 };
 
-export default financialObligationModal;
+export default editFinancialObligationModal;

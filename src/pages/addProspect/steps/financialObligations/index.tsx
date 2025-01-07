@@ -22,15 +22,13 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const initialValues: FormikValues = {
-    creditLine: "",
-    creditAmount: "",
-    paymentMethod: "",
-    paymentCycle: "",
-    firstPaymentCycle: "",
-    termInMonths: "",
-    amortizationType: "",
-    interestRate: "",
-    rateType: "",
+    type: "",
+    entity: "",
+    fee: "",
+    balance: "",
+    payment: "",
+    feePaid: "",
+    term: "",
   };
 
   const handleCloseModal = () => {
@@ -74,7 +72,7 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
         </Stack>
         <Divider />
         <Stack width="auto" justifyContent="center" margin="16px">
-          <TableFinancialObligations refreshKey={refreshKey}/>
+          <TableFinancialObligations refreshKey={refreshKey} />
         </Stack>
       </Stack>
       <Stack

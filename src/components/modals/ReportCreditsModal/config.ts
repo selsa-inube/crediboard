@@ -4,7 +4,7 @@ export interface IFinancialObligation {
   fee: number;
   entity: string;
   payment: string;
-  height: string;
+  feePaid: string;
   actions: string;
   id: string;
   idUser: string;
@@ -21,7 +21,7 @@ export const headers: {
   { label: "Entidad", key: "entity" },
   { label: "Medio de pago", key: "payment" },
   { label: "Id", key: "idUser" },
-  { label: "Altura", key: "height" },
+  { label: "Altura", key: "feePaid" },
   { label: "Acciones", key: "actions", action: true },
 ];
 

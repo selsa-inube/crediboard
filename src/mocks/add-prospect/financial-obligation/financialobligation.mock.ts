@@ -9,7 +9,7 @@ export const mockFinancialObligation: IFinancialObligation[] = [
     entity: "Bancolombia",
     payment: "Caja",
     idUser: "12546",
-    height: "5/60",
+    feePaid: "5/60",
     actions: "",
   },
   {
@@ -20,7 +20,7 @@ export const mockFinancialObligation: IFinancialObligation[] = [
     entity: "Falabella",
     payment: "Caja",
     idUser: "3524",
-    height: "10/40",
+    feePaid: "10/40",
     actions: "",
   },
   {
@@ -31,7 +31,7 @@ export const mockFinancialObligation: IFinancialObligation[] = [
     entity: "Davivienda",
     payment: "Caja",
     idUser: "4721",
-    height: "12/60",
+    feePaid: "12/60",
     actions: "",
   },
   {
@@ -42,7 +42,7 @@ export const mockFinancialObligation: IFinancialObligation[] = [
     entity: "Finandina",
     payment: "Caja",
     idUser: "-",
-    height: "-",
+    feePaid: "-",
     actions: "",
   },
   {
@@ -53,7 +53,7 @@ export const mockFinancialObligation: IFinancialObligation[] = [
     entity: "Propio",
     payment: "Nómina conv.",
     idUser: "-",
-    height: "-",
+    feePaid: "-",
     actions: "",
   },
 ];

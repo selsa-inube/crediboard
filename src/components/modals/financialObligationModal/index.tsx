@@ -2,7 +2,7 @@ import { Formik, FormikValues } from "formik";
 import localforage from "localforage";
 import * as Yup from "yup";
 import { createPortal } from "react-dom";
-import { MdClear } from "react-icons/md";
+import { MdClear, MdOutlineAttachMoney, MdOutlineTag } from "react-icons/md";
 import { Textfield } from "@inubekit/textfield";
 import { Select } from "@inubekit/select";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -12,6 +12,7 @@ import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
+import { Grid } from "@inubekit/grid";
 
 import { ITableFinancialObligationsProps } from "@pages/prospect/components/TableObligationsFinancial";
 import { truncateTextToMaxLength } from "@utils/formatData/text";
@@ -29,6 +30,7 @@ import {
   obligationTypeOptions,
   entityOptions,
   meansPaymentOptions,
+  dataInputs,
 } from "./config";
 
 interface FinancialObligationModalProps {
@@ -54,7 +56,7 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
     onConfirm,
   } = props;
 
-  const isMobile = useMediaQuery("(max-width: 550px)");
+  const isMobile = useMediaQuery("(max-width: 880px)");
   const node = document.getElementById(portalId);
 
   if (node === null) {
@@ -64,11 +66,18 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
   }
 
   const validationSchema = Yup.object({
-    type: Yup.string().required("Campo requerido"),
-    balance: Yup.number().required("Campo requerido"),
-    fee: Yup.number().required("Campo requerido"),
-    entity: Yup.string().required("Campo requerido"),
-    payment: Yup.string().required("Campo requerido"),
+    type: Yup.string().required(""),
+    entity: Yup.string().required(""),
+    fee: Yup.number().required(""),
+    balance: Yup.number().required(""),
+    payment: Yup.string().required(""),
+    feePaid: Yup.number()
+      .required("")
+      .test(function (value) {
+        const { term } = this.parent;
+        return value !== undefined && term !== undefined ? value < term : true;
+      }),
+    term: Yup.number().required(""),
   });
 
   const handleFormSubmit = async (values: FormikValues) => {
@@ -77,14 +86,19 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
         "financial_obligation"
       )) || [];
 
+    const updatedValues = {
+      ...values,
+      feePaid: `${values.feePaid || 0}/${values.term || 0}`,
+    };
+
     if (values.id) {
       const updatedData = storedData.map((item) =>
-        item.id === values.id ? { ...item, ...values } : item
+        item.id === values.id ? { ...item, ...updatedValues } : item
       );
       await localforage.setItem("financial_obligation", updatedData);
     } else {
       const newItem = {
-        ...values,
+        ...updatedValues,
         id: Date.now(),
       };
       await localforage.setItem("financial_obligation", [
@@ -92,8 +106,7 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
         newItem,
       ]);
     }
-
-    onConfirm(values);
+    onConfirm(updatedValues);
   };
 
   return createPortal(
@@ -120,7 +133,7 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
                 </Text>
                 <StyledContainerClose onClick={onCloseModal}>
                   <Stack alignItems="center" gap="8px">
-                    <Text>Cerrar</Text>
+                    <Text>{dataInputs.close}</Text>
                     <Icon
                       icon={<MdClear />}
                       size="24px"
@@ -133,59 +146,78 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
             </Stack>
             <Divider />
             <ScrollableContainer>
-              <Stack direction="column" gap="24px" width="100%">
+              <Grid
+                templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"}
+                autoRows="auto"
+                gap="20px"
+                width={isMobile ? "280px" : "100%"}
+              >
                 <Select
-                  label="Tipo"
+                  label={dataInputs.labelType}
                   name="type"
                   id="type"
                   size="compact"
-                  placeholder="Seleccione una opción"
+                  placeholder={dataInputs.palaceHolderSelect}
                   options={obligationTypeOptions}
                   onBlur={formik.handleBlur}
                   onChange={(name, value) => formik.setFieldValue(name, value)}
                   value={formik.values.type}
                   fullwidth
                 />
-                <Textfield
-                  label="Saldo"
-                  name="balance"
-                  id="balance"
-                  placeholder="Monto solicitado"
-                  value={validateCurrencyField("balance", formik, false)}
-                  size="compact"
-                  onBlur={formik.handleBlur}
-                  onChange={(e) => handleChangeWithCurrency(formik, e)}
-                  fullwidth
-                />
-                <Textfield
-                  label="Cuota"
-                  name="fee"
-                  id="fee"
-                  placeholder="Monto solicitado"
-                  value={validateCurrencyField("fee", formik, false)}
-                  size="compact"
-                  onBlur={formik.handleBlur}
-                  onChange={(e) => handleChangeWithCurrency(formik, e)}
-                  fullwidth
-                />
                 <Select
-                  label="Entidad"
+                  label={dataInputs.labelEntity}
                   name="entity"
                   id="entity"
                   size="compact"
-                  placeholder="Seleccione una opción"
+                  placeholder={dataInputs.palaceHolderSelect}
                   options={entityOptions}
                   onBlur={formik.handleBlur}
                   onChange={(name, value) => formik.setFieldValue(name, value)}
                   value={formik.values.entity}
                   fullwidth
                 />
+                <Textfield
+                  label={dataInputs.labelFee}
+                  name="fee"
+                  id="fee"
+                  iconBefore={
+                    <Icon
+                      icon={<MdOutlineAttachMoney />}
+                      appearance="dark"
+                      size="20px"
+                    />
+                  }
+                  placeholder={dataInputs.palaceHolderFee}
+                  value={validateCurrencyField("fee", formik, false)}
+                  size="compact"
+                  onBlur={formik.handleBlur}
+                  onChange={(e) => handleChangeWithCurrency(formik, e)}
+                  fullwidth
+                />
+                <Textfield
+                  label={dataInputs.labelBalance}
+                  name="balance"
+                  id="balance"
+                  iconBefore={
+                    <Icon
+                      icon={<MdOutlineAttachMoney />}
+                      appearance="dark"
+                      size="20px"
+                    />
+                  }
+                  placeholder={dataInputs.palaceHolderBalance}
+                  value={validateCurrencyField("balance", formik, false)}
+                  size="compact"
+                  onBlur={formik.handleBlur}
+                  onChange={(e) => handleChangeWithCurrency(formik, e)}
+                  fullwidth
+                />
                 <Select
-                  label="Medio de pago"
+                  label={dataInputs.labelPayment}
                   name="payment"
                   id="payment"
                   size="compact"
-                  placeholder="Seleccione una opción"
+                  placeholder={dataInputs.palaceHolderSelect}
                   options={meansPaymentOptions}
                   onBlur={formik.handleBlur}
                   onChange={(name, value) => formik.setFieldValue(name, value)}
@@ -193,10 +225,17 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
                   fullwidth
                 />
                 <Textfield
-                  label="Id"
+                  label={dataInputs.labelId}
                   name="idUser"
                   id="idUser"
-                  placeholder="Monto solicitado"
+                  iconBefore={
+                    <Icon
+                      icon={<MdOutlineTag />}
+                      appearance="dark"
+                      size="20px"
+                    />
+                  }
+                  placeholder={dataInputs.palaceHolderId}
                   value={formik.values.idUser}
                   size="compact"
                   onBlur={formik.handleBlur}
@@ -204,17 +243,44 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
                   fullwidth
                 />
                 <Textfield
-                  label="Altura"
-                  name="height"
-                  id="height"
-                  placeholder="Monto solicitado"
-                  value={formik.values.height}
+                  label={dataInputs.labelFeePaid}
+                  name="feePaid"
+                  id="feePaid"
+                  iconBefore={
+                    <Icon
+                      icon={<MdOutlineTag />}
+                      appearance="dark"
+                      size="20px"
+                    />
+                  }
+                  placeholder={dataInputs.palaceHolderFeePaid}
+                  value={formik.values.feePaid}
                   size="compact"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
+                  type="number"
                   fullwidth
                 />
-              </Stack>
+                <Textfield
+                  label={dataInputs.labelterm}
+                  name="term"
+                  id="term"
+                  iconBefore={
+                    <Icon
+                      icon={<MdOutlineTag />}
+                      appearance="dark"
+                      size="20px"
+                    />
+                  }
+                  placeholder={dataInputs.palaceHolderterm}
+                  value={formik.values.term}
+                  size="compact"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="number"
+                  fullwidth
+                />
+              </Grid>
             </ScrollableContainer>
             <Divider />
             <Stack gap="24px" justifyContent="flex-end">
@@ -223,7 +289,7 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
                 appearance="gray"
                 onClick={onCloseModal}
               >
-                Cancelar
+                {dataInputs.cancel}
               </Button>
               <Button
                 onClick={formik.submitForm}

@@ -16,7 +16,10 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
-import { FinancialObligationModal } from "@components/modals/financialObligationModal";
+
+import { EditFinancialObligationModal } from "@components/modals/editFinancialObligationModal";
+import { ListModal } from "@components/modals/ListModal";
+import { currencyFormat } from "@utils/formatData/currency";
 
 import { headers, dataReport } from "./config";
 import { usePagination } from "./utils";
@@ -35,6 +38,7 @@ export function TableFinancialObligations(
     ITableFinancialObligationsProps[]
   >([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [selectedDebtor, setSelectedDebtor] =
     useState<ITableFinancialObligationsProps | null>(null);
 
@@ -91,6 +95,21 @@ export function TableFinancialObligations(
     }
   };
 
+  const handleUpdate = async (
+    updatedDebtor: ITableFinancialObligationsProps
+  ) => {
+    try {
+      const updatedDebtors = extraDebtors.map((debtor) =>
+        debtor.id === updatedDebtor.id ? updatedDebtor : debtor
+      );
+      setExtraDebtors(updatedDebtors);
+      await localforage.setItem("financial_obligation", updatedDebtors);
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error updating debtor:", error);
+    }
+  };
+
   return (
     <Table tableLayout="auto">
       <Thead>
@@ -143,7 +162,13 @@ export function TableFinancialObligations(
             return extraDebtors.map((row, rowIndex) => (
               <Tr key={rowIndex}>
                 {visibleHeaders.map((header, colIndex) => {
-                  const cellData = row[header.key];
+                  let cellData = row[header.key];
+                  if (header.key === "balance" || header.key === "fee") {
+                    cellData =
+                      typeof cellData === "number" || !isNaN(Number(cellData))
+                        ? currencyFormat(Number(cellData), false)
+                        : cellData;
+                  }
                   return (
                     <Td
                       key={colIndex}
@@ -169,7 +194,10 @@ export function TableFinancialObligations(
                             icon={<MdDeleteOutline />}
                             appearance="danger"
                             size="16px"
-                            onClick={() => handleDelete(row.id as string)}
+                            onClick={() => {
+                              setSelectedDebtor(row);
+                              setIsDeleteModal(true);
+                            }}
                             cursorHover
                           />
                         </Stack>
@@ -202,14 +230,30 @@ export function TableFinancialObligations(
         </Tfoot>
       )}
       {isModalOpen && selectedDebtor && (
-        <FinancialObligationModal
-          title="Agregar Obligacion"
+        <EditFinancialObligationModal
+          title={`${dataReport.edit} ${selectedDebtor.type || ""}`}
           onCloseModal={() => setIsModalOpen(false)}
-          onConfirm={() => {
-            setIsModalOpen(false);
+          onConfirm={async (updatedDebtor) => {
+            await handleUpdate(updatedDebtor);
           }}
           initialValues={selectedDebtor}
-          confirmButtonText="Agregar"
+          confirmButtonText={dataReport.save}
+        />
+      )}
+      {isDeleteModal && (
+        <ListModal
+          title={dataReport.deletion}
+          handleClose={() => setIsDeleteModal(false)}
+          handleSubmit={() => setIsDeleteModal(false)}
+          onSubmit={() => {
+            if (selectedDebtor) {
+              handleDelete(selectedDebtor.id as string);
+              setIsDeleteModal(false);
+            }
+          }}
+          buttonLabel={dataReport.delete}
+          content={dataReport.content}
+          cancelButton={dataReport.cancel}
         />
       )}
     </Table>

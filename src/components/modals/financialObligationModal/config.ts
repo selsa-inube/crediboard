@@ -67,4 +67,28 @@ const meansPaymentOptions = [
   },
 ];
 
-export { obligationTypeOptions, entityOptions, meansPaymentOptions };
+const dataInputs = {
+  close: "Cerrar",
+  cancel: "Cancelar",
+  labelType: "Tipo",
+  labelEntity: "Entidad",
+  labelPayment: "Medio de pago",
+  palaceHolderSelect: "Seleccione una opción",
+  labelFee: "Cuota",
+  palaceHolderFee: "Valor de la cuota",
+  labelBalance: "Saldo",
+  palaceHolderBalance: "Valor total",
+  labelId: "Id",
+  palaceHolderId: "Identificador",
+  labelFeePaid: "Cuotas pagadas",
+  palaceHolderFeePaid: "Cuotas pagadas",
+  labelterm: "plazo",
+  palaceHolderterm: "Total de cuotas",
+};
+
+export {
+  obligationTypeOptions,
+  entityOptions,
+  meansPaymentOptions,
+  dataInputs,
+};

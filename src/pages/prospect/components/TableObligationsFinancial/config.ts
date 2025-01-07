@@ -1,10 +1,10 @@
-interface RowData {
+export interface RowData {
   type: string;
   balance: string;
   fee: string;
   entity: string;
   payment: string;
-  height: string;
+  feePaid: string;
   actions: string;
   id: string;
   idUser: string;
@@ -21,7 +21,7 @@ export const headers: {
   { label: "Entidad", key: "entity" },
   { label: "Medio de pago", key: "payment" },
   { label: "Id", key: "idUser" },
-  { label: "Altura", key: "height" },
+  { label: "Cuotas pagadas", key: "feePaid" },
   { label: "Acciones", key: "actions", action: true },
 ];
 
@@ -35,4 +35,10 @@ export const dataReport = {
   totalFee: "$ 3.300.000",
   totalBalance: "$ 87.000.000",
   close: "Cerrar",
+  save: "Guardar",
+  edit: "Editar",
+  deletion: "Eliminación",
+  delete: "Eliminar",
+  content: "¿Realmente desea eliminar esta obligación?",
+  cancel: "Cancelar",
 };
