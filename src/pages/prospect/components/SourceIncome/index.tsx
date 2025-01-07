@@ -12,6 +12,7 @@ import { currencyFormat } from "@utils/formatData/currency";
 
 import { IncomeEmployment, IncomeCapital, MicroBusinesses } from "./config";
 import { StyledContainer } from "./styles";
+import { incomeCardData } from "@src/components/cards/IncomeCard/config";
 
 interface ISourceIncomeProps {
   onChange: (name: string, newValue: string) => void;
@@ -92,8 +93,8 @@ export function SourceIncome(props: ISourceIncomeProps) {
             )}
             {onlyDebtor && !isMobile && (
               <Stack direction="column" gap="8px">
-                <Text type="body" size="small" weight="bold" appearance="gray">
-                  Deudor
+                <Text type="body" size="small" weight="bold" appearance="dark">
+                  {incomeCardData.borrower}
                 </Text>
                 <Text type="title" size="medium">
                   {form.borrower}
@@ -118,7 +119,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
                 {currencyFormat(totalSum())}
               </Text>
               <Text size="small" appearance="gray" weight="normal">
-                Total ingresos mensuales.
+                {incomeCardData.income}
               </Text>
             </Stack>
             {onlyDebtor && (
@@ -128,7 +129,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   iconBefore={<MdCached />}
                   fullwidth={isMobile}
                 >
-                  Restablecer
+                  {incomeCardData.restore}
                 </Button>
               </Stack>
             )}
