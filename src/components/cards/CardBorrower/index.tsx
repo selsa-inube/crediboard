@@ -11,7 +11,7 @@ export interface ICardBorrowerProps {
 }
 
 export function CardBorrower(props: ICardBorrowerProps) {
-  const { label, placeHolder, data, isMobile } = props;
+  const { label, placeHolder = "", data = "", isMobile } = props;
 
   return (
     <StyledContainer>

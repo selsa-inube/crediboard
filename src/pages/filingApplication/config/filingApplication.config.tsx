@@ -30,11 +30,11 @@ export const stepsFilingApplication = {
     name: "Vehículo ofrecido como garantía",
     description: "Registre el vehículo ofrecido como garantía.",
   },
-  step6: {
+  bail: {
     id: 6,
     number: 6,
-    name: "title",
-    description: "Description.",
+    name: "Fianza",
+    description: "Lea con atención el valor de la fianza a pagar.",
   },
   step7: {
     id: 7,
