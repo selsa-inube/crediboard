@@ -28,6 +28,9 @@ export function FilingApplication() {
       value: "",
       description: "",
     },
+    bail: {
+      client: false,
+    },
   });
 
   const isMobile = useMediaQuery("(max-width:880px)");
