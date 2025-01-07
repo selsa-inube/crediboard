@@ -1,7 +1,7 @@
 export const titleButtonTextAssited = {
   goBackText: "Anterior",
   goNextText: "Siguiente",
-  submitText: "Enviar",
+  submitText: "Radicar",
 };
 
 export interface StepDetails {
