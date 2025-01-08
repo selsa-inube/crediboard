@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
@@ -9,7 +10,8 @@ import { stepsFilingApplication } from "./config/filingApplication.config";
 import { ContactInformation } from "./steps/contactInformation";
 import { PropertyOffered } from "./steps/propertyOffered";
 import { VehicleOffered } from "./steps/vehicleOffered";
-import { DisbursementWithInternalAccount } from "./steps/disbursementWithInternalAccount";
+import { DisbursementGeneral } from "./steps/disbursementGeneral";
+import { disbursementln } from "./steps/disbursementGeneral/disbursementWithInternalAccount/config";
 
 interface AddPositionUIProps {
   currentStep: number;
@@ -40,6 +42,11 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
     setIsCurrentFormValid,
   } = props;
 
+  const [isSelected, setIsSelected] = useState<string>();
+
+  const handleTabChange = (tabId: string) => {
+    setIsSelected(tabId);
+  };
   return (
     <Stack
       direction="column"
@@ -111,13 +118,15 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id ===
           stepsFilingApplication.disbursement.id && (
-            <DisbursementWithInternalAccount
+            <DisbursementGeneral
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
-              initialValues={formData.disbursementWithInternalAccount}
+              initialValues={formData.disbursementGeneral}
               handleOnChange={(values) =>
-                handleFormChange({ disbursementWithInternalAccount: values })
+                handleFormChange({ disbursementGeneral: values })
               }
+              isSelected={isSelected || disbursementln.internal.id}
+              handleTabChange={handleTabChange}
             />
           )}
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">

@@ -29,7 +29,7 @@ export interface IVehicleOffered {
   value: string;
   description: string;
 }
-export interface IDisbursementWithInternalAccount {
+export interface IDisbursementGeneral {
   amount: string;
   state: string;
   description: string;
@@ -46,5 +46,5 @@ export interface FormData {
   contactInformation: ContactInformation;
   propertyOffered: IPropertyOffered;
   vehicleOffered: IVehicleOffered;
-  disbursementWithInternalAccount: IDisbursementWithInternalAccount;
+  disbursementGeneral: IDisbursementGeneral;
 }
