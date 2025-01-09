@@ -119,7 +119,7 @@ export function LoanAmount(props: ILoanAmountProps) {
                 <Text
                   appearance="primary"
                   type="headline"
-                  size="large"
+                  size={isMobile ? "medium" : "large"}
                   weight="bold"
                 >
                   {currencyFormat(value)}
@@ -279,7 +279,9 @@ export function LoanAmount(props: ILoanAmountProps) {
                 onOpenPaymentCapacityModal={() =>
                   handleOpenModals("paymentCapacity")
                 }
-                onOpenReciprocityModal={() => handleOpenModals("reciprocityModal")}
+                onOpenReciprocityModal={() =>
+                  handleOpenModals("reciprocityModal")
+                }
                 onOpenFrcModal={() => handleOpenModals("scoreModal")}
               />
             ) : (

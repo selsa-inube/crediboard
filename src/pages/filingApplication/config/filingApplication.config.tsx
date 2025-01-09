@@ -30,11 +30,11 @@ export const stepsFilingApplication = {
     name: "Vehículo ofrecido como garantía",
     description: "Registre el vehículo ofrecido como garantía.",
   },
-  step6: {
+  bail: {
     id: 6,
     number: 6,
-    name: "title",
-    description: "Description.",
+    name: "Fianza",
+    description: "Lea con atención el valor de la fianza a pagar.",
   },
   step7: {
     id: 7,
@@ -42,16 +42,10 @@ export const stepsFilingApplication = {
     name: "title",
     description: "Desembolso.",
   },
-  step8: {
+  attachedDocuments: {
     id: 8,
     number: 8,
-    name: "title",
-    description: "Listado de documentos adjuntos.",
-  },
-  step9: {
-    id: 9,
-    number: 9,
-    name: "title",
-    description: "Description.",
+    name: "Listado de documentos adjuntos",
+    description: "Adjunte los documentos solicitados a continuación.",
   },
 };

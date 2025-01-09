@@ -1,7 +1,7 @@
 export const titleButtonTextAssited = {
   goBackText: "Anterior",
   goNextText: "Siguiente",
-  submitText: "Enviar",
+  submitText: "Radicar",
 };
 
 export interface StepDetails {
@@ -37,6 +37,10 @@ export interface IPropertyOffered {
   description: string;
 }
 
+export interface IBail {
+  client: boolean;
+}
+
 export interface FormData {
   contactInformation: ContactInformation;
   propertyOffered: IPropertyOffered;
@@ -48,4 +52,5 @@ export interface FormData {
     income: number;
     obligations: number;
   };
+  bail: IBail;
 }
