@@ -18,7 +18,7 @@ export const disbursementGeneral = {
     text: "¿El desembolso es a nombre propio?",
 }
 
-export const disbursementWithInternalAccountNot = {
+export const disbursementWithInternalNo = {
     labelName: "Nombre",
     placeName: "Ej: Maria Camila",
     labelLastName: "Apellidos",

@@ -6,11 +6,13 @@ import { Divider } from "@inubekit/divider";
 import { Toggle } from "@inubekit/toggle";
 import { Select } from "@inubekit/select";
 import { Stack } from "@inubekit/stack";
+import { Grid } from "@inubekit/grid";
+import { Datefield, } from "@inubekit/datefield";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
 import { Text } from "@inubekit/text";
 
-import { optionTodisburseMoney } from "@src/mocks/filing-application/disbursement-general/disbursementgeneral.mock";
+import { optionTodisburseMoney, biologicalSex, typesOfDocuments, City } from "@src/mocks/filing-application/disbursement-general/disbursementgeneral.mock";
 import {
     handleChangeWithCurrency,
     validateCurrencyField,
@@ -18,6 +20,7 @@ import {
 
 import { IDisbursementGeneral } from "../../../types";
 import { disbursementGeneral } from "./config";
+import { disbursementWithInternalNo } from "./config";
 
 interface IDisbursementGeneralProps {
     isMobile: boolean;
@@ -31,7 +34,7 @@ export function DisbursementWithInternalAccount(props: IDisbursementGeneralProps
 
     const [isFeatureEnabled, setIsFeatureEnabled] = useState(false);
     const [isFeatureIndeterminate, setIsFeatureIndeterminate] = useState(false);
-    const [toggleChecked, setToggleChecked] = useState(false);
+    const [toggleChecked, setToggleChecked] = useState(true);
 
     const validationSchema = Yup.object({
         state: Yup.string().required(),
@@ -81,8 +84,7 @@ export function DisbursementWithInternalAccount(props: IDisbursementGeneralProps
         <Stack
             direction="column"
             padding={isMobile ? "4px 10px" : "10px 16px"}
-            gap="20px"
-            justifyContent="center"
+            gap="16px"
         >
             <Textfield
                 name="amount"
@@ -99,7 +101,7 @@ export function DisbursementWithInternalAccount(props: IDisbursementGeneralProps
             <Checkbox
                 id="featureCheckbox"
                 name="feature"
-                label="El valor a girar con esta forma de desembolso es igual saldo pendiente por desembolsar."
+                label={disbursementGeneral.labelBalance}
                 checked={isFeatureEnabled}
                 indeterminate={isFeatureIndeterminate}
                 onChange={handleCheckboxChange}
@@ -126,6 +128,122 @@ export function DisbursementWithInternalAccount(props: IDisbursementGeneralProps
             </Stack>
 
             <Divider dashed />
+
+            {!toggleChecked && (
+                <Grid
+                    templateColumns={isMobile ? "1fr" : "repeat(3, 1fr)"}
+                    autoRows="auto"
+                    gap="16px"
+                >
+
+                    <Textfield
+                        name="name"
+                        id="name"
+                        label={disbursementWithInternalNo.labelName}
+                        placeholder={disbursementWithInternalNo.placeName}
+                        size="compact"
+                        value={validateCurrencyField("amount", formik)}
+                        onChange={(e) => handleChangeWithCurrency(formik, e)}
+                        onBlur={formik.handleBlur}
+                        fullwidth
+                    />
+
+                    <Textfield
+                        name=""
+                        id=""
+                        label={disbursementWithInternalNo.labelLastName}
+                        placeholder={disbursementWithInternalNo.placeLastName}
+                        size="compact"
+                        value={validateCurrencyField("amount", formik)}
+                        onChange={(e) => handleChangeWithCurrency(formik, e)}
+                        onBlur={formik.handleBlur}
+                        fullwidth
+                    />
+                    <Select
+                        name=""
+                        id=""
+                        label={disbursementWithInternalNo.labelBiologicalSex}
+                        placeholder={disbursementWithInternalNo.placeBiologicalSex}
+                        size="compact"
+                        options={biologicalSex}
+                        onBlur={formik.handleBlur}
+                        onChange={(name, value) => formik.setFieldValue(name, value)}
+                        value={formik.values.state}
+                        fullwidth
+                    />
+                    <Select
+                        name=""
+                        id=""
+                        label={disbursementWithInternalNo.labelDocumentType}
+                        placeholder={disbursementWithInternalNo.placeDocumentType}
+                        size="compact"
+                        options={typesOfDocuments}
+                        onBlur={formik.handleBlur}
+                        onChange={(name, value) => formik.setFieldValue(name, value)}
+                        value={formik.values.state}
+                        fullwidth
+                    />
+                    <Textfield
+                        name=""
+                        id=""
+                        label={disbursementWithInternalNo.labelDocumentNumber}
+                        placeholder={disbursementWithInternalNo.placeDocumentNumber}
+                        size="compact"
+                        value={validateCurrencyField("amount", formik)}
+                        onChange={(e) => handleChangeWithCurrency(formik, e)}
+                        onBlur={formik.handleBlur}
+                        fullwidth
+                    />
+                    <Datefield
+                        id="id"
+                        label={disbursementWithInternalNo.labelBirthdate}
+                        message={disbursementWithInternalNo.placeBirthdate}
+                        name="name"
+                        onBlur={formik.handleBlur}
+                        onChange={(e) => handleChangeWithCurrency(formik, e)}
+                        // onFocus={onFocus}
+                        required={false}
+                        size="compact"
+                        // status={form.status as IDatefieldStatus}
+                        value={validateCurrencyField("amount", formik)}
+                        fullwidth
+                    />
+                    <Textfield
+                        name=""
+                        id=""
+                        label={disbursementWithInternalNo.labelphone}
+                        placeholder={disbursementWithInternalNo.placephone}
+                        size="compact"
+                        value={validateCurrencyField("amount", formik)}
+                        onChange={(e) => handleChangeWithCurrency(formik, e)}
+                        onBlur={formik.handleBlur}
+                        fullwidth
+                    />
+                    <Textfield
+                        name=""
+                        id=""
+                        label={disbursementWithInternalNo.labelMail}
+                        placeholder={disbursementWithInternalNo.placeMail}
+                        size="compact"
+                        value={validateCurrencyField("amount", formik)}
+                        onChange={(e) => handleChangeWithCurrency(formik, e)}
+                        onBlur={formik.handleBlur}
+                        fullwidth
+                    />
+                    <Select
+                        name=""
+                        id=""
+                        label={disbursementWithInternalNo.labelCity}
+                        placeholder={disbursementWithInternalNo.placeCity}
+                        size="compact"
+                        options={City}
+                        onBlur={formik.handleBlur}
+                        onChange={(name, value) => formik.setFieldValue(name, value)}
+                        value={formik.values.state}
+                        fullwidth
+                    />
+                </Grid>
+            )}
             <Select
                 name="state"
                 id="state"
