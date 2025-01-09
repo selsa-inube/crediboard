@@ -7,7 +7,7 @@ import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { stepsFilingApplication } from "./config/filingApplication.config";
 import { ContactInformation } from "./steps/contactInformation";
-import { ImplementBorrowedData } from "./steps/implementBorrowedData";
+import { Borrowers } from "./steps/implementBorrowedData";
 import { PropertyOffered } from "./steps/propertyOffered";
 import { VehicleOffered } from "./steps/vehicleOffered";
 
@@ -86,9 +86,8 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             />
           )}
         {currentStepsNumber &&
-          currentStepsNumber.id ===
-            stepsFilingApplication.implementBorrowedData.id && (
-            <ImplementBorrowedData
+          currentStepsNumber.id === stepsFilingApplication.BorrowerData.id && (
+            <Borrowers
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
               initialValues={formData.deptorData}

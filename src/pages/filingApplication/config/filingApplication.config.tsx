@@ -12,7 +12,7 @@ export const stepsFilingApplication = {
     description:
       "Registre la información de contacto con la cual se realizará seguimiento a esta solicitud.",
   },
-  implementBorrowedData: {
+  BorrowerData: {
     id: 3,
     number: 3,
     name: "Datos de deudor/es",

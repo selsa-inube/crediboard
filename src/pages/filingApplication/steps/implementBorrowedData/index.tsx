@@ -8,7 +8,7 @@ import { CardBorrowerNewData } from "@src/pages/prospect/components/cardNewBorro
 
 import { dataImplementBorrowedData } from "./config";
 
-interface IBorrowedDataProps {
+interface borrowersProps {
   isMobile: boolean;
   initialValues: {
     name: string;
@@ -26,7 +26,7 @@ interface IBorrowedDataProps {
     obligations: number;
   }) => void;
 }
-export function ImplementBorrowedData(props: IBorrowedDataProps) {
+export function Borrowers(props: borrowersProps) {
   const { isMobile, initialValues, onFormValid, handleOnChange } = props;
 
   const validationSchema = Yup.object({
