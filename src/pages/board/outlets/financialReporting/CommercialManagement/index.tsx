@@ -47,14 +47,14 @@ interface ComercialManagementProps {
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { data, print, isPrint } = props;
+  const { data, print, isPrint = false } = props;
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [prospectProducts, setProspectProducts] =
     useState<ICreditProductProspect>();
 
-  const { id } = useParams();
+  const { prospectCode } = useParams();
 
   const isMobile = useMediaQuery("(max-width: 720px)");
 
@@ -63,26 +63,26 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   };
   useEffect(() => {
     try {
-      Promise.allSettled([getById("prospects", "public_code", id!, true)]).then(
-        ([prospects]) => {
-          if (
-            prospects.status === "fulfilled" &&
-            Array.isArray(prospects.value)
-          ) {
-            if (!(prospects.value instanceof Error)) {
-              setProspectProducts(
-                prospects.value
-                  .map((dataPropects) => dataPropects.credit_product)
-                  .flat()[0] as ICreditProductProspect
-              );
-            }
+      Promise.allSettled([
+        getById("prospects", "public_code", prospectCode!, true),
+      ]).then(([prospects]) => {
+        if (
+          prospects.status === "fulfilled" &&
+          Array.isArray(prospects.value)
+        ) {
+          if (!(prospects.value instanceof Error)) {
+            setProspectProducts(
+              prospects.value
+                .map((dataPropects) => dataPropects.credit_product)
+                .flat()[0] as ICreditProductProspect
+            );
           }
         }
-      );
+      });
     } catch (error) {
       console.log("error", error);
     }
-  }, [id]);
+  }, [prospectCode]);
 
   const handleCloseModal = () => {
     setModalHistory((prevHistory) => {
@@ -173,7 +173,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   <Button
                     type="link"
                     spacing="compact"
-                    path={`/extended-card/${id}/credit-profile`}
+                    path={`/extended-card/${prospectCode}/credit-profile`}
                   >
                     Ver perfil crediticio
                   </Button>
@@ -207,7 +207,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             <Button
               type="link"
               spacing="compact"
-              path={`/extended-card/${id}/credit-profile`}
+              path={`/extended-card/${prospectCode}/credit-profile`}
               fullwidth
             >
               Ver perfil crediticio

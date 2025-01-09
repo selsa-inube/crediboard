@@ -353,34 +353,43 @@ export const entriesCommercialManagementCard = [
 export const SummaryProspectCredit = [
   {
     item: [
-      { title: "Obligaciones recogidas", amount: "5000000", miniIcon: false, operation: "" },
+      {
+        title: "Obligaciones recogidas",
+        miniIcon: false,
+        operation: "",
+      },
     ],
     iconEdit: true,
   },
   {
     item: [
-      { title: "Monto préstamo", amount: "16000000", miniIcon: false, operation:"-" },
+      {
+        title: "Monto préstamo",
+        miniIcon: false,
+        operation: "-",
+      },
       {
         title: "Obligaciones recogidas",
-        amount: "5000000",
         miniIcon: true,
         icon: <MdOutlineEdit />,
-        operation:"-"
+        operation: "-",
       },
       {
         title: "Gastos descontables",
-        amount: "1000000",
         miniIcon: true,
         icon: <MdOutlineRemoveRedEye />,
-        operation:"="
+        operation: "=",
       },
-      { title: "Neto a girar", amount: "10000000", miniIcon: false },
+      {
+        title: "Neto a girar",
+        miniIcon: false,
+        operation: "|",
+      },
       {
         title: "Cuota ordinaria",
-        amount: "1200000",
         miniIcon: true,
         icon: <MdOutlineRemoveRedEye />,
-        operation:""
+        operation: "",
       },
     ],
     iconEdit: false,

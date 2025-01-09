@@ -4,20 +4,20 @@ import { CardValues, CardValuesProps } from "./index";
 import { ListModal } from "@components/modals/ListModal";
 
 export default {
-  title: "Components/inputs/CardValues",
+  title: "Components/cards/CardValues",
   component: CardValues,
 } as Meta<typeof CardValues>;
 
 const Template: StoryObj<CardValuesProps> = {
   render: (args) => {
-    const [isModalOpen, setModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleIconClick = () => {
-      setModalOpen(true);
+      setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
-      setModalOpen(false);
+      setIsModalOpen(false);
     };
 
     return (

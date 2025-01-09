@@ -2,20 +2,24 @@ import { useCallback, useEffect, useState } from "react";
 import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Divider } from "@inubekit/divider";
+import { MdOutlineEdit } from "react-icons/md";
 
 import { CreditProductCard } from "@components/cards/CreditProductCard";
+import { NewCreditProductCard } from "@components/cards/CreditProductCard/newCard";
 import { CardValues } from "@components/cards/cardValues";
 import { DeleteModal } from "@components/modals/DeleteModal";
 import { ICreditProductProspect } from "@services/types";
 import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.service";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
+import { mockCommercialManagement } from "@mocks/financialReporting/commercialmanagement.mock";
 
 import { StyledCardsCredit } from "./styles";
 
 interface CardCommercialManagementProps {
   id: string;
   dataRef: React.RefObject<HTMLDivElement>;
+  onClick: () => void;
   refreshProducts?: () => void;
   showSummaryFirstItem?: boolean;
 }
@@ -23,7 +27,7 @@ interface CardCommercialManagementProps {
 export const CardCommercialManagement = (
   props: CardCommercialManagementProps
 ) => {
-  const { dataRef, id, showSummaryFirstItem = true } = props;
+  const { dataRef, id, showSummaryFirstItem = true, onClick } = props;
   const [prospectProducts, setProspectProducts] = useState<
     ICreditProductProspect[]
   >([]);
@@ -88,6 +92,7 @@ export const CardCommercialManagement = (
               onDelete={() => handleDeleteClick(entry.credit_product_code)}
             />
           ))}
+          <NewCreditProductCard onClick={onClick} />
         </Stack>
       </StyledCardsCredit>
       {isMobile && <Divider />}
@@ -102,7 +107,11 @@ export const CardCommercialManagement = (
         ).map((entry, index) => (
           <CardValues
             key={index}
-            items={entry.item}
+            items={entry.item.map((item, index) => ({
+              ...item,
+              amount: mockCommercialManagement[index]?.amount,
+            }))}
+            firstIcon={<MdOutlineEdit />}
             showIcon={entry.iconEdit}
             isMobile={isMobile}
             showSummaryFirstItem={showSummaryFirstItem}

@@ -1,16 +1,10 @@
-import { MdOutlineEdit } from "react-icons/md";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
 
 import { parseCunstomFormat } from "@utils/formatData/currency";
-import {
-  Container,
-  IconWrapper,
-  ContentWrapper,
-  StyledHorizontalDivider,
-  StyledText,
-} from "./styles";
+
+import { Container, IconWrapper, ContentWrapper } from "./styles";
 
 export interface CardValuesProps {
   items: {
@@ -22,6 +16,7 @@ export interface CardValuesProps {
   }[];
   isMobile: boolean;
   onIconClick?: () => void;
+  firstIcon?: React.ReactNode;
   showIcon?: boolean;
   showSummaryFirstItem?: boolean;
 }
@@ -29,17 +24,22 @@ export interface CardValuesProps {
 export function CardValues(props: CardValuesProps) {
   const {
     items,
-    onIconClick,
     isMobile,
+    firstIcon,
+    onIconClick = () => {},
     showIcon = true,
-    showSummaryFirstItem,
+    showSummaryFirstItem = false,
   } = props;
 
   return (
     <Container $showIcon={showIcon}>
       <ContentWrapper>
         {items.map((item, index) => (
-          <Stack alignItems="center" key={index}>
+          <Stack
+            alignItems="center"
+            key={index}
+            gap={showSummaryFirstItem ? "2vw" : "3vw"}
+          >
             <Stack
               direction="column"
               margin="4px"
@@ -72,30 +72,16 @@ export function CardValues(props: CardValuesProps) {
               </Stack>
             </Stack>
             {!isMobile && (
-              <Stack>
-                {item.operation && (
-                  <StyledText $left={showSummaryFirstItem}>
-                    <Text type="title" size="large" appearance="gray">
-                      {item.operation}
-                    </Text>
-                  </StyledText>
-                )}
-                {item.title === "Neto a girar" && (
-                  <StyledHorizontalDivider $left={showSummaryFirstItem} />
-                )}
-              </Stack>
+              <Text type="title" size="large" appearance="gray">
+                {item.operation}
+              </Text>
             )}
           </Stack>
         ))}
       </ContentWrapper>
       {showIcon && (
         <IconWrapper onClick={onIconClick}>
-          <Icon
-            appearance="primary"
-            icon={<MdOutlineEdit />}
-            cursorHover
-            size="24px"
-          />
+          <Icon appearance="primary" icon={firstIcon} cursorHover size="24px" />
         </IconWrapper>
       )}
     </Container>

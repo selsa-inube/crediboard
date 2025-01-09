@@ -214,6 +214,7 @@ export function CreditProspect(props: ICreditProspectProps) {
           id={id!}
           dataRef={dataCommercialManagementRef}
           showSummaryFirstItem={firstItem}
+          onClick={() => handleOpenModal("editProductModal")}
         />
       </Stack>
       {currentModal === "creditLimit" && (

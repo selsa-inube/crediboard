@@ -10,6 +10,7 @@ import { Button } from "@inubekit/button";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
+import { mockEditProspect } from "@mocks/add-prospect/edit-prospect/editprospect.mock";
 
 import { dataEditProspect } from "./config";
 
@@ -18,6 +19,8 @@ export function EditProspect() {
 
   const isMobile = useMediaQuery("(max-width:880px)");
   const { id } = useParams();
+
+  const data = mockEditProspect[0];
 
   return (
     <Stack padding="24px">
@@ -59,7 +62,7 @@ export function EditProspect() {
                 />
                 <Stack direction="column" alignItems="center" gap="8px">
                   <Text type="title" size="large">
-                    {dataEditProspect.choiceDestination}
+                    {data.choiceDestination}
                   </Text>
                   <Text type="body" size="small" appearance="gray">
                     {dataEditProspect.destination}
@@ -68,10 +71,10 @@ export function EditProspect() {
               </Stack>
               <Stack direction="column" alignItems="center" gap="8px">
                 <Text type="title" size="large">
-                  {dataEditProspect.name}
+                  {data.name}
                 </Text>
                 <Text type="body" size="small" appearance="gray">
-                  {dataEditProspect.customer}
+                  {data.customer}
                 </Text>
               </Stack>
               <Stack direction="column" alignItems="center" gap="8px">
@@ -81,7 +84,7 @@ export function EditProspect() {
                   size="large"
                   appearance="primary"
                 >
-                  $ 10.000.000
+                  $ {data.value}
                 </Text>
                 <Text type="body" size="small" appearance="gray">
                   {dataEditProspect.value}

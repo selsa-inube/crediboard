@@ -5,6 +5,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { ListModal } from "@components/modals/ListModal";
 import { Consulting } from "@components/modals/Consulting";
 import { income } from "@mocks/add-prospect/income/income.mock";
+import { prospectId } from "@mocks/add-prospect/edit-prospect/prospectid.mock";
 
 import { stepsAddProspect } from "./config/addProspect.config";
 import { FormData } from "./types";
@@ -51,6 +52,8 @@ export function AddProspect() {
     },
   });
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+
+  const id = prospectId[0];
 
   const handleFormDataChange = (
     field: string,
@@ -160,7 +163,9 @@ export function AddProspect() {
   };
 
   const handleSubmitClick = () => {
-    navigate(`/edit-prospect/999990`);
+    setTimeout(() => {
+      navigate(`/edit-prospect/${id.prospect}`);
+    }, 1000);
   };
 
   const showConsultingForFiveSeconds = () => {
