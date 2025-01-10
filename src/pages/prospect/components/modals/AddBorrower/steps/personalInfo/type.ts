@@ -1,10 +1,5 @@
 import { FormikValues } from "formik";
 
-export interface FormValues {
-  field2: number;
-  field3: string;
-}
-
 export interface Option {
   id: string;
   label: string;
@@ -14,14 +9,10 @@ export interface Option {
 export interface IAddBorrowedProps {
   title: string;
   initialValues: FormikValues;
-  formValues: FormValues;
   portalId?: string;
-  handleClose: () => void;
+  handleClose?: () => void;
   onSubmit: () => void;
-  onConfirm: () => void;
-  optionsFamily: Option[];
-  optionsSex: Option[];
-  optionsDocument: Option[];
+  onFormValid: (isValid: boolean) => void;
 }
 
 export interface FormState {

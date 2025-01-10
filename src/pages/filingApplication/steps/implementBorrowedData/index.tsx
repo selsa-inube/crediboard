@@ -3,9 +3,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Grid } from "@inubekit/grid";
 
-import { Fieldset } from "@src/components/data/Fieldset";
-import { CardBorrowerNewData } from "@src/pages/prospect/components/cardNewBorrower";
-
+import { Fieldset } from "@components/data/Fieldset";
+import { CardBorrowerNewData } from "@pages/prospect/components/cardNewBorrower";
 import { dataImplementBorrowedData } from "./config";
 
 interface borrowersProps {
