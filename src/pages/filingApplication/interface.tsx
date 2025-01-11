@@ -7,7 +7,7 @@ import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { stepsFilingApplication } from "./config/filingApplication.config";
 import { ContactInformation } from "./steps/contactInformation";
-import { Borrowers } from "./steps/implementBorrowedData";
+import { Borrowers } from "./steps/implementBorrowerData";
 import { PropertyOffered } from "./steps/propertyOffered";
 import { VehicleOffered } from "./steps/vehicleOffered";
 import { Bail } from "./steps/bail";
@@ -92,9 +92,9 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             <Borrowers
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
-              initialValues={formData.deptorData}
+              initialValues={formData.borrowerData}
               handleOnChange={(values) =>
-                handleFormChange({ deptorData: values })
+                handleFormChange({ borrowerData: values })
               }
             />
           )}

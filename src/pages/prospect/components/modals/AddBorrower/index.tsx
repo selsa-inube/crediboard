@@ -5,15 +5,16 @@ import { Blanket } from "@inubekit/blanket";
 import { stepsAddBorrower } from "./config/addBorrower.config";
 import { AddBorrowerUI } from "./interface";
 import { FormData } from "./types";
+import { createPortal } from "react-dom";
 
 interface AddBorrowerProps {
   portalId?: string;
-
   onSubmit: () => void;
   onCloseModal: () => void;
 }
 export function AddBorrower(props: AddBorrowerProps) {
   const { portalId } = props;
+
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
     throw new Error(
@@ -70,7 +71,7 @@ export function AddBorrower(props: AddBorrowerProps) {
     }));
   };
 
-  return (
+  return createPortal(
     <Blanket>
       <AddBorrowerUI
         steps={steps}
@@ -86,6 +87,7 @@ export function AddBorrower(props: AddBorrowerProps) {
         handleSubmitClick={handleSubmitClick}
         isMobile={isMobile}
       />
-    </Blanket>
+    </Blanket>,
+    node
   );
 }

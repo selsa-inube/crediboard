@@ -7,6 +7,8 @@ import { Fieldset } from "@components/data/Fieldset";
 import { CardBorrowerNewData } from "@pages/prospect/components/cardNewBorrower";
 import { dataImplementBorrowedData } from "./config";
 
+import { Button } from "@inubekit/button";
+
 interface borrowersProps {
   isMobile: boolean;
   initialValues: {
@@ -64,6 +66,7 @@ export function Borrowers(props: borrowersProps) {
 
   return (
     <Fieldset>
+      <Button variant="outlined">Agregar deudor</Button>
       <Grid
         templateColumns={
           isMobile

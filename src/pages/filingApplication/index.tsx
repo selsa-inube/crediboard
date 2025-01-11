@@ -15,7 +15,7 @@ export function FilingApplication() {
       email: "",
       phone: "",
     },
-    deptorData: {
+    borrowerData: {
       name: "",
       lastName: "",
       email: "",
