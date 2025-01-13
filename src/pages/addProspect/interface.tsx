@@ -7,13 +7,7 @@ import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInsta
 import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
 import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
-import {
-  FormData,
-  IFormAddPositionRef,
-  IStep,
-  StepDetails,
-  titleButtonTextAssited,
-} from "./types";
+import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { LoanAmount } from "./steps/loanAmount";
@@ -29,7 +23,6 @@ interface AddPositionUIProps {
   currentStep: number;
   steps: IStep[];
   isCurrentFormValid: boolean;
-  formReferences: IFormAddPositionRef;
   message: IMessageState;
   setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;
   handleNextStep: () => void;
