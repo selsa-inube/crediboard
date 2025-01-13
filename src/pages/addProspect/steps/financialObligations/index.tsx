@@ -4,7 +4,7 @@ import { Text } from "@inubekit/text";
 import { Divider } from "@inubekit/divider";
 import { Button } from "@inubekit/button";
 
-import { CardBorrower } from "@components/cards/CardBorrower";
+import { CardGray } from "@components/cards/CardGray";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 import { dataReport } from "@pages/prospect/components/TableObligationsFinancial/config";
@@ -44,7 +44,7 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
             )}
             {isMobile && (
               <Stack padding="0px 0px 10px 0px">
-                <CardBorrower
+                <CardGray
                   label={dataReport.title}
                   placeHolder={dataReport.description}
                   isMobile={true}
