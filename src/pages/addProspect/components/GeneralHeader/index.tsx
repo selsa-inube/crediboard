@@ -10,14 +10,14 @@ export interface IGeneralHeaderProps {
     state?: string;
     iconstate?: React.JSX.Element;
     iconbutton?: React.JSX.Element;
-    iconconfig?: React.JSX.Element;
+    iconbonding?: React.JSX.Element;
     imgPerfil: string;
     buttonText?: string;
     isMobile?: boolean;
 }
 
 export function GeneralHeader(props: IGeneralHeaderProps) {
-    const { imgPerfil = "", name = "", state = "", iconstate, iconbutton, iconconfig, buttonText, } = props;
+    const { imgPerfil = "", name = "", state = "", iconstate, iconbutton, iconbonding, buttonText, } = props;
 
     return (
         <StyledContainerGeneralHeader>
@@ -26,9 +26,9 @@ export function GeneralHeader(props: IGeneralHeaderProps) {
                 alignItems="center"
                 padding="12px"
             >
-                <Stack gap="12px">
+                <Stack gap="12px" >
                     <StyledPerfil src={imgPerfil} alt="imagen perfil" />
-                    <Stack direction="column" >
+                    <Stack direction="column" justifyContent="space-around">
                         <Text type="label"
                             size="medium"
                             appearance="dark"
@@ -36,19 +36,22 @@ export function GeneralHeader(props: IGeneralHeaderProps) {
                         >
                             {name}
                         </Text>
-                        <Icon
-                            size="12px"
-                            icon={iconstate}
-                            appearance="danger"
-                            spacing="narrow"
-                        />
+                        <Stack direction="row" alignItems="center" gap="6px">
+                            <Icon
+                                size="12px"
+                                icon={iconstate}
+                                appearance="danger"
+                                spacing="narrow"
+                            />
+                            <Text type="body" size="small" appearance="danger"
+                            >
+                                {state}
+                            </Text>
+                        </Stack>
                     </Stack>
-                    <Text type="body" size="small" appearance="danger"
-                    >
-                        {state}
-                    </Text>
 
-                    <Stack alignItems="center">
+
+                    <Stack alignItems="center" padding="2px" >
                         <Icon
                             appearance="primary"
                             icon={iconbutton}
@@ -57,13 +60,14 @@ export function GeneralHeader(props: IGeneralHeaderProps) {
                             variant="outlined"
                             shape="rectangle"
                             size="22px"
+
                         />
                     </Stack>
                 </Stack>
                 <Stack justifyContent="space-between" alignItems="end">
                     <Button
                         children={buttonText}
-                        iconBefore={iconconfig}
+                        iconBefore={iconbonding}
                         variant="outlined"
                         appearance="primary"
                         spacing="compact"

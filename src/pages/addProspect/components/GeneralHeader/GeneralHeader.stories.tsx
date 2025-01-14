@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { GeneralHeader } from ".";
 import { MdCancel } from "react-icons/md";
 import { MdOutlineManageAccounts } from "react-icons/md";
-import { AiOutlinePlus } from "react-icons/ai";
+import { MdAdd } from "react-icons/md";
 
 type Story = StoryObj<typeof GeneralHeader>;
 
@@ -36,7 +36,7 @@ export const Default: Story = {
         state: "Inactivo",
         iconstate: <MdCancel />,
         iconbutton: <MdOutlineManageAccounts />,
-        iconconfig: <AiOutlinePlus />,
+        iconbonding: <MdAdd />,
         buttonText: "Agregar vinculación",
     },
 };
