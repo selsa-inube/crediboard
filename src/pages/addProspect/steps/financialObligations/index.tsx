@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { MdAdd, MdCached } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Divider } from "@inubekit/divider";
 import { Button } from "@inubekit/button";
 
+import { ListModal } from "@components/modals/ListModal";
 import { CardBorrower } from "@components/cards/CardBorrower";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
@@ -15,6 +17,8 @@ interface IObligationsFinancialProps {
 
 export function ObligationsFinancial(props: IObligationsFinancialProps) {
   const { isMobile } = props;
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   return (
     <Fieldset>
@@ -64,6 +68,7 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
                   fullwidth={isMobile}
                   variant="outlined"
                   spacing="wide"
+                  onClick={() => setIsOpenModal(true)}
                 />
               </Stack>
               <Stack>
@@ -112,6 +117,17 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
             {dataReport.descriptionTotalFee}
           </Text>
         </Stack>
+        {isOpenModal && (
+          <ListModal
+            title={dataReport.restore}
+            handleClose={() => console.log("")}
+            handleSubmit={() => setIsOpenModal(false)}
+            cancelButton="Cancelar"
+            appearanceCancel="gray"
+            buttonLabel={dataReport.restore}
+            content={dataReport.descriptionModal}
+          />
+        )}
       </Stack>
     </Fieldset>
   );

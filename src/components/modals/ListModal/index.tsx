@@ -9,6 +9,7 @@ import {
   useMediaQuery,
 } from "@inube/design-system";
 import { Icon } from "@inubekit/icon";
+import { Divider } from "@inubekit/divider";
 
 import {
   StyledContainerClose,
@@ -32,6 +33,7 @@ export interface IListModalProps {
   onSubmit?: () => void;
   buttonLabel: string;
   cancelButton?: string;
+  appearanceCancel?: string;
   portalId?: string;
   content?: JSX.Element | JSX.Element[] | string;
   optionButtons?: IOptionButtons;
@@ -44,6 +46,7 @@ export const ListModal = (props: IListModalProps) => {
     content,
     optionButtons,
     cancelButton,
+    appearanceCancel = "primary",
     handleClose,
     handleSubmit,
     onSubmit,
@@ -78,6 +81,7 @@ export const ListModal = (props: IListModalProps) => {
             </Stack>
           </StyledContainerClose>
         </StyledContainerTitle>
+        <Divider />
         <StyledContainerContent $smallScreen={isMobile}>
           {typeof content === "string" ? (
             <Stack>
@@ -101,9 +105,14 @@ export const ListModal = (props: IListModalProps) => {
             {optionButtons?.label}
           </Button>
         )}
-        <Stack justifyContent="flex-end" margin="s200 s0" gap="16px">
+        <Stack justifyContent="flex-end" gap="16px">
           {cancelButton && (
-            <Button variant="outlined" onClick={handleSubmit}>
+            <Button
+              variant="outlined"
+              onClick={handleSubmit}
+              spacing="wide"
+              appearance={appearanceCancel}
+            >
               {cancelButton}
             </Button>
           )}
