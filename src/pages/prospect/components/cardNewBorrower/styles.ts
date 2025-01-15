@@ -1,0 +1,31 @@
+import styled from "styled-components";
+import { inube } from "@inubekit/foundations";
+
+interface IStyledContainer {
+  disabled?: boolean;
+}
+
+export const StyledContainer = styled.div<IStyledContainer>`
+  width: 315px;
+  height: 388px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  outline: 2px solid
+    ${({ theme }) => theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
+  background-color: ${({ theme }) =>
+    theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
+  box-shadow: 0px 4px 8px 3px rgba(9, 30, 66, 0.13);
+  border: 1px solid
+    ${({ disabled, theme }) =>
+      disabled
+        ? theme?.palette?.blue?.B400 || inube.palette.blue.B400
+        : theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
+  justify-content: center;
+`;
+export const StyledNewBorrower = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+`;
