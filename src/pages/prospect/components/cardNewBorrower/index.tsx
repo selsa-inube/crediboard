@@ -2,10 +2,6 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Divider } from "@inubekit/divider";
 import { Icon } from "@inubekit/icon";
-
-import { StyledContainer, StyledNewBorrower } from "./styles";
-import { newBorrowedDAta, BorrowerTitle } from "./config";
-
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa6";
 import { IoIosAdd } from "react-icons/io";
@@ -15,7 +11,10 @@ import {
   MdOutlineModeEditOutline,
 } from "react-icons/md";
 
-export interface ICardNewBorrowerProps {
+import { StyledContainer, StyledNewBorrower } from "./styles";
+import { newBorrowedLabels, borrowerTitle } from "./config";
+
+export interface INewBorrowerModalProps {
   title?: string;
   name?: string;
   lastName?: string;
@@ -25,8 +24,16 @@ export interface ICardNewBorrowerProps {
   hasData?: boolean;
 }
 
-export function CardBorrowerNewData(props: ICardNewBorrowerProps) {
-  const { title, name, lastName, email, income, obligations, hasData } = props;
+export function NewBorrowerModal(props: INewBorrowerModalProps) {
+  const {
+    title = "",
+    name = "",
+    lastName = "",
+    email = "",
+    income = "",
+    obligations = "",
+    hasData = false,
+  } = props;
 
   return (
     <StyledContainer>
@@ -53,25 +60,25 @@ export function CardBorrowerNewData(props: ICardNewBorrowerProps) {
           </Stack>
           <Divider dashed />
           <Text appearance="gray" size="small" margin="10px 0 7px 0">
-            {newBorrowedDAta.names}
+            {newBorrowedLabels.names}
           </Text>
           <Text type="body" size="large">
             {name}
           </Text>
           <Text appearance="gray" size="small" margin="10px 0 7px 0">
-            {newBorrowedDAta.lastNames}
+            {newBorrowedLabels.lastNames}
           </Text>
           <Text type="body" size="large">
             {lastName}
           </Text>
           <Text appearance="gray" size="small" margin="10px 0 7px 0">
-            {newBorrowedDAta.email}
+            {newBorrowedLabels.email}
           </Text>
           <Text type="label" size="large" weight="bold">
             {email}
           </Text>
           <Text appearance="gray" size="small" margin="10px 0 7px 0">
-            {newBorrowedDAta.income}
+            {newBorrowedLabels.income}
           </Text>
           <Stack>
             <Icon
@@ -84,7 +91,7 @@ export function CardBorrowerNewData(props: ICardNewBorrowerProps) {
             </Text>
           </Stack>
           <Text appearance="gray" size="small" margin="10px 0 7px 0">
-            {newBorrowedDAta.obligations}
+            {newBorrowedLabels.obligations}
           </Text>
           <Stack>
             <Icon
@@ -129,7 +136,7 @@ export function CardBorrowerNewData(props: ICardNewBorrowerProps) {
             cursorHover
           />
           <Text type="title" size="medium" weight="bold" appearance="gray">
-            `{BorrowerTitle}`
+            `{borrowerTitle}`
           </Text>
         </StyledNewBorrower>
       )}

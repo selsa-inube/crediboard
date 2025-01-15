@@ -1,4 +1,4 @@
-export const dataImplementBorrowedData = [
+export const borrowerData = [
   {
     borrower: "Deudor",
     name: "Camilo Alberto",

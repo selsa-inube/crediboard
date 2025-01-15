@@ -4,8 +4,9 @@ import * as Yup from "yup";
 import { Grid } from "@inubekit/grid";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { CardBorrowerNewData } from "@pages/prospect/components/cardNewBorrower";
-import { dataImplementBorrowedData } from "./config";
+import { NewBorrowerModal } from "@pages/prospect/components/cardNewBorrower";
+
+import { borrowerData } from "./config";
 
 import { Button } from "@inubekit/button";
 
@@ -69,16 +70,14 @@ export function Borrowers(props: borrowersProps) {
       <Button variant="outlined">Agregar deudor</Button>
       <Grid
         templateColumns={
-          isMobile
-            ? "1fr"
-            : `repeat(${dataImplementBorrowedData.length + 1}, 317px)`
+          isMobile ? "1fr" : `repeat(${borrowerData.length + 1}, 317px)`
         }
         autoRows="auto"
         padding={isMobile ? "4px 10px" : "10px 16px"}
         gap="20px"
       >
-        {dataImplementBorrowedData.map((item, index) => (
-          <CardBorrowerNewData
+        {borrowerData.map((item, index) => (
+          <NewBorrowerModal
             key={index}
             title={item.borrower + ` ${index + 1}`}
             name={item.name}
@@ -88,7 +87,7 @@ export function Borrowers(props: borrowersProps) {
             obligations={item.obligations}
           />
         ))}
-        <CardBorrowerNewData hasData />
+        <NewBorrowerModal hasData />
       </Grid>
     </Fieldset>
   );
