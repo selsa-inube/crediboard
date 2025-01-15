@@ -31,6 +31,10 @@ export const mockPeriodicity = [
     value: "mensual-pagado-en-día-15",
   },
 ];
+export const mockAmount = [
+  { id: "1", label: "valor espera recibir", value: "Valor espera recibir" },
+  { id: "2", label: "monto solicitado", value: "Monto solicitado" },
+];
 
 export const mockPayAmount = [
   { id: "1", label: "15/Dic/2024", value: "15/Dic/2024" },

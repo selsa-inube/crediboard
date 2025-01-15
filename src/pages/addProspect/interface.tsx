@@ -139,7 +139,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-            stepsAddProspect.extraordinaryInstallments.id && (
+          stepsAddProspect.extraordinaryInstallments.id && (
             <ExtraordinaryInstallments
               dataTable={extraordinaryInstallmentMock}
               isMobile={isMobile}
@@ -165,7 +165,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-            stepsAddProspect.obligationsFinancial.id && (
+          stepsAddProspect.obligationsFinancial.id && (
             <ObligationsFinancial isMobile={isMobile} />
           )}
         {currentStepsNumber &&
@@ -202,7 +202,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-            stepsAddProspect.obligationsCollected.id && (
+          stepsAddProspect.obligationsCollected.id && (
             <ConsolidatedCredit
               initialValues={formData.consolidatedCreditSelections}
               handleOnChange={handleConsolidatedCreditChange}

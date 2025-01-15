@@ -92,6 +92,7 @@ export interface FormData {
     paymentPlan: string;
     periodicity: string;
     payAmount: string;
+    optionAmount: string;
   };
   consolidatedCreditSelections: {
     totalCollected: number;

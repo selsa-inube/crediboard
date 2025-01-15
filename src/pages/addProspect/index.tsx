@@ -50,6 +50,7 @@ export function AddProspect() {
       paymentPlan: "",
       periodicity: "",
       payAmount: "",
+      optionAmount: "",
     },
     consolidatedCreditSelections: {
       totalCollected: 0,

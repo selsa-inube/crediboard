@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
-import { MdInfoOutline, MdOutlineAttachMoney } from "react-icons/md";
+import { MdInfoOutline, } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
-import { Textfield } from "@inubekit/textfield";
 import { Toggle } from "@inubekit/toggle";
 import { Select } from "@inubekit/select";
 import { Icon } from "@inubekit/icon";
-import { inube } from "@inubekit/foundations";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditLimit } from "@components/modals/CreditLimit";
@@ -22,6 +20,7 @@ import { get } from "@mocks/utils/dataMock.service";
 import {
   mockPayAmount,
   mockPeriodicity,
+  mockAmount,
 } from "@mocks/add-prospect/payment-channel/paymentchannel.mock";
 import { IPaymentChannel } from "@services/types";
 
@@ -34,7 +33,9 @@ export interface ILoanAmountProps {
     toggleChecked: boolean;
     paymentPlan: string;
     periodicity: string;
+    optionAmount: string;
     payAmount: string;
+
   };
   isMobile: boolean;
   handleOnChange: (newData: Partial<ILoanAmountProps["initialValues"]>) => void;
@@ -88,6 +89,7 @@ export function LoanAmount(props: ILoanAmountProps) {
     paymentPlan: Yup.string().required(""),
     periodicity: Yup.string().required(""),
     payAmount: Yup.string().required(""),
+    optionAmount: Yup.string().required(""),
   });
 
   return (
@@ -95,12 +97,13 @@ export function LoanAmount(props: ILoanAmountProps) {
       <Formik
         initialValues={initialValues}
         validationSchema={LoanAmountValidationSchema}
-        onSubmit={() => {}}
+        onSubmit={() => { }}
         validate={(values) => {
           const numericValue =
             parseFloat(values.inputValue.replace(/[^0-9]/g, "")) || 0;
           const isValid =
             numericValue > 0 &&
+            values.optionAmount.trim() !== "" &&
             values.paymentPlan.trim() !== "" &&
             values.periodicity.trim() !== "" &&
             values.payAmount.trim() !== "";
@@ -146,27 +149,20 @@ export function LoanAmount(props: ILoanAmountProps) {
                 <Text type="label" size="medium" weight="bold">
                   {dataAmount.expectToReceive}
                 </Text>
-                <Field name="inputValue">
+                <Field name="optionAmount">
                   {() => (
-                    <Textfield
-                      id="1"
-                      size="compact"
-                      iconBefore={
-                        <MdOutlineAttachMoney
-                          color={inube.palette.green.G400}
-                        />
-                      }
-                      type="text"
-                      fullwidth={true}
-                      value={values.inputValue}
-                      onChange={(e) => {
-                        const rawValue =
-                          parseFloat(e.target.value.replace(/[^0-9]/g, "")) ||
-                          0;
-                        const formattedValue = currencyFormat(rawValue, false);
-                        setFieldValue("inputValue", formattedValue);
-                        handleOnChange({ inputValue: formattedValue });
+                    <Select
+                      id="optionAmount"
+                      options={mockAmount}
+                      placeholder={dataAmount.selectOption}
+                      name="optionAmount"
+                      onChange={(_, newValue: string) => {
+                        setFieldValue("optionAmount", newValue);
+                        handleOnChange({ optionAmount: newValue });
                       }}
+                      value={values.optionAmount}
+                      size="compact"
+                      fullwidth={true}
                     />
                   )}
                 </Field>
