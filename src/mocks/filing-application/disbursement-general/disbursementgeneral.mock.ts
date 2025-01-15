@@ -1,16 +1,32 @@
-export const optionTodisburseMoney = [
-  { id: "savings account", label: "Cuenta Ahorro - Bancolombia - 33345612311", value: "cuenta de ahorro" },
-  { id: "bank", label: "Cuenta Corriente - Davivienda - 45612311898", value: "banco" },
-  { id: "account number", label: "Numero de cuenta - Banco de bogotá - 31313131141", value: "numero de cuenta" },
+export const optionLocalAccount = [
+  {
+    id: "savings account",
+    label: "Cuenta Ahorro - Bancolombia - 33345612311",
+    value: "cuenta de ahorro",
+  },
+  {
+    id: "bank",
+    label: "Cuenta Corriente - Davivienda - 45612311898",
+    value: "banco",
+  },
+  {
+    id: "account number",
+    label: "Numero de cuenta - Banco de bogotá - 31313131141",
+    value: "numero de cuenta",
+  },
 ];
-export const biologicalSex = [
+export const Sex = [
   { id: "man", label: "Hombre", value: "man" },
   { id: "women", label: "Mujer", value: "women" },
-  { id: "do not respond", label: "Prefiero no responder", value: "do not respond" },
+  {
+    id: "do not respond",
+    label: "Prefiero no responder",
+    value: "do not respond",
+  },
 ];
 export const typesOfDocuments = [
-  { id: "c.c", label: "Cédula de ciudadanía", value: "c.c" },
-  { id: "c.e", label: "Cédula de extranjería", value: "c.e" },
+  { id: "CC", label: "Cédula de ciudadanía", value: "CC" },
+  { id: "CE", label: "Cédula de extranjería", value: "CE" },
   { id: "passport", label: "Pasaporte", value: "passport" },
   { id: "nit", label: "NIT", value: "nit" },
   { id: "rut", label: "RUT", value: "rut" },
@@ -26,4 +42,27 @@ export const City = [
   { id: "pereira", label: "Pereira", value: "pereira" },
   { id: "santa Marta", label: "Santa Marta", value: "santa Marta" },
   { id: "manizales", label: "Manizales", value: "manizales" },
+];
+
+export const Bank = [
+  { id: "Bancolombia", label: "Bancolombia", value: "Bancolombia" },
+  { id: "Davivienda", label: "Davivienda", value: "Davivienda" },
+  { id: "BancoBogotá", label: "Banco de Bogotá", value: "Banco de Bogotá" },
+  {
+    id: "BancoOccidente",
+    label: "Banco de Occidente",
+    value: "Banco de Occidente",
+  },
+  { id: "BancoPopular", label: "Banco Popular", value: "Banco Popular" },
+  { id: "Bbva", label: "BBVA Colombia", value: "BBVA Colombia" },
+  {
+    id: "BancoCajaSocial",
+    label: "Banco Caja Social",
+    value: "Banco Caja Social",
+  },
+];
+
+export const typeAccount = [
+  { id: "CH", label: "Cuenta de ahorro", value: "A" },
+  { id: "CC", label: "Cuenta Corriente", value: "C" },
 ];

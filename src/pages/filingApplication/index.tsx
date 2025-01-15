@@ -30,8 +30,17 @@ export function FilingApplication() {
     },
     disbursementGeneral: {
       amount: "",
-      state: "",
+      account: "",
       description: "",
+      name: "",
+      lastName: "",
+      sex: "",
+      type: "",
+      identification: "",
+      birthdate: "",
+      phone: "",
+      mail: "",
+      city: "",
     },
   });
 
@@ -66,7 +75,7 @@ export function FilingApplication() {
       ...updatedValues,
     }));
   };
-
+  console.log(formData);
   return (
     <>
       <FilingApplicationUI

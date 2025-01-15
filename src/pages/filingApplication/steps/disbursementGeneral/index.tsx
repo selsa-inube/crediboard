@@ -2,56 +2,93 @@ import { Tabs } from "@inubekit/tabs";
 import { Stack } from "@inubekit/stack";
 import { Fieldset } from "@components/data/Fieldset";
 
-import { disbursementln } from "./disbursementWithInternalAccount/config";
+import { disbursemenTabs } from "./config";
 import { DisbursementWithInternalAccount } from "./disbursementWithInternalAccount/index";
-import { IDisbursementGeneral } from "../../types";
+import { DisbursementWithExternalAccount } from "./disbursementWithExternalAccount";
+import { DisbursementWithCheckEntity } from "./disbursementWithCheckEntity ";
+import { DisbursementWithCheckManagement } from "./DisbursementWithCheckManagement";
+import { DisbursementWithCash } from "./DisbursementWithCash";
 
 interface IDisbursementGeneralProps {
-    isMobile: boolean;
-    initialValues: IDisbursementGeneral;
-    onFormValid: (isValid: boolean) => void;
-    handleOnChange: (values: IDisbursementGeneral) => void;
-    isSelected: string;
-    handleTabChange: (id: string) => void;
+  isMobile: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  initialValues: any;
+  onFormValid: (isValid: boolean) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleOnChange: (values: any) => void;
+  isSelected: string;
+  handleTabChange: (id: string) => void;
 }
 
 export function DisbursementGeneral(props: IDisbursementGeneralProps) {
-    const { isMobile, initialValues, onFormValid, handleOnChange, isSelected, handleTabChange } = props;
-
-    return (
-        <Fieldset>
-            <Stack
-                direction="column"
-                padding={isMobile ? "4px 10px" : "10px 16px"}
-                gap="20px"
-            >
-                <Stack direction="column">
-                    <Tabs
-                        tabs={Object.values(disbursementln)}
-                        selectedTab={isSelected}
-                        onChange={handleTabChange}
-                    />
-                    {isSelected === disbursementln.internal.id && (
-                        <DisbursementWithInternalAccount isMobile={isMobile}
-                            onFormValid={onFormValid}
-                            initialValues={initialValues}
-                            handleOnChange={handleOnChange} />
-                    )}
-
-                    {isSelected === disbursementln.external.id && (
-                        null
-                    )}
-                    {isSelected === disbursementln.external.id && (
-                        null
-                    )}
-                    {isSelected === disbursementln.management.id && (
-                        null
-                    )}
-                    {isSelected === disbursementln.cash.id && (
-                        null
-                    )}
-                </Stack>
-            </Stack>
-        </Fieldset>
-    );
+  const {
+    isMobile,
+    initialValues,
+    onFormValid,
+    handleOnChange,
+    isSelected,
+    handleTabChange,
+  } = props;
+  return (
+    <Fieldset>
+      <Stack
+        direction="column"
+        padding={isMobile ? "4px 10px" : "10px 16px"}
+        gap="20px"
+      >
+        <Stack direction="column">
+          <Tabs
+            tabs={Object.values(disbursemenTabs)}
+            selectedTab={isSelected}
+            onChange={handleTabChange}
+          />
+          {isSelected === disbursemenTabs.internal.id && (
+            <DisbursementWithInternalAccount
+              isMobile={isMobile}
+              onFormValid={onFormValid}
+              initialValues={initialValues}
+              handleOnChange={handleOnChange}
+              optionNameForm="Internal"
+            />
+          )}
+          {isSelected === disbursemenTabs.external.id && (
+            <DisbursementWithExternalAccount
+              isMobile={isMobile}
+              onFormValid={onFormValid}
+              initialValues={initialValues}
+              handleOnChange={handleOnChange}
+              optionNameForm="External"
+            />
+          )}
+          {isSelected === disbursemenTabs.check.id && (
+            <DisbursementWithCheckEntity
+              isMobile={isMobile}
+              onFormValid={onFormValid}
+              initialValues={initialValues}
+              handleOnChange={handleOnChange}
+              optionNameForm="CheckEntity"
+            />
+          )}
+          {isSelected === disbursemenTabs.management.id && (
+            <DisbursementWithCheckManagement
+              isMobile={isMobile}
+              onFormValid={onFormValid}
+              initialValues={initialValues}
+              handleOnChange={handleOnChange}
+              optionNameForm="CheckManagement"
+            />
+          )}
+          {isSelected === disbursemenTabs.cash.id && (
+            <DisbursementWithCash
+              isMobile={isMobile}
+              onFormValid={onFormValid}
+              initialValues={initialValues}
+              handleOnChange={handleOnChange}
+              optionNameForm="Cash"
+            />
+          )}
+        </Stack>
+      </Stack>
+    </Fieldset>
+  );
 }

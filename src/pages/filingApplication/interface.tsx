@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from "react";
 import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
@@ -11,7 +11,7 @@ import { ContactInformation } from "./steps/contactInformation";
 import { PropertyOffered } from "./steps/propertyOffered";
 import { VehicleOffered } from "./steps/vehicleOffered";
 import { DisbursementGeneral } from "./steps/disbursementGeneral";
-import { disbursementln } from "./steps/disbursementGeneral/disbursementWithInternalAccount/config";
+import { disbursemenTabs } from "@pages/filingApplication/steps/disbursementGeneral/config";
 
 interface AddPositionUIProps {
   currentStep: number;
@@ -47,6 +47,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
   const handleTabChange = (tabId: string) => {
     setIsSelected(tabId);
   };
+
   return (
     <Stack
       direction="column"
@@ -76,12 +77,12 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
         </StyledContainerAssisted>
         {currentStepsNumber &&
           currentStepsNumber.id ===
-          stepsFilingApplication.generalInformation.id && (
+            stepsFilingApplication.generalInformation.id && (
             <RequirementsNotMet isMobile={isMobile} />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-          stepsFilingApplication.contactInformation.id && (
+            stepsFilingApplication.contactInformation.id && (
             <ContactInformation
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
@@ -93,7 +94,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-          stepsFilingApplication.propertyOffered.id && (
+            stepsFilingApplication.propertyOffered.id && (
             <PropertyOffered
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
@@ -105,7 +106,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-          stepsFilingApplication.vehicleOffered.id && (
+            stepsFilingApplication.vehicleOffered.id && (
             <VehicleOffered
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
@@ -116,8 +117,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             />
           )}
         {currentStepsNumber &&
-          currentStepsNumber.id ===
-          stepsFilingApplication.disbursement.id && (
+          currentStepsNumber.id === stepsFilingApplication.disbursement.id && (
             <DisbursementGeneral
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
@@ -125,7 +125,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
               handleOnChange={(values) =>
                 handleFormChange({ disbursementGeneral: values })
               }
-              isSelected={isSelected || disbursementln.internal.id}
+              isSelected={isSelected || disbursemenTabs.internal.id}
               handleTabChange={handleTabChange}
             />
           )}

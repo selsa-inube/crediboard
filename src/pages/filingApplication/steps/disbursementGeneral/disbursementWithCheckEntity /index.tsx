@@ -1,39 +1,35 @@
 import { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
 import { Checkbox } from "@inubekit/checkbox";
 import { Divider } from "@inubekit/divider";
 import { Toggle } from "@inubekit/toggle";
-import { Select } from "@inubekit/select";
 import { Stack } from "@inubekit/stack";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
 import { Text } from "@inubekit/text";
 
-import { optionLocalAccount } from "@mocks/filing-application/disbursement-general/disbursementgeneral.mock";
 import {
   handleChangeWithCurrency,
   validateCurrencyField,
 } from "@utils/formatData/currency";
-
-import { IDisbursementInternal } from "@pages/filingApplication/types";
 import {
   disbursementGeneral,
   disbursemenOptionAccount,
 } from "@pages/filingApplication/steps/disbursementGeneral/config";
-import { GeneralInformationForm } from "@pages/filingApplication/components/GeneralInformationForm";
+//import { GeneralInformationForm } from "@pages/filingApplication/components/GeneralInformationForm";
+import { IDisbursementWithCheckEntity } from "@pages/filingApplication/types";
 
-interface IDisbursementGeneralProps {
+interface IDisbursementWithCheckEntityProps {
   isMobile: boolean;
-  initialValues: IDisbursementInternal;
+  initialValues: IDisbursementWithCheckEntity;
   onFormValid: (isValid: boolean) => void;
-  handleOnChange: (values: IDisbursementInternal) => void;
+  handleOnChange: (values: IDisbursementWithCheckEntity) => void;
   optionNameForm: string;
 }
 
-export function DisbursementWithInternalAccount(
-  props: IDisbursementGeneralProps
+export function DisbursementWithCheckEntity(
+  props: IDisbursementWithCheckEntityProps
 ) {
   const {
     isMobile,
@@ -48,9 +44,8 @@ export function DisbursementWithInternalAccount(
   const [toggleChecked, setToggleChecked] = useState(true);
 
   const validationSchema = Yup.object({
-    amountInternal: Yup.number().required(),
-    accountInternal: Yup.string().required(),
-    descriptionInternal: Yup.string().required(),
+    amountCheckEntity: Yup.number().required(),
+    descriptionCheckEntity: Yup.string().required(),
   });
 
   const formik = useFormik({
@@ -68,11 +63,10 @@ export function DisbursementWithInternalAccount(
 
   useEffect(() => {
     if (
-      prevValues.current.amountInternal !== formik.values.amountInternal ||
-      prevValues.current.toggleInternal !== formik.values.toggleInternal ||
-      prevValues.current.accountInternal !== formik.values.accountInternal ||
-      prevValues.current.descriptionInternal !==
-        formik.values.descriptionInternal
+      prevValues.current.amountCheckEntity !==
+        formik.values.amountCheckEntity ||
+      prevValues.current.descriptionCheckEntity !==
+        formik.values.descriptionCheckEntity
     ) {
       handleOnChange(formik.values);
       prevValues.current = formik.values;
@@ -107,7 +101,7 @@ export function DisbursementWithInternalAccount(
           label={disbursementGeneral.label}
           placeholder={disbursementGeneral.place}
           size="compact"
-          value={validateCurrencyField("amountInternal", formik)}
+          value={validateCurrencyField("amountCheckEntity", formik)}
           onChange={(e) => handleChangeWithCurrency(formik, e)}
           onBlur={formik.handleBlur}
           fullwidth
@@ -134,15 +128,15 @@ export function DisbursementWithInternalAccount(
       </Stack>
       <Stack direction="row" gap="16px">
         <Toggle
-          id={"toggle" + optionNameForm}
-          name={"toggle" + optionNameForm}
           checked={toggleChecked}
           disabled={false}
+          id="toggleSwitch"
           margin="0px"
+          name="toggleFeature"
           onChange={handleToggleChange}
           padding="0px"
           size="large"
-          value="toggle"
+          value="switchTest1"
         />
         <Text appearance={toggleChecked ? "success" : "danger"}>
           {toggleChecked
@@ -151,39 +145,28 @@ export function DisbursementWithInternalAccount(
         </Text>
       </Stack>
       <Divider dashed />
-      {!toggleChecked && (
+      {/* {!toggleChecked && (
         <>
           <GeneralInformationForm
             onFormValid={onFormValid}
             initialValues={initialValues}
             handleOnChange={handleOnChange}
-            optionNameForm={optionNameForm}
           />
           <Divider dashed />
         </>
-      )}
-      <Select
-        id={"account" + optionNameForm}
-        name={"account" + optionNameForm}
-        label={disbursemenOptionAccount.labelAccount}
-        placeholder={disbursemenOptionAccount.placeOption}
-        size="compact"
-        options={optionLocalAccount}
-        onBlur={formik.handleBlur}
-        onChange={(name, value) => formik.setFieldValue(name, value)}
-        value={formik.values.accountInternal}
-        fullwidth
-      />
-      <Textarea
-        id={"description" + optionNameForm}
-        name={"description" + optionNameForm}
-        label={disbursemenOptionAccount.observation}
-        placeholder={disbursemenOptionAccount.placeObservation}
-        value={formik.values.descriptionInternal}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        fullwidth
-      />
+      )} */}
+      <Stack direction="row" gap="16px">
+        <Textarea
+          id={"description" + optionNameForm}
+          name={"description" + optionNameForm}
+          label={disbursemenOptionAccount.observation}
+          placeholder={disbursemenOptionAccount.placeObservation}
+          value={formik.values.descriptionCheckEntity}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          fullwidth
+        />
+      </Stack>
     </Stack>
   );
 }
