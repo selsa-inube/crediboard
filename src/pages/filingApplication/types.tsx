@@ -36,6 +36,13 @@ export interface IPropertyOffered {
   state: string;
   description: string;
 }
+export interface IBorrowerData {
+  name: string;
+  lastName: string;
+  email: string;
+  income: number;
+  obligations: number;
+}
 
 export interface IBail {
   client: boolean;
@@ -45,5 +52,6 @@ export interface FormData {
   contactInformation: ContactInformation;
   propertyOffered: IPropertyOffered;
   vehicleOffered: IVehicleOffered;
+  borrowerData: IBorrowerData;
   bail: IBail;
 }
