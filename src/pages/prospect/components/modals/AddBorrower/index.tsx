@@ -1,48 +1,47 @@
 import { useState } from "react";
 import { useMediaQuery } from "@inubekit/hooks";
+import { Blanket } from "@inubekit/blanket";
 
-import { stepsFilingApplication } from "./config/filingApplication.config";
-import { FilingApplicationUI } from "./interface";
+import { stepsAddBorrower } from "./config/addBorrower.config";
+import { AddBorrowerUI } from "./interface";
 import { FormData } from "./types";
+import { createPortal } from "react-dom";
 
-export function FilingApplication() {
+interface AddBorrowerProps {
+  portalId?: string;
+  onSubmit: () => void;
+  onCloseModal: () => void;
+}
+export function AddBorrower(props: AddBorrowerProps) {
+  const { portalId } = props;
+
+  const node = document.getElementById(portalId ?? "portal");
+  if (!node) {
+    throw new Error(
+      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
+    );
+  }
   const [currentStep, setCurrentStep] = useState<number>(
-    stepsFilingApplication.generalInformation.id
+    stepsAddBorrower.generalInformation.id
   );
   const [isCurrentFormValid, setIsCurrentFormValid] = useState(true);
   const [formData, setFormData] = useState<FormData>({
-    contactInformation: {
-      email: "",
-      phone: "",
-    },
-    borrowerData: {
-      name: "",
+    personalInfo: {
+      tipeOfDocument: "",
+      documentNumber: "",
+      firstName: "",
       lastName: "",
       email: "",
-      income: 0,
-      obligations: 0,
-    },
-    propertyOffered: {
-      antique: "",
-      estimated: "",
-      type: "",
-      state: "",
-      description: "",
-    },
-    vehicleOffered: {
-      state: "",
-      model: "",
-      value: "",
-      description: "",
-    },
-    bail: {
-      client: false,
+      phone: "",
+      sex: "",
+      age: "",
+      relation: "",
     },
   });
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
-  const steps = Object.values(stepsFilingApplication);
+  const steps = Object.values(stepsAddBorrower);
 
   const currentStepsNumber = steps.find(
     (step: { number: number }) => step.number === currentStep
@@ -72,9 +71,9 @@ export function FilingApplication() {
     }));
   };
 
-  return (
-    <>
-      <FilingApplicationUI
+  return createPortal(
+    <Blanket>
+      <AddBorrowerUI
         steps={steps}
         currentStep={currentStep}
         isCurrentFormValid={isCurrentFormValid}
@@ -88,6 +87,7 @@ export function FilingApplication() {
         handleSubmitClick={handleSubmitClick}
         isMobile={isMobile}
       />
-    </>
+    </Blanket>,
+    node
   );
 }
