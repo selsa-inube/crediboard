@@ -67,9 +67,9 @@ export interface LoanConditionState {
 }
 
 export interface LoanAmountState {
-  inputValue: string;
   toggleChecked: boolean;
   paymentPlan: string;
+  payAmount: string;
 }
 
 export interface FormData {
@@ -87,7 +87,6 @@ export interface FormData {
   togglesState: boolean[];
   incomeData: IIncome;
   loanAmountState: {
-    inputValue: string;
     toggleChecked: boolean;
     paymentPlan: string;
     periodicity: string;

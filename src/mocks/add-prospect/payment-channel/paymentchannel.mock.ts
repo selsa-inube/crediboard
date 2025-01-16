@@ -32,8 +32,8 @@ export const mockPeriodicity = [
   },
 ];
 export const mockAmount = [
-  { id: "1", label: "valor espera recibir", value: "Valor espera recibir" },
-  { id: "2", label: "monto solicitado", value: "Monto solicitado" },
+  { id: "1", label: "valor espera recibir", value: "valor espera recibir" },
+  { id: "2", label: "Monto solicitado", value: "monto solicitado" },
 ];
 
 export const mockPayAmount = [

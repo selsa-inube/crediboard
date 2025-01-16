@@ -29,7 +29,6 @@ import { dataAmount } from "./config";
 export interface ILoanAmountProps {
   value?: number;
   initialValues: {
-    inputValue: string;
     toggleChecked: boolean;
     paymentPlan: string;
     periodicity: string;
@@ -85,7 +84,6 @@ export function LoanAmount(props: ILoanAmountProps) {
   }, []);
 
   const LoanAmountValidationSchema = Yup.object({
-    inputValue: Yup.string().required(""),
     paymentPlan: Yup.string().required(""),
     periodicity: Yup.string().required(""),
     payAmount: Yup.string().required(""),
@@ -99,10 +97,7 @@ export function LoanAmount(props: ILoanAmountProps) {
         validationSchema={LoanAmountValidationSchema}
         onSubmit={() => { }}
         validate={(values) => {
-          const numericValue =
-            parseFloat(values.inputValue.replace(/[^0-9]/g, "")) || 0;
           const isValid =
-            numericValue > 0 &&
             values.optionAmount.trim() !== "" &&
             values.paymentPlan.trim() !== "" &&
             values.periodicity.trim() !== "" &&

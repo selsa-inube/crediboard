@@ -45,7 +45,6 @@ export function AddProspect() {
     togglesState: [false, true, false],
     incomeData: income[0],
     loanAmountState: {
-      inputValue: "",
       toggleChecked: false,
       paymentPlan: "",
       periodicity: "",
