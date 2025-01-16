@@ -6,18 +6,18 @@ import { Button } from "@inubekit/button";
 import { StyledContainerGeneralHeader, StyledPerfil } from "./styles";
 
 export interface IGeneralHeaderProps {
+    imgPerfil: string;
     name: string;
     state?: string;
     iconstate?: React.JSX.Element;
     iconbutton?: React.JSX.Element;
     iconbonding?: React.JSX.Element;
-    imgPerfil: string;
     buttonText?: string;
     isMobile?: boolean;
 }
 
 export function GeneralHeader(props: IGeneralHeaderProps) {
-    const { imgPerfil = "", name = "", state = "", iconstate, iconbutton, iconbonding, buttonText, } = props;
+    const { imgPerfil, name, state, iconstate, iconbutton, iconbonding, buttonText, } = props;
 
     return (
         <StyledContainerGeneralHeader>
@@ -72,9 +72,6 @@ export function GeneralHeader(props: IGeneralHeaderProps) {
                         appearance="primary"
                         spacing="compact"
                     />
-                    <Text type="title" size="medium" weight="bold" appearance="gray">
-
-                    </Text>
                 </Stack>
             </Stack>
         </StyledContainerGeneralHeader >

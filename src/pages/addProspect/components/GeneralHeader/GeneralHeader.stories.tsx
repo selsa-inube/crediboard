@@ -1,8 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { GeneralHeader } from ".";
-import { MdCancel } from "react-icons/md";
-import { MdOutlineManageAccounts } from "react-icons/md";
-import { MdAdd } from "react-icons/md";
+import { MdCancel, MdOutlineManageAccounts, MdAdd } from "react-icons/md";
 
 type Story = StoryObj<typeof GeneralHeader>;
 
