@@ -41,6 +41,7 @@ import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInsta
 import { addCreditProduct } from "@mocks/utils/addCreditProductMock.service";
 import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
+import { DisbursementModal } from "@components/modals/DisbursementModal";
 
 import { menuOptions, incomeOptions } from "./config/config";
 import {
@@ -256,13 +257,23 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             <Stack gap="2px">
               {!isMobile && (
                 <>
-                  <Button
-                    type="link"
-                    spacing="compact"
-                    path={`/extended-card/${id}/credit-profile`}
-                  >
-                    Ver perfil crediticio
-                  </Button>
+                  <Stack gap="16px">
+                    <Button
+                      type="link"
+                      spacing="compact"
+                      path={`/extended-card/${id}/credit-profile`}
+                    >
+                      Ver perfil crediticio
+                    </Button>
+                    <Button
+                      type="button"
+                      spacing="compact"
+                      variant="outlined"
+                      onClick={() => handleOpenModal("disbursementModal")}
+                    >
+                      Medio de Desembolso
+                    </Button>
+                  </Stack>
                   <StyledVerticalDivider />
                   <Icon
                     icon={<MdOutlinePhone />}
@@ -581,6 +592,13 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {currentModal === "extraPayments" && (
           <ExtraordinaryPaymentModal
             dataTable={extraordinaryInstallmentMock}
+            portalId="portal"
+            handleClose={handleCloseModal}
+          />
+        )}
+        {currentModal === "disbursementModal" && (
+          <DisbursementModal
+            isMobile={isMobile}
             portalId="portal"
             handleClose={handleCloseModal}
           />
