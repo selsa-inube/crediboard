@@ -1,14 +1,12 @@
-import { useEffect, useRef } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import { useState } from "react";
 import { Grid } from "@inubekit/grid";
+import { Button } from "@inubekit/button";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { NewBorrowerModal } from "@pages/prospect/components/cardNewBorrower";
+import { AddBorrower } from "@pages/prospect/components/modals/AddBorrower";
 
-import { borrowerData } from "./config";
-
-import { Button } from "@inubekit/button";
+import { borrowerData, dataBorrower } from "./config";
 
 interface borrowersProps {
   isMobile: boolean;
@@ -29,45 +27,15 @@ interface borrowersProps {
   }) => void;
 }
 export function Borrowers(props: borrowersProps) {
-  const { isMobile, initialValues, onFormValid, handleOnChange } = props;
+  const { isMobile } = props;
 
-  const validationSchema = Yup.object({
-    name: Yup.string().required(),
-    lastName: Yup.string().required(),
-    email: Yup.string().email().required(),
-    income: Yup.number().required(),
-    obligations: Yup.number().required(),
-  });
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema,
-    validateOnMount: true,
-    onSubmit: () => {},
-  });
-
-  const prevValues = useRef(formik.values);
-
-  useEffect(() => {
-    onFormValid(formik.isValid);
-  }, [formik.isValid, onFormValid]);
-
-  useEffect(() => {
-    if (
-      prevValues.current.name !== formik.values.name ||
-      prevValues.current.lastName !== formik.values.lastName ||
-      prevValues.current.email !== formik.values.email ||
-      prevValues.current.income !== formik.values.income ||
-      prevValues.current.obligations !== formik.values.obligations
-    ) {
-      handleOnChange(formik.values);
-      prevValues.current = formik.values;
-    }
-  }, [formik.values, handleOnChange]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <Fieldset>
-      <Button variant="outlined">Agregar deudor</Button>
+      <Button onClick={() => setIsModalOpen(true)}>
+        {dataBorrower.button}
+      </Button>
       <Grid
         templateColumns={
           isMobile ? "1fr" : `repeat(${borrowerData.length + 1}, 317px)`
@@ -79,7 +47,7 @@ export function Borrowers(props: borrowersProps) {
         {borrowerData.map((item, index) => (
           <NewBorrowerModal
             key={index}
-            title={item.borrower + ` ${index + 1}`}
+            title={dataBorrower.borrower + ` ${index + 1}`}
             name={item.name}
             lastName={item.lastName}
             email={item.email}
@@ -88,6 +56,12 @@ export function Borrowers(props: borrowersProps) {
           />
         ))}
         <NewBorrowerModal hasData />
+        {isModalOpen && (
+          <AddBorrower
+            onSubmit={() => setIsModalOpen(false)}
+            onCloseModal={() => setIsModalOpen(false)}
+          />
+        )}
       </Grid>
     </Fieldset>
   );
