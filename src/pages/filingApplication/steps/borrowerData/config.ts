@@ -16,8 +16,3 @@ export const borrowerData = [
     obligations: "1.950.000",
   },
 ];
-
-export const dataBorrower = {
-  button: "Agregar deudor",
-  borrower: "Deudor",
-}

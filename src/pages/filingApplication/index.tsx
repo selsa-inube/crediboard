@@ -3,21 +3,40 @@ import { useParams } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { userStepsMock } from "@mocks/filing-application/userSteps/users.mock";
+import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
 
 import { stepsFilingApplication } from "./config/filingApplication.config";
 import { FilingApplicationUI } from "./interface";
 import { FormData } from "./types";
+import { dataFillingApplication } from "./config/config";
 
 export function FilingApplication() {
   const { id } = useParams();
   const userId = parseInt(id || "0", 10);
+
+  const userChoice =
+    choiceBorrowers.find((choice) => choice.id === userId)?.choice ||
+    "borrowers";
+  const data =
+    dataFillingApplication[
+      userChoice === "borrowers" ? "borrowers" : "coBorrowers"
+    ];
 
   const fixedSteps = [1, 2, 7, 8];
 
   const intermediateSteps =
     userStepsMock.find((user) => user.id === userId)?.intermediateSteps || [];
 
-  const steps = Object.values(stepsFilingApplication).filter((step) =>
+  const updatedSteps = {
+    ...stepsFilingApplication,
+    BorrowerData: {
+      ...stepsFilingApplication.BorrowerData,
+      name: data.stepName,
+      description: data.stepDescription,
+    },
+  };
+
+  const steps = Object.values(updatedSteps).filter((step) =>
     [...fixedSteps, ...intermediateSteps].includes(step.id)
   );
 
