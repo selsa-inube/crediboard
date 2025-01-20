@@ -11,10 +11,11 @@ interface MobileMenuProps {
   onCancel: () => void;
   onAttach: () => void;
   onViewAttachments: () => void;
+  onGuarantee: () => void
 }
 
 function MobileMenu(props: MobileMenuProps) {
-  const { onClose, onReject, onCancel, onAttach, onViewAttachments } = props;
+  const { onClose, onReject, onCancel, onAttach, onViewAttachments, onGuarantee } = props;
 
   return (
     <StyledMenu>
@@ -22,7 +23,12 @@ function MobileMenu(props: MobileMenuProps) {
         <Text appearance="dark" size="small" type="headline">
           Menú
         </Text>
-        <Icon icon={<MdClose />} appearance="dark" size="24px" onClick={onClose} />
+        <Icon
+          icon={<MdClose />}
+          appearance="dark"
+          size="24px"
+          onClick={onClose}
+        />
       </Stack>
       <StyledMenuItem onClick={onReject}>
         <Text appearance="dark" size="medium" type="body">
@@ -47,6 +53,11 @@ function MobileMenu(props: MobileMenuProps) {
       <StyledMenuItem onClick={onViewAttachments}>
         <Text appearance="dark" size="medium" type="body">
           Ver Adjuntos
+        </Text>
+      </StyledMenuItem>
+      <StyledMenuItem onClick={onGuarantee}>
+        <Text appearance="dark" size="medium" type="body">
+          Garantías ofrecidas
         </Text>
       </StyledMenuItem>
     </StyledMenu>

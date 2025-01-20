@@ -24,8 +24,11 @@ interface IActionButtons {
     buttonViewAttachments: {
       OnClick: () => void;
     };
+    buttonWarranty: {
+      OnClick: () => void;
+    };
   };
-  menuIcon: () => void;
+  menuIcon: () => void; 
 }
 
 interface IStockTrayProps {
@@ -106,6 +109,16 @@ export const StockTray = (props: IStockTrayProps) => {
               }
             >
               {configButtons.buttonsOutlined.buttonViewAttachments.label}
+            </Button>
+            <StyledHorizontalDivider />
+            <Button
+              spacing="compact"
+              variant="outlined"
+              onClick={
+                actionButtons?.buttonsOutlined.buttonWarranty.OnClick
+              }
+            >
+              {configButtons.buttonsOutlined.buttonWarranty.label}
             </Button>
           </Stack>
         </Stack>
