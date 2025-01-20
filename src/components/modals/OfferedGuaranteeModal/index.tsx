@@ -11,6 +11,7 @@ import { Button } from "@inubekit/button";
 
 import { CardBorrower } from "@components/cards/CardBorrower";
 import { mockGuaranteeBorrower } from "@mocks/guarantee/offeredguarantee.mock";
+import { validationMessages } from "@validations/validationMessages";
 
 import { Mortgage } from "./Mortgage";
 import { Pledge } from "./Pledge";
@@ -33,9 +34,7 @@ export function OfferedGuaranteeModal(props: IOfferedGuaranteeModalProps) {
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
-    throw new Error(
-      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
-    );
+    throw new Error(validationMessages.errorNodo);
   }
 
   const [currentTab, setCurrentTab] = useState(dataTabs[0].id);
