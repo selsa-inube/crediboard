@@ -1,4 +1,4 @@
-import { currencyFormat } from "@src/utils/formatData/currency";
+import { currencyFormat } from "@utils/formatData/currency";
 import { Detail } from "../Detail";
 import { IHeaders } from "@components/modals/ExtraordinaryPaymentModal/types";
 

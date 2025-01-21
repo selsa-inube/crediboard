@@ -1,7 +1,7 @@
-import { Text } from "@inube/design-system";
+import { MdClose } from "react-icons/md";
+import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
-import { MdClose } from "react-icons/md";
 
 import { StyledMenu, StyledMenuItem } from "./styles";
 
@@ -22,7 +22,12 @@ function MobileMenu(props: MobileMenuProps) {
         <Text appearance="dark" size="small" type="headline">
           Menú
         </Text>
-        <Icon icon={<MdClose />} appearance="dark" size="24px" onClick={onClose} />
+        <Icon
+          icon={<MdClose />}
+          appearance="dark"
+          size="24px"
+          onClick={onClose}
+        />
       </Stack>
       <StyledMenuItem onClick={onReject}>
         <Text appearance="dark" size="medium" type="body">

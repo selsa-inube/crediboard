@@ -1,4 +1,4 @@
-import { SectionOrientation } from "@src/components/layout/BoardSection/types";
+import { SectionOrientation } from "@components/layout/BoardSection/types";
 interface IOperator {
   name: string;
   logo: string;

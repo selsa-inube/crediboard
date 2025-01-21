@@ -1,16 +1,14 @@
-import {
-  Stack,
-  useMediaQuery,
-  Blanket,
-  Text,
-  Button,
-  inube,
-  Textarea,
-  Textfield,
-} from "@inube/design-system";
-import { Icon } from "@inubekit/icon";
 import { createPortal } from "react-dom";
 import { MdClear, MdOutlineCalendarMonth } from "react-icons/md";
+
+import { Stack } from "@inubekit/stack";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Blanket } from "@inubekit/blanket";
+import { Text } from "@inubekit/text";
+import { Button } from "@inubekit/button";
+import { Textarea } from "@inubekit/textarea";
+import { Textfield } from "@inubekit/textfield";
+import { Icon } from "@inubekit/icon";
 
 import { formatPrimaryDate } from "@utils/formatData/date";
 
@@ -48,7 +46,7 @@ export function SeeDetailsModal(props: SeeDetailsModalProps) {
             Más detalles
           </Text>
           <StyledContainerClose onClick={onCloseModal}>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text>Cerrar</Text>
               <Icon
                 icon={<MdClear />}
@@ -59,7 +57,7 @@ export function SeeDetailsModal(props: SeeDetailsModalProps) {
             </Stack>
           </StyledContainerClose>
         </Stack>
-        <Stack direction="column" gap={inube.spacing.s300}>
+        <Stack direction="column" gap="24px">
           <Textfield
             id="date"
             name="date"
@@ -78,7 +76,7 @@ export function SeeDetailsModal(props: SeeDetailsModalProps) {
             />
           </StyledTextarea>
         </Stack>
-        <Stack justifyContent="flex-end" margin="s200 s0">
+        <Stack justifyContent="flex-end" margin="16px 0">
           <Button onClick={onCloseModal}>Cerrar</Button>
         </Stack>
       </StyledModal>

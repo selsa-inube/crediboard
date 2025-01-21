@@ -12,7 +12,7 @@ import { currencyFormat } from "@utils/formatData/currency";
 
 import { IncomeEmployment, IncomeCapital, MicroBusinesses } from "./config";
 import { StyledContainer } from "./styles";
-import { incomeCardData } from "@src/components/cards/IncomeCard/config";
+import { incomeCardData } from "@components/cards/IncomeCard/config";
 
 interface ISourceIncomeProps {
   onChange: (name: string, newValue: string) => void;

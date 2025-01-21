@@ -9,7 +9,7 @@ import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
 import { Button } from "@inubekit/button";
 
-import { currencyFormat } from "@src/utils/formatData/currency";
+import { currencyFormat } from "@utils/formatData/currency";
 
 import { StyledContainerClose, StyledContainer } from "./styles";
 import { dataReciprocity } from "./config";

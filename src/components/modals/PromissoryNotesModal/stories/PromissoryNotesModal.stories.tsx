@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StoryFn, Meta } from "@storybook/react";
-import { Button } from "@inube/design-system";
+import { Button } from "@inubekit/button";
 import { PromissoryNotesModal, PromissoryNotesModalProps } from "../index";
 import { props } from "./props";
 
@@ -28,7 +28,9 @@ const DefaultTemplate: StoryFn<PromissoryNotesModalProps> = (args) => {
   return (
     <>
       <Button onClick={handleShowModal}>Open Modal</Button>
-      {showModal && <PromissoryNotesModal {...args} handleClose={handleShowModal} />}
+      {showModal && (
+        <PromissoryNotesModal {...args} handleClose={handleShowModal} />
+      )}
     </>
   );
 };

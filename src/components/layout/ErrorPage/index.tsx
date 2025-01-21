@@ -1,16 +1,14 @@
-import {
-  Stack,
-  Button,
-  Text,
-  useMediaQueries,
-  Grid,
-} from "@inube/design-system";
-import { StyledCompanyLogo, StyledErrorImage } from "./styles";
 import { MdChevronLeft } from "react-icons/md";
+import { Stack } from "@inubekit/stack";
+import { Button } from "@inubekit/button";
+import { Text } from "@inubekit/text";
+import { useMediaQueries } from "@inubekit/hooks";
+import { Grid } from "@inubekit/grid";
 
 import selsaLogo from "@assets/images/selsa.png";
 import errorImage from "@assets/images/timeout.png";
 
+import { StyledCompanyLogo, StyledErrorImage } from "./styles";
 interface ErrorPageProps {
   logo?: string;
   logoAlt?: string;
@@ -35,7 +33,7 @@ function ErrorPage(props: ErrorPageProps) {
 
   return (
     <Stack
-      padding={matches["(max-width: 600px)"] ? "s400" : "s1000"}
+      padding={matches["(max-width: 600px)"] ? "32px" : "80px"}
       gap={matches["(max-width: 1000px)"] ? "64px" : "120px"}
       direction="column"
     >
@@ -46,7 +44,7 @@ function ErrorPage(props: ErrorPageProps) {
           matches["(max-width: 600px)"] ? "auto" : "repeat(2, 1fr)"
         }
         alignItems="center"
-        gap={matches["(max-width: 600px)"] ? "s800" : "120px"}
+        gap={matches["(max-width: 600px)"] ? "64px" : "120px"}
       >
         <Stack gap="24px" direction="column">
           <Stack gap="16px" direction="column">

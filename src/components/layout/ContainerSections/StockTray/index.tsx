@@ -1,9 +1,11 @@
 import { MdOutlineChevronLeft, MdMenu } from "react-icons/md";
-import { Button, inube } from "@inube/design-system";
+
+import { Button } from "@inubekit/button";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
-import { configButtons } from "../config";
+
 import { StyledHorizontalDivider } from "./styled";
+import { configButtons } from "../config";
 
 interface IActionButtons {
   buttons: {
@@ -40,6 +42,7 @@ export const StockTray = (props: IStockTrayProps) => {
   return (
     <Stack
       justifyContent="space-between"
+      alignItems="start"
       margin={isMobile ? "0px 0px 16px" : "0px 0px 16px"}
     >
       <Button
@@ -64,10 +67,10 @@ export const StockTray = (props: IStockTrayProps) => {
       {!isMobile && (
         <Stack
           justifyContent="end"
-          gap={inube.spacing.s200}
+          gap="16px"
           margin={!isMobile ? "0px 0px 16px 0px" : "0px"}
         >
-          <Stack gap={inube.spacing.s200}>
+          <Stack gap="16px">
             <Button
               spacing="compact"
               onClick={actionButtons?.buttons?.buttonReject?.OnClick}
@@ -89,7 +92,7 @@ export const StockTray = (props: IStockTrayProps) => {
             </Button>
           </Stack>
           <StyledHorizontalDivider />
-          <Stack gap={inube.spacing.s200}>
+          <Stack gap="16px">
             <Button
               spacing="compact"
               variant="outlined"

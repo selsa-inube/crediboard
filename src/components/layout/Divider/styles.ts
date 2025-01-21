@@ -1,4 +1,5 @@
 import styled from "styled-components";
+//import { inube } from "@inubekit/foundations";
 import { inube } from "@inube/design-system";
 
 interface IStyledDivider {

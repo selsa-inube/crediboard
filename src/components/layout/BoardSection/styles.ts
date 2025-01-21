@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+
+import { inube } from "@inubekit/foundations";
+//import { inube } from "@inube/design-system";
 
 import { SectionBackground, SectionOrientation } from "./types";
 
@@ -18,19 +20,18 @@ interface IStyledCollapseIcon {
 const StyledBoardSection = styled.div<IStyledBoardSection>`
   display: flex;
   flex-direction: column;
-  gap: ${inube.spacing.s150};
-  padding: ${inube.spacing.s300} ${inube.spacing.s150} ${inube.spacing.s150};
+  gap: 12px;
+  padding: 24px 12px 12px;
   width: calc(100% - 24px);
   border-top: 1px solid;
   border-bottom: ${({ $orientation }) =>
     $orientation !== "horizontal" ? "1px solid" : "none"};
-  border-color: ${({ theme }: IStyledBoardSection) =>
-    theme?.color?.stroke?.divider?.dark || inube.color.stroke.divider.dark};
+  border-color: ${({ theme }) =>
+    theme?.color?.stroke?.divider?.dark || inube.palette.neutral.N40};
   background-color: ${({ theme, $sectionBackground }) =>
     $sectionBackground === "gray"
-      ? theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
-      : theme?.color?.surface?.light?.regular ||
-        inube.color.surface.light.regular};
+      ? theme?.color?.surface?.gray?.regular || inube.palette.neutral.N30
+      : theme?.color?.surface?.light?.regular || inube.palette.neutral.N10};
 
   & > div:nth-child(1) {
     justify-content: space-between;
