@@ -20,6 +20,9 @@ export interface ICardBorrowerProps {
   email: string;
   income: string;
   obligations: string;
+  handleView?: () => void;
+  handleEdit?: () => void;
+  handleDelete?: () => void;
   showIcons?: boolean;
 }
 
@@ -31,6 +34,9 @@ export function CardBorrower(props: ICardBorrowerProps) {
     email,
     income,
     obligations,
+    handleView = () => {},
+    handleEdit = () => {},
+    handleDelete = () => {},
     showIcons = true,
   } = props;
 
@@ -108,18 +114,21 @@ export function CardBorrower(props: ICardBorrowerProps) {
                 icon={<MdOutlineRemoveRedEye />}
                 appearance={"primary"}
                 size="20px"
+                onClick={handleView}
                 cursorHover
               />
               <Icon
                 icon={<MdOutlineEdit />}
                 appearance={"primary"}
                 size="20px"
+                onClick={handleEdit}
                 cursorHover
               />
               <Icon
                 icon={<MdOutlineDelete />}
                 appearance={"primary"}
                 size="20px"
+                onClick={handleDelete}
                 cursorHover
               />
             </Stack>

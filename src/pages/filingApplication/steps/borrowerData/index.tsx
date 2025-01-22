@@ -1,14 +1,19 @@
-import { useEffect, useRef } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import { useState } from "react";
+import { MdAdd } from "react-icons/md";
 import { Grid } from "@inubekit/grid";
+import { Button } from "@inubekit/button";
+import { Stack } from "@inubekit/stack";
 
+import { CardBorrower } from "@components/cards/CardBorrower";
+import { NewCardBorrower } from "@components/cards/CardBorrower/newCard";
 import { Fieldset } from "@components/data/Fieldset";
-import { NewBorrowerModal } from "@pages/prospect/components/cardNewBorrower";
+import { DeleteModal } from "@components/modals/DeleteModal";
+import { DebtorAddModal } from "@pages/prospect/components/modals/DebtorAddModal";
+import { DebtorDetailsModal } from "@pages/prospect/components/modals/DebtorDetailsModal";
+import { DebtorEditModal } from "@pages/prospect/components/modals/DebtorEditModal";
+import { mockGuaranteeBorrower } from "@mocks/guarantee/offeredguarantee.mock";
 
 import { borrowerData } from "./config";
-
-import { Button } from "@inubekit/button";
 
 interface borrowersProps {
   isMobile: boolean;
@@ -29,66 +34,65 @@ interface borrowersProps {
   }) => void;
 }
 export function Borrowers(props: borrowersProps) {
-  const { isMobile, initialValues, onFormValid, handleOnChange } = props;
+  const { isMobile } = props;
 
-  const validationSchema = Yup.object({
-    name: Yup.string().required(),
-    lastName: Yup.string().required(),
-    email: Yup.string().email().required(),
-    income: Yup.number().required(),
-    obligations: Yup.number().required(),
-  });
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema,
-    validateOnMount: true,
-    onSubmit: () => {},
-  });
-
-  const prevValues = useRef(formik.values);
-
-  useEffect(() => {
-    onFormValid(formik.isValid);
-  }, [formik.isValid, onFormValid]);
-
-  useEffect(() => {
-    if (
-      prevValues.current.name !== formik.values.name ||
-      prevValues.current.lastName !== formik.values.lastName ||
-      prevValues.current.email !== formik.values.email ||
-      prevValues.current.income !== formik.values.income ||
-      prevValues.current.obligations !== formik.values.obligations
-    ) {
-      handleOnChange(formik.values);
-      prevValues.current = formik.values;
-    }
-  }, [formik.values, handleOnChange]);
+  const [isModalAdd, setIsModalAdd] = useState(false);
+  const [isModalView, setIsModalView] = useState(false);
+  const [isModalEdit, setIsModalEdit] = useState(false);
+  const [isModalDelete, setIsModalDelete] = useState(false);
 
   return (
     <Fieldset>
-      <Button variant="outlined">Agregar deudor</Button>
-      <Grid
-        templateColumns={
-          isMobile ? "1fr" : `repeat(${borrowerData.length + 1}, 317px)`
-        }
-        autoRows="auto"
-        padding={isMobile ? "4px 10px" : "10px 16px"}
-        gap="20px"
-      >
-        {borrowerData.map((item, index) => (
-          <NewBorrowerModal
-            key={index}
-            title={item.borrower + ` ${index + 1}`}
-            name={item.name}
-            lastName={item.lastName}
-            email={item.email}
-            income={item.income}
-            obligations={item.obligations}
-          />
-        ))}
-        <NewBorrowerModal hasData />
-      </Grid>
+      <Stack direction="column" padding="2px 10px" gap="20px">
+        <Stack justifyContent="end">
+          <Button onClick={() => setIsModalAdd(true)} iconBefore={<MdAdd />}>
+            {borrowerData.add}
+          </Button>
+        </Stack>
+        <Grid
+          templateColumns={
+            isMobile
+              ? "1fr"
+              : `repeat(${mockGuaranteeBorrower.length + 1}, 317px)`
+          }
+          autoRows="auto"
+          gap="20px"
+        >
+          {mockGuaranteeBorrower.map((item, index) => (
+            <CardBorrower
+              key={index}
+              title={borrowerData.borrower + ` ${index + 1}`}
+              name={item.name}
+              lastName={item.lastName}
+              email={item.email}
+              income={item.income}
+              obligations={item.obligations}
+              handleView={() => setIsModalView(true)}
+              handleEdit={() => setIsModalEdit(true)}
+              handleDelete={() => setIsModalDelete(true)}
+            />
+          ))}
+          <NewCardBorrower onClick={() => setIsModalAdd(true)} />
+          {isModalAdd && (
+            <DebtorAddModal
+              onSubmit={() => setIsModalAdd(false)}
+              handleClose={() => setIsModalAdd(false)}
+            />
+          )}
+          {isModalView && (
+            <DebtorDetailsModal handleClose={() => setIsModalView(false)} />
+          )}
+          {isModalDelete && (
+            <DeleteModal handleClose={() => setIsModalDelete(false)} />
+          )}
+          {isModalEdit && (
+            <DebtorEditModal
+              handleClose={() => setIsModalEdit(false)}
+              isMobile={isMobile}
+            />
+          )}
+        </Grid>
+      </Stack>
     </Fieldset>
   );
 }

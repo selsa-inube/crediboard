@@ -123,30 +123,6 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             />
           )}
         {currentStepsNumber &&
-          currentStepsNumber.id ===
-            stepsFilingApplication.propertyOffered.id && (
-            <PropertyOffered
-              isMobile={isMobile}
-              onFormValid={setIsCurrentFormValid}
-              initialValues={formData.propertyOffered}
-              handleOnChange={(values) =>
-                handleFormChange({ propertyOffered: values })
-              }
-            />
-          )}
-        {currentStepsNumber &&
-          currentStepsNumber.id ===
-            stepsFilingApplication.vehicleOffered.id && (
-            <VehicleOffered
-              isMobile={isMobile}
-              onFormValid={setIsCurrentFormValid}
-              initialValues={formData.vehicleOffered}
-              handleOnChange={(values) =>
-                handleFormChange({ vehicleOffered: values })
-              }
-            />
-          )}
-        {currentStepsNumber &&
           currentStepsNumber.id === stepsFilingApplication.bail.id && (
             <Bail
               onFormValid={setIsCurrentFormValid}

@@ -1,19 +1,19 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
 
 import { stepsAddBorrower } from "./config/addBorrower.config";
-import { AddBorrowerUI } from "./interface";
+import { DebtorAddModalUI } from "./interface";
 import { FormData } from "./types";
-import { createPortal } from "react-dom";
 
-interface AddBorrowerProps {
+interface DebtorAddModalProps {
   portalId?: string;
   onSubmit: () => void;
-  onCloseModal: () => void;
+  handleClose: () => void;
 }
-export function AddBorrower(props: AddBorrowerProps) {
-  const { portalId } = props;
+export function DebtorAddModal(props: DebtorAddModalProps) {
+  const { portalId, handleClose } = props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -73,7 +73,7 @@ export function AddBorrower(props: AddBorrowerProps) {
 
   return createPortal(
     <Blanket>
-      <AddBorrowerUI
+      <DebtorAddModalUI
         steps={steps}
         currentStep={currentStep}
         isCurrentFormValid={isCurrentFormValid}
@@ -85,6 +85,7 @@ export function AddBorrower(props: AddBorrowerProps) {
         setCurrentStep={setCurrentStep}
         currentStepsNumber={currentStepsNumber}
         handleSubmitClick={handleSubmitClick}
+        handleClose={handleClose}
         isMobile={isMobile}
       />
     </Blanket>,
