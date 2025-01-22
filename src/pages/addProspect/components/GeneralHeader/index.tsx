@@ -6,7 +6,7 @@ import { Button } from "@inubekit/button";
 import { StyledContainerGeneralHeader, StyledPerfil } from "./styles";
 
 export interface IGeneralHeaderProps {
-    imgPerfil: string;
+    profileImageUrl: string;
     name: string;
     state?: string;
     iconstate?: React.JSX.Element;
@@ -14,20 +14,21 @@ export interface IGeneralHeaderProps {
     iconbonding?: React.JSX.Element;
     buttonText?: string;
     isMobile?: boolean;
+    onClickIcon?: string;
 }
 
 export function GeneralHeader(props: IGeneralHeaderProps) {
-    const { imgPerfil, name, state, iconstate, iconbutton, iconbonding, buttonText, } = props;
+    const { profileImageUrl, name, state = "", iconstate, iconbutton, iconbonding, buttonText = "", } = props;
 
     return (
         <StyledContainerGeneralHeader>
             <Stack
                 justifyContent="space-between"
                 alignItems="center"
-                padding="12px"
+                padding="6px "
             >
-                <Stack gap="12px" >
-                    <StyledPerfil src={imgPerfil} alt="imagen perfil" />
+                <Stack gap="12px" alignItems="center">
+                    <StyledPerfil src={profileImageUrl} alt="imagen perfil" />
                     <Stack direction="column" justifyContent="space-around">
                         <Text type="label"
                             size="medium"
@@ -37,34 +38,34 @@ export function GeneralHeader(props: IGeneralHeaderProps) {
                             {name}
                         </Text>
                         <Stack direction="row" alignItems="center" gap="6px">
-                            <Icon
-                                size="12px"
-                                icon={iconstate}
-                                appearance="danger"
-                                spacing="narrow"
-                            />
-                            <Text type="body" size="small" appearance="danger"
-                            >
-                                {state}
-                            </Text>
+                            {iconstate && (
+                                <Icon
+                                    size="12px"
+                                    icon={iconstate}
+                                    appearance="danger"
+                                    spacing="narrow"
+                                />
+                            )}
+                            {state && (
+                                <Text type="label" size="small" appearance="danger">
+                                    {state}
+                                </Text>
+                            )}
                         </Stack>
                     </Stack>
-
-
-                    <Stack alignItems="center" padding="2px" >
-                        <Icon
-                            appearance="primary"
-                            icon={iconbutton}
-                            cursorHover={true}
-                            spacing="narrow"
-                            variant="outlined"
-                            shape="rectangle"
-                            size="22px"
-
-                        />
-                    </Stack>
+                    {/* padding="2px"  radius="4px"*/}
+                    <Icon
+                        // onClick={onClickIcon}
+                        appearance="primary"
+                        icon={iconbutton}
+                        cursorHover
+                        spacing="narrow"
+                        variant="outlined"
+                        shape="rectangle"
+                        size="22px"
+                    />
                 </Stack>
-                <Stack justifyContent="space-between" alignItems="end">
+                <Stack justifyContent="space-between" alignItems="end" padding=" 0px 6px">
                     <Button
                         children={buttonText}
                         iconBefore={iconbonding}
