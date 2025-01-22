@@ -18,6 +18,7 @@ export function DataDebtor() {
           label={DataEditBorrower.email}
           value={data.email}
           size="compact"
+          fullwidth
         />
         <Textfield
           name="phone"
@@ -25,6 +26,7 @@ export function DataDebtor() {
           label={DataEditBorrower.phone}
           value={data.phone}
           size="compact"
+          fullwidth
         />
         <Textfield
           name="relation"
@@ -32,6 +34,7 @@ export function DataDebtor() {
           label={DataEditBorrower.relation}
           value={data.relation}
           size="compact"
+          fullwidth
         />
       </Stack>
     </Fieldset>

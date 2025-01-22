@@ -24,6 +24,7 @@ export interface ICardBorrowerProps {
   handleEdit?: () => void;
   handleDelete?: () => void;
   showIcons?: boolean;
+  isMobile?: boolean;
 }
 
 export function CardBorrower(props: ICardBorrowerProps) {
@@ -38,10 +39,11 @@ export function CardBorrower(props: ICardBorrowerProps) {
     handleEdit = () => {},
     handleDelete = () => {},
     showIcons = true,
+    isMobile = false,
   } = props;
 
   return (
-    <StyledContainer showIcons={showIcons}>
+    <StyledContainer showIcons={showIcons} $isMobile={isMobile}>
       <Stack direction="column" padding="10px 16px" gap="12px">
         <Stack gap="12px">
           <Icon icon={<MdOutlinePerson />} appearance="gray" size="24px" />

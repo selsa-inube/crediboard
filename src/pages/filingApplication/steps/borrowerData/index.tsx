@@ -67,12 +67,16 @@ export function Borrowers(props: borrowersProps) {
               email={item.email}
               income={item.income}
               obligations={item.obligations}
+              isMobile={isMobile}
               handleView={() => setIsModalView(true)}
               handleEdit={() => setIsModalEdit(true)}
               handleDelete={() => setIsModalDelete(true)}
             />
           ))}
-          <NewCardBorrower onClick={() => setIsModalAdd(true)} />
+          <NewCardBorrower
+            onClick={() => setIsModalAdd(true)}
+            isMobile={isMobile}
+          />
           {isModalAdd && (
             <DebtorAddModal
               onSubmit={() => setIsModalAdd(false)}
@@ -80,7 +84,7 @@ export function Borrowers(props: borrowersProps) {
             />
           )}
           {isModalView && (
-            <DebtorDetailsModal handleClose={() => setIsModalView(false)} />
+            <DebtorDetailsModal handleClose={() => setIsModalView(false)} isMobile={isMobile} />
           )}
           {isModalDelete && (
             <DeleteModal handleClose={() => setIsModalDelete(false)} />

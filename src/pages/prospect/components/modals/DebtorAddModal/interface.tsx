@@ -7,7 +7,6 @@ import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
 
-import { SourcesOfIncome } from "@pages/addProspect/steps/sourcesOfIncome";
 import { income } from "@mocks/add-prospect/income/income.mock";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 
@@ -16,6 +15,7 @@ import { AddBorrower } from "./steps/personalInfo";
 import { StyledContainer, StyledContainerClose } from "./styles";
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { dataAddBorrower } from "./config/config";
+import { SourceIncome } from "../../SourceIncome";
 
 interface DebtorAddModalUIProps {
   currentStep: number;
@@ -56,7 +56,7 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
           alignItems={isMobile ? "normal" : "center"}
           padding="12px 24px"
           width={isMobile ? "290px" : "960px"}
-          height={isMobile ? "100%" : "788px"}
+          height={isMobile ? "100%" : "740px"}
         >
           <Stack
             gap="16px"
@@ -110,34 +110,36 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
             {currentStepsNumber &&
               currentStepsNumber.id ===
                 stepsAddBorrower.contactInformation.id && (
-                <SourcesOfIncome
-                  initialValues={income[0]}
+                <SourceIncome
+                  form={income[0]}
                   options={income[0].borrowers}
-                  isMobile={isMobile}
-                  handleOnChange={(name: string, newValue: string) => {
+                  onChange={(name: string, newValue: string) => {
                     handleFormChange({ [name]: newValue });
                   }}
+                  onlyDebtor={true}
                 />
               )}
             {currentStepsNumber &&
               currentStepsNumber.id === stepsAddBorrower.BorrowerData.id && (
                 <TableFinancialObligations />
               )}
-            <Divider />
-            <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
-              <Button
-                variant="outlined"
-                appearance="gray"
-                onClick={handlePreviousStep}
-                disabled={currentStepsNumber === steps[0]}
-              >
-                {titleButtonTextAssited.goBackText}
-              </Button>
-              <Button onClick={handleNextStep} disabled={!isCurrentFormValid}>
-                {currentStepsNumber === steps[3]
-                  ? titleButtonTextAssited.submitText
-                  : titleButtonTextAssited.goNextText}
-              </Button>
+            <Stack direction="column" gap="20px" margin="auto 0 0 0">
+              <Divider />
+              <Stack justifyContent="end" gap="20px">
+                <Button
+                  variant="outlined"
+                  appearance="gray"
+                  onClick={handlePreviousStep}
+                  disabled={currentStepsNumber === steps[0]}
+                >
+                  {titleButtonTextAssited.goBackText}
+                </Button>
+                <Button onClick={handleNextStep} disabled={!isCurrentFormValid}>
+                  {currentStepsNumber === steps[3]
+                    ? titleButtonTextAssited.submitText
+                    : titleButtonTextAssited.goNextText}
+                </Button>
+              </Stack>
             </Stack>
           </Stack>
         </Stack>

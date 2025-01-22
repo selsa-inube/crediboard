@@ -44,7 +44,7 @@ export function DebtorDetailsModal(props: IDebtorDetailsModalProps) {
           direction="column"
           padding="24px"
           gap="24px"
-          width="704px"
+          width={isMobile ? "290px" : "704px"}
           height="640px"
         >
           <Stack justifyContent="space-between" alignItems="center">

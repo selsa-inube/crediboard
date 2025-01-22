@@ -5,11 +5,12 @@ interface IStyledContainer {
   disabled?: boolean;
   showIcons?: boolean;
   $new?: boolean;
+  $isMobile?: boolean;
 }
 
 export const StyledContainer = styled.div<IStyledContainer>`
-  width: 315px;
-  height: ${({showIcons}) => showIcons ? "368px" : "322px"};
+  width: ${({ $isMobile }) => ($isMobile ? "285px" : "315px")};
+  height: ${({ showIcons }) => (showIcons ? "368px" : "322px")};
   display: flex;
   flex-direction: column;
   border-radius: 8px;

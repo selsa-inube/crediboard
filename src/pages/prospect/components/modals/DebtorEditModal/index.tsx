@@ -9,8 +9,8 @@ import { Divider } from "@inubekit/divider";
 import { Tabs } from "@inubekit/tabs";
 import { Button } from "@inubekit/button";
 
+import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
-import { SourcesOfIncome } from "@pages/addProspect/steps/sourcesOfIncome";
 import { income } from "@mocks/add-prospect/income/income.mock";
 import { validationMessages } from "@validations/validationMessages";
 
@@ -51,8 +51,8 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
           direction="column"
           padding="24px"
           gap="24px"
-          width={isMobile ? "290px" : "704px"}
-          height={isMobile ? "auto" : "640px"}
+          width={isMobile ? "290px" : "912px"}
+          height={isMobile ? "auto" : "680px"}
         >
           <Stack justifyContent="space-between" alignItems="center">
             <Text type="headline" size="small">
@@ -82,11 +82,11 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
             />
             {currentTab === "data" && <DataDebtor />}
             {currentTab === "sources" && (
-              <SourcesOfIncome
-                initialValues={dataIncome}
+              <SourceIncome
+                form={dataIncome}
                 options={dataIncome.borrowers}
-                handleOnChange={handleOnChange}
-                isMobile={isMobile}
+                onChange={handleOnChange}
+                onlyDebtor={true}
               />
             )}
             {currentTab === "obligations" && <TableFinancialObligations />}
