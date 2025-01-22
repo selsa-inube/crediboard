@@ -16,7 +16,7 @@ interface ILoanCondition {
   initialValues: LoanConditionState;
   handleOnChange: (newState: LoanConditionState) => void;
   onFormValid: (isValid: boolean) => void;
-  isMobile: boolean
+  isMobile: boolean;
 }
 
 export function LoanCondition(props: ILoanCondition) {
@@ -31,9 +31,7 @@ export function LoanCondition(props: ILoanCondition) {
     maximumTermValue: Yup.string().when(
       "toggles.maximumTermToggle",
       (maximumTermToggle, schema) =>
-        maximumTermToggle
-          ? schema.required("")
-          : schema
+        maximumTermToggle ? schema.required("") : schema
     ),
   });
 
@@ -57,7 +55,7 @@ export function LoanCondition(props: ILoanCondition) {
     >
       {({ values, handleChange, handleBlur }) => (
         <Form>
-          <Stack height={isMobile ? "320px" : "272px"}>
+          <Stack>
             <Fieldset>
               <Stack
                 direction="column"
@@ -65,34 +63,41 @@ export function LoanCondition(props: ILoanCondition) {
                 padding={isMobile ? "16px" : "0px 16px"}
               >
                 <Text>{loanData.quotaCapTitle}</Text>
-                <Stack gap="8px" alignItems="center">
-                  <Field
-                    name="toggles.quotaCapToggle"
-                    type="checkbox"
-                    as={Toggle}
-                    checked={values.toggles.quotaCapToggle}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      handleChange(e);
-                      handleOnChange({
-                        ...values,
-                        toggles: {
-                          ...values.toggles,
-                          quotaCapToggle: e.target.checked,
-                        },
-                      });
-                    }}
-                  />
-                  <Text
-                    type="label"
-                    size="large"
-                    weight="bold"
-                    appearance={
-                      values.toggles.quotaCapToggle ? "success" : "danger"
-                    }
-                  >
-                    {values.toggles.quotaCapToggle ? loanData.yes : loanData.no}
-                  </Text>
-                  <Stack padding={isMobile ? "0px 10px" : "0px 40px"}>
+                <Stack
+                  alignItems={isMobile ? "initial" : "center"}
+                  direction={isMobile ? "column" : "row"}
+                >
+                  <Stack gap="8px">
+                    <Field
+                      name="toggles.quotaCapToggle"
+                      type="checkbox"
+                      as={Toggle}
+                      checked={values.toggles.quotaCapToggle}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        handleChange(e);
+                        handleOnChange({
+                          ...values,
+                          toggles: {
+                            ...values.toggles,
+                            quotaCapToggle: e.target.checked,
+                          },
+                        });
+                      }}
+                    />
+                    <Text
+                      type="label"
+                      size="large"
+                      weight="bold"
+                      appearance={
+                        values.toggles.quotaCapToggle ? "success" : "danger"
+                      }
+                    >
+                      {values.toggles.quotaCapToggle
+                        ? loanData.yes
+                        : loanData.no}
+                    </Text>
+                  </Stack>
+                  <Stack padding={isMobile ? "0px" : "0px 40px"}>
                     <Textfield
                       id="quotaCap"
                       name="quotaCapValue"
@@ -126,38 +131,46 @@ export function LoanCondition(props: ILoanCondition) {
                   <Stack direction="column" gap="8px">
                     <Divider dashed />
                     <Text>{loanData.maximumTermTitle}</Text>
-                    <Stack gap="8px" alignItems="center">
-                      <Field
-                        name="toggles.maximumTermToggle"
-                        type="checkbox"
-                        as={Toggle}
-                        checked={values.toggles.maximumTermToggle}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                          handleChange(e);
-                          handleOnChange({
-                            ...values,
-                            toggles: {
-                              ...values.toggles,
-                              maximumTermToggle: e.target.checked,
-                            },
-                          });
-                        }}
-                      />
-                      <Text
-                        type="label"
-                        size="large"
-                        weight="bold"
-                        appearance={
-                          values.toggles.maximumTermToggle
-                            ? "success"
-                            : "danger"
-                        }
-                      >
-                        {values.toggles.maximumTermToggle
-                          ? loanData.yes
-                          : loanData.no}
-                      </Text>
-                      <Stack padding={isMobile ? "0px 10px" : "0px 40px"}>
+                    <Stack
+                      gap="8px"
+                      alignItems={isMobile ? "initial" : "center"}
+                      direction={isMobile ? "column" : "row"}
+                    >
+                      <Stack>
+                        <Field
+                          name="toggles.maximumTermToggle"
+                          type="checkbox"
+                          as={Toggle}
+                          checked={values.toggles.maximumTermToggle}
+                          onChange={(
+                            e: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            handleChange(e);
+                            handleOnChange({
+                              ...values,
+                              toggles: {
+                                ...values.toggles,
+                                maximumTermToggle: e.target.checked,
+                              },
+                            });
+                          }}
+                        />
+                        <Text
+                          type="label"
+                          size="large"
+                          weight="bold"
+                          appearance={
+                            values.toggles.maximumTermToggle
+                              ? "success"
+                              : "danger"
+                          }
+                        >
+                          {values.toggles.maximumTermToggle
+                            ? loanData.yes
+                            : loanData.no}
+                        </Text>
+                      </Stack>
+                      <Stack padding={isMobile ? "0px" : "0px 40px"}>
                         <Textfield
                           id="maximumTerm"
                           name="maximumTermValue"

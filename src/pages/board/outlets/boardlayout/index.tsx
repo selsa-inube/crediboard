@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { useMediaQuery } from "@inubekit/hooks";
 
-import { get, updateActive } from "@mocks/utils/dataMock.service";
-import { PinnedRequest, ICreditRequest } from "@services/types";
+import { ICreditRequest } from "@services/types";
+import { getCreditRequestPin } from "@services/isPinned";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
 import { AppContext } from "@context/AppContext/AppContext";
 
@@ -52,14 +52,13 @@ function BoardLayout() {
       .catch((error) => {
         console.error("Error fetching requests data:", error);
       });
-    get("requests-pinned")
+
+    getCreditRequestPin()
       .then((data) => {
-        if (data && Array.isArray(data)) {
-          setBoardData((prevState) => ({
-            ...prevState,
-            requestsPinned: data,
-          }));
-        }
+        setBoardData((prevState) => ({
+          ...prevState,
+          requestsPinned: data,
+        }));
       })
       .catch((error) => {
         setErrorLoadingPins(true);
@@ -76,13 +75,14 @@ function BoardLayout() {
         request.creditRequestCode
           .toString()
           .includes(filters.searchRequestValue);
+      request.creditRequestCode.toString().includes(filters.searchRequestValue);
 
       const isPinned =
         !filters.showPinnedOnly ||
         boardData.requestsPinned
           .filter((req) => req.isPinned === "Y")
-          .map((req) => req.requestId)
-          .includes(request.creditRequestCode);
+          .map((req) => req.creditRequestId)
+          .includes(request.creditRequestId as string);
 
       return isSearchMatch && isPinned;
     });
@@ -137,24 +137,7 @@ function BoardLayout() {
     }
   };
 
-  const handlePinRequest = async (requestId: string) => {
-    setBoardData((prevState) => ({
-      ...prevState,
-      requestsPinned: prevState.requestsPinned.map((request) => {
-        if (request.requestId !== requestId) return request;
-
-        const isPinned = request.isPinned === "Y" ? "N" : "Y";
-        updateActive({
-          key: "requestId",
-          nameDB: "requests-pinned",
-          identifier: requestId,
-          editData: { isPinned },
-        });
-
-        return { ...request, isPinned } as PinnedRequest;
-      }),
-    }));
-  };
+  const handlePinRequest = async () => {};
 
   return (
     <BoardLayoutUI

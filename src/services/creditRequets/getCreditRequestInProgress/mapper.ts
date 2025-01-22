@@ -4,6 +4,7 @@ export const mapCreditRequestToEntity = (
   data: Record<string, string | number | object>
 ): ICreditRequest => {
   const creditRequest: ICreditRequest = {
+    creditRequestId: data.creditRequestId as string,
     creditRequestCode: data.creditRequestCode as string,
     creditRequestDateOfCreation: data.creditRequestDateOfCreation as string,
     loanAmount: data.loanAmount as number,
