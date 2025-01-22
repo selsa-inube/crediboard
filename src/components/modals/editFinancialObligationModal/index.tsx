@@ -124,7 +124,7 @@ function EditFinancialObligationModal(
             </Stack>
             <Divider />
             <Grid
-              templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"}
+              templateColumns="1fr"
               autoRows="auto"
               gap="20px"
               width={isMobile ? "280px" : "100%"}

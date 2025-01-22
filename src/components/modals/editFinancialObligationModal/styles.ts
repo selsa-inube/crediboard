@@ -7,7 +7,7 @@ interface IStyledModal {
 
 const StyledModal = styled.div<IStyledModal>`
   display: flex;
-  width: ${({ $smallScreen }) => ($smallScreen ? "300px" : "600px")};
+  width: ${({ $smallScreen }) => ($smallScreen ? "300px" : "410px")};
   padding: ${({ $smallScreen }) => ($smallScreen ? "16px" : "24px")};
   height: ${({ $smallScreen }) => ($smallScreen ? "298px" : "auto")};
   margin: 24px;

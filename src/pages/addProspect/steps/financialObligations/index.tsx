@@ -98,7 +98,7 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
         </Stack>
         {openModal && (
           <FinancialObligationModal
-            title="Agregar Obligacion"
+            title="Agregar obligaciones"
             onCloseModal={handleCloseModal}
             onConfirm={() => console.log("ok")}
             initialValues={initialValues}

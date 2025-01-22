@@ -19,10 +19,10 @@ const StyledModal = styled.div<IStyledModal>`
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
 `;
 
-const ScrollableContainer = styled.div`
+const ScrollableContainer = styled.div<IStyledModal>`
   width: 600px;
   padding: 10px;
-  overflow: auto;
+  overflow: ${({ $smallScreen }) => ($smallScreen ? "auto" : "visable")};
   display: flex;
 
   &::-webkit-scrollbar {

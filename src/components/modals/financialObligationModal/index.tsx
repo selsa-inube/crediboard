@@ -145,7 +145,7 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
               </Stack>
             </Stack>
             <Divider />
-            <ScrollableContainer>
+            <ScrollableContainer $smallScreen={isMobile}>
               <Grid
                 templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"}
                 autoRows="auto"
