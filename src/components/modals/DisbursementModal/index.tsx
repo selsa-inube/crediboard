@@ -48,8 +48,8 @@ export function DisbursementModal(
           direction="column"
           gap="16px"
           padding="24px"
-          width={isMobile ? "300px" : "700px"}
-          height="700px"
+          width={isMobile ? "300px" : "652px"}
+          height={isMobile ? "536px" : "652px"}
         >
           <Stack
             justifyContent="space-between"
@@ -85,13 +85,21 @@ export function DisbursementModal(
           </Stack>
           <Fieldset heightFieldset="469px">
             <>
-              {currentTab === "Internal" && <DisbursementInternal />}
-              {currentTab === "External" && <DisbursementExternal />}
-              {currentTab === "CheckEntity" && <DisbursementCheckEntity />}
-              {currentTab === "ChequeManagement" && (
-                <DisbursementChequeManagement />
+              {currentTab === "Internal" && (
+                <DisbursementInternal isMobile={isMobile} />
               )}
-              {currentTab === "Cash" && <DisbursementCash />}
+              {currentTab === "External" && (
+                <DisbursementExternal isMobile={isMobile} />
+              )}
+              {currentTab === "CheckEntity" && (
+                <DisbursementCheckEntity isMobile={isMobile} />
+              )}
+              {currentTab === "ChequeManagement" && (
+                <DisbursementChequeManagement isMobile={isMobile} />
+              )}
+              {currentTab === "Cash" && (
+                <DisbursementCash isMobile={isMobile} />
+              )}
             </>
           </Fieldset>
           <Divider />

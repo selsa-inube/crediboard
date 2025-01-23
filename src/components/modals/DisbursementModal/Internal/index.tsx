@@ -1,13 +1,24 @@
 import { Grid } from "@inubekit/grid";
 import { Stack } from "@inubekit/stack";
+
 import { disbursementInternal } from "@mocks/disbursement/disbursement.mock";
 import { CardGray } from "@components/cards/CardGray";
 
-export function DisbursementInternal() {
+export interface IDisbursement {
+  isMobile: boolean;
+}
+
+export function DisbursementInternal(props: IDisbursement) {
+  const { isMobile } = props;
   return (
-    <Stack direction="column">
+    <Stack
+      direction="column"
+      gap="16px"
+      width={isMobile ? "265px" : "582px"}
+      height={isMobile ? "294px" : "auto"}
+    >
       <Grid
-        templateColumns="repeat(2, 1fr)"
+        templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"}
         gap="16px 20px"
         autoRows="auto"
         justifyContent="space-between"

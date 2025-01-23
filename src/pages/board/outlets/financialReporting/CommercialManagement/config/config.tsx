@@ -410,3 +410,15 @@ export const menuOptions = (
     visible: visibleExtraPayments,
   },
 ];
+
+export const tittleOptions = {
+  titleCreditId: "No. Rad.: ",
+  titleDestination: "Destino: ",
+  tittleAmount: "Valor: ",
+  titleProfile: "Ver perfil crediticio",
+  titleDisbursement: "Medios de desembolso",
+  titleCall: "Llamada",
+  titleVideoCall: "Videollamada",
+  titleAddProduct: "Agregar producto",
+  titleExtraPayments: "Pagos extras",
+};
