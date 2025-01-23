@@ -100,6 +100,7 @@ type ConfigHandleactions = {
   buttonPrint: () => void;
   buttonAttach: () => void;
   buttonViewAttachments: () => void;
+  buttonWarranty: () => void;
   menuIcon: () => void;
 };
 
@@ -109,6 +110,7 @@ export const configHandleactions = ({
   buttonPrint = () => {},
   buttonAttach = () => {},
   buttonViewAttachments = () => {},
+  buttonWarranty = () => {},
   menuIcon = () => {},
 }: ConfigHandleactions) => {
   return {
@@ -129,6 +131,9 @@ export const configHandleactions = ({
       },
       buttonViewAttachments: {
         OnClick: buttonViewAttachments,
+      },
+      buttonWarranty: {
+        OnClick: buttonWarranty,
       },
     },
     menuIcon: menuIcon,

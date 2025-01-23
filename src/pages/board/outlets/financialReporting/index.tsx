@@ -9,6 +9,7 @@ import { Icon } from "@inubekit/icon";
 import { useFlag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
+import { OfferedGuaranteeModal } from "@components/modals/OfferedGuaranteeModal";
 import { ErrorAlert } from "@components/ErrorAlert";
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { StockTray } from "@components/layout/ContainerSections/StockTray";
@@ -90,6 +91,8 @@ export const FinancialReporting = () => {
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const { addFlag } = useFlag();
+
+  const [showGuarantee, setShowGuarantee] = useState(false);
 
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
   const [errors, setError] = useState<Ierror_issued[]>([]);
@@ -176,6 +179,7 @@ export const FinancialReporting = () => {
     buttonPrint: () => {},
     buttonAttach: () => setShowAttachments(true),
     buttonViewAttachments: () => setAttachDocuments(true),
+    buttonWarranty: () => setShowGuarantee(true),
     menuIcon: () => setShowMenu(true),
   });
 
@@ -346,6 +350,12 @@ export const FinancialReporting = () => {
           }}
         />
       )}
+      {showGuarantee && (
+        <OfferedGuaranteeModal
+          handleClose={() => setShowGuarantee(false)}
+          isMobile={isMobile}
+        />
+      )}
       {showCancelModal && (
         <TextAreaModal
           title="Anular"
@@ -367,6 +377,7 @@ export const FinancialReporting = () => {
           onCancel={handleOnCancel}
           onAttach={handleOnAttach}
           onViewAttachments={handleOnViewAttachments}
+          onGuarantee={() => setShowGuarantee(true)}
         />
       )}
     </Stack>
