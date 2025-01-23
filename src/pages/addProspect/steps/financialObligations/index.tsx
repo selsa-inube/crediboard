@@ -1,9 +1,12 @@
+import { useState } from "react";
+import { FormikValues } from "formik";
 import { MdAdd, MdCached } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Divider } from "@inubekit/divider";
 import { Button } from "@inubekit/button";
 
+import { FinancialObligationModal } from "@components/modals/financialObligationModal";
 import { CardGray } from "@components/cards/CardGray";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
@@ -15,6 +18,24 @@ interface IObligationsFinancialProps {
 
 export function ObligationsFinancial(props: IObligationsFinancialProps) {
   const { isMobile } = props;
+
+  const [openModal, setOpenModal] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const initialValues: FormikValues = {
+    type: "",
+    entity: "",
+    fee: "",
+    balance: "",
+    payment: "",
+    feePaid: "",
+    term: "",
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
 
   return (
     <Fieldset>
@@ -71,6 +92,7 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
                   children={dataReport.addObligations}
                   iconBefore={<MdAdd />}
                   fullwidth={isMobile}
+                  onClick={() => setOpenModal(true)}
                 />
               </Stack>
             </Stack>
@@ -82,7 +104,7 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
           justifyContent="center"
           margin={isMobile ? "none" : "16px"}
         >
-          <TableFinancialObligations />
+          <TableFinancialObligations refreshKey={refreshKey} />
         </Stack>
       </Stack>
       <Stack gap="15px" justifyContent="center">
@@ -112,6 +134,15 @@ export function ObligationsFinancial(props: IObligationsFinancialProps) {
             {dataReport.descriptionTotalFee}
           </Text>
         </Stack>
+        {openModal && (
+          <FinancialObligationModal
+            title="Agregar obligaciones"
+            onCloseModal={handleCloseModal}
+            onConfirm={() => console.log("ok")}
+            initialValues={initialValues}
+            confirmButtonText="Agregar"
+          />
+        )}
       </Stack>
     </Fieldset>
   );
