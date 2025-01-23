@@ -1,17 +1,14 @@
 import styled from "styled-components";
 
 import { inube } from "@inubekit/foundations";
-//import { inube } from "@inube/design-system";
 
 import { SectionBackground, SectionOrientation } from "./types";
-
 interface IStyledBoardSection {
   theme?: typeof inube;
   $sectionBackground?: SectionBackground;
   $orientation?: SectionOrientation;
   $isTablet: boolean;
 }
-
 interface IStyledCollapseIcon {
   $collapse: boolean;
   $disabledCollapse: boolean;
