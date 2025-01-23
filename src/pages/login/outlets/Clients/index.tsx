@@ -4,7 +4,7 @@ import { IClientState } from "./types";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "@context/AppContext/AppContext";
 import { IClient } from "@context/AppContext/types";
-import { IClients } from "@src/routes/login";
+import { IClients } from "@routes/login";
 
 function Clients({ clients }: IClients) {
   const [search, setSearch] = useState("");

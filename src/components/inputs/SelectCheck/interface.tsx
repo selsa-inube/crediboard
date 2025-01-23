@@ -35,7 +35,7 @@ const Message = (
 
   return (
     status !== "pending" && (
-      <Stack alignItems="center" gap="4px" margin="s050 s0 s0 s200">
+      <Stack alignItems="center" gap="4px" margin="4px 0 0 16px">
         <Icon
           appearance={status === "invalid" ? "danger" : "success"}
           disabled={disabled}

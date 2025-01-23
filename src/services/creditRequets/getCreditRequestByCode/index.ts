@@ -3,7 +3,7 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { ICreditRequest } from "@src/services/types";
+import { ICreditRequest } from "@services/types";
 import { mapCreditRequestToEntities } from "./mapper";
 
 export const getCreditRequestByCode = async (

@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { MdClear } from "react-icons/md";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
 
-import { Button, Stack, Text, useMediaQuery } from "@inube/design-system";
+import { Button } from "@inubekit/button";
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
+import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
 import { Select } from "@inubekit/select";
 import { Divider } from "@inubekit/divider";

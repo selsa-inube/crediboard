@@ -1,5 +1,5 @@
 import { Icon } from "@inubekit/icon";
-import { Text } from "@inube/design-system";
+import { Text } from "@inubekit/text";
 import { StyledLi } from "./styles";
 import { InfoItem } from "./index";
 

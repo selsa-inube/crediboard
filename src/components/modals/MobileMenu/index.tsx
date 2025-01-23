@@ -1,7 +1,7 @@
-import { Text } from "@inube/design-system";
+import { MdClose } from "react-icons/md";
+import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
-import { MdClose } from "react-icons/md";
 
 import { StyledMenu, StyledMenuItem } from "./styles";
 

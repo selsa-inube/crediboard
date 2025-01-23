@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-
 import { useNavigate, useParams } from "react-router-dom";
 import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
-import { Text, inube, Grid, useMediaQuery } from "@inube/design-system";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Text } from "@inubekit/text";
+import { Grid } from "@inubekit/grid";
+import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
 import { useFlag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
@@ -265,7 +266,7 @@ export const FinancialReporting = () => {
         }
       >
         <>
-          <Stack direction="column" gap={inube.spacing.s250}>
+          <Stack direction="column" gap="20px">
             <Stack direction="column">
               <Stack direction="column">
                 <ComercialManagement
@@ -282,7 +283,7 @@ export const FinancialReporting = () => {
             </Stack>
             <Grid
               templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
-              gap="s200"
+              gap="16px"
               autoRows="auto"
             >
               <Stack direction="column">

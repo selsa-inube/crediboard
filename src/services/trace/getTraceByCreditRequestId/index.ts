@@ -3,7 +3,7 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { ITraceType } from "@src/services/types";
+import { ITraceType } from "@services/types";
 
 export const getTraceByCreditRequestId = async (
   creditRequestId: string

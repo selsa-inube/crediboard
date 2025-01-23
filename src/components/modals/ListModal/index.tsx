@@ -1,13 +1,11 @@
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
-import {
-  Blanket,
-  Button,
-  Stack,
-  Text,
-  inube,
-  useMediaQuery,
-} from "@inube/design-system";
+
+import { Blanket } from "@inubekit/blanket";
+import { Button } from "@inubekit/button";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
+import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
 
 import {
@@ -20,7 +18,7 @@ import {
 export interface IOptionButtons {
   label: string;
   variant: "filled" | "outlined" | "none";
-  icon?: React.ReactNode;
+  icon?: React.JSX.Element;
   fullwidth?: boolean;
   onClick?: () => void;
 }
@@ -67,7 +65,7 @@ export const ListModal = (props: IListModalProps) => {
             {title}
           </Text>
           <StyledContainerClose onClick={handleClose}>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text>Cerrar</Text>
               <Icon
                 icon={<MdClear />}
@@ -98,10 +96,10 @@ export const ListModal = (props: IListModalProps) => {
             fullwidth={optionButtons?.fullwidth}
             cursorHover
           >
-            {optionButtons?.label}
+            {optionButtons?.label + "prueba"}
           </Button>
         )}
-        <Stack justifyContent="flex-end" margin="s200 s0" gap="16px">
+        <Stack justifyContent="flex-end" margin="16px 0" gap="16px">
           {cancelButton && (
             <Button variant="outlined" onClick={handleSubmit}>
               {cancelButton}
