@@ -9,7 +9,7 @@ import { Text } from "@inubekit/text";
 
 import { TableBoard } from "@components/data/TableBoard";
 import { Schedule } from "@services/enums";
-import { IOptions } from "@src/components/navigation/MenuProspect/types";
+import { IOptions } from "@components/navigation/MenuProspect/types";
 
 export const titlesCommercialManagementAccordion = [
   {
@@ -379,7 +379,10 @@ export const incomeOptions = [
   },
 ];
 
-export const menuOptions = (handleOpenModal: (modalName: string) => void, visibleExtraPayments: boolean): IOptions[] => [
+export const menuOptions = (
+  handleOpenModal: (modalName: string) => void,
+  visibleExtraPayments: boolean
+): IOptions[] => [
   {
     title: "Origen de cupo",
     onClick: () => handleOpenModal("creditLimit"),
@@ -400,7 +403,9 @@ export const menuOptions = (handleOpenModal: (modalName: string) => void, visibl
   },
   {
     title: "Pagos extras",
-    onClick: () => {handleOpenModal("extraPayments")},
+    onClick: () => {
+      handleOpenModal("extraPayments");
+    },
     icon: <MdOutlinePayments />,
     visible: visibleExtraPayments,
   },

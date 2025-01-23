@@ -1,13 +1,10 @@
 import { useState } from "react";
-import {
-  Stack,
-  Text,
-  Icon,
-  useMediaQueries,
-  inube,
-} from "@inube/design-system";
 import { MdOutlineChevronRight } from "react-icons/md";
 
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
+import { Icon } from "@inubekit/icon";
+import { useMediaQueries } from "@inubekit/hooks";
 import { SummaryCard } from "@components/cards/SummaryCard";
 import { ICreditRequestPinned, ICreditRequest } from "@services/types";
 
@@ -68,11 +65,11 @@ function BoardSection(props: BoardSectionProps) {
           orientation === "vertical" ? "space-between" : "flex-start"
         }
         alignItems="end"
-        gap={inube.spacing.s300}
+        gap="24px"
       >
         <Stack
           alignItems="end"
-          gap={inube.spacing.s100}
+          gap="8px"
           width={orientation === "vertical" ? "180px" : "auto"}
           height={orientation === "vertical" ? "56px" : "auto"}
         >
@@ -108,7 +105,7 @@ function BoardSection(props: BoardSectionProps) {
           alignItems="center"
           direction={orientation === "vertical" ? "column" : "row"}
           justifyContent={isMobile ? "center" : "flex-start"}
-          gap={inube.spacing.s250}
+          gap="20px"
         >
           {sectionInformation.map((request, index) => (
             <SummaryCard

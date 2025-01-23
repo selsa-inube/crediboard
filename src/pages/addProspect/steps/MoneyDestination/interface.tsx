@@ -2,7 +2,7 @@ import { Stack } from "@inubekit/stack";
 
 import { IMoneyDestination } from "@services/types";
 import { MoneyDestinationCard } from "@components/cards/MoneyDestinationCard";
-import { Fieldset } from "@src/components/data/Fieldset";
+import { Fieldset } from "@components/data/Fieldset";
 
 interface MoneyDestinationUIProps {
   destinations: IMoneyDestination[] | undefined;

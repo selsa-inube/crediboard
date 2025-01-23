@@ -1,29 +1,6 @@
 import { Stack } from "@inubekit/stack";
 
 import { StyledContainerToCenter } from "./styles";
-/* 
-interface IActionButtons {
-  buttons: {
-    buttonReject: {
-      OnClick: () => void;
-    };
-    buttonCancel: {
-      OnClick: () => void;
-    };
-    buttonPrint: {
-      OnClick: () => void;
-    };
-  };
-  buttonsOutlined: {
-    buttonAttach: {
-      OnClick: () => void;
-    };
-    buttonViewAttachments: {
-      OnClick: () => void;
-    };
-  };
-}
- */
 interface IContainerSectionsProps {
   children?: JSX.Element | JSX.Element[];
   stockTray: JSX.Element;

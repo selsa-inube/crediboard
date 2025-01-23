@@ -1,4 +1,4 @@
-import { ILineCredit } from "@src/services/types";
+import { ILineCredit } from "@services/types";
 
 export const lineOfCredit: ILineCredit[] = [
   {

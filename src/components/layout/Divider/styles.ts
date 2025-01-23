@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
-
+import { inube } from "@inubekit/foundations";
 interface IStyledDivider {
   $dashed?: boolean;
 }
@@ -12,7 +11,6 @@ const StyledDivider = styled.hr<IStyledDivider>`
   border: none;
   border-top: 0.5px ${({ $dashed }) => ($dashed ? "dashed" : "solid")};
   border-top-color: ${({ theme }) =>
-    theme.color?.stroke?.divider?.regular ||
-    inube.color.stroke.divider.regular};
+    theme.color?.stroke?.divider?.regular || inube.palette.neutral.N40};
 `;
 export { StyledDivider };
