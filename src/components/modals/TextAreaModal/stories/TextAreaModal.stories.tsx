@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StoryFn, Meta } from "@storybook/react";
-import { Button } from "@inube/design-system";
+import { Button } from "@inubekit/button";
 
 import { TextAreaModal, TextAreaModalProps } from "..";
 import { props } from "./props";

@@ -7,8 +7,11 @@ import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { stepsFilingApplication } from "./config/filingApplication.config";
 import { ContactInformation } from "./steps/contactInformation";
+import { Borrowers } from "./steps/borrowerData";
 import { PropertyOffered } from "./steps/propertyOffered";
 import { VehicleOffered } from "./steps/vehicleOffered";
+import { Bail } from "./steps/bail";
+import { AttachedDocuments } from "./steps/attachedDocuments";
 
 interface AddPositionUIProps {
   currentStep: number;
@@ -84,6 +87,17 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             />
           )}
         {currentStepsNumber &&
+          currentStepsNumber.id === stepsFilingApplication.BorrowerData.id && (
+            <Borrowers
+              isMobile={isMobile}
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.borrowerData}
+              handleOnChange={(values) =>
+                handleFormChange({ borrowerData: values })
+              }
+            />
+          )}
+        {currentStepsNumber &&
           currentStepsNumber.id ===
             stepsFilingApplication.propertyOffered.id && (
             <PropertyOffered
@@ -107,6 +121,19 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
               }
             />
           )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsFilingApplication.bail.id && (
+            <Bail
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.bail}
+              handleOnChange={(values) => handleFormChange({ bail: values })}
+            />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsFilingApplication.attachedDocuments.id && (
+            <AttachedDocuments isMobile={isMobile} />
+          )}
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
           <Button
             variant="outlined"
@@ -117,7 +144,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             {titleButtonTextAssited.goBackText}
           </Button>
           <Button onClick={handleNextStep} disabled={!isCurrentFormValid}>
-            {currentStepsNumber === steps[8]
+            {currentStepsNumber === steps[7]
               ? titleButtonTextAssited.submitText
               : titleButtonTextAssited.goNextText}
           </Button>

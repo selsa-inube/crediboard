@@ -1,7 +1,7 @@
 import { MdAddCircleOutline } from "react-icons/md";
 
 import { IOptionButtons } from "@components/modals/ListModal";
-import { addItem } from "@src/mocks/utils/dataMock.service";
+import { addItem } from "@mocks/utils/dataMock.service";
 
 type Observer<T> = (data: T) => void;
 
@@ -31,7 +31,7 @@ export const errorObserver = observer<{
 export const handleConfirmReject = async (
   id: string,
   user: string,
-  formData: { textarea: string },
+  formData: { textarea: string }
 ) => {
   const justificationText = formData.textarea;
 
@@ -48,7 +48,6 @@ export const handleConfirmReject = async (
       read_novelty: "",
     };
 
-
     try {
       await addItem("trace", trace);
       traceObserver.notify(trace);
@@ -61,7 +60,7 @@ export const handleConfirmReject = async (
 export const handleConfirmCancel = async (
   id: string,
   user: string,
-  formData: { textarea: string },
+  formData: { textarea: string }
 ) => {
   const justificationText = formData.textarea;
 
@@ -101,6 +100,7 @@ type ConfigHandleactions = {
   buttonPrint: () => void;
   buttonAttach: () => void;
   buttonViewAttachments: () => void;
+  buttonWarranty: () => void;
   menuIcon: () => void;
 };
 
@@ -110,6 +110,7 @@ export const configHandleactions = ({
   buttonPrint = () => {},
   buttonAttach = () => {},
   buttonViewAttachments = () => {},
+  buttonWarranty = () => {},
   menuIcon = () => {},
 }: ConfigHandleactions) => {
   return {
@@ -130,6 +131,9 @@ export const configHandleactions = ({
       },
       buttonViewAttachments: {
         OnClick: buttonViewAttachments,
+      },
+      buttonWarranty: {
+        OnClick: buttonWarranty,
       },
     },
     menuIcon: menuIcon,

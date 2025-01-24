@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CardBorrower } from ".";
+import { CardBorrower } from "./index";
 
 type Story = StoryObj<typeof CardBorrower>;
 
@@ -7,32 +7,60 @@ const cardBorrower: Meta<typeof CardBorrower> = {
   component: CardBorrower,
   title: "components/cards/CardBorrower",
   argTypes: {
-    label: {
+    title: {
       control: {
         type: "text",
       },
-      description: "label",
+      description: "title of component",
     },
-    placeHolder: {
+    name: {
       control: {
         type: "text",
       },
-      description: "placeholder",
+      description: "name",
     },
-    data: {
+    lastName: {
       control: {
         type: "text",
       },
-      description: "data",
+      description: "lastName",
+    },
+    email: {
+      control: {
+        type: "text",
+      },
+      description: "email",
+    },
+    income: {
+      control: {
+        type: "text",
+      },
+      description: "income",
+    },
+    obligations: {
+      control: {
+        type: "text",
+      },
+      description: "obligations",
+    },
+    showIcons: {
+      control: {
+        type: "boolean",
+      },
+      description: "show icons with actions",
     },
   },
 };
 
 export const Default: Story = {
   args: {
-    label: "Correo electrónico",
-    placeHolder: "daniel.rodriguez98@hotmail.com",
-    data: "Cédula de ciudadanía",
+    title: "Codeudor",
+    name: "Daniel Rodrigo",
+    lastName: "Rodríguez Velandia",
+    email: "daniel.rodriguez98@hotmail.com",
+    income: "4.500.000",
+    obligations: "1.950.000",
+    showIcons: true,
   },
 };
 

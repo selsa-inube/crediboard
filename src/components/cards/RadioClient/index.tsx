@@ -24,7 +24,7 @@ function RadioClient(props: RadioClientProps) {
         templateColumns={
           matches["(max-width: 460px)"] ? "auto 1fr" : "auto 1fr 130px"
         }
-        padding={matches["(max-width: 532px)"] ? "s100 s200" : "s200 s300"}
+        padding={matches["(max-width: 532px)"] ? "8px 16px" : "16px 24px"}
         height={matches["(max-width: 532px)"] ? "auto" : "72px"}
         alignItems="center"
         alignContent="center"

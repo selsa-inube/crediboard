@@ -11,7 +11,7 @@ import { Text } from "@inubekit/text";
 
 import { TableBoard } from "@components/data/TableBoard";
 import { Schedule } from "@services/enums";
-import { IOptions } from "@src/components/navigation/MenuProspect/types";
+import { IOptions } from "@components/navigation/MenuProspect/types";
 
 export const titlesCommercialManagementAccordion = [
   {
@@ -441,3 +441,15 @@ export const menuOptions = (
     visible: visibleExtraPayments,
   },
 ];
+
+export const tittleOptions = {
+  titleCreditId: "No. Rad.: ",
+  titleDestination: "Destino: ",
+  tittleAmount: "Valor: ",
+  titleProfile: "Ver perfil crediticio",
+  titleDisbursement: "Medios de desembolso",
+  titleCall: "Llamada",
+  titleVideoCall: "Videollamada",
+  titleAddProduct: "Agregar producto",
+  titleExtraPayments: "Pagos extras",
+};
