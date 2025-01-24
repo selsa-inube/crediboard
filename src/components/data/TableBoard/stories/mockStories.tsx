@@ -28,7 +28,7 @@ export const mockData: IEntries[] = [
     "Validaciones del sistema":
       "Que el asociado sea activo y tiene mas de 5 años de antiguedad",
     tag: (
-      <Stack padding="s0 s100 s0 s0">
+      <Stack padding="0 8px 0 0">
         <Tag label="Cumple" appearance="success" weight="strong" />
       </Stack>
     ),
@@ -37,7 +37,7 @@ export const mockData: IEntries[] = [
     id: "2",
     "Validaciones del sistema": "Que este al día con las obligaciones",
     tag: (
-      <Stack padding="s0 s100 s0 s0">
+      <Stack padding="0 8px 0 0">
         <Tag label="No Cumple" appearance="warning" weight="strong" />
       </Stack>
     ),
@@ -46,7 +46,7 @@ export const mockData: IEntries[] = [
     id: "3",
     "Validaciones del sistema": "Que tenga mas de 30 años",
     tag: (
-      <Stack padding="s0 s100 s0 s0">
+      <Stack padding="0 8px 0 0">
         <Tag label="Sin Validar" appearance="danger" weight="strong" />
       </Stack>
     ),
@@ -55,7 +55,7 @@ export const mockData: IEntries[] = [
     id: "4",
     "Validaciones del sistema": "Que tenga mas de 30 años",
     tag: (
-      <Stack padding="s0 s100 s0 s0">
+      <Stack padding="0 8px 0 0">
         <Tag label="Cumple" appearance="success" weight="strong" />
       </Stack>
     ),

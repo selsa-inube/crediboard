@@ -1,4 +1,5 @@
-import { Text, Stack } from "@inube/design-system";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 
 import { TableBoard } from "@components/data/TableBoard";
 

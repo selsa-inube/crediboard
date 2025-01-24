@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import { Button } from "@inube/design-system";
+import { Button } from "@inubekit/button";
 
-import { MobileMenu, MobileMenuProps } from "..";
 import { defaultMobileMenuProps } from "./props";
+import { MobileMenu, MobileMenuProps } from "..";
 
 const meta: Meta<typeof MobileMenu> = {
   title: "Components/modals/MobileMenu",
@@ -25,12 +25,7 @@ export const Default: Story = (args: MobileMenuProps) => {
   return (
     <>
       <Button onClick={() => setShowMenu(true)}>Open Menu</Button>
-      {showMenu && (
-        <MobileMenu 
-          {...args} 
-          onClose={() => setShowMenu(false)} 
-        />
-      )}
+      {showMenu && <MobileMenu {...args} onClose={() => setShowMenu(false)} />}
     </>
   );
 };

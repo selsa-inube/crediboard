@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 
 interface IStyledModal {
   $smallScreen: boolean;
@@ -10,13 +10,11 @@ const StyledModal = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) =>
-    theme.color?.surface?.light?.clear || inube.color.surface.light.clear};
+    theme.color?.surface?.light?.clear || inube.palette.neutral.N0};
   width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "500px")};
-  padding: ${({ $smallScreen }) =>
-    $smallScreen ? inube.spacing.s200 : inube.spacing.s300};
-  gap: ${({ $smallScreen }) =>
-    $smallScreen ? inube.spacing.s200 : inube.spacing.s300};
-  border-radius: ${inube.spacing.s100};
+  padding: ${({ $smallScreen }) => ($smallScreen ? "16px" : "24px")};
+  gap: ${({ $smallScreen }) => ($smallScreen ? "16px" : "24px")};
+  border-radius: ${"8px"};
 `;
 
 const StyledContainerClose = styled.div`
