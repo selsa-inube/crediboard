@@ -15,6 +15,13 @@ export function FilingApplication() {
       email: "",
       phone: "",
     },
+    borrowerData: {
+      name: "",
+      lastName: "",
+      email: "",
+      income: 0,
+      obligations: 0,
+    },
     propertyOffered: {
       antique: "",
       estimated: "",

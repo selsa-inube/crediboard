@@ -9,7 +9,7 @@ import { Button } from "@inubekit/button";
 
 import { incomeCardData } from "@components/cards/IncomeCard/config";
 import { ListModal } from "@components/modals/ListModal";
-import { CardBorrower } from "@components/cards/CardBorrower";
+import { CardGray } from "@components/cards/CardGray";
 import { currencyFormat } from "@utils/formatData/currency";
 
 import { IncomeEmployment, IncomeCapital, MicroBusinesses } from "./config";
@@ -105,7 +105,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
               </Stack>
             )}
             {onlyDebtor && isMobile && (
-              <CardBorrower label="Deudor" placeHolder={form.borrower} />
+              <CardGray label="Deudor" placeHolder={form.borrower} />
             )}
             <Stack
               width={!isMobile ? "end" : "auto"}
@@ -191,7 +191,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
       {isOpenModal && (
         <ListModal
           title={incomeCardData.restore}
-          handleClose={() => console.log("")}
+          handleClose={() => setIsOpenModal(false)}
           handleSubmit={() => setIsOpenModal(false)}
           cancelButton="Cancelar"
           appearanceCancel="gray"
