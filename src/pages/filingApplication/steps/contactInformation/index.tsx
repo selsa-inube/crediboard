@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { Grid } from "@inubekit/grid";
 import { Textfield } from "@inubekit/textfield";
 
-import { CardBorrower } from "@components/cards/CardBorrower";
+import { CardGray } from "@components/cards/CardGray";
 import { Fieldset } from "@components/data/Fieldset";
 
 import { dataContactInformation } from "./config";
@@ -58,19 +58,19 @@ export function ContactInformation(props: IContactInformationProps) {
         padding={isMobile ? "4px 10px" : "10px 16px"}
         gap="20px"
       >
-        <CardBorrower
+        <CardGray
           label={dataContactInformation.cardDocument}
           placeHolder={dataContactInformation.placeDocument}
         />
-        <CardBorrower
+        <CardGray
           label={dataContactInformation.cardDocumentNumber}
           placeHolder={dataContactInformation.placeDocumentNumber}
         />
-        <CardBorrower
+        <CardGray
           label={dataContactInformation.cardName}
           placeHolder={dataContactInformation.placeName}
         />
-        <CardBorrower
+        <CardGray
           label={dataContactInformation.cardLastName}
           placeHolder={dataContactInformation.placeLastName}
         />

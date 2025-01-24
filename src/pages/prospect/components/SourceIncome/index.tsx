@@ -1,5 +1,5 @@
+import { useState } from "react";
 import { MdCached } from "react-icons/md";
-
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -7,12 +7,13 @@ import { Grid } from "@inubekit/grid";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
 
-import { CardBorrower } from "@components/cards/CardBorrower";
+import { incomeCardData } from "@components/cards/IncomeCard/config";
+import { ListModal } from "@components/modals/ListModal";
+import { CardGray } from "@components/cards/CardGray";
 import { currencyFormat } from "@utils/formatData/currency";
 
 import { IncomeEmployment, IncomeCapital, MicroBusinesses } from "./config";
 import { StyledContainer } from "./styles";
-import { incomeCardData } from "@src/components/cards/IncomeCard/config";
 
 interface ISourceIncomeProps {
   onChange: (name: string, newValue: string) => void;
@@ -34,6 +35,8 @@ interface ISourceIncomeProps {
 
 export function SourceIncome(props: ISourceIncomeProps) {
   const { form, onChange, options, ShowSupport, onlyDebtor } = props;
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const handleFieldChange = (
     fields: string[],
@@ -102,7 +105,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
               </Stack>
             )}
             {onlyDebtor && isMobile && (
-              <CardBorrower label="Deudor" placeHolder={form.borrower} />
+              <CardGray label="Deudor" placeHolder={form.borrower} />
             )}
             <Stack
               width={!isMobile ? "end" : "auto"}
@@ -128,6 +131,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   variant="outlined"
                   iconBefore={<MdCached />}
                   fullwidth={isMobile}
+                  onClick={() => setIsOpenModal(true)}
                 >
                   {incomeCardData.restore}
                 </Button>
@@ -184,6 +188,17 @@ export function SourceIncome(props: ISourceIncomeProps) {
           </Grid>
         </Stack>
       </Stack>
+      {isOpenModal && (
+        <ListModal
+          title={incomeCardData.restore}
+          handleClose={() => setIsOpenModal(false)}
+          handleSubmit={() => setIsOpenModal(false)}
+          cancelButton="Cancelar"
+          appearanceCancel="gray"
+          buttonLabel={incomeCardData.restore}
+          content={incomeCardData.description}
+        />
+      )}
     </StyledContainer>
   );
 }

@@ -4,7 +4,7 @@ import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { CardBorrower } from "@components/cards/CardBorrower";
+import { CardGray } from "@components/cards/CardGray";
 import { CardConsolidatedCredit } from "@pages/addProspect/components/CardConsolidatedCredit";
 import { currencyFormat } from "@utils/formatData/currency";
 import { mockConsolidatedCredit } from "@mocks/add-prospect/consolidates-credit/consolidatedcredit.mock";
@@ -65,7 +65,7 @@ export function ConsolidatedCredit(props: IConsolidatedCreditProps) {
             </Stack>
           )}
           {isMobile && (
-            <CardBorrower
+            <CardGray
               label={dataConsolidated.debtor}
               placeHolder={debtorData.name}
             />

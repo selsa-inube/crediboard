@@ -1,9 +1,19 @@
-import { Stack, useMediaQuery, Blanket, Text, Button, inube } from "@inube/design-system";
 import { createPortal } from "react-dom";
 import { MdClear, MdOutlineEmail, MdOutlinePhone } from "react-icons/md";
+import { Stack } from "@inubekit/stack";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Blanket } from "@inubekit/blanket";
+import { Text } from "@inubekit/text";
+import { Button } from "@inubekit/button";
+import { inube } from "@inubekit/foundations";
 import { Icon } from "@inubekit/icon";
 import { Textfield } from "@inubekit/textfield";
-import { StyledModal, StyledContainerClose, StyledContainerTitle } from "./styles";
+
+import {
+  StyledModal,
+  StyledContainerClose,
+  StyledContainerTitle,
+} from "./styles";
 
 interface FormValues {
   field1: string;
@@ -47,7 +57,7 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
             {title}
           </Text>
           <StyledContainerClose onClick={handleClose}>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text>Cerrar</Text>
               <Icon
                 appearance="dark"
@@ -58,14 +68,12 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
             </Stack>
           </StyledContainerClose>
         </StyledContainerTitle>
-        <Stack gap={inube.spacing.s300} direction="column">
+        <Stack gap="24px" direction="column">
           <Textfield
             id="field1"
             value={formValues.field1}
             label="Correo"
-            iconBefore={
-              <MdOutlineEmail color={inube.color.stroke.dark.regular} />
-            }
+            iconBefore={<MdOutlineEmail color={inube.palette.neutral.N900} />}
             placeholder="usuario@inube.com"
             disabled
             fullwidth
@@ -74,9 +82,7 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
             id="field2"
             value={formValues.field2}
             label="Teléfono"
-            iconBefore={
-              <MdOutlinePhone color={inube.color.stroke.dark.regular} />
-            }
+            iconBefore={<MdOutlinePhone color={inube.palette.neutral.N900} />}
             placeholder="3122638128"
             disabled
             fullwidth
@@ -85,15 +91,13 @@ export function PromissoryNotesModal(props: PromissoryNotesModalProps) {
             id="field3"
             value={formValues.field3}
             label="Whatsapp"
-            iconBefore={
-              <MdOutlinePhone color={inube.color.stroke.dark.regular} />
-            }
+            iconBefore={<MdOutlinePhone color={inube.palette.neutral.N900} />}
             placeholder="3122638128"
             disabled
             fullwidth
           />
         </Stack>
-        <Stack justifyContent="flex-end" margin="s200 s0">
+        <Stack justifyContent="flex-end" margin="16px 0">
           <Button type="button" onClick={onSubmit}>
             {buttonText}
           </Button>
