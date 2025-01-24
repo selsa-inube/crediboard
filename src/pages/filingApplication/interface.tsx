@@ -69,7 +69,6 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             size={isMobile ? "small" : "large"}
           />
         </StyledContainerAssisted>
-
         {currentStepsNumber &&
           currentStepsNumber.id ===
             stepsFilingApplication.generalInformation.id && (
@@ -95,30 +94,6 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
               initialValues={formData.borrowerData}
               handleOnChange={(values) =>
                 handleFormChange({ borrowerData: values })
-              }
-            />
-          )}
-        {currentStepsNumber &&
-          currentStepsNumber.id ===
-            stepsFilingApplication.propertyOffered.id && (
-            <PropertyOffered
-              isMobile={isMobile}
-              onFormValid={setIsCurrentFormValid}
-              initialValues={formData.propertyOffered}
-              handleOnChange={(values) =>
-                handleFormChange({ propertyOffered: values })
-              }
-            />
-          )}
-        {currentStepsNumber &&
-          currentStepsNumber.id ===
-            stepsFilingApplication.vehicleOffered.id && (
-            <VehicleOffered
-              isMobile={isMobile}
-              onFormValid={setIsCurrentFormValid}
-              initialValues={formData.vehicleOffered}
-              handleOnChange={(values) =>
-                handleFormChange({ vehicleOffered: values })
               }
             />
           )}

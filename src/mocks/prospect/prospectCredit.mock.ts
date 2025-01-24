@@ -1,9 +1,5 @@
 import { IProspect } from "@services/types";
-import {
-  Schedule,
-  GracePeriodType,
-  BorrowerProperties,
-} from "@src/services/enums";
+import { Schedule, GracePeriodType, BorrowerProperties } from "@services/enums";
 
 export const mockProspectCredit: IProspect[] = [
   {

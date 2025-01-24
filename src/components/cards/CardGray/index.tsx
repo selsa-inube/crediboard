@@ -18,13 +18,13 @@ export function CardGray(props: ICardGrayProps) {
       <Stack
         justifyContent="space-between"
         alignItems="center"
-        padding="10px 16px"
+        padding="6px 16px"
       >
         <Stack direction="column">
-          <Text type="label" weight="bold" size="medium">
+          <Text type="label" weight="bold" size="medium" appearance="dark">
             {label}
           </Text>
-          <Text type="body" size="large">
+          <Text type="body" size="medium" appearance="gray">
             {placeHolder}
           </Text>
         </Stack>

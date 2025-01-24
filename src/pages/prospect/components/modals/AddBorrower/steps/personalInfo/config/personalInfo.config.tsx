@@ -22,3 +22,21 @@ export const TipeOfFamily = [
   { id: "13", label: "Yerno/a", value: "Yerno" },
   { id: "15", label: "Otro", value: "Otro" },
 ];
+
+export const dataPersonalInfo = {
+  labelDocument: "Tipo de documento",
+  labelNumber: "documentNumber",
+  labelName: "Nombre",
+  labelLastName: "apellidos",
+  labelEmail: "correo",
+  labelPhone: "Numer de telefono",
+  labelSex: "Sexo biológico",
+  labelDate: "fecha de nacimiento",
+  labelRelation: "Parentesco",
+  placeHolderSelect: "Seleccione una opción",
+  placeHolderNumber: "Ej: 1010477949",
+  placeHolderName: "Ej: Daniel Rodrigo",
+  placeHolderLastName: "Ej: Rodriguez Velandia",
+  placeHolderEmail: "Ej: micorreo@mail.com",
+  placeHolderPhone: "Ej: 3102330109",
+}
