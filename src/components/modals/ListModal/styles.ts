@@ -9,12 +9,12 @@ export const StyledModal = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
   max-height: ${({ $smallScreen }) => ($smallScreen ? "398px" : "382px")};
-  width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "493px")};
+  width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "430px")};
   background-color: ${({ theme }) =>
     theme.color?.surface?.light?.clear || inube.palette.neutral.N0};
   padding: ${({ $smallScreen }) => ($smallScreen ? "16px" : "24px")};
   gap: ${({ $smallScreen }) => ($smallScreen ? "16px" : "24px")};
-  border-radius: ${"8px"};
+  border-radius: 8px;
 `;
 export const StyledContainerContent = styled.div<IStyledModal>`
   display: flex;
@@ -44,11 +44,4 @@ export const StyledContainerContent = styled.div<IStyledModal>`
 
 export const StyledContainerClose = styled.div`
   cursor: pointer;
-`;
-
-export const StyledContainerTitle = styled.div`
-  display: flex;
-  margin: 0px;
-  padding: 0px;
-  justify-content: space-between;
 `;

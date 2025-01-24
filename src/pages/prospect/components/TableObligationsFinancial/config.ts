@@ -35,6 +35,9 @@ export const dataReport = {
   totalFee: "$ 3.300.000",
   totalBalance: "$ 87.000.000",
   close: "Cerrar",
+  restore: "Restablecer",
+  descriptionModal:
+    "¿Realmente desea restablecer los valores a su estado inicial?",
   save: "Guardar",
   edit: "Editar",
   deletion: "Eliminación",

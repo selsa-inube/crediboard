@@ -7,12 +7,12 @@ import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
+import { Divider } from "@inubekit/divider";
 
 import {
   StyledContainerClose,
   StyledContainerContent,
   StyledModal,
-  StyledContainerTitle,
 } from "./styles";
 
 export interface IOptionButtons {
@@ -30,6 +30,15 @@ export interface IListModalProps {
   onSubmit?: () => void;
   buttonLabel: string;
   cancelButton?: string;
+  appearanceCancel?:
+    | "primary"
+    | "success"
+    | "warning"
+    | "danger"
+    | "help"
+    | "dark"
+    | "gray"
+    | "light";
   portalId?: string;
   content?: JSX.Element | JSX.Element[] | string;
   optionButtons?: IOptionButtons;
@@ -42,6 +51,7 @@ export const ListModal = (props: IListModalProps) => {
     content,
     optionButtons,
     cancelButton,
+    appearanceCancel = "primary",
     handleClose,
     handleSubmit,
     onSubmit,
@@ -60,7 +70,7 @@ export const ListModal = (props: IListModalProps) => {
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
-        <StyledContainerTitle>
+        <Stack alignItems="center" justifyContent="space-between">
           <Text type="headline" size="small">
             {title}
           </Text>
@@ -75,7 +85,8 @@ export const ListModal = (props: IListModalProps) => {
               />
             </Stack>
           </StyledContainerClose>
-        </StyledContainerTitle>
+        </Stack>
+        <Divider />
         <StyledContainerContent $smallScreen={isMobile}>
           {typeof content === "string" ? (
             <Stack>
@@ -99,9 +110,14 @@ export const ListModal = (props: IListModalProps) => {
             {optionButtons?.label + "prueba"}
           </Button>
         )}
-        <Stack justifyContent="flex-end" margin="16px 0" gap="16px">
+        <Stack justifyContent="flex-end" margin="16px 0 0 0" gap="16px">
           {cancelButton && (
-            <Button variant="outlined" onClick={handleSubmit}>
+            <Button
+              variant="outlined"
+              onClick={handleSubmit}
+              spacing="wide"
+              appearance={appearanceCancel}
+            >
               {cancelButton}
             </Button>
           )}
