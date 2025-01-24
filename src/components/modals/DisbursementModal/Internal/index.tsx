@@ -3,10 +3,8 @@ import { Stack } from "@inubekit/stack";
 
 import { disbursementInternal } from "@mocks/disbursement/disbursement.mock";
 import { CardGray } from "@components/cards/CardGray";
-import {
-  disbursementGeneral,
-  disbursemenOptionAccount,
-} from "@pages/filingApplication/steps/disbursementGeneral/config";
+
+import { disbursementGeneral, disbursemenOptionAccount } from "../config";
 
 export interface IDisbursement {
   isMobile: boolean;

@@ -2,11 +2,9 @@ import { Grid } from "@inubekit/grid";
 import { Stack } from "@inubekit/stack";
 
 import { disbursementChequeManagement } from "@mocks/disbursement/disbursement.mock";
+import { disbursementGeneral, disbursemenOptionAccount } from "../config";
+
 import { CardGray } from "@components/cards/CardGray";
-import {
-  disbursementGeneral,
-  disbursemenOptionAccount,
-} from "@pages/filingApplication/steps/disbursementGeneral/config";
 
 export interface IDisbursement {
   isMobile: boolean;
