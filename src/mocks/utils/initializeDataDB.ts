@@ -38,6 +38,7 @@ import {
   traceMock,
   requirementsMock,
 } from "./importDataDb";
+import { userStepsMock } from "../filing-application/userSteps/users.mock";
 
 export function initializeDataDB(company: string) {
   localforage.clear();
@@ -96,4 +97,5 @@ export function initializeDataDB(company: string) {
   intializedData("financial_obligation", mockFinancialObligation);
   intializedData("extra_debtors", mockExtraDebtors);
   intializedData("attached_documents", mockAttachedDocuments);
+  intializedData("user_steps", userStepsMock);
 }
