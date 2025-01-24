@@ -3,6 +3,10 @@ import { Stack } from "@inubekit/stack";
 
 import { disbursementExternal } from "@mocks/disbursement/disbursement.mock";
 import { CardGray } from "@components/cards/CardGray";
+import {
+  disbursementGeneral,
+  disbursemenOptionAccount,
+} from "@pages/filingApplication/steps/disbursementGeneral/config";
 export interface IDisbursement {
   isMobile: boolean;
 }
@@ -22,64 +26,64 @@ export function DisbursementExternal(props: IDisbursement) {
         autoRows="auto"
       >
         <CardGray
-          label={disbursementExternal.labelAmount}
+          label={disbursementGeneral.label}
           placeHolder={disbursementExternal.amount}
         />
         <CardGray
-          label={disbursementExternal.labelToggle}
+          label={disbursementGeneral.labelToggle}
           placeHolder={disbursementExternal.toggleChecked}
         />
         <CardGray
-          label={disbursementExternal.labelName}
+          label={disbursemenOptionAccount.labelName}
           placeHolder={disbursementExternal.name}
         />
         <CardGray
-          label={disbursementExternal.labelLastName}
+          label={disbursemenOptionAccount.labelLastName}
           placeHolder={disbursementExternal.lastName}
         />
         <CardGray
-          label={disbursementExternal.labelSex}
+          label={disbursemenOptionAccount.labelSex}
           placeHolder={disbursementExternal.sex}
         />
         <CardGray
-          label={disbursementExternal.labelDocumentType}
+          label={disbursemenOptionAccount.labelDocumentType}
           placeHolder={disbursementExternal.typeDocument}
         />
         <CardGray
-          label={disbursementExternal.labelDocumentNumber}
+          label={disbursemenOptionAccount.labelDocumentNumber}
           placeHolder={disbursementExternal.identification}
         />
         <CardGray
-          label={disbursementExternal.labelBirthdate}
+          label={disbursemenOptionAccount.labelBirthdate}
           placeHolder={disbursementExternal.birthday}
         />
         <CardGray
-          label={disbursementExternal.labelphone}
+          label={disbursemenOptionAccount.labelphone}
           placeHolder={disbursementExternal.phone}
         />
         <CardGray
-          label={disbursementExternal.labelMail}
+          label={disbursemenOptionAccount.labelMail}
           placeHolder={disbursementExternal.mail}
         />
         <CardGray
-          label={disbursementExternal.labelCity}
+          label={disbursemenOptionAccount.labelCity}
           placeHolder={disbursementExternal.city}
         />
         <CardGray
-          label={disbursementExternal.labelBank}
+          label={disbursemenOptionAccount.labelBank}
           placeHolder={disbursementExternal.bank}
         />
         <CardGray
-          label={disbursementExternal.labelAccountType}
+          label={disbursemenOptionAccount.labelAccountType}
           placeHolder={disbursementExternal.typeAccount}
         />
         <CardGray
-          label={disbursementExternal.labelAccountNumber}
+          label={disbursemenOptionAccount.labelAccountNumber}
           placeHolder={disbursementExternal.AccountNumber}
         />
       </Grid>
       <CardGray
-        label={disbursementExternal.labelObservation}
+        label={disbursemenOptionAccount.observation}
         placeHolder={disbursementExternal.observation}
       />
     </Stack>

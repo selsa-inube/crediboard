@@ -2,6 +2,10 @@ import { Grid } from "@inubekit/grid";
 import { Stack } from "@inubekit/stack";
 
 import { disbursementCash } from "@mocks/disbursement/disbursement.mock";
+import {
+  disbursementGeneral,
+  disbursemenOptionAccount,
+} from "@pages/filingApplication/steps/disbursementGeneral/config";
 import { CardGray } from "@components/cards/CardGray";
 export interface IDisbursement {
   isMobile: boolean;
@@ -22,52 +26,52 @@ export function DisbursementCash(props: IDisbursement) {
         autoRows="auto"
       >
         <CardGray
-          label={disbursementCash.labelAmount}
+          label={disbursementGeneral.label}
           placeHolder={disbursementCash.amount}
         />
         <CardGray
-          label={disbursementCash.labelToggle}
+          label={disbursementGeneral.labelToggle}
           placeHolder={disbursementCash.toggleChecked}
         />
         <CardGray
-          label={disbursementCash.labelName}
+          label={disbursemenOptionAccount.labelName}
           placeHolder={disbursementCash.name}
         />
         <CardGray
-          label={disbursementCash.labelLastName}
+          label={disbursemenOptionAccount.labelLastName}
           placeHolder={disbursementCash.lastName}
         />
         <CardGray
-          label={disbursementCash.labelSex}
+          label={disbursemenOptionAccount.labelSex}
           placeHolder={disbursementCash.sex}
         />
         <CardGray
-          label={disbursementCash.labelDocumentType}
+          label={disbursemenOptionAccount.labelDocumentType}
           placeHolder={disbursementCash.typeDocument}
         />
         <CardGray
-          label={disbursementCash.labelDocumentNumber}
+          label={disbursemenOptionAccount.labelDocumentNumber}
           placeHolder={disbursementCash.identification}
         />
         <CardGray
-          label={disbursementCash.labelBirthdate}
+          label={disbursemenOptionAccount.labelBirthdate}
           placeHolder={disbursementCash.birthday}
         />
         <CardGray
-          label={disbursementCash.labelphone}
+          label={disbursemenOptionAccount.labelphone}
           placeHolder={disbursementCash.phone}
         />
         <CardGray
-          label={disbursementCash.labelMail}
+          label={disbursemenOptionAccount.labelMail}
           placeHolder={disbursementCash.mail}
         />
         <CardGray
-          label={disbursementCash.labelCity}
+          label={disbursemenOptionAccount.labelCity}
           placeHolder={disbursementCash.city}
         />
       </Grid>
       <CardGray
-        label={disbursementCash.labelObservation}
+        label={disbursementCash.observation}
         placeHolder={disbursementCash.observation}
       />
     </Stack>

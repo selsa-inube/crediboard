@@ -3,6 +3,10 @@ import { Stack } from "@inubekit/stack";
 
 import { disbursementChequeManagement } from "@mocks/disbursement/disbursement.mock";
 import { CardGray } from "@components/cards/CardGray";
+import {
+  disbursementGeneral,
+  disbursemenOptionAccount,
+} from "@pages/filingApplication/steps/disbursementGeneral/config";
 
 export interface IDisbursement {
   isMobile: boolean;
@@ -23,52 +27,52 @@ export function DisbursementChequeManagement(props: IDisbursement) {
         autoRows="auto"
       >
         <CardGray
-          label={disbursementChequeManagement.labelAmount}
+          label={disbursementGeneral.label}
           placeHolder={disbursementChequeManagement.amount}
         />
         <CardGray
-          label={disbursementChequeManagement.labelToggle}
+          label={disbursementGeneral.labelToggle}
           placeHolder={disbursementChequeManagement.toggleChecked}
         />
         <CardGray
-          label={disbursementChequeManagement.labelName}
+          label={disbursemenOptionAccount.labelName}
           placeHolder={disbursementChequeManagement.name}
         />
         <CardGray
-          label={disbursementChequeManagement.labelLastName}
+          label={disbursemenOptionAccount.labelLastName}
           placeHolder={disbursementChequeManagement.lastName}
         />
         <CardGray
-          label={disbursementChequeManagement.labelSex}
+          label={disbursemenOptionAccount.labelSex}
           placeHolder={disbursementChequeManagement.sex}
         />
         <CardGray
-          label={disbursementChequeManagement.labelDocumentType}
+          label={disbursemenOptionAccount.labelDocumentType}
           placeHolder={disbursementChequeManagement.typeDocument}
         />
         <CardGray
-          label={disbursementChequeManagement.labelDocumentNumber}
+          label={disbursemenOptionAccount.labelDocumentNumber}
           placeHolder={disbursementChequeManagement.identification}
         />
         <CardGray
-          label={disbursementChequeManagement.labelBirthdate}
+          label={disbursemenOptionAccount.labelBirthdate}
           placeHolder={disbursementChequeManagement.birthday}
         />
         <CardGray
-          label={disbursementChequeManagement.labelphone}
+          label={disbursemenOptionAccount.labelphone}
           placeHolder={disbursementChequeManagement.phone}
         />
         <CardGray
-          label={disbursementChequeManagement.labelMail}
+          label={disbursemenOptionAccount.labelMail}
           placeHolder={disbursementChequeManagement.mail}
         />
         <CardGray
-          label={disbursementChequeManagement.labelCity}
+          label={disbursemenOptionAccount.labelCity}
           placeHolder={disbursementChequeManagement.city}
         />
       </Grid>
       <CardGray
-        label={disbursementChequeManagement.labelObservation}
+        label={disbursementChequeManagement.observation}
         placeHolder={disbursementChequeManagement.observation}
       />
     </Stack>
