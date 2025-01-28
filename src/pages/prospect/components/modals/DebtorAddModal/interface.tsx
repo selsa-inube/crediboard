@@ -23,6 +23,7 @@ interface DebtorAddModalUIProps {
   steps: IStep[];
   isCurrentFormValid: boolean;
   formData: FormData;
+  title: string;
   isMobile: boolean;
   handleFormChange: (updatedValues: Partial<FormData>) => void;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -39,6 +40,7 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
     steps,
     isCurrentFormValid,
     formData,
+    title,
     isMobile,
     handleFormChange,
     handleNextStep,
@@ -66,7 +68,7 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
           >
             <Stack justifyContent="space-between" alignItems="center">
               <Text type="headline" size="small">
-                {dataAddBorrower.add}
+                {title}
               </Text>
               <StyledContainerClose onClick={handleClose}>
                 <Stack alignItems="center" gap="8px">
@@ -121,7 +123,7 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
               )}
             {currentStepsNumber &&
               currentStepsNumber.id === stepsAddBorrower.BorrowerData.id && (
-                <TableFinancialObligations />
+                <TableFinancialObligations showActions={true} />
               )}
             <Stack direction="column" gap="20px" margin="auto 0 0 0">
               <Divider />

@@ -89,7 +89,12 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
                 onlyDebtor={true}
               />
             )}
-            {currentTab === "obligations" && <TableFinancialObligations />}
+            {currentTab === "obligations" && (
+              <TableFinancialObligations
+                showActions={true}
+                showOnlyEdit={true}
+              />
+            )}
           </Stack>
           <Divider />
           <Stack justifyContent="end" alignItems="end" gap="16px">

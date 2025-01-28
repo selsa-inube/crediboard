@@ -8,12 +8,13 @@ import { DebtorAddModalUI } from "./interface";
 import { FormData } from "./types";
 
 interface DebtorAddModalProps {
-  portalId?: string;
   onSubmit: () => void;
   handleClose: () => void;
+  portalId?: string;
+  title?: string;
 }
 export function DebtorAddModal(props: DebtorAddModalProps) {
-  const { portalId, handleClose } = props;
+  const { title = "", portalId, handleClose } = props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -86,6 +87,7 @@ export function DebtorAddModal(props: DebtorAddModalProps) {
         currentStepsNumber={currentStepsNumber}
         handleSubmitClick={handleSubmitClick}
         handleClose={handleClose}
+        title={title}
         isMobile={isMobile}
       />
     </Blanket>,

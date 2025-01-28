@@ -1,9 +1,9 @@
 export const dataAddModal = {
   labelTypeDocument: "Tipo de documento",
   labelNumberDocument: "Numero de documento",
-  labelName: "Nombre",
+  labelName: "Nombres",
   labelLastName: "Apellidos",
-  labelEmail: "Correo",
+  labelEmail: "Correo electronico",
   labelNumber: "Numero de telefono",
   labelSex: "Sexo biológico",
   labelAge: "Edad",

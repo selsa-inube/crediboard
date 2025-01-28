@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { MdAdd } from "react-icons/md";
+import { useParams } from "react-router-dom";
 import { Grid } from "@inubekit/grid";
 import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
@@ -12,11 +13,8 @@ import { DebtorAddModal } from "@pages/prospect/components/modals/DebtorAddModal
 import { DebtorDetailsModal } from "@pages/prospect/components/modals/DebtorDetailsModal";
 import { DebtorEditModal } from "@pages/prospect/components/modals/DebtorEditModal";
 import { mockGuaranteeBorrower } from "@mocks/guarantee/offeredguarantee.mock";
-
-import { borrowerData } from "./config";
-import { useParams } from "react-router-dom";
-import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
 import { dataFillingApplication } from "@pages/filingApplication/config/config";
+import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
 
 interface borrowersProps {
   isMobile: boolean;
@@ -75,7 +73,7 @@ export function Borrowers(props: borrowersProps) {
           {mockGuaranteeBorrower.map((item, index) => (
             <CardBorrower
               key={index}
-              title={borrowerData.borrower + ` ${index + 1}`}
+              title={data.borrowerLabel + ` ${index + 1}`}
               name={item.name}
               lastName={item.lastName}
               email={item.email}
@@ -95,6 +93,7 @@ export function Borrowers(props: borrowersProps) {
             <DebtorAddModal
               onSubmit={() => setIsModalAdd(false)}
               handleClose={() => setIsModalAdd(false)}
+              title={data.addButton}
             />
           )}
           {isModalView && (
