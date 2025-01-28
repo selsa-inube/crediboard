@@ -21,6 +21,7 @@ export function AddProspect() {
   });
   const [showConsultingModal, setShowConsultingModal] = useState(false);
   const [showDebtorModal, setShowDebtorModal] = useState(false);
+  const [isModalOpenRequirements, setIsModalOpenRequirements] = useState(false);
 
   const isMobile = useMediaQuery("(max-width:880px)");
   const isTablet = useMediaQuery("(max-width: 1482px)");
@@ -188,6 +189,8 @@ export function AddProspect() {
         currentStep={currentStep}
         isCurrentFormValid={isCurrentFormValid}
         message={message}
+        isModalOpenRequirements={isModalOpenRequirements}
+        setIsModalOpenRequirements={setIsModalOpenRequirements}
         setIsCurrentFormValid={setIsCurrentFormValid}
         handleNextStep={handleNextStep}
         handlePreviousStep={handlePreviousStep}

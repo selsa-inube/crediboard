@@ -2,6 +2,8 @@ import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
 
+import { ButtonRequirements } from "@pages/prospect/components/buttonRequirements";
+import { RequirementsModal } from "@pages/prospect/components/modals/RequirementsModal";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 
 import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
@@ -24,6 +26,8 @@ interface AddPositionUIProps {
   steps: IStep[];
   isCurrentFormValid: boolean;
   message: IMessageState;
+  isModalOpenRequirements: boolean;
+  setIsModalOpenRequirements: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;
   handleNextStep: () => void;
   handlePreviousStep: () => void;
@@ -51,6 +55,8 @@ export function AddProspectUI(props: AddPositionUIProps) {
     handleSubmitClick,
     steps,
     isCurrentFormValid,
+    isModalOpenRequirements,
+    setIsModalOpenRequirements,
     setIsCurrentFormValid,
     handleNextStep,
     handlePreviousStep,
@@ -90,118 +96,126 @@ export function AddProspectUI(props: AddPositionUIProps) {
             size={isMobile ? "small" : "large"}
           />
         </StyledContainerAssisted>
-        {currentStepsNumber &&
-          currentStepsNumber.id === stepsAddProspect.generalInformation.id && (
-            <RequirementsNotMet isMobile={isMobile} />
-          )}
-        {currentStepsNumber &&
-          currentStepsNumber.id === stepsAddProspect.destination.id && (
-            <MoneyDestination
-              initialValues={formData.selectedDestination}
-              handleOnChange={(newDestination) =>
-                handleFormDataChange("selectedDestination", newDestination)
-              }
-              onFormValid={setIsCurrentFormValid}
-              isTablet={isTablet}
+        <Stack direction="column">
+          <Stack justifyContent="end">
+            <ButtonRequirements
+              onClick={() => setIsModalOpenRequirements(true)}
             />
-          )}
-        {currentStepsNumber &&
-          currentStepsNumber.id === stepsAddProspect.productSelection.id && (
-            <ProductSelection
-              initialValues={{
-                selectedProducts,
-                generalToggleChecked: formData.generalToggleChecked,
-                togglesState: formData.togglesState,
-              }}
-              handleOnChange={{
-                setSelectedProducts,
-                onGeneralToggleChange: () =>
-                  handleFormDataChange(
-                    "generalToggleChecked",
-                    !formData.generalToggleChecked
-                  ),
-                onToggleChange: (index: number) => {
-                  const newToggles = [...formData.togglesState];
-                  newToggles[index] = !newToggles[index];
-                  handleFormDataChange("togglesState", newToggles);
-                },
-              }}
-              onFormValid={setIsCurrentFormValid}
-              isMobile={isMobile}
-            />
-          )}
-        {currentStepsNumber &&
-          currentStepsNumber.id ===
-            stepsAddProspect.extraordinaryInstallments.id && (
-            <ExtraordinaryInstallments
-              dataTable={extraordinaryInstallmentMock}
-              isMobile={isMobile}
-            />
-          )}
-        {currentStepsNumber &&
-          currentStepsNumber.id === stepsAddProspect.extraBorrowers.id && (
-            <ExtraDebtors />
-          )}
-        {currentStepsNumber &&
-          currentStepsNumber.id === stepsAddProspect.sourcesIncome.id && (
-            <SourcesOfIncome
-              initialValues={formData.incomeData}
-              handleOnChange={(name: string, value: string) =>
-                handleFormDataChange("incomeData", {
-                  ...formData.incomeData,
-                  [name]: value,
-                })
-              }
-              options={formData.incomeData.borrowers}
-              isMobile={isMobile}
-            />
-          )}
-        {currentStepsNumber &&
-          currentStepsNumber.id ===
-            stepsAddProspect.obligationsFinancial.id && (
-            <ObligationsFinancial isMobile={isMobile} />
-          )}
-        {currentStepsNumber &&
-          currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
-            <LoanCondition
-              initialValues={formData.loanConditionState}
-              handleOnChange={(
-                newState: Partial<typeof formData.loanConditionState>
-              ) =>
-                handleFormDataChange("loanConditionState", {
-                  ...formData.loanConditionState,
-                  ...newState,
-                })
-              }
-              onFormValid={setIsCurrentFormValid}
-              isMobile={isMobile}
-            />
-          )}
-        {currentStepsNumber &&
-          currentStepsNumber.id === stepsAddProspect.loanAmount.id && (
-            <LoanAmount
-              initialValues={formData.loanAmountState}
-              handleOnChange={(
-                newData: Partial<typeof formData.loanAmountState>
-              ) =>
-                handleFormDataChange("loanAmountState", {
-                  ...formData.loanAmountState,
-                  ...newData,
-                })
-              }
-              onFormValid={setIsCurrentFormValid}
-              isMobile={isMobile}
-            />
-          )}
-        {currentStepsNumber &&
-          currentStepsNumber.id ===
-            stepsAddProspect.obligationsCollected.id && (
-            <ConsolidatedCredit
-              initialValues={formData.consolidatedCreditSelections}
-              handleOnChange={handleConsolidatedCreditChange}
-              isMobile={isMobile}
-            />
-          )}
+          </Stack>
+          {currentStepsNumber &&
+            currentStepsNumber.id ===
+              stepsAddProspect.generalInformation.id && (
+              <RequirementsNotMet isMobile={isMobile} />
+            )}
+          {currentStepsNumber &&
+            currentStepsNumber.id === stepsAddProspect.destination.id && (
+              <MoneyDestination
+                initialValues={formData.selectedDestination}
+                handleOnChange={(newDestination) =>
+                  handleFormDataChange("selectedDestination", newDestination)
+                }
+                onFormValid={setIsCurrentFormValid}
+                isTablet={isTablet}
+              />
+            )}
+          {currentStepsNumber &&
+            currentStepsNumber.id === stepsAddProspect.productSelection.id && (
+              <ProductSelection
+                initialValues={{
+                  selectedProducts,
+                  generalToggleChecked: formData.generalToggleChecked,
+                  togglesState: formData.togglesState,
+                }}
+                handleOnChange={{
+                  setSelectedProducts,
+                  onGeneralToggleChange: () =>
+                    handleFormDataChange(
+                      "generalToggleChecked",
+                      !formData.generalToggleChecked
+                    ),
+                  onToggleChange: (index: number) => {
+                    const newToggles = [...formData.togglesState];
+                    newToggles[index] = !newToggles[index];
+                    handleFormDataChange("togglesState", newToggles);
+                  },
+                }}
+                onFormValid={setIsCurrentFormValid}
+                isMobile={isMobile}
+              />
+            )}
+          {currentStepsNumber &&
+            currentStepsNumber.id ===
+              stepsAddProspect.extraordinaryInstallments.id && (
+              <ExtraordinaryInstallments
+                dataTable={extraordinaryInstallmentMock}
+                isMobile={isMobile}
+              />
+            )}
+          {currentStepsNumber &&
+            currentStepsNumber.id === stepsAddProspect.extraBorrowers.id && (
+              <ExtraDebtors />
+            )}
+          {currentStepsNumber &&
+            currentStepsNumber.id === stepsAddProspect.sourcesIncome.id && (
+              <SourcesOfIncome
+                initialValues={formData.incomeData}
+                handleOnChange={(name: string, value: string) =>
+                  handleFormDataChange("incomeData", {
+                    ...formData.incomeData,
+                    [name]: value,
+                  })
+                }
+                options={formData.incomeData.borrowers}
+                isMobile={isMobile}
+              />
+            )}
+          {currentStepsNumber &&
+            currentStepsNumber.id ===
+              stepsAddProspect.obligationsFinancial.id && (
+              <ObligationsFinancial isMobile={isMobile} />
+            )}
+          {currentStepsNumber &&
+            currentStepsNumber.id === stepsAddProspect.loanConditions.id && (
+              <LoanCondition
+                initialValues={formData.loanConditionState}
+                handleOnChange={(
+                  newState: Partial<typeof formData.loanConditionState>
+                ) =>
+                  handleFormDataChange("loanConditionState", {
+                    ...formData.loanConditionState,
+                    ...newState,
+                  })
+                }
+                onFormValid={setIsCurrentFormValid}
+                isMobile={isMobile}
+              />
+            )}
+          {currentStepsNumber &&
+            currentStepsNumber.id === stepsAddProspect.loanAmount.id && (
+              <LoanAmount
+                initialValues={formData.loanAmountState}
+                handleOnChange={(
+                  newData: Partial<typeof formData.loanAmountState>
+                ) =>
+                  handleFormDataChange("loanAmountState", {
+                    ...formData.loanAmountState,
+                    ...newData,
+                  })
+                }
+                onFormValid={setIsCurrentFormValid}
+                isMobile={isMobile}
+              />
+            )}
+          {currentStepsNumber &&
+            currentStepsNumber.id ===
+              stepsAddProspect.obligationsCollected.id && (
+              <ConsolidatedCredit
+                initialValues={formData.consolidatedCreditSelections}
+                handleOnChange={handleConsolidatedCreditChange}
+                isMobile={isMobile}
+              />
+            )}
+        </Stack>
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
           <Button
             variant="outlined"
@@ -217,6 +231,11 @@ export function AddProspectUI(props: AddPositionUIProps) {
               : titleButtonTextAssited.goNextText}
           </Button>
         </Stack>
+        {isModalOpenRequirements && (
+          <RequirementsModal
+            handleClose={() => setIsModalOpenRequirements(false)}
+          />
+        )}
       </Stack>
     </Stack>
   );

@@ -1,23 +1,24 @@
 import { MdWarningAmber } from "react-icons/md";
-
 import { Divider } from "@inubekit/divider";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
+
 import { Fieldset } from "@components/data/Fieldset";
+
 import LabelData from "./Config/config";
 
 interface IUnfulfilledRequirementsProps {
-  title: string;
   requirement: string;
   causeNonCompliance: string;
+  title?: string;
   isMobile?: boolean;
 }
 
 export const UnfulfilledRequirements = (
   props: IUnfulfilledRequirementsProps
 ) => {
-  const { title, requirement, causeNonCompliance, isMobile } = props;
+  const { title = "", requirement, causeNonCompliance, isMobile } = props;
   return (
     <Fieldset title={title} isMobile={isMobile}>
       <Stack direction="column" gap="16px" padding="0 16px">
