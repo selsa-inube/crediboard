@@ -1,11 +1,3 @@
-interface IMessage {
-  show?: boolean;
-  title: string;
-  description: string;
-  icon: JSX.Element;
-  appearance: string;
-}
-
 interface IAssignmentFormEntry {
   id: string;
   value: string;
@@ -21,12 +13,6 @@ interface IFormsInvitation {
   payrolls: { entries: IAssignmentFormEntry[] };
 }
 
-interface IMessageState {
-  visible: boolean;
-  data?: IMessage;
-  type?: string;
-}
-
 interface LoanConditionState {
   toggles: {
     quotaCapToggle: boolean;
@@ -36,4 +22,4 @@ interface LoanConditionState {
   maximumTermValue: string;
 }
 
-export type { IFormsInvitation, IAssignmentFormEntry, IMessageState, IMessage, LoanConditionState };
+export type { IFormsInvitation, IAssignmentFormEntry, LoanConditionState };

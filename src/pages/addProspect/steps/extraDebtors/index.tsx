@@ -8,6 +8,8 @@ import { Stack } from "@inubekit/stack";
 import { TableExtraDebtors } from "@pages/prospect/components/TableExtraDebtors";
 import { ExtraDebtorModal } from "@components/modals/extraDebtorModal";
 
+import { dataExtraDebtors } from "./config";
+
 export function ExtraDebtors() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -31,7 +33,7 @@ export function ExtraDebtors() {
     <Stack direction="column">
       <Stack justifyContent="end" margin="15px 0px">
         <Button
-          children="Agregar deudor extra"
+          children={dataExtraDebtors.AddBorrower}
           iconBefore={
             <Icon
               icon={<MdOutlineAdd />}
@@ -46,11 +48,11 @@ export function ExtraDebtors() {
       <TableExtraDebtors refreshKey={refreshKey} />
       {isOpenModal && (
         <ExtraDebtorModal
-          title="Agregar deudor extra"
+          title={dataExtraDebtors.AddBorrower}
           initialValues={initialValues}
           onCloseModal={handleCloseModal}
           onConfirm={() => console.log("ok")}
-          confirmButtonText="Agregar"
+          confirmButtonText={dataExtraDebtors.Add}
           iconBefore={<MdAdd />}
         />
       )}
