@@ -6,7 +6,6 @@ import { Divider } from "@inubekit/divider";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
-import { getLoanText } from "@mocks/utils/loanAmountMock.service";
 import { Toggle } from "@inubekit/toggle";
 import { Select } from "@inubekit/select";
 import { Icon } from "@inubekit/icon";
@@ -20,6 +19,7 @@ import { ScoreModal } from "@components/modals/FrcModal";
 
 import { currencyFormat } from "@utils/formatData/currency";
 import { get } from "@mocks/utils/dataMock.service";
+import { loanAmount } from "@mocks/add-prospect/loan-amount/loanAmount.mock";
 import {
   mockPayAmount,
   mockPeriodicity,
@@ -50,7 +50,6 @@ export function LoanAmount(props: ILoanAmountProps) {
     handleOnChange,
     onFormValid,
   } = props;
-  const [expectToReceiveText, setExpectToReceiveText] = useState<string | null>(null);
   const [requestValue, setRequestValue] = useState<IPaymentChannel[]>();
   const [openModal, setOpenModal] = useState<string | null>(null);
   const [creditModal, setCreditModal] = useState(false);
@@ -72,17 +71,6 @@ export function LoanAmount(props: ILoanAmountProps) {
       setLoading(false);
     }, 2000);
   };
-
-  useEffect(() => {
-    const businessUnit = "ValueReceive";
-    getLoanText(businessUnit)
-      .then((response) => {
-        setExpectToReceiveText(response);
-      })
-      .catch((error) => {
-        console.error("Error fetching loan text:", error);
-      });
-  }, []);
 
   useEffect(() => {
     get("mockRequest_value")
@@ -157,7 +145,7 @@ export function LoanAmount(props: ILoanAmountProps) {
               <Divider dashed />
               <Stack direction="column">
                 <Text type="label" size="medium" weight="bold">
-                  {expectToReceiveText || "Cargando..."}
+                  {loanAmount[0].loanAmountText}
                 </Text>
                 <Field name="inputValue">
                   {() => (
