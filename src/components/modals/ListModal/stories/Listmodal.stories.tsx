@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import { Button, Text } from "@inube/design-system";
+import { Button } from "@inubekit/button";
+import { Text } from "@inubekit/text";
 
 import { IListModalProps, ListModal } from "..";
 import { parameters, props } from "./props";
@@ -32,4 +33,3 @@ Default.args = {
 };
 
 export default meta;
-  

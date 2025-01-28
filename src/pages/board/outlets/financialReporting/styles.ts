@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
+import { inube } from "@inubekit/foundations";
 
 export const StyledItem = styled.li`
   display: flex;
@@ -8,8 +8,7 @@ export const StyledItem = styled.li`
   padding: 8px;
   border-bottom: 1px solid
     ${({ theme }) =>
-      theme.color?.stroke?.divider?.regular ||
-      inube.color.stroke.divider.regular};
+      theme.color?.stroke?.divider?.regular || inube.palette.neutral.N40};
 `;
 export const StyledMessageContainer = styled.div`
   position: fixed;

@@ -1,6 +1,6 @@
 import { Stack } from "@inubekit/stack";
 import { Flag } from "@inubekit/flag";
-import { IUsersMessage } from "@src/pages/addProspect/types/users.types";
+import { IUsersMessage } from "@pages/addProspect/types/users.types";
 
 import { StyledMessageContainer } from "./styles";
 

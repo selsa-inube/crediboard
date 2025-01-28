@@ -14,6 +14,9 @@ import { DebtorEditModal } from "@pages/prospect/components/modals/DebtorEditMod
 import { mockGuaranteeBorrower } from "@mocks/guarantee/offeredguarantee.mock";
 
 import { borrowerData } from "./config";
+import { useParams } from "react-router-dom";
+import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
+import { dataFillingApplication } from "@pages/filingApplication/config/config";
 
 interface borrowersProps {
   isMobile: boolean;
@@ -41,12 +44,23 @@ export function Borrowers(props: borrowersProps) {
   const [isModalEdit, setIsModalEdit] = useState(false);
   const [isModalDelete, setIsModalDelete] = useState(false);
 
+  const { id } = useParams();
+  const userId = parseInt(id || "0", 10);
+  const userChoice =
+    choiceBorrowers.find((choice) => choice.id === userId)?.choice ||
+    "borrowers";
+
+  const data =
+    dataFillingApplication[
+      userChoice === "borrowers" ? "borrowers" : "coBorrowers"
+    ];
+
   return (
     <Fieldset>
       <Stack direction="column" padding="2px 10px" gap="20px">
         <Stack justifyContent="end">
           <Button onClick={() => setIsModalAdd(true)} iconBefore={<MdAdd />}>
-            {borrowerData.add}
+            {data.addButton}
           </Button>
         </Stack>
         <Grid
@@ -84,7 +98,10 @@ export function Borrowers(props: borrowersProps) {
             />
           )}
           {isModalView && (
-            <DebtorDetailsModal handleClose={() => setIsModalView(false)} isMobile={isMobile} />
+            <DebtorDetailsModal
+              handleClose={() => setIsModalView(false)}
+              isMobile={isMobile}
+            />
           )}
           {isModalDelete && (
             <DeleteModal handleClose={() => setIsModalDelete(false)} />

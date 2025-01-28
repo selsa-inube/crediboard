@@ -12,8 +12,8 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
 import { useFlag } from "@inubekit/flag";
 
-import { makeDecisions } from "@src/services/todo/makeDecisions";
-import { validationMessages } from "@src/validations/validationMessages";
+import { makeDecisions } from "@services/todo/makeDecisions";
+import { validationMessages } from "@validations/validationMessages";
 
 import { IMakeDecisionsCreditRequestWithXAction } from "./types";
 

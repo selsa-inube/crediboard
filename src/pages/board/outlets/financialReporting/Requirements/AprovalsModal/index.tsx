@@ -1,21 +1,18 @@
-import {
-  Stack,
-  useMediaQuery,
-  Blanket,
-  Text,
-  Button,
-  inube,
-  Textarea,
-  Switch,
-} from "@inube/design-system";
-import { Icon } from "@inubekit/icon";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 
-import { StyledModal, StyledContainerClose } from "./styles";
+import { Toggle } from "@inubekit/toggle";
+import { Stack } from "@inubekit/stack";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Blanket } from "@inubekit/blanket";
+import { Button } from "@inubekit/button";
+import { Textarea } from "@inubekit/textarea";
+import { Text } from "@inubekit/text";
+import { Icon } from "@inubekit/icon";
 
+import { StyledModal, StyledContainerClose } from "./styles";
 interface FormValues {
   textarea: string;
   isApproved: boolean;
@@ -72,7 +69,7 @@ export function AprovalsModal(props: AprovalsModalProps) {
             {title}
           </Text>
           <StyledContainerClose onClick={onCloseModal}>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text>Cerrar</Text>
               <Icon
                 icon={<MdClear />}
@@ -96,22 +93,24 @@ export function AprovalsModal(props: AprovalsModalProps) {
         >
           {({ errors, touched, isSubmitting }) => (
             <Form>
-              <Stack direction="column" gap={inube.spacing.s300}>
+              <Stack direction="column" gap="24px">
                 <Stack>
-                  <Switch
+                  <Toggle
                     id="approve"
                     name="approve"
-                    label="Aprobar"
                     size="large"
                     checked={isApproved}
-                    value={isApproved}
-                    onChange={onChangeApprove}
+                    onChange={(e) => {
+                      onChangeApprove?.();
+                      e.target.checked = !isApproved;
+                    }}
                   />
                 </Stack>
                 <Field name="textarea">
                   {({ field, form: { setFieldTouched } }: FieldProps) => (
                     <Textarea
                       {...field}
+                      id="textarea"
                       label={inputLabel}
                       placeholder={inputPlaceholder}
                       maxLength={maxLength}
@@ -126,7 +125,7 @@ export function AprovalsModal(props: AprovalsModalProps) {
                           : ""
                       }
                       fullwidth
-                      onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+                      onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setFieldTouched("textarea");
                         field.onBlur(e);
                       }}
@@ -134,7 +133,7 @@ export function AprovalsModal(props: AprovalsModalProps) {
                   )}
                 </Field>
               </Stack>
-              <Stack justifyContent="flex-end" margin="s200 s0">
+              <Stack justifyContent="flex-end" margin="16px 0">
                 <Button type="submit" disabled={isSubmitting}>
                   {buttonText}
                 </Button>

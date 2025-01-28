@@ -1,19 +1,17 @@
-import {
-  Stack,
-  useMediaQuery,
-  Blanket,
-  Text,
-  Button,
-  inube,
-  Select,
-} from "@inube/design-system";
-import { Icon } from "@inubekit/icon";
-import { Spinner } from "@inubekit/spinner";
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { useState, useEffect } from "react";
+
+import { Stack } from "@inubekit/stack";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Blanket } from "@inubekit/blanket";
+import { Text } from "@inubekit/text";
+import { Button } from "@inubekit/button";
+import { Select } from "@inubekit/select";
+import { Icon } from "@inubekit/icon";
+import { Spinner } from "@inubekit/spinner";
 
 import { IStaff } from "@services/types";
 import { get } from "@mocks/utils/dataMock.service";
@@ -30,14 +28,7 @@ export interface StaffModalProps {
 }
 
 export function StaffModal(props: StaffModalProps) {
-  const {
-    commercialManager,
-    analyst,
-    portalId = "portal",
-    onChange,
-    onSubmit,
-    onCloseModal,
-  } = props;
+  const { portalId = "portal", onSubmit, onCloseModal } = props;
 
   const [analystList, setAnalystList] = useState<IStaff[]>([]);
   const [accountManagerList, setAccountManagerList] = useState<IStaff[]>([]);
@@ -104,10 +95,12 @@ export function StaffModal(props: StaffModalProps) {
     analyst: analystList.map((official) => ({
       id: official.userId,
       label: official.userName,
+      value: official.userName,
     })),
     accountManager: accountManagerList.map((official) => ({
       id: official.userId,
       label: official.userName,
+      value: official.userName,
     })),
   };
 
@@ -119,7 +112,7 @@ export function StaffModal(props: StaffModalProps) {
             Gestor Comercial y Analista
           </Text>
           <StyledContainerClose onClick={onCloseModal}>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text>Cerrar</Text>
               <Icon
                 icon={<MdClear />}
@@ -144,17 +137,17 @@ export function StaffModal(props: StaffModalProps) {
               setSubmitting(false);
             }}
           >
-            {({ isSubmitting }) => (
+            {({ isSubmitting, setFieldValue, values }) => (
               <Form>
-                <Stack direction="column" gap={inube.spacing.s300}>
+                <Stack direction="column" gap="24px">
                   <Select
                     name="commercialManager"
                     id="commercialManager"
                     label="Gestor Comercial"
                     placeholder="Seleccione una opción"
                     options={options.accountManager}
-                    value={commercialManager}
-                    onChange={onChange("commercialManager")}
+                    onChange={(name, values) => setFieldValue(name, values)}
+                    value={values.commercialManager}
                     fullwidth
                   />
                   <Select
@@ -162,13 +155,13 @@ export function StaffModal(props: StaffModalProps) {
                     id="analyst"
                     label="Analista"
                     options={options.analyst}
-                    value={analyst}
+                    value={values.analyst}
                     placeholder="Seleccione una opción"
-                    onChange={onChange("analyst")}
+                    onChange={(name, value) => setFieldValue(name, value)}
                     fullwidth
                   />
                 </Stack>
-                <Stack justifyContent="flex-end" margin="s200 s0">
+                <Stack justifyContent="flex-end" margin="16px 0">
                   <Button type="submit" disabled={isSubmitting}>
                     Aceptar
                   </Button>

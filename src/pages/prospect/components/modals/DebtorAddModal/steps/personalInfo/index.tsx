@@ -10,14 +10,14 @@ import { Grid } from "@inubekit/grid";
 import {
   handleChangeWithCurrency,
   validateCurrencyField,
-} from "@src/utils/formatData/currency";
+} from "@utils/formatData/currency";
 
 import { IAddBorrowed } from "./types";
 import {
   MockTipeOfDocument,
   MockTipeOfFamily,
   MockTipeOfSex,
-} from "@src/mocks/filing-application/add-borrower/addborrower.mock";
+} from "@mocks/filing-application/add-borrower/addborrower.mock";
 import { dataAddModal } from "./config";
 
 export interface IAddBorrowedProps {

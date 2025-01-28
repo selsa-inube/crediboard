@@ -394,3 +394,8 @@ export interface IMakeDecisionsCreditRequest {
   humanDecision: string;
   justification: string;
 }
+
+export interface IUserSteps {
+  id: number,
+  intermediateSteps: number[],
+}

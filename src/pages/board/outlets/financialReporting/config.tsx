@@ -1,7 +1,7 @@
 import { MdAddCircleOutline } from "react-icons/md";
 
 import { IOptionButtons } from "@components/modals/ListModal";
-import { addItem } from "@src/mocks/utils/dataMock.service";
+import { addItem } from "@mocks/utils/dataMock.service";
 
 type Observer<T> = (data: T) => void;
 

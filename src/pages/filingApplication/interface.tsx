@@ -69,7 +69,6 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             size={isMobile ? "small" : "large"}
           />
         </StyledContainerAssisted>
-
         {currentStepsNumber &&
           currentStepsNumber.id ===
             stepsFilingApplication.generalInformation.id && (
