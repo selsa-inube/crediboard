@@ -2,6 +2,8 @@ import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
 
+import { MdCancel, MdOutlineManageAccounts, MdAdd } from "react-icons/md";
+import { GeneralHeader } from "@pages/addProspect/components/GeneralHeader/";
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
@@ -42,7 +44,16 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
     setIsCurrentFormValid,
   } = props;
 
-  return (
+  return (<>
+    <GeneralHeader
+      buttonText="Agregar vinculación"
+      iconbonding={<MdAdd />}
+      iconbutton={<MdOutlineManageAccounts />}
+      iconstate={<MdCancel />}
+      name="José Manuel Hernández Díaz"
+      profileImageUrl="https://s3-alpha-sig.figma.com/img/27d0/10fa/3d2630d7b4cf8d8135968f727bd6d965?Expires=1737936000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=h5lEzRE3Uk8fW5GT2LOd5m8eC6TYIJEH84ZLfY7WyFqMx-zv8TC1yzz-OV9FCH9veCgWZ5eBfKi4t0YrdpoWZriy4E1Ic2odZiUbH9uQrHkpxLjFwcMI2VJbWzTXKon-HkgvkcCnKFzMFv3BwmCqd34wNDkLlyDrFSjBbXdGj9NZWS0P3pf8PDWZe67ND1kropkpGAWmRp-qf9Sp4QTJW-7Wcyg1KPRy8G-joR0lsQD86zW6G6iJ7PuNHC8Pq3t7Jnod4tEipN~OkBI8cowG7V5pmY41GSjBolrBWp2ls4Bf-Vr1BKdzSqVvivSTQMYCi8YbRy7ejJo9-ZNVCbaxRg__"
+      state="Inactivo"
+    />
     <Stack
       direction="column"
       alignItems={isMobile ? "normal" : "center"}
@@ -71,12 +82,12 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
         </StyledContainerAssisted>
         {currentStepsNumber &&
           currentStepsNumber.id ===
-            stepsFilingApplication.generalInformation.id && (
+          stepsFilingApplication.generalInformation.id && (
             <RequirementsNotMet isMobile={isMobile} />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-            stepsFilingApplication.contactInformation.id && (
+          stepsFilingApplication.contactInformation.id && (
             <ContactInformation
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
@@ -99,7 +110,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-            stepsFilingApplication.propertyOffered.id && (
+          stepsFilingApplication.propertyOffered.id && (
             <PropertyOffered
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
@@ -111,7 +122,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-            stepsFilingApplication.vehicleOffered.id && (
+          stepsFilingApplication.vehicleOffered.id && (
             <VehicleOffered
               isMobile={isMobile}
               onFormValid={setIsCurrentFormValid}
@@ -131,7 +142,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id ===
-            stepsFilingApplication.attachedDocuments.id && (
+          stepsFilingApplication.attachedDocuments.id && (
             <AttachedDocuments isMobile={isMobile} />
           )}
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
@@ -151,5 +162,6 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
         </Stack>
       </Stack>
     </Stack>
+  </>
   );
 }

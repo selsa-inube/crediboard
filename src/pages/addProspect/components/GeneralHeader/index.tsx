@@ -2,7 +2,8 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Button } from "@inubekit/button";
-import { useState } from "react";
+// import { useState } from "react";
+import { useMediaQuery } from "@inubekit/hooks";
 import { StyledContainerGeneralHeader, StyledPerfil } from "./styles";
 
 export interface IGeneralHeaderProps {
@@ -14,11 +15,13 @@ export interface IGeneralHeaderProps {
     iconbonding?: React.JSX.Element;
     buttonText?: string;
     isMobile?: boolean;
+    showButton?: boolean;
     onClickIcon?: () => void;
     onClickButton?: () => void;
 }
 
 export function GeneralHeader(props: IGeneralHeaderProps) {
+    const isMobileQuery = useMediaQuery("(max-width: 360px)");
     const { profileImageUrl,
         name,
         state,
@@ -26,16 +29,19 @@ export function GeneralHeader(props: IGeneralHeaderProps) {
         iconbutton,
         iconbonding,
         buttonText,
+        showButton = true,
         onClickIcon,
-        onClickButton
+        onClickButton,
+        isMobile: isMobileProp,
     } = props;
-    const [showButton] = useState(false);
+    const isMobile = isMobileProp ?? isMobileQuery;
     return (
         <StyledContainerGeneralHeader>
             <Stack
                 justifyContent="space-between"
                 alignItems="center"
                 padding="6px "
+                direction={!isMobile ? "row" : "column"}
             >
                 <Stack gap="12px" alignItems="center">
                     <StyledPerfil src={profileImageUrl} alt="imagen perfil" />
@@ -75,7 +81,7 @@ export function GeneralHeader(props: IGeneralHeaderProps) {
                     )}
                 </Stack>
                 {showButton && (
-                    <Stack justifyContent="space-between" alignItems="end" padding="0px 6px">
+                    <Stack justifyContent="space-between" alignItems="end" padding={isMobile ? "6px 0 0 0" : "0 6px"}>
                         <Button
                             children={buttonText}
                             onClick={onClickButton}

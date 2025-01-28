@@ -24,6 +24,11 @@ const generalHeader: Meta<typeof GeneralHeader> = {
             control: { type: "text" },
             description: "button text",
         },
+        showButton: {
+            control: { type: "boolean" },
+            description: "Controls whether the button is displayed",
+        },
+
     },
 };
 
@@ -36,6 +41,7 @@ export const Default: Story = {
         iconbutton: <MdOutlineManageAccounts />,
         iconbonding: <MdAdd />,
         buttonText: "Agregar vinculación",
+        showButton: true,
     },
 };
 

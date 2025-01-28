@@ -4,7 +4,7 @@ export const StyledContainerGeneralHeader = styled.div`
   border-radius: 4px;
   box-shadow: 0px 1px 3px 1px #00000026;
   box-shadow: 0px 1px 2px 0px #0000004D;
-  width: 100%;
+  margin: 8px 16px;
 `;
 export const StyledPerfil = styled.img`
 width: 34px;
