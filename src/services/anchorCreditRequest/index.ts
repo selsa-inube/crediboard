@@ -3,7 +3,6 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-//import { ICreditRequestPinned } from "@services/types";
 
 export const ChangeAnchorToCreditRequest = async (
   creditRequestId: string | undefined,

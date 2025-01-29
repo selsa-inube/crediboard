@@ -1,8 +1,5 @@
 import { TableBoard } from "@components/data/TableBoard";
-import {
-  Accordion,
-  type IAccordionProps,
-} from "@src/components/data/Accordion";
+import { Accordion, type IAccordionProps } from "@components/data/Accordion";
 import {
   entriesCommercialManagement,
   titlesCommercialManagement,

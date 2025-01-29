@@ -4,7 +4,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { ICreditRequest } from "@services/types";
 import { getCreditRequestPin } from "@services/isPinned";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
-import { ChangeAnchorToCreditRequest } from "@src/services/anchorCreditRequest";
+import { ChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
 import { AppContext } from "@context/AppContext/AppContext";
 
 import { BoardLayoutUI } from "./interface";

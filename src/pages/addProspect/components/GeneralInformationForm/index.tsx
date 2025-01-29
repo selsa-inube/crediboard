@@ -1,11 +1,11 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { FormikProps, useFormik } from "formik";
-
 import * as Yup from "yup";
+
 import { validationMessages } from "@validations/validationMessages";
-import { IMessageState } from "@src/pages/addProspect/types/forms.types";
-import { generalMessage } from "@src/pages/addProspect/config/messages.config";
-import { IHandleUpdateDataSwitchstep } from "@src/pages/addProspect/types";
+import { IMessageState } from "@pages/addProspect/types/forms.types";
+import { generalMessage } from "@pages/addProspect/config/messages.config";
+import { IHandleUpdateDataSwitchstep } from "@pages/addProspect/types";
 
 import { GeneralInformationFormUI } from "./interface";
 

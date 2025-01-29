@@ -18,7 +18,7 @@ import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
-import { getSearchDecisionById } from "@src/services/todo/SearchDecisionById";
+import { getSearchDecisionById } from "@services/todo/SearchDecisionById";
 
 import { StaffModal } from "./StaffModal";
 import { errorMessagge, txtLabels, txtLabelsNoData } from "./config";

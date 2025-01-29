@@ -1,10 +1,10 @@
 import { FormikValues } from "formik";
-
 import { Grid } from "@inubekit/grid";
 import { Textfield } from "@inubekit/textfield";
+
 import { RenderMessage } from "@components/feedback/RenderMessage";
 import { FormButtons } from "@components/forms/submit/FormButtons";
-import { IMessageState } from "@src/pages/addProspect/types/forms.types";
+import { IMessageState } from "@pages/addProspect/types/forms.types";
 
 import { IGeneralInformationEntry } from ".";
 
@@ -54,8 +54,8 @@ export function GeneralInformationFormUI(props: GeneralInformationFormUIProps) {
             size="compact"
             fullwidth
             message={
-              stateValue(formik, "abbreviated_name") === "invalid"
-                && formik.errors.abbreviated_name
+              stateValue(formik, "abbreviated_name") === "invalid" &&
+              formik.errors.abbreviated_name
             }
             status={stateValue(formik, "abbreviated_name")}
             onBlur={formik.handleBlur}
