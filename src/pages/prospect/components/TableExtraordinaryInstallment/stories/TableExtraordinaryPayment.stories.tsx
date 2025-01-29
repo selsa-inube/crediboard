@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { IExtraordinaryPayment } from "@services/types";
-import { TableExtraordinaryInstallment } from "..";
 import { props } from "./props";
+import { TableExtraordinaryInstallment } from "..";
 
 type Story = StoryObj<typeof TableExtraordinaryInstallment>;
 
