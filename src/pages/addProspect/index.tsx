@@ -1,6 +1,5 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FormikProps } from "formik";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { ListModal } from "@components/modals/ListModal";
@@ -8,9 +7,8 @@ import { Consulting } from "@components/modals/Consulting";
 import { income } from "@mocks/add-prospect/income/income.mock";
 
 import { IMessageState } from "./types/forms.types";
-import { IGeneralInformationEntry } from "./components/GeneralInformationForm";
 import { stepsAddProspect } from "./config/addProspect.config";
-import { FormData, IFormAddPositionRef } from "./types";
+import { FormData } from "./types";
 import { AddProspectUI } from "./interface";
 
 export function AddProspect() {
@@ -97,13 +95,6 @@ export function AddProspect() {
   const currentStepsNumber = steps.find(
     (step: { number: number }) => step.number === currentStep
   );
-
-  const generalInformationRef =
-    useRef<FormikProps<IGeneralInformationEntry>>(null);
-
-  const formReferences: IFormAddPositionRef = {
-    generalInformation: generalInformationRef,
-  };
 
   const handleNextStep = () => {
     const { togglesState } = formData;
@@ -196,7 +187,6 @@ export function AddProspect() {
         steps={steps}
         currentStep={currentStep}
         isCurrentFormValid={isCurrentFormValid}
-        formReferences={formReferences}
         message={message}
         setIsCurrentFormValid={setIsCurrentFormValid}
         handleNextStep={handleNextStep}

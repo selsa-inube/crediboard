@@ -1,4 +1,4 @@
-import { Stack } from "@inube/design-system";
+import { Stack } from "@inubekit/stack";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";

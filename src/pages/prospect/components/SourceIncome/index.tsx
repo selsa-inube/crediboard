@@ -1,5 +1,5 @@
+import { useState } from "react";
 import { MdCached } from "react-icons/md";
-
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -7,7 +7,9 @@ import { Grid } from "@inubekit/grid";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
 
-import { CardBorrower } from "@components/cards/CardBorrower";
+import { incomeCardData } from "@components/cards/IncomeCard/config";
+import { ListModal } from "@components/modals/ListModal";
+import { CardGray } from "@components/cards/CardGray";
 import { currencyFormat } from "@utils/formatData/currency";
 
 import { IncomeEmployment, IncomeCapital, MicroBusinesses } from "./config";
@@ -33,6 +35,8 @@ interface ISourceIncomeProps {
 
 export function SourceIncome(props: ISourceIncomeProps) {
   const { form, onChange, options, ShowSupport, onlyDebtor } = props;
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const handleFieldChange = (
     fields: string[],
@@ -92,8 +96,8 @@ export function SourceIncome(props: ISourceIncomeProps) {
             )}
             {onlyDebtor && !isMobile && (
               <Stack direction="column" gap="8px">
-                <Text type="body" size="small" weight="bold" appearance="gray">
-                  Deudor
+                <Text type="body" size="small" weight="bold" appearance="dark">
+                  {incomeCardData.borrower}
                 </Text>
                 <Text type="title" size="medium">
                   {form.borrower}
@@ -101,7 +105,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
               </Stack>
             )}
             {onlyDebtor && isMobile && (
-              <CardBorrower label="Deudor" placeHolder={form.borrower} />
+              <CardGray label="Deudor" placeHolder={form.borrower} />
             )}
             <Stack
               width={!isMobile ? "end" : "auto"}
@@ -118,7 +122,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
                 {currencyFormat(totalSum())}
               </Text>
               <Text size="small" appearance="gray" weight="normal">
-                Total ingresos mensuales.
+                {incomeCardData.income}
               </Text>
             </Stack>
             {onlyDebtor && (
@@ -127,8 +131,9 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   variant="outlined"
                   iconBefore={<MdCached />}
                   fullwidth={isMobile}
+                  onClick={() => setIsOpenModal(true)}
                 >
-                  Restablecer
+                  {incomeCardData.restore}
                 </Button>
               </Stack>
             )}
@@ -183,6 +188,17 @@ export function SourceIncome(props: ISourceIncomeProps) {
           </Grid>
         </Stack>
       </Stack>
+      {isOpenModal && (
+        <ListModal
+          title={incomeCardData.restore}
+          handleClose={() => setIsOpenModal(false)}
+          handleSubmit={() => setIsOpenModal(false)}
+          cancelButton="Cancelar"
+          appearanceCancel="gray"
+          buttonLabel={incomeCardData.restore}
+          content={incomeCardData.description}
+        />
+      )}
     </StyledContainer>
   );
 }

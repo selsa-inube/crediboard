@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inube/design-system";
-
+import { inube } from "@inubekit/foundations";
 interface IStyledModal {
   $smallScreen: boolean;
 }
@@ -10,14 +9,12 @@ export const StyledModal = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
   max-height: ${({ $smallScreen }) => ($smallScreen ? "398px" : "382px")};
-  width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "493px")};
+  width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "430px")};
   background-color: ${({ theme }) =>
-    theme.color?.surface?.light?.clear || inube.color.surface.light.clear};
-  padding: ${({ $smallScreen }) =>
-    $smallScreen ? inube.spacing.s200 : inube.spacing.s300};
-  gap: ${({ $smallScreen }) =>
-    $smallScreen ? inube.spacing.s200 : inube.spacing.s300};
-  border-radius: ${inube.spacing.s100};
+    theme.color?.surface?.light?.clear || inube.palette.neutral.N0};
+  padding: ${({ $smallScreen }) => ($smallScreen ? "16px" : "24px")};
+  gap: ${({ $smallScreen }) => ($smallScreen ? "16px" : "24px")};
+  border-radius: 8px;
 `;
 export const StyledContainerContent = styled.div<IStyledModal>`
   display: flex;
@@ -38,7 +35,7 @@ export const StyledContainerContent = styled.div<IStyledModal>`
     }
     &::-webkit-scrollbar-thumb {
       background-color: ${
-        theme?.color?.surface?.gray?.regular || inube.color.surface.gray.regular
+        theme?.color?.surface?.gray?.regular || inube.palette.neutral.N30
       };
       border-radius: 8px;
     }
@@ -47,11 +44,4 @@ export const StyledContainerContent = styled.div<IStyledModal>`
 
 export const StyledContainerClose = styled.div`
   cursor: pointer;
-`;
-
-export const StyledContainerTitle = styled.div`
-  display: flex;
-  margin: 0px;
-  padding: 0px;
-  justify-content: space-between;
 `;

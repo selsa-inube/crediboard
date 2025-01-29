@@ -1,16 +1,36 @@
-import { Meta } from "@storybook/react";
+import { BrowserRouter } from "react-router-dom";
+import { Meta, StoryObj } from "@storybook/react";
 
-import { BusinessUnitChange } from "@components/inputs/BusinessUnitChange";
 import { clientsDataMock } from "@mocks/login/clients.mock";
 
-const meta: Meta<typeof BusinessUnitChange> = {
-  title: "components/inputs/BusinessUnitChange",
+import { BusinessUnitChange } from ".";
+
+type Story = StoryObj<typeof BusinessUnitChange>;
+
+const businessUnitChange: Meta<typeof BusinessUnitChange> = {
   component: BusinessUnitChange,
+  title: "components/inputs/BusinessUnitChange",
+  argTypes: {
+    clients: {
+      control: {
+        type: "object",
+      },
+      description: "entities",
+    },
+  },
+  decorators: [
+    (Story) => (
+      <BrowserRouter>
+        <Story />
+      </BrowserRouter>
+    ),
+  ],
 };
 
-const Default = () => {
-  return <BusinessUnitChange clients={clientsDataMock} />;
+export const Default: Story = {
+  args: {
+    clients: clientsDataMock,
+  },
 };
 
-export { Default };
-export default meta;
+export default businessUnitChange;

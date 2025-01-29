@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import { Button } from "@inube/design-system";
+import { Button } from "@inubekit/button";
 
 import { IExtraordinaryPayment } from "@services/types";
-
-import { parameters, props } from "./props";
 import { ExtraordinaryPaymentModalProps, ExtraordinaryPaymentModal } from "..";
+import { parameters, props } from "./props";
 
 const meta: Meta<typeof ExtraordinaryPaymentModal> = {
   title: "pages/propect/components/ExtraordinaryPaymentModal",

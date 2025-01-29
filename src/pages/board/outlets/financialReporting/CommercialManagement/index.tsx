@@ -41,8 +41,9 @@ import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInsta
 import { addCreditProduct } from "@mocks/utils/addCreditProductMock.service";
 import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
+import { DisbursementModal } from "@components/modals/DisbursementModal";
 
-import { menuOptions, incomeOptions } from "./config/config";
+import { menuOptions, incomeOptions, tittleOptions } from "./config/config";
 import {
   StyledCollapseIcon,
   StyledFieldset,
@@ -193,7 +194,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               <Stack>
                 <Stack gap="6px" width="max-content">
                   <Text type="title" size="small" appearance="gray">
-                    No. Rad.:
+                    {tittleOptions.titleCreditId}
                   </Text>
                   <Text type="title" size="small">
                     {data.creditRequestCode}
@@ -222,7 +223,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               )}
               <Stack gap={!isMobile ? "4px" : "4px"}>
                 <Text type="title" size="small" appearance="gray">
-                  Destino:
+                  {tittleOptions.titleDestination}
                 </Text>
                 <Text type="title" size="small">
                   {data.clientName &&
@@ -233,7 +234,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               </Stack>
               <Stack gap="4px">
                 <Text type="title" size="small" appearance="gray">
-                  Valor:
+                  {tittleOptions.tittleAmount}
                 </Text>
                 <Text type="title" size="small">
                   {data.loanAmount === 0
@@ -256,13 +257,23 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             <Stack gap="2px">
               {!isMobile && (
                 <>
-                  <Button
-                    type="link"
-                    spacing="compact"
-                    path={`/extended-card/${id}/credit-profile`}
-                  >
-                    Ver perfil crediticio
-                  </Button>
+                  <Stack gap="16px">
+                    <Button
+                      type="link"
+                      spacing="compact"
+                      path={`/extended-card/${id}/credit-profile`}
+                    >
+                      {tittleOptions.titleProfile}
+                    </Button>
+                    <Button
+                      type="button"
+                      spacing="compact"
+                      variant="outlined"
+                      onClick={() => handleOpenModal("disbursementModal")}
+                    >
+                      {tittleOptions.titleDisbursement}
+                    </Button>
+                  </Stack>
                   <StyledVerticalDivider />
                   <Icon
                     icon={<MdOutlinePhone />}
@@ -290,14 +301,25 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             </Stack>
           </Stack>
           {isMobile && (
-            <Button
-              type="link"
-              spacing="compact"
-              path={`/extended-card/${id}/credit-profile`}
-              fullwidth
-            >
-              Ver perfil crediticio
-            </Button>
+            <>
+              <Button
+                type="link"
+                spacing="compact"
+                path={`/extended-card/${id}/credit-profile`}
+                fullwidth
+              >
+                {tittleOptions.titleProfile}
+              </Button>
+              <Button
+                type="button"
+                spacing="compact"
+                variant="outlined"
+                onClick={() => handleOpenModal("disbursementModal")}
+                fullwidth
+              >
+                {tittleOptions.titleDisbursement}
+              </Button>
+            </>
           )}
           {isMobile && (
             <Stack gap="16px" padding="12px 0px 12px 0px">
@@ -308,7 +330,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   fullwidth
                   iconBefore={<MdOutlinePhone />}
                 >
-                  Llamada
+                  {tittleOptions.titleCall}
                 </Button>
               )}
               {isMobile && (
@@ -318,7 +340,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   fullwidth
                   iconBefore={<MdOutlineVideocam />}
                 >
-                  Videollamada
+                  {tittleOptions.titleVideoCall}
                 </Button>
               )}
             </Stack>
@@ -342,7 +364,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       />
                     }
                   >
-                    Agregar producto
+                    {tittleOptions.titleAddProduct}
                   </Button>
                 </Stack>
               )}
@@ -369,7 +391,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       }
                       onClick={() => handleOpenModal("extraPayments")}
                     >
-                      Pagos extras
+                      {tittleOptions.titleExtraPayments}
                     </Button>
                   )}
                 </Stack>
@@ -435,7 +457,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     }
                     onClick={() => handleOpenModal("editProductModal")}
                   >
-                    Agregar producto
+                    {tittleOptions.titleAddProduct}
                   </Button>
                   {prospectProducts?.ordinary_installment_for_principal && (
                     <Button
@@ -453,7 +475,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       }
                       onClick={() => handleOpenModal("extraPayments")}
                     >
-                      Pagos extras
+                      {tittleOptions.titleExtraPayments}
                     </Button>
                   )}
 
@@ -581,6 +603,13 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {currentModal === "extraPayments" && (
           <ExtraordinaryPaymentModal
             dataTable={extraordinaryInstallmentMock}
+            portalId="portal"
+            handleClose={handleCloseModal}
+          />
+        )}
+        {currentModal === "disbursementModal" && (
+          <DisbursementModal
+            isMobile={isMobile}
             portalId="portal"
             handleClose={handleCloseModal}
           />

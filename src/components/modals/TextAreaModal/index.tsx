@@ -1,9 +1,9 @@
 import { createPortal } from "react-dom";
+import { MdClear } from "react-icons/md";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import { MdClear } from "react-icons/md";
 
-import { Textarea } from "@inube/design-system";
+import { Textarea } from "@inubekit/textarea";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -44,7 +44,6 @@ export function TextAreaModal(props: TextAreaModalProps) {
     onSubmit,
     onCloseModal,
     readOnly = false,
-    hideCharCount = false,
     disableTextarea = false,
     secondaryButtonText = "Cancelar",
     onSecondaryButtonClick,
@@ -104,6 +103,7 @@ export function TextAreaModal(props: TextAreaModalProps) {
                 {({ field, form: { setFieldTouched } }: FieldProps) => (
                   <Textarea
                     {...field}
+                    id="textarea"
                     label={inputLabel}
                     placeholder={inputPlaceholder}
                     maxLength={maxLength}
@@ -116,10 +116,8 @@ export function TextAreaModal(props: TextAreaModalProps) {
                       touched.textarea && errors.textarea ? errors.textarea : ""
                     }
                     fullwidth
-                    readOnly={readOnly}
-                    hideCharCount={hideCharCount}
                     disabled={disableTextarea}
-                    onBlur={(e: React.FocusEvent<HTMLTextAreaElement>) => {
+                    onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setFieldTouched("textarea");
                       field.onBlur(e);
                     }}

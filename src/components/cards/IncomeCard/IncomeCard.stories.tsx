@@ -1,44 +1,71 @@
-import { action } from "@storybook/addon-actions";
-import { IncomeCard, IIncomeCardProps } from "./index";
+import { Meta, StoryObj } from "@storybook/react";
 
-const story = {
-  components: [IncomeCard],
-  title: "components/Cards/IncomeCard",
+import { IncomeCard } from "./index";
+
+type Story = StoryObj<typeof IncomeCard>;
+
+const incomeCard: Meta<typeof IncomeCard> = {
+  component: IncomeCard,
+  title: "components/cards/IncomeCard",
   argTypes: {
     title: {
-      control: { type: "text" },
-      description: "Título del IncomeCard.",
+      control: {
+        type: "text",
+      },
+      description: "Title of the component.",
     },
     labels: {
-      control: { type: "array" },
-      description: "Etiquetas para cada campo de entrada.",
+      control: {
+        type: "object",
+      },
+      description:
+        "An array of labels that are displayed next to the textfields.",
     },
     placeholders: {
-      control: { type: "array" },
-      description: "Placeholder para cada campo de entrada.",
+      control: {
+        type: "object",
+      },
+      description:
+        "An array of placeholder texts displayed inside each textfield,",
     },
     values: {
-      control: { type: "array" },
-      description: "Valores iniciales de los campos de entrada.",
+      control: {
+        type: "object",
+      },
+      description: "An array of values that will be shown in the textfields.",
     },
     onChange: {
-      action: "onChange",
-      description: "Función llamada cuando el valor de un campo cambia.",
+      control: {
+        type: "object",
+      },
+      description:
+        "A callback function that is triggered when the value of a field changes. It receives the field index and the new value as parameters.",
+    },
+    ShowSupport: {
+      control: {
+        type: "boolean",
+      },
+      description: "Defines whether to display the support.",
     },
   },
 };
 
-const Default = (args: IIncomeCardProps) => <IncomeCard {...args} />;
+export const Default: Story = {
+  args: {
+    title: "Otros ingresos variables",
+    labels: [
+      "Salario mensual",
+      "Otros pagos mensuales (No salariales)",
+      "Mesadas pensionales",
+    ],
+    placeholders: [
+      "Salario percibido/mes",
+      "Subsidios, utilidades, propinas, etc.",
+      "Pensión/mes",
+    ],
+    values: ["1300000", "240000", "100000"],
+    ShowSupport: true,
+  },
+};
 
-Default.args = {
-  title: "Ingreso Mensual",
-  labels: ["Salario", "Alquiler", "Otros"],
-  placeholders: ["Ej: 3000", "Ej: 1200", "Ej: 500"],
-  values: ["", "", ""],
-  onChange: (index: number, newValue: string) =>
-    action("onChange")(index, newValue),
-} satisfies IIncomeCardProps;
-
-export default story;
-
-export { Default };
+export default incomeCard;

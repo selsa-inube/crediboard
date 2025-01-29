@@ -7,13 +7,7 @@ import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInsta
 import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
 import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
-import {
-  FormData,
-  IFormAddPositionRef,
-  IStep,
-  StepDetails,
-  titleButtonTextAssited,
-} from "./types";
+import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { LoanAmount } from "./steps/loanAmount";
@@ -29,7 +23,6 @@ interface AddPositionUIProps {
   currentStep: number;
   steps: IStep[];
   isCurrentFormValid: boolean;
-  formReferences: IFormAddPositionRef;
   message: IMessageState;
   setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;
   handleNextStep: () => void;
@@ -76,7 +69,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
       alignItems={isMobile ? "normal" : "center"}
       margin="20px 0px"
       padding="24px"
-      height={isMobile ? "2000px" : "100%"}
+      height={isMobile ? "2000px" : "150%"}
     >
       <Stack
         gap="24px"
@@ -99,7 +92,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
         </StyledContainerAssisted>
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.generalInformation.id && (
-            <RequirementsNotMet isMobile={isMobile}  />
+            <RequirementsNotMet isMobile={isMobile} />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.destination.id && (
@@ -166,7 +159,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {currentStepsNumber &&
           currentStepsNumber.id ===
             stepsAddProspect.obligationsFinancial.id && (
-            <ObligationsFinancial isMobile={isMobile}  />
+            <ObligationsFinancial isMobile={isMobile} />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddProspect.loanConditions.id && (

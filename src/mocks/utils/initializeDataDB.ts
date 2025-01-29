@@ -20,10 +20,12 @@ import { mockDecisions } from "@mocks/financialReporting/to-do/decisions.mock";
 import { mockMoneyDestinations } from "@mocks/add-prospect/money-destinations/moneydestinations.mock";
 import { mockPaymentChannel } from "@mocks/add-prospect/payment-channel/paymentchannel.mock";
 import { mockExtraDebtors } from "@mocks/add-prospect/extra-debtors/extradebtors.mock";
+import { mockFinancialObligation } from "@mocks/add-prospect/financial-obligation/financialobligation.mock";
 import {
   mockRangeRequeredByTheBusinessUnit,
   mockRiskScoring,
 } from "@mocks/credit-profile/risk-scoring/riskScoring.mock";
+import { mockAttachedDocuments } from "@mocks/filing-application/attached-documents/attacheddocuments.mock";
 import { IRiskScoring } from "@services/types";
 
 import {
@@ -36,6 +38,7 @@ import {
   traceMock,
   requirementsMock,
 } from "./importDataDb";
+import { userStepsMock } from "../filing-application/userSteps/users.mock";
 
 export function initializeDataDB(company: string) {
   localforage.clear();
@@ -91,5 +94,8 @@ export function initializeDataDB(company: string) {
   intializedData("decisions", mockDecisions);
   intializedData("money_destinations", mockMoneyDestinations);
   intializedData("mockRequest_value", mockPaymentChannel);
+  intializedData("financial_obligation", mockFinancialObligation);
   intializedData("extra_debtors", mockExtraDebtors);
+  intializedData("attached_documents", mockAttachedDocuments);
+  intializedData("user_steps", userStepsMock);
 }

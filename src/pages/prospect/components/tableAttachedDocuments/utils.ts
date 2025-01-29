@@ -1,10 +1,11 @@
-import { useState, useMemo } from "react";
-import { IPosition } from "@pages/addProspect/types";
+import { useState } from "react";
+import { mockAttachedDocuments } from "@mocks/filing-application/attached-documents/attacheddocuments.mock";
 
-const usePagination = (data: IPosition[], pagerecord: number) => {
-  const pageLength = pagerecord;
+export const usePagination = () => {
   const [currentPage, setCurrentPage] = useState(0);
-  const totalRecords = data.length;
+
+  const pageLength = 5;
+  const totalRecords = mockAttachedDocuments.length;
   const totalPages = Math.ceil(totalRecords / pageLength);
 
   const handleStartPage = () => setCurrentPage(0);
@@ -16,12 +17,14 @@ const usePagination = (data: IPosition[], pagerecord: number) => {
   const firstEntryInPage = currentPage * pageLength;
   const lastEntryInPage = Math.min(firstEntryInPage + pageLength, totalRecords);
 
-  const paginatedData = useMemo(() => {
-    return data.slice(firstEntryInPage, lastEntryInPage);
-  }, [data, firstEntryInPage, lastEntryInPage]);
+  const currentData = mockAttachedDocuments.slice(
+    firstEntryInPage,
+    lastEntryInPage
+  );
 
   return {
     currentPage,
+    totalRecords,
     totalPages,
     handleStartPage,
     handlePrevPage,
@@ -29,8 +32,6 @@ const usePagination = (data: IPosition[], pagerecord: number) => {
     handleEndPage,
     firstEntryInPage,
     lastEntryInPage,
-    paginatedData,
+    currentData,
   };
 };
-
-export { usePagination };
