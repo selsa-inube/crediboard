@@ -18,7 +18,7 @@ interface IUnfulfilledRequirementsProps {
 export const UnfulfilledRequirements = (
   props: IUnfulfilledRequirementsProps
 ) => {
-  const { title = "", requirement, causeNonCompliance, isMobile } = props;
+  const { title, requirement, causeNonCompliance, isMobile } = props;
   return (
     <Fieldset title={title} isMobile={isMobile}>
       <Stack direction="column" gap="16px" padding="0 16px">
