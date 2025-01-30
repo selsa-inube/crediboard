@@ -1,15 +1,20 @@
 import { useState } from "react";
+import { MdAdd } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import { Grid } from "@inubekit/grid";
 import { Button } from "@inubekit/button";
+import { Stack } from "@inubekit/stack";
 
+import { CardBorrower } from "@components/cards/CardBorrower";
+import { NewCardBorrower } from "@components/cards/CardBorrower/newCard";
 import { Fieldset } from "@components/data/Fieldset";
-import { NewBorrowerModal } from "@pages/prospect/components/cardNewBorrower";
-import { AddBorrower } from "@pages/prospect/components/modals/AddBorrower";
+import { DeleteModal } from "@components/modals/DeleteModal";
+import { DebtorAddModal } from "@pages/prospect/components/modals/DebtorAddModal";
+import { DebtorDetailsModal } from "@pages/prospect/components/modals/DebtorDetailsModal";
+import { DebtorEditModal } from "@pages/prospect/components/modals/DebtorEditModal";
+import { mockGuaranteeBorrower } from "@mocks/guarantee/offeredguarantee.mock";
 import { dataFillingApplication } from "@pages/filingApplication/config/config";
 import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
-
-import { borrowerData } from "./config";
 
 interface borrowersProps {
   isMobile: boolean;
@@ -29,9 +34,13 @@ interface borrowersProps {
     obligations: number;
   }) => void;
 }
-
 export function Borrowers(props: borrowersProps) {
   const { isMobile } = props;
+
+  const [isModalAdd, setIsModalAdd] = useState(false);
+  const [isModalView, setIsModalView] = useState(false);
+  const [isModalEdit, setIsModalEdit] = useState(false);
+  const [isModalDelete, setIsModalDelete] = useState(false);
 
   const { id } = useParams();
   const userId = parseInt(id || "0", 10);
@@ -44,38 +53,66 @@ export function Borrowers(props: borrowersProps) {
       userChoice === "borrowers" ? "borrowers" : "coBorrowers"
     ];
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
     <Fieldset>
-      <Button onClick={() => setIsModalOpen(true)}>{data.addButton}</Button>
-      <Grid
-        templateColumns={
-          isMobile ? "1fr" : `repeat(${borrowerData.length + 1}, 317px)`
-        }
-        autoRows="auto"
-        padding={isMobile ? "4px 10px" : "10px 16px"}
-        gap="20px"
-      >
-        {borrowerData.map((item, index) => (
-          <NewBorrowerModal
-            key={index}
-            title={`${data.borrowerLabel} ${index + 1}`}
-            name={item.name}
-            lastName={item.lastName}
-            email={item.email}
-            income={item.income}
-            obligations={item.obligations}
+      <Stack direction="column" padding="2px 10px" gap="20px">
+        <Stack justifyContent="end">
+          <Button onClick={() => setIsModalAdd(true)} iconBefore={<MdAdd />}>
+            {data.addButton}
+          </Button>
+        </Stack>
+        <Grid
+          templateColumns={
+            isMobile
+              ? "1fr"
+              : `repeat(${mockGuaranteeBorrower.length + 1}, 317px)`
+          }
+          autoRows="auto"
+          gap="20px"
+        >
+          {mockGuaranteeBorrower.map((item, index) => (
+            <CardBorrower
+              key={index}
+              title={data.borrowerLabel + ` ${index + 1}`}
+              name={item.name}
+              lastName={item.lastName}
+              email={item.email}
+              income={item.income}
+              obligations={item.obligations}
+              isMobile={isMobile}
+              handleView={() => setIsModalView(true)}
+              handleEdit={() => setIsModalEdit(true)}
+              handleDelete={() => setIsModalDelete(true)}
+            />
+          ))}
+          <NewCardBorrower
+            onClick={() => setIsModalAdd(true)}
+            isMobile={isMobile}
           />
-        ))}
-        <NewBorrowerModal hasData />
-        {isModalOpen && (
-          <AddBorrower
-            onSubmit={() => setIsModalOpen(false)}
-            onCloseModal={() => setIsModalOpen(false)}
-          />
-        )}
-      </Grid>
+          {isModalAdd && (
+            <DebtorAddModal
+              onSubmit={() => setIsModalAdd(false)}
+              handleClose={() => setIsModalAdd(false)}
+              title={data.addButton}
+            />
+          )}
+          {isModalView && (
+            <DebtorDetailsModal
+              handleClose={() => setIsModalView(false)}
+              isMobile={isMobile}
+            />
+          )}
+          {isModalDelete && (
+            <DeleteModal handleClose={() => setIsModalDelete(false)} />
+          )}
+          {isModalEdit && (
+            <DebtorEditModal
+              handleClose={() => setIsModalEdit(false)}
+              isMobile={isMobile}
+            />
+          )}
+        </Grid>
+      </Stack>
     </Fieldset>
   );
 }
