@@ -132,15 +132,12 @@ export function AddProspect() {
         : undefined,
       togglesState[2] ? stepsAddProspect.extraBorrowers.id : undefined,
       togglesState[1] ? stepsAddProspect.sourcesIncome.id : undefined,
+      togglesState[1] ? stepsAddProspect.obligationsFinancial.id : undefined,
       stepsAddProspect.loanConditions.id,
     ].filter((step): step is number => step !== undefined);
 
     const currentStepIndex = dynamicSteps.indexOf(currentStep);
 
-    if (currentStep === stepsAddProspect.obligationsFinancial.id) {
-      setCurrentStep(stepsAddProspect.sourcesIncome.id);
-      return;
-    }
     if (currentStepIndex > 0) {
       setCurrentStep(dynamicSteps[currentStepIndex - 1]);
     } else if (currentStepIndex === 0) {
