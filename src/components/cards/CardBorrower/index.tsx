@@ -43,7 +43,7 @@ export function CardBorrower(props: ICardBorrowerProps) {
   } = props;
 
   return (
-    <StyledContainer showIcons={showIcons} $isMobile={isMobile}>
+    <StyledContainer $showIcons={showIcons} $isMobile={isMobile}>
       <Stack direction="column" padding="10px 16px" gap="12px">
         <Stack gap="12px">
           <Icon icon={<MdOutlinePerson />} appearance="gray" size="24px" />

@@ -10,11 +10,11 @@ import { FormData } from "./types";
 interface DebtorAddModalProps {
   onSubmit: () => void;
   handleClose: () => void;
+  title: string;
   portalId?: string;
-  title?: string;
 }
 export function DebtorAddModal(props: DebtorAddModalProps) {
-  const { title = "", portalId, handleClose } = props;
+  const { title, portalId, handleClose } = props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {

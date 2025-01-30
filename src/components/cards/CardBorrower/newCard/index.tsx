@@ -15,7 +15,12 @@ export function NewCardBorrower(props: INewCardBorrowerProps) {
   const { onClick, isMobile } = props;
 
   return (
-    <StyledContainer $new={true} showIcons={true} onClick={onClick} $isMobile={isMobile}>
+    <StyledContainer
+      $new={true}
+      $showIcons={true}
+      onClick={onClick}
+      $isMobile={isMobile}
+    >
       <Stack direction="column" alignItems="center" justifyContent="center">
         <Icon icon={<MdAdd />} appearance={"gray"} size="40px" cursorHover />
         <Text type="title" size="medium" weight="bold" appearance="gray">

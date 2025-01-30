@@ -137,7 +137,7 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
                   {titleButtonTextAssited.goBackText}
                 </Button>
                 <Button onClick={handleNextStep} disabled={!isCurrentFormValid}>
-                  {currentStepsNumber === steps[3]
+                  {currentStepsNumber === steps[2]
                     ? titleButtonTextAssited.submitText
                     : titleButtonTextAssited.goNextText}
                 </Button>
