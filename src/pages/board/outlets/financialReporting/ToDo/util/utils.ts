@@ -1,17 +1,11 @@
-const getXAction = (executedTask: string, humanDecision: string): string => {
-  if (
-    executedTask === "ASESORAR_CLIENTE" &&
-    humanDecision === "VIABILIZAR_SOLICITUD"
-  ) {
+const getXAction = (humanDecision: string): string => {
+  if (humanDecision === "PREVIABILIZAR_SOLICITUD") {
     return "PrequalifyCreditRequest";
-  } else if (
-    executedTask === "VALIDAR_REQUISITOS" &&
-    humanDecision === "VIABILIZAR_SOLICITUD"
-  ) {
+  } else if (humanDecision === "VIABILIZAR_SOLICITUD") {
     return "MakeTheCreditRequestViable";
-  } else if (executedTask === "xx" && humanDecision === "xx") {
+  } else if (humanDecision === "xx") {
     return "";
-  } else if (executedTask === "" && humanDecision === "") {
+  } else if (humanDecision === "") {
     return "";
   }
   return "";

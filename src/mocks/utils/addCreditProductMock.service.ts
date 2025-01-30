@@ -1,8 +1,8 @@
 import localforage from "localforage";
 import { FormikValues } from "formik";
+
 import { Schedule } from "@services/enums";
-import { ICreditProductProspect } from "@services/types";
-import { IProspect } from "@services/types";
+import { ICreditProductProspect, IProspect } from "@services/types";
 
 export async function addCreditProduct(
   id: string,

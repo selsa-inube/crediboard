@@ -4,6 +4,7 @@ import {
   maxRetriesServices,
 } from "@config/environment";
 import { ICreditRequest } from "@services/types";
+
 import { mapCreditRequestToEntities } from "./mapper";
 
 export const getCreditRequestByCode = async (
