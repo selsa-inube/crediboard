@@ -4,15 +4,16 @@ import { Icon } from "@inubekit/icon";
 import { Button } from "@inubekit/button";
 // import { useState } from "react";
 import { useMediaQuery } from "@inubekit/hooks";
+// import { appearanceConfig } from "./config";
 import { StyledContainerGeneralHeader, StyledPerfil } from "./styles";
 
 export interface IGeneralHeaderProps {
     profileImageUrl: string;
     name: string;
-    state?: string;
-    iconstate?: React.JSX.Element;
-    iconbutton?: React.JSX.Element;
-    iconbonding?: React.JSX.Element;
+    descriptionStatus?: string;
+    iconState?: React.JSX.Element;
+    iconSettings?: React.JSX.Element;
+    iconButton?: React.JSX.Element;
     buttonText?: string;
     isMobile?: boolean;
     showButton?: boolean;
@@ -21,25 +22,24 @@ export interface IGeneralHeaderProps {
 }
 
 export function GeneralHeader(props: IGeneralHeaderProps) {
-    const isMobileQuery = useMediaQuery("(max-width: 360px)");
-    const { profileImageUrl,
+    const isMobile = useMediaQuery("(max-width: 460px)");
+    const {
+        profileImageUrl,
         name,
-        state,
-        iconstate,
-        iconbutton,
-        iconbonding,
+        descriptionStatus,
+        iconState,
+        iconSettings,
+        iconButton,
         buttonText,
-        showButton = true,
+        showButton,
         onClickIcon,
         onClickButton,
-        isMobile: isMobileProp,
     } = props;
-    const isMobile = isMobileProp ?? isMobileQuery;
     return (
         <StyledContainerGeneralHeader>
             <Stack
                 justifyContent="space-between"
-                alignItems="center"
+                alignItems={isMobile ? "flex-start" : "center"}
                 padding="6px "
                 direction={!isMobile ? "row" : "column"}
             >
@@ -57,12 +57,12 @@ export function GeneralHeader(props: IGeneralHeaderProps) {
 
                             <Icon
                                 size="12px"
-                                icon={iconstate}
+                                icon={iconState}
                                 appearance="danger"
                                 spacing="narrow"
                             />
-                            <Text type="label" size="small" appearance="danger">
-                                {state}
+                            <Text type="label" size="small" appearance="danger" weight="normal">
+                                {descriptionStatus}
                             </Text>
 
                         </Stack>
@@ -71,24 +71,26 @@ export function GeneralHeader(props: IGeneralHeaderProps) {
                         <Icon
                             onClick={onClickIcon}
                             appearance="primary"
-                            icon={iconbutton}
+                            icon={iconSettings}
                             cursorHover
                             spacing="narrow"
                             variant="outlined"
                             shape="rectangle"
                             size="22px"
+
                         />
                     )}
                 </Stack>
                 {showButton && (
-                    <Stack justifyContent="space-between" alignItems="end" padding={isMobile ? "6px 0 0 0" : "0 6px"}>
+                    <Stack justifyContent="space-between" alignItems="end" padding={isMobile ? "6px 0 0 0" : "0 6px"} width={isMobile ? "100%" : "auto"}>
                         <Button
                             children={buttonText}
                             onClick={onClickButton}
-                            iconBefore={iconbonding}
+                            iconBefore={iconButton}
                             variant="outlined"
                             appearance="primary"
                             spacing="compact"
+                            fullwidth={isMobile}
                         />
                     </Stack>
                 )}
