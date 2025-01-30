@@ -33,11 +33,14 @@ export function EditProspect() {
         <Fieldset>
           <Stack gap="16px" direction="column" padding="4px 16px">
             <Stack justifyContent="space-between" alignItems="center">
-              <Stack gap="8px">
+              <Stack
+                gap={isMobile ? "0" : "8px"}
+                direction={isMobile ? "column" : "row"}
+              >
                 <Text type="title" weight="bold" size="large" appearance="gray">
                   {dataEditProspect.creditProspect}
                 </Text>
-                <Text type="title" weight="bold" size="large">
+                <Text type="title" weight="bold" size="large" appearance="gray">
                   #{id}
                 </Text>
               </Stack>
@@ -53,24 +56,27 @@ export function EditProspect() {
               justifyContent="space-between"
               alignItems="center"
               direction={isMobile ? "column" : "row"}
+              gap="16px"
             >
-              <Stack gap="8px">
-                <Icon
-                  icon={<MdOutlineBeachAccess />}
-                  appearance="dark"
-                  size="28px"
-                />
-                <Stack direction="column" alignItems="center" gap="8px">
-                  <Text type="title" size="large">
-                    {data.choiceDestination}
-                  </Text>
-                  <Text type="body" size="small" appearance="gray">
-                    {dataEditProspect.destination}
-                  </Text>
+              <Stack gap="8px" direction="column" alignItems="center">
+                <Stack gap="8px">
+                  <Icon
+                    icon={<MdOutlineBeachAccess />}
+                    appearance="dark"
+                    size="28px"
+                  />
+                  <Stack direction="column" alignItems="center" gap="8px">
+                    <Text type="title" size="large">
+                      {data.choiceDestination}
+                    </Text>
+                  </Stack>
                 </Stack>
+                <Text type="body" size="small" appearance="gray">
+                  {dataEditProspect.destination}
+                </Text>
               </Stack>
               <Stack direction="column" alignItems="center" gap="8px">
-                <Text type="title" size="large">
+                <Text type="title" size="large" textAlign="center">
                   {data.name}
                 </Text>
                 <Text type="body" size="small" appearance="gray">
