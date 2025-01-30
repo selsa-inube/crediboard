@@ -5,9 +5,13 @@ import { Button } from "@inubekit/button";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 
 import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
-import { IMessageState } from "./types/forms.types";
 import { stepsAddProspect } from "./config/addProspect.config";
-import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
+import {
+  FormData,
+  IStep,
+  StepDetails,
+  titleButtonTextAssited,
+} from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { LoanAmount } from "./steps/loanAmount";
@@ -23,12 +27,10 @@ interface AddPositionUIProps {
   currentStep: number;
   steps: IStep[];
   isCurrentFormValid: boolean;
-  message: IMessageState;
   setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;
   handleNextStep: () => void;
   handlePreviousStep: () => void;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-  handleCloseSectionMessage: () => void;
   handleSubmitClick: () => void;
   currentStepsNumber?: StepDetails;
   formData: FormData;
