@@ -21,6 +21,7 @@ import {
 
 import { IAddBorrowedProps, FormState } from "./type";
 import {
+  dataPersonalInfo,
   TipeOfDocument,
   TipeOfFamily,
   TipeOfSex,
@@ -58,17 +59,15 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
   const isMobile = useMediaQuery("(max-width: 700px)");
 
   const validationSchema = Yup.object({
-    TipeOfDocument: Yup.string().required("Campo requerido"),
-    documentNumber: Yup.number().required("Número de documento requerido"),
-    firstName: Yup.string().required("Nombre requerido"),
-    lastName: Yup.string().required("Apellidos requeridos"),
-    email: Yup.string().email("Correo no válido").required("Correo requerido"),
-    phone: Yup.number().required("Número de teléfono requerido"),
-    sex: Yup.string().required("Campo requerido"),
-    age: Yup.number()
-      .min(0, "Debe ser mayor o igual a 0")
-      .required("Edad requerida"),
-    relation: Yup.string().required("Campo requerido"),
+    TipeOfDocument: Yup.string().required(""),
+    documentNumber: Yup.number().required(""),
+    firstName: Yup.string().required(""),
+    lastName: Yup.string().required(""),
+    email: Yup.string().email("").required(""),
+    phone: Yup.number().required(""),
+    sex: Yup.string().required(""),
+    age: Yup.number().min(0, "").required(""),
+    relation: Yup.string().required(""),
   });
 
   return (
@@ -105,20 +104,20 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
           >
             <Select
               id="tipeOfDocument"
-              label="Tipo de documento"
+              label={dataPersonalInfo.labelDocument}
               name="tipeOfDocument"
               onChange={onChange}
               onBlur={formik.handleBlur}
               options={TipeOfDocument}
-              placeholder="Seleccione una opción"
+              placeholder={dataPersonalInfo.placeHolderSelect}
               size="wide"
               value={form["tipeOfDocument"]}
               fullwidth
             />
             <Textfield
               id="documentNumber"
-              label="Numeo de documento"
-              placeholder="Ej 1010477949"
+              label={dataPersonalInfo.labelNumber}
+              placeholder={dataPersonalInfo.placeHolderNumber}
               fullwidth
               type="tel"
               onChange={(e) =>
@@ -129,8 +128,8 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
             />
             <Textfield
               id="firstName"
-              label="Nombre"
-              placeholder="Ej: Daniel Rodrigo"
+              label={dataPersonalInfo.labelName}
+              placeholder={dataPersonalInfo.placeHolderName}
               fullwidth
               type="text"
               onChange={(e) => handleNumberChange("firstName", e.target.value)}
@@ -138,9 +137,9 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
               size="wide"
             />
             <Textfield
-              id="lastName"
+              id={dataPersonalInfo.labelLastName}
               label="apellidos"
-              placeholder="Ej: Rodriguez Velandia"
+              placeholder={dataPersonalInfo.labelLastName}
               fullwidth
               onChange={(e) => handleNumberChange("lastName", e.target.value)}
               type="text"
@@ -149,8 +148,8 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
             />
             <Textfield
               id="email"
-              label="correo"
-              placeholder="micorreo@mail.com"
+              label={dataPersonalInfo.labelEmail}
+              placeholder={dataPersonalInfo.placeHolderEmail}
               fullwidth
               type="email"
               onChange={(e) => handleNumberChange("email", e.target.value)}
@@ -160,8 +159,8 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
 
             <Textfield
               id="phone"
-              label="Numer de telefono"
-              placeholder="3102330109"
+              label={dataPersonalInfo.labelPhone}
+              placeholder={dataPersonalInfo.placeHolderPhone}
               fullwidth
               type="tel"
               onChange={(e) => handleNumberChange("phone", e.target.value)}
@@ -170,19 +169,19 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
             />
             <Select
               id="sex"
-              label="Sexo biológico"
+              label={dataPersonalInfo.labelSex}
               name="sex"
               options={TipeOfSex}
-              placeholder="Seleccione una opción"
+              placeholder={dataPersonalInfo.placeHolderSelect}
               size="wide"
               value={form["sex"]}
               onChange={onChange}
               onBlur={formik.handleBlur}
             />
             <Textfield
-              id="age"
-              label="edad"
-              placeholder="Seleccione una opción"
+              id="dateOfBirth"
+              label={dataPersonalInfo.labelDate}
+              placeholder={dataPersonalInfo.placeHolderSelect}
               fullwidth
               type="number"
               onChange={(e) => handleNumberChange("age", e.target.value)}
@@ -191,10 +190,10 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
             />
             <Select
               id="relation"
-              label="Parentesco"
+              label={dataPersonalInfo.labelRelation}
               name="relation"
               options={TipeOfFamily}
-              placeholder="Seleccione una opción"
+              placeholder={dataPersonalInfo.placeHolderSelect}
               size="wide"
               value={form["relation"]}
               onChange={onChange}
