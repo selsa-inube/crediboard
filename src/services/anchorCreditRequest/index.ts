@@ -4,11 +4,10 @@ import {
   maxRetriesServices,
 } from "@config/environment";
 
-import { ICreditRequestPinned } from "@services/types";
-
-export const getCreditRequestPin = async (): Promise<
-  ICreditRequestPinned[]
-> => {
+export const ChangeAnchorToCreditRequest = async (
+  creditRequestId: string | undefined,
+  isPinned: string | undefined
+) => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -18,46 +17,46 @@ export const getCreditRequestPin = async (): Promise<
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
 
       const options: RequestInit = {
-        method: "GET",
+        method: "PATCH",
         headers: {
-          "X-Action": "SearchAllCreditRequestPinned",
+          "X-Action": "ChangeAnchorToCreditRequest",
           "X-Business-Unit": enviroment.BUSINESS_UNIT,
+          "X-User-Name": "Erg",
           "Content-type": "application/json; charset=UTF-8",
         },
+        body: JSON.stringify({ creditRequestId, isPinned }),
         signal: controller.signal,
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/`,
+        `${enviroment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
         options
       );
 
       clearTimeout(timeoutId);
 
       if (res.status === 204) {
-        throw new Error("No hay datos disponibles.");
+        return res;
       }
 
-      const data: ICreditRequestPinned[] = await res.json();
+      const data = await res.json();
 
       if (!res.ok) {
         throw {
-          message: "Error al obtener el pin de la solicitud de crédito.",
+          message:
+            "Error al actualizar la calificación de la solicitud de crédito",
           status: res.status,
           data,
         };
       }
-
-      return data;
+      return { ...data, statusServices: res.status };
     } catch (error) {
-      console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
         throw new Error(
-          "Todos los intentos fallaron. No se pudo obtener el pin de la solicitud de crédito."
+          "Todos los intentos fallaron. No se pudo registrar la calificación en la solicitud de crédito."
         );
       }
     }
   }
-
-  throw new Error("No se pudo obtener el pin después de varios intentos.");
+  throw new Error("No se pudo completar la solicitud.");
 };

@@ -1,11 +1,3 @@
-interface IMessage {
-  show?: boolean;
-  title: string;
-  description: string;
-  icon: JSX.Element;
-  appearance: string;
-}
-
 interface IAssignmentFormEntry {
   id: string;
   value: string;
@@ -30,4 +22,4 @@ interface LoanConditionState {
   maximumTermValue: string;
 }
 
-export type { IFormsInvitation, IAssignmentFormEntry, IMessage, LoanConditionState };
+export type { IFormsInvitation, IAssignmentFormEntry, LoanConditionState };

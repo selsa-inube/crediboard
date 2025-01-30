@@ -7,7 +7,7 @@ interface IStyledModal {
 
 const StyledModal = styled.div<IStyledModal>`
   display: flex;
-  width: ${({ $smallScreen }) => ($smallScreen ? "100%" : "450px")};
+  width: ${({ $smallScreen }) => ($smallScreen ? "290px" : "450px")};
   padding: ${({ $smallScreen }) => ($smallScreen ? "16px" : "24px")};
   height: ${({ $smallScreen }) => ($smallScreen ? "452px" : "765px")};
   margin: 24px;
@@ -19,8 +19,8 @@ const StyledModal = styled.div<IStyledModal>`
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
 `;
 
-const ScrollableContainer = styled.div`
-  width: 440px;
+const ScrollableContainer = styled.div<IStyledModal>`
+  width: ${({ $smallScreen }) => ($smallScreen ? "270px" : "440px")};
   padding: 10px;
   overflow: auto;
   display: flex;
