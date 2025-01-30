@@ -20,11 +20,12 @@ import {
 
 export interface IRequirementsModalProps {
   handleClose: () => void;
+  isMobile: boolean;
   portalId?: string;
 }
 
 export function RequirementsModal(props: IRequirementsModalProps) {
-  const { portalId, handleClose } = props;
+  const { portalId, isMobile, handleClose } = props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -38,8 +39,8 @@ export function RequirementsModal(props: IRequirementsModalProps) {
           direction="column"
           padding="24px"
           gap="24px"
-          width="402px"
-          height="652px"
+          width={isMobile ? "300px " : "402px"}
+          height={isMobile ? "auto" : "652px"}
         >
           <Stack justifyContent="space-between" alignItems="center">
             <Text size="small" type="headline">

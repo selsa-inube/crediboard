@@ -234,6 +234,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
         {isModalOpenRequirements && (
           <RequirementsModal
             handleClose={() => setIsModalOpenRequirements(false)}
+            isMobile={isMobile}
           />
         )}
       </Stack>
