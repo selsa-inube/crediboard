@@ -1,16 +1,17 @@
 import { MdWarningAmber } from "react-icons/md";
-
 import { Divider } from "@inubekit/divider";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
+
 import { Fieldset } from "@components/data/Fieldset";
+
 import LabelData from "./Config/config";
 
 interface IUnfulfilledRequirementsProps {
-  title: string;
   requirement: string;
   causeNonCompliance: string;
+  title?: string;
   isMobile?: boolean;
 }
 
