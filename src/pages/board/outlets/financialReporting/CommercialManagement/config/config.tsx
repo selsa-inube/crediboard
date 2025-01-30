@@ -3,6 +3,8 @@ import {
   MdOutlineMonetizationOn,
   MdOutlineBalance,
   MdOutlineAccountBalanceWallet,
+  MdOutlineEdit,
+  MdOutlineRemoveRedEye,
 } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -350,16 +352,45 @@ export const entriesCommercialManagementCard = [
 
 export const SummaryProspectCredit = [
   {
-    item: [{ title: "Obligaciones recogidas", amount: "5000000" }],
+    item: [
+      {
+        title: "Obligaciones recogidas",
+        miniIcon: false,
+        operation: "",
+      },
+    ],
     iconEdit: true,
   },
   {
     item: [
-      { title: "Monto prestamo", amount: "16000000" },
-      { title: "Obligaciones recogidas", amount: "5000000" },
-      { title: "Gastos decontables", amount: "1000000" },
-      { title: "Neto a girar", amount: "10000000" },
-      { title: "Cuota ordinaria", amount: "1200000" },
+      {
+        title: "Monto préstamo",
+        miniIcon: false,
+        operation: "-",
+      },
+      {
+        title: "Obligaciones recogidas",
+        miniIcon: true,
+        icon: <MdOutlineEdit />,
+        operation: "-",
+      },
+      {
+        title: "Gastos descontables",
+        miniIcon: true,
+        icon: <MdOutlineRemoveRedEye />,
+        operation: "=",
+      },
+      {
+        title: "Neto a girar",
+        miniIcon: false,
+        operation: "|",
+      },
+      {
+        title: "Cuota ordinaria",
+        miniIcon: true,
+        icon: <MdOutlineRemoveRedEye />,
+        operation: "",
+      },
     ],
     iconEdit: false,
   },

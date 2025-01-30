@@ -1,34 +1,34 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { SummaryProspect, SummaryProspectProps } from "./index";
+import { CardValues, CardValuesProps } from "./index";
 import { ListModal } from "@components/modals/ListModal";
 
 export default {
-  title: "Components/inputs/SummaryProspect",
-  component: SummaryProspect,
-} as Meta<typeof SummaryProspect>;
+  title: "Components/cards/CardValues",
+  component: CardValues,
+} as Meta<typeof CardValues>;
 
-const Template: StoryObj<SummaryProspectProps> = {
+const Template: StoryObj<CardValuesProps> = {
   render: (args) => {
-    const [isModalOpen, setModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleIconClick = () => {
-      setModalOpen(true);
+      setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
-      setModalOpen(false);
+      setIsModalOpen(false);
     };
 
     return (
       <>
-        <SummaryProspect {...args} onIconClick={handleIconClick} />
+        <CardValues {...args} onIconClick={handleIconClick} />
         {isModalOpen && (
           <ListModal
             title="Resumen Prospectivo"
             handleClose={handleCloseModal}
             buttonLabel="Cerrar"
-            content={<div>Contenido del modal</div>} 
+            content={<div>Contenido del modal</div>}
           />
         )}
       </>
@@ -36,16 +36,14 @@ const Template: StoryObj<SummaryProspectProps> = {
   },
 };
 
-export const Default: StoryObj<SummaryProspectProps> = {
+export const Default: StoryObj<CardValuesProps> = {
   ...Template,
   args: {
-    items: [
-      { title: "Obligaciones recogidas", amount: "$5.000.000" },
-    ],
+    items: [{ title: "Obligaciones recogidas", amount: "$5.000.000" }],
   },
 };
 
-export const WithoutIcon: StoryObj<SummaryProspectProps> = {
+export const WithoutIcon: StoryObj<CardValuesProps> = {
   ...Template,
   args: {
     items: [
@@ -55,6 +53,6 @@ export const WithoutIcon: StoryObj<SummaryProspectProps> = {
       { title: "Neto a girar", amount: "$10.000.000" },
       { title: "Cuotas ordinarias", amount: "$1.200.000" },
     ],
-    showIcon: false, 
+    showIcon: false,
   },
 };

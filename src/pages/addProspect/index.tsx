@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { Consulting } from "@components/modals/Consulting";
 import { income } from "@mocks/add-prospect/income/income.mock";
+import { prospectId } from "@mocks/add-prospect/edit-prospect/prospectid.mock";
 
 import { stepsAddProspect } from "./config/addProspect.config";
 import { FormData } from "./types";
+
 import { AddProspectUI } from "./interface";
 
 export function AddProspect() {
@@ -19,6 +22,7 @@ export function AddProspect() {
   const isTablet = useMediaQuery("(max-width: 1482px)");
 
   const steps = Object.values(stepsAddProspect);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState<FormData>({
     selectedDestination: "",
@@ -47,6 +51,8 @@ export function AddProspect() {
     },
   });
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+
+  const id = prospectId[0];
 
   const handleFormDataChange = (
     field: string,
@@ -148,9 +154,11 @@ export function AddProspect() {
     setIsCurrentFormValid(true);
   };
 
-  function handleSubmitClick() {
-    console.log("Enviar paso: ", currentStep);
-  }
+  const handleSubmitClick = () => {
+    setTimeout(() => {
+      navigate(`/edit-prospect/${id.prospect}`);
+    }, 1000);
+  };
 
   const showConsultingForFiveSeconds = () => {
     setShowConsultingModal(true);
