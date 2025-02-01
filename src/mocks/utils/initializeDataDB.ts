@@ -39,6 +39,7 @@ import {
   requirementsMock,
 } from "./importDataDb";
 import { userStepsMock } from "../filing-application/userSteps/users.mock";
+import { mockExtraordinaryInstallments } from "@mocks/add-prospect/extraordinary-installments/extraordinaryinstallments.mock";
 
 export function initializeDataDB(company: string) {
   localforage.clear();
@@ -95,6 +96,7 @@ export function initializeDataDB(company: string) {
   intializedData("money_destinations", mockMoneyDestinations);
   intializedData("mockRequest_value", mockPaymentChannel);
   intializedData("financial_obligation", mockFinancialObligation);
+  intializedData("extraordinary_installments", mockExtraordinaryInstallments);
   intializedData("extra_debtors", mockExtraDebtors);
   intializedData("attached_documents", mockAttachedDocuments);
   intializedData("user_steps", userStepsMock);

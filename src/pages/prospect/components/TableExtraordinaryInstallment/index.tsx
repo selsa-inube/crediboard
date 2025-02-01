@@ -28,6 +28,7 @@ export interface TableExtraordinaryInstallmentProps {
   onClickDetails?: (id: string) => void;
   onClickEdit?: (id: string) => void;
   onClickEliminate?: (id: string) => void;
+  refreshKey?: number;
 }
 
 const usePagination = (data: IExtraordinaryPayment[]) => {
@@ -38,9 +39,9 @@ const usePagination = (data: IExtraordinaryPayment[]) => {
   const totalPages = Math.ceil(totalRecords / pageLength);
   const handleStartPage = () => setCurrentPage(0);
   const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 0));
-  const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
+  const handleNextPage = () =>
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
   const handleEndPage = () => setCurrentPage(totalPages - 1);
-
 
   const firstEntryInPage = currentPage * pageLength;
   const lastEntryInPage = Math.min(firstEntryInPage + pageLength, totalRecords);
@@ -96,77 +97,66 @@ export const TableExtraordinaryInstallment = (
     <Table>
       <Thead>
         <Tr>
-          {!loading && visbleHeaders.map((header) => (
-            <Th key={header.key} align="left">
-              {header.label}
-            </Th>
-          ))}
-          { !loading &&
+          {!loading &&
+            visbleHeaders.map((header) => (
+              <Th key={header.key} align="left">
+                {header.label}
+              </Th>
+            ))}
+          {!loading &&
             visbleActions &&
             visbleActions.length > 0 &&
             visbleActions.map((action) => (
               <Th key={action.key} action>
                 {action.label}
               </Th>
-            ))
-          }
-          {
-            loading && visbleHeaders.map(
-              (header) => (
-                <Td key={header.key} align="left" type="custom">
-                  <SkeletonLine />
-                </Td>)
-
-            )
-          }
-          {
-            loading && visbleActions.map(
-              (action) => (
-                <Td key={action.key} type="custom">
-                  <SkeletonLine />
-                </Td>
-              )
-            )
-          }
+            ))}
+          {loading &&
+            visbleHeaders.map((header) => (
+              <Td key={header.key} align="left" type="custom">
+                <SkeletonLine />
+              </Td>
+            ))}
+          {loading &&
+            visbleActions.map((action) => (
+              <Td key={action.key} type="custom">
+                <SkeletonLine />
+              </Td>
+            ))}
         </Tr>
       </Thead>
       <Tbody>
-        {
-          loading && (
-            <Tr>
-              <Td
-                colSpan={visbleHeaders.length + visbleActions.length}
-                align="center"
-                type="custom"
-              >
-                <SkeletonLine />
-              </Td>
+        {loading && (
+          <Tr>
+            <Td
+              colSpan={visbleHeaders.length + visbleActions.length}
+              align="center"
+              type="custom"
+            >
+              <SkeletonLine />
+            </Td>
+          </Tr>
+        )}
+        {!loading &&
+          currentData &&
+          currentData.length > 0 &&
+          currentData.map((row, indx) => (
+            <Tr key={row.id} zebra={indx % 2 !== 0}>
+              {visbleHeaders.map((header) => (
+                <Td key={header.key} align="left">
+                  {header.mask ? header.mask(row[header.key]) : row[header.key]}
+                </Td>
+              ))}
+              {visbleActions &&
+                visbleActions.length > 0 &&
+                visbleActions.map((action) => (
+                  <Td key={action.key} type="custom">
+                    {isMobile ? <ActionMobile /> : action.container()}
+                  </Td>
+                ))}
             </Tr>
-          )
-        }
-       {!loading && currentData &&
-  currentData.length > 0 &&
-  currentData.map((row, indx) => (
-    <Tr key={row.id} zebra={indx % 2 !== 0}>
-      {visbleHeaders.map((header) => (
-        <Td key={header.key} align="left">
-          {header.mask ? header.mask(row[header.key]) : row[header.key]}
-        </Td>
-      ))}
-      {visbleActions &&
-        visbleActions.length > 0 &&
-        visbleActions.map((action) => (
-          <Td key={action.key} type="custom">
-            {isMobile ? (
-              <ActionMobile />
-            ) : (
-              action.container()
-            )}
-          </Td>
-        ))}
-    </Tr>
-  ))}
-        {!loading && currentData.length === 0  && (
+          ))}
+        {!loading && currentData.length === 0 && (
           <Tr>
             <Td
               colSpan={visbleHeaders.length + visbleActions.length}
@@ -185,7 +175,7 @@ export const TableExtraordinaryInstallment = (
           </Tr>
         )}
       </Tbody>
-      {data.length > 0 && !loading  && (
+      {data.length > 0 && !loading && (
         <Tfoot>
           <Tr border="bottom">
             <Td

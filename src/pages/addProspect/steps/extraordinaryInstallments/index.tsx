@@ -25,11 +25,14 @@ export interface ExtraordinaryInstallmentsProps {
 export function ExtraordinaryInstallments(
   props: ExtraordinaryInstallmentsProps
 ) {
-  const { dataTable, onClickDetails, onClickEdit, onClickEliminate, isMobile } = props;
+  const { dataTable, onClickDetails, onClickEdit, onClickEliminate, isMobile } =
+    props;
   const [isAddSeriesModalOpen, setAddSeriesModalOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const toggleAddSeriesModal = () => {
     setAddSeriesModalOpen(!isAddSeriesModalOpen);
+    setRefreshKey((prevKey) => prevKey + 1);
   };
   const handleSubmit = () => {
     toggleAddSeriesModal();
@@ -38,7 +41,6 @@ export function ExtraordinaryInstallments(
   const handleConfirm = () => {
     console.log("Confirmar acción");
   };
-
   return (
     <>
       <Stack gap="16px" direction="column">
@@ -66,6 +68,7 @@ export function ExtraordinaryInstallments(
                 onClickDetails={onClickDetails}
                 onClickEdit={onClickEdit}
                 onClickEliminate={onClickEliminate}
+                refreshKey={refreshKey}
               />
             ) : (
               <Text type="label" appearance="gray" weight="bold">
