@@ -1,7 +1,7 @@
 import { useState, isValidElement, useEffect } from "react";
 import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
-import { useFlag } from "@inubekit/flag"; 
+import { useFlag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
 import userNotFound from "@assets/images/ItemNotFound.png";
@@ -41,10 +41,14 @@ export interface IRequirementsProps {
 export const Requirements = (props: IRequirementsProps) => {
   const { isMobile, id, user } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
-  const [modalData, setModalData] = useState<{ date?: Date; details?: string }>({});
+  const [modalData, setModalData] = useState<{ date?: Date; details?: string }>(
+    {}
+  );
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
-  const [dataRequirements, setDataRequirements] = useState<IRequirementsData[]>([]);
+  const [dataRequirements, setDataRequirements] = useState<IRequirementsData[]>(
+    []
+  );
   const [error, setError] = useState(false);
 
   const { addFlag } = useFlag();
@@ -75,7 +79,10 @@ export const Requirements = (props: IRequirementsProps) => {
     })();
   }, [id, error]);
 
-  const renderAccion = getAcctionMobile(setShowSeeDetailsModal , setShowAprovalsModal);
+  const renderAccion = getAcctionMobile(
+    setShowSeeDetailsModal,
+    setShowAprovalsModal
+  );
 
   const toggleAprovalsModal = () => setShowAprovalsModal(!showAprovalsModal);
   const changeApprove = () => setIsApproved(!isApproved);
@@ -91,7 +98,7 @@ export const Requirements = (props: IRequirementsProps) => {
   const handleSubmitAprovals = async (
     id: string,
     user: string,
-    formData: { textarea: string },
+    formData: { textarea: string }
   ) => {
     const justificationText = formData.textarea;
 
@@ -129,7 +136,8 @@ export const Requirements = (props: IRequirementsProps) => {
   };
 
   const renderAddIcon = (entry: IEntries) => {
-    const details = typeof entry.details === "string" ? entry.details : undefined;
+    const details =
+      typeof entry.details === "string" ? entry.details : undefined;
 
     return (
       <Stack justifyContent="center">
@@ -172,45 +180,45 @@ export const Requirements = (props: IRequirementsProps) => {
 
   return (
     <>
-        <Fieldset
-          title="Requisitos"
-          activeButton={dataButton}
-          heightFieldset="340px"
-          hasTable={!error}
-          aspectRatio={isMobile ? "auto" : "1"}
-        >
-          {error ? (
-            <ItemNotFound
-              image={userNotFound}
-              title="Error al cargar datos"
-              description={
-                "Error al intentar conectar con el servicio de trazabilidad."
-              }
-              buttonDescription="Volver a intentar"
-              route="#"
-              onRetry={() => setError(false)}
+      <Fieldset
+        title="Requisitos"
+        activeButton={dataButton}
+        heightFieldset="340px"
+        hasTable={!error}
+        aspectRatio={isMobile ? "auto" : "1"}
+      >
+        {error ? (
+          <ItemNotFound
+            image={userNotFound}
+            title="Error al cargar datos"
+            description={
+              "Error al intentar conectar con el servicio de trazabilidad."
+            }
+            buttonDescription="Volver a intentar"
+            route="#"
+            onRetry={() => setError(false)}
+          />
+        ) : (
+          dataRequirements.map((item, index) => (
+            <TableBoard
+              key={item.id}
+              id={item.id}
+              titles={item.titlesRequirements}
+              entries={item.entriesRequirements}
+              actions={actionsRequirements}
+              actionMobile={renderAccion}
+              appearanceTable={{
+                widthTd: !isMobile ? "75%" : "70%",
+                efectzebra: true,
+                title: "primary",
+                isStyleMobile: true,
+              }}
+              isFirstTable={index === 0}
+              infoItems={infoItems}
             />
-          ) : (
-            dataRequirements.map((item, index) => (
-              <TableBoard
-                key={item.id}
-                id={item.id}
-                titles={item.titlesRequirements}
-                entries={item.entriesRequirements}
-                actions={actionsRequirements}
-                actionMobile={renderAccion}
-                appearanceTable={{
-                  widthTd: !isMobile ? "75%" : "70%",
-                  efectzebra: true,
-                  title: "primary",
-                  isStyleMobile: true,
-                }}
-                isFirstTable={index === 0}
-                infoItems={infoItems}
-              />
-            ))
-          )}
-        </Fieldset>
+          ))
+        )}
+      </Fieldset>
 
       {showSeeDetailsModal && (
         <SeeDetailsModal
@@ -229,13 +237,7 @@ export const Requirements = (props: IRequirementsProps) => {
           isApproved={isApproved}
           onCloseModal={toggleAprovalsModal}
           onChangeApprove={changeApprove}
-          onSubmit={(values) =>
-            handleSubmitAprovals(
-              id!,
-              user,
-              values,
-            )
-          }
+          onSubmit={(values) => handleSubmitAprovals(id!, user, values)}
         />
       )}
     </>

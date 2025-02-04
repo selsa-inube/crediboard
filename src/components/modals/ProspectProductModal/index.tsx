@@ -119,7 +119,7 @@ function EditProductModal(props: EditProductModalProps) {
 
             <Divider />
 
-            <ScrollableContainer>
+            <ScrollableContainer $smallScreen={isMobile}>
               <Stack direction="column" gap="24px" width="100%">
                 <Select
                   label="Línea de crédito"

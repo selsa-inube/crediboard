@@ -1,6 +1,7 @@
-import { currencyFormat } from "@src/utils/formatData/currency";
-import { Detail } from "../Detail";
+import { currencyFormat } from "@utils/formatData/currency";
 import { IHeaders } from "@components/modals/ExtraordinaryPaymentModal/types";
+
+import { Detail } from "../Detail";
 
 export const rowsVisbleMobile = ["datePayment", "value", "actions"];
 

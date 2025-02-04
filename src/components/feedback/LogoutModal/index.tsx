@@ -1,13 +1,11 @@
-import {
-  Button,
-  Blanket,
-  Stack,
-  Text,
-  inube,
-  Icon,
-  useMediaQuery,
-} from "@inube/design-system";
 import { MdClose } from "react-icons/md";
+
+import { Button } from "@inubekit/button";
+import { Blanket } from "@inubekit/blanket";
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
+import { Icon } from "@inubekit/icon";
+import { useMediaQuery } from "@inubekit/hooks";
 
 import { StyledBackdropBlanket, StyledModal } from "./styles";
 
@@ -24,8 +22,8 @@ function LogoutModal(props: ILogoutModalProps) {
     <StyledBackdropBlanket>
       <Blanket>
         <StyledModal $isSmallScreen={isSmallScreen}>
-          <Stack direction="column" gap={inube.spacing.s300} padding="s300">
-            <Stack direction="column" gap={inube.spacing.s300}>
+          <Stack direction="column" gap="24px" padding="24px">
+            <Stack direction="column" gap="24px">
               <Stack justifyContent="space-between">
                 <Text type="title" size={isSmallScreen ? "small" : "medium"}>
                   Cerrar sesión
@@ -42,7 +40,7 @@ function LogoutModal(props: ILogoutModalProps) {
                 ¿Realmente quieres cerrar sesión?
               </Text>
             </Stack>
-            <Stack justifyContent="flex-end" gap={inube.spacing.s200}>
+            <Stack justifyContent="flex-end" gap="16px">
               <Button
                 appearance="gray"
                 spacing={isSmallScreen ? "compact" : "wide"}

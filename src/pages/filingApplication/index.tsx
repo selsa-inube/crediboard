@@ -1,14 +1,46 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
+
+import { userStepsMock } from "@mocks/filing-application/userSteps/users.mock";
+import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
 
 import { stepsFilingApplication } from "./config/filingApplication.config";
 import { FilingApplicationUI } from "./interface";
 import { FormData } from "./types";
+import { dataFillingApplication } from "./config/config";
 
 export function FilingApplication() {
-  const [currentStep, setCurrentStep] = useState<number>(
-    stepsFilingApplication.generalInformation.id
+  const { id } = useParams();
+  const userId = parseInt(id || "0", 10);
+
+  const userChoice =
+    choiceBorrowers.find((choice) => choice.id === userId)?.choice ||
+    "borrowers";
+  const data =
+    dataFillingApplication[
+      userChoice === "borrowers" ? "borrowers" : "coBorrowers"
+    ];
+
+  const fixedSteps = [1, 2, 7, 8];
+
+  const intermediateSteps =
+    userStepsMock.find((user) => user.id === userId)?.intermediateSteps || [];
+
+  const updatedSteps = {
+    ...stepsFilingApplication,
+    BorrowerData: {
+      ...stepsFilingApplication.BorrowerData,
+      name: data.stepName,
+      description: data.stepDescription,
+    },
+  };
+
+  const steps = Object.values(updatedSteps).filter((step) =>
+    [...fixedSteps, ...intermediateSteps].includes(step.id)
   );
+
+  const [currentStep, setCurrentStep] = useState<number>(steps[0]?.id || 1);
   const [isCurrentFormValid, setIsCurrentFormValid] = useState(true);
   const [formData, setFormData] = useState<FormData>({
     contactInformation: {
@@ -123,21 +155,23 @@ export function FilingApplication() {
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
-  const steps = Object.values(stepsFilingApplication);
-
-  const currentStepsNumber = steps.find(
-    (step: { number: number }) => step.number === currentStep
-  ) || { id: 0, number: 0, name: "", description: "" };
+  const currentStepIndex = steps.findIndex((step) => step.id === currentStep);
+  const currentStepsNumber = {
+    ...steps[currentStepIndex],
+    number: currentStepIndex + 1,
+  };
 
   const handleNextStep = () => {
-    if (currentStep < steps.length) {
-      setCurrentStep(currentStep + 1);
+    const currentIndex = steps.findIndex((step) => step.id === currentStep);
+    if (currentIndex < steps.length - 1) {
+      setCurrentStep(steps[currentIndex + 1].id);
     }
   };
 
   const handlePreviousStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
+    const currentIndex = steps.findIndex((step) => step.id === currentStep);
+    if (currentIndex > 0) {
+      setCurrentStep(steps[currentIndex - 1].id);
       setIsCurrentFormValid(true);
     }
   };

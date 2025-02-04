@@ -11,7 +11,7 @@ import { Fieldset } from "@components/data/Fieldset";
 
 import { dataBail } from "./config";
 import { IBail } from "../../types";
-import { bailMock } from "@src/mocks/filing-application/bail/bail.mock";
+import { bailMock } from "@mocks/filing-application/bail/bail.mock";
 
 interface IBailProps {
   initialValues: IBail;

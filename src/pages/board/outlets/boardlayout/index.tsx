@@ -4,6 +4,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { ICreditRequest } from "@services/types";
 import { getCreditRequestPin } from "@services/isPinned";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
+import { ChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
 import { AppContext } from "@context/AppContext/AppContext";
 
 import { BoardLayoutUI } from "./interface";
@@ -137,7 +138,18 @@ function BoardLayout() {
     }
   };
 
-  const handlePinRequest = async () => {};
+  const handlePinRequest = async (
+    creditRequestId: string | undefined,
+    isPinned: string
+  ) => {
+    setBoardData((prevState) => ({
+      ...prevState,
+      requestsPinned: prevState.requestsPinned.map((card) =>
+        card.creditRequestId === creditRequestId ? { ...card, isPinned } : card
+      ),
+    }));
+    await ChangeAnchorToCreditRequest(creditRequestId, isPinned);
+  };
 
   return (
     <BoardLayoutUI

@@ -6,6 +6,7 @@ export const defaultMobileMenuProps: MobileMenuProps = {
   onCancel: () => alert("Anular"),
   onAttach: () => alert("Adjuntar"),
   onViewAttachments: () => alert("Ver Adjuntos"),
+  onGuarantee: () => alert("Garantías ofrecidas"),
 };
 
 export const parameters = {

@@ -1,7 +1,9 @@
 import { useContext, useState, useRef, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { Grid, useMediaQuery } from "@inube/design-system";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
+
+import { Grid } from "@inubekit/grid";
+import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
 import { Header } from "@inubekit/header";
 import { Text } from "@inubekit/text";

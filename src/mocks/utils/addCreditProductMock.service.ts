@@ -1,12 +1,12 @@
-import localforage from 'localforage';
+import localforage from "localforage";
 import { FormikValues } from "formik";
-import { Schedule } from "@src/services/enums";
-import { ICreditProductProspect } from "@services/types";
-import { IProspect } from "@services/types";
+
+import { Schedule } from "@services/enums";
+import { ICreditProductProspect, IProspect } from "@services/types";
 
 export async function addCreditProduct(
-  id: string, 
-  values: FormikValues, 
+  id: string,
+  values: FormikValues,
   mockProspectCredit: IProspect[]
 ) {
   try {
@@ -15,12 +15,12 @@ export async function addCreditProduct(
     );
 
     if (foundProspectIndex === -1) {
-      console.error('Prospecto no encontrado para guardar el credit_product');
+      console.error("Prospecto no encontrado para guardar el credit_product");
       return null;
     }
 
     if (!id) {
-      console.error('ID no está definido');
+      console.error("ID no está definido");
       return null;
     }
 
@@ -44,11 +44,11 @@ export async function addCreditProduct(
         gradient_value: 1000000,
         gradient_schedule: "monthly",
         first_gradient_date: "2024-01-15T23:59:59Z",
-         payment_channel_code: values.paymentMethod,
+        payment_channel_code: values.paymentMethod,
       },
       ordinary_installment_for_interest: {
         schedule: values.paymentCycle,
-         payment_channel_code: values.paymentMethod,
+        payment_channel_code: values.paymentMethod,
       },
       extraordinary_installment: {
         installment_amount: 2000,
@@ -63,13 +63,15 @@ export async function addCreditProduct(
       },
     };
 
-    mockProspectCredit[foundProspectIndex].credit_product.push(newCreditProduct);
+    mockProspectCredit[foundProspectIndex].credit_product.push(
+      newCreditProduct
+    );
 
-    await localforage.setItem('prospects', mockProspectCredit);
+    await localforage.setItem("prospects", mockProspectCredit);
 
-    return newCreditProduct; 
+    return newCreditProduct;
   } catch (error) {
-    console.error('Error al guardar el producto:', error);
-    return null; 
+    console.error("Error al guardar el producto:", error);
+    return null;
   }
 }
