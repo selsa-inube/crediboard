@@ -122,7 +122,7 @@ export function PropertyOffered(props: IPropertyOfferedProps) {
             label={dataProperty.labelEstimated}
             placeholder={dataProperty.placeHolderEstimated}
             size="compact"
-            value={validateCurrencyField("estimated", formik)}
+            value={validateCurrencyField("estimated", formik, true, "")}
             onChange={(e) => handleChangeWithCurrency(formik, e)}
             onBlur={formik.handleBlur}
             fullwidth

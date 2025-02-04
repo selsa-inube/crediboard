@@ -36,75 +36,93 @@ export interface IPropertyOffered {
   state: string;
   description: string;
 }
-
-export interface IDisbursementTab {
-  amount: string;
-  account: string;
-  description: string;
-}
-/*export interface DisbursementGeneral {
-  internal: IDisbursementTab;
-  external: IDisbursementTab;
-  check: IDisbursementTab;
-  cash: IDisbursementTab;
-}*/
-
-export interface IDisbursementGeneral {
-  amount: string;
-  account: string;
-  description: string;
-  name: string;
-  lastName: string;
-  sex: string;
-  type: string;
-  identification: string;
-  birthdate: string;
-  phone: string;
-  mail: string;
-  city: string;
-}
-
-export interface IDisbursementExternal {
-  amountExternal: string;
-  bankExternal: string;
-  typeExternal: string;
-  accountExternal: string;
-  descriptionExternal: string;
-}
-
-export interface IDisbursementInternal {
-  amountInternal: string;
-  toggleInternal: boolean;
-  accountInternal: string;
-  descriptionInternal: string;
-  nameInternal: string;
-  lastNameInternal: string;
-  sexInternal: string;
-  typeInternal: string;
-  identificationInternal: string;
-  birthdateInternal: string;
-  phoneInternal: string;
-  mailInternal: string;
-  cityInternal: string;
-}
-
-export interface IDisbursementWithCheckEntity {
-  amountCheckEntity: string;
-  descriptionCheckEntity: string;
-}
-
-export interface IDisbursementWithCheckManagement {
-  amountCheckManagement: string;
-  descriptionCheckManagement: string;
-}
-
-export interface IDisbursementWithCash {
-  amountCash: string;
-  descriptionCash: string;
-}
 export interface FormData {
   contactInformation: ContactInformation;
   propertyOffered: IPropertyOffered;
   vehicleOffered: IVehicleOffered;
   disbursementGeneral: IDisbursementGeneral;
+}
+
+export interface IDisbursementGeneral {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+  Internal: {
+    amount: string;
+    check: boolean;
+    toggle: boolean;
+    account: string;
+    description: string;
+    name: string;
+    lastName: string;
+    sex: string;
+    documentType: string;
+    identification: string;
+    birthdate: string;
+    phone: string;
+    mail: string;
+    city: string;
+  };
+  External: {
+    amount: string;
+    check: boolean;
+    toggle: boolean;
+    bank: string;
+    accountType: string;
+    accountNumber: string;
+    description: string;
+    name: string;
+    lastName: string;
+    sex: string;
+    documentType: string;
+    identification: string;
+    birthdate: string;
+    phone: string;
+    mail: string;
+    city: string;
+  };
+  CheckEntity: {
+    amount: string;
+    check: boolean;
+    toggle: boolean;
+    description: string;
+    name: string;
+    lastName: string;
+    sex: string;
+    documentType: string;
+    identification: string;
+    birthdate: string;
+    phone: string;
+    mail: string;
+    city: string;
+  };
+  CheckManagement: {
+    amount: string;
+    check: boolean;
+    toggle: boolean;
+    description: string;
+    name: string;
+    lastName: string;
+    sex: string;
+    documentType: string;
+    identification: string;
+    birthdate: string;
+    phone: string;
+    mail: string;
+    city: string;
+  };
+  Cash: {
+    amount: string;
+    check: boolean;
+    toggle: boolean;
+    description: string;
+    name: string;
+    lastName: string;
+    sex: string;
+    documentType: string;
+    identification: string;
+    birthdate: string;
+    phone: string;
+    mail: string;
+    city: string;
+  };
 }

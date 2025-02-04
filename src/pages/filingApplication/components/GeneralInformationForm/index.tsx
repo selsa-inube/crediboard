@@ -1,10 +1,8 @@
-import { useEffect, useRef } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import { Select } from "@inubekit/select";
 import { Input } from "@inubekit/input";
 import { Grid } from "@inubekit/grid";
 import { Datefield } from "@inubekit/datefield";
+
 import { disbursemenOptionAccount } from "@pages/filingApplication/steps/disbursementGeneral/config";
 import {
   Sex,
@@ -14,145 +12,128 @@ import {
 
 interface IGeneralInformationFormProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  initialValues?: any;
-  onFormValid: (isValid: boolean) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handleOnChange: (values: any) => void;
+  formik: any;
   optionNameForm: string;
 }
 
 export function GeneralInformationForm(props: IGeneralInformationFormProps) {
-  const { initialValues, onFormValid, handleOnChange, optionNameForm } = props;
-  const validationSchema = Yup.object({
-    nameInternal: Yup.string().required(),
-    amount: Yup.number().required(),
-    description: Yup.string().required(),
-  });
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema,
-    validateOnMount: true,
-    onSubmit: () => {},
-  });
-
-  const prevValues = useRef(formik.values);
-
-  useEffect(() => {
-    onFormValid(formik.isValid);
-  }, [formik.isValid, onFormValid]);
-
-  useEffect(() => {
-    if (
-      prevValues.current.name !== formik.values.name ||
-      prevValues.current.lastName !== formik.values.lastName ||
-      prevValues.current.sex !== formik.values.sex ||
-      prevValues.current.type !== formik.values.type ||
-      prevValues.current.identification !== formik.values.identification ||
-      prevValues.current.birthdate !== formik.values.birthdate ||
-      prevValues.current.phone !== formik.values.phone ||
-      prevValues.current.mail !== formik.values.mail ||
-      prevValues.current.city !== formik.values.city
-    ) {
-      handleOnChange(formik.values);
-      prevValues.current = formik.values;
-    }
-  }, [formik.values, handleOnChange]);
+  const { formik, optionNameForm } = props;
 
   return (
     <>
       <Grid templateColumns="repeat(3, 1fr)" gap="16px" autoRows="auto">
         <Input
-          id={"name" + optionNameForm}
-          name={"name" + optionNameForm}
+          id={"name"}
+          name={`${optionNameForm}.name`}
           label={disbursemenOptionAccount.labelName}
           placeholder={disbursemenOptionAccount.placeName}
-          value={formik.values["name" + optionNameForm]}
+          value={formik.values[optionNameForm]?.name || ""}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           fullwidth={true}
           size="compact"
         ></Input>
         <Input
-          id={"lastName" + optionNameForm}
+          id={"lastName"}
+          name={`${optionNameForm}.lastName`}
           label={disbursemenOptionAccount.labelLastName}
           placeholder={disbursemenOptionAccount.placeLastName}
-          value={formik.values.lastName}
+          value={formik.values[optionNameForm]?.lastName || ""}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           fullwidth={true}
           size="compact"
         ></Input>
         <Select
-          id={"sex" + optionNameForm}
-          name={"sex" + optionNameForm}
+          id={"sex"}
+          name={`${optionNameForm}.sex`}
           label={disbursemenOptionAccount.labelSex}
           placeholder={disbursemenOptionAccount.placeOption}
           size="compact"
           options={Sex}
           onBlur={formik.handleBlur}
-          onChange={(name, value) => formik.setFieldValue(name, value)}
-          value={formik.values.sex}
+          onChange={(_, value) =>
+            formik.setFieldValue(`${optionNameForm}.sex`, value)
+          }
+          value={formik.values[optionNameForm]?.sex || ""}
           fullwidth
         />
         <Select
-          id={"type" + optionNameForm}
-          name={"type" + optionNameForm}
+          id={"documentType"}
+          name={`${optionNameForm}.documentType`}
           label={disbursemenOptionAccount.labelDocumentType}
           placeholder={disbursemenOptionAccount.placeOption}
           size="compact"
           options={typesOfDocuments}
           onBlur={formik.handleBlur}
-          onChange={(name, value) => formik.setFieldValue(name, value)}
-          value={formik.values.type}
+          onChange={(_, value) =>
+            formik.setFieldValue(`${optionNameForm}.documentType`, value)
+          }
+          value={formik.values[optionNameForm]?.documentType || ""}
           fullwidth
         />
         <Input
-          id={"identification" + optionNameForm}
+          id={"identification"}
+          name={`${optionNameForm}.identification`}
           label={disbursemenOptionAccount.labelDocumentNumber}
           placeholder={disbursemenOptionAccount.placeDocumentNumber}
-          value={formik.values.identification}
+          value={formik.values[optionNameForm]?.identification || ""}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           fullwidth={true}
           size="compact"
         ></Input>
         <Datefield
-          id={"birthdate" + optionNameForm}
+          id="birthdate"
+          name={`${optionNameForm}.birthdate`}
           label={disbursemenOptionAccount.labelBirthdate}
           size="compact"
           fullwidth={true}
+          value={formik.values[optionNameForm]?.birthdate || ""}
+          onChange={(e) => {
+            const date = new Date(e.target.value);
+            formik.setFieldValue(
+              `${optionNameForm}.birthdate`,
+              date instanceof Date && !isNaN(date.getTime())
+                ? date.toISOString().split("T")[0]
+                : ""
+            );
+          }}
         ></Datefield>
         <Input
-          id={"phone" + optionNameForm}
+          id={"phone"}
+          name={`${optionNameForm}.phone`}
           label={disbursemenOptionAccount.labelphone}
           placeholder={disbursemenOptionAccount.placephone}
-          value={formik.values.phone}
+          value={formik.values[optionNameForm]?.phone || ""}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           fullwidth={true}
           size="compact"
         ></Input>
         <Input
-          id={"mail" + optionNameForm}
+          id={"mail"}
+          name={`${optionNameForm}.mail`}
           label={disbursemenOptionAccount.labelMail}
           placeholder={disbursemenOptionAccount.placeMail}
-          value={formik.values.mail}
+          value={formik.values[optionNameForm]?.mail || ""}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           fullwidth={true}
           size="compact"
         ></Input>
         <Select
-          id={"city" + optionNameForm}
-          name={"city" + optionNameForm}
+          id={"city"}
+          name={`${optionNameForm}.city`}
           label={disbursemenOptionAccount.labelCity}
           placeholder={disbursemenOptionAccount.placeOption}
           size="compact"
           options={City}
           onBlur={formik.handleBlur}
-          onChange={(name, value) => formik.setFieldValue(name, value)}
-          value={formik.values.city}
+          onChange={(_, value) =>
+            formik.setFieldValue(`${optionNameForm}.city`, value)
+          }
+          value={formik.values[optionNameForm]?.city || ""}
           fullwidth
         />
       </Grid>

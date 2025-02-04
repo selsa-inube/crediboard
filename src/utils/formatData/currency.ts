@@ -26,19 +26,31 @@ const parseCurrencyString = (currencyString: string): number => {
 const validateCurrencyField = (
   fieldName: string,
   formik: FormikValues,
-  withCurrencySymbol = true
+  withCurrencySymbol = true,
+  optionNameForm: string | undefined
 ) => {
-  return typeof formik.values[fieldName] === "number"
-    ? currencyFormat(formik.values[fieldName], withCurrencySymbol)
-    : "";
+  const value = optionNameForm
+    ? formik.values[optionNameForm]?.[fieldName]
+    : formik.values[fieldName];
+
+  return typeof value === "number"
+    ? currencyFormat(value, withCurrencySymbol)
+    : value;
 };
 
 const handleChangeWithCurrency = (
   formik: FormikValues,
-  e: React.ChangeEvent<HTMLInputElement>
+  e: React.ChangeEvent<HTMLInputElement>,
+  optionNameForm?: string
 ) => {
   const parsedValue = parseCurrencyString(e.target.value);
-  formik.setFieldValue(e.target.name, isNaN(parsedValue) ? "" : parsedValue);
+  const formattedValue = isNaN(parsedValue) ? "" : parsedValue;
+
+  const fieldName = optionNameForm
+    ? `${optionNameForm}.${e.target.name}`
+    : e.target.name;
+
+  formik.setFieldValue(fieldName, formattedValue);
 };
 
 const parseCunstomFormat = (amount: string) => {

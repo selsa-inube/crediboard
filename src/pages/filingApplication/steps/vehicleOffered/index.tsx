@@ -103,7 +103,7 @@ export function VehicleOffered(props: IVehicleOfferedProps) {
             label={dataVehicule.labelValue}
             placeholder={dataVehicule.placeHolderValue}
             size="compact"
-            value={validateCurrencyField("value", formik)}
+            value={validateCurrencyField("value", formik, true, "")}
             onChange={(e) => handleChangeWithCurrency(formik, e)}
             onBlur={formik.handleBlur}
             fullwidth

@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import { useEffect, useRef } from "react";
 import { Checkbox } from "@inubekit/checkbox";
 import { Divider } from "@inubekit/divider";
 import { Toggle } from "@inubekit/toggle";
@@ -8,6 +6,7 @@ import { Stack } from "@inubekit/stack";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
 import { Text } from "@inubekit/text";
+import { Button } from "@inubekit/button";
 
 import {
   handleChangeWithCurrency,
@@ -17,14 +16,16 @@ import {
   disbursementGeneral,
   disbursemenOptionAccount,
 } from "@pages/filingApplication/steps/disbursementGeneral/config";
-//import { GeneralInformationForm } from "@pages/filingApplication/components/GeneralInformationForm";
-import { IDisbursementWithCash } from "@pages/filingApplication/types";
+import { GeneralInformationForm } from "@pages/filingApplication/components/GeneralInformationForm";
+import { IDisbursementGeneral } from "@pages/filingApplication/types";
 
 interface IDisbursementWithCashProps {
   isMobile: boolean;
-  initialValues: IDisbursementWithCash;
+  initialValues: IDisbursementGeneral;
   onFormValid: (isValid: boolean) => void;
-  handleOnChange: (values: IDisbursementWithCash) => void;
+  handleOnChange: (values: IDisbursementGeneral) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  formik: any;
   optionNameForm: string;
 }
 
@@ -34,53 +35,39 @@ export function DisbursementWithCash(props: IDisbursementWithCashProps) {
     initialValues,
     onFormValid,
     handleOnChange,
+    formik,
     optionNameForm,
   } = props;
 
-  const [isFeatureEnabled, setIsFeatureEnabled] = useState(false);
-  const [isFeatureIndeterminate, setIsFeatureIndeterminate] = useState(false);
-  const [toggleChecked, setToggleChecked] = useState(true);
-
-  const validationSchema = Yup.object({
-    amountCash: Yup.number().required(),
-    descriptionCash: Yup.string().required(),
-  });
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema,
-    validateOnMount: true,
-    onSubmit: () => {},
-  });
-
-  const prevValues = useRef(formik.values);
+  const prevValues = useRef(formik.values[optionNameForm]);
 
   useEffect(() => {
     onFormValid(formik.isValid);
   }, [formik.isValid, onFormValid]);
 
   useEffect(() => {
-    if (
-      prevValues.current.amountCash !== formik.values.amountCash ||
-      prevValues.current.descriptionCash !== formik.values.descriptionCash
-    ) {
-      handleOnChange(formik.values);
-      prevValues.current = formik.values;
-    }
-  }, [formik.values, handleOnChange]);
+    if (formik.values[optionNameForm]) {
+      const updatedValues = {
+        ...initialValues,
+        [optionNameForm]: { ...formik.values[optionNameForm] },
+      };
 
-  const handleCheckboxChange = (event: { target: { checked: boolean } }) => {
-    if (isFeatureIndeterminate) {
-      setIsFeatureEnabled(!isFeatureEnabled);
-      setIsFeatureIndeterminate(false);
+      if (
+        JSON.stringify(prevValues.current) !==
+        JSON.stringify(formik.values[optionNameForm])
+      ) {
+        handleOnChange(updatedValues as IDisbursementGeneral);
+        prevValues.current = { ...formik.values[optionNameForm] };
+      }
     }
-    {
-      setIsFeatureEnabled(event.target.checked);
-    }
+  }, [formik.values, handleOnChange, initialValues, optionNameForm]);
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    formik.setFieldValue(`${optionNameForm}.check`, event.target.checked);
   };
 
-  const handleToggleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setToggleChecked(e.target.checked);
+  const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    formik.setFieldValue(`${optionNameForm}.toggle`, event.target.checked);
   };
 
   return (
@@ -92,22 +79,24 @@ export function DisbursementWithCash(props: IDisbursementWithCashProps) {
     >
       <Stack direction="column" gap="20px">
         <Textfield
-          id={"amount" + optionNameForm}
-          name={"amount" + optionNameForm}
+          id={"amount"}
+          name={"amount"}
           label={disbursementGeneral.label}
           placeholder={disbursementGeneral.place}
           size="compact"
-          value={validateCurrencyField("amountCash", formik)}
-          onChange={(e) => handleChangeWithCurrency(formik, e)}
+          value={validateCurrencyField("amount", formik, true, optionNameForm)}
+          onChange={(e) => {
+            handleChangeWithCurrency(formik, e, optionNameForm);
+          }}
           onBlur={formik.handleBlur}
           fullwidth
         />
         <Stack gap="10px" direction="row" alignItems="center">
           <Checkbox
-            id={"featureCheckbox" + optionNameForm}
-            name={"feature" + optionNameForm}
-            checked={isFeatureEnabled}
-            indeterminate={isFeatureIndeterminate}
+            id={"featureCheckbox"}
+            name={"featureCheckbox"}
+            checked={formik.values[optionNameForm]?.check}
+            indeterminate={false}
             onChange={handleCheckboxChange}
             value={"featureCheckbox"}
           />
@@ -124,45 +113,55 @@ export function DisbursementWithCash(props: IDisbursementWithCashProps) {
       </Stack>
       <Stack direction="row" gap="16px">
         <Toggle
-          checked={toggleChecked}
+          id="toggle"
+          name="toggle"
+          checked={formik.values[optionNameForm]?.toggle}
           disabled={false}
-          id="toggleSwitch"
           margin="0px"
-          name="toggleFeature"
           onChange={handleToggleChange}
           padding="0px"
           size="large"
-          value="switchTest1"
+          value="toggle"
         />
-        <Text appearance={toggleChecked ? "success" : "danger"}>
-          {toggleChecked
+        <Text
+          appearance={
+            formik.values[optionNameForm]?.toggle ? "success" : "danger"
+          }
+        >
+          {formik.values[optionNameForm]?.toggle
             ? disbursementGeneral.optionToggleYes
             : disbursementGeneral.optionToggleNo}
         </Text>
       </Stack>
       <Divider dashed />
-      {/* {!toggleChecked && (
+      {!formik.values[optionNameForm]?.toggle && (
         <>
           <GeneralInformationForm
-            onFormValid={onFormValid}
-            initialValues={initialValues}
-            handleOnChange={handleOnChange}
+            formik={formik}
+            optionNameForm={optionNameForm}
           />
           <Divider dashed />
         </>
-      )} */}
+      )}
       <Stack direction="row" gap="16px">
         <Textarea
-          id={"description" + optionNameForm}
-          name={"description" + optionNameForm}
+          id={"description"}
+          name={`${optionNameForm}.description`}
           label={disbursemenOptionAccount.observation}
           placeholder={disbursemenOptionAccount.placeObservation}
-          value={formik.values.descriptionCash}
+          value={formik.values[optionNameForm]?.description || ""}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           fullwidth
         />
       </Stack>
+      <Button
+        onClick={() =>
+          console.log("onChange triggered, e.target.name:", formik.values)
+        }
+      >
+        log
+      </Button>
     </Stack>
   );
 }

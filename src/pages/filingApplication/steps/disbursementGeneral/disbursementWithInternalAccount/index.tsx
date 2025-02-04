@@ -1,7 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-
+import { useEffect, useRef } from "react";
 import { Checkbox } from "@inubekit/checkbox";
 import { Divider } from "@inubekit/divider";
 import { Toggle } from "@inubekit/toggle";
@@ -16,81 +13,64 @@ import {
   handleChangeWithCurrency,
   validateCurrencyField,
 } from "@utils/formatData/currency";
-
-import { IDisbursementInternal } from "@pages/filingApplication/types";
+import { IDisbursementGeneral } from "@pages/filingApplication/types";
 import {
   disbursementGeneral,
   disbursemenOptionAccount,
 } from "@pages/filingApplication/steps/disbursementGeneral/config";
 import { GeneralInformationForm } from "@pages/filingApplication/components/GeneralInformationForm";
 
-interface IDisbursementGeneralProps {
+interface IDisbursementWithInternalAccountProps {
   isMobile: boolean;
-  initialValues: IDisbursementInternal;
+  initialValues: IDisbursementGeneral;
   onFormValid: (isValid: boolean) => void;
-  handleOnChange: (values: IDisbursementInternal) => void;
+  handleOnChange: (values: IDisbursementGeneral) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  formik: any;
   optionNameForm: string;
 }
 
 export function DisbursementWithInternalAccount(
-  props: IDisbursementGeneralProps
+  props: IDisbursementWithInternalAccountProps
 ) {
   const {
     isMobile,
     initialValues,
     onFormValid,
     handleOnChange,
+    formik,
     optionNameForm,
   } = props;
 
-  const [isFeatureEnabled, setIsFeatureEnabled] = useState(false);
-  const [isFeatureIndeterminate, setIsFeatureIndeterminate] = useState(false);
-  const [toggleChecked, setToggleChecked] = useState(true);
-
-  const validationSchema = Yup.object({
-    amountInternal: Yup.number().required(),
-    accountInternal: Yup.string().required(),
-    descriptionInternal: Yup.string().required(),
-  });
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema,
-    validateOnMount: true,
-    onSubmit: () => {},
-  });
-
-  const prevValues = useRef(formik.values);
+  const prevValues = useRef(formik.values[optionNameForm]);
 
   useEffect(() => {
     onFormValid(formik.isValid);
   }, [formik.isValid, onFormValid]);
 
   useEffect(() => {
-    if (
-      prevValues.current.amountInternal !== formik.values.amountInternal ||
-      prevValues.current.toggleInternal !== formik.values.toggleInternal ||
-      prevValues.current.accountInternal !== formik.values.accountInternal ||
-      prevValues.current.descriptionInternal !==
-        formik.values.descriptionInternal
-    ) {
-      handleOnChange(formik.values);
-      prevValues.current = formik.values;
-    }
-  }, [formik.values, handleOnChange]);
+    if (formik.values[optionNameForm]) {
+      const updatedValues = {
+        ...initialValues,
+        [optionNameForm]: { ...formik.values[optionNameForm] },
+      };
 
-  const handleCheckboxChange = (event: { target: { checked: boolean } }) => {
-    if (isFeatureIndeterminate) {
-      setIsFeatureEnabled(!isFeatureEnabled);
-      setIsFeatureIndeterminate(false);
+      if (
+        JSON.stringify(prevValues.current) !==
+        JSON.stringify(formik.values[optionNameForm])
+      ) {
+        handleOnChange(updatedValues as IDisbursementGeneral);
+        prevValues.current = { ...formik.values[optionNameForm] };
+      }
     }
-    {
-      setIsFeatureEnabled(event.target.checked);
-    }
+  }, [formik.values, handleOnChange, initialValues, optionNameForm]);
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    formik.setFieldValue(`${optionNameForm}.check`, event.target.checked);
   };
 
-  const handleToggleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setToggleChecked(e.target.checked);
+  const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    formik.setFieldValue(`${optionNameForm}.toggle`, event.target.checked);
   };
 
   return (
@@ -102,24 +82,26 @@ export function DisbursementWithInternalAccount(
     >
       <Stack direction="column" gap="20px">
         <Textfield
-          id={"amount" + optionNameForm}
-          name={"amount" + optionNameForm}
+          id="amount"
+          name="amount"
           label={disbursementGeneral.label}
           placeholder={disbursementGeneral.place}
           size="compact"
-          value={validateCurrencyField("amountInternal", formik)}
-          onChange={(e) => handleChangeWithCurrency(formik, e)}
+          value={validateCurrencyField("amount", formik, true, optionNameForm)}
+          onChange={(e) => {
+            handleChangeWithCurrency(formik, e, optionNameForm);
+          }}
           onBlur={formik.handleBlur}
           fullwidth
         />
         <Stack gap="10px" direction="row" alignItems="center">
           <Checkbox
-            id={"featureCheckbox" + optionNameForm}
-            name={"featureCheckbox" + optionNameForm}
-            checked={isFeatureEnabled}
-            indeterminate={isFeatureIndeterminate}
+            id="featureCheckbox"
+            name="featureCheckbox"
+            checked={formik.values[optionNameForm]?.check}
+            indeterminate={false}
             onChange={handleCheckboxChange}
-            value={"featureCheckbox"}
+            value="featureCheckbox"
           />
           <Text type="label" size="medium">
             {disbursementGeneral.labelCheck}
@@ -134,9 +116,9 @@ export function DisbursementWithInternalAccount(
       </Stack>
       <Stack direction="row" gap="16px">
         <Toggle
-          id={"toggle" + optionNameForm}
-          name={"toggle" + optionNameForm}
-          checked={toggleChecked}
+          id="toggle"
+          name="toggle"
+          checked={formik.values[optionNameForm]?.toggle}
           disabled={false}
           margin="0px"
           onChange={handleToggleChange}
@@ -144,43 +126,49 @@ export function DisbursementWithInternalAccount(
           size="large"
           value="toggle"
         />
-        <Text appearance={toggleChecked ? "success" : "danger"}>
-          {toggleChecked
+        <Text
+          appearance={
+            formik.values[optionNameForm]?.toggle ? "success" : "danger"
+          }
+        >
+          {formik.values[optionNameForm]?.toggle
             ? disbursementGeneral.optionToggleYes
             : disbursementGeneral.optionToggleNo}
         </Text>
       </Stack>
       <Divider dashed />
-      {!toggleChecked && (
+      {!formik.values[optionNameForm]?.toggle && (
         <>
           <GeneralInformationForm
-            onFormValid={onFormValid}
-            initialValues={initialValues}
-            handleOnChange={handleOnChange}
+            formik={formik}
             optionNameForm={optionNameForm}
           />
           <Divider dashed />
         </>
       )}
       <Select
-        id={"account" + optionNameForm}
-        name={"account" + optionNameForm}
+        id={`${optionNameForm}.account`}
+        name={`${optionNameForm}.account`}
         label={disbursemenOptionAccount.labelAccount}
         placeholder={disbursemenOptionAccount.placeOption}
         size="compact"
         options={optionLocalAccount}
         onBlur={formik.handleBlur}
-        onChange={(name, value) => formik.setFieldValue(name, value)}
-        value={formik.values.accountInternal}
+        onChange={(_, value) =>
+          formik.setFieldValue(`${optionNameForm}.account`, value)
+        }
+        value={formik.values[optionNameForm]?.account || ""}
         fullwidth
       />
       <Textarea
-        id={"description" + optionNameForm}
-        name={"description" + optionNameForm}
+        id={`${optionNameForm}.description`}
+        name={`${optionNameForm}.description`}
         label={disbursemenOptionAccount.observation}
         placeholder={disbursemenOptionAccount.placeObservation}
-        value={formik.values.descriptionInternal}
-        onChange={formik.handleChange}
+        value={formik.values[optionNameForm]?.description || ""}
+        onChange={(e) =>
+          formik.setFieldValue(`${optionNameForm}.description`, e.target.value)
+        }
         onBlur={formik.handleBlur}
         fullwidth
       />

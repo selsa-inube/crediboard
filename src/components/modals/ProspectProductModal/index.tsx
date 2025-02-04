@@ -1,4 +1,4 @@
-import { Formik, FormikValues ,FormikHelpers} from "formik";
+import { Formik, FormikValues, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { createPortal } from "react-dom";
 import { MdAttachMoney, MdPercent, MdClear } from "react-icons/md";
@@ -32,7 +32,6 @@ import {
   amortizationTypeOptions,
   rateTypeOptions,
 } from "./config";
-
 
 interface EditProductModalProps {
   portalId: string;
@@ -80,14 +79,16 @@ function EditProductModal(props: EditProductModalProps) {
     rateType: Yup.string().required("Campo requerido"),
   });
 
-
   return createPortal(
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values: FormikValues, formikHelpers: FormikHelpers<FormikValues>) => {
+      onSubmit={(
+        values: FormikValues,
+        formikHelpers: FormikHelpers<FormikValues>
+      ) => {
         onConfirm(values);
-        formikHelpers.setSubmitting(false); 
+        formikHelpers.setSubmitting(false);
       }}
     >
       {(formik) => (
@@ -137,7 +138,12 @@ function EditProductModal(props: EditProductModalProps) {
                   name="creditAmount"
                   id="creditAmount"
                   placeholder="Monto solicitado"
-                  value={validateCurrencyField("creditAmount", formik, false)}
+                  value={validateCurrencyField(
+                    "creditAmount",
+                    formik,
+                    false,
+                    ""
+                  )}
                   iconBefore={
                     <Icon
                       icon={<MdAttachMoney />}

@@ -1,3 +1,5 @@
+import { useFormik } from "formik";
+import { useEffect } from "react";
 import { Tabs } from "@inubekit/tabs";
 import { Stack } from "@inubekit/stack";
 import { Fieldset } from "@components/data/Fieldset";
@@ -29,6 +31,17 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
     isSelected,
     handleTabChange,
   } = props;
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    validateOnMount: true,
+    onSubmit: () => {},
+  });
+
+  useEffect(() => {
+    handleOnChange(formik.values);
+  }, [formik.values, handleOnChange]);
+
   return (
     <Fieldset>
       <Stack
@@ -48,6 +61,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               onFormValid={onFormValid}
               initialValues={initialValues}
               handleOnChange={handleOnChange}
+              formik={formik}
               optionNameForm="Internal"
             />
           )}
@@ -57,6 +71,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               onFormValid={onFormValid}
               initialValues={initialValues}
               handleOnChange={handleOnChange}
+              formik={formik}
               optionNameForm="External"
             />
           )}
@@ -66,6 +81,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               onFormValid={onFormValid}
               initialValues={initialValues}
               handleOnChange={handleOnChange}
+              formik={formik}
               optionNameForm="CheckEntity"
             />
           )}
@@ -75,6 +91,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               onFormValid={onFormValid}
               initialValues={initialValues}
               handleOnChange={handleOnChange}
+              formik={formik}
               optionNameForm="CheckManagement"
             />
           )}
@@ -84,6 +101,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               onFormValid={onFormValid}
               initialValues={initialValues}
               handleOnChange={handleOnChange}
+              formik={formik}
               optionNameForm="Cash"
             />
           )}
