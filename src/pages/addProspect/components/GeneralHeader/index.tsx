@@ -2,39 +2,60 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Button } from "@inubekit/button";
-// import { useState } from "react";
 import { useMediaQuery } from "@inubekit/hooks";
-// import { appearanceConfig } from "./config";
+import { MdAdd, MdCheckCircle, MdOutlineAccessTime, MdCancel, MdOutlineManageAccounts } from "react-icons/md";
 import { StyledContainerGeneralHeader, StyledPerfil } from "./styles";
 
-export interface IGeneralHeaderProps {
+interface IGeneralHeaderProps {
     profileImageUrl: string;
     name: string;
     descriptionStatus?: string;
-    iconState?: React.JSX.Element;
-    iconSettings?: React.JSX.Element;
-    iconButton?: React.JSX.Element;
+    iconSettings?: React.ReactNode;
+    iconButton?: React.ReactNode;
     buttonText?: string;
-    isMobile?: boolean;
-    showButton?: boolean;
+    showButtonAndIcon?: boolean;
     onClickIcon?: () => void;
     onClickButton?: () => void;
 }
 
+type AppearanceType =
+    | "success"
+    | "danger"
+    | "primary"
+    | "warning"
+    | "help"
+    | "dark"
+    | "gray"
+    | "light";
+
 export function GeneralHeader(props: IGeneralHeaderProps) {
     const isMobile = useMediaQuery("(max-width: 460px)");
+
     const {
         profileImageUrl,
         name,
         descriptionStatus,
-        iconState,
-        iconSettings,
-        iconButton,
         buttonText,
-        showButton,
+        showButtonAndIcon,
         onClickIcon,
         onClickButton,
     } = props;
+
+    const appearanceTag = (label: string = "") => {
+        const config: Record<
+            string,
+            { appearance: AppearanceType; icon: JSX.Element }
+        > = {
+            Activo: { appearance: "success", icon: <MdCheckCircle /> },
+            Vinculado: { appearance: "success", icon: <MdCheckCircle /> },
+            Prospecto: { appearance: "warning", icon: <MdCheckCircle /> },
+            "En proceso devinculación": { appearance: "warning", icon: <MdOutlineAccessTime /> },
+            "En proceso de retiro": { appearance: "danger", icon: <MdCancel /> },
+            Retirado: { appearance: "danger", icon: <MdCancel /> },
+        };
+        return config[label] || { appearance: "danger", icon: "" };
+    };
+
     return (
         <StyledContainerGeneralHeader>
             <Stack
@@ -46,56 +67,60 @@ export function GeneralHeader(props: IGeneralHeaderProps) {
                 <Stack gap="12px" alignItems="center">
                     <StyledPerfil src={profileImageUrl} alt="imagen perfil" />
                     <Stack direction="column" justifyContent="space-around">
-                        <Text type="label"
-                            size="medium"
-                            appearance="dark"
-                            weight="bold"
-                        >
+                        <Text type="label" size="medium" appearance="dark" weight="bold">
                             {name}
                         </Text>
                         <Stack direction="row" alignItems="center" gap="6px">
-
                             <Icon
                                 size="12px"
-                                icon={iconState}
-                                appearance="danger"
+                                icon={appearanceTag(descriptionStatus).icon}
+                                appearance={appearanceTag(descriptionStatus).appearance}
                                 spacing="narrow"
                             />
-                            <Text type="label" size="small" appearance="danger" weight="normal">
+                            <Text
+                                type="label"
+                                size="small"
+                                appearance={appearanceTag(descriptionStatus).appearance}
+                                weight="normal"
+                            >
                                 {descriptionStatus}
                             </Text>
-
                         </Stack>
                     </Stack>
-                    {showButton && (
+
+                    {showButtonAndIcon && (
                         <Icon
                             onClick={onClickIcon}
                             appearance="primary"
-                            icon={iconSettings}
+                            icon={<MdOutlineManageAccounts />}
                             cursorHover
                             spacing="narrow"
                             variant="outlined"
                             shape="rectangle"
                             size="22px"
-
                         />
                     )}
                 </Stack>
-                {showButton && (
-                    <Stack justifyContent="space-between" alignItems="end" padding={isMobile ? "6px 0 0 0" : "0 6px"} width={isMobile ? "100%" : "auto"}>
+                {showButtonAndIcon && (
+                    <Stack
+                        justifyContent="space-between"
+                        alignItems="end"
+                        padding={isMobile ? "6px 0 0 0" : "0 6px"}
+                        width={isMobile ? "100%" : "auto"}
+                    >
                         <Button
-                            children={buttonText}
                             onClick={onClickButton}
-                            iconBefore={iconButton}
+                            iconBefore={<MdAdd />}
                             variant="outlined"
                             appearance="primary"
                             spacing="compact"
                             fullwidth={isMobile}
-                        />
+                        >
+                            {buttonText}
+                        </Button>
                     </Stack>
                 )}
-
             </Stack>
-        </StyledContainerGeneralHeader >
+        </StyledContainerGeneralHeader>
     );
 }
