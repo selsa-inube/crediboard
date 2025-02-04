@@ -1,16 +1,14 @@
 import { useState } from "react";
+import { FormikValues } from "formik";
 import { MdOutlineAdd } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
 import { Button } from "@inubekit/button";
 import { Text } from "@inubekit/text";
 
+import { Fieldset } from "@components/data/Fieldset";
 import { AddSeriesModal } from "@components/modals/AddSeriesModal";
 import { IExtraordinaryPayment } from "@services/types";
-import {
-  paymentMethodOptions,
-  frequencyOptions,
-} from "@components/modals/AddSeriesModal/config";
 import { TableExtraordinaryInstallment } from "@pages/prospect/components/TableExtraordinaryInstallment";
 import { TextLabels } from "@config/pages/add-prospect/ExtraordinaryInstallments/ExtraordinaryInstallments.config";
 
@@ -25,15 +23,28 @@ export interface ExtraordinaryInstallmentsProps {
 export function ExtraordinaryInstallments(
   props: ExtraordinaryInstallmentsProps
 ) {
-  const { dataTable, onClickDetails, onClickEdit, onClickEliminate, isMobile } =
-    props;
+  const { dataTable, isMobile } = props;
   const [isAddSeriesModalOpen, setAddSeriesModalOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+
+  const initialValues: FormikValues = {
+    paymentMethod: "",
+    amount: "",
+    value: "",
+    frequency: "",
+    datePayment: "",
+  };
 
   const toggleAddSeriesModal = () => {
     setAddSeriesModalOpen(!isAddSeriesModalOpen);
     setRefreshKey((prevKey) => prevKey + 1);
   };
+
+  const handleCloseModal = () => {
+    setAddSeriesModalOpen(false);
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
+
   const handleSubmit = () => {
     toggleAddSeriesModal();
   };
@@ -42,10 +53,10 @@ export function ExtraordinaryInstallments(
     console.log("Confirmar acción");
   };
   return (
-    <>
-      <Stack gap="16px" direction="column">
-        <Stack gap="24px" direction="column">
-          <Stack justifyContent="end">
+    <Fieldset>
+      <Stack direction="column">
+        <Stack direction="column">
+          <Stack justifyContent="end" margin="0px 0px 16px ">
             <Button
               fullwidth={isMobile}
               iconBefore={
@@ -63,13 +74,7 @@ export function ExtraordinaryInstallments(
           </Stack>
           <Stack justifyContent="center">
             {dataTable.length > 0 ? (
-              <TableExtraordinaryInstallment
-                data={dataTable}
-                onClickDetails={onClickDetails}
-                onClickEdit={onClickEdit}
-                onClickEliminate={onClickEliminate}
-                refreshKey={refreshKey}
-              />
+              <TableExtraordinaryInstallment refreshKey={refreshKey} />
             ) : (
               <Text type="label" appearance="gray" weight="bold">
                 {TextLabels.NoData}
@@ -78,21 +83,15 @@ export function ExtraordinaryInstallments(
           </Stack>
           <Stack></Stack>
         </Stack>
+        {isAddSeriesModalOpen && (
+          <AddSeriesModal
+            handleClose={handleCloseModal}
+            onSubmit={handleSubmit}
+            onConfirm={handleConfirm}
+            initialValues={initialValues}
+          />
+        )}
       </Stack>
-      {isAddSeriesModalOpen && (
-        <AddSeriesModal
-          title={TextLabels.title}
-          handleClose={toggleAddSeriesModal}
-          onSubmit={handleSubmit}
-          onConfirm={handleConfirm}
-          buttonText="Cancelar"
-          secondButtonText="Agregar"
-          formValues={{ field1: 0, field2: 0 }}
-          initialValues={{ field1: 0, field2: 0 }}
-          paymentMethodOptions={paymentMethodOptions}
-          frequencyOptions={frequencyOptions}
-        />
-      )}
-    </>
+    </Fieldset>
   );
 }

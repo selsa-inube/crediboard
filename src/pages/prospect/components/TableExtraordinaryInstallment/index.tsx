@@ -1,5 +1,5 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import localforage from "localforage";
 import { Text } from "@inubekit/text";
 import { SkeletonLine } from "@inubekit/skeleton";
 import {
@@ -15,27 +15,29 @@ import {
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { ActionMobile } from "@components/feedback/ActionMobile";
-import { IExtraordinaryPayment } from "@services/types";
+import { ListModal } from "@components/modals/ListModal";
+import { EditSeriesModal } from "@components/modals/EditSeriesModal";
+import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
+import { formatPrimaryDate } from "@utils/formatData/date";
 
+import { Detail } from "./Detail";
 import {
   headersTableExtraordinaryInstallment,
   rowsVisbleMobile,
   rowsActions,
+  dataTableExtraordinaryInstallment,
 } from "./config";
 
 export interface TableExtraordinaryInstallmentProps {
-  data: IExtraordinaryPayment[];
-  onClickDetails?: (id: string) => void;
-  onClickEdit?: (id: string) => void;
-  onClickEliminate?: (id: string) => void;
+  [key: string]: React.ReactNode;
   refreshKey?: number;
 }
 
-const usePagination = (data: IExtraordinaryPayment[]) => {
+const usePagination = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const pageLength = 5;
-  const totalRecords = data.length;
+  const totalRecords = extraordinaryInstallmentMock.length;
   const totalPages = Math.ceil(totalRecords / pageLength);
   const handleStartPage = () => setCurrentPage(0);
   const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 0));
@@ -46,7 +48,10 @@ const usePagination = (data: IExtraordinaryPayment[]) => {
   const firstEntryInPage = currentPage * pageLength;
   const lastEntryInPage = Math.min(firstEntryInPage + pageLength, totalRecords);
 
-  const currentData = data.slice(firstEntryInPage, lastEntryInPage);
+  const currentData = extraordinaryInstallmentMock.slice(
+    firstEntryInPage,
+    lastEntryInPage
+  );
 
   return {
     currentPage,
@@ -65,10 +70,24 @@ const usePagination = (data: IExtraordinaryPayment[]) => {
 export const TableExtraordinaryInstallment = (
   props: TableExtraordinaryInstallmentProps
 ) => {
-  const { data } = props;
+  const { refreshKey } = props;
+
   const headers = headersTableExtraordinaryInstallment;
 
+  const [extraDebtors, setExtraDebtors] = useState<
+    TableExtraordinaryInstallmentProps[]
+  >([]);
+  const [selectedDebtor, setSelectedDebtor] =
+    useState<TableExtraordinaryInstallmentProps>({});
+
+  const handleEdit = (debtor: TableExtraordinaryInstallmentProps) => {
+    setSelectedDebtor(debtor);
+    setIsOpenModalEdit(true);
+  };
+
   const [loading, setLoading] = useState(true);
+  const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
+  const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
 
   setTimeout(() => {
     setLoading(false);
@@ -91,8 +110,48 @@ export const TableExtraordinaryInstallment = (
     handleEndPage,
     firstEntryInPage,
     lastEntryInPage,
-    currentData,
-  } = usePagination(data);
+  } = usePagination();
+
+  useEffect(() => {
+    const loadExtraDebtors = async () => {
+      const storedData =
+        (await localforage.getItem<TableExtraordinaryInstallmentProps[]>(
+          "extraordinary_installments"
+        )) || [];
+      setExtraDebtors(storedData);
+    };
+
+    loadExtraDebtors();
+  }, [refreshKey]);
+
+  const handleDelete = async (id: string) => {
+    try {
+      const updatedDebtors = extraDebtors.filter((debtor) => debtor.id !== id);
+      setExtraDebtors(updatedDebtors);
+
+      await localforage.setItem("extraordinary_installments", updatedDebtors);
+
+      console.log(`Debtor with ID ${id} deleted successfully.`);
+    } catch (error) {
+      console.error("Failed to delete debtor:", error);
+    }
+  };
+
+  const handleUpdate = async (
+    updatedDebtor: TableExtraordinaryInstallmentProps
+  ) => {
+    try {
+      const updatedDebtors = extraDebtors.map((debtor) =>
+        debtor.id === updatedDebtor.id ? updatedDebtor : debtor
+      );
+      setExtraDebtors(updatedDebtors);
+      await localforage.setItem("extraordinary_installments", updatedDebtors);
+      setIsOpenModalEdit(false);
+    } catch (error) {
+      console.error("Error updating debtor:", error);
+    }
+  };
+
   return (
     <Table>
       <Thead>
@@ -138,25 +197,45 @@ export const TableExtraordinaryInstallment = (
           </Tr>
         )}
         {!loading &&
-          currentData &&
-          currentData.length > 0 &&
-          currentData.map((row, indx) => (
-            <Tr key={row.id} zebra={indx % 2 !== 0}>
+          extraDebtors &&
+          extraDebtors.length > 0 &&
+          extraDebtors.map((row, indx) => (
+            <Tr key={indx} zebra={indx % 2 !== 0}>
               {visbleHeaders.map((header) => (
                 <Td key={header.key} align="left">
-                  {header.mask ? header.mask(row[header.key]) : row[header.key]}
+                  {(() => {
+                    if (header.key === "datePayment") {
+                      return formatPrimaryDate(
+                        new Date(row[header.key] as string)
+                      );
+                    }
+                    if (header.mask) {
+                      return header.mask(row[header.key] as string | number);
+                    }
+                    return row[header.key];
+                  })()}
                 </Td>
               ))}
               {visbleActions &&
                 visbleActions.length > 0 &&
                 visbleActions.map((action) => (
                   <Td key={action.key} type="custom">
-                    {isMobile ? <ActionMobile /> : action.container()}
+                    {isMobile ? (
+                      <ActionMobile
+                        handleDelete={() => setIsOpenModalDelete(true)}
+                        handleEdit={() => handleEdit(row)}
+                      />
+                    ) : (
+                      <Detail
+                        handleDelete={() => setIsOpenModalDelete(true)}
+                        handleEdit={() => handleEdit(row)}
+                      />
+                    )}
                   </Td>
                 ))}
             </Tr>
           ))}
-        {!loading && currentData.length === 0 && (
+        {!loading && extraDebtors.length === 0 && (
           <Tr>
             <Td
               colSpan={visbleHeaders.length + visbleActions.length}
@@ -169,13 +248,13 @@ export const TableExtraordinaryInstallment = (
                 appearance="gray"
                 textAlign="center"
               >
-                ¡Ups! No se encontraron registros.
+                {dataTableExtraordinaryInstallment.noData}
               </Text>
             </Td>
           </Tr>
         )}
       </Tbody>
-      {data.length > 0 && !loading && (
+      {extraordinaryInstallmentMock.length > 0 && !loading && (
         <Tfoot>
           <Tr border="bottom">
             <Td
@@ -195,6 +274,32 @@ export const TableExtraordinaryInstallment = (
             </Td>
           </Tr>
         </Tfoot>
+      )}
+      {isOpenModalDelete && (
+        <ListModal
+          title={dataTableExtraordinaryInstallment.deletion}
+          handleClose={() => setIsOpenModalDelete(false)}
+          handleSubmit={() => setIsOpenModalDelete(false)}
+          onSubmit={() => {
+            if (selectedDebtor) {
+              handleDelete(selectedDebtor.id as string);
+              setIsOpenModalDelete(false);
+            }
+          }}
+          buttonLabel={dataTableExtraordinaryInstallment.delete}
+          content={dataTableExtraordinaryInstallment.content}
+          cancelButton={dataTableExtraordinaryInstallment.cancel}
+        />
+      )}
+      {isOpenModalEdit && (
+        <EditSeriesModal
+          handleClose={() => setIsOpenModalEdit(false)}
+          onSubmit={() => setIsOpenModalEdit(false)}
+          onConfirm={async (updatedDebtor) => {
+            await handleUpdate(updatedDebtor);
+          }}
+          initialValues={selectedDebtor}
+        />
       )}
     </Table>
   );
