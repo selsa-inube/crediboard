@@ -36,11 +36,11 @@ export const stepsFilingApplication = {
     name: "Fianza",
     description: "Lea con atención el valor de la fianza a pagar.",
   },
-  step7: {
+  disbursement: {
     id: 7,
     number: 7,
-    name: "title",
-    description: "Desembolso.",
+    name: "Desembolso",
+    description: "configure todos los tipos de desembolso.",
   },
   attachedDocuments: {
     id: 8,

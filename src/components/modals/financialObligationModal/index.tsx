@@ -188,7 +188,7 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
                     />
                   }
                   placeholder={dataInputs.palaceHolderFee}
-                  value={validateCurrencyField("fee", formik, false)}
+                  value={validateCurrencyField("fee", formik, false, "")}
                   size="compact"
                   onBlur={formik.handleBlur}
                   onChange={(e) => handleChangeWithCurrency(formik, e)}
@@ -206,7 +206,7 @@ function FinancialObligationModal(props: FinancialObligationModalProps) {
                     />
                   }
                   placeholder={dataInputs.palaceHolderBalance}
-                  value={validateCurrencyField("balance", formik, false)}
+                  value={validateCurrencyField("balance", formik, false, "")}
                   size="compact"
                   onBlur={formik.handleBlur}
                   onChange={(e) => handleChangeWithCurrency(formik, e)}

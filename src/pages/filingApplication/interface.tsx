@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
@@ -12,6 +13,8 @@ import { PropertyOffered } from "./steps/propertyOffered";
 import { VehicleOffered } from "./steps/vehicleOffered";
 import { Bail } from "./steps/bail";
 import { AttachedDocuments } from "./steps/attachedDocuments";
+import { DisbursementGeneral } from "./steps/disbursementGeneral";
+import { disbursemenTabs } from "@pages/filingApplication/steps/disbursementGeneral/config";
 
 interface AddPositionUIProps {
   currentStep: number;
@@ -41,6 +44,12 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
     handleSubmitClick,
     setIsCurrentFormValid,
   } = props;
+
+  const [isSelected, setIsSelected] = useState<string>();
+
+  const handleTabChange = (tabId: string) => {
+    setIsSelected(tabId);
+  };
 
   return (
     <Stack
@@ -133,6 +142,19 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
           currentStepsNumber.id ===
             stepsFilingApplication.attachedDocuments.id && (
             <AttachedDocuments isMobile={isMobile} />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsFilingApplication.disbursement.id && (
+            <DisbursementGeneral
+              isMobile={isMobile}
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.disbursementGeneral}
+              handleOnChange={(values) =>
+                handleFormChange({ disbursementGeneral: values })
+              }
+              isSelected={isSelected || disbursemenTabs.internal.id}
+              handleTabChange={handleTabChange}
+            />
           )}
         <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
           <Button

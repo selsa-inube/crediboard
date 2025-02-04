@@ -102,7 +102,7 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
           placeholder={dataAddModal.placeNumberDocument}
           onChange={(e) => handleChangeWithCurrency(formik, e)}
           onBlur={formik.handleBlur}
-          value={validateCurrencyField("documentNumber", formik, false)}
+          value={validateCurrencyField("documentNumber", formik, false, "")}
           size="compact"
           fullwidth
         />
