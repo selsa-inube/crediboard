@@ -6,7 +6,6 @@ import { Stack } from "@inubekit/stack";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
 import { Text } from "@inubekit/text";
-import { Button } from "@inubekit/button";
 
 import {
   handleChangeWithCurrency,
@@ -155,13 +154,6 @@ export function DisbursementWithCash(props: IDisbursementWithCashProps) {
           fullwidth
         />
       </Stack>
-      <Button
-        onClick={() =>
-          console.log("onChange triggered, e.target.name:", formik.values)
-        }
-      >
-        log
-      </Button>
     </Stack>
   );
 }

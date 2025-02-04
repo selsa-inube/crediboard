@@ -64,11 +64,10 @@ export function LoanCondition(props: ILoanCondition) {
               >
                 <Text>{loanData.quotaCapTitle}</Text>
                 <Stack
-                  gap="8px"
                   alignItems={isMobile ? "initial" : "center"}
                   direction={isMobile ? "column" : "row"}
                 >
-                  <Stack>
+                  <Stack gap="8px">
                     <Field
                       name="toggles.quotaCapToggle"
                       type="checkbox"

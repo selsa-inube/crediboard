@@ -10,6 +10,8 @@ import { stepsFilingApplication } from "./config/filingApplication.config";
 import { ContactInformation } from "./steps/contactInformation";
 import { PropertyOffered } from "./steps/propertyOffered";
 import { VehicleOffered } from "./steps/vehicleOffered";
+import { Bail } from "./steps/bail";
+import { AttachedDocuments } from "./steps/attachedDocuments";
 import { DisbursementGeneral } from "./steps/disbursementGeneral";
 import { disbursemenTabs } from "@pages/filingApplication/steps/disbursementGeneral/config";
 
@@ -117,6 +119,19 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             />
           )}
         {currentStepsNumber &&
+          currentStepsNumber.id === stepsFilingApplication.bail.id && (
+            <Bail
+              onFormValid={setIsCurrentFormValid}
+              initialValues={formData.bail}
+              handleOnChange={(values) => handleFormChange({ bail: values })}
+            />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id ===
+            stepsFilingApplication.attachedDocuments.id && (
+            <AttachedDocuments isMobile={isMobile} />
+          )}
+        {currentStepsNumber &&
           currentStepsNumber.id === stepsFilingApplication.disbursement.id && (
             <DisbursementGeneral
               isMobile={isMobile}
@@ -139,7 +154,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             {titleButtonTextAssited.goBackText}
           </Button>
           <Button onClick={handleNextStep} disabled={!isCurrentFormValid}>
-            {currentStepsNumber === steps[8]
+            {currentStepsNumber === steps[7]
               ? titleButtonTextAssited.submitText
               : titleButtonTextAssited.goNextText}
           </Button>
