@@ -68,6 +68,14 @@ export interface LoanAmountState {
   paymentPlan: string;
 }
 
+export interface IBorrowerData {
+  name: string;
+  lastName: string;
+  email: string;
+  income: number;
+  obligations: number;
+}
+
 export interface FormData {
   selectedDestination: string;
   selectedProducts: string[];
@@ -79,6 +87,7 @@ export interface FormData {
     quotaCapValue: string;
     maximumTermValue: string;
   };
+  borrowerData: IBorrowerData;
   generalToggleChecked: boolean;
   togglesState: boolean[];
   incomeData: IIncome;

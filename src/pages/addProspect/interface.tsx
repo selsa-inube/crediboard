@@ -8,12 +8,7 @@ import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInsta
 
 import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
 import { stepsAddProspect } from "./config/addProspect.config";
-import {
-  FormData,
-  IStep,
-  StepDetails,
-  titleButtonTextAssited,
-} from "./types";
+import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { LoanAmount } from "./steps/loanAmount";
@@ -155,7 +150,14 @@ export function AddProspectUI(props: AddPositionUIProps) {
             )}
           {currentStepsNumber &&
             currentStepsNumber.id === stepsAddProspect.extraBorrowers.id && (
-              <ExtraDebtors />
+              <ExtraDebtors
+                initialValues={formData.borrowerData}
+                onFormValid={setIsCurrentFormValid}
+                handleOnChange={(newDestination) =>
+                  handleFormDataChange("borrowerData", newDestination)
+                }
+                isMobile={isMobile}
+              />
             )}
           {currentStepsNumber &&
             currentStepsNumber.id === stepsAddProspect.sourcesIncome.id && (

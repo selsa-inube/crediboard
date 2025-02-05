@@ -142,7 +142,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
                 label={dataAddSeriesModal.labelAmount}
                 placeholder={dataAddSeriesModal.placeHolderAmount}
                 onChange={(e) => handleChangeWithCurrency(formik, e)}
-                value={validateCurrencyField("amount", formik, false)}
+                value={validateCurrencyField("amount", formik, false, "")}
                 onBlur={formik.handleBlur}
                 size="wide"
                 fullwidth
@@ -156,7 +156,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
                   <MdOutlineAttachMoney color={inube.palette.green.G400} />
                 }
                 onChange={(e) => handleChangeWithCurrency(formik, e)}
-                value={validateCurrencyField("value", formik, false)}
+                value={validateCurrencyField("value", formik, false, "")}
                 onBlur={formik.handleBlur}
                 fullwidth
               />

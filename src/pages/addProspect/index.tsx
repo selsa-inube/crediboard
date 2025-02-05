@@ -38,6 +38,13 @@ export function AddProspect() {
     },
     generalToggleChecked: true,
     togglesState: [false, true, false],
+    borrowerData: {
+      name: "",
+      lastName: "",
+      email: "",
+      income: 0,
+      obligations: 0,
+    },
     incomeData: income[0],
     loanAmountState: {
       inputValue: "",
