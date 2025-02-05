@@ -358,7 +358,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               isMobile={isMobile}
               isPrint={isPrint}
               showMenu={() => setShowMenu(false)}
-              firstItem={true}
               showPrint
             />
           )}

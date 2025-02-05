@@ -139,7 +139,7 @@ export function EditSeriesModal(props: EditSeriesModalProps) {
                   <MdOutlineAttachMoney color={inube.palette.green.G400} />
                 }
                 onChange={(e) => handleChangeWithCurrency(formik, e)}
-                value={validateCurrencyField("value", formik, false)}
+                value={validateCurrencyField("value", formik, false, "")}
                 onBlur={formik.handleBlur}
                 fullwidth
               />
