@@ -34,6 +34,7 @@ interface AddPositionUIProps {
 export function FilingApplicationUI(props: AddPositionUIProps) {
   const {
     currentStepsNumber,
+    currentStep,
     steps,
     isCurrentFormValid,
     formData,
@@ -166,7 +167,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             {titleButtonTextAssited.goBackText}
           </Button>
           <Button onClick={handleNextStep} disabled={!isCurrentFormValid}>
-            {currentStepsNumber === steps[7]
+            {currentStep === steps[steps.length - 1].id
               ? titleButtonTextAssited.submitText
               : titleButtonTextAssited.goNextText}
           </Button>
