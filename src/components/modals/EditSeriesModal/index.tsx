@@ -1,6 +1,6 @@
 import * as Yup from "yup";
-import { Formik, FormikValues } from "formik";
 import localforage from "localforage";
+import { Formik, FormikValues } from "formik";
 import { createPortal } from "react-dom";
 import { MdClear, MdOutlineAttachMoney } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -20,20 +20,17 @@ import {
   handleChangeWithCurrency,
   validateCurrencyField,
 } from "@utils/formatData/currency";
-import {
-  frequencyOptionsMock,
-  paymentMethodOptionsMock,
-} from "@mocks/prospect/extraordinaryInstallment.mock";
 import { validationMessages } from "@validations/validationMessages";
+import { paymentMethodOptionsMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 
 import {
   StyledModal,
   StyledContainerClose,
   StyledContainerTitle,
 } from "./styles";
-import { dataAddSeriesModal } from "./config";
+import { dataEditSeriesModal } from "./config";
 
-export interface AddSeriesModalProps {
+export interface EditSeriesModalProps {
   handleClose: () => void;
   onSubmit: () => void;
   onConfirm: (values: FormikValues) => void;
@@ -41,7 +38,7 @@ export interface AddSeriesModalProps {
   portalId?: string;
 }
 
-export function AddSeriesModal(props: AddSeriesModalProps) {
+export function EditSeriesModal(props: EditSeriesModalProps) {
   const {
     portalId = "portal",
     initialValues,
@@ -59,9 +56,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
 
   const validationSchema = Yup.object({
     paymentMethod: Yup.string().required(""),
-    amount: Yup.number().required(""),
     value: Yup.number().required(""),
-    frequency: Yup.string().required(""),
     datePayment: Yup.date().required(""),
   });
 
@@ -108,11 +103,11 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
           <StyledModal $smallScreen={isMobile}>
             <StyledContainerTitle>
               <Text type="headline" size="small">
-                {dataAddSeriesModal.title}
+                {dataEditSeriesModal.title}
               </Text>
               <StyledContainerClose onClick={handleClose}>
                 <Stack alignItems="center" gap="8px">
-                  <Text>{dataAddSeriesModal.close}</Text>
+                  <Text>{dataEditSeriesModal.close}</Text>
                   <Icon
                     appearance="dark"
                     icon={<MdClear />}
@@ -124,34 +119,22 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
             </StyledContainerTitle>
             <Divider />
             <Stack gap="24px" direction="column">
-              <Select
-                name="paymentMethod"
-                id="paymentMethod"
-                label={dataAddSeriesModal.labelPaymentMethod}
-                placeholder={dataAddSeriesModal.placeHolderSelect}
-                options={paymentMethodOptionsMock}
-                value={formik.values.paymentMethod}
-                onChange={(name, value) => formik.setFieldValue(name, value)}
+              <Datefield
+                name="datePayment"
+                id="datePayment"
+                label={dataEditSeriesModal.labelDate}
+                value={formik.values.datePayment}
+                onChange={(e) =>
+                  formik.setFieldValue("datePayment", e.target.value)
+                }
                 onBlur={formik.handleBlur}
-                size="wide"
-                fullwidth
-              />
-              <Textfield
-                name="amount"
-                id="amount"
-                label={dataAddSeriesModal.labelAmount}
-                placeholder={dataAddSeriesModal.placeHolderAmount}
-                onChange={(e) => handleChangeWithCurrency(formik, e)}
-                value={validateCurrencyField("amount", formik, false)}
-                onBlur={formik.handleBlur}
-                size="wide"
                 fullwidth
               />
               <Textfield
                 name="value"
                 id="value"
-                label={dataAddSeriesModal.labelValue}
-                placeholder={dataAddSeriesModal.placeHolderValue}
+                label={dataEditSeriesModal.labelValue}
+                placeholder={dataEditSeriesModal.placeHolderValue}
                 iconBefore={
                   <MdOutlineAttachMoney color={inube.palette.green.G400} />
                 }
@@ -160,30 +143,19 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
                 onBlur={formik.handleBlur}
                 fullwidth
               />
+              <Select
+                name="paymentMethod"
+                id="paymentMethod"
+                label={dataEditSeriesModal.labelPaymentMethod}
+                placeholder={dataEditSeriesModal.placeHolderSelect}
+                options={paymentMethodOptionsMock}
+                value={formik.values.paymentMethod}
+                onChange={(name, value) => formik.setFieldValue(name, value)}
+                onBlur={formik.handleBlur}
+                size="wide"
+                fullwidth
+              />
             </Stack>
-            <Select
-              name="frequency"
-              id="frequency"
-              label={dataAddSeriesModal.labelFrequency}
-              placeholder={dataAddSeriesModal.placeHolderSelect}
-              options={frequencyOptionsMock}
-              value={formik.values.frequency}
-              onChange={(name, value) => formik.setFieldValue(name, value)}
-              onBlur={formik.handleBlur}
-              size="wide"
-              fullwidth
-            />
-            <Datefield
-              name="datePayment"
-              id="datePayment"
-              label={dataAddSeriesModal.labelDate}
-              value={formik.values.datePayment}
-              onChange={(e) =>
-                formik.setFieldValue("datePayment", e.target.value)
-              }
-              onBlur={formik.handleBlur}
-              fullwidth
-            />
             <Divider />
             <Stack justifyContent="flex-end" margin="16px 0px" gap="10px">
               <Button
@@ -192,14 +164,14 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
                 appearance="gray"
                 variant="outlined"
               >
-                {dataAddSeriesModal.cancel}
+                {dataEditSeriesModal.cancel}
               </Button>
               <Button
                 type="button"
                 disabled={!formik.dirty || !formik.isValid}
                 onClick={formik.submitForm}
               >
-                {dataAddSeriesModal.add}
+                {dataEditSeriesModal.add}
               </Button>
             </Stack>
           </StyledModal>

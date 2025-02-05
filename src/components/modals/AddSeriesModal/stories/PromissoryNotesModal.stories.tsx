@@ -4,24 +4,7 @@ import { Button } from "@inubekit/button";
 
 import { props, parameters } from "./props";
 import { AddSeriesModal } from "../index";
-import { AddSeriesModalProps } from "../type";
-
-
-const paymentMethodOptions = [
-  {
-    id: "bank_transfer",
-    label: "Transferencia Bancaria",
-    value: "bank_transfer",
-  },
-  { id: "credit_card", label: "Tarjeta de Crédito", value: "credit_card" },
-  { id: "cash", label: "Efectivo", value: "cash" },
-];
-
-const frequencyOptions = [
-  { id: "monthly", label: "Mensual", value: "monthly" },
-  { id: "quarterly", label: "Trimestral", value: "quarterly" },
-  { id: "annually", label: "Anual", value: "annually" },
-];
+import { AddSeriesModalProps } from "../index";
 
 const story: Meta<typeof AddSeriesModal> = {
   component: AddSeriesModal,
@@ -52,8 +35,6 @@ const DefaultTemplate: StoryFn<AddSeriesModalProps> = (args) => {
         <AddSeriesModal
           {...args}
           handleClose={handleShowModal}
-          paymentMethodOptions={paymentMethodOptions}
-          frequencyOptions={frequencyOptions}
         />
       )}
     </>
@@ -62,11 +43,7 @@ const DefaultTemplate: StoryFn<AddSeriesModalProps> = (args) => {
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {
-  title: "Nueva serie",
-  buttonText: "Cancelar",
-  secondButtonText: "Agregar",
   portalId: "portal",
-  formValues: { field1: 0, field2: 0 },
 };
 
 export default story;
