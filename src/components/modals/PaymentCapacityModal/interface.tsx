@@ -28,6 +28,7 @@ interface PaymentCapacityInterfaceProps {
   availableForNewCommitments: number;
   maxVacationTerm: number;
   maxAmount: number;
+  iconVisible?: boolean;
 }
 
 export const PaymentCapacityInterface = forwardRef<
@@ -46,6 +47,7 @@ export const PaymentCapacityInterface = forwardRef<
     availableForNewCommitments,
     maxVacationTerm,
     maxAmount,
+    iconVisible,
   } = props;
 
   return (
@@ -97,15 +99,17 @@ export const PaymentCapacityInterface = forwardRef<
                   </Text>
                 )}
                 <Stack margin="0px 0px 0px 6px">
-                  <Icon
-                    appearance="primary"
-                    icon={<MdOutlineVisibility />}
-                    size="16px"
-                    spacing="narrow"
-                    cursorHover
-                    variant="filled"
-                    shape="circle"
-                  />
+                  {!iconVisible && (
+                    <Icon
+                      appearance="primary"
+                      icon={<MdOutlineVisibility />}
+                      size="16px"
+                      spacing="narrow"
+                      cursorHover
+                      variant="filled"
+                      shape="circle"
+                    />
+                  )}
                 </Stack>
               </Stack>
             </Stack>
@@ -125,15 +129,17 @@ export const PaymentCapacityInterface = forwardRef<
                   </Text>
                 )}
                 <Stack margin="0px 0px 0px 6px">
-                  <Icon
-                    appearance="primary"
-                    icon={<MdOutlineVisibility />}
-                    size="16px"
-                    spacing="narrow"
-                    cursorHover
-                    variant="filled"
-                    shape="circle"
-                  />
+                  {!iconVisible && (
+                    <Icon
+                      appearance="primary"
+                      icon={<MdOutlineVisibility />}
+                      size="16px"
+                      spacing="narrow"
+                      cursorHover
+                      variant="filled"
+                      shape="circle"
+                    />
+                  )}
                 </Stack>
               </Stack>
             </Stack>
@@ -205,7 +211,13 @@ export const PaymentCapacityInterface = forwardRef<
             </Text>
           </Stack>
 
-          <Stack justifyContent="center" alignItems="center" width="100%" direction="column" gap="8px">
+          <Stack
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            direction="column"
+            gap="8px"
+          >
             <Text
               appearance="primary"
               weight="bold"
@@ -214,10 +226,7 @@ export const PaymentCapacityInterface = forwardRef<
             >
               ${loading ? "Cargando..." : currencyFormat(maxAmount, false)}
             </Text>
-            <Text
-              appearance="gray"   
-              size="small" 
-            >
+            <Text appearance="gray" size="small">
               {incomeModalConfig.maxAmount}
             </Text>
           </Stack>

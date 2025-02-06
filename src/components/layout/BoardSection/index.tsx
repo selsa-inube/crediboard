@@ -1,15 +1,12 @@
 import { useState } from "react";
-import {
-  Stack,
-  Text,
-  Icon,
-  useMediaQueries,
-  inube,
-} from "@inube/design-system";
 import { MdOutlineChevronRight } from "react-icons/md";
 
+import { Stack } from "@inubekit/stack";
+import { Text } from "@inubekit/text";
+import { Icon } from "@inubekit/icon";
+import { useMediaQueries } from "@inubekit/hooks";
 import { SummaryCard } from "@components/cards/SummaryCard";
-import { PinnedRequest, Requests } from "@services/types";
+import { ICreditRequestPinned, ICreditRequest } from "@services/types";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
@@ -18,9 +15,9 @@ interface BoardSectionProps {
   sectionTitle: string;
   sectionBackground: SectionBackground;
   orientation: SectionOrientation;
-  sectionInformation: Requests[];
-  pinnedRequests: PinnedRequest[];
-  handlePinRequest: (requestId: number) => void;
+  sectionInformation: ICreditRequest[];
+  pinnedRequests: ICreditRequestPinned[];
+  handlePinRequest: (requestId: string, isPinned: string) => void;
   errorLoadingPins: boolean;
 }
 
@@ -32,7 +29,7 @@ function BoardSection(props: BoardSectionProps) {
     sectionInformation,
     pinnedRequests,
     handlePinRequest,
-    errorLoadingPins
+    errorLoadingPins,
   } = props;
   const disabledCollapse = sectionInformation.length === 0;
 
@@ -47,11 +44,13 @@ function BoardSection(props: BoardSectionProps) {
     }
   };
 
-  function isRequestPinned(k_Prospe: number, pinnedRequests: PinnedRequest[]) {
+  function isRequestPinned(
+    creditRequestId: string | undefined,
+    pinnedRequests: ICreditRequestPinned[]
+  ) {
     const pinnedRequest = pinnedRequests.find(
-      (pinnedRequest) => pinnedRequest.requestId === k_Prospe
+      (pinnedRequest) => pinnedRequest.creditRequestId === creditRequestId
     );
-
     return pinnedRequest && pinnedRequest.isPinned === "Y" ? true : false;
   }
 
@@ -66,11 +65,11 @@ function BoardSection(props: BoardSectionProps) {
           orientation === "vertical" ? "space-between" : "flex-start"
         }
         alignItems="end"
-        gap={inube.spacing.s300}
+        gap="24px"
       >
         <Stack
           alignItems="end"
-          gap={inube.spacing.s100}
+          gap="8px"
           width={orientation === "vertical" ? "180px" : "auto"}
           height={orientation === "vertical" ? "56px" : "auto"}
         >
@@ -106,22 +105,32 @@ function BoardSection(props: BoardSectionProps) {
           alignItems="center"
           direction={orientation === "vertical" ? "column" : "row"}
           justifyContent={isMobile ? "center" : "flex-start"}
-          gap={inube.spacing.s250}
+          gap="20px"
         >
           {sectionInformation.map((request, index) => (
             <SummaryCard
               key={index}
-              rad={request.k_Prospe}
-              date={request.f_Prospe}
-              name={request.nnasocia}
-              destination={request.k_Desdin}
-              value={request.v_Monto}
-              toDo={request.n_Descr_Tarea}
-              path={`extended-card/${request.k_Prospe}`}
-              isPinned={isRequestPinned(request.k_Prospe, pinnedRequests)}
+              rad={request.creditRequestCode}
+              date={request.creditRequestDateOfCreation}
+              name={request.clientName}
+              destination={request.moneyDestinationAbreviatedName}
+              value={request.loanAmount}
+              toDo={request.taskToBeDone}
+              path={`extended-card/${request.creditRequestCode}`}
+              isPinned={isRequestPinned(
+                request.creditRequestId,
+                pinnedRequests
+              )}
               hasMessage
               onPinChange={() => {
-                handlePinRequest(request.k_Prospe);
+                if (request.creditRequestId) {
+                  handlePinRequest(
+                    request.creditRequestId,
+                    isRequestPinned(request.creditRequestId, pinnedRequests)
+                      ? "N"
+                      : "Y"
+                  );
+                }
               }}
               errorLoadingPins={errorLoadingPins}
             />

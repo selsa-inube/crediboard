@@ -1,12 +1,14 @@
 import { useContext, useState, useRef, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { Grid, useMediaQuery } from "@inube/design-system";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
+
+import { Grid } from "@inubekit/grid";
+import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
 import { Header } from "@inubekit/header";
 import { Text } from "@inubekit/text";
 
-import { AppContext } from "@context/AppContext";
+import { AppContext } from "@context/AppContext/AppContext";
 import { MenuSection } from "@components/navigation/MenuSection";
 import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
@@ -135,16 +137,12 @@ function AppPage() {
           )}
           <StyledMain>
             <Outlet />
-            <StyledFooter>
-              <Text
-                appearance="gray"
-                textAlign="center"
-                size="medium"
-              >
-                © 2024 Inube
-              </Text>
-            </StyledFooter>
           </StyledMain>
+          <StyledFooter>
+            <Text appearance="gray" textAlign="center" size="medium">
+              © 2024 Inube
+            </Text>
+          </StyledFooter>
         </StyledContainer>
       </Grid>
     </StyledAppPage>

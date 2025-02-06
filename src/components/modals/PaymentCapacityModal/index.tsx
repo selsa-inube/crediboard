@@ -14,6 +14,8 @@ export interface PaymentCapacityProps {
   availableForNewCommitments: number;
   maxVacationTerm: number;
   maxAmount: number;
+  iconVisible?: boolean;
+  loading?: boolean;
 }
 
 export const PaymentCapacity = (props: PaymentCapacityProps) => {
@@ -27,6 +29,8 @@ export const PaymentCapacity = (props: PaymentCapacityProps) => {
     availableForNewCommitments,
     maxVacationTerm,
     maxAmount,
+    iconVisible,
+    loading = false,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -38,13 +42,11 @@ export const PaymentCapacity = (props: PaymentCapacityProps) => {
 
   const isMobile = useMediaQuery("(max-width: 700px)");
 
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
       setError(false);
-      setLoading(false);
     }, 2000);
   }, []);
 
@@ -62,6 +64,7 @@ export const PaymentCapacity = (props: PaymentCapacityProps) => {
         availableForNewCommitments={availableForNewCommitments}
         maxVacationTerm={maxVacationTerm}
         maxAmount={maxAmount}
+        iconVisible={iconVisible}
       />
     </Blanket>,
     node

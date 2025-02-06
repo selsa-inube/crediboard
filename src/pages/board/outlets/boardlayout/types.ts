@@ -1,8 +1,8 @@
-import { Requests, PinnedRequest } from "@services/types";
+import { ICreditRequest, ICreditRequestPinned } from "@services/types";
 
 interface IBoardData {
-  boardRequests: Requests[];
-  requestsPinned: PinnedRequest[];
+  boardRequests: ICreditRequest[];
+  requestsPinned: ICreditRequestPinned[];
 }
 
 export type { IBoardData };

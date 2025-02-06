@@ -10,7 +10,6 @@ import {
   MdOutlineVideocam,
   MdOutlinePayments,
 } from "react-icons/md";
-
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
@@ -18,28 +17,23 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Divider } from "@inubekit/divider";
 
-import { getById } from "@mocks/utils/dataMock.service";
-import { CreditLimit } from "@components/modals/CreditLimit";
-import { Fieldset } from "@components/data/Fieldset";
-import { IncomeModal } from "@components/modals/IncomeModal";
-import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
-import { ReciprocityModal } from "@components/modals/ReciprocityModal";
-import { ReportCreditsModal } from "@components/modals/ReportCreditsModal";
-import { ScoreModal } from "@components/modals/FrcModal";
+import { MenuProspect } from "@components/navigation/MenuProspect";
 import {
   truncateTextToMaxLength,
   capitalizeFirstLetter,
   capitalizeFirstLetterEachWord,
 } from "@utils/formatData/text";
+import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
+import { CreditProspect } from "@pages/prospect/components/CreditProspect";
+import { Fieldset } from "@components/data/Fieldset";
+import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
+import { getById } from "@mocks/utils/dataMock.service";
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
-import { ICreditProductProspect, Requests } from "@services/types";
-import { MenuPropect } from "@components/navigation/MenuPropect";
-import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
-import { ExtraordinaryPaymentModal } from "@pages/prospect/components/ExtraordinaryPaymentModal";
-import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
+import { ICreditProductProspect, ICreditRequest } from "@services/types";
+import { DisbursementModal } from "@components/modals/DisbursementModal";
 
-import { menuOptions, incomeOptions } from "./config/config";
+import { menuOptions, tittleOptions } from "./config/config";
 import {
   StyledCollapseIcon,
   StyledFieldset,
@@ -48,65 +42,20 @@ import {
 } from "./styles";
 
 interface ComercialManagementProps {
-  data: Requests;
-  children?: JSX.Element;
+  data: ICreditRequest;
   print: () => void;
   isPrint?: boolean;
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { data, children, print, isPrint } = props;
+  const { data, print, isPrint = false } = props;
   const [collapse, setCollapse] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [openModal, setOpenModal] = useState<string | null>(null);
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [prospectProducts, setProspectProducts] =
     useState<ICreditProductProspect>();
-  const maxReciprocity = 40000000;
 
-  const { id } = useParams();
-  const [form, setForm] = useState({
-    debtor: "",
-    monthly_salary: 0,
-    other_monthly_payments: 0,
-    pension_allowances: 0,
-    leases: 0,
-    dividends_or_shares: 0,
-    financial_returns: 0,
-    average_monthly_profit: 0,
-    monthly_fees: 0,
-    total: undefined,
-  });
-
-  useEffect(() => {
-    if (id) {
-      const foundProspect = mockProspectCredit.find(
-        (prospect) => prospect.public_code === id
-      );
-      if (foundProspect) {
-        const mockCredit = foundProspect.consolidated_credit[0];
-        setForm({
-          debtor: foundProspect.borrower[0].borrower_name,
-          monthly_salary: mockCredit.monthly_salary ?? 0,
-          other_monthly_payments: mockCredit.other_monthly_payments ?? 0,
-          pension_allowances: mockCredit.pension_allowances ?? 0,
-          leases: mockCredit.leases ?? 0,
-          dividends_or_shares: mockCredit.dividends_or_shares ?? 0,
-          financial_returns: mockCredit.financial_returns ?? 0,
-          average_monthly_profit: mockCredit.average_monthly_profit ?? 0,
-          monthly_fees: mockCredit.monthly_fees ?? 0,
-          total: undefined,
-        });
-      }
-    }
-  }, [id]);
-
-  const onChanges = (name: string, newValue: string) => {
-    setForm((prevForm) => ({
-      ...prevForm,
-      [name]: newValue,
-    }));
-  };
+  const { prospectCode, id } = useParams();
 
   const isMobile = useMediaQuery("(max-width: 720px)");
 
@@ -115,26 +64,26 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   };
   useEffect(() => {
     try {
-      Promise.allSettled([getById("prospects", "public_code", id!, true)]).then(
-        ([prospects]) => {
-          if (
-            prospects.status === "fulfilled" &&
-            Array.isArray(prospects.value)
-          ) {
-            if (!(prospects.value instanceof Error)) {
-              setProspectProducts(
-                prospects.value
-                  .map((dataPropects) => dataPropects.credit_product)
-                  .flat()[0] as ICreditProductProspect
-              );
-            }
+      Promise.allSettled([
+        getById("prospects", "public_code", prospectCode!, true),
+      ]).then(([prospects]) => {
+        if (
+          prospects.status === "fulfilled" &&
+          Array.isArray(prospects.value)
+        ) {
+          if (!(prospects.value instanceof Error)) {
+            setProspectProducts(
+              prospects.value
+                .map((dataPropects) => dataPropects.credit_product)
+                .flat()[0] as ICreditProductProspect
+            );
           }
         }
-      );
+      });
     } catch (error) {
       console.log("error", error);
     }
-  }, [id]);
+  }, [prospectCode]);
 
   const handleCloseModal = () => {
     setModalHistory((prevHistory) => {
@@ -142,10 +91,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       newHistory.pop();
       return newHistory;
     });
-  };
-
-  const handleGoBackOrCloseModal = () => {
-    setOpenModal(null);
   };
 
   const handleCollapse = () => {
@@ -163,10 +108,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               <Stack>
                 <Stack gap="6px" width="max-content">
                   <Text type="title" size="small" appearance="gray">
-                    No. Rad.:
+                    {tittleOptions.titleCreditId}
                   </Text>
                   <Text type="title" size="small">
-                    {data.k_Prospe}
+                    {data.creditRequestCode}
                   </Text>
                   <Text
                     type="title"
@@ -174,37 +119,41 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     appearance="gray"
                     padding={`0px 0px 0px 8px`}
                   >
-                    {formatPrimaryDate(new Date(data.f_Prospe))}
+                    {formatPrimaryDate(
+                      new Date(data.creditRequestDateOfCreation)
+                    )}
                   </Text>
                 </Stack>
               </Stack>
               {isMobile && (
                 <Stack margin="4px 0px">
                   <Text type="title" size={!isMobile ? "large" : "medium"}>
-                    {data.nnasocia &&
+                    {data.clientName &&
                       capitalizeFirstLetterEachWord(
-                        truncateTextToMaxLength(data.nnasocia)
+                        truncateTextToMaxLength(data.clientName)
                       )}
                   </Text>
                 </Stack>
               )}
               <Stack gap={!isMobile ? "4px" : "4px"}>
                 <Text type="title" size="small" appearance="gray">
-                  Destino:
+                  {tittleOptions.titleDestination}
                 </Text>
                 <Text type="title" size="small">
-                  {data.nnasocia &&
+                  {data.clientName &&
                     capitalizeFirstLetter(
-                      truncateTextToMaxLength(data.k_Desdin, 60)
+                      truncateTextToMaxLength(data.moneyDestinationId, 60)
                     )}
                 </Text>
               </Stack>
               <Stack gap="4px">
                 <Text type="title" size="small" appearance="gray">
-                  Valor:
+                  {tittleOptions.tittleAmount}
                 </Text>
                 <Text type="title" size="small">
-                  {data.v_Monto === 0 ? "$ 0" : currencyFormat(data.v_Monto)}
+                  {data.loanAmount === 0
+                    ? "$ 0"
+                    : currencyFormat(data.loanAmount)}
                 </Text>
               </Stack>
             </Stack>
@@ -212,9 +161,9 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             {!isMobile && (
               <Stack gap="36px">
                 <Text type="title">
-                  {data.nnasocia &&
+                  {data.clientName &&
                     capitalizeFirstLetterEachWord(
-                      truncateTextToMaxLength(data.nnasocia)
+                      truncateTextToMaxLength(data.clientName)
                     )}
                 </Text>
               </Stack>
@@ -222,13 +171,23 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             <Stack gap="2px">
               {!isMobile && (
                 <>
-                  <Button
-                    type="link"
-                    spacing="compact"
-                    path={`/extended-card/${id}/credit-profile`}
-                  >
-                    Ver perfil crediticio
-                  </Button>
+                  <Stack gap="16px">
+                    <Button
+                      type="link"
+                      spacing="compact"
+                      path={`/extended-card/${id}/credit-profile`}
+                    >
+                      {tittleOptions.titleProfile}
+                    </Button>
+                    <Button
+                      type="button"
+                      spacing="compact"
+                      variant="outlined"
+                      onClick={() => handleOpenModal("disbursementModal")}
+                    >
+                      {tittleOptions.titleDisbursement}
+                    </Button>
+                  </Stack>
                   <StyledVerticalDivider />
                   <Icon
                     icon={<MdOutlinePhone />}
@@ -256,14 +215,25 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             </Stack>
           </Stack>
           {isMobile && (
-            <Button
-              type="link"
-              spacing="compact"
-              path={`/extended-card/${id}/credit-profile`}
-              fullwidth
-            >
-              Ver perfil crediticio
-            </Button>
+            <>
+              <Button
+                type="link"
+                spacing="compact"
+                path={`/extended-card/${id}/credit-profile`}
+                fullwidth
+              >
+                {tittleOptions.titleProfile}
+              </Button>
+              <Button
+                type="button"
+                spacing="compact"
+                variant="outlined"
+                onClick={() => handleOpenModal("disbursementModal")}
+                fullwidth
+              >
+                {tittleOptions.titleDisbursement}
+              </Button>
+            </>
           )}
           {isMobile && (
             <Stack gap="16px" padding="12px 0px 12px 0px">
@@ -274,7 +244,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   fullwidth
                   iconBefore={<MdOutlinePhone />}
                 >
-                  Llamada
+                  {tittleOptions.titleCall}
                 </Button>
               )}
               {isMobile && (
@@ -284,7 +254,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   fullwidth
                   iconBefore={<MdOutlineVideocam />}
                 >
-                  Videollamada
+                  {tittleOptions.titleVideoCall}
                 </Button>
               )}
             </Stack>
@@ -308,7 +278,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       />
                     }
                   >
-                    Agregar producto
+                    {tittleOptions.titleAddProduct}
                   </Button>
                 </Stack>
               )}
@@ -335,7 +305,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       }
                       onClick={() => handleOpenModal("extraPayments")}
                     >
-                      Pagos extras
+                      {tittleOptions.titleExtraPayments}
                     </Button>
                   )}
                 </Stack>
@@ -369,7 +339,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       onClick={() => setShowMenu(!showMenu)}
                     />
                     {showMenu && (
-                      <MenuPropect
+                      <MenuProspect
                         options={menuOptions(
                           handleOpenModal,
                           !prospectProducts?.ordinary_installment_for_principal
@@ -384,160 +354,24 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           )}
           {collapse && <Stack>{isMobile && <Divider />}</Stack>}
           {collapse && (
-            <Stack direction="column" gap="24px">
-              {!isMobile && (
-                <Stack gap="16px" justifyContent="end" alignItems="center">
-                  <Button
-                    type="button"
-                    appearance="primary"
-                    spacing="compact"
-                    iconBefore={
-                      <Icon
-                        icon={<MdOutlineAdd />}
-                        appearance="light"
-                        size="18px"
-                        spacing="narrow"
-                      />
-                    }
-                  >
-                    Agregar producto
-                  </Button>
-                  {prospectProducts?.ordinary_installment_for_principal && (
-                    <Button
-                      type="button"
-                      appearance="primary"
-                      spacing="compact"
-                      variant="outlined"
-                      iconBefore={
-                        <Icon
-                          icon={<MdOutlinePayments />}
-                          appearance="primary"
-                          size="18px"
-                          spacing="narrow"
-                        />
-                      }
-                      onClick={() => handleOpenModal("extraPayments")}
-                    >
-                      Pagos extras
-                    </Button>
-                  )}
-
-                  <StyledVerticalDivider />
-                  <StyledContainerIcon>
-                    <Icon
-                      icon={<MdOutlinePictureAsPdf />}
-                      appearance="primary"
-                      size="24px"
-                      disabled={isPrint}
-                      cursorHover
-                      onClick={print}
-                    />
-                    <Icon
-                      icon={<MdOutlineShare />}
-                      appearance="primary"
-                      size="24px"
-                      cursorHover
-                    />
-                    <Icon
-                      icon={<MdOutlineMoreVert />}
-                      appearance="primary"
-                      size="24px"
-                      cursorHover
-                      onClick={() => setShowMenu(!showMenu)}
-                    />
-                    {showMenu && (
-                      <MenuPropect
-                        options={menuOptions(
-                          handleOpenModal,
-                          !prospectProducts?.ordinary_installment_for_principal
-                        )}
-                        onMouseLeave={() => setShowMenu(false)}
-                      />
-                    )}
-                  </StyledContainerIcon>
-                </Stack>
-              )}
-              <Stack direction="column">{children}</Stack>
-            </Stack>
+            <CreditProspect
+              isMobile={isMobile}
+              isPrint={isPrint}
+              showMenu={() => setShowMenu(false)}
+              showPrint
+            />
           )}
         </Stack>
-
-        {currentModal === "creditLimit" && (
-          <CreditLimit
-            handleClose={handleCloseModal}
-            title="Origen de cupo"
-            portalId="portal"
-            maxPaymentCapacity={50000000}
-            maxReciprocity={40000000}
-            maxDebtFRC={45000000}
-            assignedLimit={0}
-            currentPortfolio={10000000}
-            maxUsableLimit={20000000}
-            availableLimitWithoutGuarantee={15000000}
-            onOpenPaymentCapacityModal={() => setOpenModal("paymentCapacity")}
-            onOpenReciprocityModal={() => setOpenModal("reciprocityModal")}
-            onOpenFrcModal={() => setOpenModal("scoreModal")}
-          />
-        )}
-        {openModal === "paymentCapacity" && (
-          <PaymentCapacity
-            title="Cupo máx. capacidad de pago"
-            portalId="portal"
-            handleClose={handleGoBackOrCloseModal}
-            reportedIncomeSources={2000000}
-            reportedFinancialObligations={6789000}
-            subsistenceReserve={2000000}
-            availableForNewCommitments={5000000}
-            maxVacationTerm={12}
-            maxAmount={1000000}
-          />
-        )}
-        {openModal === "reciprocityModal" && (
-          <ReciprocityModal
-            portalId="portal"
-            handleClose={handleGoBackOrCloseModal}
-            balanceOfContributions={maxReciprocity}
-            accordingToRegulation={2}
-            assignedQuota={1000000}
-          />
-        )}
-        {openModal === "scoreModal" && (
-          <ScoreModal
-            title="Score Details"
-            handleClose={handleGoBackOrCloseModal}
-            subTitle="Your Financial Score"
-            totalScore={150}
-            seniority={150}
-            centralRisk={50}
-            employmentStability={230}
-            maritalStatus={30}
-            economicActivity={118}
-            monthlyIncome={3000000}
-            maxIndebtedness={50000000}
-          />
-        )}
-        {currentModal === "IncomeModal" && (
-          <IncomeModal
-            onChange={onChanges}
-            form={form}
-            handleClose={handleCloseModal}
-            options={incomeOptions}
-          />
-        )}
-        {currentModal === "reportCreditsModal" && (
-          <ReportCreditsModal
-            handleClose={handleCloseModal}
-            portalId="portal"
-            totalBalance={87000000}
-            totalFee={3300000}
-            options={incomeOptions}
-            onChange={onChanges}
-            debtor={form.debtor}
-          />
-        )}
         {currentModal === "extraPayments" && (
           <ExtraordinaryPaymentModal
             dataTable={extraordinaryInstallmentMock}
+            portalId="portal"
+            handleClose={handleCloseModal}
+          />
+        )}
+        {currentModal === "disbursementModal" && (
+          <DisbursementModal
+            isMobile={isMobile}
             portalId="portal"
             handleClose={handleCloseModal}
           />

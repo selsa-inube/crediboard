@@ -1,41 +1,42 @@
 import { Schedule, GracePeriodType, BorrowerProperties } from "@services/enums";
-interface Requests {
-  k_Prospe: number;
-  n_Prospe: string;
-  f_Prospe: string;
-  v_Monto: number;
-  k_Idterc: number;
-  k_Desdin: string;
-  i_Estprs: DmEtapasPrs;
-  n_Desdin: string;
-  aanumnit: string;
-  nnasocia: string;
-  n_Descr_Etapa: string;
-  n_Descr_Tarea: string;
+export interface ICreditRequest {
+  creditRequestId?: string;
+  creditRequestCode: string;
+  creditRequestDateOfCreation: string;
+  loanAmount: number;
+  clientId: string;
+  moneyDestinationId: string;
+  stage: DmEtapasPrs;
+  moneyDestinationAbreviatedName: string;
+  clientIdentificationNumber: string;
+  clientName: string;
+  taskToBeDone: string;
 }
 
-interface IStaff {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
+export interface IStaff {
+  userId: string;
+  userName: string;
+  identificationType: string;
+  identificationNumber: string;
   position: string;
 }
 
-interface PinnedRequest {
-  requestId: number;
-  isPinned: "Y" | "N";
+export interface ICreditRequestPinned {
+  creditRequestId: string;
+  isPinned: string;
 }
 
-interface IToDo {
-  credit_request_state_id: string;
-  task_to_be_done: string;
-  account_manager_name: string;
-  analyst_name: string;
-  decisions: { id: string; label: string; value: string }[];
+export interface IToDo {
+  creditRequestId: string;
+  creditRequestCode: string;
+  CreditRequestStateId: string;
+  creditRequestStateAbbreviatedName: string;
+  stage: string;
+  taskToBeDone: string;
+  usersByCreditRequestResponse: IStaff[];
 }
 
-interface IKeyRiskScoring {
+export interface IKeyRiskScoring {
   total_score: number;
   minimum_score: number;
   seniority: number;
@@ -50,12 +51,12 @@ interface IKeyRiskScoring {
   economic_activity_score: number;
 }
 
-interface IRiskScoring {
+export interface IRiskScoring {
   credit_request_id: string;
   risk_scoring: IKeyRiskScoring;
 }
 
-type DmEtapasPrs =
+export type DmEtapasPrs =
   | "CUMPLIMIENTO_REQUISITOS"
   | "FORMALIZACION_GARANTIAS"
   | "GESTION_COMERCIAL"
@@ -63,7 +64,7 @@ type DmEtapasPrs =
   | "TRAMITE_DESEMBOLSO"
   | "VERIFICACION_APROBACION";
 
-type DmTareasPrs =
+export type DmTareasPrs =
   | "ASESORAR_CLIENTE"
   | "CONFIRMAR_APROBACION"
   | "CONFIRMAR_DESEMBOLSO"
@@ -72,7 +73,7 @@ type DmTareasPrs =
   | "VALIDAR_SOPORTES_JURIDICOS"
   | "INTERFACE_CARTERA";
 
-type DmConceptos =
+export type DmConceptos =
   | "APROBAR_SOLICITUD"
   | "AUTOMATICA"
   | "GESTION_COMERCIAL"
@@ -82,7 +83,7 @@ type DmConceptos =
   | "APROBACION_HUMANA"
   | "RECHAZO_HUMANO";
 
-type DmDecisions =
+export type DmDecisions =
   | "ANALISIS_RIESGO"
   | "ANULAR_SOLICITUD"
   | "APROBAR_SOLICITUD"
@@ -100,43 +101,32 @@ type DmDecisions =
   | "CREAR_OBLIGACIONES_DE_CARTERA"
   | "DECLINAR_OBLIGACIONES_DE_CARTERA";
 
-interface TraceType {
-  trace_id: string;
-  trace_value: string;
-  credit_request_id: string;
-  use_case: string;
-  user_id: string;
-  execution_date: string;
+export interface ITraceType {
+  creditRequestId?: string;
+  excecutionDate: string;
+  traceType: string;
+  traceValue: string;
+  userId: string;
+  userName: string;
+  decision_of_concept?: string;
+  decisionTakenByUser?: string;
   justification?: string;
-  decision_taken_by_user?: string;
-  trace_type?: string;
-  read_novelty?: string;
+  readNovelty?: string;
+  useCase?: string;
 }
 
-export type {
-  Requests,
-  IStaff,
-  IToDo,
-  IRiskScoring,
-  DmEtapasPrs,
-  DmTareasPrs,
-  DmConceptos,
-  DmDecisions,
-  PinnedRequest,
-  TraceType,
-};
-
-export interface payroll_discount_authorization {
-  credit_request_id: string;
-  payroll_discount_authorization_id: string;
-  description_use: string;
-  abbreviated_name: string;
-  credit_product_id: string;
-  borrower_id: string;
-  state: string;
-  obligation_unique_code: string;
-  document_unique_code: string;
-  image_unique_code: string;
+export interface IPayrollDiscountAuthorization {
+  creditRequestId: string;
+  payrollDiscountAuthorizationId: string;
+  payrollDiscountAuthorizationCode: string;
+  descriptionUse: string;
+  abbreviatedName: string;
+  borrowerId: string;
+  borrowerName: string;
+  documentState: string;
+  obligationCode: string;
+  documentCode: string;
+  imageCode: string;
 }
 
 export interface Ipayment_capacity {
@@ -166,16 +156,18 @@ export interface Iuncovered_wallet {
   };
 }
 
-export interface promissory_note {
-  credit_request_id: string;
-  promissory_note_id: string;
-  description_use: string;
-  abbreviated_name: string;
-  credit_product_id: string;
-  state: string;
-  obligation_unique_code: string;
-  document_unique_code: string;
-  image_unique_code: string;
+export interface IPromissoryNotes {
+  creditRequestId: string;
+  payrollDiscountAuthorizationId: string;
+  payrollDiscountAuthorizationCode: string;
+  descriptionUse: string;
+  abbreviatedName: string;
+  borrowerId: string;
+  borrowerName: string;
+  documentState: string;
+  obligationCode: string;
+  documentCode: string;
+  imageCode: string;
 }
 
 export interface approval_by_credit_request_Mock {
@@ -289,17 +281,24 @@ export interface ICreditProductProspect {
   acquired_cash_flow: IAcquiredCashFlow;
 }
 
+interface IDebtor {
+  id: string;
+  label: string;
+  value: string;
+}
+
 export interface IIncome {
-  debtor_id: string;
-  debtor: string,
-  monthly_salary: number,
-  other_monthly_payments: number,
-  pension_allowances: number,
-  leases: number,
-  dividends_or_shares: number,
-  financial_returns: number,
-  average_monthly_profit: number,
-  monthly_fees: number,
+  borrowers: IDebtor[];
+  borrower_id: string;
+  borrower: string;
+  monthly_salary: number;
+  other_monthly_payments: number;
+  pension_allowances: number;
+  leases: number;
+  dividends_or_shares: number;
+  financial_returns: number;
+  average_monthly_profit: number;
+  monthly_fees: number;
 }
 
 export interface IBorrowerProperty {
@@ -366,16 +365,39 @@ export interface IRiskScoringRangeRequered {
 }
 
 export interface IExtraordinaryPayment {
-  id: string;
+  id: number;
   datePayment: string;
+  amount?: number;
   value: number;
   paymentMethod: string;
+  frequency?: string;
 }
-
 export interface IMoneyDestination {
   money_destination_id: string;
   money_destination_unique_reference: string;
   abbreviated_name: string;
   description_use: string;
   icon: string;
+}
+
+export interface IPaymentChannel {
+  id: string;
+  label: string;
+  value: string;
+}
+export interface IDecisionsToDo {
+  id: number | string;
+  label: string;
+  value: string;
+}
+
+export interface IMakeDecisionsCreditRequest {
+  creditRequestId: string;
+  humanDecision: string;
+  justification: string;
+}
+
+export interface IUserSteps {
+  id: number,
+  intermediateSteps: number[],
 }

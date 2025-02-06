@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-
 import { useNavigate, useParams } from "react-router-dom";
 import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
-import { Text, inube, Grid, useMediaQuery } from "@inube/design-system";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Text } from "@inubekit/text";
+import { Grid } from "@inubekit/grid";
+import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
 import { useFlag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
+import { OfferedGuaranteeModal } from "@components/modals/OfferedGuaranteeModal";
 import { ErrorAlert } from "@components/ErrorAlert";
 import { ContainerSections } from "@components/layout/ContainerSections";
 import { StockTray } from "@components/layout/ContainerSections/StockTray";
@@ -16,7 +18,8 @@ import { MobileMenu } from "@components/modals/MobileMenu";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
-import { Ierror_issued, IErrorService, Requests } from "@services/types";
+import { Ierror_issued, IErrorService, ICreditRequest } from "@services/types";
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
@@ -34,7 +37,6 @@ import { Requirements } from "./Requirements";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
-import { CardCommercialManagement } from "./CommercialManagement/CardCommercialManagement";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -79,7 +81,7 @@ const removeErrorByIdServices = (
 };
 
 export const FinancialReporting = () => {
-  const [data, setData] = useState({} as Requests);
+  const [data, setData] = useState({} as ICreditRequest);
 
   const [showAttachments, setShowAttachments] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
@@ -88,6 +90,8 @@ export const FinancialReporting = () => {
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const { addFlag } = useFlag();
+
+  const [showGuarantee, setShowGuarantee] = useState(false);
 
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
   const [errors, setError] = useState<Ierror_issued[]>([]);
@@ -105,13 +109,9 @@ export const FinancialReporting = () => {
 
   useEffect(() => {
     Promise.allSettled([
-      getById("requests", "k_Prospe", id!),
       getById("document", "credit_request_id", id!, true),
       getById("error_issued", "credit_request_id", id!, true),
-    ]).then(([requirement, documents, error_issue]) => {
-      if (requirement.status === "fulfilled") {
-        setData(requirement.value as Requests);
-      }
+    ]).then(([documents, error_issue]) => {
       if (documents.status === "fulfilled" && Array.isArray(documents.value)) {
         const documentsUser = documents.value.map((dataListDocument) => ({
           id: dataListDocument.document_id,
@@ -123,6 +123,14 @@ export const FinancialReporting = () => {
         setError(error_issue.value as Ierror_issued[]);
       }
     });
+
+    getCreditRequestByCode(id!)
+      .then((data) => {
+        setData(data[0]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, [id]);
 
   useEffect(() => {
@@ -170,6 +178,7 @@ export const FinancialReporting = () => {
     buttonPrint: () => {},
     buttonAttach: () => setShowAttachments(true),
     buttonViewAttachments: () => setAttachDocuments(true),
+    buttonWarranty: () => setShowGuarantee(true),
     menuIcon: () => setShowMenu(true),
   });
 
@@ -256,24 +265,15 @@ export const FinancialReporting = () => {
         }
       >
         <>
-          <Stack direction="column" gap={inube.spacing.s250}>
+          <Stack direction="column" gap="20px">
             <Stack direction="column">
               <Stack direction="column">
-                <ComercialManagement
-                  print={handleGeneratePDF}
-                  data={data}
-                  children={
-                    <CardCommercialManagement
-                      id={id!}
-                      dataRef={dataCommercialManagementRef}
-                    />
-                  }
-                />
+                <ComercialManagement print={handleGeneratePDF} data={data} />
               </Stack>
             </Stack>
             <Grid
               templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
-              gap="s200"
+              gap="16px"
               autoRows="auto"
             >
               <Stack direction="column">
@@ -285,7 +285,7 @@ export const FinancialReporting = () => {
                 />
               </Stack>
               <Stack direction="column">
-                <Approvals user={id!} isMobile={isMobile} />
+                <Approvals user={id!} isMobile={isMobile} id={id!} />
               </Stack>
               <Stack direction="column">
                 <Requirements
@@ -298,7 +298,7 @@ export const FinancialReporting = () => {
                 <Management id={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
-                <PromissoryNotes user={id!} isMobile={isMobile} />
+                <PromissoryNotes id={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
                 <Postingvouchers />
@@ -334,13 +334,16 @@ export const FinancialReporting = () => {
           inputPlaceholder="Describa el motivo del Rechazo."
           onCloseModal={() => setShowRejectModal(false)}
           onSubmit={(values) => {
-            handleConfirmReject(
-              id!,
-              user!.nickname!,
-              values,
-            );
+            handleConfirmReject(id!, user!.nickname!, values);
             handleSubmit();
+            setShowRejectModal(false);
           }}
+        />
+      )}
+      {showGuarantee && (
+        <OfferedGuaranteeModal
+          handleClose={() => setShowGuarantee(false)}
+          isMobile={isMobile}
         />
       )}
       {showCancelModal && (
@@ -351,12 +354,9 @@ export const FinancialReporting = () => {
           inputPlaceholder="Describa el motivo de la anulación."
           onCloseModal={() => setShowCancelModal(false)}
           onSubmit={(values) => {
-            handleConfirmCancel(
-              id!,
-              user!.nickname!,
-              values,
-            );
+            handleConfirmCancel(id!, user!.nickname!, values);
             handleCancelSubmit();
+            setShowCancelModal(false);
           }}
         />
       )}
@@ -367,6 +367,7 @@ export const FinancialReporting = () => {
           onCancel={handleOnCancel}
           onAttach={handleOnAttach}
           onViewAttachments={handleOnViewAttachments}
+          onGuarantee={() => setShowGuarantee(true)}
         />
       )}
     </Stack>

@@ -7,30 +7,24 @@ import { SkeletonLine } from "@inubekit/skeleton";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
-import { ItemNotFound } from "@components/layout/ItemNotFound";
+import { IOption } from "@inubekit/select";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
-import { IStaff, IToDo } from "@services/types";
-import { TextAreaModal } from "@components/modals/TextAreaModal";
-import { get, getById } from "@mocks/utils/dataMock.service";
+import { IStaff, IToDo, ICreditRequest } from "@services/types";
+import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
+import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
+import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import userNotFound from "@assets/images/ItemNotFound.png";
+import { ItemNotFound } from "@components/layout/ItemNotFound";
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { getSearchDecisionById } from "@services/todo/SearchDecisionById";
 
 import { StaffModal } from "./StaffModal";
-import { errorMessagge, buttonText } from "./config";
+import { errorMessagge, txtLabels, txtLabelsNoData } from "./config";
+import { IICon, IButton } from "./types";
+import { getXAction } from "./util/utils";
 import { errorObserver } from "../config";
-
-interface IICon {
-  icon: JSX.Element;
-  onClick?: (e?: ChangeEvent) => void;
-}
-
-interface IButton {
-  label: string;
-  onClick: (e?: ChangeEvent) => void;
-  disabled: boolean;
-  loading?: boolean;
-}
 
 interface ToDoProps {
   icon?: IICon;
@@ -42,10 +36,18 @@ interface ToDoProps {
 
 function ToDo(props: ToDoProps) {
   const { icon, button, isMobile, id } = props;
+
+  const [requests, setRequests] = useState<ICreditRequest | null>(null);
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
-  const [toDo, setToDo] = useState<IToDo[]>([]);
+  const [taskDecisions, setTaskDecisions] = useState<IOption[]>([]);
+  const [selectedDecision, setSelectedDecision] = useState<IOption | null>(
+    null
+  );
+  const [loading, setLoading] = useState(true);
+  const [taskData, setTaskData] = useState<IToDo | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [assignedStaff, setAssignedStaff] = useState({
     commercialManager: "",
     analyst: "",
@@ -55,44 +57,36 @@ function ToDo(props: ToDoProps) {
     decision: "",
   });
 
-  const [loading, setLoading] = useState(true);
   const { addFlag } = useFlag();
 
   useEffect(() => {
-    (async () => {
+    const fetchCreditRequest = async () => {
+      try {
+        const data = await getCreditRequestByCode(id);
+        setRequests(data[0] as ICreditRequest);
+      } catch (error) {
+        console.error(error);
+        errorObserver.notify({
+          id: "Management",
+          message: (error as Error).message.toString(),
+        });
+      }
+    };
+
+    if (id) {
+      fetchCreditRequest();
+    }
+  }, [id]);
+
+  useEffect(() => {
+    const fetchToDoData = async () => {
+      if (!requests?.creditRequestId) return;
       setLoading(true);
       try {
-        const [staffResult, toDoResult] = await Promise.allSettled([
-          get("staff"),
-          getById<IToDo[]>("to-do", "credit_request_state_id", id!, true),
-        ]);
-
-        if (
-          staffResult.status === "fulfilled" &&
-          !(staffResult.value instanceof Error)
-        ) {
-          setStaff(staffResult.value as IStaff[]);
-        }
-
-        if (
-          toDoResult.status === "fulfilled" &&
-          !(toDoResult.value instanceof Error)
-        ) {
-          setToDo(toDoResult.value as IToDo[]);
-        } else {
-          if (
-            toDoResult.status === "rejected" ||
-            toDoResult.value instanceof Error
-          ) {
-            errorObserver.notify({
-              id: "Management",
-              message: "Error al obtener los datos de gestión.",
-            });
-          }
-          setToDo([]);
-        }
+        const data = await getToDoByCreditRequestId(requests.creditRequestId);
+        setTaskData(data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         errorObserver.notify({
           id: "Management",
           message: (error as Error).message.toString(),
@@ -100,27 +94,56 @@ function ToDo(props: ToDoProps) {
       } finally {
         setLoading(false);
       }
-    })();
-  }, [id]);
+    };
 
-  const handleRetry = () => {
-    setLoading(true);
-  };
+    fetchToDoData();
+  }, [requests?.creditRequestId]);
 
   useEffect(() => {
-    if (toDo) {
-      const { account_manager_name = "", analyst_name = "" } = toDo[0] ?? {};
+    if (taskData?.usersByCreditRequestResponse) {
+      const formattedStaff = taskData.usersByCreditRequestResponse.map(
+        (staffMember: IStaff) => ({
+          ...staffMember,
+          userName: capitalizeFirstLetterEachWord(staffMember.userName),
+        })
+      );
+      setStaff(formattedStaff);
 
-      setAssignedStaff({
-        commercialManager: account_manager_name,
-        analyst: analyst_name,
-      });
-      setTempStaff({
-        commercialManager: account_manager_name,
-        analyst: analyst_name,
-      });
+      const firstAccountManager = formattedStaff.find(
+        (staffMember) => staffMember.position === "Account_manager"
+      );
+
+      const firstAnalyst = formattedStaff.find(
+        (staffMember) => staffMember.position === "Analyst"
+      );
+
+      const newStaffState = {
+        commercialManager: firstAccountManager?.userName || "",
+        analyst: firstAnalyst?.userName || "",
+      };
+
+      setAssignedStaff(newStaffState);
+      setTempStaff(newStaffState);
     }
-  }, [toDo]);
+  }, [taskData]);
+
+  const handleRetry = async () => {
+    setLoading(true);
+    if (requests?.creditRequestId) {
+      try {
+        const data = await getToDoByCreditRequestId(requests.creditRequestId);
+        setTaskData(data);
+      } catch (error) {
+        console.error(error);
+        errorObserver.notify({
+          id: "Management",
+          message: (error as Error).message.toString(),
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   const handleToggleStaffModal = () => setShowStaffModal((prev) => !prev);
 
@@ -132,6 +155,11 @@ function ToDo(props: ToDoProps) {
 
   const onChangeDecision = (name: string, newValue: string) => {
     setDecisionValue({ ...decisionValue, [name]: newValue });
+
+    const selected = taskDecisions.find(
+      (decision) => decision.value === newValue
+    );
+    setSelectedDecision(selected || null);
   };
 
   const handleSubmit = () => {
@@ -146,11 +174,49 @@ function ToDo(props: ToDoProps) {
     });
   };
 
-  const handleSend = async () => {
+  const handleSend = () => {
     setIsModalOpen(true);
   };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleSelectOpen = async () => {
+    setLoading(true);
+    if (requests?.creditRequestId) {
+      try {
+        const decision = await getSearchDecisionById(requests.creditRequestId);
+        const formattedDecisions = Array.isArray(decision)
+          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            decision.map((decisions: any, index: number) => ({
+              id: `decision-${index}`,
+              label: decisions.decision + ": " + decisions.value,
+              value: decisions.value,
+            }))
+          : [];
+        setTaskDecisions(formattedDecisions);
+      } catch (error) {
+        console.error(error);
+        errorObserver.notify({
+          id: "Management",
+          message: (error as Error).message.toString(),
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const data = {
+    makeDecision: {
+      creditRequestId: requests?.creditRequestId || "",
+      humanDecision: selectedDecision?.label.split(":")[0] || "",
+      justification: "",
+    },
+
+    xAction: getXAction(selectedDecision?.label.split(":")[0] || ""),
+    humanDecisionDescription: selectedDecision?.label || "",
   };
 
   return (
@@ -162,13 +228,13 @@ function ToDo(props: ToDoProps) {
         hasOverflow
         aspectRatio={isMobile ? "auto" : "1"}
       >
-        {toDo.length === 0 ? (
+        {!taskData ? (
           <ItemNotFound
             image={userNotFound}
-            title="No se encontraron tareas"
-            description="Parece que no hay tareas disponibles para mostrar."
-            buttonDescription="volver a intentar"
-            route="/retry-path"
+            title={txtLabelsNoData.title}
+            description={txtLabelsNoData.description}
+            buttonDescription={txtLabelsNoData.buttonDescription}
+            route={txtLabelsNoData.route}
             onRetry={handleRetry}
           />
         ) : (
@@ -189,9 +255,9 @@ function ToDo(props: ToDoProps) {
               ) : (
                 <Text
                   size={isMobile ? "medium" : "large"}
-                  appearance={toDo?.[0]?.task_to_be_done ? "dark" : "gray"}
+                  appearance={taskData?.taskToBeDone ? "dark" : "gray"}
                 >
-                  {toDo?.[0]?.task_to_be_done ?? errorMessagge}
+                  {taskData?.taskToBeDone ?? errorMessagge}
                 </Text>
               )}
             </Stack>
@@ -209,9 +275,9 @@ function ToDo(props: ToDoProps) {
                   value={decisionValue.decision}
                   placeholder="Seleccione una opción"
                   size="compact"
-                  options={toDo?.[0]?.decisions ?? []}
+                  options={taskDecisions || []}
                   onChange={onChangeDecision}
-                  disabled={toDo === undefined}
+                  onClick={handleSelectOpen}
                   fullwidth={isMobile}
                 />
               </Stack>
@@ -219,13 +285,12 @@ function ToDo(props: ToDoProps) {
                 <Button
                   onClick={handleSend}
                   cursorHover
-                  disabled={toDo === undefined}
                   loading={button?.loading || false}
                   type="submit"
                   fullwidth={isMobile}
                   spacing="compact"
                 >
-                  {button?.label || buttonText}
+                  {button?.label || txtLabels.buttonText}
                 </Button>
               </Stack>
             </Stack>
@@ -237,16 +302,16 @@ function ToDo(props: ToDoProps) {
               padding="8px 0px 0px 0px"
             >
               {isModalOpen && (
-                <TextAreaModal
-                title="Confirmar la decisión"
-                buttonText="Enviar"
-                secondaryButtonText="Cancelar"
-                inputLabel="Justificación"
-                maxLength={120}
-                inputPlaceholder="Describa el motivo de su decisión."
-                onSecondaryButtonClick={handleCloseModal}
-                onCloseModal={handleCloseModal}
-              />
+                <DecisionModal
+                  title={txtLabels.title}
+                  buttonText={txtLabels.buttonText}
+                  secondaryButtonText={txtLabels.secondaryButtonText}
+                  inputLabel={txtLabels.inputLabel}
+                  inputPlaceholder={txtLabels.inputPlaceholder}
+                  onSecondaryButtonClick={handleCloseModal}
+                  onCloseModal={handleCloseModal}
+                  data={data}
+                />
               )}
               <Stack direction="column" width="100%" alignItems="end">
                 {icon && isMobile && (
@@ -299,7 +364,6 @@ function ToDo(props: ToDoProps) {
         <StaffModal
           commercialManager={tempStaff.commercialManager}
           analyst={tempStaff.analyst}
-          staff={staff}
           onChange={handleSelectOfficial}
           onSubmit={handleSubmit}
           onCloseModal={handleToggleStaffModal}

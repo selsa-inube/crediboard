@@ -1,70 +1,48 @@
-import { IExtraordinaryPayment } from "@src/services/types";
+import { IExtraordinaryPayment } from "@services/types";
 
 export const extraordinaryInstallmentMock: IExtraordinaryPayment[] = [
   {
-    id: "1",
-    datePayment: "25/mar/24",
+    id: 1,
+    datePayment: "2024-02-03",
+    amount: 1500000,
     value: 1500000,
     paymentMethod: "Selsa",
+    frequency: "Mensual",
   },
   {
-    id: "2",
-    datePayment: "25/mar/24",
+    id: 2,
+    datePayment: "2024-02-03",
+    amount: 1500000,
     value: 1000000,
     paymentMethod: "Selsa",
+    frequency: "Trimestral",
   },
   {
-    id: "3",
-    datePayment: "25/mar/24",
+    id: 3,
+    datePayment: "2024-02-03",
+    amount: 1500000,
     value: 2000000,
     paymentMethod: "Prima",
+    frequency: "Anual",
+  },
+];
+
+export const paymentMethodOptionsMock = [
+  {
+    id: "bank_transfer",
+    label: "Transferencia Bancaria",
+    value: "Transferencia Bancaria",
   },
   {
-    id: "4",
-    datePayment: "25/mar/24",
-    value: 2500000,
-    paymentMethod: "Cesantias",
+    id: "credit_card",
+    label: "Tarjeta de Crédito",
+    value: "Tarjeta de Crédito",
   },
-  {
-    id: "5",
-    datePayment: "25/mar/24",
-    value: 3000000,
-    paymentMethod: "Cesantias",
-  },
-  {
-    id: "6",
-    datePayment: "25/mar/24",
-    value: 3500000,
-    paymentMethod: "Prima",
-  },
-  {
-    id: "7",
-    datePayment: "25/mar/24",
-    value: 4000000,
-    paymentMethod: "Selsa",
-  },
-  {
-    id: "8",
-    datePayment: "25/mar/24",
-    value: 4500000,
-    paymentMethod: "Selsa",
-  },
-  {
-    id: "9",
-    datePayment: "25/mar/24",
-    value: 5000000,
-    paymentMethod: "Prima",
-  },
-  {
-    id: "10",
-    datePayment: "25/mar/24",
-    value: 5500000,
-    paymentMethod: "Cesantias",
-  },
-  {
-    id: "11",
-    datePayment: "25/mar/24",
-    value: 6000000,
-    paymentMethod: "Cesantias",
-  },
+  { id: "cash", label: "Efectivo", value: "Efectivo" },
+];
+
+export const frequencyOptionsMock = [
+  { id: "monthly", label: "Mensual", value: "Mensual" },
+  { id: "quarterly", label: "Trimestral", value: "Trimestral" },
+  { id: "annually", label: "Anual", value: "Anual" },
 ];

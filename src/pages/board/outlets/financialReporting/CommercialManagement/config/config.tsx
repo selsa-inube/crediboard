@@ -3,13 +3,15 @@ import {
   MdOutlineMonetizationOn,
   MdOutlineBalance,
   MdOutlineAccountBalanceWallet,
+  MdOutlineEdit,
+  MdOutlineRemoveRedEye,
 } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 
 import { TableBoard } from "@components/data/TableBoard";
 import { Schedule } from "@services/enums";
-import { IOptions } from "@src/components/navigation/MenuPropect/types";
+import { IOptions } from "@components/navigation/MenuProspect/types";
 
 export const titlesCommercialManagementAccordion = [
   {
@@ -350,16 +352,35 @@ export const entriesCommercialManagementCard = [
 
 export const SummaryProspectCredit = [
   {
-    item: [{ title: "Obligaciones recogidas", amount: "5000000" }],
-    iconEdit: true,
-  },
-  {
     item: [
-      { title: "Monto prestamo", amount: "16000000" },
-      { title: "Obligaciones recogidas", amount: "5000000" },
-      { title: "Gastos decontables", amount: "1000000" },
-      { title: "Neto a girar", amount: "10000000" },
-      { title: "Cuota ordinaria", amount: "1200000" },
+      {
+        title: "Monto préstamo",
+        miniIcon: false,
+        operation: "-",
+      },
+      {
+        title: "Obligaciones recogidas",
+        miniIcon: true,
+        icon: <MdOutlineEdit />,
+        operation: "-",
+      },
+      {
+        title: "Gastos descontables",
+        miniIcon: true,
+        icon: <MdOutlineRemoveRedEye />,
+        operation: "=",
+      },
+      {
+        title: "Neto a girar",
+        miniIcon: false,
+        operation: "|",
+      },
+      {
+        title: "Cuota ordinaria",
+        miniIcon: true,
+        icon: <MdOutlineRemoveRedEye />,
+        operation: "",
+      },
     ],
     iconEdit: false,
   },
@@ -379,7 +400,10 @@ export const incomeOptions = [
   },
 ];
 
-export const menuOptions = (handleOpenModal: (modalName: string) => void, visibleExtraPayments: boolean): IOptions[] => [
+export const menuOptions = (
+  handleOpenModal: (modalName: string) => void,
+  visibleExtraPayments: boolean
+): IOptions[] => [
   {
     title: "Origen de cupo",
     onClick: () => handleOpenModal("creditLimit"),
@@ -400,8 +424,22 @@ export const menuOptions = (handleOpenModal: (modalName: string) => void, visibl
   },
   {
     title: "Pagos extras",
-    onClick: () => {handleOpenModal("extraPayments")},
+    onClick: () => {
+      handleOpenModal("extraPayments");
+    },
     icon: <MdOutlinePayments />,
     visible: visibleExtraPayments,
   },
 ];
+
+export const tittleOptions = {
+  titleCreditId: "No. Rad.: ",
+  titleDestination: "Destino: ",
+  tittleAmount: "Valor: ",
+  titleProfile: "Ver perfil crediticio",
+  titleDisbursement: "Medios de desembolso",
+  titleCall: "Llamada",
+  titleVideoCall: "Videollamada",
+  titleAddProduct: "Agregar producto",
+  titleExtraPayments: "Pagos extras",
+};

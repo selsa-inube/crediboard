@@ -1,34 +1,38 @@
-import { StoryFn, Meta } from "@storybook/react";
+import { BrowserRouter } from "react-router-dom";
+import { Meta, StoryObj } from "@storybook/react";
 
 import { mockRequests } from "@mocks/requests/requests.mock";
 
-import { BoardSection, BoardSectionProps } from "..";
+import { BoardSection } from "..";
 import { props } from "./props";
 
-const story: Meta<typeof BoardSection> = {
+type Story = StoryObj<typeof BoardSection>;
+
+const boardSection: Meta<typeof BoardSection> = {
   component: BoardSection,
-  argTypes: props,
   title: "layouts/BoardSection",
+  argTypes: props,
+  decorators: [
+    (Story) => (
+      <BrowserRouter>
+        <Story />
+      </BrowserRouter>
+    ),
+  ],
 };
 
-export const Default: StoryFn<BoardSectionProps> = (args) => (
-  <BoardSection {...args} />
-);
-
-export const Horizontal: StoryFn<BoardSectionProps> = (args) => (
-  <BoardSection {...args} />
-);
-
-Default.args = {
-  sectionTitle: "BoardSectionTitle",
-  sectionBackground: "gray",
-  orientation: "vertical",
-  sectionInformation: mockRequests,
+export const Default: Story = {
+  args: {
+    sectionTitle: "BoardSectionTitle",
+    sectionBackground: "gray",
+    orientation: "vertical",
+    sectionInformation: mockRequests,
+    pinnedRequests: [],
+    handlePinRequest: (requestId: string) => {
+      console.log(`Pin request: ${requestId}`);
+    },
+    errorLoadingPins: false,
+  },
 };
 
-Horizontal.args = {
-  ...Default.args,
-  orientation: "horizontal",
-};
-
-export default story;
+export default boardSection;

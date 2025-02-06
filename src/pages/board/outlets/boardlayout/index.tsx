@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { useMediaQuery } from "@inubekit/hooks";
 
-import { get, updateActive } from "@mocks/utils/dataMock.service";
-import { PinnedRequest, Requests } from "@services/types";
-import { AppContext } from "@context/AppContext";
+import { ICreditRequest } from "@services/types";
+import { getCreditRequestPin } from "@services/isPinned";
+import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
+import { ChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
+import { AppContext } from "@context/AppContext/AppContext";
 
 import { BoardLayoutUI } from "./interface";
 import { selectCheckOptions } from "./config/select";
@@ -24,8 +26,10 @@ function BoardLayout() {
     boardOrientation: user.preferences.boardOrientation || "vertical",
   });
 
-  const [filteredRequests, setFilteredRequests] = useState<Requests[]>([]);
-  const [errorLoadingPins, setErrorLoadingPins] = useState(false)
+  const [filteredRequests, setFilteredRequests] = useState<ICreditRequest[]>(
+    []
+  );
+  const [errorLoadingPins, setErrorLoadingPins] = useState(false);
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
@@ -38,46 +42,27 @@ function BoardLayout() {
   }, [isMobile]);
 
   useEffect(() => {
-    get("requests")
+    getCreditRequestInProgress()
       .then((data) => {
-        if (data && Array.isArray(data)) {
-          setBoardData((prevState) => ({
-            ...prevState,
-            boardRequests: data,
-          }));
-          setFilteredRequests(data);
-        }
+        setBoardData((prevState) => ({
+          ...prevState,
+          boardRequests: data,
+        }));
+        setFilteredRequests(data);
       })
       .catch((error) => {
-        console.error("Error fetching requests data:", error.message);
+        console.error("Error fetching requests data:", error);
       });
-  },[user.company]);
 
-  useEffect(() => {
-    get("requests")
+    getCreditRequestPin()
       .then((data) => {
-        if (data && Array.isArray(data)) {
-          setBoardData((prevState) => ({
-            ...prevState,
-            boardRequests: data,
-          }));
-          setFilteredRequests(data);
-        }
+        setBoardData((prevState) => ({
+          ...prevState,
+          requestsPinned: data,
+        }));
       })
       .catch((error) => {
-        console.error("Error fetching requests data:", error.message);
-      });
-    get("requests-pinned")
-      .then((data) => {
-        if (data && Array.isArray(data)) {
-          setBoardData((prevState) => ({
-            ...prevState,
-            requestsPinned: data,
-          }));
-        }
-      })
-      .catch((error) => {
-        setErrorLoadingPins(true)
+        setErrorLoadingPins(true);
         console.error("Error fetching requests pinned data:", error.message);
       });
   }, []);
@@ -85,17 +70,20 @@ function BoardLayout() {
   useEffect(() => {
     const filteredRequests = boardData.boardRequests.filter((request) => {
       const isSearchMatch =
-        request.nnasocia
+        request.clientName
           .toLowerCase()
           .includes(filters.searchRequestValue.toLowerCase()) ||
-        request.k_Prospe.toString().includes(filters.searchRequestValue);
+        request.creditRequestCode
+          .toString()
+          .includes(filters.searchRequestValue);
+      request.creditRequestCode.toString().includes(filters.searchRequestValue);
 
       const isPinned =
         !filters.showPinnedOnly ||
         boardData.requestsPinned
           .filter((req) => req.isPinned === "Y")
-          .map((req) => req.requestId)
-          .includes(request.k_Prospe);
+          .map((req) => req.creditRequestId)
+          .includes(request.creditRequestId as string);
 
       return isSearchMatch && isPinned;
     });
@@ -115,17 +103,17 @@ function BoardLayout() {
               "VERIFICACION_APROBACION",
               "FORMALIZACION_GARANTIAS",
               "TRAMITE_DESEMBOLSO",
-            ].includes(request.i_Estprs);
+            ].includes(request.stage);
           case "3":
-            return request.i_Estprs === "GESTION_COMERCIAL";
+            return request.stage === "GESTION_COMERCIAL";
           case "4":
-            return request.i_Estprs === "VERIFICACION_APROBACION";
+            return request.stage === "VERIFICACION_APROBACION";
           case "5":
-            return request.i_Estprs === "FORMALIZACION_GARANTIAS";
+            return request.stage === "FORMALIZACION_GARANTIAS";
           case "6":
-            return request.i_Estprs === "TRAMITE_DESEMBOLSO";
+            return request.stage === "TRAMITE_DESEMBOLSO";
           case "7":
-            return request.i_Estprs === "CUMPLIMIENTO_REQUISITOS";
+            return request.stage === "CUMPLIMIENTO_REQUISITOS";
           default:
             return false;
         }
@@ -150,23 +138,17 @@ function BoardLayout() {
     }
   };
 
-  const handlePinRequest = async (requestId: number) => {
+  const handlePinRequest = async (
+    creditRequestId: string | undefined,
+    isPinned: string
+  ) => {
     setBoardData((prevState) => ({
       ...prevState,
-      requestsPinned: prevState.requestsPinned.map((request) => {
-        if (request.requestId !== requestId) return request;
-
-        const isPinned = request.isPinned === "Y" ? "N" : "Y";
-        updateActive({
-          key: "requestId",
-          nameDB: "requests-pinned",
-          identifier: requestId,
-          editData: { isPinned },
-        });
-
-        return { ...request, isPinned } as PinnedRequest;
-      }),
+      requestsPinned: prevState.requestsPinned.map((card) =>
+        card.creditRequestId === creditRequestId ? { ...card, isPinned } : card
+      ),
     }));
+    await ChangeAnchorToCreditRequest(creditRequestId, isPinned);
   };
 
   return (

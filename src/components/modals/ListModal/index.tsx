@@ -1,26 +1,24 @@
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
-import {
-  Blanket,
-  Button,
-  Stack,
-  Text,
-  inube,
-  useMediaQuery,
-} from "@inube/design-system";
+
+import { Blanket } from "@inubekit/blanket";
+import { Button } from "@inubekit/button";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
+import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
+import { Divider } from "@inubekit/divider";
 
 import {
   StyledContainerClose,
   StyledContainerContent,
   StyledModal,
-  StyledContainerTitle,
 } from "./styles";
 
 export interface IOptionButtons {
   label: string;
   variant: "filled" | "outlined" | "none";
-  icon?: React.ReactNode;
+  icon?: React.JSX.Element;
   fullwidth?: boolean;
   onClick?: () => void;
 }
@@ -28,16 +26,37 @@ export interface IOptionButtons {
 export interface IListModalProps {
   title: string;
   handleClose: () => void;
-  onSubmit?: () => void; 
+  handleSubmit?: () => void;
+  onSubmit?: () => void;
   buttonLabel: string;
+  cancelButton?: string;
+  appearanceCancel?:
+    | "primary"
+    | "success"
+    | "warning"
+    | "danger"
+    | "help"
+    | "dark"
+    | "gray"
+    | "light";
   portalId?: string;
   content?: JSX.Element | JSX.Element[] | string;
   optionButtons?: IOptionButtons;
 }
 
 export const ListModal = (props: IListModalProps) => {
-  const { title, portalId, content, optionButtons, handleClose, onSubmit, buttonLabel } =
-    props;
+  const {
+    title,
+    portalId,
+    content,
+    optionButtons,
+    cancelButton,
+    appearanceCancel = "primary",
+    handleClose,
+    handleSubmit,
+    onSubmit,
+    buttonLabel,
+  } = props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -51,12 +70,12 @@ export const ListModal = (props: IListModalProps) => {
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
-        <StyledContainerTitle>
+        <Stack alignItems="center" justifyContent="space-between">
           <Text type="headline" size="small">
             {title}
           </Text>
           <StyledContainerClose onClick={handleClose}>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text>Cerrar</Text>
               <Icon
                 icon={<MdClear />}
@@ -66,7 +85,8 @@ export const ListModal = (props: IListModalProps) => {
               />
             </Stack>
           </StyledContainerClose>
-        </StyledContainerTitle>
+        </Stack>
+        <Divider />
         <StyledContainerContent $smallScreen={isMobile}>
           {typeof content === "string" ? (
             <Stack>
@@ -87,10 +107,20 @@ export const ListModal = (props: IListModalProps) => {
             fullwidth={optionButtons?.fullwidth}
             cursorHover
           >
-            {optionButtons?.label}
+            {optionButtons?.label + "prueba"}
           </Button>
         )}
-        <Stack justifyContent="flex-end" margin="s200 s0">
+        <Stack justifyContent="flex-end" margin="16px 0 0 0" gap="16px">
+          {cancelButton && (
+            <Button
+              variant="outlined"
+              onClick={handleSubmit}
+              spacing="wide"
+              appearance={appearanceCancel}
+            >
+              {cancelButton}
+            </Button>
+          )}
           <Button onClick={onSubmit ?? handleClose}>{buttonLabel}</Button>
         </Stack>
       </StyledModal>

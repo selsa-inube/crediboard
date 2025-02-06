@@ -1,30 +1,26 @@
-import {
-  Stack,
-  useMediaQuery,
-  Blanket,
-  Text,
-  Button,
-  inube,
-  Select,
-} from "@inube/design-system";
-import { Icon } from "@inubekit/icon";
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
-import { Formik, Form, FormikHelpers } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import { StyledModal, StyledContainerClose } from "./styles";
-import { IStaff } from "@services/types";
+import { Stack } from "@inubekit/stack";
+import { useMediaQuery } from "@inubekit/hooks";
+import { Blanket } from "@inubekit/blanket";
+import { Text } from "@inubekit/text";
+import { Button } from "@inubekit/button";
+import { Select } from "@inubekit/select";
+import { Icon } from "@inubekit/icon";
+import { Spinner } from "@inubekit/spinner";
 
-interface FormValues {
-  commercialManager: string;
-  analyst: string;
-}
+import { IStaff } from "@services/types";
+import { get } from "@mocks/utils/dataMock.service";
+
+import { StyledModal, StyledContainerClose } from "./styles";
 
 export interface StaffModalProps {
   commercialManager: string;
   analyst: string;
-  staff: IStaff[];
   portalId?: string;
   onChange: (key: string) => void;
   onSubmit?: (values: { commercialManager: string; analyst: string }) => void;
@@ -32,23 +28,18 @@ export interface StaffModalProps {
 }
 
 export function StaffModal(props: StaffModalProps) {
-  const {
-    commercialManager,
-    analyst,
-    staff,
-    portalId = "portal",
-    onChange,
-    onSubmit,
-    onCloseModal,
-  } = props;
+  const { portalId = "portal", onSubmit, onCloseModal } = props;
 
+  const [analystList, setAnalystList] = useState<IStaff[]>([]);
+  const [accountManagerList, setAccountManagerList] = useState<IStaff[]>([]);
+  const [loading, setLoading] = useState(true);
+  const isMobile = useMediaQuery("(max-width: 700px)");
+
+  const node = document.getElementById(portalId);
   const validationSchema = Yup.object().shape({
     commercialManager: Yup.string(),
     analyst: Yup.string(),
   });
-
-  const isMobile = useMediaQuery("(max-width: 700px)");
-  const node = document.getElementById(portalId);
 
   if (!node) {
     throw new Error(
@@ -56,10 +47,62 @@ export function StaffModal(props: StaffModalProps) {
     );
   }
 
-  const getOptions = (position: string) =>
-    staff
-      .filter((official) => official.position === position)
-      .map((official) => ({ id: official.id, label: official.name }));
+  useEffect(() => {
+    let isSubscribed = true;
+
+    const fetchStaffData = async () => {
+      try {
+        const results = await Promise.allSettled([
+          get("analyst"),
+          get("account-manager"),
+        ]);
+
+        if (!isSubscribed) return;
+
+        results.forEach((result, index) => {
+          if (result.status === "fulfilled") {
+            const data = result.value;
+            if (data instanceof Array) {
+              if (index === 0) {
+                setAnalystList(data);
+              } else {
+                setAccountManagerList(data);
+              }
+            }
+          } else {
+            console.error(
+              `Error al obtener ${index === 0 ? "analistas" : "gestores"}:`,
+              result.reason
+            );
+          }
+        });
+      } catch (error) {
+        console.error("Error inesperado al obtener el staff:", error);
+      } finally {
+        if (isSubscribed) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchStaffData();
+    return () => {
+      isSubscribed = false;
+    };
+  }, []);
+
+  const options = {
+    analyst: analystList.map((official) => ({
+      id: official.userId,
+      label: official.userName,
+      value: official.userName,
+    })),
+    accountManager: accountManagerList.map((official) => ({
+      id: official.userId,
+      label: official.userName,
+      value: official.userName,
+    })),
+  };
 
   return createPortal(
     <Blanket>
@@ -69,7 +112,7 @@ export function StaffModal(props: StaffModalProps) {
             Gestor Comercial y Analista
           </Text>
           <StyledContainerClose onClick={onCloseModal}>
-            <Stack alignItems="center" gap={inube.spacing.s100}>
+            <Stack alignItems="center" gap="8px">
               <Text>Cerrar</Text>
               <Icon
                 icon={<MdClear />}
@@ -80,49 +123,53 @@ export function StaffModal(props: StaffModalProps) {
             </Stack>
           </StyledContainerClose>
         </Stack>
-        <Formik
-          initialValues={{ commercialManager: "", analyst: "" }}
-          validationSchema={validationSchema}
-          onSubmit={(
-            values: FormValues,
-            { setSubmitting }: FormikHelpers<FormValues>
-          ) => {
-            onSubmit?.(values);
-            setSubmitting(false);
-          }}
-        >
-          {({ isSubmitting }) => (
-            <Form>
-              <Stack direction="column" gap={inube.spacing.s300}>
-                <Select
-                  name="commercialManager"
-                  id="commercialManager"
-                  label="Gestor Comercial"
-                  placeholder="Seleccione una opción"
-                  options={getOptions("commercialManager")}
-                  value={commercialManager}
-                  onChange={onChange("commercialManager")}
-                  fullwidth
-                />
-                <Select
-                  name="analyst"
-                  id="analyst"
-                  label="Analista"
-                  options={getOptions("analyst")}
-                  value={analyst}
-                  placeholder="Seleccione una opción"
-                  onChange={onChange("analyst")}
-                  fullwidth
-                />
-              </Stack>
-              <Stack justifyContent="flex-end" margin="s200 s0">
-                <Button type="submit" disabled={isSubmitting}>
-                  Aceptar
-                </Button>
-              </Stack>
-            </Form>
-          )}
-        </Formik>
+
+        {loading ? (
+          <Stack justifyContent="center">
+            <Spinner size="large" appearance="primary" transparent={false} />
+          </Stack>
+        ) : (
+          <Formik
+            initialValues={{ commercialManager: "", analyst: "" }}
+            validationSchema={validationSchema}
+            onSubmit={(values, { setSubmitting }) => {
+              onSubmit?.(values);
+              setSubmitting(false);
+            }}
+          >
+            {({ isSubmitting, setFieldValue, values }) => (
+              <Form>
+                <Stack direction="column" gap="24px">
+                  <Select
+                    name="commercialManager"
+                    id="commercialManager"
+                    label="Gestor Comercial"
+                    placeholder="Seleccione una opción"
+                    options={options.accountManager}
+                    onChange={(name, values) => setFieldValue(name, values)}
+                    value={values.commercialManager}
+                    fullwidth
+                  />
+                  <Select
+                    name="analyst"
+                    id="analyst"
+                    label="Analista"
+                    options={options.analyst}
+                    value={values.analyst}
+                    placeholder="Seleccione una opción"
+                    onChange={(name, value) => setFieldValue(name, value)}
+                    fullwidth
+                  />
+                </Stack>
+                <Stack justifyContent="flex-end" margin="16px 0">
+                  <Button type="submit" disabled={isSubmitting}>
+                    Aceptar
+                  </Button>
+                </Stack>
+              </Form>
+            )}
+          </Formik>
+        )}
       </StyledModal>
     </Blanket>,
     node
