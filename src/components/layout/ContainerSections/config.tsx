@@ -18,7 +18,7 @@ export const configButtons = {
       label: "Ver Adjuntos",
     },
     buttonWarranty: {
-      label: "Garantías ofrecida",
+      label: "Garantías ofrecidas",
     },
   },
 };

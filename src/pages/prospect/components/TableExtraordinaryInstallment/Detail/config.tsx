@@ -13,15 +13,18 @@ interface IAppearance {
 }
 
 interface IIconConfig extends IAppearance {
+  id: string;
   icon: JSX.Element;
 }
 
 export const icons: IIconConfig[] = [
   {
+    id: "edit",
     icon: <MdOutlineEdit />,
     appearance: "dark",
   },
   {
+    id: "delete",
     icon: <MdDeleteOutline />,
     appearance: "danger",
   },

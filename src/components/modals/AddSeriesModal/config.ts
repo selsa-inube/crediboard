@@ -1,17 +1,14 @@
-const paymentMethodOptions = [
-  {
-    id: "bank_transfer",
-    label: "Transferencia Bancaria",
-    value: "bank_transfer",
-  },
-  { id: "credit_card", label: "Tarjeta de Crédito", value: "credit_card" },
-  { id: "cash", label: "Efectivo", value: "cash" },
-];
-
-const frequencyOptions = [
-  { id: "monthly", label: "Mensual", value: "monthly" },
-  { id: "quarterly", label: "Trimestral", value: "quarterly" },
-  { id: "annually", label: "Anual", value: "annually" },
-];
-
-export { paymentMethodOptions, frequencyOptions };
+export const dataAddSeriesModal = {
+  title: "Nueva serie",
+  close: "Cerrar",
+  cancel: "Cancelar",
+  add: "Agregar",
+  labelPaymentMethod: "Medio de pago",
+  labelAmount: "Cantidad",
+  labelValue: "Valor",
+  labelFrequency: "Frecuencia de pago",
+  labelDate: "Primer pago",
+  placeHolderSelect: "Seleccione una opción",
+  placeHolderAmount: "Número de pagos",
+  placeHolderValue: "Valor a pagar",
+};

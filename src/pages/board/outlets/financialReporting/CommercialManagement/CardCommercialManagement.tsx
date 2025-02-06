@@ -21,13 +21,12 @@ interface CardCommercialManagementProps {
   dataRef: React.RefObject<HTMLDivElement>;
   onClick: () => void;
   refreshProducts?: () => void;
-  showSummaryFirstItem?: boolean;
 }
 
 export const CardCommercialManagement = (
   props: CardCommercialManagementProps
 ) => {
-  const { dataRef, id, showSummaryFirstItem = true, onClick } = props;
+  const { dataRef, id, onClick } = props;
   const [prospectProducts, setProspectProducts] = useState<
     ICreditProductProspect[]
   >([]);
@@ -102,9 +101,7 @@ export const CardCommercialManagement = (
         direction={isMobile ? "column" : "row"}
         justifyContent="space-between"
       >
-        {SummaryProspectCredit.filter((_, index) =>
-          index === 0 ? showSummaryFirstItem : true
-        ).map((entry, index) => (
+        {SummaryProspectCredit.map((entry, index) => (
           <CardValues
             key={index}
             items={entry.item.map((item, index) => ({
@@ -114,7 +111,6 @@ export const CardCommercialManagement = (
             firstIcon={<MdOutlineEdit />}
             showIcon={entry.iconEdit}
             isMobile={isMobile}
-            showSummaryFirstItem={showSummaryFirstItem}
           />
         ))}
       </Stack>
