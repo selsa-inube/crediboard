@@ -27,5 +27,6 @@ export const ModalConfig = {
     keep: "Guardar",
     edit: "Editar obligaciones",
   },
-  collectedValue: "Valor total recogido."
+  collectedValue: "Valor total recogido.",
+  title: "Obligaciones recogidas"
 };

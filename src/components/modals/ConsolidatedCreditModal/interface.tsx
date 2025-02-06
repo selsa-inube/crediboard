@@ -10,17 +10,14 @@ import { ModalConfig } from "./Config";
 import { StyledContainerClose, StyledModal, StyledContainer, StyledInput } from "./styles";
 
 interface ConsolidatedCreditsInterfaceProps {
-    loading: boolean;
+    loading?: boolean;
     error: boolean;
     handleClose: () => void;
-    title: string;
-    selectedText: string;
     expiredValue: number;
-    investmentCode: number;
+    investmentCode: string;
     collectedValue: number;
     nextExpiration: number;
     isMobile?: boolean;
-
 }
 
 export const ConsolidatedCreditsInterface = forwardRef<
@@ -30,29 +27,18 @@ export const ConsolidatedCreditsInterface = forwardRef<
     const {
         loading,
         handleClose,
-        title,
         collectedValue,
         isMobile,
         expiredValue,
         investmentCode,
+        nextExpiration,
     } = props;
-
-    const paymentOptions = [
-        {
-            label: ModalConfig.investmentCode.label,
-            value: investmentCode,
-        },
-        {
-            label: ModalConfig.expiredValue.label,
-            value: expiredValue,
-        },
-    ];
 
     return (
         <StyledModal ref={ref}>
             <Stack justifyContent="space-between">
                 <Text type="headline" size="small" appearance="dark">
-                    {title}
+                    {ModalConfig.title}
                 </Text>
                 <StyledContainerClose onClick={handleClose}>
                     <Stack alignItems="center" gap="5px">
@@ -98,62 +84,103 @@ export const ConsolidatedCreditsInterface = forwardRef<
             <Text type="body" appearance="gray" size="small" weight="bold">
                 {ModalConfig.selectedText.label}
             </Text>
+            <Stack direction="row" gap="16px">
+                <StyledContainer $isMobile={isMobile}>
+                    <Stack
+                        direction="column"
+                        padding={isMobile ? "16px 10px" : "16px 20px"}
+                        gap="16px"
+                        width="256px"
+                    >
+                        <Text type="label" size="large" weight="bold" appearance="dark">
+                            {ModalConfig.creditInvestment.label}
+                        </Text>
+                        <Divider dashed />
+                        <Stack direction="column" gap="8px">
+                            {[{ label: ModalConfig.investmentCode.label, value: investmentCode },
+                            { label: ModalConfig.expiredValue.label, value: expiredValue }].map((item, index) => (
+                                <StyledInput
+                                    key={index}
+                                >
+                                    <Stack alignItems="center" justifyContent="space-between">
+                                        <Stack>
 
-            <StyledContainer $isMobile={isMobile}>
-                <Stack
-                    direction="column"
-                    padding={isMobile ? "16px 10px" : "16px 20px"}
-                    gap="16px"
-                    width="256px"
-                >
-                    <Text type="label" size="large" weight="bold" appearance="dark">
-                        {ModalConfig.creditInvestment.label}
-                    </Text>
-                    <Divider dashed />
-                    <Stack direction="column" gap="8px">
-                        {paymentOptions.map((option, index) => (
-                            <StyledInput
-                                key={index}
-                            >
-                                <Stack alignItems="center" justifyContent="space-between">
-                                    <Stack>
-
-                                        <Stack direction="column">
-                                            <Text type="label" size="medium" weight="bold">
-                                                {option.label}
-                                            </Text>
+                                            <Stack direction="column">
+                                                <Text type="label" size="medium" weight="bold">
+                                                    {item.label}
+                                                </Text>
+                                            </Stack>
                                         </Stack>
+                                        <Text type="body" size="small" appearance="gray">
+                                            {index === 1 ? currencyFormat(Number(item.value)) : item.value}
+                                        </Text>
                                     </Stack>
-                                    <Text type="body" size="small" appearance="gray">
-                                        {currencyFormat(option.value)}
-                                    </Text>
-                                </Stack>
-                            </StyledInput>
-                        ))}
+                                </StyledInput>
+                            ))}
+                        </Stack>
                     </Stack>
+                </StyledContainer>
+
+                <StyledContainer $isMobile={isMobile}>
+                    <Stack
+                        direction="column"
+                        padding={isMobile ? "16px 10px" : "16px 20px"}
+                        gap="16px"
+                        width="256px"
+                    >
+                        <Text type="label" size="large" weight="bold" appearance="dark">
+                            {ModalConfig.creditInvestment.label}
+                        </Text>
+                        <Divider dashed />
+                        <Stack direction="column" gap="8px">
+                            {[{ label: ModalConfig.investmentCode.label, value: investmentCode },
+                            { label: ModalConfig.nextExpiration.label, value: nextExpiration }].map((item, index) => (
+                                <StyledInput
+                                    key={index}
+                                >
+                                    <Stack alignItems="center" justifyContent="space-between">
+                                        <Stack>
+
+                                            <Stack direction="column">
+                                                <Text type="label" size="medium" weight="bold">
+                                                    {item.label}
+                                                </Text>
+                                            </Stack>
+                                        </Stack>
+                                        <Text type="body" size="small" appearance="gray">
+                                            {index === 1 ? currencyFormat(Number(item.value)) : item.value}
+
+                                        </Text>
+                                    </Stack>
+                                </StyledInput>
+                            ))}
+                        </Stack>
+                    </Stack>
+                </StyledContainer>
+            </Stack >
+            <Stack height="100%" direction="column" justifyContent="end" gap="16px">
+                <Divider />
+                <Stack gap="20px" justifyContent="end">
+
+                    <Button
+                        onClick={handleClose}
+                        variant="outlined"
+                        appearance="gray"
+                    >
+                        {ModalConfig.buttons.close}
+                    </Button>
+                    <Button
+                        onClick={() => { }}
+                        variant="filled"
+                        disabled
+                        spacing="wide"
+                        appearance="primary"
+                    >
+                        {ModalConfig.buttons.keep}
+                    </Button>
                 </Stack>
-            </StyledContainer>
-
-            <Divider />
-            <Stack gap="20px" justifyContent="end">
-
-                <Button
-                    onClick={handleClose}
-                    variant="outlined"
-                    appearance="gray"
-                >
-                    {ModalConfig.buttons.close}
-                </Button>
-                <Button
-                    onClick={() => { }}
-                    variant="filled"
-                    disabled
-                    spacing="wide"
-                    appearance="primary"
-                >
-                    {ModalConfig.buttons.keep}
-                </Button>
             </Stack>
         </StyledModal>
+
     );
 });

@@ -4,11 +4,9 @@ import { Blanket } from "@inubekit/blanket";
 import { ConsolidatedCreditsInterface } from "./interface";
 
 export interface ConsolidatedCreditsProps {
-    title: string;
-    selectedText: string;
     handleClose: () => void;
     portalId?: string;
-    investmentCode: number;
+    investmentCode: string;
     expiredValue: number;
     collectedValue: number;
     loading?: boolean;
@@ -17,8 +15,6 @@ export interface ConsolidatedCreditsProps {
 
 export const ConsolidatedCredits = (props: ConsolidatedCreditsProps) => {
     const {
-        title,
-        selectedText,
         portalId,
         handleClose,
         collectedValue,
@@ -49,8 +45,6 @@ export const ConsolidatedCredits = (props: ConsolidatedCreditsProps) => {
                 loading={loading}
                 error={error}
                 handleClose={handleClose}
-                title={title}
-                selectedText={selectedText}
                 investmentCode={investmentCode}
                 nextExpiration={nextExpiration}
                 expiredValue={expiredValue}

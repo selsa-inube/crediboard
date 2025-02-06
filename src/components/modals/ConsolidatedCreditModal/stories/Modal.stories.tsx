@@ -6,7 +6,6 @@ import { ConsolidatedCredits } from '..';
 import { ConsolidatedCreditsProps } from '..';
 import { props } from './props';
 
-
 const meta: Meta<typeof ConsolidatedCredits> = {
     title: 'components/modals/ConsolidatedCreditModal',
     component: ConsolidatedCredits,
@@ -32,10 +31,8 @@ export const Default: Story = (args: ConsolidatedCreditsProps) => {
     );
 };
 Default.args = {
-    title: 'Obligaciones recogidas',
-    investmentCode: 123456,
+    investmentCode: "10-123456",
     expiredValue: 120000,
     collectedValue: 360000,
     nextExpiration: 240000,
-
 };

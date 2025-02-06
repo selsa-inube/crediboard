@@ -13,9 +13,13 @@ export interface CardValuesProps {
     operation?: string;
     miniIcon?: boolean;
     icon?: React.ReactNode;
+    modal?: string;
   }[];
   isMobile: boolean;
   onIconClick?: () => void;
+  handleView: () => void;
+  handleEdit: () => void;
+  handleClose: () => void;
   firstIcon?: React.ReactNode;
   showIcon?: boolean;
   showSummaryFirstItem?: boolean;
@@ -26,7 +30,9 @@ export function CardValues(props: CardValuesProps) {
     items,
     isMobile,
     firstIcon,
-    onIconClick = () => {},
+    onIconClick = () => { },
+    handleEdit = () => { },
+    handleView = () => { },
     showIcon = true,
     showSummaryFirstItem = false,
   } = props;
@@ -67,6 +73,13 @@ export function CardValues(props: CardValuesProps) {
                     icon={item.icon}
                     cursorHover
                     size="16px"
+                    onClick={() => {
+                      if (item.modal === "edit") {
+                        handleEdit();
+                      } else if (item.modal === "view") {
+                        handleView();
+                      }
+                    }}
                   />
                 )}
               </Stack>

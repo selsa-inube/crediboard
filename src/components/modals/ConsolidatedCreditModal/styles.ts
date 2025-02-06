@@ -1,19 +1,17 @@
 import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
 
-
 export const StyledModal = styled.div`
   display: flex;
   flex-direction: column;
-  height: 688px; 
-  width: 680px; 
+  height: 640px; 
+  width: 644px; 
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   padding: 24px;
   gap: 24px;
   border-radius: 8px;
 `;
-
 
 export const StyledContainerClose = styled.div`
   cursor: pointer;
