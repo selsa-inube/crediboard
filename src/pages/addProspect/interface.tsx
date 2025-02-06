@@ -151,7 +151,14 @@ export function AddProspectUI(props: AddPositionUIProps) {
             )}
           {currentStepsNumber &&
             currentStepsNumber.id === stepsAddProspect.extraBorrowers.id && (
-              <ExtraDebtors />
+              <ExtraDebtors
+                initialValues={formData.borrowerData}
+                onFormValid={setIsCurrentFormValid}
+                handleOnChange={(newDestination) =>
+                  handleFormDataChange("borrowerData", newDestination)
+                }
+                isMobile={isMobile}
+              />
             )}
           {currentStepsNumber &&
             currentStepsNumber.id === stepsAddProspect.sourcesIncome.id && (

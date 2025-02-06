@@ -42,11 +42,10 @@ interface ICreditProspectProps {
   isMobile: boolean;
   isPrint?: boolean | undefined;
   showPrint?: boolean;
-  firstItem?: boolean;
 }
 
 export function CreditProspect(props: ICreditProspectProps) {
-  const { showMenu, isMobile, isPrint, showPrint, firstItem = false } = props;
+  const { showMenu, isMobile, isPrint, showPrint } = props;
 
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [openModal, setOpenModal] = useState<string | null>(null);
@@ -213,7 +212,6 @@ export function CreditProspect(props: ICreditProspectProps) {
         <CardCommercialManagement
           id={id!}
           dataRef={dataCommercialManagementRef}
-          showSummaryFirstItem={firstItem}
           onClick={() => handleOpenModal("editProductModal")}
         />
       </Stack>

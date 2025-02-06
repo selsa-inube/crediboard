@@ -37,7 +37,14 @@ export function AddProspect() {
       maximumTermValue: "",
     },
     generalToggleChecked: true,
-    togglesState: [false, false, false],
+    togglesState: [false, true, false],
+    borrowerData: {
+      name: "",
+      lastName: "",
+      email: "",
+      income: 0,
+      obligations: 0,
+    },
     incomeData: income[0],
     loanAmountState: {
       inputValue: "",

@@ -5,4 +5,3 @@ export const newBorrowedDAta = {
   income: "Fuentes de ingreso",
   obligations: "Obligaciones financieras",
 };
-export const BorrowerTitle = "agregar deudor";

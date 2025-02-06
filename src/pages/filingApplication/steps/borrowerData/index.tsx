@@ -87,6 +87,7 @@ export function Borrowers(props: borrowersProps) {
           ))}
           <NewCardBorrower
             onClick={() => setIsModalAdd(true)}
+            title={data.borrowerLabel}
             isMobile={isMobile}
           />
           {isModalAdd && (

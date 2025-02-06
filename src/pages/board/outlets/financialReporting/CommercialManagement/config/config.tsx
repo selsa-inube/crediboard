@@ -354,16 +354,6 @@ export const SummaryProspectCredit = [
   {
     item: [
       {
-        title: "Obligaciones recogidas",
-        miniIcon: false,
-        operation: "",
-      },
-    ],
-    iconEdit: true,
-  },
-  {
-    item: [
-      {
         title: "Monto préstamo",
         miniIcon: false,
         operation: "-",

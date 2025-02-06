@@ -1,17 +1,12 @@
 import { currencyFormat } from "@utils/formatData/currency";
 import { IHeaders } from "@components/modals/ExtraordinaryPaymentModal/types";
 
-import { Detail } from "../Detail";
-
 export const rowsVisbleMobile = ["datePayment", "value", "actions"];
 
 export const rowsActions = [
   {
     label: "Acciones",
     key: "actions",
-    container: () => {
-      return <Detail />;
-    },
   },
 ];
 
@@ -32,5 +27,13 @@ export const headersTableExtraordinaryInstallment: IHeaders[] = [
     key: "paymentMethod",
   },
 ];
+
+export const dataTableExtraordinaryInstallment = {
+  noData: "¡Ups! No se encontraron registros.",
+  deletion: "Eliminación",
+  delete: "Eliminar",
+  content: "¿Realmente desea eliminar este pago extra?",
+  cancel: "Cancelar",
+};
 
 export const pageLength = 5;
