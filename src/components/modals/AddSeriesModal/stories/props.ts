@@ -1,5 +1,5 @@
 import { ArgTypes } from "@storybook/react";
-import { AddSeriesModalProps } from "../type";
+import { AddSeriesModalProps } from "..";
 
 export const parameters = {
   docs: {
@@ -11,27 +11,6 @@ export const parameters = {
 };
 
 export const props: Partial<ArgTypes<AddSeriesModalProps>> = {
-  title: {
-    control: {
-      type: "text",
-    },
-    description: "Título del modal",
-    defaultValue: "Confirma los datos del usuario",
-  },
-  buttonText: {
-    control: {
-      type: "text",
-    },
-    description: "Texto del botón",
-    defaultValue: "hola",
-  },
-  secondButtonText: {
-    control: {
-      type: "text",
-    },
-    description: "Texto del segundo botón",
-    defaultValue: "hola",
-  },
   portalId: {
     control: {
       type: "text",

@@ -1,9 +1,3 @@
-/*  
-trace_type:
-novelty, executed_task,
-novelty_document, document, message
-*/
-
 export const traceMock = [
   {
     trace_id: "1f4b0f8a-1234-4f5c-9876-3e8e8a8b8a8b",

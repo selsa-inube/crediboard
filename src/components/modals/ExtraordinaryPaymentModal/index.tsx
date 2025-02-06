@@ -12,10 +12,6 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { TableExtraordinaryInstallment } from "@pages/prospect/components/TableExtraordinaryInstallment";
 import { IExtraordinaryPayment } from "@services/types";
 import { AddSeriesModal } from "@components/modals/AddSeriesModal";
-import {
-  paymentMethodOptions,
-  frequencyOptions,
-} from "@components/modals/AddSeriesModal/config";
 
 import { StyledContainerClose, StyledContainerContent } from "./styles";
 import { TextLabels } from "./config";
@@ -31,14 +27,7 @@ export interface ExtraordinaryPaymentModalProps {
 export const ExtraordinaryPaymentModal = (
   props: ExtraordinaryPaymentModalProps
 ) => {
-  const {
-    dataTable,
-    handleClose,
-    portalId,
-    onClickDetails,
-    onClickEdit,
-    onClickEliminate,
-  } = props;
+  const { handleClose, portalId } = props;
 
   const [isAddSeriesModalOpen, setAddSeriesModalOpen] = useState(false);
   const node = document.getElementById(portalId ?? "portal");
@@ -109,12 +98,7 @@ export const ExtraordinaryPaymentModal = (
                 </Button>
               </Stack>
               <Stack>
-                <TableExtraordinaryInstallment
-                  data={dataTable}
-                  onClickDetails={onClickDetails}
-                  onClickEdit={onClickEdit}
-                  onClickEliminate={onClickEliminate}
-                />
+                <TableExtraordinaryInstallment />
               </Stack>
               <Divider />
               <Stack justifyContent="end">
@@ -134,16 +118,10 @@ export const ExtraordinaryPaymentModal = (
       </Blanket>
       {isAddSeriesModalOpen && (
         <AddSeriesModal
-          title="Agregar serie"
           handleClose={closeAddSeriesModal}
           onSubmit={handleSubmit}
           onConfirm={handleConfirm}
-          buttonText="Cancelar"
-          secondButtonText="Agregar"
-          formValues={{ field1: 0, field2: 0 }}
           initialValues={{ field1: 0, field2: 0 }}
-          paymentMethodOptions={paymentMethodOptions}
-          frequencyOptions={frequencyOptions}
           portalId={portalId}
         />
       )}

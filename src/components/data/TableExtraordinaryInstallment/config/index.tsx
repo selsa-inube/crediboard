@@ -1,6 +1,5 @@
 import { currencyFormat } from "@utils/formatData/currency";
 import { IHeaders } from "@components/modals/ExtraordinaryPaymentModal/types";
-import { Detail } from "@pages/prospect/components/TableExtraordinaryInstallment/Detail";
 
 export const rowsVisbleMobile = ["datePayment", "value", "actions"];
 
@@ -8,9 +7,6 @@ export const rowsActions = [
   {
     label: "Acciones",
     key: "actions",
-    container: () => {
-      return <Detail />;
-    },
   },
 ];
 

@@ -55,7 +55,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const [prospectProducts, setProspectProducts] =
     useState<ICreditProductProspect>();
 
-  const { prospectCode } = useParams();
+  const { prospectCode, id } = useParams();
 
   const isMobile = useMediaQuery("(max-width: 720px)");
 
@@ -175,7 +175,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                     <Button
                       type="link"
                       spacing="compact"
-                      path={`/extended-card/${prospectCode}/credit-profile`}
+                      path={`/extended-card/${id}/credit-profile`}
                     >
                       {tittleOptions.titleProfile}
                     </Button>
@@ -219,7 +219,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               <Button
                 type="link"
                 spacing="compact"
-                path={`/extended-card/${prospectCode}/credit-profile`}
+                path={`/extended-card/${id}/credit-profile`}
                 fullwidth
               >
                 {tittleOptions.titleProfile}
@@ -358,7 +358,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
               isMobile={isMobile}
               isPrint={isPrint}
               showMenu={() => setShowMenu(false)}
-              firstItem={true}
               showPrint
             />
           )}
