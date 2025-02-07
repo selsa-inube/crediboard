@@ -5,6 +5,7 @@ export const StyledContainerGeneralHeader = styled.div`
   box-shadow: 0px 1px 2px 0px #0000004D;
   margin: 8px 16px;
 `;
+
 export const StyledPerfil = styled.img`
 width: 34px;
 height: 34px;

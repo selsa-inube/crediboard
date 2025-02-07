@@ -89,12 +89,12 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
           </StyledContainerAssisted>
           {currentStepsNumber &&
             currentStepsNumber.id ===
-            stepsFilingApplication.generalInformation.id && (
+              stepsFilingApplication.generalInformation.id && (
               <RequirementsNotMet isMobile={isMobile} />
             )}
           {currentStepsNumber &&
             currentStepsNumber.id ===
-            stepsFilingApplication.contactInformation.id && (
+              stepsFilingApplication.contactInformation.id && (
               <ContactInformation
                 isMobile={isMobile}
                 onFormValid={setIsCurrentFormValid}
@@ -105,7 +105,8 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
               />
             )}
           {currentStepsNumber &&
-            currentStepsNumber.id === stepsFilingApplication.BorrowerData.id && (
+            currentStepsNumber.id ===
+              stepsFilingApplication.BorrowerData.id && (
               <Borrowers
                 isMobile={isMobile}
                 onFormValid={setIsCurrentFormValid}
@@ -117,7 +118,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             )}
           {currentStepsNumber &&
             currentStepsNumber.id ===
-            stepsFilingApplication.propertyOffered.id && (
+              stepsFilingApplication.propertyOffered.id && (
               <PropertyOffered
                 isMobile={isMobile}
                 onFormValid={setIsCurrentFormValid}
@@ -129,7 +130,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             )}
           {currentStepsNumber &&
             currentStepsNumber.id ===
-            stepsFilingApplication.vehicleOffered.id && (
+              stepsFilingApplication.vehicleOffered.id && (
               <VehicleOffered
                 isMobile={isMobile}
                 onFormValid={setIsCurrentFormValid}
@@ -149,11 +150,12 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
             )}
           {currentStepsNumber &&
             currentStepsNumber.id ===
-            stepsFilingApplication.attachedDocuments.id && (
+              stepsFilingApplication.attachedDocuments.id && (
               <AttachedDocuments isMobile={isMobile} />
             )}
           {currentStepsNumber &&
-            currentStepsNumber.id === stepsFilingApplication.disbursement.id && (
+            currentStepsNumber.id ===
+              stepsFilingApplication.disbursement.id && (
               <DisbursementGeneral
                 isMobile={isMobile}
                 onFormValid={setIsCurrentFormValid}
