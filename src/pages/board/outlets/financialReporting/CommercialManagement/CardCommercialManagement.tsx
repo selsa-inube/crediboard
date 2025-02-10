@@ -2,12 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Divider } from "@inubekit/divider";
-import { MdOutlineEdit } from "react-icons/md";
 
 import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { NewCreditProductCard } from "@components/cards/CreditProductCard/newCard";
 import { CardValues } from "@components/cards/cardValues";
 import { DeleteModal } from "@components/modals/DeleteModal";
+import { DeductibleExpensesModal } from "@components/modals/DeductibleExpensesModal";
 import { ICreditProductProspect } from "@services/types";
 import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.service";
@@ -32,6 +32,8 @@ export const CardCommercialManagement = (
   >([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState("");
+  const [showDeductibleExpensesModal, setShowDeductibleExpensesModal] =
+    useState(false);
 
   const loadProspectProducts = useCallback(() => {
     const foundProspect = mockProspectCredit.find(
@@ -108,9 +110,10 @@ export const CardCommercialManagement = (
               ...item,
               amount: mockCommercialManagement[index]?.amount,
             }))}
-            firstIcon={<MdOutlineEdit />}
             showIcon={entry.iconEdit}
             isMobile={isMobile}
+            handleEdit={() => true}
+            handleView={() => setShowDeductibleExpensesModal(true)}
           />
         ))}
       </Stack>
@@ -118,6 +121,11 @@ export const CardCommercialManagement = (
         <DeleteModal
           handleClose={() => setShowDeleteModal(false)}
           handleDelete={handleDelete}
+        />
+      )}
+      {showDeductibleExpensesModal && (
+        <DeductibleExpensesModal
+          handleClose={() => setShowDeductibleExpensesModal(false)}
         />
       )}
     </div>

@@ -1,0 +1,15 @@
+export const deductibleexpenses = {
+  deductibleExpenses: "Gastos descontables",
+  close: "Cerrar",
+  loading: "Cargando...",
+  adjustmentInterest: "Intereses de ajuste al ciclo (I.A.C)",
+  bail: "Fianza",
+  sureOne: "seguro 1",
+  sureTwo: "seguro 2",
+  sureThere: "seguro 3",
+  sureFour: "seguro 4",
+  sureFive: "seguro 5",
+  sureSix: "seguro 6",
+  sureSeven: "seguro 7",
+  totalExpenses: "Total",
+};
