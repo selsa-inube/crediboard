@@ -86,7 +86,7 @@ export const CardCommercialManagement = (
                 entry.ordinary_installment_for_principal?.gradient_value || 0
               }
               schedule={entry.schedule}
-              onEdit={() => { }}
+              onEdit={() => {}}
               onDelete={() => handleDeleteClick(entry.credit_product_code)}
             />
           ))}
@@ -110,8 +110,7 @@ export const CardCommercialManagement = (
             showIcon={entry.iconEdit}
             isMobile={isMobile}
             handleEdit={() => setShowConsolidatedModal(true)}
-            handleView={() => setShowDeleteModal(true)}
-            handleClose={() => setShowConsolidatedModal(true)}
+            handleView={() => true}
           />
         ))}
       </Stack>
@@ -124,10 +123,6 @@ export const CardCommercialManagement = (
       {showConsolidatedModal && (
         <ConsolidatedCredits
           handleClose={() => setShowConsolidatedModal(false)}
-          investmentCode="10-123456"
-          expiredValue={120000}
-          collectedValue={360000}
-          nextExpiration={240000}
         />
       )}
     </div>

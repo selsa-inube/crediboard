@@ -19,7 +19,6 @@ export interface CardValuesProps {
   onIconClick?: () => void;
   handleView: () => void;
   handleEdit: () => void;
-  handleClose: () => void;
   firstIcon?: React.ReactNode;
   showIcon?: boolean;
   showSummaryFirstItem?: boolean;
@@ -30,9 +29,9 @@ export function CardValues(props: CardValuesProps) {
     items,
     isMobile,
     firstIcon,
-    onIconClick = () => { },
-    handleEdit = () => { },
-    handleView = () => { },
+    onIconClick = () => {},
+    handleEdit = () => {},
+    handleView = () => {},
     showIcon = true,
     showSummaryFirstItem = false,
   } = props;
