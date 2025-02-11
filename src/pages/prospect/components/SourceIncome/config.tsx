@@ -4,14 +4,9 @@ interface IncomeProps {
   values: string[];
   ShowSupport?: boolean;
   disabled?: boolean;
-  
 }
 
-function IncomeCapital({
-  values,
-  ShowSupport,
-  disabled,
-}: IncomeProps) {
+function IncomeCapital({ values, ShowSupport, disabled }: IncomeProps) {
   return (
     <IncomeCard
       title="Rentas de capital"
@@ -22,18 +17,13 @@ function IncomeCapital({
       ]}
       placeholders={["Arrendamiento/mes", "Utilidades/mes", "Rendimientos/mes"]}
       values={values}
-
       ShowSupport={ShowSupport}
       disabled={disabled}
     />
   );
 }
 
-function IncomeEmployment({
-  values,
-  ShowSupport,
-  disabled,
-}: IncomeProps) {
+function IncomeEmployment({ values, ShowSupport, disabled }: IncomeProps) {
   return (
     <IncomeCard
       title="Rentas de trabajo"
@@ -48,18 +38,13 @@ function IncomeEmployment({
         "Pensión/mes",
       ]}
       values={values}
-
       ShowSupport={ShowSupport}
       disabled={disabled}
     />
   );
 }
 
-function MicroBusinesses({
-  values,
-  ShowSupport,
-  disabled,
-}: IncomeProps) {
+function MicroBusinesses({ values, ShowSupport, disabled }: IncomeProps) {
   return (
     <IncomeCard
       title="Otros ingresos variables"
