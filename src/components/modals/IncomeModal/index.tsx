@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
@@ -14,43 +13,13 @@ import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 import { StyledContainer, StyledContainerClose } from "./styles";
 
 interface IncomeModalProps {
-  form: {
-    borrower: string;
-    monthly_salary?: number;
-    other_monthly_payments?: number;
-    pension_allowances?: number;
-    leases?: number;
-    dividends_or_shares?: number;
-    financial_returns?: number;
-    average_monthly_profit?: number;
-    monthly_fees?: number;
-  };
-  onChange: (name: string, newValue: string) => void;
-  options: { id: string; label: string; value: string }[];
   portalId?: string;
   handleClose?: () => void;
 }
 
 export function IncomeModal(props: IncomeModalProps) {
-  const { form, onChange, options, portalId, handleClose } = props;
+  const { portalId, handleClose } = props;
 
-  const [isFormComplete, setIsFormComplete] = useState(false);
-
-  useEffect(() => {
-    const allFieldsFilled = [
-      form.borrower,
-      form.monthly_salary,
-      form.other_monthly_payments,
-      form.pension_allowances,
-      form.leases,
-      form.dividends_or_shares,
-      form.financial_returns,
-      form.average_monthly_profit,
-      form.monthly_fees,
-    ].every((field) => field !== undefined && field !== "");
-
-    setIsFormComplete(allFieldsFilled);
-  }, [form]);
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
@@ -88,10 +57,7 @@ export function IncomeModal(props: IncomeModalProps) {
           </Stack>
           <Divider />
           <SourceIncome
-            form={form}
-            onChange={onChange}
-            options={options}
-            ShowSupport
+            ShowSupport={false}
           />
           <Divider />
           <Stack
@@ -115,8 +81,7 @@ export function IncomeModal(props: IncomeModalProps) {
               />
               <Button
                 children="Guardar"
-                appearance={isFormComplete ? "primary" : "gray"}
-                disabled={!isFormComplete}
+                onClick={handleClose}
               />
             </Stack>
           </Stack>
