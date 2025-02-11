@@ -22,7 +22,6 @@ interface IProductSelectionProps {
   handleOnChange: {
     setSelectedProducts: React.Dispatch<React.SetStateAction<string[]>>;
     onGeneralToggleChange: () => void;
-    onToggleChange: (index: number) => void;
   };
   onFormValid: (isValid: boolean) => void;
   isMobile: boolean;
@@ -32,11 +31,7 @@ interface IProductSelectionProps {
 export function ProductSelection(props: IProductSelectionProps) {
   const {
     initialValues: { selectedProducts, generalToggleChecked, togglesState },
-    handleOnChange: {
-      setSelectedProducts,
-      onGeneralToggleChange,
-      onToggleChange,
-    },
+    handleOnChange: { setSelectedProducts, onGeneralToggleChange },
     onFormValid,
     isMobile,
     showQuestion,
@@ -171,7 +166,6 @@ export function ProductSelection(props: IProductSelectionProps) {
                             value={field.value.toString()}
                             checked={field.value}
                             onChange={() => {
-                              onToggleChange(questionIndex - 1);
                               setFieldValue(
                                 `togglesState[${questionIndex - 1}]`,
                                 !field.value

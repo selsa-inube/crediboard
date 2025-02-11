@@ -130,11 +130,6 @@ export function AddProspectUI(props: AddPositionUIProps) {
                       "generalToggleChecked",
                       !formData.generalToggleChecked
                     ),
-                  onToggleChange: (index: number) => {
-                    const newToggles = [...formData.togglesState];
-                    newToggles[index] = !newToggles[index];
-                    handleFormDataChange("togglesState", newToggles);
-                  },
                 }}
                 onFormValid={setIsCurrentFormValid}
                 isMobile={isMobile}
