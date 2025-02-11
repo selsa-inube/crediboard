@@ -8,7 +8,7 @@ export const StyledItem = styled.li`
   padding: 8px;
   border-bottom: 1px solid
     ${({ theme }) =>
-      theme.color?.stroke?.divider?.regular || inube.palette.neutral.N40};
+    theme.color?.stroke?.divider?.regular || inube.palette.neutral.N40};
 `;
 export const StyledMessageContainer = styled.div`
   position: fixed;
@@ -34,4 +34,12 @@ export const StyledToast = styled.div<IStyledToast>`
   &:hover {
     opacity: 1;
   }
+`;
+
+export const StyledHorizontalDivider = styled.hr`
+  margin: 0px;
+  width: 2px;
+  border: none;
+  background-color: ${({ theme }) =>
+    theme?.color?.stroke?.divider?.regular || inube.palette.neutral.N40};
 `;
