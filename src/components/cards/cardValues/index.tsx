@@ -3,6 +3,7 @@ import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
 
 import { parseCunstomFormat } from "@utils/formatData/currency";
+import { StyledPrint } from "@pages/prospect/components/CreditProspect/styles";
 
 import { Container, IconWrapper, ContentWrapper } from "./styles";
 
@@ -71,11 +72,13 @@ export function CardValues(props: CardValuesProps) {
                 )}
               </Stack>
             </Stack>
-            {!isMobile && (
-              <Text type="title" size="large" appearance="gray">
-                {item.operation}
-              </Text>
-            )}
+            <StyledPrint>
+              {!isMobile && (
+                <Text type="title" size="large" appearance="gray">
+                  {item.operation}
+                </Text>
+              )}
+            </StyledPrint>
           </Stack>
         ))}
       </ContentWrapper>

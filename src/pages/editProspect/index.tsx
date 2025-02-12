@@ -11,6 +11,7 @@ import { Button } from "@inubekit/button";
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
 import { mockEditProspect } from "@mocks/add-prospect/edit-prospect/editprospect.mock";
+import { StyledPrint } from "@pages/prospect/components/CreditProspect/styles";
 
 import { dataEditProspect } from "./config";
 
@@ -44,12 +45,14 @@ export function EditProspect() {
                   #{id}
                 </Text>
               </Stack>
-              <Icon
-                icon={<MdOutlineShare />}
-                appearance="primary"
-                size="20px"
-                cursorHover
-              />
+              <StyledPrint>
+                <Icon
+                  icon={<MdOutlineShare />}
+                  appearance="primary"
+                  size="20px"
+                  cursorHover
+                />
+              </StyledPrint>
             </Stack>
             <Divider dashed />
             <Stack
@@ -103,14 +106,17 @@ export function EditProspect() {
           <CreditProspect
             isMobile={isMobile}
             showMenu={() => setShowMenu(false)}
+            showPrint={true}
           />
         </Fieldset>
-        <Stack gap="20px" justifyContent="end">
-          <Button appearance="danger" variant="outlined">
-            {dataEditProspect.delete}
-          </Button>
-          <Button>{dataEditProspect.confirm}</Button>
-        </Stack>
+        <StyledPrint>
+          <Stack gap="20px" justifyContent="end">
+            <Button appearance="danger" variant="outlined">
+              {dataEditProspect.delete}
+            </Button>
+            <Button>{dataEditProspect.confirm}</Button>
+          </Stack>
+        </StyledPrint>
       </Stack>
       {showMenu && <Stack></Stack>}
     </Stack>

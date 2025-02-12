@@ -14,6 +14,7 @@ import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
 import { BusinessUnitChange } from "@components/inputs/BusinessUnitChange";
 import { clientsDataMock } from "@mocks/login/clients.mock";
+import { StyledPrint } from "@pages/prospect/components/CreditProspect/styles";
 
 import { logoutConfig } from "./config/apps.config";
 import {
@@ -98,25 +99,27 @@ function AppPage() {
   return (
     <StyledAppPage>
       <Grid templateRows="auto 1fr" height="100vh" justifyContent="unset">
-        <Header
-          portalId="portal"
-          logoURL={renderLogo(user.operator.logo)}
-          userName={user.username}
-          client={user.company}
-        />
-        <StyledCollapseIcon
-          $collapse={collapse}
-          onClick={() => setCollapse(!collapse)}
-          $isTablet={isTablet}
-          ref={collapseMenuRef}
-        >
-          <Icon
-            icon={<MdOutlineChevronRight />}
-            appearance="primary"
-            size="24px"
-            cursorHover
+        <StyledPrint>
+          <Header
+            portalId="portal"
+            logoURL={renderLogo(user.operator.logo)}
+            userName={user.username}
+            client={user.company}
           />
-        </StyledCollapseIcon>
+          <StyledCollapseIcon
+            $collapse={collapse}
+            onClick={() => setCollapse(!collapse)}
+            $isTablet={isTablet}
+            ref={collapseMenuRef}
+          >
+            <Icon
+              icon={<MdOutlineChevronRight />}
+              appearance="primary"
+              size="24px"
+              cursorHover
+            />
+          </StyledCollapseIcon>
+        </StyledPrint>
         {collapse && (
           <StyledCollapse ref={businessUnitChangeRef}>
             <BusinessUnitChange clients={clientsDataMock} />

@@ -13,6 +13,7 @@ import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/C
 import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.service";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 import { mockCommercialManagement } from "@mocks/financialReporting/commercialmanagement.mock";
+import { StyledPrint } from "@pages/prospect/components/CreditProspect/styles";
 
 import { StyledCardsCredit } from "./styles";
 
@@ -91,7 +92,9 @@ export const CardCommercialManagement = (
               onDelete={() => handleDeleteClick(entry.credit_product_code)}
             />
           ))}
-          <NewCreditProductCard onClick={onClick} />
+          <StyledPrint>
+            <NewCreditProductCard onClick={onClick} />
+          </StyledPrint>
         </Stack>
       </StyledCardsCredit>
       {isMobile && <Divider />}
