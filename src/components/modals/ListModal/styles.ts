@@ -19,6 +19,7 @@ export const StyledModal = styled.div<IStyledModal>`
 export const StyledContainerContent = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
   overflow-y: auto;
   padding-top: 4px;
   padding-right: 4px;

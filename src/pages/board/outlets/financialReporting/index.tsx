@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Text } from "@inubekit/text";
+
 import { Grid } from "@inubekit/grid";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Icon } from "@inubekit/icon";
 import { useFlag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 
@@ -31,7 +29,7 @@ import {
   optionButtons,
   errorObserver,
 } from "./config";
-import { StyledItem, StyledToast } from "./styles";
+import { StyledToast } from "./styles";
 import { Approvals } from "./Approvals";
 import { Requirements } from "./Requirements";
 import { Management } from "./management";
@@ -41,37 +39,8 @@ import { Postingvouchers } from "./Postingvouchers";
 interface IListdataProps {
   data: { id: string; name: string }[];
   icon?: React.ReactNode;
+  onDelete: (id: string) => void;
 }
-
-const Listdata = (props: IListdataProps) => {
-  const { data, icon } = props;
-
-  if (data.length === 0) {
-    return <Text>No hay documentos adjuntos.</Text>;
-  }
-
-  return (
-    <ul
-      style={{
-        paddingInlineStart: "2px",
-        marginBlock: "8px",
-      }}
-    >
-      {data.map((element) => (
-        <StyledItem key={element.id}>
-          <Text>{element.name}</Text>
-          <Icon
-            icon={icon}
-            appearance="dark"
-            spacing="narrow"
-            size="24px"
-            cursorHover
-          />
-        </StyledItem>
-      ))}
-    </ul>
-  );
-};
 
 const removeErrorByIdServices = (
   errorsList: IErrorService[],
@@ -308,20 +277,21 @@ export const FinancialReporting = () => {
           {showAttachments && (
             <ListModal
               title="Adjuntar"
-              content={<Listdata data={document} icon={<MdDeleteOutline />} />}
               handleClose={() => setShowAttachments(false)}
               optionButtons={optionButtons}
-              buttonLabel="Cerrar"
+              buttonLabel="Guardar"
+              id={id!}
             />
           )}
           {attachDocuments && (
             <ListModal
               title="Ver Adjuntos"
-              content={
-                <Listdata data={document} icon={<MdOutlineRemoveRedEye />} />
-              }
+              content={document.map((doc) => (
+                <div key={doc.id}>{doc.name}</div>
+              ))}
               handleClose={() => setAttachDocuments(false)}
               buttonLabel="Cerrar"
+              id={id!}
             />
           )}
         </>
