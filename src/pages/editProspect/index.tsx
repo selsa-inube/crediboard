@@ -11,8 +11,8 @@ import { Button } from "@inubekit/button";
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
 import { mockEditProspect } from "@mocks/add-prospect/edit-prospect/editprospect.mock";
-import { StyledPrint } from "@pages/prospect/components/CreditProspect/styles";
 
+import { StyledPrint } from "./styles";
 import { dataEditProspect } from "./config";
 
 export function EditProspect() {

@@ -13,9 +13,8 @@ import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/C
 import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.service";
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 import { mockCommercialManagement } from "@mocks/financialReporting/commercialmanagement.mock";
-import { StyledPrint } from "@pages/prospect/components/CreditProspect/styles";
 
-import { StyledCardsCredit } from "./styles";
+import { StyledCardsCredit, StyledPrint } from "./styles";
 
 interface CardCommercialManagementProps {
   id: string;

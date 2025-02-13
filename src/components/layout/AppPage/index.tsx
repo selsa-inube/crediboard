@@ -14,7 +14,6 @@ import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
 import { BusinessUnitChange } from "@components/inputs/BusinessUnitChange";
 import { clientsDataMock } from "@mocks/login/clients.mock";
-import { StyledPrint } from "@pages/prospect/components/CreditProspect/styles";
 
 import { logoutConfig } from "./config/apps.config";
 import {
@@ -27,6 +26,7 @@ import {
   StyledCollapseIcon,
   StyledCollapse,
   StyledFooter,
+  StyledPrint,
 } from "./styles";
 
 const renderLogo = (imgUrl: string) => {

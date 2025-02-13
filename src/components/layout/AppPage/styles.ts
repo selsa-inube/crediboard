@@ -60,12 +60,18 @@ const StyledMenuContainer = styled.div`
 `;
 
 const StyledFooter = styled.footer`
-margin-top: auto;
+  margin-top: auto;
   display: flex;
   justify-content: center;
   padding: 16px 24px;
-  background-color:${({ theme }) =>
+  background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
+`;
+
+const StyledPrint = styled.div`
+  @media print {
+    display: none;
+  }
 `;
 
 export {
@@ -77,5 +83,6 @@ export {
   StyledMenuContainer,
   StyledCollapseIcon,
   StyledCollapse,
-  StyledFooter
+  StyledFooter,
+  StyledPrint,
 };

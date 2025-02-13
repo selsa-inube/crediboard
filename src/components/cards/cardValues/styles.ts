@@ -46,3 +46,9 @@ export const ContentWrapper = styled.div`
     align-items: center;
   }
 `;
+
+export const StyledPrint = styled.div`
+  @media print {
+    display: none;
+  }
+`;

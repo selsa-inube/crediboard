@@ -48,7 +48,7 @@ const StyledCardsCredit = styled.div`
     overflow-y: auto;
     display: grid;
     place-items: center;
-    
+
     &::-webkit-scrollbar {
       width: 8px;
     }
@@ -76,6 +76,12 @@ const StyledVerticalDivider = styled.hr`
     theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
+const StyledPrint = styled.div`
+  @media print {
+    display: none;
+  }
+`;
+
 export {
   StyledCollapseIcon,
   StyledIcon,
@@ -83,4 +89,5 @@ export {
   StyledCardsCredit,
   StyledContainerIcon,
   StyledVerticalDivider,
+  StyledPrint,
 };

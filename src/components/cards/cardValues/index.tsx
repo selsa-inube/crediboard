@@ -3,9 +3,8 @@ import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
 
 import { parseCunstomFormat } from "@utils/formatData/currency";
-import { StyledPrint } from "@pages/prospect/components/CreditProspect/styles";
 
-import { Container, IconWrapper, ContentWrapper } from "./styles";
+import { Container, IconWrapper, ContentWrapper, StyledPrint } from "./styles";
 
 export interface CardValuesProps {
   items: {
