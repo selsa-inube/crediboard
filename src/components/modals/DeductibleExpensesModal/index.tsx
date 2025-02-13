@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
+
 import { SkeletonLine } from "@inubekit/skeleton";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
@@ -47,7 +48,7 @@ export function DeductibleExpensesModal({
           direction="column"
           padding="24px"
           gap="24px"
-          width={!isMobile ? "450px" : "287px"}
+          width={!isMobile ? "540px" : "400px"}
         >
           <Stack justifyContent="space-between" alignItems="center" gap="15px">
             <Text size="small" type="headline">
@@ -111,164 +112,30 @@ export function DeductibleExpensesModal({
                 )}
               </Stack>
             </Stack>
-
-            <Stack justifyContent="space-between">
-              <Text size="medium" appearance="gray" weight="bold">
-                {deductibleexpenses.sureOne}
-              </Text>
-              <Stack>
-                <Text type="body" size="medium" appearance="success">
-                  $
+            {deductibleexpenses.sure.map((sure, index) => (
+              <Stack key={index} justifyContent="space-between">
+                <Text size="medium" appearance="gray" weight="bold">
+                  {sure}
                 </Text>
-                {loading ? (
-                  <SkeletonLine width="70px" animated={true} />
-                ) : (
-                  <Text
-                    type="body"
-                    size="medium"
-                    appearance="gray"
-                    weight="bold"
-                  >
-                    {currencyFormat(data.sureOne, false)}
+                <Stack>
+                  <Text type="body" size="medium" appearance="success">
+                    $
                   </Text>
-                )}
+                  {loading ? (
+                    <SkeletonLine width="70px" animated={true} />
+                  ) : (
+                    <Text
+                      type="body"
+                      size="medium"
+                      appearance="gray"
+                      weight="bold"
+                    >
+                      {currencyFormat(data.sure, false)}
+                    </Text>
+                  )}
+                </Stack>
               </Stack>
-            </Stack>
-
-            <Stack justifyContent="space-between">
-              <Text size="medium" appearance="gray" weight="bold">
-                {deductibleexpenses.sureTwo}
-              </Text>
-              <Stack>
-                <Text type="body" size="medium" appearance="success">
-                  $
-                </Text>
-                {loading ? (
-                  <SkeletonLine width="70px" animated={true} />
-                ) : (
-                  <Text
-                    type="body"
-                    size="medium"
-                    appearance="gray"
-                    weight="bold"
-                  >
-                    {currencyFormat(data.sureTwo, false)}
-                  </Text>
-                )}
-              </Stack>
-            </Stack>
-
-            <Stack justifyContent="space-between">
-              <Text size="medium" appearance="gray" weight="bold">
-                {deductibleexpenses.sureThere}
-              </Text>
-              <Stack>
-                <Text type="body" size="medium" appearance="success">
-                  $
-                </Text>
-                {loading ? (
-                  <SkeletonLine width="70px" animated={true} />
-                ) : (
-                  <Text
-                    type="body"
-                    size="medium"
-                    appearance="gray"
-                    weight="bold"
-                  >
-                    {currencyFormat(data.sureThere, false)}
-                  </Text>
-                )}
-              </Stack>
-            </Stack>
-
-            <Stack justifyContent="space-between">
-              <Text size="medium" appearance="gray" weight="bold">
-                {deductibleexpenses.sureFour}
-              </Text>
-              <Stack>
-                <Text type="body" size="medium" appearance="success">
-                  $
-                </Text>
-                {loading ? (
-                  <SkeletonLine width="70px" animated={true} />
-                ) : (
-                  <Text
-                    type="body"
-                    size="medium"
-                    appearance="gray"
-                    weight="bold"
-                  >
-                    {currencyFormat(data.sureFour, false)}
-                  </Text>
-                )}
-              </Stack>
-            </Stack>
-            <Stack justifyContent="space-between">
-              <Text size="medium" appearance="gray" weight="bold">
-                {deductibleexpenses.sureFive}
-              </Text>
-              <Stack>
-                <Text type="body" size="medium" appearance="success">
-                  $
-                </Text>
-                {loading ? (
-                  <SkeletonLine width="70px" animated={true} />
-                ) : (
-                  <Text
-                    type="body"
-                    size="medium"
-                    appearance="gray"
-                    weight="bold"
-                  >
-                    {currencyFormat(data.sureFive, false)}
-                  </Text>
-                )}
-              </Stack>
-            </Stack>
-            <Stack justifyContent="space-between">
-              <Text size="medium" appearance="gray" weight="bold">
-                {deductibleexpenses.sureSix}
-              </Text>
-              <Stack>
-                <Text type="body" size="medium" appearance="success">
-                  $
-                </Text>
-                {loading ? (
-                  <SkeletonLine width="70px" animated={true} />
-                ) : (
-                  <Text
-                    type="body"
-                    size="medium"
-                    appearance="gray"
-                    weight="bold"
-                  >
-                    {currencyFormat(data.sureSix, false)}
-                  </Text>
-                )}
-              </Stack>
-            </Stack>
-            <Stack justifyContent="space-between">
-              <Text size="medium" appearance="gray" weight="bold">
-                {deductibleexpenses.sureSeven}
-              </Text>
-              <Stack>
-                <Text type="body" size="medium" appearance="success">
-                  $
-                </Text>
-                {loading ? (
-                  <SkeletonLine width="70px" animated={true} />
-                ) : (
-                  <Text
-                    type="body"
-                    size="medium"
-                    appearance="gray"
-                    weight="bold"
-                  >
-                    {currencyFormat(data.sureSeven, false)}
-                  </Text>
-                )}
-              </Stack>
-            </Stack>
+            ))}
           </ScrollableContainer>
           <Stack direction="column" justifyContent="space-between" gap="12px">
             <Stack justifyContent="space-between">
