@@ -1,29 +1,33 @@
 import React from "react";
-import { MdSearch } from "react-icons/md";
-import { Button } from "@inubekit/button";
-import { Textfield } from "@inubekit/textfield";
 import { Stack } from "@inubekit/stack";
+import { Searchfield } from "@inubekit/input";
+
+import { IBusinessUnitstate } from "./types";
 import { Text } from "@inubekit/text";
-
-import { RadioClient } from "@components/cards/RadioClient";
-import { IClient } from "@context/AppContext/types";
-
-import { IClientState } from "./types";
+import { Button } from "@inubekit/button";
 import {
-  StyledClients,
-  StyledClientsList,
+  StyledBusinessUnits,
+  StyledBusinessUnitsList,
   StyledNoResults,
-  StyledClientsItem,
+  StyledBusinessUnitsItem,
 } from "./styles";
+import { useMediaQuery } from "@inubekit/hooks";
+import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
+import { RadioBusinessUnit } from "@components/RadioBusinessUnit";
 
-interface ClientsUIProps {
-  clients: IClient[];
+interface BusinessUnitsUIProps {
+  businessUnits: IBusinessUnitsPortalStaff[];
   search: string;
-  client: IClientState;
+  businessUnit: IBusinessUnitstate;
   handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleClientChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  filterClients: (clients: IClient[], search: string) => IClient[];
-  handleSubmit: (event?: Event) => void;
+  handleBussinessUnitChange: (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  filterBusinessUnits: (
+    businessUnits: IBusinessUnitsPortalStaff[],
+    search: string
+  ) => IBusinessUnitsPortalStaff[];
+  handleSubmit: () => void;
 }
 
 function NoResultsMessage({ search }: { search: string }) {
@@ -37,66 +41,81 @@ function NoResultsMessage({ search }: { search: string }) {
   );
 }
 
-function ClientsUI({
-  clients,
+function BusinessUnitsUI({
+  businessUnits,
   search,
-  client,
+  businessUnit,
   handleSearchChange,
-  filterClients,
-  handleClientChange,
+  filterBusinessUnits,
+  handleBussinessUnitChange,
   handleSubmit,
-}: ClientsUIProps) {
-  const filteredClients = filterClients(clients, search);
-
+}: BusinessUnitsUIProps) {
+  const isMobile = useMediaQuery("(max-width: 532px)");
   return (
-    <StyledClients>
-      <Text type="title" as="h2" textAlign="center">
-        Unidades de negocio
-      </Text>
-      <Text size="medium" textAlign="center">
-        Selecciona la unidad de negocio con la que vas a trabajar hoy
-      </Text>
+    <StyledBusinessUnits $isMobile={isMobile}>
+      <Stack direction="column">
+        <Text type="title" as="h2" textAlign="center">
+          Unidad de Negocios
+        </Text>
+        <Text size="medium" textAlign="center">
+          Seleccione la Unidad de Negocio
+        </Text>
+      </Stack>
       <form>
-        <Stack direction="column" alignItems="center">
-          {clients.length > 10 && (
-            <Textfield
+        <Stack direction="column" alignItems="center" gap="16px">
+          {businessUnits.length > 10 && (
+            <Searchfield
               placeholder="Buscar..."
               type="search"
-              name="searchClients"
-              id="searchClients"
+              name="searchBusinessUnits"
+              id="searchBusinessUnits"
               value={search}
               fullwidth={true}
               onChange={handleSearchChange}
-              iconBefore={<MdSearch size={22} />}
             />
           )}
-          {filteredClients.length === 0 && <NoResultsMessage search={search} />}
-          <StyledClientsList $scroll={clients.length > 5}>
+          {filterBusinessUnits(businessUnits, search).length === 0 && (
+            <NoResultsMessage search={search} />
+          )}
+          <StyledBusinessUnitsList
+            $scroll={businessUnits.length > 5}
+            $isMobile={isMobile}
+          >
             <Stack
               direction="column"
-              padding="0px 8px"
+              padding="s0 s100"
               alignItems="center"
               gap="8px"
             >
-              {filteredClients.map((client) => (
-                <StyledClientsItem key={client.id}>
-                  <RadioClient
-                    name="client"
-                    label={client.name}
-                    id={client.id}
-                    value={client.name}
-                    logo={client.logo}
-                    handleChange={handleClientChange}
-                  />
-                </StyledClientsItem>
-              ))}
+              {filterBusinessUnits(businessUnits, search).map(
+                (businessUnit) => (
+                  <StyledBusinessUnitsItem
+                    key={businessUnit.businessUnitPublicCode}
+                  >
+                    <RadioBusinessUnit
+                      name="businessUnit"
+                      label={businessUnit.abbreviatedName}
+                      id={businessUnit.businessUnitPublicCode}
+                      value={businessUnit.abbreviatedName}
+                      logo={businessUnit.urlLogo}
+                      handleChange={handleBussinessUnitChange}
+                    />
+                  </StyledBusinessUnitsItem>
+                )
+              )}
             </Stack>
-          </StyledClientsList>
-          <Button type="button" children="Continuar" disabled={client.value} onClick={handleSubmit}/>
+          </StyledBusinessUnitsList>
+          <Button
+            type="button"
+            disabled={businessUnit.value}
+            onClick={handleSubmit}
+          >
+            Continuar
+          </Button>
         </Stack>
       </form>
-    </StyledClients>
+    </StyledBusinessUnits>
   );
 }
 
-export { ClientsUI };
+export { BusinessUnitsUI };

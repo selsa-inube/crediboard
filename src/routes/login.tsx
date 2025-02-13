@@ -1,29 +1,31 @@
 import { Route, Routes } from "react-router-dom";
-import { CheckingCredentials } from "@pages/login/outlets/CheckingCredentials";
-import { Clients } from "@pages/login/outlets/Clients";
-import { LoadingApp } from "@pages/login/outlets/LoadingApp";
+
 import { ErrorPage } from "@components/layout/ErrorPage";
+
+import { Login } from "@pages/login";
+
+import { CheckingCredentials } from "@pages/login/outlets/CheckingCredentials";
 import { ErrorNotAvailable } from "@pages/login/errors/ErrorNotAvailable";
 import { ErrorNotClient } from "@pages/login/errors/ErrorNotClient";
-import { Login } from "@pages/login";
-import { clientsDataMock } from "@mocks/login/clients.mock";
-import { IClient } from "@context/AppContext/types";
+import { LoadingApp } from "@pages/login/outlets/LoadingApp";
 
-export interface IClients {
-  clients: IClient[];
-}
+import { useContext } from "react";
+import { AppContext } from "@context/AppContext";
+import { BusinessUnits } from "@pages/login/outlets/Clients";
+
 function LoginRoutes() {
-  const clients = clientsDataMock;
+  const { businessUnitsToTheStaff } = useContext(AppContext);
+  const business = businessUnitsToTheStaff;
   return (
     <Routes>
       <Route path="/" element={<Login />}>
         <Route
           path="/:user_id/checking-credentials"
-          element={<CheckingCredentials clients={clients} />}
+          element={<CheckingCredentials businessUnits={business} />}
         />
         <Route
           path="/:user_id/clients"
-          element={<Clients clients={clients} />}
+          element={<BusinessUnits businessUnits={business} />}
         />
         <Route path="loading-app" element={<LoadingApp />} />
       </Route>

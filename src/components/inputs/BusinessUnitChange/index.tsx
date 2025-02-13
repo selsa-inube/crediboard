@@ -1,71 +1,61 @@
-import { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
 import { MdCheck } from "react-icons/md";
-
 import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
-import { AppContext } from "@context/AppContext/AppContext";
-import { IClient } from "@context/AppContext/types";
 
 import {
   StyledContainer,
   StyledUl,
-  StyledItem,
+  StyledLi,
   StyledImg,
-  StyledHr,
+  StyledContainerOption,
 } from "./styles";
+import { tokens } from "@design/tokens";
+import { Divider } from "@inubekit/divider";
+import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
 
 interface BusinessUnitChangeProps {
-  clients: IClient[];
+  businessUnits: IBusinessUnitsPortalStaff[];
+  selectedClient: string;
+  onLogoClick: (businessUnit: IBusinessUnitsPortalStaff) => void;
 }
 
-export const BusinessUnitChange = ({ clients }: BusinessUnitChangeProps) => {
-  const { user, handleClientChange } = useContext(AppContext);
-  const [selectedClient, setSelectedClient] = useState<string>(() => {
-    return localStorage.getItem("selectedClientSigla") || "";
-  });
-
-  useEffect(() => {
-    localStorage.setItem("selectedClientSigla", selectedClient);
-  }, [selectedClient]);
-
-  useEffect(() => {
-    if (user.company) {
-      setSelectedClient(user.company);
-    }
-  }, [user.company]);
-
-  const handleLogoClick = (client: IClient) => {
-    handleClientChange(client);
-    setSelectedClient(client.sigla);
-  };
+const BusinessUnitChange = (props: BusinessUnitChangeProps) => {
+  const { businessUnits, selectedClient, onLogoClick } = props;
 
   return (
     <StyledContainer>
-      <Stack width="220px">
+      <Stack width="200px">
         <StyledUl>
-          {clients.map((client, index) => (
-            <Link
-              key={client.id}
-              to=".."
-              onClick={() => handleLogoClick(client)}
+          {businessUnits.map((businessUnit, index) => (
+            <StyledContainerOption
+              key={businessUnit.businessUnitPublicCode}
+              onClick={() => onLogoClick(businessUnit)}
             >
-              <StyledItem>
-                <StyledImg src={client.logo} alt={client.name} />
-                {selectedClient === client.sigla && (
-                  <Icon
-                    icon={<MdCheck />}
-                    appearance="primary"
-                    size="24px"
-                    cursorHover
-                  />
+              <StyledLi>
+                <StyledImg
+                  src={businessUnit.urlLogo}
+                  alt={businessUnit.abbreviatedName}
+                />
+                {selectedClient === businessUnit.abbreviatedName && (
+                  <Stack
+                    margin={`${tokens.spacing.s0} ${tokens.spacing.s150} ${tokens.spacing.s0}`}
+                  >
+                    <Icon
+                      icon={<MdCheck />}
+                      appearance="primary"
+                      size="24px"
+                      cursorHover
+                    />
+                  </Stack>
                 )}
-              </StyledItem>
-              {index !== clients.length - 1 && <StyledHr />}
-            </Link>
+              </StyledLi>
+              {index !== businessUnits.length - 1 && <Divider />}
+            </StyledContainerOption>
           ))}
         </StyledUl>
       </Stack>
     </StyledContainer>
   );
 };
+
+export { BusinessUnitChange };

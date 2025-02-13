@@ -1,14 +1,24 @@
 import { Outlet } from "react-router-dom";
-import { useMediaQueries } from "@inubekit/hooks";
-import { Grid } from "@inubekit/grid";
 import { Stack } from "@inubekit/stack";
+import { Grid } from "@inubekit/grid";
 import { Text } from "@inubekit/text";
+import { useMediaQueries } from "@inubekit/hooks";
 
-import { StyledWelcomeContainer, StyledOutletContainer } from "./styles";
+import selsaLogo from "@assets/images/selsa.png";
+import {
+  StyledWelcomeContainer,
+  StyledOutletContainer,
+  StyledImage,
+} from "./styles";
 
 function LoginUI() {
-  const { "(max-width: 768px)": screenMobile }: { [key: string]: boolean } =
-    useMediaQueries(["(max-width: 768px)"]);
+  const {
+    "(max-width: 768px)": screenMobile,
+    "(min-width: 993px) and (max-width: 2200px)": screenDesktop,
+  }: { [key: string]: boolean } = useMediaQueries([
+    "(max-width: 768px)",
+    "(min-width: 993px) and (max-width: 2200px)",
+  ]);
 
   return (
     <Grid
@@ -28,9 +38,14 @@ function LoginUI() {
               Bienvenido
             </Text>
             <Text as="h1" type="headline" size="large">
-              Crediboard
+              iEvent Portal
             </Text>
           </Stack>
+          <StyledImage
+            src={selsaLogo}
+            alt="Sistemas Enlinea"
+            width={screenDesktop ? "240px" : "160px"}
+          />
         </Stack>
       </StyledWelcomeContainer>
       <StyledOutletContainer>

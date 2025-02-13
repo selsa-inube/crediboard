@@ -1,34 +1,40 @@
 import { useNavigate } from "react-router-dom";
-import { CheckingCredentialsUI } from "./interface";
 import { useCallback, useContext, useEffect } from "react";
-import { AppContext } from "@context/AppContext/AppContext";
-import { IClient } from "@context/AppContext/types";
 
-function CheckingCredentials({ clients }: { clients: IClient[] }) {
+import { AppContext } from "@context/AppContext";
+
+import { CheckingCredentialsUI } from "./interface";
+import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
+
+function CheckingCredentials({
+  businessUnits,
+}: {
+  businessUnits: IBusinessUnitsPortalStaff[];
+}) {
   const navigate = useNavigate();
-  const { user } = useContext(AppContext);
+  const { eventData, setBusinessUnitSigla } = useContext(AppContext);
 
   const checkCredentials = useCallback(async () => {
     try {
-      if (!user) {
+      if (!eventData) {
         return;
       }
 
-      if (user) {
-        if (!clients || clients.length === 0) {
-          navigate("/login/error/not-related-clients");
-        } else if (clients.length === 1) {
-          navigate("/login/loading-app");
-        } else {
-          navigate(`/login/${user.id}/clients`);
-        }
+      if (!businessUnits || businessUnits.length === 0) {
+        navigate("/login/error/not-related-businessUnits");
+      } else if (businessUnits.length === 1) {
+        const selectedBusinessUnit = businessUnits[0];
+        const selectJSON = JSON.stringify(selectedBusinessUnit);
+        setBusinessUnitSigla(selectJSON);
+
+        navigate("/login/loading-app");
       } else {
-        navigate("/login/error/not-available");
+        navigate(`/login/${eventData.user.userAccount}/clients`);
       }
     } catch (error) {
       navigate("/login/error/not-available");
     }
-  }, [user, navigate, clients]);
+  }, [eventData, navigate, businessUnits, setBusinessUnitSigla]);
 
   useEffect(() => {
     const timer = setTimeout(checkCredentials, 2000);
