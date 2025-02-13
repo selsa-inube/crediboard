@@ -13,6 +13,7 @@ import { inube } from "@inubekit/foundations";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditLimit } from "@components/modals/CreditLimit";
+import { CreditLimitCard } from "@components/cards/CreditLimitCard";
 import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
 import { ReciprocityModal } from "@components/modals/ReciprocityModal";
 import { ScoreModal } from "@components/modals/FrcModal";
@@ -116,6 +117,24 @@ export function LoanAmount(props: ILoanAmountProps) {
               padding={isMobile ? "10px" : "0px 10px"}
             >
               <Stack direction="column" alignItems="center" gap="8px">
+                <Text
+                  appearance="dark"
+                  type="label"
+                  size={isMobile ? "medium" : "large"}
+                  weight="bold"
+                >
+                  {dataAmount.creditText}
+                </Text>
+                <Stack direction="row" alignItems="center" gap="24px">
+                  <CreditLimitCard
+                    creditLineTxt="crédito vacacional."
+                    creditLine={20000000}
+                  />
+                  <CreditLimitCard
+                    creditLineTxt="Crediaportes."
+                    creditLine={value}
+                  />
+                </Stack>
                 <Text
                   appearance="primary"
                   type="headline"
