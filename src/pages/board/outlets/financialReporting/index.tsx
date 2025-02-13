@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Text } from "@inubekit/text";
-import { Grid } from "@inubekit/grid";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
 import { useFlag } from "@inubekit/flag";
@@ -31,7 +30,7 @@ import {
   optionButtons,
   errorObserver,
 } from "./config";
-import { StyledItem, StyledToast } from "./styles";
+import { StyledItem, StyledScreenPrint, StyledToast } from "./styles";
 import { Approvals } from "./Approvals";
 import { Requirements } from "./Requirements";
 import { Management } from "./management";
@@ -271,11 +270,7 @@ export const FinancialReporting = () => {
                 <ComercialManagement print={handleGeneratePDF} data={data} />
               </Stack>
             </Stack>
-            <Grid
-              templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
-              gap="16px"
-              autoRows="auto"
-            >
+            <StyledScreenPrint $isMobile={isMobile}>
               <Stack direction="column">
                 <ToDo
                   icon={infoIcon}
@@ -303,7 +298,7 @@ export const FinancialReporting = () => {
               <Stack direction="column">
                 <Postingvouchers />
               </Stack>
-            </Grid>
+            </StyledScreenPrint>
           </Stack>
           {showAttachments && (
             <ListModal

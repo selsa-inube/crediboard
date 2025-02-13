@@ -62,12 +62,14 @@ export function CardValues(props: CardValuesProps) {
                   {parseCunstomFormat(item.amount)}
                 </Text>
                 {item.miniIcon && (
-                  <Icon
-                    appearance="primary"
-                    icon={item.icon}
-                    cursorHover
-                    size="16px"
-                  />
+                  <StyledPrint>
+                    <Icon
+                      appearance="primary"
+                      icon={item.icon}
+                      cursorHover
+                      size="16px"
+                    />
+                  </StyledPrint>
                 )}
               </Stack>
             </Stack>

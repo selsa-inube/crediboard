@@ -65,7 +65,7 @@ export const CardCommercialManagement = (
 
   return (
     <div ref={dataRef}>
-      <StyledCardsCredit>
+      <StyledCardsCredit $isMobile={isMobile}>
         <Stack
           gap="24px"
           width="fit-content"

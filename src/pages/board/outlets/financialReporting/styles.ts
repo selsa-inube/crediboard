@@ -35,3 +35,15 @@ export const StyledToast = styled.div<IStyledToast>`
     opacity: 1;
   }
 `;
+
+export const StyledScreenPrint = styled.div<IStyledToast>`
+  display: grid;
+  grid-template-columns: ${({ $isMobile }) => ($isMobile ? "1fr" : "repeat(2, 1fr)")};
+  gap: 16px;
+
+  @media print {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+`;

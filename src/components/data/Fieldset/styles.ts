@@ -57,3 +57,9 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
     }
   `}
 `;
+
+export const StyledPrint = styled.div`
+  @media print {
+    display: none;
+  }
+`;

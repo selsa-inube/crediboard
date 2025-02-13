@@ -39,6 +39,7 @@ import {
   StyledFieldset,
   StyledContainerIcon,
   StyledVerticalDivider,
+  StyledPrint,
 } from "./styles";
 
 interface ComercialManagementProps {
@@ -171,68 +172,80 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
             <Stack gap="2px">
               {!isMobile && (
                 <>
-                  <Stack gap="16px">
-                    <Button
-                      type="link"
-                      spacing="compact"
-                      path={`/extended-card/${id}/credit-profile`}
-                    >
-                      {tittleOptions.titleProfile}
-                    </Button>
-                    <Button
-                      type="button"
-                      spacing="compact"
-                      variant="outlined"
-                      onClick={() => handleOpenModal("disbursementModal")}
-                    >
-                      {tittleOptions.titleDisbursement}
-                    </Button>
-                  </Stack>
+                  <StyledPrint>
+                    <Stack gap="16px">
+                      <Button
+                        type="link"
+                        spacing="compact"
+                        path={`/extended-card/${id}/credit-profile`}
+                      >
+                        {tittleOptions.titleProfile}
+                      </Button>
+                      <Button
+                        type="button"
+                        spacing="compact"
+                        variant="outlined"
+                        onClick={() => handleOpenModal("disbursementModal")}
+                      >
+                        {tittleOptions.titleDisbursement}
+                      </Button>
+                    </Stack>
+                  </StyledPrint>
                   <StyledVerticalDivider />
-                  <Icon
-                    icon={<MdOutlinePhone />}
-                    appearance="primary"
-                    size="24px"
-                    cursorHover
-                  />
-                  <Icon
-                    icon={<MdOutlineVideocam />}
-                    appearance="primary"
-                    size="24px"
-                    cursorHover
-                  />
+                  <StyledPrint>
+                    <Icon
+                      icon={<MdOutlinePhone />}
+                      appearance="primary"
+                      size="24px"
+                      cursorHover
+                    />
+                  </StyledPrint>
+                  <StyledPrint>
+                    <Icon
+                      icon={<MdOutlineVideocam />}
+                      appearance="primary"
+                      size="24px"
+                      cursorHover
+                    />
+                  </StyledPrint>
                   <StyledVerticalDivider />
                 </>
               )}
               <StyledCollapseIcon $collapse={collapse} onClick={handleCollapse}>
-                <Icon
-                  icon={<MdOutlineChevronRight />}
-                  appearance="primary"
-                  size={isMobile ? "32px" : "24px"}
-                  cursorHover
-                />
+                <StyledPrint>
+                  <Icon
+                    icon={<MdOutlineChevronRight />}
+                    appearance="primary"
+                    size={isMobile ? "32px" : "24px"}
+                    cursorHover
+                  />
+                </StyledPrint>
               </StyledCollapseIcon>
             </Stack>
           </Stack>
           {isMobile && (
             <>
-              <Button
-                type="link"
-                spacing="compact"
-                path={`/extended-card/${id}/credit-profile`}
-                fullwidth
-              >
-                {tittleOptions.titleProfile}
-              </Button>
-              <Button
-                type="button"
-                spacing="compact"
-                variant="outlined"
-                onClick={() => handleOpenModal("disbursementModal")}
-                fullwidth
-              >
-                {tittleOptions.titleDisbursement}
-              </Button>
+              <StyledPrint>
+                <Button
+                  type="link"
+                  spacing="compact"
+                  path={`/extended-card/${id}/credit-profile`}
+                  fullwidth
+                >
+                  {tittleOptions.titleProfile}
+                </Button>
+              </StyledPrint>
+              <StyledPrint>
+                <Button
+                  type="button"
+                  spacing="compact"
+                  variant="outlined"
+                  onClick={() => handleOpenModal("disbursementModal")}
+                  fullwidth
+                >
+                  {tittleOptions.titleDisbursement}
+                </Button>
+              </StyledPrint>
             </>
           )}
           {isMobile && (

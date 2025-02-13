@@ -5,7 +5,7 @@ import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
 
-import { StyledContainerFieldset } from "./styles";
+import { StyledContainerFieldset, StyledPrint } from "./styles";
 
 interface IOptionsButton {
   title: string;
@@ -80,13 +80,15 @@ export const Fieldset = (props: IFieldsetProps) => {
         </Stack>
         {activeButton && (
           <Stack>
-            <Button
-              iconBefore={<MdAdd />}
-              spacing="compact"
-              onClick={activeButton.onClick}
-            >
-              {activeButton.title}
-            </Button>
+            <StyledPrint>
+              <Button
+                iconBefore={<MdAdd />}
+                spacing="compact"
+                onClick={activeButton.onClick}
+              >
+                {activeButton.title}
+              </Button>
+            </StyledPrint>
           </Stack>
         )}
       </Stack>
