@@ -18,6 +18,7 @@ import { enviroment } from "./config/environment";
 import { usePortalLogic } from "./hooks/usePortalRedirect";
 import { BoardRoutes } from "@routes/board";
 import { ErrorNotClient } from "@pages/login/errors/ErrorNotClient";
+import { FlagProvider } from "@inubekit/flag";
 
 function LogOut() {
   localStorage.clear();
@@ -62,10 +63,12 @@ function App() {
   }
 
   return (
-    <AppContextProvider>
-      <GlobalStyles />
-      <RouterProvider router={router} />
-    </AppContextProvider>
+    <FlagProvider>
+      <AppContextProvider>
+        <GlobalStyles />
+        <RouterProvider router={router} />
+      </AppContextProvider>
+    </FlagProvider>
   );
 }
 
