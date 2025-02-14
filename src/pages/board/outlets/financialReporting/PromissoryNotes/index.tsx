@@ -134,12 +134,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   };
 
   return (
-    <Fieldset
-      title="Pagarés y Libranzas"
-      heightFieldset="163px"
-      aspectRatio={isMobile ? "auto" : "1"}
-      hasTable
-    >
+    <Fieldset title="Pagarés y Libranzas" heightFieldset="100%" hasTable>
       {showRetry ? (
         <UnfoundData
           image={userNotFound}

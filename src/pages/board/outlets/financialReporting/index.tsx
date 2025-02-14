@@ -287,10 +287,10 @@ export const FinancialReporting = () => {
                   user={user!.nickname!}
                 />
               </Stack>
-              <Stack direction="column">
+              <Stack direction="column" height={isMobile ? "auto" : "277px"}>
                 <Approvals user={id!} isMobile={isMobile} id={id!} />
               </Stack>
-              <Stack direction="column">
+              <Stack direction="column" height={isMobile ? "auto" : "340px"}>
                 <StyledPageBreak />
                 <Requirements
                   isMobile={isMobile}
@@ -301,11 +301,11 @@ export const FinancialReporting = () => {
               <Stack direction="column">
                 <Management id={id!} isMobile={isMobile} />
               </Stack>
-              <Stack direction="column">
+              <Stack direction="column" height={isMobile ? "auto" : "163px"}>
                 <StyledPageBreak />
                 <PromissoryNotes id={id!} isMobile={isMobile} />
               </Stack>
-              <Stack direction="column">
+              <Stack direction="column" height={isMobile ? "auto" : "163px"}>
                 <Postingvouchers />
               </Stack>
             </StyledScreenPrint>

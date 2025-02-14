@@ -183,9 +183,8 @@ export const Requirements = (props: IRequirementsProps) => {
       <Fieldset
         title="Requisitos"
         activeButton={dataButton}
-        heightFieldset="340px"
+        heightFieldset="100%"
         hasTable={!error}
-        aspectRatio={isMobile ? "auto" : "1"}
       >
         {error ? (
           <ItemNotFound

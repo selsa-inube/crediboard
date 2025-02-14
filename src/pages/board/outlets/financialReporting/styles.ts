@@ -47,6 +47,15 @@ export const StyledScreenPrint = styled.div<IStyledToast>`
     grid-template-columns: 1fr;
     gap: 35px;
   }
+
+  & > div:nth-child(2),
+  & > div:nth-child(3),
+  & > div:nth-child(5),
+  & > div:nth-child(6) {
+    @media print {
+      height: 100%;
+    }
+  }
 `;
 
 export const StyledPageBreak = styled.div`

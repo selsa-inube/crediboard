@@ -128,12 +128,7 @@ export const Approvals = (props: IApprovalsProps) => {
 
   return (
     <>
-      <Fieldset
-        title="Aprobaciones"
-        heightFieldset="277px"
-        hasTable
-        aspectRatio={isMobile ? "auto" : "1"}
-      >
+      <Fieldset title="Aprobaciones" heightFieldset="100%" hasTable>
         {error ? (
           <ItemNotFound
             image={userNotFound}
