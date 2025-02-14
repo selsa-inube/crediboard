@@ -30,7 +30,12 @@ import {
   optionButtons,
   errorObserver,
 } from "./config";
-import { StyledItem, StyledScreenPrint, StyledToast } from "./styles";
+import {
+  StyledItem,
+  StyledPageBreak,
+  StyledScreenPrint,
+  StyledToast,
+} from "./styles";
 import { Approvals } from "./Approvals";
 import { Requirements } from "./Requirements";
 import { Management } from "./management";
@@ -174,7 +179,9 @@ export const FinancialReporting = () => {
   const handleActions = configHandleactions({
     buttonReject: () => setShowRejectModal(true),
     buttonCancel: () => setShowCancelModal(true),
-    buttonPrint: () => {},
+    buttonPrint: () => {
+      print();
+    },
     buttonAttach: () => setShowAttachments(true),
     buttonViewAttachments: () => setAttachDocuments(true),
     buttonWarranty: () => setShowGuarantee(true),
@@ -272,6 +279,7 @@ export const FinancialReporting = () => {
             </Stack>
             <StyledScreenPrint $isMobile={isMobile}>
               <Stack direction="column">
+                <StyledPageBreak />
                 <ToDo
                   icon={infoIcon}
                   isMobile={isMobile}
@@ -283,6 +291,7 @@ export const FinancialReporting = () => {
                 <Approvals user={id!} isMobile={isMobile} id={id!} />
               </Stack>
               <Stack direction="column">
+                <StyledPageBreak />
                 <Requirements
                   isMobile={isMobile}
                   id={id!}
@@ -293,6 +302,7 @@ export const FinancialReporting = () => {
                 <Management id={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">
+                <StyledPageBreak />
                 <PromissoryNotes id={id!} isMobile={isMobile} />
               </Stack>
               <Stack direction="column">

@@ -38,12 +38,19 @@ export const StyledToast = styled.div<IStyledToast>`
 
 export const StyledScreenPrint = styled.div<IStyledToast>`
   display: grid;
-  grid-template-columns: ${({ $isMobile }) => ($isMobile ? "1fr" : "repeat(2, 1fr)")};
+  grid-template-columns: ${({ $isMobile }) =>
+    $isMobile ? "1fr" : "repeat(2, 1fr)"};
   gap: 16px;
 
   @media print {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 25px;
+    gap: 35px;
+  }
+`;
+
+export const StyledPageBreak = styled.div`
+  @media print {
+    page-break-before: always;
   }
 `;

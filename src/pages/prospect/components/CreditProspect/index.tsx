@@ -41,12 +41,12 @@ import { StyledPrint } from "./styles";
 interface ICreditProspectProps {
   showMenu: () => void;
   isMobile: boolean;
-  isPrint?: boolean | undefined;
+  isPrint?: boolean;
   showPrint?: boolean;
 }
 
 export function CreditProspect(props: ICreditProspectProps) {
-  const { showMenu, isMobile, isPrint, showPrint } = props;
+  const { showMenu, isMobile, isPrint = false, showPrint = true } = props;
 
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [openModal, setOpenModal] = useState<string | null>(null);
@@ -187,7 +187,7 @@ export function CreditProspect(props: ICreditProspectProps) {
                     icon={<MdOutlinePictureAsPdf />}
                     appearance="primary"
                     size="24px"
-                    disabled={isPrint}
+                    disabled={!isPrint}
                     cursorHover
                     onClick={print}
                   />

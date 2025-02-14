@@ -107,6 +107,7 @@ export function EditProspect() {
             isMobile={isMobile}
             showMenu={() => setShowMenu(false)}
             showPrint={true}
+            isPrint={true}
           />
         </Fieldset>
         <StyledPrint>
