@@ -121,7 +121,6 @@ export function AddProspectUI(props: AddPositionUIProps) {
                 initialValues={{
                   selectedProducts,
                   generalToggleChecked: formData.generalToggleChecked,
-                  togglesState: formData.togglesState,
                 }}
                 handleOnChange={{
                   setSelectedProducts,
@@ -130,6 +129,11 @@ export function AddProspectUI(props: AddPositionUIProps) {
                       "generalToggleChecked",
                       !formData.generalToggleChecked
                     ),
+                  onToggleChange: (index: number) => {
+                    const newToggles = [...formData.togglesState];
+                    newToggles[index] = !newToggles[index];
+                    handleFormDataChange("togglesState", newToggles);
+                  },
                 }}
                 onFormValid={setIsCurrentFormValid}
                 isMobile={isMobile}
