@@ -56,6 +56,12 @@ export const StyledScreenPrint = styled.div<IStyledToast>`
       height: 100%;
     }
   }
+
+  & > div:nth-child(2) {
+    @media print {
+      margin-top: 35px;
+    }
+  }
 `;
 
 export const StyledPageBreak = styled.div`

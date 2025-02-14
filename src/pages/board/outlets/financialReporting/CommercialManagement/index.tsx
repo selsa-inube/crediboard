@@ -44,13 +44,14 @@ import {
 
 interface ComercialManagementProps {
   data: ICreditRequest;
+  collapse: boolean;
+  setCollapse: React.Dispatch<React.SetStateAction<boolean>>;
   print: () => void;
   isPrint?: boolean;
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { data, print, isPrint = false } = props;
-  const [collapse, setCollapse] = useState(false);
+  const { data, print, isPrint = false, collapse, setCollapse } = props;
   const [showMenu, setShowMenu] = useState(false);
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [prospectProducts, setProspectProducts] =

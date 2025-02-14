@@ -90,6 +90,7 @@ export const FinancialReporting = () => {
   const [showAttachments, setShowAttachments] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [collapse, setCollapse] = useState(false);
 
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -180,7 +181,13 @@ export const FinancialReporting = () => {
     buttonReject: () => setShowRejectModal(true),
     buttonCancel: () => setShowCancelModal(true),
     buttonPrint: () => {
-      print();
+      setCollapse(true);
+      setTimeout(() => {
+        print();
+      }, 1);
+      setTimeout(() => {
+        setCollapse(false);
+      }, 1);
     },
     buttonAttach: () => setShowAttachments(true),
     buttonViewAttachments: () => setAttachDocuments(true),
@@ -274,7 +281,12 @@ export const FinancialReporting = () => {
           <Stack direction="column" gap="20px">
             <Stack direction="column">
               <Stack direction="column">
-                <ComercialManagement print={handleGeneratePDF} data={data} />
+                <ComercialManagement
+                  print={handleGeneratePDF}
+                  data={data}
+                  collapse={collapse}
+                  setCollapse={setCollapse}
+                />
               </Stack>
             </Stack>
             <StyledScreenPrint $isMobile={isMobile}>
