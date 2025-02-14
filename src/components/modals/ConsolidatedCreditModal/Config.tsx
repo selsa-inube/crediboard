@@ -10,4 +10,5 @@ export const ModalConfig = {
   edit: "Editar obligaciones",
   collectedValue: "Valor total recogido.",
   title: "Obligaciones recogidas",
+  loading: "Cargando...",
 };

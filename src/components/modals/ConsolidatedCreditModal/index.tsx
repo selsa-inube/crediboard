@@ -3,9 +3,9 @@ import { Blanket } from "@inubekit/blanket";
 import { ConsolidatedCreditsInterface } from "./interface";
 
 export interface ConsolidatedCreditsProps {
-  handleClose: () => void;
   portalId?: string;
   loading?: boolean;
+  handleClose: () => void;
 }
 
 export const ConsolidatedCredits = (props: ConsolidatedCreditsProps) => {

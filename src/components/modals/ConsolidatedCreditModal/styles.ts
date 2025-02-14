@@ -1,11 +1,14 @@
 import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
 
-export const StyledModal = styled.div`
+interface IStyledModal {
+  $isMobile?: boolean;
+}
+export const StyledModal = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
-  height: 640px; 
-  width: 644px; 
+  height: ${({ $isMobile }) => ($isMobile ? "auto" : "640px")}; 
+  width: ${({ $isMobile }) => ($isMobile ? "388px" : "644px")}; 
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   padding: 24px;

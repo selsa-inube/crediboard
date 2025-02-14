@@ -1,10 +1,13 @@
 import { forwardRef } from "react";
 import { MdClear } from "react-icons/md";
+
 import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
+import { useMediaQuery } from "@inubekit/hooks";
+
 import { currencyFormat } from "@utils/formatData/currency";
 
 import { mockConsolidatedCreditModal } from "@mocks/add-prospect/consolidated-credit-modal/consolidatedcreditmodal.mock";
@@ -17,20 +20,20 @@ import {
 import { ModalConfig } from "./Config";
 
 interface ConsolidatedCreditsInterfaceProps {
-  loading?: boolean;
   handleClose: () => void;
-  isMobile?: boolean;
+  loading?: boolean;
 }
 
 export const ConsolidatedCreditsInterface = forwardRef<
   HTMLDivElement,
   ConsolidatedCreditsInterfaceProps
->((props, ref) => {
-  const { loading, handleClose, isMobile } = props;
+>(function ConsolidatedCreditsInterface(props, ref) {
+  const { loading, handleClose } = props;
+  const isMobile = useMediaQuery("(max-width:880px)");
   const data = mockConsolidatedCreditModal[0];
 
   return (
-    <StyledModal ref={ref}>
+    <StyledModal ref={ref} $isMobile={isMobile}>
       <Stack justifyContent="space-between">
         <Text type="headline" size="small" appearance="dark">
           {ModalConfig.title}
@@ -55,7 +58,7 @@ export const ConsolidatedCreditsInterface = forwardRef<
           <Text appearance="primary" weight="bold" type="headline" size="large">
             $
             {loading
-              ? "Cargando..."
+              ? ModalConfig.loading
               : currencyFormat(data.collectedValue, false)}
           </Text>
           <Text type="body" appearance="gray" size="small" textAlign="center">
@@ -76,7 +79,7 @@ export const ConsolidatedCreditsInterface = forwardRef<
       <Text type="body" appearance="gray" size="small" weight="bold">
         {ModalConfig.selectedText}
       </Text>
-      <Stack direction="row" gap="16px">
+      <Stack direction={isMobile ? "column" : "row"} gap="16px">
         <StyledContainer $isMobile={isMobile}>
           <Stack
             direction="column"
