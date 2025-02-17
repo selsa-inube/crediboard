@@ -12,8 +12,8 @@ import { useFlag } from "@inubekit/flag";
 import { Divider } from "@inubekit/divider";
 
 import { StyledItem } from "@pages/board/outlets/financialReporting/styles";
-import { saveDocument } from "@services/saveDocument";
 import { optionFlags } from "@pages/board/outlets/financialReporting/config";
+import { saveDocument } from "@services/saveDocument";
 import { validationMessages } from "@validations/validationMessages";
 
 import {
@@ -48,6 +48,7 @@ export interface IListModalProps {
   portalId?: string;
   content?: JSX.Element | JSX.Element[] | string;
   optionButtons?: IOptionButtons;
+  uploadMode?: string;
   id?: string;
 }
 
@@ -63,6 +64,7 @@ export const ListModal = (props: IListModalProps) => {
     handleSubmit,
     onSubmit,
     buttonLabel,
+    uploadMode,
     //id,
   } = props;
 
@@ -131,8 +133,8 @@ export const ListModal = (props: IListModalProps) => {
         name: file.name,
         file: file,
       }));
-      setUploadedFiles((prev) => [...prev, ...newFiles]);
       setLoading(true);
+      setUploadedFiles((prev) => [...prev, ...newFiles]);
     }
   };
 
@@ -164,14 +166,22 @@ export const ListModal = (props: IListModalProps) => {
   };
 
   const handleUpload = async () => {
+    if (uploadMode === "local") {
+      console.log("Archivos guardados en estado:", uploadedFiles);
+      handleClose();
+      return;
+    }
+
     try {
-      uploadedFiles.forEach(async (fileData) => {
+      for (const fileData of uploadedFiles) {
         await saveDocument(
-          "1", //id
-          fileData.name.split(".").slice(0, -1).join("."),
+          "1", // id
+          fileData.name,
           fileData.file
         );
-      });
+      }
+
+      setUploadedFiles([]);
       handleClose();
       handleFlag(
         optionFlags.title,
