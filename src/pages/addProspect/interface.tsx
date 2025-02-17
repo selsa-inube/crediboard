@@ -72,7 +72,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
       alignItems={isMobile ? "normal" : "center"}
       margin="20px 0px"
       padding="24px"
-      height={isMobile ? "2000px" : "150%"}
+      height="100vh"
     >
       <Stack
         gap="24px"
@@ -121,6 +121,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
                 initialValues={{
                   selectedProducts,
                   generalToggleChecked: formData.generalToggleChecked,
+                  togglesState: formData.togglesState,
                 }}
                 handleOnChange={{
                   setSelectedProducts,

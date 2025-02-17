@@ -17,7 +17,7 @@ interface IProductSelectionProps {
   initialValues: {
     selectedProducts: string[];
     generalToggleChecked: boolean;
-    togglesState?: boolean[];
+    togglesState: boolean[];
   };
   handleOnChange: {
     setSelectedProducts: React.Dispatch<React.SetStateAction<string[]>>;
@@ -31,11 +31,7 @@ interface IProductSelectionProps {
 
 export function ProductSelection(props: IProductSelectionProps) {
   const {
-    initialValues: {
-      selectedProducts,
-      generalToggleChecked,
-      togglesState = [false, false, false],
-    },
+    initialValues: { selectedProducts, generalToggleChecked, togglesState },
     handleOnChange: {
       setSelectedProducts,
       onGeneralToggleChange,

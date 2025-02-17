@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
 
@@ -8,7 +8,6 @@ import { prospectId } from "@mocks/add-prospect/edit-prospect/prospectid.mock";
 
 import { stepsAddProspect } from "./config/addProspect.config";
 import { FormData } from "./types";
-
 import { AddProspectUI } from "./interface";
 
 export function AddProspect() {
@@ -97,6 +96,17 @@ export function AddProspect() {
       };
     });
   };
+
+  useEffect(() => {
+    if (currentStep === stepsAddProspect.productSelection.id) {
+      setFormData((prevState) => ({
+        ...prevState,
+        selectedProducts: [],
+        generalToggleChecked: true,
+        togglesState: [false, false, false],
+      }));
+    }
+  }, [currentStep]);
 
   const currentStepsNumber = steps.find(
     (step: { number: number }) => step.number === currentStep
