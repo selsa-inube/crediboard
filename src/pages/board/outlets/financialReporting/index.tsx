@@ -181,13 +181,17 @@ export const FinancialReporting = () => {
     buttonReject: () => setShowRejectModal(true),
     buttonCancel: () => setShowCancelModal(true),
     buttonPrint: () => {
-      setCollapse(true);
-      setTimeout(() => {
-        print();
-      }, 1);
-      setTimeout(() => {
+      if (collapse === true) {
         setCollapse(false);
-      }, 1);
+        setTimeout(() => {
+          print();
+        }, 1);
+        setTimeout(() => {
+          setCollapse(true);
+        }, 1);
+      } else {
+        print();
+      }
     },
     buttonAttach: () => setShowAttachments(true),
     buttonViewAttachments: () => setAttachDocuments(true),
@@ -291,7 +295,6 @@ export const FinancialReporting = () => {
             </Stack>
             <StyledScreenPrint $isMobile={isMobile}>
               <Stack direction="column">
-                <StyledPageBreak />
                 <ToDo
                   icon={infoIcon}
                   isMobile={isMobile}
