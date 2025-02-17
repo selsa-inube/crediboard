@@ -36,10 +36,22 @@ export const StyledToast = styled.div<IStyledToast>`
   }
 `;
 
-export const StyledHorizontalDivider = styled.hr`
+interface IStyledHorizontalDivider {
+  $isMobile?: boolean;
+}
+
+export const StyledHorizontalDivider = styled.hr<IStyledHorizontalDivider>`
   margin: 0px;
   width: 2px;
   border: none;
   background-color: ${({ theme }) =>
     theme?.color?.stroke?.divider?.regular || inube.palette.neutral.N40};
+  display: ${({ $isMobile }) => ($isMobile ? "none" : "block")};
+`;
+
+export const StyledTextField = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 `;

@@ -28,7 +28,7 @@ import {
   txtTaskQuery,
 } from "./config";
 import { IICon, IButton } from "./types";
-import { StyledHorizontalDivider } from "../styles";
+import { StyledHorizontalDivider, StyledTextField } from "../styles";
 import { getXAction } from "./util/utils";
 import { errorObserver } from "../config";
 
@@ -306,7 +306,7 @@ function ToDo(props: ToDoProps) {
               direction={isMobile ? "column" : "row"}
               gap="16px"
               alignItems="flex-start"
-              padding="18px 0"
+              padding="16px 0"
               justifyContent="space-between"
             >
               {isModalOpen && (
@@ -321,80 +321,154 @@ function ToDo(props: ToDoProps) {
                   data={data}
                 />
               )}
-              <Stack justifyContent="start">
-                {icon && isMobile && (
-                  <Icon
-                    icon={icon.icon}
-                    appearance="primary"
-                    size="24px"
-                    onClick={handleToggleStaffModal}
-                    cursorHover
-                  />
-                )}
+              {isMobile ? (
                 <Stack
-                  direction="column"
-                  alignItems="flex-start"
-                  gap="16px"
-                  padding="0px 100px 0px 0px"
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  width="100%"
                 >
-                  <Text
-                    type="body"
-                    weight="bold"
-                    size="small"
-                    appearance="gray"
-                    textAlign="start"
-                  >
-                    {txtTaskQuery.txtCommercialManager}
-                  </Text>
-                  <Text
-                    type="title"
-                    size="medium"
-                    appearance="dark"
-                    textAlign="start"
-                  >
-                    {datamock.CommercialManager}
-                  </Text>
+                  <Stack direction="column" alignItems="flex-start" gap="16px">
+                    <StyledTextField>
+                      <Text
+                        type="body"
+                        weight="bold"
+                        size="small"
+                        appearance="gray"
+                        textAlign="start"
+                      >
+                        {txtTaskQuery.txtCommercialManager}
+                      </Text>
+                    </StyledTextField>
+                    <StyledTextField>
+                      <Text
+                        type="title"
+                        size="medium"
+                        appearance="dark"
+                        textAlign="start"
+                      >
+                        {datamock.CommercialManager}
+                      </Text>
+                    </StyledTextField>
+
+                    <StyledTextField>
+                      <Text
+                        type="body"
+                        weight="bold"
+                        size="small"
+                        appearance="gray"
+                        textAlign="start"
+                      >
+                        {txtTaskQuery.txtAnalyst}
+                      </Text>
+                    </StyledTextField>
+                    <StyledTextField>
+                      <Text
+                        type="title"
+                        size="medium"
+                        appearance="dark"
+                        textAlign="start"
+                      >
+                        {datamock.Analyst}
+                      </Text>
+                    </StyledTextField>
+                  </Stack>
+
+                  {icon && (
+                    <Icon
+                      icon={icon.icon}
+                      appearance="primary"
+                      size="24px"
+                      onClick={handleToggleStaffModal}
+                      cursorHover
+                    />
+                  )}
                 </Stack>
-                <StyledHorizontalDivider />
-              </Stack>
-              <Stack>
-                <Stack
-                  direction="column"
-                  alignItems="flex-start"
-                  gap="16px"
-                  padding="0px 100px 0px 0px"
-                >
-                  <Text
-                    type="body"
-                    weight="bold"
-                    size="small"
-                    appearance="gray"
-                    textAlign="start"
-                  >
-                    {txtTaskQuery.txtAnalyst}
-                  </Text>
-                  <Text
-                    type="title"
-                    size="medium"
-                    appearance="dark"
-                    textAlign="start"
-                  >
-                    {datamock.Analyst}
-                  </Text>
-                </Stack>
-                <StyledHorizontalDivider />
-              </Stack>
-              {icon && !isMobile && (
-                <Stack width="40px" height="50px" alignItems="center">
-                  <Icon
-                    icon={icon.icon}
-                    appearance="primary"
-                    size="24px"
-                    onClick={handleToggleStaffModal}
-                    cursorHover
-                    disabled={staff === null}
-                  />
-                </Stack>
+              ) : (
+                <>
+                  <Stack justifyContent="start">
+                    <Stack
+                      direction="column"
+                      alignItems="flex-start"
+                      gap="16px"
+                      padding="0px 100px 0px 0px"
+                    >
+                      <StyledTextField>
+                        <Text
+                          type="body"
+                          weight="bold"
+                          size="small"
+                          appearance="gray"
+                          textAlign="start"
+                        >
+                          {txtTaskQuery.txtCommercialManager}
+                        </Text>
+                      </StyledTextField>
+                      <StyledTextField>
+                        <Text
+                          type="title"
+                          size="medium"
+                          appearance="dark"
+                          textAlign="start"
+                        >
+                          {datamock.CommercialManager}
+                        </Text>
+                      </StyledTextField>
+                    </Stack>
+                    <StyledHorizontalDivider />
+                  </Stack>
+
+                  <Stack>
+                    <Stack
+                      direction="column"
+                      alignItems="flex-start"
+                      gap="16px"
+                      padding="0px 100px 0px 0px"
+                    >
+                      <StyledTextField>
+                        <Text
+                          type="body"
+                          weight="bold"
+                          size="small"
+                          appearance="gray"
+                          textAlign="start"
+                        >
+                          {txtTaskQuery.txtAnalyst}
+                        </Text>
+                      </StyledTextField>
+                      <StyledTextField>
+                        <Text
+                          type="title"
+                          size="medium"
+                          appearance="dark"
+                          textAlign="start"
+                        >
+                          {datamock.Analyst}
+                        </Text>
+                      </StyledTextField>
+                    </Stack>
+                    <StyledHorizontalDivider />
+                  </Stack>
+
+                  {icon && (
+                    <Stack
+                      width="40px"
+                      height="50px"
+                      alignItems="center"
+                      justifyContent="flex-end"
+                      padding="0px 16px 0px 0px"
+                    >
+                      <Icon
+                        icon={icon.icon}
+                        appearance="primary"
+                        size="24px"
+                        onClick={handleToggleStaffModal}
+                        cursorHover
+                        disabled={staff === null}
+                      />
+                    </Stack>
+                  )}
+                </>
               )}
             </Stack>
           </Stack>
