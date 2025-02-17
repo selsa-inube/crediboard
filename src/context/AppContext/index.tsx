@@ -5,11 +5,11 @@ import { useAppContext } from "@hooks/useAppContext";
 
 const AppContext = createContext<IAppContext>({} as IAppContext);
 
-interface IEventProviderProps {
+interface ICrediboardProviderProps {
   children: React.ReactNode;
 }
 
-function AppContextProvider(props: IEventProviderProps) {
+function AppContextProvider(props: ICrediboardProviderProps) {
   const { children } = props;
   const appContext = useAppContext();
 

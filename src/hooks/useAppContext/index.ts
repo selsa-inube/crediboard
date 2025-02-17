@@ -7,7 +7,7 @@ import {
   validateBusinessManagers,
   validateConsultation,
 } from "@context/AppContext/utils";
-import { IEventData } from "@context/AppContext/types";
+import { ICrediboardData } from "@context/AppContext/types";
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
 import { decrypt } from "@utils/encrypt/encrypt";
 
@@ -49,7 +49,7 @@ function useAppContext() {
     console.error("Error parsing businessUnitSigla: ", error);
   }
 
-  const [eventData, setEventData] = useState<IEventData>({
+  const [eventData, setEventData] = useState<ICrediboardData>({
     portal: {
       abbreviatedName: "",
       staffPortalCatalogId: "",

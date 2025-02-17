@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
-import { tokens } from "@design/tokens";
 
 const StyledContainer = styled.div`
   box-shadow: 2px 2px 3px 2px
     ${({ theme }) => theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
-  border-radius: ${tokens.spacing.s100};
+  border-radius: 8px;
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   margin-left: 10px;
@@ -16,9 +15,8 @@ const StyledUl = styled.ul`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: ${tokens.spacing.s0};
-  padding: ${tokens.spacing.s0} ${tokens.spacing.s025} ${tokens.spacing.s0}
-    ${tokens.spacing.s025};
+  margin: 0px;
+  padding: 0px 2px;
 `;
 
 const StyledLi = styled.li`
@@ -30,7 +28,7 @@ const StyledLi = styled.li`
 
   &:hover {
     background-color: ${inube.palette.neutral.N30};
-    border-radius: ${tokens.spacing.s100};
+    border-radius: 8px;
   }
 `;
 
@@ -43,8 +41,7 @@ const StyledImg = styled.img`
   width: 75px;
   height: auto;
   left: 5px;
-  padding: ${tokens.spacing.s150} ${tokens.spacing.s150} ${tokens.spacing.s150}
-    ${tokens.spacing.s100};
+  padding: 12px 12px 12px 8px;
   object-fit: contain;
 `;
 

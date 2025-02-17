@@ -32,7 +32,7 @@ interface IBusinessUnit {
   descriptionUse?: string;
   firstMonthOfFiscalYear?: string;
 }
-interface IEventData {
+interface ICrediboardData {
   portal: IPortal;
   businessManager: IBusinessManager;
   businessUnit: IBusinessUnit;
@@ -40,14 +40,14 @@ interface IEventData {
 }
 
 interface IAppContext {
-  eventData: IEventData;
+  eventData: ICrediboardData;
   businessUnitSigla: string;
   businessUnitsToTheStaff: IBusinessUnitsPortalStaff[];
-  setEventData: React.Dispatch<React.SetStateAction<IEventData>>;
+  setEventData: React.Dispatch<React.SetStateAction<ICrediboardData>>;
   setBusinessUnitSigla: React.Dispatch<React.SetStateAction<string>>;
   setBusinessUnitsToTheStaff: React.Dispatch<
     React.SetStateAction<IBusinessUnitsPortalStaff[]>
   >;
 }
 
-export type { IEventData, IAppContext, IBusinessUnit };
+export type { ICrediboardData, IAppContext, IBusinessUnit, IPreferences };

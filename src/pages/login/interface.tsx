@@ -38,7 +38,7 @@ function LoginUI() {
               Bienvenido
             </Text>
             <Text as="h1" type="headline" size="large">
-              iEvent Portal
+              Crediboard Portal
             </Text>
           </Stack>
           <StyledImage

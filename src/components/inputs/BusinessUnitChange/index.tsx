@@ -9,7 +9,6 @@ import {
   StyledImg,
   StyledContainerOption,
 } from "./styles";
-import { tokens } from "@design/tokens";
 import { Divider } from "@inubekit/divider";
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
 
@@ -37,9 +36,7 @@ const BusinessUnitChange = (props: BusinessUnitChangeProps) => {
                   alt={businessUnit.abbreviatedName}
                 />
                 {selectedClient === businessUnit.abbreviatedName && (
-                  <Stack
-                    margin={`${tokens.spacing.s0} ${tokens.spacing.s150} ${tokens.spacing.s0}`}
-                  >
+                  <Stack margin={`0px 12px 0`}>
                     <Icon
                       icon={<MdCheck />}
                       appearance="primary"
