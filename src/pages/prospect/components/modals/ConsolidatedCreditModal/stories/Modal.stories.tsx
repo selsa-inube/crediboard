@@ -6,7 +6,7 @@ import { ConsolidatedCredits } from "..";
 import { ConsolidatedCreditsProps } from "..";
 
 const meta: Meta<typeof ConsolidatedCredits> = {
-  title: "components/modals/ConsolidatedCreditModal",
+  title: "pages/prospect/components/modals/ConsolidatedCreditModal",
   component: ConsolidatedCredits,
 };
 
