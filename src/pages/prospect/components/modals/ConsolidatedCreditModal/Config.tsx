@@ -3,7 +3,7 @@ export const ModalConfig = {
   selectedText: "Obligaciones seleccionadas:",
   creditInvestment: "Crédito libre inversión",
   investmentCode: "códigio",
-  expiredValue: "Valor vencido",
+  expired: "Valor vencido",
   nextExpiration: "Próximo vencimiento",
   close: "Cerrar",
   keep: "Guardar",

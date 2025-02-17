@@ -7,7 +7,7 @@ import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { NewCreditProductCard } from "@components/cards/CreditProductCard/newCard";
 import { CardValues } from "@components/cards/cardValues";
 import { DeleteModal } from "@components/modals/DeleteModal";
-import { ConsolidatedCredits } from "@components/modals/ConsolidatedCreditModal";
+import { ConsolidatedCredits } from "@pages/prospect/components/modals/ConsolidatedCreditModal";
 import { ICreditProductProspect } from "@services/types";
 import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.service";
