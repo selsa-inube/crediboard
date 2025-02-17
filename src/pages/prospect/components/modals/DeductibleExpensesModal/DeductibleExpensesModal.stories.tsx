@@ -5,7 +5,7 @@ import { DeductibleExpensesModal } from ".";
 import type { DeductibleExpensesModalProps } from ".";
 
 const meta: Meta<typeof DeductibleExpensesModal> = {
-  title: "components/modals/DeductibleExpensesModal",
+  title: "pages/prospect/components/modals/DeductibleExpensesModal",
   component: DeductibleExpensesModal,
 };
 
