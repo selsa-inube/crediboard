@@ -43,7 +43,10 @@ const router = createBrowserRouter(
       <Route path="/*" element={<BoardRoutes />} />
       <Route path="add-prospect/*" element={<AddProspectRoutes />} />
       <Route path="edit-prospect/*" element={<EditProspectRoutes />} />
-      <Route path="filing-application/*" element={<FilingApplicationRoutes />} />
+      <Route
+        path="submit-credit-application/*"
+        element={<FilingApplicationRoutes />}
+      />
       <Route path="logout" element={<LogOut />} />
     </>
   )
