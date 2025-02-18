@@ -1,7 +1,8 @@
 import { createContext } from "react";
 
-import { IAppContext } from "./types";
 import { useAppContext } from "@hooks/useAppContext";
+
+import { IAppContext } from "./types";
 
 const AppContext = createContext<IAppContext>({} as IAppContext);
 

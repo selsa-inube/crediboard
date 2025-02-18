@@ -2,9 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { useCallback, useContext, useEffect } from "react";
 
 import { AppContext } from "@context/AppContext";
+import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
 
 import { CheckingCredentialsUI } from "./interface";
-import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
 
 function CheckingCredentials({
   businessUnits,

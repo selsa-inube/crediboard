@@ -1,8 +1,9 @@
 import { BrowserRouter } from "react-router-dom";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { CheckingCredentials } from ".";
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
+
+import { CheckingCredentials } from ".";
 
 const meta: Meta<typeof CheckingCredentials> = {
   title: "login/outlets/checking-credentials",

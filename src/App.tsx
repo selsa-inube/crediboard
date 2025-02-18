@@ -6,23 +6,26 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { FlagProvider } from "@inubekit/flag";
+
+import { AppContext, AppContextProvider } from "@context/AppContext";
+import { usePortalLogic } from "@hooks/usePortalRedirect";
 
 import { ErrorPage } from "@components/layout/ErrorPage";
-import { LoginRoutes } from "./routes/login";
-import { AppPage } from "./components/layout/AppPage";
-import { GlobalStyles } from "./styles/global";
-import { AppContext, AppContextProvider } from "./context/AppContext";
+import { AppPage } from "@components/layout/AppPage";
 
-import { Login } from "./pages/login";
-import { enviroment } from "./config/environment";
-import { usePortalLogic } from "./hooks/usePortalRedirect";
-import { BoardRoutes } from "@routes/board";
+import { GlobalStyles } from "@styles/global";
+import { Login } from "@pages/login";
 import { ErrorNotClient } from "@pages/login/errors/ErrorNotClient";
-import { FlagProvider } from "@inubekit/flag";
+
+import { enviroment } from "@config/environment";
+import { initializeDataDB } from "@mocks/utils/initializeDataDB";
+
+import { LoginRoutes } from "@routes/login";
+import { BoardRoutes } from "@routes/board";
 import { AddProspectRoutes } from "@routes/addProspect";
 import { EditProspectRoutes } from "@routes/editProspect";
 import { FilingApplicationRoutes } from "@routes/filingApplication";
-import { initializeDataDB } from "@mocks/utils/initializeDataDB";
 
 function LogOut() {
   localStorage.clear();

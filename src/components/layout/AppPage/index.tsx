@@ -2,11 +2,12 @@ import { useContext, useState, useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
 import { Grid } from "@inubekit/grid";
-import { Header } from "@components/navigation/header";
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
+import { Text } from "@inubekit/text";
 
 import { AppContext } from "@context/AppContext";
+import { Header } from "@components/navigation/header";
 import { MenuSection } from "@components/navigation/MenuSection";
 import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
@@ -22,6 +23,7 @@ import {
   StyledHeaderContainer,
   StyledCollapseIcon,
   StyledCollapse,
+  StyledFooter,
 } from "./styles";
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
 
@@ -153,13 +155,14 @@ function AppPage() {
               handleShowBlanket={handleToggleLogoutModal}
             />
           )}
-          <StyledContainer>
-            <Grid templateColumns="1fr" alignContent="unset">
-              <StyledMain>
-                <Outlet />
-              </StyledMain>
-            </Grid>
-          </StyledContainer>
+          <StyledMain>
+            <Outlet />
+          </StyledMain>
+          <StyledFooter>
+            <Text appearance="gray" textAlign="center" size="medium">
+              © 2024 Inube
+            </Text>
+          </StyledFooter>
         </StyledContainer>
       </Grid>
     </StyledAppPage>
