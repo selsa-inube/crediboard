@@ -5,9 +5,9 @@ import { Grid } from "@inubekit/grid";
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Text } from "@inubekit/text";
+import { Header } from "@inubekit/header";
 
 import { AppContext } from "@context/AppContext";
-import { Header } from "@components/navigation/header";
 import { MenuSection } from "@components/navigation/MenuSection";
 import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
@@ -98,6 +98,7 @@ function AppPage() {
       <Grid templateRows="auto 1fr" height="100vh" justifyContent="unset">
         <StyledHeaderContainer>
           <Header
+            portalId="portal"
             logoURL={renderLogo(eventData.businessUnit.urlLogo)}
             userName={eventData.user.userName}
             client={eventData.businessUnit.abbreviatedName}

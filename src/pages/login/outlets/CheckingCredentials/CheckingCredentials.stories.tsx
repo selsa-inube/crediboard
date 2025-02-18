@@ -22,7 +22,6 @@ const meta: Meta<typeof CheckingCredentials> = {
 
 export default meta;
 
-// Mock data para businessUnits
 const mockBusinessUnits: IBusinessUnitsPortalStaff[] = [
   {
     businessUnitPublicCode: "100",
@@ -42,7 +41,6 @@ const mockBusinessUnits: IBusinessUnitsPortalStaff[] = [
   },
 ];
 
-// Historia por defecto
 export const Default: StoryFn<typeof CheckingCredentials> = () => (
   <CheckingCredentials businessUnits={mockBusinessUnits} />
 );
