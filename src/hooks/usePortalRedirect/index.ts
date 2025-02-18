@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+
 import { IStaffPortalByBusinessManager } from "@services/staffPortal/types";
 import { IBusinessmanagers } from "@services/businessManager/types";
 import { getStaffPortalByBusinessManager } from "@services/staffPortal";

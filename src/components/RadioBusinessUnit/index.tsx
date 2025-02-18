@@ -1,6 +1,7 @@
 import { Grid } from "@inubekit/grid";
 import { useMediaQueries, useMediaQuery } from "@inubekit/hooks";
 import { Text } from "@inubekit/text";
+
 import { StyledImage, StyledRadio, StyledRadioBusinessUnit } from "./styles";
 
 interface RadioBusinessUnitProps {

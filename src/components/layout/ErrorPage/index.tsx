@@ -3,11 +3,13 @@ import { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
-import selsaLogo from "@assets/images/selsa.png";
-import errorImage from "@assets/images/timeout.png";
 import { Stack } from "@inubekit/stack";
 import { Grid } from "@inubekit/grid";
 import { Button } from "@inubekit/button";
+
+import selsaLogo from "@assets/images/selsa.png";
+import errorImage from "@assets/images/timeout.png";
+
 import { StyledCompanyLogo, StyledErrorImage } from "./styles";
 
 interface ErrorPageProps {

@@ -12,6 +12,7 @@ import { MenuSection } from "@components/navigation/MenuSection";
 import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
 import { BusinessUnitChange } from "@components/inputs/BusinessUnitChange";
+import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
 
 import {
   StyledAppPage,
@@ -25,7 +26,6 @@ import {
   StyledCollapse,
   StyledFooter,
 } from "./styles";
-import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
 
 const renderLogo = (imgUrl: string) => {
   return (

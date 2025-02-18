@@ -1,19 +1,20 @@
 import React from "react";
 import { Stack } from "@inubekit/stack";
 import { Searchfield } from "@inubekit/input";
-
-import { IBusinessUnitstate } from "./types";
 import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
+import { useMediaQuery } from "@inubekit/hooks";
+
+import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
+import { RadioBusinessUnit } from "@components/RadioBusinessUnit";
+
+import { IBusinessUnitstate } from "./types";
 import {
   StyledBusinessUnits,
   StyledBusinessUnitsList,
   StyledNoResults,
   StyledBusinessUnitsItem,
 } from "./styles";
-import { useMediaQuery } from "@inubekit/hooks";
-import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
-import { RadioBusinessUnit } from "@components/RadioBusinessUnit";
 
 interface BusinessUnitsUIProps {
   businessUnits: IBusinessUnitsPortalStaff[];

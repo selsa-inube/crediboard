@@ -5,6 +5,7 @@ import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
 import selsaLogo from "@assets/images/selsa.png";
+
 import {
   StyledWelcomeContainer,
   StyledOutletContainer,

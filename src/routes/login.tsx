@@ -1,15 +1,12 @@
 import { Route, Routes } from "react-router-dom";
+import { useContext } from "react";
 
 import { ErrorPage } from "@components/layout/ErrorPage";
-
 import { Login } from "@pages/login";
-
 import { CheckingCredentials } from "@pages/login/outlets/CheckingCredentials";
 import { ErrorNotAvailable } from "@pages/login/errors/ErrorNotAvailable";
 import { ErrorNotClient } from "@pages/login/errors/ErrorNotClient";
 import { LoadingApp } from "@pages/login/outlets/LoadingApp";
-
-import { useContext } from "react";
 import { AppContext } from "@context/AppContext";
 import { BusinessUnits } from "@pages/login/outlets/Clients";
 
