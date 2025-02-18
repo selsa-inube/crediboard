@@ -7,11 +7,18 @@ export interface ICardGrayProps {
   label: string;
   placeHolder?: string;
   data?: string;
+  apparencePlaceHolder?: "dark" | "gray";
   isMobile?: boolean;
 }
 
 export function CardGray(props: ICardGrayProps) {
-  const { label, placeHolder = "", data = "", isMobile } = props;
+  const {
+    label,
+    placeHolder = "",
+    data = "",
+    isMobile = false,
+    apparencePlaceHolder = "dark",
+  } = props;
 
   return (
     <StyledContainer>
@@ -24,7 +31,7 @@ export function CardGray(props: ICardGrayProps) {
           <Text type="label" weight="bold" size="medium" appearance="dark">
             {label}
           </Text>
-          <Text type="body" size="medium" appearance="gray">
+          <Text type="body" size="medium" appearance={apparencePlaceHolder}>
             {placeHolder}
           </Text>
         </Stack>

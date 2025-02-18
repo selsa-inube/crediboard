@@ -1,59 +1,119 @@
 import { useState } from "react";
-import { FormikValues } from "formik";
-import { MdAdd, MdOutlineAdd } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
+import { useParams } from "react-router-dom";
+import { Grid } from "@inubekit/grid";
 import { Button } from "@inubekit/button";
-import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 
-import { TableExtraDebtors } from "@pages/prospect/components/TableExtraDebtors";
-import { ExtraDebtorModal } from "@components/modals/extraDebtorModal";
+import { CardBorrower } from "@components/cards/CardBorrower";
+import { NewCardBorrower } from "@components/cards/CardBorrower/newCard";
+import { Fieldset } from "@components/data/Fieldset";
+import { DeleteModal } from "@components/modals/DeleteModal";
+import { DebtorAddModal } from "@pages/prospect/components/modals/DebtorAddModal";
+import { DebtorDetailsModal } from "@pages/prospect/components/modals/DebtorDetailsModal";
+import { DebtorEditModal } from "@pages/prospect/components/modals/DebtorEditModal";
+import { mockGuaranteeBorrower } from "@mocks/guarantee/offeredguarantee.mock";
+import { dataFillingApplication } from "@pages/filingApplication/config/config";
+import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
 
-export function ExtraDebtors() {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  const initialValues: FormikValues = {
-    documentType: "",
-    documentNumber: "",
-    names: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    gender: "",
+interface IExtraDebtorsProps {
+  isMobile: boolean;
+  initialValues: {
+    name: string;
+    lastName: string;
+    email: string;
+    income: number;
+    obligations: number;
   };
+  onFormValid: (isValid: boolean) => void;
+  handleOnChange: (values: {
+    name: string;
+    lastName: string;
+    email: string;
+    income: number;
+    obligations: number;
+  }) => void;
+}
+export function ExtraDebtors(props: IExtraDebtorsProps) {
+  const { isMobile } = props;
 
-  const handleCloseModal = () => {
-    setIsOpenModal(false);
-    setRefreshKey((prevKey) => prevKey + 1);
-  };
+  const [isModalAdd, setIsModalAdd] = useState(false);
+  const [isModalView, setIsModalView] = useState(false);
+  const [isModalEdit, setIsModalEdit] = useState(false);
+  const [isModalDelete, setIsModalDelete] = useState(false);
+
+  const { id } = useParams();
+  const userId = parseInt(id || "0", 10);
+  const userChoice =
+    choiceBorrowers.find((choice) => choice.id === userId)?.choice ||
+    "borrowers";
+
+  const data =
+    dataFillingApplication[
+      userChoice === "borrowers" ? "borrowers" : "coBorrowers"
+    ];
 
   return (
-    <Stack direction="column">
-      <Stack justifyContent="end" margin="15px 0px">
-        <Button
-          children="Agregar deudor extra"
-          iconBefore={
-            <Icon
-              icon={<MdOutlineAdd />}
-              appearance="light"
-              size="18px"
-              spacing="narrow"
-            />
+    <Fieldset>
+      <Stack direction="column" padding="2px 10px" gap="20px">
+        <Stack justifyContent="end">
+          <Button onClick={() => setIsModalAdd(true)} iconBefore={<MdAdd />}>
+            {data.addButton}
+          </Button>
+        </Stack>
+        <Grid
+          templateColumns={
+            isMobile
+              ? "1fr"
+              : `repeat(${mockGuaranteeBorrower.length + 1}, 317px)`
           }
-          onClick={() => setIsOpenModal(true)}
-        />
+          autoRows="auto"
+          gap="20px"
+        >
+          {mockGuaranteeBorrower.map((item, index) => (
+            <CardBorrower
+              key={index}
+              title={data.borrowerLabel + ` ${index + 1}`}
+              name={item.name}
+              lastName={item.lastName}
+              email={item.email}
+              income={item.income}
+              obligations={item.obligations}
+              isMobile={isMobile}
+              handleView={() => setIsModalView(true)}
+              handleEdit={() => setIsModalEdit(true)}
+              handleDelete={() => setIsModalDelete(true)}
+            />
+          ))}
+          <NewCardBorrower
+            onClick={() => setIsModalAdd(true)}
+            isMobile={isMobile}
+            title={data.borrowerLabel}
+          />
+          {isModalAdd && (
+            <DebtorAddModal
+              onSubmit={() => setIsModalAdd(false)}
+              handleClose={() => setIsModalAdd(false)}
+              title={data.addButton}
+            />
+          )}
+          {isModalView && (
+            <DebtorDetailsModal
+              handleClose={() => setIsModalView(false)}
+              isMobile={isMobile}
+            />
+          )}
+          {isModalDelete && (
+            <DeleteModal handleClose={() => setIsModalDelete(false)} />
+          )}
+          {isModalEdit && (
+            <DebtorEditModal
+              handleClose={() => setIsModalEdit(false)}
+              isMobile={isMobile}
+            />
+          )}
+        </Grid>
       </Stack>
-      <TableExtraDebtors refreshKey={refreshKey} />
-      {isOpenModal && (
-        <ExtraDebtorModal
-          title="Agregar deudor extra"
-          initialValues={initialValues}
-          onCloseModal={handleCloseModal}
-          onConfirm={() => console.log("ok")}
-          confirmButtonText="Agregar"
-          iconBefore={<MdAdd />}
-        />
-      )}
-    </Stack>
+    </Fieldset>
   );
 }

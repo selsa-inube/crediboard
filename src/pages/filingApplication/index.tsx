@@ -70,6 +70,87 @@ export function FilingApplication() {
     bail: {
       client: false,
     },
+    disbursementGeneral: {
+      Internal: {
+        amount: "",
+        account: "",
+        description: "",
+        name: "",
+        lastName: "",
+        sex: "",
+        identification: "",
+        birthdate: "",
+        phone: "",
+        mail: "",
+        city: "",
+        check: false,
+        toggle: true,
+        documentType: "",
+      },
+      External: {
+        amount: "",
+        check: false,
+        toggle: true,
+        description: "",
+        name: "",
+        lastName: "",
+        sex: "",
+        identification: "",
+        birthdate: "",
+        phone: "",
+        mail: "",
+        city: "",
+        bank: "",
+        accountType: "",
+        accountNumber: "",
+        documentType: "",
+      },
+      CheckEntity: {
+        amount: "",
+        check: false,
+        toggle: true,
+        description: "",
+        name: "",
+        lastName: "",
+        sex: "",
+        documentType: "",
+        identification: "",
+        birthdate: "",
+        phone: "",
+        mail: "",
+        city: "",
+      },
+      CheckManagement: {
+        amount: "",
+        check: false,
+        toggle: true,
+        description: "",
+        name: "",
+        lastName: "",
+        sex: "",
+        documentType: "",
+        identification: "",
+        birthdate: "",
+        phone: "",
+        mail: "",
+        city: "",
+      },
+      Cash: {
+        amount: "",
+        check: false,
+        toggle: true,
+        description: "",
+        name: "",
+        lastName: "",
+        sex: "",
+        documentType: "",
+        identification: "",
+        birthdate: "",
+        phone: "",
+        mail: "",
+        city: "",
+      },
+    },
   });
 
   const isMobile = useMediaQuery("(max-width:880px)");
@@ -100,10 +181,17 @@ export function FilingApplication() {
   }
 
   const handleFormChange = (updatedValues: Partial<FormData>) => {
-    setFormData((prev) => ({
-      ...prev,
-      ...updatedValues,
-    }));
+    setFormData((prev) => {
+      if (
+        JSON.stringify(prev) !== JSON.stringify({ ...prev, ...updatedValues })
+      ) {
+        return {
+          ...prev,
+          ...updatedValues,
+        };
+      }
+      return prev;
+    });
   };
 
   return (

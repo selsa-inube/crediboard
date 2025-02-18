@@ -3,21 +3,28 @@ import { Stack } from "@inubekit/stack";
 import { Icon } from "@inubekit/icon";
 import { Text } from "@inubekit/text";
 
-import { BorrowerTitle } from "../config";
 import { StyledContainer } from "../styles";
 
-export function NewCardBorrower() {
+interface INewCardBorrowerProps {
+  onClick: () => void;
+  title: string;
+  isMobile?: boolean;
+}
+
+export function NewCardBorrower(props: INewCardBorrowerProps) {
+  const { onClick, title,isMobile } = props;
+
   return (
-    <StyledContainer $new={true}>
-      <Stack
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-        height="368px"
-      >
+    <StyledContainer
+      $new={true}
+      $showIcons={true}
+      onClick={onClick}
+      $isMobile={isMobile}
+    >
+      <Stack direction="column" alignItems="center" justifyContent="center">
         <Icon icon={<MdAdd />} appearance={"gray"} size="40px" cursorHover />
         <Text type="title" size="medium" weight="bold" appearance="gray">
-          {BorrowerTitle}
+          {title}
         </Text>
       </Stack>
     </StyledContainer>

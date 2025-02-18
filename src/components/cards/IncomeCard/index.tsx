@@ -5,6 +5,8 @@ import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
 import { Icon } from "@inubekit/icon";
 
+import { currencyFormat } from "@utils/formatData/currency";
+
 import { StyledContainer, StyledTextField, StyledSupport } from "./styles";
 import { incomeCardData } from "./config";
 
@@ -39,10 +41,9 @@ export function IncomeCard(props: IIncomeCardProps) {
                 id={`field${index}`}
                 label={label}
                 placeholder={placeholders[index]}
-                value={values[index]}
+                value={currencyFormat(parseFloat(values[index]), false)}
                 onChange={(e) => onChange(index, e.target.value)}
                 size="compact"
-                type="number"
                 fullwidth
               />
             </StyledTextField>

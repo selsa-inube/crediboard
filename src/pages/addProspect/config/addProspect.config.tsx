@@ -27,14 +27,15 @@ export const stepsAddProspect = {
   extraBorrowers: {
     id: 5,
     number: 5,
-    name: "Deudores extra",
-    description: "Actualice los deudores extra",
+    name: "Deudores",
+    description: "Actualice los deudores",
   },
   sourcesIncome: {
     id: 6,
     number: 6,
     name: "Fuentes de ingreso",
-    description: "Actualice sus fuentes de ingreso para soportar capacidad de pago.",
+    description:
+      "Actualice sus fuentes de ingreso para soportar capacidad de pago.",
   },
   obligationsFinancial: {
     id: 7,

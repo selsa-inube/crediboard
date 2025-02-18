@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
 
-const StyledCreditProductCard = styled.div`
+interface IStyledProduct {
+  $new?: boolean;
+}
+
+const StyledCreditProductCard = styled.div<IStyledProduct>`
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -13,6 +17,7 @@ const StyledCreditProductCard = styled.div`
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   box-shadow: 0px 4px 8px 3px rgba(9, 30, 66, 0.13);
+  cursor: ${({ $new }) => ($new ? "pointer" : "normal")};
 `;
 
 const StyledDivider = styled.hr`

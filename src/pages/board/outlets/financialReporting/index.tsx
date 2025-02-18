@@ -19,6 +19,7 @@ import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
 import { getById } from "@mocks/utils/dataMock.service";
 import { Ierror_issued, IErrorService, ICreditRequest } from "@services/types";
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
@@ -36,8 +37,6 @@ import { Requirements } from "./Requirements";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
-import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
-import { CardCommercialManagement } from "./CommercialManagement/CardCommercialManagement";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -269,16 +268,7 @@ export const FinancialReporting = () => {
           <Stack direction="column" gap="20px">
             <Stack direction="column">
               <Stack direction="column">
-                <ComercialManagement
-                  print={handleGeneratePDF}
-                  data={data}
-                  children={
-                    <CardCommercialManagement
-                      id={id!}
-                      dataRef={dataCommercialManagementRef}
-                    />
-                  }
-                />
+                <ComercialManagement print={handleGeneratePDF} data={data} />
               </Stack>
             </Stack>
             <Grid

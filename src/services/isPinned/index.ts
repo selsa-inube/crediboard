@@ -4,7 +4,7 @@ import {
   maxRetriesServices,
 } from "@config/environment";
 
-import { ICreditRequestPinned } from "../types";
+import { ICreditRequestPinned } from "@services/types";
 
 export const getCreditRequestPin = async (): Promise<
   ICreditRequestPinned[]

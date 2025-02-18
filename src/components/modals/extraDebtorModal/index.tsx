@@ -140,7 +140,12 @@ function ExtraDebtorModal(props: ExtraDebtorModalProps) {
                 name="documentNumber"
                 id="documentNumber"
                 placeholder="Ej.: 1.000.000.000"
-                value={validateCurrencyField("documentNumber", formik, false)}
+                value={validateCurrencyField(
+                  "documentNumber",
+                  formik,
+                  false,
+                  ""
+                )}
                 size="compact"
                 onBlur={formik.handleBlur}
                 onChange={(e) => handleChangeWithCurrency(formik, e)}
@@ -173,7 +178,7 @@ function ExtraDebtorModal(props: ExtraDebtorModalProps) {
                 name="income"
                 id="income"
                 placeholder="Ej.: 1.300.000"
-                value={validateCurrencyField("income", formik, false)}
+                value={validateCurrencyField("income", formik, false, "")}
                 size="compact"
                 onBlur={formik.handleBlur}
                 onChange={(e) => handleChangeWithCurrency(formik, e)}
@@ -184,7 +189,7 @@ function ExtraDebtorModal(props: ExtraDebtorModalProps) {
                 name="expenses"
                 id="expenses"
                 placeholder="Ej.: 390.000"
-                value={validateCurrencyField("expenses", formik, false)}
+                value={validateCurrencyField("expenses", formik, false, "")}
                 size="compact"
                 onBlur={formik.handleBlur}
                 onChange={(e) => handleChangeWithCurrency(formik, e)}

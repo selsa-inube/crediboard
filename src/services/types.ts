@@ -365,10 +365,12 @@ export interface IRiskScoringRangeRequered {
 }
 
 export interface IExtraordinaryPayment {
-  id: string;
+  id: number;
   datePayment: string;
+  amount?: number;
   value: number;
   paymentMethod: string;
+  frequency?: string;
 }
 export interface IMoneyDestination {
   money_destination_id: string;

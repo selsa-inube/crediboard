@@ -27,12 +27,14 @@ import { usePagination } from "./utils";
 export interface ITableFinancialObligationsProps {
   [key: string]: React.ReactNode;
   refreshKey?: number;
+  showActions?: boolean;
+  showOnlyEdit?: boolean;
 }
 
 export function TableFinancialObligations(
   props: ITableFinancialObligationsProps
 ) {
-  const { refreshKey } = props;
+  const { refreshKey, showActions, showOnlyEdit } = props;
   const [loading, setLoading] = useState(true);
   const [extraDebtors, setExtraDebtors] = useState<
     ITableFinancialObligationsProps[]
@@ -67,8 +69,12 @@ export function TableFinancialObligations(
 
   const isMobile = useMediaQuery("(max-width:880px)");
   const visibleHeaders = isMobile
-    ? headers.filter((header) => ["type", "actions"].includes(header.key))
-    : headers;
+    ? headers.filter(
+        (header) =>
+          ["type", "balance", "actions"].includes(header.key) &&
+          (showActions || header.key !== "actions")
+      )
+    : headers.filter((header) => showActions || header.key !== "actions");
 
   useEffect(() => {
     const loadExtraDebtors = async () => {
@@ -190,16 +196,18 @@ export function TableFinancialObligations(
                             onClick={() => handleEdit(row)}
                             cursorHover
                           />
-                          <Icon
-                            icon={<MdDeleteOutline />}
-                            appearance="danger"
-                            size="16px"
-                            onClick={() => {
-                              setSelectedDebtor(row);
-                              setIsDeleteModal(true);
-                            }}
-                            cursorHover
-                          />
+                          {!showOnlyEdit && (
+                            <Icon
+                              icon={<MdDeleteOutline />}
+                              appearance="danger"
+                              size="16px"
+                              onClick={() => {
+                                setSelectedDebtor(row);
+                                setIsDeleteModal(true);
+                              }}
+                              cursorHover
+                            />
+                          )}
                         </Stack>
                       ) : (
                         cellData

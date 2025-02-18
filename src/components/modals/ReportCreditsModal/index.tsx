@@ -109,7 +109,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
               </Stack>
             </Stack>
           )}
-          <TableFinancialObligations />
+          <TableFinancialObligations showActions={true} />
           <Stack gap="15px" direction={!isMobile ? "row" : "column"}>
             {loading ? (
               <SkeletonLine />
