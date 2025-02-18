@@ -53,5 +53,5 @@ export const StyledTextField = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
+  max-width: 230px;
 `;
