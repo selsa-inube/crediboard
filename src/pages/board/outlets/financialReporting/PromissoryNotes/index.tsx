@@ -3,13 +3,13 @@ import { Stack } from "@inubekit/stack";
 import { useFlag } from "@inubekit/flag";
 import { Tag } from "@inubekit/tag";
 
+import userNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 import { UnfoundData } from "@components/layout/UnfoundData";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
-import userNotFound from "@assets/images/ItemNotFound.png";
 import { getPayrollDiscountAuthorizationById } from "@services/payroll_discount_authorizations";
 import { getPromissoryNotesById } from "@services/promissory_notes";
 import {

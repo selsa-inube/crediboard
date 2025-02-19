@@ -22,7 +22,6 @@ interface IFieldsetProps {
   activeButton?: IOptionsButton;
   hasTable?: boolean;
   hasOverflow?: boolean;
-  slim?: boolean;
   isMobile?: boolean;
   isClickable?: boolean;
   selectedState?: boolean;
@@ -33,14 +32,14 @@ export const Fieldset = (props: IFieldsetProps) => {
     onSelectionChange,
     children,
     title,
-    heightFieldset,
     aspectRatio,
+    heightFieldset,
     descriptionTitle,
     activeButton,
     hasTable = false,
-    hasOverflow,
-    isClickable,
-    selectedState,
+    hasOverflow = false,
+    isClickable = false,
+    selectedState = false,
   } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");

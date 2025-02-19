@@ -24,14 +24,14 @@ import {
   capitalizeFirstLetterEachWord,
 } from "@utils/formatData/text";
 import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
-import { CreditProspect } from "@pages/prospect/components/CreditProspect";
+import { DisbursementModal } from "@components/modals/DisbursementModal";
 import { Fieldset } from "@components/data/Fieldset";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { getById } from "@mocks/utils/dataMock.service";
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
+import { CreditProspect } from "@pages/prospect/components/CreditProspect";
 import { ICreditProductProspect, ICreditRequest } from "@services/types";
-import { DisbursementModal } from "@components/modals/DisbursementModal";
 
 import { menuOptions, tittleOptions } from "./config/config";
 import {
