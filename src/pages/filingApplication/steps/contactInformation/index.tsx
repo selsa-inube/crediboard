@@ -6,6 +6,7 @@ import { Textfield } from "@inubekit/textfield";
 
 import { CardGray } from "@components/cards/CardGray";
 import { Fieldset } from "@components/data/Fieldset";
+import { IContactInformation } from "@pages/filingApplication/types";
 
 import { dataContactInformation } from "./config";
 
@@ -16,7 +17,7 @@ interface IContactInformationProps {
     phone: string;
   };
   onFormValid: (isValid: boolean) => void;
-  handleOnChange: (values: { email: string; phone: string }) => void;
+  handleOnChange: (values: IContactInformation) => void;
 }
 
 export function ContactInformation(props: IContactInformationProps) {

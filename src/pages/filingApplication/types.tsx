@@ -18,7 +18,7 @@ export interface IStep {
   name?: string;
 }
 
-interface ContactInformation {
+export interface IContactInformation {
   email: string;
   phone: string;
 }
@@ -47,7 +47,7 @@ export interface IBail {
   client: boolean;
 }
 export interface FormData {
-  contactInformation: ContactInformation;
+  contactInformation: IContactInformation;
   propertyOffered: IPropertyOffered;
   vehicleOffered: IVehicleOffered;
   borrowerData: IBorrowerData;
