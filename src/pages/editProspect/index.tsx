@@ -87,14 +87,24 @@ export function EditProspect() {
                 </Text>
               </Stack>
               <Stack direction="column" alignItems="center" gap="8px">
-                <Text
-                  type="headline"
-                  weight="bold"
-                  size="large"
-                  appearance="primary"
-                >
-                  $ {data.value}
-                </Text>
+                <Stack gap="8px">
+                  <Text
+                    type="headline"
+                    weight="bold"
+                    size="large"
+                    appearance="primary"
+                  >
+                    $
+                  </Text>
+                  <Text
+                    type="headline"
+                    weight="bold"
+                    size="large"
+                    appearance="primary"
+                  >
+                    {data.value}
+                  </Text>
+                </Stack>
                 <Text type="body" size="small" appearance="gray">
                   {dataEditProspect.value}
                 </Text>
