@@ -1,6 +1,5 @@
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
-
 import { SkeletonLine } from "@inubekit/skeleton";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
@@ -11,7 +10,11 @@ import { Divider } from "@inubekit/divider";
 import { Button } from "@inubekit/button";
 
 import { currencyFormat } from "@utils/formatData/currency";
-import { mockDeductibleExpenses } from "@mocks/add-prospect/deductible-expenses-modal/deductibleexpenses.mock";
+import {
+  mockDeductibleExpenses,
+  mocksures,
+} from "@mocks/add-prospect/deductible-expenses-modal/deductibleexpenses.mock";
+import { validationMessages } from "@validations/validationMessages";
 
 import {
   StyledContainerClose,
@@ -26,6 +29,15 @@ export interface DeductibleExpensesModalProps {
   loading?: boolean;
 }
 
+const calculateTotalExpenses = (
+  adjustmentInterest: number,
+  bail: number,
+  sures: { sure: number }[]
+): number => {
+  const totalSures = sures.reduce((acc, { sure }) => acc + sure, 0);
+  return adjustmentInterest + bail + totalSures;
+};
+
 export function DeductibleExpensesModal({
   portalId,
   handleClose,
@@ -34,11 +46,15 @@ export function DeductibleExpensesModal({
   const isMobile = useMediaQuery("(max-width:880px)");
   const data = mockDeductibleExpenses[0];
 
+  const totalExpenses = calculateTotalExpenses(
+    data.adjustmentInterest.value,
+    data.bail.value,
+    mocksures
+  );
+
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
-    throw new Error(
-      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
-    );
+    throw new Error(validationMessages.errorNodo);
   }
 
   return createPortal(
@@ -70,7 +86,7 @@ export function DeductibleExpensesModal({
           <ScrollableContainer>
             <Stack justifyContent="space-between">
               <Text size="medium" appearance="gray" weight="bold">
-                {deductibleexpenses.adjustmentInterest}
+                {data.adjustmentInterest.label}
               </Text>
               <Stack>
                 <Text type="body" size="medium" appearance="success">
@@ -85,14 +101,14 @@ export function DeductibleExpensesModal({
                     appearance="gray"
                     weight="bold"
                   >
-                    {currencyFormat(data.adjustmentInterest, false)}
+                    {currencyFormat(data.adjustmentInterest.value, false)}
                   </Text>
                 )}
               </Stack>
             </Stack>
             <Stack justifyContent="space-between">
               <Text size="medium" appearance="gray" weight="bold">
-                {deductibleexpenses.bail}
+                {data.bail.label}
               </Text>
               <Stack>
                 <Text type="body" size="medium" appearance="success">
@@ -107,15 +123,15 @@ export function DeductibleExpensesModal({
                     appearance="gray"
                     weight="bold"
                   >
-                    {currencyFormat(data.bail, false)}
+                    {currencyFormat(data.bail.value, false)}
                   </Text>
                 )}
               </Stack>
             </Stack>
-            {deductibleexpenses.sure.map((sure, index) => (
+            {mocksures.map((sure, index) => (
               <Stack key={index} justifyContent="space-between">
                 <Text size="medium" appearance="gray" weight="bold">
-                  {sure}
+                  {data.sure.label + ` ${index + 1}`}
                 </Text>
                 <Stack>
                   <Text type="body" size="medium" appearance="success">
@@ -130,7 +146,7 @@ export function DeductibleExpensesModal({
                       appearance="gray"
                       weight="bold"
                     >
-                      {currencyFormat(data.sure, false)}
+                      {currencyFormat(sure.sure, false)}
                     </Text>
                   )}
                 </Stack>
@@ -155,7 +171,7 @@ export function DeductibleExpensesModal({
                     appearance="dark"
                     weight="bold"
                   >
-                    {currencyFormat(data.totalExpenses, false)}
+                    {currencyFormat(totalExpenses, false)}
                   </Text>
                 )}
               </Stack>

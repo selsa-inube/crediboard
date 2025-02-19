@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Button } from "@inubekit/button";
+
 import { DeductibleExpensesModal } from ".";
 import type { DeductibleExpensesModalProps } from ".";
 
