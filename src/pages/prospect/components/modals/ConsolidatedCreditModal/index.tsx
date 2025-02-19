@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 import { Blanket } from "@inubekit/blanket";
+import { validationMessages } from "@validations/validationMessages";
 import { ConsolidatedCreditsInterface } from "./interface";
 
 export interface ConsolidatedCreditsProps {
@@ -13,9 +14,7 @@ export const ConsolidatedCredits = (props: ConsolidatedCreditsProps) => {
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
-    throw new Error(
-      "The portal node is not defined. Ensure the portal has been set correctly."
-    );
+    throw new Error(validationMessages.errorNodo);
   }
 
   return createPortal(

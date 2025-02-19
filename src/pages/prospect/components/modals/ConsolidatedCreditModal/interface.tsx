@@ -1,6 +1,4 @@
-import { forwardRef } from "react";
 import { MdClear } from "react-icons/md";
-
 import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
@@ -20,16 +18,26 @@ interface ConsolidatedCreditsInterfaceProps {
   loading?: boolean;
 }
 
-export const ConsolidatedCreditsInterface = forwardRef<
-  HTMLDivElement,
-  ConsolidatedCreditsInterfaceProps
->(function ConsolidatedCreditsInterface(props, ref) {
+export function ConsolidatedCreditsInterface(
+  props: ConsolidatedCreditsInterfaceProps
+) {
   const { loading, handleClose } = props;
   const isMobile = useMediaQuery("(max-width:880px)");
   const data = mockConsolidatedCreditModal[0];
 
+  const investmentCardsData = [
+    {
+      expired: ModalConfig.expired,
+      expiredValue: data.expiredValue,
+    },
+    {
+      expired: ModalConfig.nextExpiration,
+      expiredValue: data.nextExpiration,
+    },
+  ];
+
   return (
-    <StyledModal ref={ref} $isMobile={isMobile}>
+    <StyledModal $isMobile={isMobile}>
       <Stack justifyContent="space-between">
         <Text type="headline" size="small" appearance="dark">
           {ModalConfig.title}
@@ -76,20 +84,16 @@ export const ConsolidatedCreditsInterface = forwardRef<
         {ModalConfig.selectedText}
       </Text>
       <Stack direction={isMobile ? "column" : "row"} gap="16px">
-        <InvestmentCreditCard
-          code={ModalConfig.investmentCode}
-          codeValue={data.investmentCode}
-          expired={ModalConfig.expired}
-          expiredValue={data.expiredValue}
-          title={ModalConfig.creditInvestment}
-        />
-        <InvestmentCreditCard
-          code={ModalConfig.investmentCode}
-          codeValue={data.investmentCode}
-          expired={ModalConfig.nextExpiration}
-          expiredValue={data.nextExpiration}
-          title={ModalConfig.creditInvestment}
-        />
+        {investmentCardsData.map((item, index) => (
+          <InvestmentCreditCard
+            key={index}
+            code={ModalConfig.investmentCode}
+            codeValue={data.investmentCode}
+            expired={item.expired}
+            expiredValue={item.expiredValue}
+            title={ModalConfig.creditInvestment}
+          />
+        ))}
       </Stack>
       <Stack height="100%" direction="column" justifyContent="end" gap="16px">
         <Divider />
@@ -110,4 +114,4 @@ export const ConsolidatedCreditsInterface = forwardRef<
       </Stack>
     </StyledModal>
   );
-});
+}

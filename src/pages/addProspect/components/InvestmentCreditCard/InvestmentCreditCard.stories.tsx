@@ -1,43 +1,43 @@
-import { InvestmentCreditCard, InvestmentCreditCardProps } from "./index";
+import { Meta, StoryObj } from "@storybook/react";
+import { InvestmentCreditCard } from "./";
 
-const story = {
-  components: [InvestmentCreditCard],
+const meta: Meta<typeof InvestmentCreditCard> = {
   title: "pages/addProspect/components/InvestmentCreditCard",
+  component: InvestmentCreditCard,
   argTypes: {
-    title: {
-      control: { type: "text" },
-      description: "Título del card.",
+    title: { 
+      control: "text", 
+      description: "Título del card." 
     },
-    code: {
-      control: { type: "text" },
-      description: "Código que se muestra en el card.",
+    code: { 
+      control: "text", description: 
+      "Código que se muestra en el card." 
     },
-    codeValue: {
-      control: { type: "text" },
-      description: "Valor asociado al código.",
+    codeValue: { 
+      control: "text", description: 
+      "Valor asociado al código." 
     },
     expired: {
-      control: { type: "text" },
+      control: "text",
       description: "Texto que indica el estado de vencimiento.",
     },
     expiredValue: {
-      control: { type: "number" },
+      control: "number",
       description: "Valor asociado al vencimiento.",
     },
   },
 };
 
-const Default = (args: InvestmentCreditCardProps) => (
-  <InvestmentCreditCard {...args} />
-);
-Default.args = {
-  title: "Crédito libre inversión",
-  code: "Código",
-  codeValue: "10-12345",
-  expired: "Valor vencido",
-  expiredValue: 120000,
-} satisfies InvestmentCreditCardProps;
+export default meta;
 
-export default story;
+type Story = StoryObj<typeof InvestmentCreditCard>;
 
-export { Default };
+export const Default: Story = {
+  args: {
+    title: "Crédito libre inversión",
+    code: "Código",
+    codeValue: "10-12345",
+    expired: "Valor vencido",
+    expiredValue: 120000,
+  },
+};

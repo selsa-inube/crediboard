@@ -4,13 +4,7 @@ import { Text } from "@inubekit/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { StyledContainer, StyledInput } from "./styles";
 
-interface IPaymentOption {
-  label: string;
-  value: string | number;
-  isCurrency?: boolean;
-}
-
-export interface InvestmentCreditCardProps {
+interface InvestmentCreditCardProps {
   title: string;
   code: string;
   codeValue: string;
@@ -27,19 +21,6 @@ export function InvestmentCreditCard({
   expiredValue,
   isMobile,
 }: InvestmentCreditCardProps) {
-  const paymentOptions: IPaymentOption[] = [
-    {
-      label: code,
-      value: codeValue,
-      isCurrency: false,
-    },
-    {
-      label: expired,
-      value: expiredValue,
-      isCurrency: true,
-    },
-  ];
-
   return (
     <StyledContainer $isMobile={isMobile}>
       <Stack
@@ -53,20 +34,26 @@ export function InvestmentCreditCard({
         </Text>
         <Divider dashed />
         <Stack direction="column" gap="8px">
-          {paymentOptions.map((item) => (
-            <StyledInput key={item.label}>
-              <Stack alignItems="center" justifyContent="space-between">
-                <Text type="label" size="medium" weight="bold">
-                  {item.label}
-                </Text>
-                <Text type="body" size="small" appearance="gray">
-                  {item.isCurrency
-                    ? currencyFormat(Number(item.value))
-                    : item.value}
-                </Text>
-              </Stack>
-            </StyledInput>
-          ))}
+          <StyledInput>
+            <Stack alignItems="center" justifyContent="space-between">
+              <Text type="label" size="medium" weight="bold">
+                {code}
+              </Text>
+              <Text type="body" size="small" appearance="gray">
+                {codeValue}
+              </Text>
+            </Stack>
+          </StyledInput>
+          <StyledInput>
+            <Stack alignItems="center" justifyContent="space-between">
+              <Text type="label" size="medium" weight="bold">
+                {expired}
+              </Text>
+              <Text type="body" size="small" appearance="gray">
+                {currencyFormat(expiredValue)}
+              </Text>
+            </Stack>
+          </StyledInput>
         </Stack>
       </Stack>
     </StyledContainer>
