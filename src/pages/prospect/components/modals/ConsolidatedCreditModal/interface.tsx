@@ -12,6 +12,7 @@ import { mockConsolidatedCreditModal } from "@mocks/add-prospect/consolidated-cr
 
 import { StyledContainerClose, StyledModal } from "./styles";
 import { ModalConfig } from "./Config";
+import { useState } from "react";
 
 interface ConsolidatedCreditsInterfaceProps {
   handleClose: () => void;
@@ -24,7 +25,7 @@ export function ConsolidatedCreditsInterface(
   const { loading, handleClose } = props;
   const isMobile = useMediaQuery("(max-width:880px)");
   const data = mockConsolidatedCreditModal[0];
-
+  const [editOpen, setEditOpen] = useState(false);
   const investmentCardsData = [
     {
       expired: ModalConfig.expired,
@@ -70,7 +71,7 @@ export function ConsolidatedCreditsInterface(
           </Text>
         </Stack>
         <Button
-          onClick={() => {}}
+          onClick={() => setEditOpen(true)}
           variant="outlined"
           appearance="primary"
           spacing="wide"
@@ -94,6 +95,17 @@ export function ConsolidatedCreditsInterface(
             title={ModalConfig.creditInvestment}
           />
         ))}
+        {editOpen &&
+          investmentCardsData.map((item, index) => (
+            <InvestmentCreditCard
+              key={index}
+              code={ModalConfig.investmentCode}
+              codeValue={data.investmentCode}
+              expired={item.expired}
+              expiredValue={item.expiredValue}
+              title={ModalConfig.creditInvestment}
+            />
+          ))}
       </Stack>
       <Stack height="100%" direction="column" justifyContent="end" gap="16px">
         <Divider />
