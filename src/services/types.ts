@@ -402,6 +402,6 @@ export interface IUserSteps {
   intermediateSteps: number[],
 }
 export interface ILoanAmount {
-  id: string;
-  loanAmountText: string;
+  id: number;
+  choice: string;
 }
