@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-
 import { Grid } from "@inubekit/grid";
 import { useMediaQuery } from "@inubekit/hooks";
 import { useFlag } from "@inubekit/flag";
@@ -15,9 +14,9 @@ import { ListModal } from "@components/modals/ListModal";
 import { MobileMenu } from "@components/modals/MobileMenu";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
-import { getById } from "@mocks/utils/dataMock.service";
 import { Ierror_issued, IErrorService, ICreditRequest } from "@services/types";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { getSearchAllDocumentsById } from "@services/documents/SearchAllDocuments";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { infoIcon } from "./ToDo/config";
@@ -35,11 +34,10 @@ import { Requirements } from "./Requirements";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
-
 interface IListdataProps {
   data: { id: string; name: string }[];
   icon?: React.ReactNode;
-  onDelete: (id: string) => void;
+  onPreview: (id: string, name: string) => void;
 }
 
 const removeErrorByIdServices = (
@@ -77,22 +75,6 @@ export const FinancialReporting = () => {
   const [errorsService, setErrorsService] = useState<IErrorService[]>([]);
 
   useEffect(() => {
-    Promise.allSettled([
-      getById("document", "credit_request_id", id!, true),
-      getById("error_issued", "credit_request_id", id!, true),
-    ]).then(([documents, error_issue]) => {
-      if (documents.status === "fulfilled" && Array.isArray(documents.value)) {
-        const documentsUser = documents.value.map((dataListDocument) => ({
-          id: dataListDocument.document_id,
-          name: dataListDocument.abbreviated_name,
-        }));
-        setDocument(documentsUser);
-      }
-      if (error_issue.status === "fulfilled") {
-        setError(error_issue.value as Ierror_issued[]);
-      }
-    });
-
     getCreditRequestByCode(id!)
       .then((data) => {
         setData(data[0]);
@@ -100,6 +82,16 @@ export const FinancialReporting = () => {
       .catch((error) => {
         console.error(error);
       });
+
+    getSearchAllDocumentsById("1").then((documents) => {
+      const dataToMap = Array.isArray(documents) ? documents : documents.value;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const documentsUser = dataToMap.map((dataListDocument: any) => ({
+        id: dataListDocument.documentId,
+        name: dataListDocument.fileName,
+      }));
+      setDocument(documentsUser);
+    });
   }, [id]);
 
   useEffect(() => {
@@ -281,17 +273,17 @@ export const FinancialReporting = () => {
               optionButtons={optionButtons}
               buttonLabel="Guardar"
               id={id!}
+              isViewing={false}
             />
           )}
           {attachDocuments && (
             <ListModal
               title="Ver Adjuntos"
-              content={document.map((doc) => (
-                <div key={doc.id}>{doc.name}</div>
-              ))}
               handleClose={() => setAttachDocuments(false)}
               buttonLabel="Cerrar"
               id={id!}
+              isViewing={true}
+              dataDocument={document}
             />
           )}
         </>

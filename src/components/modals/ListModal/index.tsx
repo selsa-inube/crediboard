@@ -1,6 +1,10 @@
 import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { MdClear, MdDeleteOutline } from "react-icons/md";
+import {
+  MdClear,
+  MdDeleteOutline,
+  MdOutlineRemoveRedEye,
+} from "react-icons/md";
 
 import { Blanket } from "@inubekit/blanket";
 import { Button } from "@inubekit/button";
@@ -21,6 +25,9 @@ import {
   StyledContainerContent,
   StyledModal,
 } from "./styles";
+import { getSearchDocumentById } from "@services/documents/SearchDocumentById";
+import { DocumentViewer } from "../DocumentViewer";
+
 export interface IOptionButtons {
   label: string;
   variant: "filled" | "outlined" | "none";
@@ -49,6 +56,8 @@ export interface IListModalProps {
   content?: JSX.Element | JSX.Element[] | string;
   optionButtons?: IOptionButtons;
   id?: string;
+  dataDocument?: { id: string; name: string }[];
+  isViewing?: boolean;
 }
 
 export const ListModal = (props: IListModalProps) => {
@@ -64,6 +73,8 @@ export const ListModal = (props: IListModalProps) => {
     onSubmit,
     buttonLabel,
     //id,
+    dataDocument,
+    isViewing,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -80,14 +91,19 @@ export const ListModal = (props: IListModalProps) => {
   >([]);
   const [loading, setLoading] = useState(false);
 
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+  const [fileName, setFileName] = useState<string | null>(null);
+
   interface IListdataProps {
     data: { id: string; name: string }[];
+    onDelete?: (id: string) => void;
     icon?: React.ReactNode;
-    onDelete: (id: string) => void;
+    onPreview?: (id: string, name: string) => void;
   }
 
   const Listdata = (props: IListdataProps) => {
-    const { data, icon, onDelete } = props;
+    const { data, icon, onDelete, onPreview } = props;
 
     if (data.length === 0) {
       return <Text>No hay documentos adjuntos.</Text>;
@@ -109,7 +125,13 @@ export const ListModal = (props: IListModalProps) => {
               spacing="narrow"
               size="24px"
               cursorHover
-              onClick={() => onDelete(element.id)}
+              onClick={() => {
+                if (onDelete) {
+                  onDelete(element.id);
+                } else if (onPreview) {
+                  onPreview(element.id, element.name);
+                }
+              }}
             />
           </StyledItem>
         ))}
@@ -187,6 +209,18 @@ export const ListModal = (props: IListModalProps) => {
     }
   };
 
+  const handlePreview = async (id: string, name: string) => {
+    try {
+      const documentData = await getSearchDocumentById(id);
+      const fileUrl = URL.createObjectURL(documentData);
+      setSelectedFile(fileUrl);
+      setFileName(name);
+      setOpen(true);
+    } catch (error) {
+      console.error("Error obteniendo el documento:", error);
+    }
+  };
+
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
@@ -215,9 +249,12 @@ export const ListModal = (props: IListModalProps) => {
           ) : (
             <StyledContainerContent $smallScreen={isMobile}>
               <Listdata
-                data={uploadedFiles}
-                icon={<MdDeleteOutline />}
-                onDelete={handleDeleteFile}
+                data={isViewing ? (dataDocument ?? []) : uploadedFiles}
+                icon={
+                  isViewing ? <MdOutlineRemoveRedEye /> : <MdDeleteOutline />
+                }
+                onDelete={!isViewing ? handleDeleteFile : undefined}
+                onPreview={isViewing ? handlePreview : undefined}
               />
             </StyledContainerContent>
           )}
@@ -265,6 +302,13 @@ export const ListModal = (props: IListModalProps) => {
             </Button>
             <Button onClick={onSubmit ?? handleClose}>{buttonLabel}</Button>
           </Stack>
+        )}
+        {selectedFile && open && (
+          <DocumentViewer
+            selectedFile={selectedFile}
+            handleClose={() => setOpen(false)}
+            title={fileName || ""}
+          />
         )}
       </StyledModal>
     </Blanket>,

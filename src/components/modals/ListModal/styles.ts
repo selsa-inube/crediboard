@@ -9,7 +9,7 @@ export const StyledModal = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
   max-height: ${({ $smallScreen }) => ($smallScreen ? "398px" : "382px")};
-  width: ${({ $smallScreen }) => ($smallScreen ? "280px" : "430px")};
+  width: ${({ $smallScreen }) => ($smallScreen ? "335px" : "430px")};
   background-color: ${({ theme }) =>
     theme.color?.surface?.light?.clear || inube.palette.neutral.N0};
   padding: ${({ $smallScreen }) => ($smallScreen ? "16px" : "24px")};
