@@ -53,11 +53,15 @@ export function LoanAmount(props: ILoanAmountProps) {
   } = props;
 
   const { id } = useParams();
-  const loanId = parseInt(id || "1", 10);
+  const loanId = parseInt(id || "0", 10);
 
   const loanText =
-    loanAmount.find((loan) => loan.id === loanId)?.choice ||
-    dataAmount.expectToReceive;
+    loanAmount.find((loan) => loan.id === loanId)?.choice || "expectToReceive";
+
+  const data =
+    dataAmount[
+      loanText === "expectToReceive" ? "expectToReceive" : "amountRequested"
+    ];
 
   const [requestValue, setRequestValue] = useState<IPaymentChannel[]>();
   const [openModal, setOpenModal] = useState<string | null>(null);
@@ -154,7 +158,7 @@ export function LoanAmount(props: ILoanAmountProps) {
               <Divider dashed />
               <Stack direction="column">
                 <Text type="label" size="medium" weight="bold">
-                  {loanText}
+                  {data}
                 </Text>
                 <Field name="inputValue">
                   {() => (
