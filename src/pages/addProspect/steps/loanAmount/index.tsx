@@ -10,7 +10,7 @@ import { Toggle } from "@inubekit/toggle";
 import { Select } from "@inubekit/select";
 import { Icon } from "@inubekit/icon";
 import { inube } from "@inubekit/foundations";
-import { useParams } from "react-router-dom"; 
+import { useParams } from "react-router-dom";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditLimit } from "@components/modals/CreditLimit";
@@ -20,7 +20,7 @@ import { ScoreModal } from "@components/modals/FrcModal";
 
 import { currencyFormat } from "@utils/formatData/currency";
 import { get } from "@mocks/utils/dataMock.service";
-import { loanAmount } from "@mocks/add-prospect/loan-amount/loanAmount.mock"; 
+import { loanAmount } from "@mocks/add-prospect/loan-amount/loanAmount.mock";
 import {
   mockPayAmount,
   mockPeriodicity,
@@ -53,11 +53,11 @@ export function LoanAmount(props: ILoanAmountProps) {
   } = props;
 
   const { id } = useParams();
-  const loanId = parseInt(id || "101", 10); 
+  const loanId = parseInt(id || "1", 10);
 
   const loanText =
     loanAmount.find((loan) => loan.id === loanId)?.choice ||
-    "¿Qué valor espera recibir?"; 
+    dataAmount.expectToReceive;
 
   const [requestValue, setRequestValue] = useState<IPaymentChannel[]>();
   const [openModal, setOpenModal] = useState<string | null>(null);
