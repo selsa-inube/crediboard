@@ -21,6 +21,10 @@ export interface IStep {
 export interface IContactInformation {
   email: string;
   phone: string;
+  document: string;
+  documentNumber: string;
+  name: string;
+  lastName: string;
 }
 
 export interface IVehicleOffered {

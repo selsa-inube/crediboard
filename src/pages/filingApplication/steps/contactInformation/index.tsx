@@ -9,13 +9,11 @@ import { Fieldset } from "@components/data/Fieldset";
 import { IContactInformation } from "@pages/filingApplication/types";
 
 import { dataContactInformation } from "./config";
+import { mockContactInformation } from "@mocks/filing-application/contact-information/contactinformation.mock";
 
 interface IContactInformationProps {
   isMobile: boolean;
-  initialValues: {
-    email: string;
-    phone: string;
-  };
+  initialValues: IContactInformation;
   onFormValid: (isValid: boolean) => void;
   handleOnChange: (values: IContactInformation) => void;
 }
@@ -23,13 +21,21 @@ interface IContactInformationProps {
 export function ContactInformation(props: IContactInformationProps) {
   const { isMobile, initialValues, onFormValid, handleOnChange } = props;
 
+  const data = mockContactInformation[0];
+
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
     phone: Yup.number().required(),
   });
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues: {
+      ...initialValues,
+      document: data.document,
+      documentNumber: data.documentNumber,
+      name: data.name,
+      lastName: data.lastName,
+    },
     validationSchema,
     validateOnMount: true,
     onSubmit: () => {},
@@ -61,19 +67,19 @@ export function ContactInformation(props: IContactInformationProps) {
       >
         <CardGray
           label={dataContactInformation.cardDocument}
-          placeHolder={dataContactInformation.placeDocument}
+          placeHolder={formik.values.document}
         />
         <CardGray
           label={dataContactInformation.cardDocumentNumber}
-          placeHolder={dataContactInformation.placeDocumentNumber}
+          placeHolder={formik.values.documentNumber}
         />
         <CardGray
           label={dataContactInformation.cardName}
-          placeHolder={dataContactInformation.placeName}
+          placeHolder={formik.values.name}
         />
         <CardGray
           label={dataContactInformation.cardLastName}
-          placeHolder={dataContactInformation.placeLastName}
+          placeHolder={formik.values.lastName}
         />
         <Textfield
           name="email"

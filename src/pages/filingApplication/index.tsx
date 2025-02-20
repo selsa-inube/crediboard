@@ -44,6 +44,10 @@ export function FilingApplication() {
   const [isCurrentFormValid, setIsCurrentFormValid] = useState(true);
   const [formData, setFormData] = useState<FormData>({
     contactInformation: {
+      document: "",
+      documentNumber: "",
+      name: "",
+      lastName: "",
       email: "",
       phone: "",
     },
