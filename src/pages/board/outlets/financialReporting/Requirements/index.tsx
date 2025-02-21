@@ -10,11 +10,9 @@ import { TableBoard } from "@components/data/TableBoard";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 import { CreditRequest } from "@services/types";
-import { getById } from "@mocks/utils/dataMock.service";
-import { addItem } from "@mocks/utils/dataMock.service";
+import { addItem, getById } from "@mocks/utils/dataMock.service";
 
-import { traceObserver } from "../config";
-import { errorObserver } from "../config";
+import { errorObserver, traceObserver } from "../config";
 import {
   dataButton,
   infoItems,
