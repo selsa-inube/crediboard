@@ -69,3 +69,9 @@ export const StyledPageBreak = styled.div`
     page-break-before: always;
   }
 `;
+
+export const StyledMarginPrint = styled.div`
+  @media print {
+    margin: 1cm 0cm 1cm 2cm;
+  }
+`;
