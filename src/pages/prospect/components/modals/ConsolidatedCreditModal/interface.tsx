@@ -5,6 +5,7 @@ import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
 import { useMediaQuery } from "@inubekit/hooks";
+import { Grid } from "@inubekit/grid";
 
 import { currencyFormat } from "@utils/formatData/currency";
 import { InvestmentCreditCard } from "@pages/addProspect/components/InvestmentCreditCard";
@@ -24,17 +25,6 @@ export function ConsolidatedCreditsInterface(
   const { loading, handleClose } = props;
   const isMobile = useMediaQuery("(max-width:880px)");
   const data = mockConsolidatedCreditModal[0];
-
-  const investmentCardsData = [
-    {
-      expired: ModalConfig.expired,
-      expiredValue: data.expiredValue,
-    },
-    {
-      expired: ModalConfig.nextExpiration,
-      expiredValue: data.nextExpiration,
-    },
-  ];
 
   return (
     <StyledModal $isMobile={isMobile}>
@@ -83,18 +73,25 @@ export function ConsolidatedCreditsInterface(
       <Text type="body" appearance="gray" size="small" weight="bold">
         {ModalConfig.selectedText}
       </Text>
-      <Stack direction={isMobile ? "column" : "row"} gap="16px">
-        {investmentCardsData.map((item, index) => (
+      <Grid
+        autoRows="auto"
+        templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"}
+        gap="16px"
+        width="0%"
+      >
+        {data.investments.map((item, index) => (
           <InvestmentCreditCard
             key={index}
             code={ModalConfig.investmentCode}
-            codeValue={data.investmentCode}
-            expired={item.expired}
+            codeValue={item.investmentCode}
+            expired={
+              index === 0 ? ModalConfig.expired : ModalConfig.nextExpiration
+            }
             expiredValue={item.expiredValue}
             title={ModalConfig.creditInvestment}
           />
         ))}
-      </Stack>
+      </Grid>
       <Stack height="100%" direction="column" justifyContent="end" gap="16px">
         <Divider />
         <Stack gap="20px" justifyContent="end">
