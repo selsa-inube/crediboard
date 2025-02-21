@@ -1,25 +1,13 @@
 export const mockDeductibleExpenses = [
   {
-    adjustmentInterest: {
-      label: "Intereses de ajuste al ciclo (I.A.C)",
-      value: 700000,
-    },
-    bail: {
-      label: "Fianza",
-      value: 300000,
-    },
-    sure: {
-      label: "Seguro",
-    },
+    adjustmentInterest: 700000, 
+    bail: 300000, 
+    sure1: 100000, 
+    sure2: 100000,
+    sure3: 100000,
+    sure4: 100000,
+    sure5: 100000,
+    sure6: 100000,
+    sure7: 100000,
   },
-];
-
-export const mocksures = [
-  { sure: 100000 },
-  { sure: 100000 },
-  { sure: 100000 },
-  { sure: 100000 },
-  { sure: 100000 },
-  { sure: 100000 },
-  { sure: 100000 },
 ];
