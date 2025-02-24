@@ -9,6 +9,7 @@ import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
 import { Tabs } from "@inubekit/tabs";
 
+import { IDebtorDetail } from "@pages/filingApplication/types";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 import { validationMessages } from "@validations/validationMessages";
 
@@ -21,10 +22,11 @@ interface IDebtorDetailsModalProps {
   handleClose: () => void;
   isMobile?: boolean;
   portalId?: string;
+  initialValues: IDebtorDetail;
 }
 
 export function DebtorDetailsModal(props: IDebtorDetailsModalProps) {
-  const { handleClose, isMobile, portalId = "portal" } = props;
+  const { handleClose, isMobile, portalId = "portal", initialValues } = props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
@@ -73,7 +75,9 @@ export function DebtorDetailsModal(props: IDebtorDetailsModalProps) {
               tabs={dataTabs}
               onChange={onChange}
             />
-            {currentTab === "data" && <DataDebtor />}
+            {currentTab === "data" && (
+              <DataDebtor initialValues={initialValues} />
+            )}
             {currentTab === "sources" && <IncomeDebtor />}
             {currentTab === "obligations" && <TableFinancialObligations />}
           </Stack>

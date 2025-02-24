@@ -52,11 +52,21 @@ export function FilingApplication() {
       phone: "",
     },
     borrowerData: {
-      name: "",
-      lastName: "",
-      email: "",
-      income: 0,
-      obligations: 0,
+      initialBorrowers: {
+        id: "",
+        name: "",
+        debtorDetail: {
+          document: "",
+          documentNumber: "",
+          name: "",
+          lastName: "",
+          email: "",
+          number: "",
+          sex: "",
+          age: "",
+          relation: "",
+        },
+      },
     },
     propertyOffered: {
       antique: "",
