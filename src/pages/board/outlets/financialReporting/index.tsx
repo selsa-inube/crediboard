@@ -248,8 +248,8 @@ export const FinancialReporting = () => {
   };
 
   return (
-    <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
-      <StyledMarginPrint>
+    <StyledMarginPrint $isMobile={isMobile}>
+      <Stack direction="column">
         {errors && (
           <Stack justifyContent="center" alignContent="center">
             <StyledToast $isMobile={isMobile}>
@@ -394,7 +394,7 @@ export const FinancialReporting = () => {
             onGuarantee={() => setShowGuarantee(true)}
           />
         )}
-      </StyledMarginPrint>
-    </Stack>
+      </Stack>
+    </StyledMarginPrint>
   );
 };

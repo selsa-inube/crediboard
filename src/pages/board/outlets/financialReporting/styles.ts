@@ -70,8 +70,12 @@ export const StyledPageBreak = styled.div`
   }
 `;
 
-export const StyledMarginPrint = styled.div`
+export const StyledMarginPrint = styled.div<IStyledToast>`
+  margin: ${({ $isMobile }) => ($isMobile ? "20px" : "20px 40px")};
   @media print {
-    margin: 1cm 0cm 1cm 2cm;
+    @page {
+      margin: 1in 0.85in 1in 1in;
+    }
+    margin: -15px 0 0 0;
   }
 `;
