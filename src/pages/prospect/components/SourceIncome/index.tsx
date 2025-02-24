@@ -124,9 +124,9 @@ export function SourceIncome(props: ISourceIncomeProps) {
             </Stack>
             {onlyDebtor && (
               <Stack
-                alignItems="end"
                 width={isMobile ? "100%" : "auto"}
                 gap="16px"
+                margin="auto 0 0 0"
               >
                 <Button
                   variant="outlined"

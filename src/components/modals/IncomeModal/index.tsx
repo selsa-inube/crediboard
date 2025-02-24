@@ -7,19 +7,20 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { Icon } from "@inubekit/icon";
 import { Blanket } from "@inubekit/blanket";
+import { useFlag } from "@inubekit/flag";
 
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 
 import { StyledContainer, StyledContainerClose } from "./styles";
+import { dataIncomeModal } from "./config";
 
 interface IncomeModalProps {
   portalId?: string;
-  handleClose?: () => void;
+  handleClose: () => void;
 }
 
 export function IncomeModal(props: IncomeModalProps) {
   const { portalId, handleClose } = props;
-
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
@@ -29,6 +30,18 @@ export function IncomeModal(props: IncomeModalProps) {
       "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
     );
   }
+
+  const { addFlag } = useFlag();
+
+  const handleSubmit = () => {
+    handleClose();
+    addFlag({
+      title: `${dataIncomeModal.flagTittle}`,
+      description: `${dataIncomeModal.flagDescription}`,
+      appearance: "success",
+      duration: 5000,
+    });
+  };
 
   return createPortal(
     <Blanket>
@@ -41,11 +54,11 @@ export function IncomeModal(props: IncomeModalProps) {
         >
           <Stack justifyContent="space-between" alignItems="center">
             <Text size="small" type="headline">
-              Fuentes de ingreso
+              {dataIncomeModal.title}
             </Text>
             <StyledContainerClose onClick={handleClose}>
               <Stack alignItems="center" gap="8px">
-                <Text>Cerrar</Text>
+                <Text>{dataIncomeModal.close}</Text>
                 <Icon
                   icon={<MdClear />}
                   size="24px"
@@ -56,9 +69,7 @@ export function IncomeModal(props: IncomeModalProps) {
             </StyledContainerClose>
           </Stack>
           <Divider />
-          <SourceIncome
-            ShowSupport={false}
-          />
+          <SourceIncome ShowSupport={false} />
           <Divider />
           <Stack
             padding="10px 0px"
@@ -79,10 +90,7 @@ export function IncomeModal(props: IncomeModalProps) {
                 variant="outlined"
                 onClick={handleClose}
               />
-              <Button
-                children="Guardar"
-                onClick={handleClose}
-              />
+              <Button children="Guardar" onClick={handleSubmit} />
             </Stack>
           </Stack>
         </Stack>
