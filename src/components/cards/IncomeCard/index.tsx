@@ -1,14 +1,21 @@
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { Stack } from "@inubekit/stack";
 import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
 import { Icon } from "@inubekit/icon";
 
-import { currencyFormat } from "@utils/formatData/currency";
-
+import { CardGray } from "../CardGray";
 import { StyledContainer, StyledTextField, StyledSupport } from "./styles";
 import { incomeCardData } from "./config";
+import {
+  currencyFormat,
+  handleChangeWithCurrency,
+  parseCurrencyString,
+  validateCurrencyField,
+} from "@utils/formatData/currency";
 
 export interface IIncomeCardProps {
   title: string;
@@ -16,11 +23,35 @@ export interface IIncomeCardProps {
   placeholders: string[];
   values: string[];
   ShowSupport?: boolean;
-  onChange: (index: number, newValue: string) => void;
+  disabled?: boolean;
 }
 
 export function IncomeCard(props: IIncomeCardProps) {
-  const { title, labels, placeholders, values, onChange, ShowSupport } = props;
+  const {
+    title,
+    labels,
+    placeholders,
+    values,
+    ShowSupport,
+    disabled = false,
+  } = props;
+
+  const validationSchema = Yup.object({
+    field: Yup.number().required(),
+  });
+
+  const formik = useFormik({
+    initialValues: values.reduce(
+      (acc, val, index) => {
+        acc[`field${index}`] = currencyFormat(parseCurrencyString(val));
+        return acc;
+      },
+      {} as Record<string, string>
+    ),
+    validationSchema,
+    validateOnMount: true,
+    onSubmit: () => {},
+  });
 
   return (
     <StyledContainer>
@@ -35,19 +66,48 @@ export function IncomeCard(props: IIncomeCardProps) {
         </Text>
         <Divider />
         <Stack direction="column" padding="10px 8px">
-          {labels.map((label, index) => (
-            <StyledTextField key={index}>
-              <Textfield
-                id={`field${index}`}
-                label={label}
-                placeholder={placeholders[index]}
-                value={currencyFormat(parseFloat(values[index]), false)}
-                onChange={(e) => onChange(index, e.target.value)}
-                size="compact"
-                fullwidth
-              />
-            </StyledTextField>
-          ))}
+          {!disabled && (
+            <>
+              {labels.map((label, index) => (
+                <StyledTextField key={index}>
+                  <Text type="label" weight="bold" size="medium">
+                    {label}
+                  </Text>
+                  <Textfield
+                    name={`field${index}`}
+                    id={`field${index}`}
+                    placeholder={placeholders[index]}
+                    value={validateCurrencyField(
+                      `field${index}`,
+                      formik,
+                      true,
+                      ""
+                    )}
+                    onChange={(e) => handleChangeWithCurrency(formik, e)}
+                    size="compact"
+                    disabled={disabled}
+                    fullwidth
+                  />
+                </StyledTextField>
+              ))}
+            </>
+          )}
+          {disabled && (
+            <Stack direction="column" padding="16px 0px" gap="12px">
+              {labels.map((label, index) => (
+                <CardGray
+                  key={index}
+                  label={label}
+                  placeHolder={validateCurrencyField(
+                    `field${index}`,
+                    formik,
+                    true,
+                    ""
+                  )}
+                />
+              ))}
+            </Stack>
+          )}
         </Stack>
         {ShowSupport && (
           <Stack justifyContent="end" margin="auto 12px 5px 0px">

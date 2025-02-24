@@ -2,11 +2,11 @@ import { IncomeCard } from "@components/cards/IncomeCard";
 
 interface IncomeProps {
   values: string[];
-  onChange: (index: number, newValue: string) => void;
   ShowSupport?: boolean;
+  disabled?: boolean;
 }
 
-function IncomeCapital({ values, onChange, ShowSupport }: IncomeProps) {
+function IncomeCapital({ values, ShowSupport, disabled }: IncomeProps) {
   return (
     <IncomeCard
       title="Rentas de capital"
@@ -17,13 +17,13 @@ function IncomeCapital({ values, onChange, ShowSupport }: IncomeProps) {
       ]}
       placeholders={["Arrendamiento/mes", "Utilidades/mes", "Rendimientos/mes"]}
       values={values}
-      onChange={onChange}
       ShowSupport={ShowSupport}
+      disabled={disabled}
     />
   );
 }
 
-function IncomeEmployment({ values, onChange, ShowSupport }: IncomeProps) {
+function IncomeEmployment({ values, ShowSupport, disabled }: IncomeProps) {
   return (
     <IncomeCard
       title="Rentas de trabajo"
@@ -38,41 +38,23 @@ function IncomeEmployment({ values, onChange, ShowSupport }: IncomeProps) {
         "Pensión/mes",
       ]}
       values={values}
-      onChange={onChange}
       ShowSupport={ShowSupport}
+      disabled={disabled}
     />
   );
 }
 
-function MicroBusinesses({ values, onChange, ShowSupport }: IncomeProps) {
+function MicroBusinesses({ values, ShowSupport, disabled }: IncomeProps) {
   return (
     <IncomeCard
       title="Otros ingresos variables"
       labels={["Ganancia promedio mensual", "Honorarios mensuales"]}
       placeholders={["Ganancias/mes", "Honorarios/mes"]}
       values={values}
-      onChange={onChange}
       ShowSupport={ShowSupport}
+      disabled={disabled}
     />
   );
 }
 
-function ProfessionalServices({ values, onChange, ShowSupport }: IncomeProps) {
-  return (
-    <IncomeCard
-      title="Servicios profesionales"
-      labels={["Honorarios mensuales"]}
-      placeholders={["Honorarios/mes"]}
-      values={values}
-      onChange={onChange}
-      ShowSupport={ShowSupport}
-    />
-  );
-}
-
-export {
-  IncomeCapital,
-  IncomeEmployment,
-  MicroBusinesses,
-  ProfessionalServices,
-};
+export { IncomeCapital, IncomeEmployment, MicroBusinesses };
