@@ -13,10 +13,12 @@ import { DeleteModal } from "@components/modals/DeleteModal";
 import { DebtorAddModal } from "@pages/prospect/components/modals/DebtorAddModal";
 import { DebtorDetailsModal } from "@pages/prospect/components/modals/DebtorDetailsModal";
 import { DebtorEditModal } from "@pages/prospect/components/modals/DebtorEditModal";
-import { mockGuaranteeBorrower } from "@mocks/guarantee/offeredguarantee.mock";
 import { dataFillingApplication } from "@pages/filingApplication/config/config";
+import { mockGuaranteeBorrower } from "@mocks/guarantee/offeredguarantee.mock";
 import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
 import { MockDataDebtor } from "@mocks/filing-application/add-borrower/addborrower.mock";
+import { income } from "@mocks/add-prospect/income/income.mock";
+import { mockFinancialObligation } from "@mocks/add-prospect/financial-obligation/financialobligation.mock";
 
 interface borrowersProps {
   isMobile: boolean;
@@ -30,8 +32,20 @@ export function Borrowers(props: borrowersProps) {
   const { handleOnChange, initialValues, isMobile } = props;
 
   const dataDebtorDetail = MockDataDebtor[0];
+  const dataIncome = income[0];
+
   const initialBorrowers = mockGuaranteeBorrower.reduce(
     (acc, item, index) => {
+      const financialDetails = mockFinancialObligation.map((financial) => ({
+        id: financial.id,
+        type: financial.type,
+        balance: financial.balance,
+        entity: financial.entity,
+        payment: financial.payment,
+        idUser: financial.idUser,
+        feePaid: financial.feePaid,
+      }));
+
       acc[`borrower${index + 1}`] = {
         id: item.id,
         name: item.name,
@@ -46,6 +60,18 @@ export function Borrowers(props: borrowersProps) {
           age: dataDebtorDetail?.Age || "",
           relation: dataDebtorDetail?.Relation || "",
         },
+        incomeDetail: {
+          borrower: dataIncome?.borrower || "",
+          leases: dataIncome?.capital[0] || "",
+          dividends: dataIncome?.capital[1] || "",
+          yields: dataIncome?.capital[2] || "",
+          salary: dataIncome?.employment[0] || "",
+          otherPay: dataIncome?.employment[1] || "",
+          allowances: dataIncome?.employment[2] || "",
+          revenue: dataIncome?.businesses[0] || "",
+          fee: dataIncome?.businesses[1] || "",
+        },
+        financialDetail: financialDetails,
       };
       return acc;
     },
@@ -55,6 +81,8 @@ export function Borrowers(props: borrowersProps) {
         name: string;
         id: string;
         debtorDetail: Record<string, string | number>;
+        incomeDetail: Record<string, string | number>;
+        financialDetail: Array<Record<string, string | number>>;
       }
     >
   );
