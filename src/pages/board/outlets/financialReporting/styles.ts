@@ -47,10 +47,35 @@ export const StyledScreenPrint = styled.div<IStyledToast>`
     grid-template-columns: 1fr;
     gap: 35px;
   }
+
+  & > div:nth-child(2),
+  & > div:nth-child(3),
+  & > div:nth-child(5),
+  & > div:nth-child(6) {
+    @media print {
+      height: 100%;
+    }
+  }
+
+  & > div:nth-child(2) {
+    @media print {
+      margin-top: 35px;
+    }
+  }
 `;
 
 export const StyledPageBreak = styled.div`
   @media print {
     page-break-before: always;
+  }
+`;
+
+export const StyledMarginPrint = styled.div<IStyledToast>`
+  margin: ${({ $isMobile }) => ($isMobile ? "20px" : "20px 40px")};
+  @media print {
+    @page {
+      margin: 1in 0.85in 1in 1in;
+    }
+    margin: -15px 0 0 0;
   }
 `;

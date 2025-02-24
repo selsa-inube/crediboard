@@ -34,13 +34,13 @@ interface IActionButtons {
 }
 
 interface IStockTrayProps {
+  navigation: () => void;
   isMobile?: boolean;
   actionButtons?: IActionButtons;
-  navigation: () => void;
 }
 
 export const StockTray = (props: IStockTrayProps) => {
-  const { isMobile, actionButtons, navigation } = props;
+  const { navigation, isMobile, actionButtons } = props;
 
   return (
     <Stack

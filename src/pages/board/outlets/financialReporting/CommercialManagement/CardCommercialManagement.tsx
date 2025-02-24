@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { MdOutlineEdit } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Divider } from "@inubekit/divider";
-import { MdOutlineEdit } from "react-icons/md";
 
 import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { NewCreditProductCard } from "@components/cards/CreditProductCard/newCard";

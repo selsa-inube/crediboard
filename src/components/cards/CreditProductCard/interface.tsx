@@ -1,7 +1,7 @@
+import { MdOutlineEdit, MdOutlineDelete } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
-import { MdOutlineEdit, MdOutlineDelete } from "react-icons/md";
 
 import {
   truncateTextToMaxLength,
@@ -11,8 +11,8 @@ import { currencyFormat } from "@utils/formatData/currency";
 import { getScheduleInSpanish } from "@utils/mappingData/mappings";
 
 import { StyledCreditProductCard, StyledDivider, StyledPrint } from "./styles";
-import { CreditProductCardProps } from ".";
 import { CREDIT_PRODUCT_TEXTS } from "./config";
+import { CreditProductCardProps } from ".";
 
 function CreditProductCardUI(props: CreditProductCardProps) {
   const {
