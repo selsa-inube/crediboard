@@ -11,7 +11,10 @@ import { incomeCardData } from "@components/cards/IncomeCard/config";
 import { ListModal } from "@components/modals/ListModal";
 import { CardGray } from "@components/cards/CardGray";
 import { IncomeModal } from "@components/modals/IncomeModal";
-import { currencyFormat } from "@utils/formatData/currency";
+import {
+  currencyFormat,
+  parseCurrencyString,
+} from "@utils/formatData/currency";
 import { get } from "@mocks/utils/dataMock.service";
 import { IIncome } from "@services/types";
 
@@ -40,11 +43,18 @@ export function SourceIncome(props: ISourceIncomeProps) {
 
   const totalSum = () => {
     const sumCapital =
-      values?.capital.reduce((acc, val) => acc + Number(val), 0) ?? 0;
+      values?.capital.reduce((acc, val) => acc + parseCurrencyString(val), 0) ??
+      0;
     const sumEmployment =
-      values?.employment.reduce((acc, val) => acc + Number(val), 0) ?? 0;
+      values?.employment.reduce(
+        (acc, val) => acc + parseCurrencyString(val),
+        0
+      ) ?? 0;
     const sumBusinesses =
-      values?.businesses.reduce((acc, val) => acc + Number(val), 0) ?? 0;
+      values?.businesses.reduce(
+        (acc, val) => acc + parseCurrencyString(val),
+        0
+      ) ?? 0;
 
     return sumCapital + sumEmployment + sumBusinesses;
   };
@@ -60,6 +70,23 @@ export function SourceIncome(props: ISourceIncomeProps) {
         console.error("Error fetching money destinations data:", error.message);
       });
   }, []);
+
+  const handleIncomeChange = (
+    category: "employment" | "capital" | "businesses",
+    index: number,
+    newValue: string
+  ) => {
+    setValues((prev) =>
+      prev
+        ? {
+            ...prev,
+            [category]: prev[category].map((val, i) =>
+              i === index ? newValue : val
+            ),
+          }
+        : null
+    );
+  };
 
   return (
     <StyledContainer $smallScreen={isMobile}>
@@ -158,16 +185,25 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   values={values.employment}
                   ShowSupport={ShowSupport}
                   disabled={disabled}
+                  onValueChange={(index, newValue) =>
+                    handleIncomeChange("employment", index, newValue)
+                  }
                 />
                 <IncomeCapital
                   values={values.capital}
                   ShowSupport={ShowSupport}
                   disabled={disabled}
+                  onValueChange={(index, newValue) =>
+                    handleIncomeChange("capital", index, newValue)
+                  }
                 />
                 <MicroBusinesses
                   values={values.businesses}
                   ShowSupport={ShowSupport}
                   disabled={disabled}
+                  onValueChange={(index, newValue) =>
+                    handleIncomeChange("businesses", index, newValue)
+                  }
                 />
               </>
             )}

@@ -24,6 +24,7 @@ export interface IIncomeCardProps {
   values: string[];
   ShowSupport?: boolean;
   disabled?: boolean;
+  onValueChange?: (index: number, newValue: string) => void;
 }
 
 export function IncomeCard(props: IIncomeCardProps) {
@@ -34,6 +35,7 @@ export function IncomeCard(props: IIncomeCardProps) {
     values,
     ShowSupport,
     disabled = false,
+    onValueChange,
   } = props;
 
   const validationSchema = Yup.object({
@@ -83,7 +85,10 @@ export function IncomeCard(props: IIncomeCardProps) {
                       true,
                       ""
                     )}
-                    onChange={(e) => handleChangeWithCurrency(formik, e)}
+                    onChange={(e) => {
+                      handleChangeWithCurrency(formik, e);
+                      onValueChange?.(index, e.target.value);
+                    }}
                     size="compact"
                     disabled={disabled}
                     fullwidth

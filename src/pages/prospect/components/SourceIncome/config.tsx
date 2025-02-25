@@ -4,9 +4,15 @@ interface IncomeProps {
   values: string[];
   ShowSupport?: boolean;
   disabled?: boolean;
+  onValueChange?: (index: number, newValue: string) => void;
 }
 
-function IncomeCapital({ values, ShowSupport, disabled }: IncomeProps) {
+function IncomeCapital({
+  values,
+  ShowSupport,
+  disabled,
+  onValueChange,
+}: IncomeProps) {
   return (
     <IncomeCard
       title="Rentas de capital"
@@ -19,11 +25,17 @@ function IncomeCapital({ values, ShowSupport, disabled }: IncomeProps) {
       values={values}
       ShowSupport={ShowSupport}
       disabled={disabled}
+      onValueChange={onValueChange}
     />
   );
 }
 
-function IncomeEmployment({ values, ShowSupport, disabled }: IncomeProps) {
+function IncomeEmployment({
+  values,
+  ShowSupport,
+  disabled,
+  onValueChange,
+}: IncomeProps) {
   return (
     <IncomeCard
       title="Rentas de trabajo"
@@ -40,11 +52,17 @@ function IncomeEmployment({ values, ShowSupport, disabled }: IncomeProps) {
       values={values}
       ShowSupport={ShowSupport}
       disabled={disabled}
+      onValueChange={onValueChange}
     />
   );
 }
 
-function MicroBusinesses({ values, ShowSupport, disabled }: IncomeProps) {
+function MicroBusinesses({
+  values,
+  ShowSupport,
+  disabled,
+  onValueChange,
+}: IncomeProps) {
   return (
     <IncomeCard
       title="Otros ingresos variables"
@@ -53,6 +71,7 @@ function MicroBusinesses({ values, ShowSupport, disabled }: IncomeProps) {
       values={values}
       ShowSupport={ShowSupport}
       disabled={disabled}
+      onValueChange={onValueChange}
     />
   );
 }
