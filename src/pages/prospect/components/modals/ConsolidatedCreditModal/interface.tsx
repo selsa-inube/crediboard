@@ -11,7 +11,11 @@ import { currencyFormat } from "@utils/formatData/currency";
 import { InvestmentCreditCard } from "@pages/addProspect/components/InvestmentCreditCard";
 import { mockConsolidatedCreditModal } from "@mocks/add-prospect/consolidated-credit-modal/consolidatedcreditmodal.mock";
 
-import { StyledContainerClose, StyledModal } from "./styles";
+import {
+  StyledContainerClose,
+  StyledModal,
+  ScrollableContainer,
+} from "./styles";
 import { ModalConfig } from "./Config";
 
 interface ConsolidatedCreditsInterfaceProps {
@@ -29,7 +33,11 @@ export function ConsolidatedCreditsInterface(
   return (
     <StyledModal $isMobile={isMobile}>
       <Stack justifyContent="space-between">
-        <Text type="headline" size="small" appearance="dark">
+        <Text
+          type={isMobile ? "title" : "headline"}
+          size="small"
+          appearance="dark"
+        >
           {ModalConfig.title}
         </Text>
         <StyledContainerClose onClick={handleClose}>
@@ -37,17 +45,20 @@ export function ConsolidatedCreditsInterface(
             <Text>{ModalConfig.closeButton}</Text>
             <Icon
               icon={<MdClear />}
-              size="24px"
+              size={isMobile ? "18px" : "24px"}
               cursorHover
               appearance="dark"
             />
           </Stack>
         </StyledContainerClose>
       </Stack>
-
       <Divider />
-
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
+      <Stack
+        direction={isMobile ? "column" : "row"}
+        alignItems="center"
+        justifyContent={isMobile ? "center" : "space-between"}
+        gap={isMobile ? "10px" : "0px"}
+      >
         <Stack direction="column">
           <Text appearance="primary" weight="bold" type="headline" size="large">
             $
@@ -64,6 +75,7 @@ export function ConsolidatedCreditsInterface(
           variant="outlined"
           appearance="primary"
           spacing="wide"
+          fullwidth={isMobile}
         >
           {ModalConfig.edit}
         </Button>
@@ -73,25 +85,25 @@ export function ConsolidatedCreditsInterface(
       <Text type="body" appearance="gray" size="small" weight="bold">
         {ModalConfig.selectedText}
       </Text>
-      <Grid
-        autoRows="auto"
-        templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"}
-        gap="16px"
-        width="0%"
-      >
-        {data.investments.map((item, index) => (
-          <InvestmentCreditCard
-            key={index}
-            code={ModalConfig.investmentCode}
-            codeValue={item.investmentCode}
-            expired={
-              index === 0 ? ModalConfig.expired : ModalConfig.nextExpiration
-            }
-            expiredValue={item.expiredValue}
-            title={ModalConfig.creditInvestment}
-          />
-        ))}
-      </Grid>
+      <ScrollableContainer>
+        <Grid
+          autoRows="auto"
+          templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"}
+          gap="16px"
+          width="0%"
+        >
+          {data.investments.map((item, index) => (
+            <InvestmentCreditCard
+              key={index}
+              code={item.code}
+              codeValue={item.codeValue}
+              expired={item.expired}
+              expiredValue={item.expiredValue}
+              title={ModalConfig.creditInvestment}
+            />
+          ))}
+        </Grid>
+      </ScrollableContainer>
       <Stack height="100%" direction="column" justifyContent="end" gap="16px">
         <Divider />
         <Stack gap="20px" justifyContent="end">

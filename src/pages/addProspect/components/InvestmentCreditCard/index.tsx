@@ -1,7 +1,9 @@
 import { Divider } from "@inubekit/divider";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
+
 import { currencyFormat } from "@utils/formatData/currency";
+
 import { StyledContainer, StyledInput } from "./styles";
 
 interface InvestmentCreditCardProps {
