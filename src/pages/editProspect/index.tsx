@@ -12,7 +12,7 @@ import { Fieldset } from "@components/data/Fieldset";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
 import { mockEditProspect } from "@mocks/add-prospect/edit-prospect/editprospect.mock";
 
-import { StyledPrint } from "./styles";
+import { StyledMarginPrint, StyledPrint } from "./styles";
 import { dataEditProspect } from "./config";
 
 export function EditProspect() {
@@ -24,6 +24,7 @@ export function EditProspect() {
   const data = mockEditProspect[0];
 
   return (
+    <StyledMarginPrint>
     <Stack padding="24px">
       <Stack
         width={isMobile ? "-webkit-fill-available" : "min(100%,1440px)"}
@@ -131,5 +132,6 @@ export function EditProspect() {
       </Stack>
       {showMenu && <Stack></Stack>}
     </Stack>
+    </StyledMarginPrint>
   );
 }
