@@ -304,11 +304,11 @@ function ToDo(props: ToDoProps) {
             </Stack>
             <Divider />
             <Stack
-              direction={isMobile ? "column" : "row"}
-              gap="16px"
-              alignItems="flex-start"
               padding="16px 0"
               justifyContent="space-between"
+              direction="row"
+              alignItems="center"
+              gap="16px"
             >
               {isModalOpen && (
                 <DecisionModal
@@ -322,75 +322,80 @@ function ToDo(props: ToDoProps) {
                   data={data}
                 />
               )}
-              <Stack justifyContent="start">
-                <Stack
-                  direction="column"
-                  alignItems="flex-start"
-                  gap="16px"
-                  padding="0px 100px 0px 0px"
-                >
-                  <StyledTextField>
-                    <Text
-                      type="body"
-                      weight="bold"
-                      size="small"
-                      appearance="gray"
-                      textAlign="start"
-                    >
-                      {txtTaskQuery.txtCommercialManager}
-                    </Text>
-                  </StyledTextField>
-                  <StyledTextField>
-                    <Text
-                      type="title"
-                      size="medium"
-                      appearance="dark"
-                      textAlign="start"
-                    >
-                      {truncateTextToMaxLength(datamock.CommercialManager, 30)}
-                    </Text>
-                  </StyledTextField>
+              <Stack
+                gap="16px"
+                justifyContent="flex-start"
+                direction={isMobile ? "column" : "row"}
+              >
+                <Stack justifyContent="start">
+                  <Stack
+                    direction="column"
+                    alignItems="flex-start"
+                    gap="16px"
+                    padding="0px 100px 0px 0px"
+                  >
+                    <StyledTextField>
+                      <Text
+                        type="body"
+                        weight="bold"
+                        size="small"
+                        appearance="gray"
+                        textAlign="start"
+                      >
+                        {txtTaskQuery.txtCommercialManager}
+                      </Text>
+                    </StyledTextField>
+                    <StyledTextField>
+                      <Text
+                        type="title"
+                        size="medium"
+                        appearance="dark"
+                        textAlign="start"
+                      >
+                        {truncateTextToMaxLength(
+                          datamock.CommercialManager,
+                          30
+                        )}
+                      </Text>
+                    </StyledTextField>
+                  </Stack>
+                  <StyledHorizontalDivider $isMobile={isMobile} />
                 </Stack>
-                <StyledHorizontalDivider $isMobile={isMobile} />
-              </Stack>
-              <Stack>
-                <Stack
-                  direction="column"
-                  alignItems="flex-start"
-                  gap="16px"
-                  padding="0px 100px 0px 0px"
-                >
-                  <StyledTextField>
-                    <Text
-                      type="body"
-                      weight="bold"
-                      size="small"
-                      appearance="gray"
-                      textAlign="start"
-                    >
-                      {txtTaskQuery.txtAnalyst}
-                    </Text>
-                  </StyledTextField>
-                  <StyledTextField>
-                    <Text
-                      type="title"
-                      size="medium"
-                      appearance="dark"
-                      textAlign="start"
-                    >
-                      {truncateTextToMaxLength(datamock.Analyst, 30)}
-                    </Text>
-                  </StyledTextField>
+                <Stack>
+                  <Stack
+                    direction="column"
+                    alignItems="flex-start"
+                    gap="16px"
+                    padding="0px 100px 0px 0px"
+                  >
+                    <StyledTextField>
+                      <Text
+                        type="body"
+                        weight="bold"
+                        size="small"
+                        appearance="gray"
+                        textAlign="start"
+                      >
+                        {txtTaskQuery.txtAnalyst}
+                      </Text>
+                    </StyledTextField>
+                    <StyledTextField>
+                      <Text
+                        type="title"
+                        size="medium"
+                        appearance="dark"
+                        textAlign="start"
+                      >
+                        {truncateTextToMaxLength(datamock.Analyst, 30)}
+                      </Text>
+                    </StyledTextField>
+                  </Stack>
+
+                  <StyledHorizontalDivider $isMobile={isMobile} />
                 </Stack>
-                <StyledHorizontalDivider $isMobile={isMobile} />
               </Stack>
               {icon && (
-                <Stack
-                  width="50px"
-                  height="60px"
-                  alignItems="center"
-                  justifyContent="center"
-                >
+                <Stack alignItems="center" padding="0px 15px 0px  0px">
                   <Icon
                     icon={icon.icon}
                     appearance="primary"
