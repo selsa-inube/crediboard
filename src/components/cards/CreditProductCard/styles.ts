@@ -29,4 +29,10 @@ const StyledDivider = styled.hr`
     theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
-export { StyledCreditProductCard, StyledDivider };
+const StyledPrint = styled.div`
+  @media print {
+    display: none;
+  }
+`;
+
+export { StyledCreditProductCard, StyledDivider, StyledPrint };

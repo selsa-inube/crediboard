@@ -12,7 +12,7 @@ export function RequirementsNotMet(props: IRequirementsNotMetProps) {
   const { isMobile } = props;
 
   return (
-    <Fieldset slim>
+    <Fieldset >
       <Stack
         gap="16px"
         margin={isMobile ? "8px" : "16px"}

@@ -5,7 +5,7 @@ import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
 
-import { StyledContainerFieldset } from "./styles";
+import { StyledContainerFieldset, StyledPrint } from "./styles";
 
 interface IOptionsButton {
   title: string;
@@ -22,7 +22,6 @@ interface IFieldsetProps {
   activeButton?: IOptionsButton;
   hasTable?: boolean;
   hasOverflow?: boolean;
-  slim?: boolean;
   isMobile?: boolean;
   isClickable?: boolean;
   selectedState?: boolean;
@@ -33,14 +32,14 @@ export const Fieldset = (props: IFieldsetProps) => {
     onSelectionChange,
     children,
     title,
-    heightFieldset,
     aspectRatio,
+    heightFieldset,
     descriptionTitle,
     activeButton,
     hasTable = false,
-    hasOverflow,
-    isClickable,
-    selectedState,
+    hasOverflow = false,
+    isClickable = false,
+    selectedState = false,
   } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
@@ -80,13 +79,15 @@ export const Fieldset = (props: IFieldsetProps) => {
         </Stack>
         {activeButton && (
           <Stack>
-            <Button
-              iconBefore={<MdAdd />}
-              spacing="compact"
-              onClick={activeButton.onClick}
-            >
-              {activeButton.title}
-            </Button>
+            <StyledPrint>
+              <Button
+                iconBefore={<MdAdd />}
+                spacing="compact"
+                onClick={activeButton.onClick}
+              >
+                {activeButton.title}
+              </Button>
+            </StyledPrint>
           </Stack>
         )}
       </Stack>
