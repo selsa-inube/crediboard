@@ -3,4 +3,6 @@ export const dataIncomeModal = {
   flagDescription: "Las fuentes de ingreso fueron actualizadas.",
   title: "Fuentes de ingreso",
   close: "Cerrar",
+  save: "Guardar",
+  cancel: "Cancelar",
 };

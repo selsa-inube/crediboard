@@ -41,7 +41,7 @@ function IncomeEmployment({
       title="Rentas de trabajo"
       labels={[
         "Salario mensual",
-        "Otros pagos mensuales (No salariales)",
+        "Otros pagos mensuales",
         "Mesadas pensionales",
       ]}
       placeholders={[
@@ -66,8 +66,8 @@ function MicroBusinesses({
   return (
     <IncomeCard
       title="Otros ingresos variables"
-      labels={["Ganancia promedio mensual", "Honorarios mensuales"]}
-      placeholders={["Ganancias/mes", "Honorarios/mes"]}
+      labels={["Honorarios profesionales", "Ganancias en micronegocios"]}
+      placeholders={["Honorarios/mes", "Ganancias/mes"]}
       values={values}
       ShowSupport={ShowSupport}
       disabled={disabled}

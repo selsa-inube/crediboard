@@ -9,6 +9,7 @@ import { Icon } from "@inubekit/icon";
 import { Blanket } from "@inubekit/blanket";
 import { useFlag } from "@inubekit/flag";
 
+import { validationMessages } from "@validations/validationMessages";
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 
 import { StyledContainer, StyledContainerClose } from "./styles";
@@ -26,9 +27,7 @@ export function IncomeModal(props: IncomeModalProps) {
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
-    throw new Error(
-      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
-    );
+    throw new Error(validationMessages.errorNodo);
   }
 
   const { addFlag } = useFlag();
@@ -85,12 +84,12 @@ export function IncomeModal(props: IncomeModalProps) {
               width={!isMobile ? "auto" : "100%"}
             >
               <Button
-                children="Cerrar"
+                children={dataIncomeModal.cancel}
                 appearance="gray"
                 variant="outlined"
                 onClick={handleClose}
               />
-              <Button children="Guardar" onClick={handleSubmit} />
+              <Button children={dataIncomeModal.save} onClick={handleSubmit} />
             </Stack>
           </Stack>
         </Stack>
