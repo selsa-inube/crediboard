@@ -1,13 +1,23 @@
-import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
+import styled from "styled-components";
 
+interface IStyledImage {
+  width?: string;
+}
 
 const StyledWelcomeContainer = styled.div`
-  background-color: ${inube.palette.neutral.N30};
+  background-color: ${({ theme }) =>
+    theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
 `;
 
 const StyledOutletContainer = styled(StyledWelcomeContainer)`
-  background-color: ${inube.palette.neutral.N0};
+  background-color: ${({ theme }) =>
+    theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
 `;
 
-export { StyledWelcomeContainer, StyledOutletContainer };
+const StyledImage = styled.img<IStyledImage>`
+  width: ${({ width }) => width};
+  max-width: 1200px;
+`;
+
+export { StyledWelcomeContainer, StyledOutletContainer, StyledImage };
