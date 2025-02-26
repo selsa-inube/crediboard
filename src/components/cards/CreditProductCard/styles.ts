@@ -18,6 +18,10 @@ const StyledCreditProductCard = styled.div<IStyledProduct>`
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   box-shadow: 0px 4px 8px 3px rgba(9, 30, 66, 0.13);
   cursor: ${({ $new }) => ($new ? "pointer" : "normal")};
+
+  @media print {
+    height: 365px;
+  }
 `;
 
 const StyledDivider = styled.hr`
@@ -29,4 +33,10 @@ const StyledDivider = styled.hr`
     theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
-export { StyledCreditProductCard, StyledDivider };
+const StyledPrint = styled.div`
+  @media print {
+    display: none;
+  }
+`;
+
+export { StyledCreditProductCard, StyledDivider, StyledPrint };
