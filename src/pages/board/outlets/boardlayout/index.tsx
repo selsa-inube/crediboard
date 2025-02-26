@@ -5,14 +5,14 @@ import { ICreditRequest } from "@services/types";
 import { getCreditRequestPin } from "@services/isPinned";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
 import { ChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
-import { AppContext } from "@context/AppContext/AppContext";
+import { AppContext } from "@context/AppContext";
 
 import { BoardLayoutUI } from "./interface";
 import { selectCheckOptions } from "./config/select";
 import { IBoardData } from "./types";
 
 function BoardLayout() {
-  const { user, updatePreferences } = useContext(AppContext);
+  const { eventData, setEventData } = useContext(AppContext);
 
   const [boardData, setBoardData] = useState<IBoardData>({
     boardRequests: [],
@@ -21,9 +21,9 @@ function BoardLayout() {
 
   const [filters, setFilters] = useState({
     searchRequestValue: "",
-    showPinnedOnly: user.preferences.showPinnedOnly || false,
+    showPinnedOnly: eventData.user.preferences.showPinnedOnly || false,
     selectOptions: selectCheckOptions,
-    boardOrientation: user.preferences.boardOrientation || "vertical",
+    boardOrientation: eventData.user.preferences.boardOrientation || "vertical",
   });
 
   const [filteredRequests, setFilteredRequests] = useState<ICreditRequest[]>(
@@ -130,11 +130,24 @@ function BoardLayout() {
     }));
 
     if (newFilters.boardOrientation !== undefined) {
-      updatePreferences({ boardOrientation: newFilters.boardOrientation });
+      const updatedEventData = { ...eventData };
+      updatedEventData.user.preferences = {
+        ...updatedEventData.user.preferences,
+        boardOrientation: newFilters.boardOrientation,
+      };
+
+      setEventData(updatedEventData);
     }
 
     if (newFilters.showPinnedOnly !== undefined) {
-      updatePreferences({ showPinnedOnly: newFilters.showPinnedOnly });
+      const updatedEventData = { ...eventData };
+
+      updatedEventData.user.preferences = {
+        ...updatedEventData.user.preferences,
+        showPinnedOnly: newFilters.showPinnedOnly,
+      };
+
+      setEventData(updatedEventData);
     }
   };
 
