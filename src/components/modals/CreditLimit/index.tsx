@@ -21,12 +21,6 @@ import { StyledContainerClose, StyledModal, StyledList } from "./styles";
 
 export interface ICreditLimitProps {
   title: string;
-  loading?: boolean;
-  handleClose: () => void;
-  onOpenPaymentCapacityModal?: () => void;
-  onOpenReciprocityModal?: () => void;
-  onOpenFrcModal?: () => void;
-  portalId?: string;
   maxPaymentCapacity: number;
   maxReciprocity: number;
   maxDebtFRC: number;
@@ -34,6 +28,12 @@ export interface ICreditLimitProps {
   currentPortfolio: number;
   maxUsableLimit: number;
   availableLimitWithoutGuarantee: number;
+  loading?: boolean;
+  handleClose: () => void;
+  onOpenPaymentCapacityModal?: () => void;
+  onOpenReciprocityModal?: () => void;
+  onOpenFrcModal?: () => void;
+  portalId?: string;
 }
 
 export const CreditLimit = (props: ICreditLimitProps) => {

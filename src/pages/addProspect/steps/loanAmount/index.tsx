@@ -12,7 +12,6 @@ import { inube } from "@inubekit/foundations";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditLimitCard } from "@pages/addProspect/components/CreditLimitCard";
-
 import { currencyFormat } from "@utils/formatData/currency";
 import { get } from "@mocks/utils/dataMock.service";
 import {
@@ -23,6 +22,7 @@ import { mockCreditLimit } from "@mocks/add-prospect/modals-amount/modalsAmount.
 import { IPaymentChannel } from "@services/types";
 
 import { dataAmount } from "./config";
+import { ScrollableContainer } from "./styles";
 
 export interface ILoanAmountProps {
   initialValues: {
@@ -94,19 +94,26 @@ export function LoanAmount(props: ILoanAmountProps) {
                 >
                   {dataAmount.creditText}
                 </Text>
-                <Stack direction="row" alignItems="center" gap="24px">
-                  {creditCardsData.slice(0, 2).map((item, index) => (
-                    <CreditLimitCard
-                      key={index}
-                      creditLineTxt={item.creditLineTxt}
-                      creditLine={item.creditLine}
-                      CreditLimitdata={item.CreditLimitdata}
-                      paymentCapacityData={item.paymentCapacityData}
-                      reciprocityData={item.reciprocityData}
-                      scoreData={item.scoreData}
-                    />
-                  ))}
-                </Stack>
+                <ScrollableContainer>
+                  <Stack
+                    direction="row"
+                    gap="24px"
+                    margin="0 auto"
+                    padding=" 0px 5px"
+                  >
+                    {creditCardsData.slice(0, 2).map((item, index) => (
+                      <CreditLimitCard
+                        key={index}
+                        creditLineTxt={item.creditLineTxt}
+                        creditLine={item.creditLine}
+                        CreditLimitdata={item.CreditLimitdata}
+                        paymentCapacityData={item.paymentCapacityData}
+                        reciprocityData={item.reciprocityData}
+                        scoreData={item.scoreData}
+                      />
+                    ))}
+                  </Stack>
+                </ScrollableContainer>
               </Stack>
               <Divider dashed />
               <Stack direction="column">
