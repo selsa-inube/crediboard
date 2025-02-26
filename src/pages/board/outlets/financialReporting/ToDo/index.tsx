@@ -332,7 +332,7 @@ function ToDo(props: ToDoProps) {
                     direction="column"
                     alignItems="flex-start"
                     gap="16px"
-                    padding="0px 100px 0px 0px"
+                    padding={isMobile ? "0px" : "0px 100px 0px 0px"}
                   >
                     <StyledTextField>
                       <Text
@@ -366,7 +366,7 @@ function ToDo(props: ToDoProps) {
                     direction="column"
                     alignItems="flex-start"
                     gap="16px"
-                    padding="0px 100px 0px 0px"
+                    padding={isMobile ? "0px" : "0px 100px 0px 0px"}
                   >
                     <StyledTextField>
                       <Text
