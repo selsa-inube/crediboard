@@ -54,6 +54,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
             tabs={Object.values(disbursemenTabs)}
             selectedTab={isSelected}
             onChange={handleTabChange}
+            scroll={isMobile}
           />
           {isSelected === disbursemenTabs.internal.id && (
             <DisbursementWithInternalAccount

@@ -3,6 +3,8 @@ import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
 
+import { disbursemenTabs } from "@pages/filingApplication/steps/disbursementGeneral/config";
+
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
@@ -14,7 +16,6 @@ import { VehicleOffered } from "./steps/vehicleOffered";
 import { Bail } from "./steps/bail";
 import { AttachedDocuments } from "./steps/attachedDocuments";
 import { DisbursementGeneral } from "./steps/disbursementGeneral";
-import { disbursemenTabs } from "@pages/filingApplication/steps/disbursementGeneral/config";
 
 interface AddPositionUIProps {
   currentStep: number;

@@ -11,7 +11,6 @@ import { Button } from "@inubekit/button";
 
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
-import { income } from "@mocks/add-prospect/income/income.mock";
 import { validationMessages } from "@validations/validationMessages";
 
 import { StyledContainer, StyledContainerClose } from "./styles";
@@ -37,12 +36,6 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
   const onChange = (tabId: string) => {
     setCurrentTab(tabId);
   };
-
-  const handleOnChange = (name: string, newValue: string) => {
-    console.log(name, newValue);
-  };
-
-  const dataIncome = income[0];
 
   return createPortal(
     <Blanket>
@@ -83,9 +76,6 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
             {currentTab === "data" && <DataDebtor />}
             {currentTab === "sources" && (
               <SourceIncome
-                form={dataIncome}
-                options={dataIncome.borrowers}
-                onChange={handleOnChange}
                 onlyDebtor={true}
               />
             )}

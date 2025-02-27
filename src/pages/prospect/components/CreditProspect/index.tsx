@@ -275,10 +275,7 @@ export function CreditProspect(props: ICreditProspectProps) {
       )}
       {currentModal === "IncomeModal" && (
         <IncomeModal
-          onChange={onChanges}
-          form={form}
           handleClose={handleCloseModal}
-          options={incomeOptions}
         />
       )}
       {currentModal === "reportCreditsModal" && (

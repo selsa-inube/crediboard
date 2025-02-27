@@ -34,13 +34,6 @@ const incomeCard: Meta<typeof IncomeCard> = {
       },
       description: "An array of values that will be shown in the textfields.",
     },
-    onChange: {
-      control: {
-        type: "object",
-      },
-      description:
-        "A callback function that is triggered when the value of a field changes. It receives the field index and the new value as parameters.",
-    },
     ShowSupport: {
       control: {
         type: "boolean",
