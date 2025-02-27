@@ -7,19 +7,19 @@ import { Textfield } from "@inubekit/textfield";
 import { CardGray } from "@components/cards/CardGray";
 import { Fieldset } from "@components/data/Fieldset";
 import { IContactInformation } from "@pages/filingApplication/types";
-
-import { dataContactInformation } from "./config";
 import { mockContactInformation } from "@mocks/filing-application/contact-information/contactinformation.mock";
 
+import { dataContactInformation } from "./config";
+
 interface IContactInformationProps {
-  isMobile: boolean;
-  initialValues: IContactInformation;
   onFormValid: (isValid: boolean) => void;
   handleOnChange: (values: IContactInformation) => void;
+  isMobile: boolean;
+  initialValues: IContactInformation;
 }
 
 export function ContactInformation(props: IContactInformationProps) {
-  const { isMobile, initialValues, onFormValid, handleOnChange } = props;
+  const { onFormValid, handleOnChange, isMobile, initialValues } = props;
 
   const data = mockContactInformation[0];
 

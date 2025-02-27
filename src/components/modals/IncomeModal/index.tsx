@@ -10,27 +10,25 @@ import { Blanket } from "@inubekit/blanket";
 import { useFlag } from "@inubekit/flag";
 
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
+import { validationMessages } from "@validations/validationMessages";
 
 import { StyledContainer, StyledContainerClose } from "./styles";
 import { dataIncomeModal } from "./config";
 
 interface IncomeModalProps {
-  portalId?: string;
   handleClose: () => void;
+  portalId?: string;
 }
 
 export function IncomeModal(props: IncomeModalProps) {
-  const { portalId, handleClose } = props;
+  const { handleClose, portalId } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
-    throw new Error(
-      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
-    );
+    throw new Error(validationMessages.errorNodo);
   }
-
   const { addFlag } = useFlag();
 
   const handleSubmit = () => {

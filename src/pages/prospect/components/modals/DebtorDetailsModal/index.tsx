@@ -20,13 +20,13 @@ import { IncomeDebtor } from "./incomeDebtor";
 
 interface IDebtorDetailsModalProps {
   handleClose: () => void;
+  initialValues: IDebtorDetail;
   isMobile?: boolean;
   portalId?: string;
-  initialValues: IDebtorDetail;
 }
 
 export function DebtorDetailsModal(props: IDebtorDetailsModalProps) {
-  const { handleClose, isMobile, portalId = "portal", initialValues } = props;
+  const { handleClose, initialValues, isMobile, portalId = "portal" } = props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
