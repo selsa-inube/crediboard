@@ -122,7 +122,6 @@ export const ExtraordinaryPaymentModal = (
           onSubmit={handleSubmit}
           onConfirm={handleConfirm}
           initialValues={{ field1: 0, field2: 0 }}
-          portalId={portalId}
         />
       )}
     </>,

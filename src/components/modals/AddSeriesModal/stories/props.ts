@@ -11,13 +11,6 @@ export const parameters = {
 };
 
 export const props: Partial<ArgTypes<AddSeriesModalProps>> = {
-  portalId: {
-    control: {
-      type: "text",
-    },
-    description: "ID del portal donde se renderiza el modal",
-    defaultValue: "portal",
-  },
   handleClose: {
     action: "handleClose",
     description: "Función para manejar el cierre del modal",
