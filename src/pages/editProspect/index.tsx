@@ -8,6 +8,7 @@ import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
 
+import { ShareCreditModal } from "@components/modals/ShareCreditModal";
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
 import { mockEditProspect } from "@mocks/add-prospect/edit-prospect/editprospect.mock";
@@ -16,6 +17,7 @@ import { dataEditProspect } from "./config";
 
 export function EditProspect() {
   const [showMenu, setShowMenu] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   const isMobile = useMediaQuery("(max-width:880px)");
   const { id } = useParams();
@@ -49,6 +51,7 @@ export function EditProspect() {
                 appearance="primary"
                 size="20px"
                 cursorHover
+                onClick={() => setShowShareModal(true)}
               />
             </Stack>
             <Divider dashed />
@@ -113,6 +116,12 @@ export function EditProspect() {
         </Stack>
       </Stack>
       {showMenu && <Stack></Stack>}
+      {showShareModal && (
+        <ShareCreditModal
+          isMobile={isMobile}
+          handleClose={() => setShowShareModal(false)}
+        />
+      )}
     </Stack>
   );
 }

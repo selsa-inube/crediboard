@@ -21,6 +21,7 @@ import { ReportCreditsModal } from "@components/modals/ReportCreditsModal";
 import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
 import { CreditLimit } from "@components/modals/CreditLimit";
 
+import { ShareCreditModal } from "@components/modals/ShareCreditModal";
 import { ICreditProductProspect } from "@services/types";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { addCreditProduct } from "@mocks/utils/addCreditProductMock.service";
@@ -49,6 +50,8 @@ export function CreditProspect(props: ICreditProspectProps) {
 
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [openModal, setOpenModal] = useState<string | null>(null);
+  const [showShareModal, setShowShareModal] = useState(false);
+
   const handleOpenModal = (modalName: string) => {
     setModalHistory((prevHistory) => [...prevHistory, modalName]);
   };
@@ -192,6 +195,7 @@ export function CreditProspect(props: ICreditProspectProps) {
                   icon={<MdOutlineShare />}
                   appearance="primary"
                   size="24px"
+                  onClick={() => setShowShareModal(true)}
                   cursorHover
                 />
                 <StyledVerticalDivider />
@@ -297,6 +301,12 @@ export function CreditProspect(props: ICreditProspectProps) {
           dataTable={extraordinaryInstallmentMock}
           portalId="portal"
           handleClose={handleCloseModal}
+        />
+      )}
+      {showShareModal && (
+        <ShareCreditModal
+          handleClose={() => setShowShareModal(false)}
+          isMobile={isMobile}
         />
       )}
     </Stack>
