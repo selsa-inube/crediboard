@@ -2,7 +2,6 @@ import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
-
 import { Toggle } from "@inubekit/toggle";
 import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -11,66 +10,57 @@ import { Button } from "@inubekit/button";
 import { Textarea } from "@inubekit/textarea";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
+import { Divider } from "@inubekit/divider";
 
+import { validationMessages } from "@validations/validationMessages";
+
+import { aprovalsConfig } from "./config";
 import { StyledModal, StyledContainerClose } from "./styles";
+
 interface FormValues {
   textarea: string;
   isApproved: boolean;
 }
 
 interface AprovalsModalProps {
-  title: string;
-  buttonText: string;
-  inputLabel: string;
-  inputPlaceholder: string;
-  maxLength?: number;
   portalId?: string;
   isApproved?: boolean;
-  onChangeApprove?: () => void;
+  onChangeApprove?: (isApproved: boolean) => void;
   onSubmit?: (values: FormValues) => void;
   onCloseModal?: () => void;
 }
 
 export function AprovalsModal(props: AprovalsModalProps) {
   const {
-    title,
-    buttonText,
-    inputLabel,
-    inputPlaceholder,
-    maxLength = 200,
     portalId = "portal",
-    isApproved = false,
-    onChangeApprove,
     onSubmit,
     onCloseModal,
+    onChangeApprove,
   } = props;
 
   const validationSchema = Yup.object().shape({
     textarea: Yup.string()
-      .max(maxLength, "El número de caracteres es demasiado largo")
-      .required("Este campo es obligatorio"),
-    approve: Yup.boolean(),
+      .max(aprovalsConfig.maxLength, aprovalsConfig.limitedTxt)
+      .required(aprovalsConfig.requiredField),
   });
 
   const isMobile = useMediaQuery("(max-width: 700px)");
   const node = document.getElementById(portalId);
 
   if (!node) {
-    throw new Error(
-      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
-    );
+    throw new Error(validationMessages.errorNodo);
   }
 
   return createPortal(
     <Blanket>
-      <StyledModal $smallScreen={isMobile}>
+      <StyledModal $isMobile={isMobile}>
         <Stack alignItems="center" justifyContent="space-between">
           <Text type="headline" size="small">
-            {title}
+            {aprovalsConfig.title}
           </Text>
           <StyledContainerClose onClick={onCloseModal}>
             <Stack alignItems="center" gap="8px">
-              <Text>Cerrar</Text>
+              <Text>{aprovalsConfig.close}</Text>
               <Icon
                 icon={<MdClear />}
                 size="24px"
@@ -80,6 +70,7 @@ export function AprovalsModal(props: AprovalsModalProps) {
             </Stack>
           </StyledContainerClose>
         </Stack>
+        <Divider />
         <Formik
           initialValues={{ textarea: "", isApproved: false }}
           validationSchema={validationSchema}
@@ -87,33 +78,44 @@ export function AprovalsModal(props: AprovalsModalProps) {
             values: FormValues,
             { setSubmitting }: FormikHelpers<FormValues>
           ) => {
-            onSubmit?.(values);
+            if (values.isApproved) {
+              onSubmit?.(values);
+              onCloseModal?.();
+            }
             setSubmitting(false);
           }}
         >
-          {({ errors, touched, isSubmitting }) => (
+          {({ errors, touched, isSubmitting, values, setFieldValue }) => (
             <Form>
               <Stack direction="column" gap="24px">
-                <Stack>
+                <Stack gap="8px">
                   <Toggle
-                    id="approve"
-                    name="approve"
-                    size="large"
-                    checked={isApproved}
                     onChange={(e) => {
-                      onChangeApprove?.();
-                      e.target.checked = !isApproved;
+                      const checked = e.target.checked;
+                      setFieldValue("isApproved", checked);
+                      onChangeApprove?.(checked);
                     }}
+                    checked={values.isApproved}
                   />
+                  <Text
+                    type="label"
+                    size="large"
+                    weight="bold"
+                    appearance={values.isApproved ? "success" : "danger"}
+                  >
+                    {values.isApproved
+                      ? aprovalsConfig.meets
+                      : aprovalsConfig.doesNotComply}
+                  </Text>
                 </Stack>
                 <Field name="textarea">
                   {({ field, form: { setFieldTouched } }: FieldProps) => (
                     <Textarea
                       {...field}
                       id="textarea"
-                      label={inputLabel}
-                      placeholder={inputPlaceholder}
-                      maxLength={maxLength}
+                      label={aprovalsConfig.observations}
+                      placeholder={aprovalsConfig.observationdetails}
+                      maxLength={aprovalsConfig.maxLength}
                       status={
                         touched.textarea && errors.textarea
                           ? "invalid"
@@ -133,9 +135,21 @@ export function AprovalsModal(props: AprovalsModalProps) {
                   )}
                 </Field>
               </Stack>
-              <Stack justifyContent="flex-end" margin="16px 0">
-                <Button type="submit" disabled={isSubmitting}>
-                  {buttonText}
+              <Stack justifyContent="flex-end" margin="16px 0" gap="12px">
+                <Button
+                  type="button"
+                  variant="outlined"
+                  appearance="gray"
+                  onClick={onCloseModal}
+                >
+                  {aprovalsConfig.Cancel}
+                </Button>
+                <Button
+                  type="submit"
+                  appearance="primary"
+                  disabled={!values.isApproved || isSubmitting}
+                >
+                  {aprovalsConfig.confirm}
                 </Button>
               </Stack>
             </Form>
