@@ -7,7 +7,6 @@ import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
 
-import { income } from "@mocks/add-prospect/income/income.mock";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 
 import { stepsAddBorrower } from "./config/addBorrower.config";
@@ -113,11 +112,6 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
               currentStepsNumber.id ===
                 stepsAddBorrower.contactInformation.id && (
                 <SourceIncome
-                  form={income[0]}
-                  options={income[0].borrowers}
-                  onChange={(name: string, newValue: string) => {
-                    handleFormChange({ [name]: newValue });
-                  }}
                   onlyDebtor={true}
                 />
               )}

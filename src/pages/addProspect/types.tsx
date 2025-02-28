@@ -1,5 +1,3 @@
-import { IIncome } from "@services/types";
-
 export const titleButtonTextAssited = {
   goBackText: "Anterior",
   goNextText: "Siguiente",
@@ -90,7 +88,6 @@ export interface FormData {
   borrowerData: IBorrowerData;
   generalToggleChecked: boolean;
   togglesState: boolean[];
-  incomeData: IIncome;
   loanAmountState: {
     inputValue: string;
     toggleChecked: boolean;

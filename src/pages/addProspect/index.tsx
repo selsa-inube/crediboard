@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { Consulting } from "@components/modals/Consulting";
-import { income } from "@mocks/add-prospect/income/income.mock";
 import { prospectId } from "@mocks/add-prospect/edit-prospect/prospectid.mock";
 
 import { stepsAddProspect } from "./config/addProspect.config";
@@ -44,7 +43,6 @@ export function AddProspect() {
       income: 0,
       obligations: 0,
     },
-    incomeData: income[0],
     loanAmountState: {
       inputValue: "",
       toggleChecked: false,
