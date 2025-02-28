@@ -85,16 +85,6 @@ export function ConsolidatedCreditsInterface(
         {ModalConfig.selectedText}
       </Text>
       <Stack direction={isMobile ? "column" : "row"} gap="16px">
-        {investmentCardsData.map((item, index) => (
-          <InvestmentCreditCard
-            key={index}
-            code={ModalConfig.investmentCode}
-            codeValue={data.investmentCode}
-            expired={item.expired}
-            expiredValue={item.expiredValue}
-            title={ModalConfig.creditInvestment}
-          />
-        ))}
         {editOpen &&
           investmentCardsData.map((item, index) => (
             <InvestmentCreditCard
@@ -106,6 +96,16 @@ export function ConsolidatedCreditsInterface(
               title={ModalConfig.creditInvestment}
             />
           ))}
+        {investmentCardsData.map((item, index) => (
+          <InvestmentCreditCard
+            key={index}
+            code={ModalConfig.investmentCode}
+            codeValue={data.investmentCode}
+            expired={item.expired}
+            expiredValue={item.expiredValue}
+            title={ModalConfig.creditInvestment}
+          />
+        ))}
       </Stack>
       <Stack height="100%" direction="column" justifyContent="end" gap="16px">
         <Divider />
