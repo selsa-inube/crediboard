@@ -66,7 +66,7 @@ export function FilingApplicationUI(props: AddPositionUIProps) {
         alignItems={isMobile ? "normal" : "center"}
         margin="20px 0px"
         padding="24px"
-        height={isMobile ? "2000px" : "100%"}
+        height="100vh"
       >
         <Stack
           gap="24px"

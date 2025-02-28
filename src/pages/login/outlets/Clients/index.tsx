@@ -1,62 +1,85 @@
 import React, { useState, useContext } from "react";
-import { ClientsUI } from "./interface";
-import { IClientState } from "./types";
 import { useNavigate } from "react-router-dom";
-import { AppContext } from "@context/AppContext/AppContext";
-import { IClient } from "@context/AppContext/types";
-import { IClients } from "@routes/login";
 
-function Clients({ clients }: IClients) {
+import { AppContext } from "@context/AppContext";
+import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
+
+import { IBusinessUnitstate } from "./types";
+import { BusinessUnitsUI } from "./interface";
+
+interface IBusinessUnitsProps {
+  businessUnits: IBusinessUnitsPortalStaff[];
+}
+
+function BusinessUnits(props: IBusinessUnitsProps) {
+  const { businessUnits } = props;
   const [search, setSearch] = useState("");
-  const [clientLocal, setClientLocal] = useState<IClientState>({
-    ref: null,
-    value: true,
-  });
+  const [businessUnitLocal, setBusinessUnitLocal] =
+    useState<IBusinessUnitstate>({
+      ref: null,
+      value: true,
+    });
+
+  const [selectedBusinessUnit, setSelectedBusinessUnit] =
+    useState<IBusinessUnitsPortalStaff | null>(null);
 
   const navigate = useNavigate();
-  const { handleClientChange } = useContext(AppContext);
+  const { setBusinessUnitSigla } = useContext(AppContext);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (clientLocal.ref) {
-      clientLocal.ref.checked = false;
+    if (businessUnitLocal.ref) {
+      businessUnitLocal.ref.checked = false;
     }
-    setClientLocal({ ref: null, value: true });
+    setBusinessUnitLocal({ ref: null, value: true });
     setSearch(event.target.value);
   };
 
   const handleCChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setClientLocal({ ref: event.target, value: false });
-    handleClientChange(
-      clients.filter((client0) => client0.name === event.target.value)[0]
+    setBusinessUnitLocal({ ref: event.target, value: false });
+
+    const selectOption = businessUnits.find(
+      (businessUnit0) => businessUnit0.abbreviatedName === event.target.value
     );
+    setSelectedBusinessUnit(selectOption || null);
   };
 
   const handleSubmit = () => {
+    if (selectedBusinessUnit) {
+      const selectJSON = JSON.stringify(selectedBusinessUnit);
+      setBusinessUnitSigla(selectJSON);
+    }
     navigate("/login/loading-app");
   };
 
-  function filterClients(clients: IClient[], search: string) {
-    return clients.filter((client) => {
-      const clientName = client.name.toUpperCase();
-      const clientSigla = client.sigla.toUpperCase();
-      const searchTerm = search.toUpperCase();
+  function filterBusinessUnits(
+    businessUnits: IBusinessUnitsPortalStaff[],
+    search: string
+  ) {
+    const searchTerm = search?.toUpperCase();
+
+    return businessUnits.filter((unit) => {
+      const businessUnitName = unit?.abbreviatedName?.toUpperCase() || "";
+      const businessUnitSigla =
+        unit?.businessUnitPublicCode?.toUpperCase() || "";
+
       return (
-        clientName.includes(searchTerm) || clientSigla.includes(searchTerm)
+        businessUnitName.includes(searchTerm) ||
+        businessUnitSigla.includes(searchTerm)
       );
     });
   }
 
   return (
-    <ClientsUI
-      clients={clients}
+    <BusinessUnitsUI
+      businessUnits={Object.values(businessUnits)}
       search={search}
-      client={clientLocal}
+      businessUnit={businessUnitLocal}
       handleSearchChange={handleSearchChange}
-      handleClientChange={handleCChange}
-      filterClients={filterClients}
+      handleBussinessUnitChange={handleCChange}
+      filterBusinessUnits={filterBusinessUnits}
       handleSubmit={handleSubmit}
     />
   );
 }
 
-export { Clients };
+export { BusinessUnits };
