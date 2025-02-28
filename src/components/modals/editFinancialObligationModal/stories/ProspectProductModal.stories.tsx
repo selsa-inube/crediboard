@@ -51,7 +51,6 @@ export const Create: Story = (args: IEditFinancialObligationModalProps) => {
 };
 
 Create.args = {
-  portalId: "portal",
   title: "Agregar Obligacion",
   confirmButtonText: "Agregar",
   iconBefore: <MdAdd />,
@@ -88,7 +87,6 @@ export const Edit: Story = (args: IEditFinancialObligationModalProps) => {
 };
 
 Edit.args = {
-  portalId: "portal",
   title: "Nombre de producto",
   confirmButtonText: "Actualizar",
   iconAfter: <MdCached />,

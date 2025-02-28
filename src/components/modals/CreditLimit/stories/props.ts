@@ -5,8 +5,5 @@ export const props: Partial<ArgTypes<ICreditLimitProps>> = {
   title: {
     control: { type: "text" },
   },
-  portalId: {
-    control: { type: "text" },
-  },
   handleClose: { action: "closed" },
 };

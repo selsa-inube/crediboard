@@ -219,7 +219,6 @@ export function CreditProspect(props: ICreditProspectProps) {
         <CreditLimit
           handleClose={handleCloseModal}
           title="Origen de cupo"
-          portalId="portal"
           onOpenPaymentCapacityModal={() => setOpenModal("paymentCapacity")}
           onOpenReciprocityModal={() => setOpenModal("reciprocityModal")}
           onOpenFrcModal={() => setOpenModal("scoreModal")}
@@ -240,7 +239,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       )}
       {openModal === "reciprocityModal" && (
         <ReciprocityModal
-          portalId="portal"
           handleClose={() => setOpenModal(null)}
           balanceOfContributions={4000000}
           accordingToRegulation={2}
