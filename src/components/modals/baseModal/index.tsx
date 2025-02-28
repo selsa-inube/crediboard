@@ -18,12 +18,15 @@ export interface IBaseModalProps {
   nextButton: string;
   children: JSX.Element | JSX.Element[];
   handleBack?: () => void;
+  handleClose?: () => void;
   width?: string;
   height?: string;
   disabledNext?: boolean;
+  disabledBack?: boolean;
   iconBeforeNext?: React.JSX.Element;
   iconAfterNext?: React.JSX.Element;
   backButton?: string;
+  initialDivider?: boolean;
   finalDivider?: boolean;
   portalId?: string;
 }
@@ -34,14 +37,17 @@ export function BaseModal(props: IBaseModalProps) {
     title,
     nextButton,
     children,
-    handleBack,
-    width,
-    height,
-    disabledNext,
+    handleBack = () => {},
+    handleClose = () => {},
+    width = "",
+    height = "",
+    disabledNext = false,
+    disabledBack = false,
     iconBeforeNext,
     iconAfterNext,
-    backButton,
-    finalDivider,
+    backButton = "",
+    initialDivider = true,
+    finalDivider = false,
     portalId = "portal",
   } = props;
 
@@ -64,7 +70,7 @@ export function BaseModal(props: IBaseModalProps) {
             <Text size="small" type="headline">
               {title}
             </Text>
-            <StyledContainerClose onClick={handleBack}>
+            <StyledContainerClose onClick={handleClose || handleBack}>
               <Stack alignItems="center" gap="8px">
                 <Text type="body" size="large">
                   {dataBaseModal.close}
@@ -78,12 +84,17 @@ export function BaseModal(props: IBaseModalProps) {
               </Stack>
             </StyledContainerClose>
           </Stack>
-          <Divider />
+          {initialDivider && <Divider />}
           <Stack direction="column">{children}</Stack>
           {finalDivider && <Divider />}
           <Stack justifyContent="end" gap="20px">
             {backButton && (
-              <Button onClick={handleBack} variant="outlined" appearance="gray">
+              <Button
+                onClick={handleBack || handleClose}
+                disabled={disabledBack}
+                variant="outlined"
+                appearance="gray"
+              >
                 {backButton}
               </Button>
             )}

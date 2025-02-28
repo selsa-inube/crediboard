@@ -30,7 +30,7 @@ export interface AddSeriesModalProps {
 }
 
 export function AddSeriesModal(props: AddSeriesModalProps) {
-  const { initialValues, onConfirm, handleClose, onSubmit } = props;
+  const { handleClose, onSubmit, onConfirm, initialValues } = props;
 
   const isMobile = useMediaQuery("(max-width: 700px)");
 
@@ -87,6 +87,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
           nextButton={dataAddSeriesModal.add}
           handleBack={onSubmit}
           handleNext={formik.submitForm}
+          handleClose={handleClose}
           disabledNext={!formik.dirty || !formik.isValid}
           width={isMobile ? "280px" : "425px"}
           height={isMobile ? "auto" : "639px"}

@@ -365,14 +365,12 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         {currentModal === "extraPayments" && (
           <ExtraordinaryPaymentModal
             dataTable={extraordinaryInstallmentMock}
-            portalId="portal"
             handleClose={handleCloseModal}
           />
         )}
         {currentModal === "disbursementModal" && (
           <DisbursementModal
             isMobile={isMobile}
-            portalId="portal"
             handleClose={handleCloseModal}
           />
         )}

@@ -227,7 +227,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       {openModal === "paymentCapacity" && (
         <PaymentCapacity
           title="Cupo máx. capacidad de pago"
-          portalId="portal"
           handleClose={() => setOpenModal(null)}
           reportedIncomeSources={2000000}
           reportedFinancialObligations={6789000}
@@ -262,7 +261,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       )}
       {currentModal === "editProductModal" && (
         <EditProductModal
-          portalId="portal"
           title="Agregar productos"
           confirmButtonText="Guardar"
           initialValues={initialValues}
@@ -282,7 +280,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       {currentModal === "reportCreditsModal" && (
         <ReportCreditsModal
           handleClose={handleCloseModal}
-          portalId="portal"
           totalBalance={87000000}
           totalFee={3300000}
           options={incomeOptions}
@@ -293,7 +290,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       {currentModal === "extraPayments" && (
         <ExtraordinaryPaymentModal
           dataTable={extraordinaryInstallmentMock}
-          portalId="portal"
           handleClose={handleCloseModal}
         />
       )}

@@ -17,26 +17,26 @@ import {
 import { dataInputs } from "./config";
 
 interface IEditFinancialObligationModalProps {
+  onCloseModal: () => void;
+  onConfirm: (values: FormikValues) => void;
   title: string;
   confirmButtonText: string;
   initialValues: FormikValues;
   iconBefore?: React.JSX.Element;
   iconAfter?: React.JSX.Element;
-  onCloseModal: () => void;
-  onConfirm: (values: FormikValues) => void;
 }
 
 function EditFinancialObligationModal(
   props: IEditFinancialObligationModalProps
 ) {
   const {
+    onCloseModal,
+    onConfirm,
     title,
     confirmButtonText,
     initialValues,
     iconBefore,
     iconAfter,
-    onCloseModal,
-    onConfirm,
   } = props;
 
   const isMobile = useMediaQuery("(max-width: 880px)");

@@ -98,7 +98,6 @@ export const Default: Story = (args: ExtraordinaryPaymentModalProps) => {
   );
 };
 Default.args = {
-  portalId: "portal",
   dataTable,
   onClickDetails: (id) => console.log("Action Details", id),
   onClickEdit: (id) => console.log("Action Edit", id),
@@ -120,7 +119,6 @@ export const NoData: Story = (args: ExtraordinaryPaymentModalProps) => {
   );
 };
 NoData.args = {
-  portalId: "portal",
   dataTable: [],
   onClickDetails: (id) => console.log("Action Details", id),
   onClickEdit: (id) => console.log("Action Edit", id),

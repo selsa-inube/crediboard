@@ -289,7 +289,6 @@ export function LoanAmount(props: ILoanAmountProps) {
             {openModal === "paymentCapacity" ? (
               <PaymentCapacity
                 title="Cupo máx. capacidad de pago"
-                portalId="portal"
                 loading={loading}
                 handleClose={() => setOpenModal(null)}
                 reportedIncomeSources={2000000}
