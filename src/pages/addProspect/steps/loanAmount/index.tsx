@@ -101,7 +101,7 @@ export function LoanAmount(props: ILoanAmountProps) {
                     margin="0 auto"
                     padding=" 0px 5px"
                   >
-                    {creditCardsData.slice(0, 2).map((item, index) => (
+                    {creditCardsData.map((item, index) => (
                       <CreditLimitCard
                         key={index}
                         creditLineTxt={item.creditLineTxt}

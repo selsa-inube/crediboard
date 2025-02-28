@@ -71,41 +71,4 @@ export const mockCreditLimit = [
       maxIndebtedness: 50000000,
     },
   },
-  {
-    creditLineTxt: "Crediaportes.",
-    creditLine: 30000000,
-    CreditLimitdata: {
-      maxPaymentCapacity: 50000000,
-      maxReciprocity: 40000000,
-      maxDebtFRC: 45000000,
-      assignedLimit: 0,
-      currentPortfolio: 10000000,
-      maxUsableLimit: 20000000,
-      availableLimitWithoutGuarantee: 15000000,
-    },
-    paymentCapacityData: {
-      reportedIncomeSources: 3000000,
-      reportedFinancialObligations: 8789000,
-      subsistenceReserve: 1000000,
-      availableForNewCommitments: 5000000,
-      maxVacationTerm: 10,
-      maxAmount: 3000000,
-    },
-    reciprocityData: {
-      balanceOfContributions: 50000000,
-      accordingToRegulation: 3,
-      assignedQuota: 3000000,
-    },
-    scoreData: {
-      totalScore: 200,
-      seniority: 100,
-      centralRisk: 60,
-      employmentStability: 250,
-      maritalStatus: 40,
-      economicActivity: 120,
-      monthlyIncome: 4000000,
-      maxIndebtedness: 70000000,
-    },
-  }
-
 ];
