@@ -22,7 +22,6 @@ export const StyledContainer = styled.div<IStyledContainer>`
 export const StyledInput = styled.div`
   padding: 8px 12px;
   border-radius: 8px;
-  cursor: pointer;
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
 `;
