@@ -1,5 +1,6 @@
+import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { MdClear } from "react-icons/md";
+import { MdClear, MdDeleteOutline } from "react-icons/md";
 
 import { Blanket } from "@inubekit/blanket";
 import { Button } from "@inubekit/button";
@@ -7,14 +8,19 @@ import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
+import { useFlag } from "@inubekit/flag";
 import { Divider } from "@inubekit/divider";
+
+import { StyledItem } from "@pages/board/outlets/financialReporting/styles";
+import { saveDocument } from "@services/saveDocument";
+import { optionFlags } from "@pages/board/outlets/financialReporting/config";
+import { validationMessages } from "@validations/validationMessages";
 
 import {
   StyledContainerClose,
   StyledContainerContent,
   StyledModal,
 } from "./styles";
-
 export interface IOptionButtons {
   label: string;
   variant: "filled" | "outlined" | "none";
@@ -42,6 +48,7 @@ export interface IListModalProps {
   portalId?: string;
   content?: JSX.Element | JSX.Element[] | string;
   optionButtons?: IOptionButtons;
+  id?: string;
 }
 
 export const ListModal = (props: IListModalProps) => {
@@ -56,16 +63,129 @@ export const ListModal = (props: IListModalProps) => {
     handleSubmit,
     onSubmit,
     buttonLabel,
+    //id,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
-    throw new Error(
-      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
-    );
+    throw new Error(validationMessages.errorNodo);
   }
+  const { addFlag } = useFlag();
 
   const isMobile = useMediaQuery("(max-width: 700px)");
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<
+    { id: string; name: string; file: File }[]
+  >([]);
+  const [loading, setLoading] = useState(false);
+
+  interface IListdataProps {
+    data: { id: string; name: string }[];
+    icon?: React.ReactNode;
+    onDelete: (id: string) => void;
+  }
+
+  const Listdata = (props: IListdataProps) => {
+    const { data, icon, onDelete } = props;
+
+    if (data.length === 0) {
+      return <Text>No hay documentos adjuntos.</Text>;
+    }
+
+    return (
+      <ul
+        style={{
+          paddingInlineStart: "2px",
+          marginBlock: "8px",
+        }}
+      >
+        {data.map((element) => (
+          <StyledItem key={element.id}>
+            <Text>{element.name}</Text>
+            <Icon
+              icon={icon}
+              appearance="dark"
+              spacing="narrow"
+              size="24px"
+              cursorHover
+              onClick={() => onDelete(element.id)}
+            />
+          </StyledItem>
+        ))}
+      </ul>
+    );
+  };
+
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const newFiles = Array.from(files).map((file) => ({
+        id: crypto.randomUUID(),
+        name: file.name,
+        file: file,
+      }));
+      setUploadedFiles((prev) => [...prev, ...newFiles]);
+      setLoading(true);
+    }
+  };
+
+  const handleDeleteFile = (id: string) => {
+    setUploadedFiles((prev) => prev.filter((file) => file.id !== id));
+    setLoading(false);
+  };
+
+  type FlagAppearance =
+    | "primary"
+    | "danger"
+    | "warning"
+    | "success"
+    | "help"
+    | "gray"
+    | "dark";
+
+  const handleFlag = (
+    title: string,
+    description: string,
+    appearance: FlagAppearance
+  ) => {
+    addFlag({
+      title: title,
+      description: description,
+      appearance: appearance,
+      duration: 5000,
+    });
+  };
+
+  const handleUpload = async () => {
+    try {
+      uploadedFiles.forEach(async (fileData) => {
+        await saveDocument(
+          "1", //id
+          fileData.name.split(".").slice(0, -1).join("."),
+          fileData.file
+        );
+      });
+      handleClose();
+      handleFlag(
+        optionFlags.title,
+        optionFlags.description,
+        optionFlags.appearance as FlagAppearance
+      );
+    } catch (error) {
+      handleFlag(
+        optionFlags.title,
+        optionFlags.description,
+        optionFlags.appearanceError as FlagAppearance
+      );
+    }
+  };
 
   return createPortal(
     <Blanket>
@@ -94,24 +214,47 @@ export const ListModal = (props: IListModalProps) => {
             </Stack>
           ) : (
             <StyledContainerContent $smallScreen={isMobile}>
-              {content}
+              <Listdata
+                data={uploadedFiles}
+                icon={<MdDeleteOutline />}
+                onDelete={handleDeleteFile}
+              />
             </StyledContainerContent>
           )}
         </StyledContainerContent>
-        {optionButtons && (
-          <Button
-            spacing="compact"
-            iconBefore={optionButtons?.icon}
-            variant={optionButtons?.variant}
-            onClick={optionButtons?.onClick}
-            fullwidth={optionButtons?.fullwidth}
-            cursorHover
-          >
-            {optionButtons?.label + "prueba"}
-          </Button>
+        {optionButtons ? (
+          <>
+            <Button
+              spacing="compact"
+              iconBefore={optionButtons?.icon}
+              variant={optionButtons?.variant}
+              onClick={handleButtonClick}
+              fullwidth={optionButtons?.fullwidth}
+              cursorHover
+            >
+              {optionButtons?.label}
+            </Button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+              accept=".pdf,.jpg,.png"
+              multiple
+            />
+            <Stack justifyContent="flex-end" margin="16px 0 0 0" gap="16px">
+              <Button onClick={handleUpload} disabled={loading ? false : true}>
+                {buttonLabel}
+              </Button>
+            </Stack>
+          </>
+        ) : (
+          <Stack justifyContent="flex-end" margin="16px 0 0 0" gap="16px">
+            <Button onClick={handleClose}>{buttonLabel}</Button>
+          </Stack>
         )}
-        <Stack justifyContent="flex-end" margin="16px 0 0 0" gap="16px">
-          {cancelButton && (
+        {cancelButton && optionButtons && (
+          <Stack justifyContent="flex-end" margin="16px 0 0 0" gap="16px">
             <Button
               variant="outlined"
               onClick={handleSubmit}
@@ -120,9 +263,9 @@ export const ListModal = (props: IListModalProps) => {
             >
               {cancelButton}
             </Button>
-          )}
-          <Button onClick={onSubmit ?? handleClose}>{buttonLabel}</Button>
-        </Stack>
+            <Button onClick={onSubmit ?? handleClose}>{buttonLabel}</Button>
+          </Stack>
+        )}
       </StyledModal>
     </Blanket>,
     node

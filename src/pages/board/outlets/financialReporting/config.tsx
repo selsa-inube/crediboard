@@ -91,7 +91,7 @@ export const optionButtons: IOptionButtons = {
   variant: "none",
   icon: <MdAddCircleOutline />,
   fullwidth: false,
-  onClick: () => console.log("Adjuntar archivo"),
+  onClick: () => {},
 };
 
 type ConfigHandleactions = {
@@ -138,4 +138,11 @@ export const configHandleactions = ({
     },
     menuIcon: menuIcon,
   };
+};
+
+export const optionFlags = {
+  title: "Adjuntar archivo",
+  description: "Los archivos adjuntos fueron cargados correctamente",
+  appearance: "success",
+  appearanceError: "danger",
 };
