@@ -401,3 +401,7 @@ export interface IUserSteps {
   id: number,
   intermediateSteps: number[],
 }
+export interface ILoanAmount {
+  id: number;
+  choice: string;
+}
