@@ -10,6 +10,7 @@ import { ICreditRequestPinned, ICreditRequest } from "@services/types";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
+import { configOption } from "./config";
 
 interface BoardSectionProps {
   sectionTitle: string;
@@ -107,34 +108,40 @@ function BoardSection(props: BoardSectionProps) {
           justifyContent={isMobile ? "center" : "flex-start"}
           gap="20px"
         >
-          {sectionInformation.map((request, index) => (
-            <SummaryCard
-              key={index}
-              rad={request.creditRequestCode}
-              date={request.creditRequestDateOfCreation}
-              name={request.clientName}
-              destination={request.moneyDestinationAbreviatedName}
-              value={request.loanAmount}
-              toDo={request.taskToBeDone}
-              path={`extended-card/${request.creditRequestCode}`}
-              isPinned={isRequestPinned(
-                request.creditRequestId,
-                pinnedRequests
-              )}
-              hasMessage
-              onPinChange={() => {
-                if (request.creditRequestId) {
-                  handlePinRequest(
-                    request.creditRequestId,
-                    isRequestPinned(request.creditRequestId, pinnedRequests)
-                      ? "N"
-                      : "Y"
-                  );
-                }
-              }}
-              errorLoadingPins={errorLoadingPins}
-            />
-          ))}
+          {sectionInformation.length > 0 ? (
+            sectionInformation.map((request, index) => (
+              <SummaryCard
+                key={index}
+                rad={request.creditRequestCode}
+                date={request.creditRequestDateOfCreation}
+                name={request.clientName}
+                destination={request.moneyDestinationAbreviatedName}
+                value={request.loanAmount}
+                toDo={request.taskToBeDone}
+                path={`extended-card/${request.creditRequestCode}`}
+                isPinned={isRequestPinned(
+                  request.creditRequestId,
+                  pinnedRequests
+                )}
+                hasMessage
+                onPinChange={() => {
+                  if (request.creditRequestId) {
+                    handlePinRequest(
+                      request.creditRequestId,
+                      isRequestPinned(request.creditRequestId, pinnedRequests)
+                        ? "N"
+                        : "Y"
+                    );
+                  }
+                }}
+                errorLoadingPins={errorLoadingPins}
+              />
+            ))
+          ) : (
+            <Stack gap="16px" alignItems="center">
+              <Text type="label">{configOption.textNodata}</Text>
+            </Stack>
+          )}
         </Stack>
       )}
     </StyledBoardSection>
