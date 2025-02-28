@@ -87,7 +87,7 @@ export function initializeDataDB(company: string) {
   intializedData("uncovered_wallet", uncovered_wallet);
   intializedData("credit_behavior", credit_behavior);
   intializedData("prospects", mockProspectCredit);
-  intializedData("requirements", requirementsMock(company));
+  intializedData("requirements", requirementsMock("Presente"));
   intializedData(
     "range_requered_Business_Unit",
     mockRangeRequeredByTheBusinessUnit
