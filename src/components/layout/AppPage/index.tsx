@@ -4,7 +4,6 @@ import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
 import { Grid } from "@inubekit/grid";
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Text } from "@inubekit/text";
 import { Header } from "@inubekit/header";
 
 import { AppContext } from "@context/AppContext";
@@ -160,9 +159,7 @@ function AppPage() {
             <Outlet />
           </StyledMain>
           <StyledFooter>
-            <Text appearance="gray" textAlign="center" size="medium">
-              © 2024 Inube
-            </Text>
+            {renderLogo(eventData.businessManager.urlBrand)}
           </StyledFooter>
         </StyledContainer>
       </Grid>

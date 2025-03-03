@@ -20,6 +20,7 @@ interface BoardSectionProps {
   pinnedRequests: ICreditRequestPinned[];
   handlePinRequest: (requestId: string, isPinned: string) => void;
   errorLoadingPins: boolean;
+  searchRequestValue: string;
 }
 
 function BoardSection(props: BoardSectionProps) {
@@ -31,6 +32,7 @@ function BoardSection(props: BoardSectionProps) {
     pinnedRequests,
     handlePinRequest,
     errorLoadingPins,
+    searchRequestValue,
   } = props;
   const disabledCollapse = sectionInformation.length === 0;
 
@@ -54,6 +56,15 @@ function BoardSection(props: BoardSectionProps) {
     );
     return pinnedRequest && pinnedRequest.isPinned === "Y" ? true : false;
   }
+
+  const getNoDataMessage = () => {
+    if (!sectionInformation || sectionInformation.length === 0) {
+      return searchRequestValue
+        ? `${configOption.noMatches} "${searchRequestValue}"`
+        : `${configOption.textNodata}`;
+    }
+    return "";
+  };
 
   return (
     <StyledBoardSection
@@ -138,8 +149,10 @@ function BoardSection(props: BoardSectionProps) {
               />
             ))
           ) : (
-            <Stack gap="16px" alignItems="center">
-              <Text type="label">{configOption.textNodata}</Text>
+            <Stack gap="24px" alignItems="center" height="533px" width="100%">
+              <Text type="title" size="small" appearance="gray">
+                {getNoDataMessage()}
+              </Text>
             </Stack>
           )}
         </Stack>
