@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
@@ -8,58 +7,43 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { Icon } from "@inubekit/icon";
 import { Blanket } from "@inubekit/blanket";
+import { useFlag } from "@inubekit/flag";
 
+import { validationMessages } from "@validations/validationMessages";
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 
 import { StyledContainer, StyledContainerClose } from "./styles";
+import { dataIncomeModal } from "./config";
 
 interface IncomeModalProps {
-  form: {
-    borrower: string;
-    monthly_salary?: number;
-    other_monthly_payments?: number;
-    pension_allowances?: number;
-    leases?: number;
-    dividends_or_shares?: number;
-    financial_returns?: number;
-    average_monthly_profit?: number;
-    monthly_fees?: number;
-  };
-  onChange: (name: string, newValue: string) => void;
-  options: { id: string; label: string; value: string }[];
+  handleClose: () => void;
+  openModal?: (state: boolean) => void;
   portalId?: string;
-  handleClose?: () => void;
+  onlyDebtor?: boolean;
+  disabled?: boolean;
 }
 
 export function IncomeModal(props: IncomeModalProps) {
-  const { form, onChange, options, portalId, handleClose } = props;
-
-  const [isFormComplete, setIsFormComplete] = useState(false);
-
-  useEffect(() => {
-    const allFieldsFilled = [
-      form.borrower,
-      form.monthly_salary,
-      form.other_monthly_payments,
-      form.pension_allowances,
-      form.leases,
-      form.dividends_or_shares,
-      form.financial_returns,
-      form.average_monthly_profit,
-      form.monthly_fees,
-    ].every((field) => field !== undefined && field !== "");
-
-    setIsFormComplete(allFieldsFilled);
-  }, [form]);
+  const { handleClose, openModal, portalId, onlyDebtor, disabled } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
-    throw new Error(
-      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
-    );
+    throw new Error(validationMessages.errorNodo);
   }
+
+  const { addFlag } = useFlag();
+
+  const handleSubmit = () => {
+    handleClose();
+    addFlag({
+      title: `${dataIncomeModal.flagTittle}`,
+      description: `${dataIncomeModal.flagDescription}`,
+      appearance: "success",
+      duration: 5000,
+    });
+  };
 
   return createPortal(
     <Blanket>
@@ -72,11 +56,11 @@ export function IncomeModal(props: IncomeModalProps) {
         >
           <Stack justifyContent="space-between" alignItems="center">
             <Text size="small" type="headline">
-              Fuentes de ingreso
+              {dataIncomeModal.title}
             </Text>
             <StyledContainerClose onClick={handleClose}>
               <Stack alignItems="center" gap="8px">
-                <Text>Cerrar</Text>
+                <Text>{dataIncomeModal.close}</Text>
                 <Icon
                   icon={<MdClear />}
                   size="24px"
@@ -88,10 +72,10 @@ export function IncomeModal(props: IncomeModalProps) {
           </Stack>
           <Divider />
           <SourceIncome
-            form={form}
-            onChange={onChange}
-            options={options}
-            ShowSupport
+            ShowSupport={false}
+            onlyDebtor={onlyDebtor}
+            disabled={disabled}
+            openModal={openModal}
           />
           <Divider />
           <Stack
@@ -108,16 +92,12 @@ export function IncomeModal(props: IncomeModalProps) {
               width={!isMobile ? "auto" : "100%"}
             >
               <Button
-                children="Cerrar"
+                children={dataIncomeModal.cancel}
                 appearance="gray"
                 variant="outlined"
                 onClick={handleClose}
               />
-              <Button
-                children="Guardar"
-                appearance={isFormComplete ? "primary" : "gray"}
-                disabled={!isFormComplete}
-              />
+              <Button children={dataIncomeModal.save} onClick={handleSubmit} />
             </Stack>
           </Stack>
         </Stack>

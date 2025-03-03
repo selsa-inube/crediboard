@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { Consulting } from "@components/modals/Consulting";
-import { income } from "@mocks/add-prospect/income/income.mock";
 import { prospectId } from "@mocks/add-prospect/edit-prospect/prospectid.mock";
 
 import { stepsAddProspect } from "./config/addProspect.config";
 import { FormData } from "./types";
-
 import { AddProspectUI } from "./interface";
 
 export function AddProspect() {
@@ -37,7 +35,7 @@ export function AddProspect() {
       maximumTermValue: "",
     },
     generalToggleChecked: true,
-    togglesState: [false, true, false],
+    togglesState: [false, false, false],
     borrowerData: {
       name: "",
       lastName: "",
@@ -45,7 +43,6 @@ export function AddProspect() {
       income: 0,
       obligations: 0,
     },
-    incomeData: income[0],
     loanAmountState: {
       inputValue: "",
       toggleChecked: false,
@@ -97,6 +94,17 @@ export function AddProspect() {
       };
     });
   };
+
+  useEffect(() => {
+    if (currentStep === stepsAddProspect.productSelection.id) {
+      setFormData((prevState) => ({
+        ...prevState,
+        selectedProducts: [],
+        generalToggleChecked: true,
+        togglesState: [false, false, false],
+      }));
+    }
+  }, [currentStep]);
 
   const currentStepsNumber = steps.find(
     (step: { number: number }) => step.number === currentStep
