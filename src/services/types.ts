@@ -291,14 +291,9 @@ export interface IIncome {
   borrowers: IDebtor[];
   borrower_id: string;
   borrower: string;
-  monthly_salary: number;
-  other_monthly_payments: number;
-  pension_allowances: number;
-  leases: number;
-  dividends_or_shares: number;
-  financial_returns: number;
-  average_monthly_profit: number;
-  monthly_fees: number;
+  capital: string[];
+  employment: string[];
+  businesses: string[];
 }
 
 export interface IBorrowerProperty {

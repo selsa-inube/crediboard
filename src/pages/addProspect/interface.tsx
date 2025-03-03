@@ -171,17 +171,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
               )}
             {currentStepsNumber &&
               currentStepsNumber.id === stepsAddProspect.sourcesIncome.id && (
-                <SourcesOfIncome
-                  initialValues={formData.incomeData}
-                  handleOnChange={(name: string, value: string) =>
-                    handleFormDataChange("incomeData", {
-                      ...formData.incomeData,
-                      [name]: value,
-                    })
-                  }
-                  options={formData.incomeData.borrowers}
-                  isMobile={isMobile}
-                />
+                <SourcesOfIncome isMobile={isMobile} />
               )}
             {currentStepsNumber &&
               currentStepsNumber.id ===
