@@ -16,12 +16,15 @@ import { StyledContainer, StyledContainerClose } from "./styles";
 import { dataIncomeModal } from "./config";
 
 interface IncomeModalProps {
-  portalId?: string;
   handleClose: () => void;
+  openModal?: (state: boolean) => void;
+  portalId?: string;
+  onlyDebtor?: boolean;
+  disabled?: boolean;
 }
 
 export function IncomeModal(props: IncomeModalProps) {
-  const { portalId, handleClose } = props;
+  const { handleClose, openModal, portalId, onlyDebtor, disabled } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
@@ -68,7 +71,12 @@ export function IncomeModal(props: IncomeModalProps) {
             </StyledContainerClose>
           </Stack>
           <Divider />
-          <SourceIncome ShowSupport={false} />
+          <SourceIncome
+            ShowSupport={false}
+            onlyDebtor={onlyDebtor}
+            disabled={disabled}
+            openModal={openModal}
+          />
           <Divider />
           <Stack
             padding="10px 0px"

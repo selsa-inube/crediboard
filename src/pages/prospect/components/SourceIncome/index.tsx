@@ -10,7 +10,7 @@ import { Button } from "@inubekit/button";
 import { incomeCardData } from "@components/cards/IncomeCard/config";
 import { ListModal } from "@components/modals/ListModal";
 import { CardGray } from "@components/cards/CardGray";
-import { IncomeModal } from "@components/modals/IncomeModal";
+import { IncomeModal } from "@pages/prospect/components/modals/IncomeModal";
 import {
   currencyFormat,
   parseCurrencyString,
@@ -23,13 +23,14 @@ import { StyledContainer } from "./styles";
 import { dataReport } from "../TableObligationsFinancial/config";
 
 interface ISourceIncomeProps {
+  openModal?: (state: boolean) => void;
   ShowSupport?: boolean;
   onlyDebtor?: boolean;
   disabled?: boolean;
 }
 
 export function SourceIncome(props: ISourceIncomeProps) {
-  const { ShowSupport, onlyDebtor, disabled } = props;
+  const { openModal, ShowSupport, onlyDebtor, disabled } = props;
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
@@ -165,7 +166,9 @@ export function SourceIncome(props: ISourceIncomeProps) {
                 </Button>
                 <Button
                   iconBefore={<MdOutlineEdit />}
-                  onClick={() => setIsOpenEditModal(true)}
+                  onClick={() =>
+                    openModal ? openModal(true) : setIsOpenEditModal(true)
+                  }
                 >
                   {dataReport.edit}
                 </Button>
@@ -222,7 +225,11 @@ export function SourceIncome(props: ISourceIncomeProps) {
         />
       )}
       {isOpenEditModal && (
-        <IncomeModal handleClose={() => setIsOpenEditModal(false)} />
+        <IncomeModal
+          handleClose={() => setIsOpenEditModal(false)}
+          onlyDebtor={false}
+          disabled={false}
+        />
       )}
     </StyledContainer>
   );
