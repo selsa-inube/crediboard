@@ -6,10 +6,9 @@ import { Button } from "@inubekit/button";
 import { IncomeModal, IncomeModalProps } from ".";
 
 const meta: Meta<typeof IncomeModal> = {
-  title: "components/modals/IncomeModal",
+  title: "prospect/components/modals/IncomeModal",
   component: IncomeModal,
 };
-
 
 export const Default: StoryFn<IncomeModalProps> = (args) => {
   const [showModal, setShowModal] = useState(false);
@@ -18,16 +17,12 @@ export const Default: StoryFn<IncomeModalProps> = (args) => {
     <>
       <Button onClick={() => setShowModal(true)}>Modal Income</Button>
       {showModal && (
-        <IncomeModal
-          {...args}
-          handleClose={() => setShowModal(false)}
-        />
+        <IncomeModal {...args} handleClose={() => setShowModal(false)} />
       )}
     </>
   );
 };
 
-Default.args = {
-};
+Default.args = {};
 
 export default meta;
