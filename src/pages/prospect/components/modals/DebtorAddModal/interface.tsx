@@ -3,13 +3,12 @@ import { Stack } from "@inubekit/stack";
 import { Divider } from "@inubekit/divider";
 
 import { BaseModal } from "@components/modals/baseModal";
-import { income } from "@mocks/add-prospect/income/income.mock";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 
 import { stepsAddBorrower } from "./config/addBorrower.config";
 import { AddBorrower } from "./steps/personalInfo";
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
-import { SourceIncome } from "../../SourceIncome";
+import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 
 interface DebtorAddModalUIProps {
   currentStep: number;
@@ -88,14 +87,7 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddBorrower.contactInformation.id && (
-            <SourceIncome
-              form={income[0]}
-              options={income[0].borrowers}
-              onChange={(name: string, newValue: string) => {
-                handleFormChange({ [name]: newValue });
-              }}
-              onlyDebtor={true}
-            />
+            <SourceIncome onlyDebtor={true} />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddBorrower.BorrowerData.id && (

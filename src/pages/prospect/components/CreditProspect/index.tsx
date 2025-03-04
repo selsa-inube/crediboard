@@ -16,7 +16,7 @@ import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
 import { ReciprocityModal } from "@components/modals/ReciprocityModal";
 import { ScoreModal } from "@components/modals/FrcModal";
 import { EditProductModal } from "@components/modals/ProspectProductModal";
-import { IncomeModal } from "@components/modals/IncomeModal";
+import { IncomeModal } from "@pages/prospect/components/modals/IncomeModal";
 import { ReportCreditsModal } from "@components/modals/ReportCreditsModal";
 import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
 import { CreditLimit } from "@components/modals/CreditLimit";
@@ -271,11 +271,14 @@ export function CreditProspect(props: ICreditProspectProps) {
       )}
       {currentModal === "IncomeModal" && (
         <IncomeModal
-          onChange={onChanges}
-          form={form}
           handleClose={handleCloseModal}
-          options={incomeOptions}
+          onlyDebtor={true}
+          disabled={true}
+          openModal={() => setOpenModal("IncomeModalEdit")}
         />
+      )}
+      {openModal === "IncomeModalEdit" && (
+        <IncomeModal handleClose={() => setOpenModal(null)} />
       )}
       {currentModal === "reportCreditsModal" && (
         <ReportCreditsModal

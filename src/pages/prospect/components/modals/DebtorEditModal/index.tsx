@@ -5,7 +5,6 @@ import { Tabs } from "@inubekit/tabs";
 import { BaseModal } from "@components/modals/baseModal";
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
-import { income } from "@mocks/add-prospect/income/income.mock";
 
 import { dataEditDebtor, dataTabs } from "./config";
 import { DataDebtor } from "./dataDebtor";
@@ -23,12 +22,6 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
   const onChange = (tabId: string) => {
     setCurrentTab(tabId);
   };
-
-  const handleOnChange = (name: string, newValue: string) => {
-    console.log(name, newValue);
-  };
-
-  const dataIncome = income[0];
 
   return (
     <BaseModal
@@ -49,14 +42,7 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
           onChange={onChange}
         />
         {currentTab === "data" && <DataDebtor />}
-        {currentTab === "sources" && (
-          <SourceIncome
-            form={dataIncome}
-            options={dataIncome.borrowers}
-            onChange={handleOnChange}
-            onlyDebtor={true}
-          />
-        )}
+        {currentTab === "sources" && <SourceIncome onlyDebtor={true} />}
         {currentTab === "obligations" && (
           <TableFinancialObligations showActions={true} showOnlyEdit={true} />
         )}
