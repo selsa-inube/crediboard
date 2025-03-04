@@ -17,7 +17,7 @@ export const getCreditRequestPin = async (): Promise<
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
       const queryParams = new URLSearchParams({
-        sort: "desc.isPinned",
+        sort: "",
       });
 
       const options: RequestInit = {
