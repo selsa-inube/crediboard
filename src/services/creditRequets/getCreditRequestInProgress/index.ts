@@ -15,9 +15,9 @@ export const getCreditRequestInProgress = async (
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      const queryParams = new URLSearchParams({
-        sort: "creditRequestDateOfCreation",
-      });
+      const queryParams = new URLSearchParams();
+      queryParams.set("sort", "desc.isPinned,asc.creditRequestDateOfCreation");
+
       const options: RequestInit = {
         method: "GET",
         headers: {

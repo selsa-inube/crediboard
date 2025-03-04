@@ -21,7 +21,7 @@ export const registerNewsToCreditRequest = async (
         headers: {
           "X-Action": "RegisterNewsToACreditRequest",
           "X-Business-Unit": enviroment.BUSINESS_UNIT,
-          "X-User-Name": "cualquiera",
+          "X-User-Name": "Erg",
           "Content-type": "application/json; charset=UTF-8",
         },
         body: JSON.stringify(payload),
