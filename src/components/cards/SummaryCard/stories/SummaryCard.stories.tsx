@@ -31,7 +31,7 @@ Default.args = {
   toDo: "Aceptación por parte del cliente de la propuesta",
   path: "/",
   isPinned: true,
-  hasMessage: true,
+  hasMessage: "N",
 };
 
 export default story;

@@ -9,7 +9,7 @@ interface SummaryCardProps {
   toDo: string;
   path: string;
   isPinned?: boolean;
-  hasMessage?: boolean;
+  hasMessage?: string;
   onPinChange?: () => void;
   errorLoadingPins?: boolean;
 }
@@ -24,11 +24,11 @@ const SummaryCard = (props: SummaryCardProps) => {
     toDo,
     path,
     isPinned = false,
-    hasMessage = false,
+    hasMessage,
     onPinChange,
     errorLoadingPins,
   } = props;
-
+  console.log("---> ", hasMessage);
   return (
     <SummaryCardUI
       rad={rad}

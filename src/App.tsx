@@ -30,7 +30,7 @@ import { FilingApplicationRoutes } from "@routes/filingApplication";
 function LogOut() {
   localStorage.clear();
   const { logout } = useAuth0();
-  logout({ logoutParams: { returnTo: enviroment.REDIRECT_URI } });
+  logout({ logoutParams: { returnTo: enviroment.GOOGLE_REDIRECT_URI } });
   return <AppPage />;
 }
 

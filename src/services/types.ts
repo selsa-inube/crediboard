@@ -11,6 +11,7 @@ export interface ICreditRequest {
   clientIdentificationNumber: string;
   clientName: string;
   taskToBeDone: string;
+  unreadNovelties?: string;
 }
 
 export interface IStaff {
@@ -398,8 +399,8 @@ export interface IMakeDecisionsCreditRequest {
 }
 
 export interface IUserSteps {
-  id: number,
-  intermediateSteps: number[],
+  id: number;
+  intermediateSteps: number[];
 }
 export interface ILoanAmount {
   id: number;
