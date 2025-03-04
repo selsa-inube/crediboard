@@ -15,6 +15,9 @@ export const getCreditRequestInProgress = async (
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
+      const queryParams = new URLSearchParams({
+        sort: "creditRequestDateOfCreation",
+      });
       const options: RequestInit = {
         method: "GET",
         headers: {
@@ -26,7 +29,7 @@ export const getCreditRequestInProgress = async (
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests`,
+        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests?${queryParams.toString()}`,
         options
       );
 
