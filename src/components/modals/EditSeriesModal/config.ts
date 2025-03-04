@@ -1,5 +1,5 @@
 export const dataEditSeriesModal = {
-  title: "Nueva serie",
+  title: "Editar serie",
   close: "Cerrar",
   cancel: "Cancelar",
   add: "Guardar",

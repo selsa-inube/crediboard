@@ -1,46 +1,54 @@
 import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
 
-export const StyledContainer = styled.div`
+const StyledContainer = styled.div`
   box-shadow: 2px 2px 3px 2px
     ${({ theme }) => theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
   border-radius: 8px;
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
-  margin-left: 1%;
-  margin-top: 60px;
-  position: absolute;
-  z-index: 1;
+  margin-left: 10px;
+  z-index: 3;
 `;
 
-export const StyledUl = styled.ul`
-  margin: 0;
+const StyledUl = styled.ul`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0px;
+  padding: 0px 2px;
 `;
 
-export const StyledItem = styled.li`
+const StyledLi = styled.li`
   list-style: none;
   display: flex;
   align-items: center;
+  width: 100%;
+  justify-content: space-between;
+
+  &:hover {
+    background-color: ${inube.palette.neutral.N30};
+    border-radius: 8px;
+  }
 `;
 
-export const StyledImg = styled.img`
+const StyledContainerOption = styled.div`
+  cursor: pointer;
+`;
+
+const StyledImg = styled.img`
   position: relative;
-  width: 120px;
-  height: 41px;
-  right: 20px;
-  padding-right: 20px;
-  padding-bottom: 5px;
-  padding-top: 5px;
+  width: 75px;
+  height: auto;
+  left: 5px;
+  padding: 12px 12px 12px 8px;
   object-fit: contain;
 `;
 
-export const StyledHr = styled.hr`
-  position: relative;
-  right: 25px;
-  width: 115%;
-  border: 0;
-  border-top: 2px solid;
-  border-color: ${({ theme }) =>
-    theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
-  margin: 0;
-`;
+export {
+  StyledContainer,
+  StyledUl,
+  StyledLi,
+  StyledImg,
+  StyledContainerOption,
+};
