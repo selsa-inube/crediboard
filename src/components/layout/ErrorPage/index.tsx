@@ -55,7 +55,7 @@ function ErrorPage(props: ErrorPageProps) {
           matches["(max-width: 600px)"] ? "auto" : "repeat(2, 1fr)"
         }
         alignItems="center"
-        gap={matches["(max-width: 600px)"] ? "s800" : "120px"}
+        gap={matches["(max-width: 600px)"] ? "64px" : "120px"}
       >
         <Stack gap="24px" direction="column">
           <Stack gap="16px" direction="column">

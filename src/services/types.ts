@@ -103,11 +103,11 @@ export type DmDecisions =
 
 export interface ITraceType {
   traceValue: string;
-  userId: string;
-  userName: string;
-  excecutionDate: string;
+  executionDate: string;
   traceType: string;
   creditRequestId?: string;
+  userName?: string;
+  userId?: string;
   traceId?: string;
   useCase?: string;
   justification?: string;
