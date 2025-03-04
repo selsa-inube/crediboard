@@ -9,4 +9,8 @@ const genderOptions = [
   { id: "3", label: "Otro", value: "otro" },
 ];
 
+export const dataExtraDebtorModal = {
+  cancel: "Cancelar",
+}
+
 export { typeDocument, genderOptions };

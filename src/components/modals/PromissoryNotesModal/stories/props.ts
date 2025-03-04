@@ -16,13 +16,6 @@ export const props: Partial<ArgTypes<PromissoryNotesModalProps>> = {
     description: "Texto del botón",
     defaultValue: "Enviar",
   },
-  portalId: {
-    control: {
-      type: "text",
-    },
-    description: "ID del portal donde se renderiza el modal",
-    defaultValue: "portal",
-  },
   formValues: {
     control: {
       type: "object",

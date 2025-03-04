@@ -84,7 +84,6 @@ export function CreditLimitCard(props: CreditLimitProps) {
         <CreditLimit
           handleClose={() => setCreditModal(false)}
           title="Origen de cupo"
-          portalId="portal"
           loading={loadingCredit}
           onOpenPaymentCapacityModal={() => handleOpenModals("paymentCapacity")}
           onOpenReciprocityModal={() => handleOpenModals("reciprocityModal")}
@@ -96,7 +95,6 @@ export function CreditLimitCard(props: CreditLimitProps) {
       {openModal === "paymentCapacity" && (
         <PaymentCapacity
           title="Cupo máx. capacidad de pago"
-          portalId="portal"
           loading={loading}
           handleClose={() => setOpenModal(null)}
           {...paymentCapacityData}
@@ -106,7 +104,6 @@ export function CreditLimitCard(props: CreditLimitProps) {
 
       {openModal === "reciprocityModal" && (
         <ReciprocityModal
-          portalId="portal"
           loading={loading}
           handleClose={() => setOpenModal(null)}
           {...reciprocityData}

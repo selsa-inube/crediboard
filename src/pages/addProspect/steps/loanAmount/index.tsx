@@ -9,11 +9,13 @@ import { Textfield } from "@inubekit/textfield";
 import { Toggle } from "@inubekit/toggle";
 import { Select } from "@inubekit/select";
 import { inube } from "@inubekit/foundations";
+import { useParams } from "react-router-dom";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditLimitCard } from "@pages/addProspect/components/CreditLimitCard";
 import { currencyFormat } from "@utils/formatData/currency";
 import { get } from "@mocks/utils/dataMock.service";
+import { loanAmount } from "@mocks/add-prospect/loan-amount/loanAmount.mock";
 import {
   mockPayAmount,
   mockPeriodicity,
@@ -39,6 +41,14 @@ export interface ILoanAmountProps {
 
 export function LoanAmount(props: ILoanAmountProps) {
   const { initialValues, isMobile, handleOnChange, onFormValid } = props;
+  const { id } = useParams();
+  const loanId = parseInt(id || "0", 10);
+  const loanText =
+    loanAmount.find((loan) => loan.id === loanId)?.choice || "expectToReceive";
+  const data =
+    dataAmount[
+      loanText === "expectToReceive" ? "expectToReceive" : "amountRequested"
+    ];
   const [requestValue, setRequestValue] = useState<IPaymentChannel[]>();
   const creditCardsData = mockCreditLimit;
   useEffect(() => {
@@ -118,7 +128,7 @@ export function LoanAmount(props: ILoanAmountProps) {
               <Divider dashed />
               <Stack direction="column">
                 <Text type="label" size="medium" weight="bold">
-                  {dataAmount.expectToReceive}
+                  {data}
                 </Text>
                 <Field name="inputValue">
                   {() => (

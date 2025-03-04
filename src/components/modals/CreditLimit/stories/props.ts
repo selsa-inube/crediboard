@@ -6,11 +6,6 @@ export const props: Partial<ArgTypes<ICreditLimitProps>> = {
     control: { type: "text" },
     description: "The title of the modal",
   },
-  portalId: {
-    control: { type: "text" },
-    description: "The portal identifier",
-  },
-  handleClose: { action: "closed" },
   maxPaymentCapacity: {
     control: { type: "number" },
     description: "Maximum payment capacity",
@@ -39,5 +34,6 @@ export const props: Partial<ArgTypes<ICreditLimitProps>> = {
     control: { type: "number" },
     description: "Available limit without a guarantee",
   },
+  handleClose: { action: "closed" },
 };
 

@@ -7,7 +7,7 @@ import { Fieldset } from "@components/data/Fieldset";
 import { disbursemenTabs } from "./config";
 import { DisbursementWithInternalAccount } from "./disbursementWithInternalAccount/index";
 import { DisbursementWithExternalAccount } from "./disbursementWithExternalAccount";
-import { DisbursementWithCheckEntity } from "./disbursementWithCheckEntity ";
+import { DisbursementWithCheckEntity } from "./disbursementWithCheckEntity";
 import { DisbursementWithCheckManagement } from "./DisbursementWithCheckManagement";
 import { DisbursementWithCash } from "./DisbursementWithCash";
 

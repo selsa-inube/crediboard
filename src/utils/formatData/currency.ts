@@ -16,11 +16,14 @@ const currencyFormat = (price: number, withCurrencySymbol = true): string => {
 };
 
 const parseCurrencyString = (currencyString: string): number => {
-  if (currencyString === "$ 0") {
-    return NaN;
-  }
+  if (!currencyString) return 0;
 
-  return parseInt(currencyString.replace(/\$|\./g, ""));
+  const cleanedString = currencyString
+    .replace(/[^0-9,]/g, "")
+    .replace(",", ".");
+  const parsedValue = parseFloat(cleanedString);
+
+  return isNaN(parsedValue) ? 0 : parsedValue;
 };
 
 const validateCurrencyField = (
