@@ -1,12 +1,19 @@
 import { useContext, useEffect, useState } from "react";
+import { MdInfoOutline } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
+import { Icon } from "@inubekit/icon";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 
+import { mockAnchored } from "@mocks/anchored/anchored.mock";
+import { BaseModal } from "@components/modals/baseModal";
 import { ICreditRequest } from "@services/types";
 import { getCreditRequestPin } from "@services/isPinned";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
 import { ChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
 import { AppContext } from "@context/AppContext";
 
+import { dataInformationModal } from "./config/board";
 import { BoardLayoutUI } from "./interface";
 import { selectCheckOptions } from "./config/select";
 import { IBoardData } from "./types";
@@ -30,6 +37,7 @@ function BoardLayout() {
     []
   );
   const [errorLoadingPins, setErrorLoadingPins] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
@@ -158,6 +166,13 @@ function BoardLayout() {
     creditRequestId: string | undefined,
     isPinned: string
   ) => {
+    const request = mockAnchored.find((item) => item.id === creditRequestId);
+
+    if (request?.modify === "N") {
+      setIsOpenModal(true);
+      return;
+    }
+
     setBoardData((prevState) => ({
       ...prevState,
       requestsPinned: prevState.requestsPinned.map((card) =>
@@ -199,6 +214,22 @@ function BoardLayout() {
           handleFiltersChange({ boardOrientation: orientation })
         }
       />
+      {isOpenModal && (
+        <BaseModal
+          title={dataInformationModal.tilte}
+          nextButton={dataInformationModal.button}
+          handleNext={() => setIsOpenModal(false)}
+          handleClose={() => setIsOpenModal(false)}
+          width={isMobile ? "290px" : "403px"}
+        >
+          <Stack direction="column" alignItems="center" gap="16px">
+            <Icon icon={<MdInfoOutline />} size="68px" appearance="primary" />
+            <Text type="body" size="medium" appearance="gray">
+              {dataInformationModal.description}
+            </Text>
+          </Stack>
+        </BaseModal>
+      )}
     </>
   );
 }

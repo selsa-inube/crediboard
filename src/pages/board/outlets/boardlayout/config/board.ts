@@ -47,7 +47,10 @@ const boardColumns: BoardColumn[] = [
   },
 ];
 
-const selectConfig = (selectOptions: IOptionItemCheckedProps[], handleSelectCheckChange: (e: React.ChangeEvent<HTMLInputElement>) => void): SelectConfigProps => ({
+const selectConfig = (
+  selectOptions: IOptionItemCheckedProps[],
+  handleSelectCheckChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+): SelectConfigProps => ({
   label: "Filtrado por",
   id: "FilterRequests",
   name: "FilterRequests",
@@ -61,6 +64,13 @@ const selectConfig = (selectOptions: IOptionItemCheckedProps[], handleSelectChec
 
 const seePinned = {
   viewPinned: "Ver unicamente los anclados",
-}
+};
 
-export { boardColumns, seePinned, selectConfig };
+const dataInformationModal = {
+  tilte: "Información",
+  button: "Entendido",
+  description:
+    "No cuenta con los privilegios requeridos para quitar el ancla de esta tarjeta.",
+};
+
+export { boardColumns, seePinned, dataInformationModal, selectConfig };
