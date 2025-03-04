@@ -24,6 +24,7 @@ import {
   StyledCollapseIcon,
   StyledCollapse,
   StyledFooter,
+  StyledPrint,
 } from "./styles";
 
 const renderLogo = (imgUrl: string) => {
@@ -95,27 +96,29 @@ function AppPage() {
   return (
     <StyledAppPage>
       <Grid templateRows="auto 1fr" height="100vh" justifyContent="unset">
-        <StyledHeaderContainer>
-          <Header
-            portalId="portal"
-            logoURL={renderLogo(eventData.businessUnit.urlLogo)}
-            userName={eventData.user.userName}
-            client={eventData.businessUnit.abbreviatedName}
-          />
-        </StyledHeaderContainer>
-        <StyledCollapseIcon
-          $collapse={collapse}
-          onClick={() => setCollapse(!collapse)}
-          $isTablet={isTablet}
-          ref={collapseMenuRef}
-        >
-          <Icon
-            icon={<MdOutlineChevronRight />}
-            appearance="primary"
-            size="24px"
-            cursorHover
-          />
-        </StyledCollapseIcon>
+        <StyledPrint>
+          <StyledHeaderContainer>
+            <Header
+              portalId="portal"
+              logoURL={renderLogo(eventData.businessUnit.urlLogo)}
+              userName={eventData.user.userName}
+              client={eventData.businessUnit.abbreviatedName}
+            />
+          </StyledHeaderContainer>
+          <StyledCollapseIcon
+            $collapse={collapse}
+            onClick={() => setCollapse(!collapse)}
+            $isTablet={isTablet}
+            ref={collapseMenuRef}
+          >
+            <Icon
+              icon={<MdOutlineChevronRight />}
+              appearance="primary"
+              size="24px"
+              cursorHover
+            />
+          </StyledCollapseIcon>
+        </StyledPrint>
         {collapse && (
           <StyledCollapse ref={businessUnitChangeRef}>
             <BusinessUnitChange

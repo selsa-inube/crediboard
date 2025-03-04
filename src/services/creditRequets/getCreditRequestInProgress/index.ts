@@ -6,23 +6,23 @@ import {
 import { ICreditRequest } from "@services/types";
 import { mapCreditRequestToEntities } from "./mapper";
 
-export const getCreditRequestInProgress = async (): Promise<
-  ICreditRequest[]
-> => {
+export const getCreditRequestInProgress = async (
+  businessUnitPublicCode: string
+): Promise<ICreditRequest[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      const queryParams = new URLSearchParams({
-        sort: "creditRequestDateOfCreation",
-      });
+      const queryParams = new URLSearchParams();
+      queryParams.set("sort", "desc.isPinned,asc.creditRequestDateOfCreation");
+
       const options: RequestInit = {
         method: "GET",
         headers: {
           "X-Action": "SearchAllCreditRequestsInProgress",
-          "X-Business-Unit": enviroment.BUSINESS_UNIT,
+          "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,

@@ -6,14 +6,14 @@ export const mockAnalyst: IStaff[] = [
     userName: "Juan Carlos Pérez Gómez",
     identificationType: "C",
     identificationNumber: "3001234567",
-    position: "Analyst",
+    role: "Analyst",
   },
   {
     userId: "34567890",
     userName: "Carlos Andrés Martínez Torres",
     identificationType: "C",
     identificationNumber: "3003456789",
-    position: "Analyst",
+    role: "Analyst",
   },
 ];
 
@@ -23,6 +23,6 @@ export const mockAccountManager: IStaff[] = [
     userName: "Jorge Enrique Díaz Vargas",
     identificationType: "C",
     identificationNumber: "3007890123",
-    position: "Account_manager",
+    role: "Account_manager",
   },
 ];

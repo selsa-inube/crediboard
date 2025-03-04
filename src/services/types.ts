@@ -19,7 +19,7 @@ export interface IStaff {
   userName: string;
   identificationType: string;
   identificationNumber: string;
-  position: string;
+  role: string;
 }
 
 export interface ICreditRequestPinned {
@@ -103,17 +103,18 @@ export type DmDecisions =
   | "DECLINAR_OBLIGACIONES_DE_CARTERA";
 
 export interface ITraceType {
-  creditRequestId?: string;
-  excecutionDate: string;
-  traceType: string;
   traceValue: string;
-  userId: string;
-  userName: string;
-  decision_of_concept?: string;
-  decisionTakenByUser?: string;
-  justification?: string;
-  readNovelty?: string;
+  executionDate: string;
+  traceType: string;
+  creditRequestId?: string;
+  userName?: string;
+  userId?: string;
+  traceId?: string;
   useCase?: string;
+  justification?: string;
+  decisionTakenByUser?: string;
+  decision_of_concept?: string;
+  readNovelty?: string;
 }
 
 export interface IPayrollDiscountAuthorization {
@@ -128,6 +129,8 @@ export interface IPayrollDiscountAuthorization {
   obligationCode: string;
   documentCode: string;
   imageCode: string;
+  borrowerIdentificationType: string;
+  borrowerIdentificationNumber: string;
 }
 
 export interface Ipayment_capacity {
@@ -159,16 +162,18 @@ export interface Iuncovered_wallet {
 
 export interface IPromissoryNotes {
   creditRequestId: string;
-  payrollDiscountAuthorizationId: string;
-  payrollDiscountAuthorizationCode: string;
+  promissory_note_id: string;
+  promissory_note_code: string;
   descriptionUse: string;
   abbreviatedName: string;
-  borrowerId: string;
-  borrowerName: string;
+  CreditProductId: string;
   documentState: string;
   obligationCode: string;
   documentCode: string;
   imageCode: string;
+  BorrowersByPromissoryNotes: IBorrower[];
+  TransactionOperation: string;
+  payrollDiscountAuthorizationId: string;
 }
 
 export interface approval_by_credit_request_Mock {
@@ -292,14 +297,9 @@ export interface IIncome {
   borrowers: IDebtor[];
   borrower_id: string;
   borrower: string;
-  monthly_salary: number;
-  other_monthly_payments: number;
-  pension_allowances: number;
-  leases: number;
-  dividends_or_shares: number;
-  financial_returns: number;
-  average_monthly_profit: number;
-  monthly_fees: number;
+  capital: string[];
+  employment: string[];
+  businesses: string[];
 }
 
 export interface IBorrowerProperty {
