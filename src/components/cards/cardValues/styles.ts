@@ -43,6 +43,12 @@ export const ContentWrapper = styled.div`
   @media (max-width: 800px) {
     flex-direction: column;
     gap: 16px;
-    align-items: flex-start;
+    align-items: center;
+  }
+`;
+
+export const StyledPrint = styled.div`
+  @media print {
+    display: none;
   }
 `;

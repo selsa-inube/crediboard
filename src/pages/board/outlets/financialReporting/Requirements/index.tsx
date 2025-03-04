@@ -9,11 +9,10 @@ import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
-import { getById } from "@mocks/utils/dataMock.service";
 import { CreditRequest } from "@services/types";
-import { addItem } from "@mocks/utils/dataMock.service";
+import { addItem, getById } from "@mocks/utils/dataMock.service";
 
-import { traceObserver } from "../config";
+import { errorObserver, traceObserver } from "../config";
 import {
   dataButton,
   infoItems,
@@ -23,7 +22,6 @@ import {
 } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
-import { errorObserver } from "../config";
 
 interface IRequirementsData {
   id: string;
@@ -183,9 +181,8 @@ export const Requirements = (props: IRequirementsProps) => {
       <Fieldset
         title="Requisitos"
         activeButton={dataButton}
-        heightFieldset="340px"
+        heightFieldset="100%"
         hasTable={!error}
-        aspectRatio={isMobile ? "auto" : "1"}
       >
         {error ? (
           <ItemNotFound
