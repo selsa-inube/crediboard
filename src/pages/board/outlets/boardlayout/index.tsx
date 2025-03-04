@@ -19,7 +19,7 @@ import { selectCheckOptions } from "./config/select";
 import { IBoardData } from "./types";
 
 function BoardLayout() {
-  const { eventData, setEventData } = useContext(AppContext);
+  const { businessUnitSigla, eventData, setEventData } = useContext(AppContext);
 
   const [boardData, setBoardData] = useState<IBoardData>({
     boardRequests: [],
@@ -49,8 +49,11 @@ function BoardLayout() {
     }));
   }, [isMobile]);
 
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
   useEffect(() => {
-    getCreditRequestInProgress()
+    getCreditRequestInProgress(businessUnitPublicCode)
       .then((data) => {
         setBoardData((prevState) => ({
           ...prevState,
@@ -73,7 +76,7 @@ function BoardLayout() {
         setErrorLoadingPins(true);
         console.error("Error fetching requests pinned data:", error.message);
       });
-  }, []);
+  }, [businessUnitPublicCode]);
 
   useEffect(() => {
     const filteredRequests = boardData.boardRequests.filter((request) => {
@@ -180,7 +183,8 @@ function BoardLayout() {
   };
 
   return (
-    <Stack>
+    <>
+      {console.log(JSON.parse(businessUnitSigla).businessUnitPublicCode)}
       <BoardLayoutUI
         isMobile={isMobile}
         selectOptions={filters.selectOptions}
@@ -226,7 +230,7 @@ function BoardLayout() {
           </Stack>
         </BaseModal>
       )}
-    </Stack>
+    </>
   );
 }
 

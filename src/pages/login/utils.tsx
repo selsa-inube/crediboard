@@ -1,7 +1,7 @@
 import { getBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff";
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
 
-const validateBusinessUnities = async (
+const validateBusinessUnits = async (
   publicCode: string,
   userAccount: string
 ): Promise<IBusinessUnitsPortalStaff[]> => {
@@ -10,4 +10,4 @@ const validateBusinessUnities = async (
   return newData;
 };
 
-export { validateBusinessUnities };
+export { validateBusinessUnits };
