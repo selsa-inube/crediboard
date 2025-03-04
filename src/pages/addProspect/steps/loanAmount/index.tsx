@@ -106,7 +106,7 @@ export function LoanAmount(props: ILoanAmountProps) {
                         key={index}
                         creditLineTxt={item.creditLineTxt}
                         creditLine={item.creditLine}
-                        CreditLimitdata={item.CreditLimitdata}
+                        creditLimitData={item.CreditLimitdata}
                         paymentCapacityData={item.paymentCapacityData}
                         reciprocityData={item.reciprocityData}
                         scoreData={item.scoreData}

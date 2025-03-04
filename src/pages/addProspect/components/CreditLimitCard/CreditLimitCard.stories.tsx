@@ -44,7 +44,7 @@ export const Default: Story = {
   args: {
     creditLine: 10000000,
     creditLineTxt: "Crediaportes.",
-    CreditLimitdata:{
+    creditLimitData: {
       maxPaymentCapacity: 50000000,
       maxReciprocity: 40000000,
       maxDebtFRC: 45000000,

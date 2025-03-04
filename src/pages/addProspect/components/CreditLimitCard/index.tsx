@@ -22,7 +22,7 @@ import {
 export interface CreditLimitProps {
   creditLine: number;
   creditLineTxt: string;
-  CreditLimitdata: ICreditLimitData;
+  creditLimitData: ICreditLimitData;
   paymentCapacityData: IPaymentCapacityData;
   reciprocityData: IReciprocityData;
   scoreData: IScoreData;
@@ -32,7 +32,7 @@ export function CreditLimitCard(props: CreditLimitProps) {
   const {
     creditLine,
     creditLineTxt,
-    CreditLimitdata,
+    creditLimitData,
     paymentCapacityData,
     reciprocityData,
     scoreData,
@@ -89,7 +89,7 @@ export function CreditLimitCard(props: CreditLimitProps) {
           onOpenPaymentCapacityModal={() => handleOpenModals("paymentCapacity")}
           onOpenReciprocityModal={() => handleOpenModals("reciprocityModal")}
           onOpenFrcModal={() => handleOpenModals("scoreModal")}
-          {...CreditLimitdata}
+          {...creditLimitData}
         />
       )}
 
