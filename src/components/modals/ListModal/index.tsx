@@ -63,7 +63,6 @@ export const ListModal = (props: IListModalProps) => {
     handleSubmit,
     onSubmit,
     buttonLabel,
-    //id,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -167,7 +166,7 @@ export const ListModal = (props: IListModalProps) => {
     try {
       uploadedFiles.forEach(async (fileData) => {
         await saveDocument(
-          "1", //id
+          "1",
           fileData.name.split(".").slice(0, -1).join("."),
           fileData.file
         );
