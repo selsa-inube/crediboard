@@ -1,25 +1,24 @@
-import { forwardRef } from "react";
 import {
-  MdClear,
   MdOutlineVisibility,
   MdInfoOutline,
   MdErrorOutline,
   MdCached,
 } from "react-icons/md";
-import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
 import { SkeletonLine } from "@inubekit/skeleton";
+
+import { BaseModal } from "@components/modals/baseModal";
 import { currencyFormat } from "@utils/formatData/currency";
+
 import { incomeModalConfig } from "./IcomeModalConfig";
-import { StyledContainerClose, StyledModal } from "./styles";
 
 interface PaymentCapacityInterfaceProps {
+  handleClose: () => void;
   loading: boolean;
   error: boolean;
-  handleClose: () => void;
   title: string;
   isMobile: boolean;
   reportedIncomeSources: number;
@@ -31,14 +30,13 @@ interface PaymentCapacityInterfaceProps {
   iconVisible?: boolean;
 }
 
-export const PaymentCapacityInterface = forwardRef<
-  HTMLDivElement,
-  PaymentCapacityInterfaceProps
->((props, ref) => {
+export const PaymentCapacityInterface = (
+  props: PaymentCapacityInterfaceProps
+) => {
   const {
+    handleClose,
     loading,
     error,
-    handleClose,
     title,
     isMobile,
     reportedIncomeSources,
@@ -51,26 +49,17 @@ export const PaymentCapacityInterface = forwardRef<
   } = props;
 
   return (
-    <StyledModal $smallScreen={isMobile} ref={ref}>
-      <Stack justifyContent="space-between">
-        <Text type="headline" size="small" appearance="dark">
-          {title}
-        </Text>
-        <StyledContainerClose onClick={handleClose}>
-          <Stack alignItems="center" gap="5px">
-            <Text>{incomeModalConfig.closeButton.text}</Text>
-            <Icon
-              icon={<MdClear />}
-              size="24px"
-              cursorHover
-              appearance="dark"
-            />
-          </Stack>
-        </StyledContainerClose>
-      </Stack>
-
-      <Divider />
-
+    <BaseModal
+      title={title}
+      nextButton={incomeModalConfig.buttons.recalculate}
+      handleNext={() => alert("Recalculando...")}
+      backButton={incomeModalConfig.buttons.close}
+      handleBack={handleClose}
+      handleClose={handleClose}
+      iconBeforeNext={<MdCached />}
+      width={isMobile ? "287px" : "450px"}
+      finalDivider={true}
+    >
       {error ? (
         <Stack direction="column" alignItems="center">
           <Icon icon={<MdErrorOutline />} size="32px" appearance="danger" />
@@ -232,28 +221,6 @@ export const PaymentCapacityInterface = forwardRef<
           </Stack>
         </Stack>
       )}
-
-      <Divider />
-
-      <Stack gap="20px" justifyContent="end">
-        <Button
-          onClick={handleClose}
-          variant="outlined"
-          appearance="gray"
-          fullwidth={isMobile}
-        >
-          {incomeModalConfig.buttons.close}
-        </Button>
-        <Button
-          onClick={() => alert("Recalculando...")}
-          variant="filled"
-          appearance="primary"
-          fullwidth={isMobile}
-          iconBefore={<MdCached />}
-        >
-          {incomeModalConfig.buttons.recalculate}
-        </Button>
-      </Stack>
-    </StyledModal>
+    </BaseModal>
   );
-});
+};

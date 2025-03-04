@@ -1,20 +1,14 @@
-import { MdClear } from "react-icons/md";
 import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/stack";
-import { Button } from "@inubekit/button";
-import { Blanket } from "@inubekit/blanket";
-import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
 
+import { BaseModal } from "@components/modals/baseModal";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 
 import { stepsAddBorrower } from "./config/addBorrower.config";
 import { AddBorrower } from "./steps/personalInfo";
-import { StyledContainer, StyledContainerClose } from "./styles";
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
-import { dataAddBorrower } from "./config/config";
-import { SourceIncome } from "../../SourceIncome";
+import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 
 interface DebtorAddModalUIProps {
   currentStep: number;
@@ -50,96 +44,56 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
   } = props;
 
   return (
-    <Blanket>
-      <StyledContainer>
-        <Stack
-          direction="column"
-          alignItems={isMobile ? "normal" : "center"}
-          padding="12px 24px"
-          width={isMobile ? "290px" : "960px"}
-          height={isMobile ? "100%" : "740px"}
-        >
-          <Stack
-            gap="16px"
-            direction="column"
-            height="100%"
-            width={isMobile ? "-webkit-fill-available" : "min(100%,1440px)"}
-          >
-            <Stack justifyContent="space-between" alignItems="center">
-              <Text type="headline" size="small">
-                {title}
-              </Text>
-              <StyledContainerClose onClick={handleClose}>
-                <Stack alignItems="center" gap="8px">
-                  <Text type="body" size="large">
-                    {dataAddBorrower.close}
-                  </Text>
-                  <Icon
-                    icon={<MdClear />}
-                    size="24px"
-                    cursorHover
-                    appearance="dark"
-                  />
-                </Stack>
-              </StyledContainerClose>
-            </Stack>
-            <Divider />
-            <Assisted
-              step={currentStepsNumber!}
-              totalSteps={steps.length}
-              onBackClick={handlePreviousStep}
-              onNextClick={handleNextStep}
-              controls={titleButtonTextAssited}
-              onSubmitClick={handleSubmitClick}
-              disableNext={!isCurrentFormValid}
-              disableSubmit={!isCurrentFormValid}
-              size={isMobile ? "small" : "large"}
+    <BaseModal
+      title={title}
+      nextButton={
+        currentStepsNumber === steps[2]
+          ? titleButtonTextAssited.submitText
+          : titleButtonTextAssited.goNextText
+      }
+      backButton={titleButtonTextAssited.goBackText}
+      handleNext={handleNextStep}
+      handleBack={handlePreviousStep}
+      handleClose={handleClose}
+      disabledNext={!isCurrentFormValid}
+      disabledBack={currentStepsNumber === steps[0]}
+      finalDivider={true}
+      width={isMobile ? "290px" : "950px"}
+      height="100%"
+    >
+      <Stack direction="column" gap="16px">
+        <Assisted
+          step={currentStepsNumber!}
+          totalSteps={steps.length}
+          onBackClick={handlePreviousStep}
+          onNextClick={handleNextStep}
+          controls={titleButtonTextAssited}
+          onSubmitClick={handleSubmitClick}
+          disableNext={!isCurrentFormValid}
+          disableSubmit={!isCurrentFormValid}
+          size={isMobile ? "small" : "large"}
+        />
+        <Divider />
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddBorrower.generalInformation.id && (
+            <AddBorrower
+              title="Información personal"
+              initialValues={formData.personalInfo}
+              onFormValid={setIsCurrentFormValid}
+              handleOnChange={(values) =>
+                handleFormChange({ personalInfo: values })
+              }
             />
-            <Divider />
-            {currentStepsNumber &&
-              currentStepsNumber.id ===
-                stepsAddBorrower.generalInformation.id && (
-                <AddBorrower
-                  title="Información personal"
-                  initialValues={formData.personalInfo}
-                  onFormValid={setIsCurrentFormValid}
-                  handleOnChange={(values) =>
-                    handleFormChange({ personalInfo: values })
-                  }
-                />
-              )}
-            {currentStepsNumber &&
-              currentStepsNumber.id ===
-                stepsAddBorrower.contactInformation.id && (
-                <SourceIncome
-                  onlyDebtor={true}
-                />
-              )}
-            {currentStepsNumber &&
-              currentStepsNumber.id === stepsAddBorrower.BorrowerData.id && (
-                <TableFinancialObligations showActions={true} />
-              )}
-            <Stack direction="column" gap="20px" margin="auto 0 0 0">
-              <Divider />
-              <Stack justifyContent="end" gap="20px">
-                <Button
-                  variant="outlined"
-                  appearance="gray"
-                  onClick={handlePreviousStep}
-                  disabled={currentStepsNumber === steps[0]}
-                >
-                  {titleButtonTextAssited.goBackText}
-                </Button>
-                <Button onClick={handleNextStep} disabled={!isCurrentFormValid}>
-                  {currentStepsNumber === steps[2]
-                    ? titleButtonTextAssited.submitText
-                    : titleButtonTextAssited.goNextText}
-                </Button>
-              </Stack>
-            </Stack>
-          </Stack>
-        </Stack>
-      </StyledContainer>
-    </Blanket>
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddBorrower.contactInformation.id && (
+            <SourceIncome />
+          )}
+        {currentStepsNumber &&
+          currentStepsNumber.id === stepsAddBorrower.BorrowerData.id && (
+            <TableFinancialObligations showActions={true} />
+          )}
+      </Stack>
+    </BaseModal>
   );
 }

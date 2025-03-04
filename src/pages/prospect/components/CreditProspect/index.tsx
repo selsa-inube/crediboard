@@ -223,7 +223,6 @@ export function CreditProspect(props: ICreditProspectProps) {
         <CreditLimit
           handleClose={handleCloseModal}
           title="Origen de cupo"
-          portalId="portal"
           onOpenPaymentCapacityModal={() => setOpenModal("paymentCapacity")}
           onOpenReciprocityModal={() => setOpenModal("reciprocityModal")}
           onOpenFrcModal={() => setOpenModal("scoreModal")}
@@ -232,7 +231,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       {openModal === "paymentCapacity" && (
         <PaymentCapacity
           title="Cupo máx. capacidad de pago"
-          portalId="portal"
           handleClose={() => setOpenModal(null)}
           reportedIncomeSources={2000000}
           reportedFinancialObligations={6789000}
@@ -244,7 +242,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       )}
       {openModal === "reciprocityModal" && (
         <ReciprocityModal
-          portalId="portal"
           handleClose={() => setOpenModal(null)}
           balanceOfContributions={4000000}
           accordingToRegulation={2}
@@ -268,7 +265,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       )}
       {currentModal === "editProductModal" && (
         <EditProductModal
-          portalId="portal"
           title="Agregar productos"
           confirmButtonText="Guardar"
           initialValues={initialValues}
@@ -291,7 +287,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       {currentModal === "reportCreditsModal" && (
         <ReportCreditsModal
           handleClose={handleCloseModal}
-          portalId="portal"
           totalBalance={87000000}
           totalFee={3300000}
           options={incomeOptions}
@@ -302,7 +297,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       {currentModal === "extraPayments" && (
         <ExtraordinaryPaymentModal
           dataTable={extraordinaryInstallmentMock}
-          portalId="portal"
           handleClose={handleCloseModal}
         />
       )}

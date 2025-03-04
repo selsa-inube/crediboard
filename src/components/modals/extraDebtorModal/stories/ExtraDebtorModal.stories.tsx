@@ -56,7 +56,6 @@ export const Create: Story = (args: ExtraDebtorModalProps) => {
 };
 
 Create.args = {
-  portalId: "portal",
   title: "Agregar deudor extra",
   confirmButtonText: "Agregar",
   iconBefore: <MdAdd />,
@@ -101,7 +100,6 @@ export const Edit: Story = (args: ExtraDebtorModalProps) => {
 };
 
 Edit.args = {
-  portalId: "portal",
   title: "Editar deudor extra",
   confirmButtonText: "Actualizar",
   iconAfter: <MdCached />,

@@ -1,37 +1,22 @@
-import { createPortal } from "react-dom";
-import { MdClear } from "react-icons/md";
-import { Divider } from "@inubekit/divider";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Button } from "@inubekit/button";
-import { Icon } from "@inubekit/icon";
-import { Blanket } from "@inubekit/blanket";
 import { useFlag } from "@inubekit/flag";
 
-import { validationMessages } from "@validations/validationMessages";
+import { BaseModal } from "@components/modals/baseModal";
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 
-import { StyledContainer, StyledContainerClose } from "./styles";
 import { dataIncomeModal } from "./config";
 
 interface IncomeModalProps {
   handleClose: () => void;
   openModal?: (state: boolean) => void;
-  portalId?: string;
   onlyDebtor?: boolean;
   disabled?: boolean;
 }
 
 export function IncomeModal(props: IncomeModalProps) {
-  const { handleClose, openModal, portalId, onlyDebtor, disabled } = props;
+  const { handleClose, openModal, onlyDebtor, disabled } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
-
-  const node = document.getElementById(portalId ?? "portal");
-  if (!node) {
-    throw new Error(validationMessages.errorNodo);
-  }
 
   const { addFlag } = useFlag();
 
@@ -45,65 +30,23 @@ export function IncomeModal(props: IncomeModalProps) {
     });
   };
 
-  return createPortal(
-    <Blanket>
-      <StyledContainer $smallScreen={isMobile}>
-        <Stack
-          direction="column"
-          padding="16px 24px"
-          gap="16px"
-          width={isMobile ? "auto" : "1002px"}
-        >
-          <Stack justifyContent="space-between" alignItems="center">
-            <Text size="small" type="headline">
-              {dataIncomeModal.title}
-            </Text>
-            <StyledContainerClose onClick={handleClose}>
-              <Stack alignItems="center" gap="8px">
-                <Text>{dataIncomeModal.close}</Text>
-                <Icon
-                  icon={<MdClear />}
-                  size="24px"
-                  cursorHover
-                  appearance="dark"
-                />
-              </Stack>
-            </StyledContainerClose>
-          </Stack>
-          <Divider />
-          <SourceIncome
-            ShowSupport={false}
-            onlyDebtor={onlyDebtor}
-            disabled={disabled}
-            openModal={openModal}
-          />
-          <Divider />
-          <Stack
-            padding="10px 0px"
-            justifyContent="end"
-            alignItems={!isMobile ? "end" : "end"}
-            direction={!isMobile ? "row" : "column"}
-            gap="20px"
-          >
-            <Stack
-              justifyContent="end"
-              gap="15px"
-              margin={!isMobile ? "none" : "15px 0px"}
-              width={!isMobile ? "auto" : "100%"}
-            >
-              <Button
-                children={dataIncomeModal.cancel}
-                appearance="gray"
-                variant="outlined"
-                onClick={handleClose}
-              />
-              <Button children={dataIncomeModal.save} onClick={handleSubmit} />
-            </Stack>
-          </Stack>
-        </Stack>
-      </StyledContainer>
-    </Blanket>,
-    node
+  return (
+    <BaseModal
+      title={dataIncomeModal.title}
+      nextButton={dataIncomeModal.save}
+      backButton={dataIncomeModal.cancel}
+      handleNext={handleSubmit}
+      handleBack={handleClose}
+      width={isMobile ? "auto" : "1002px"}
+      finalDivider={true}
+    >
+      <SourceIncome
+        ShowSupport={false}
+        onlyDebtor={onlyDebtor}
+        disabled={disabled}
+        openModal={openModal}
+      />
+    </BaseModal>
   );
 }
 
