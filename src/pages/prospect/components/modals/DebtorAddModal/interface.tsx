@@ -87,7 +87,7 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddBorrower.contactInformation.id && (
-            <SourceIncome onlyDebtor={true} />
+            <SourceIncome />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddBorrower.BorrowerData.id && (

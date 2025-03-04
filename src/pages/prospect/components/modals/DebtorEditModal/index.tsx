@@ -42,7 +42,7 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
           onChange={onChange}
         />
         {currentTab === "data" && <DataDebtor />}
-        {currentTab === "sources" && <SourceIncome onlyDebtor={true} />}
+        {currentTab === "sources" && <SourceIncome />}
         {currentTab === "obligations" && (
           <TableFinancialObligations showActions={true} showOnlyEdit={true} />
         )}
