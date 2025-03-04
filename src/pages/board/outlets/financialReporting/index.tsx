@@ -225,6 +225,7 @@ export const FinancialReporting = () => {
                   message={error.error_description}
                   onClose={() => handleClose(error.error_issued_id)}
                   key={error.error_issued_id}
+                  isMobile={isMobile}
                 />
               ))}
 
@@ -234,6 +235,7 @@ export const FinancialReporting = () => {
                     message={errorService.message.toString()}
                     onClose={() => handleCloseErrorService(errorService.id)}
                     key={errorService.id}
+                    isMobile={isMobile}
                   />
                 ))}
             </StyledToast>
