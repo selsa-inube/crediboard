@@ -56,6 +56,7 @@ function BoardLayout() {
         boardRequests,
         requestsPinned,
       }));
+      console.log("en fetchBoardData---> boardRequests: ", boardRequests);
       setFilteredRequests(boardRequests);
     } catch (error) {
       console.error("Error fetching board data:", error);

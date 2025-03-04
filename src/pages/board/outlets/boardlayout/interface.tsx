@@ -87,6 +87,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     setIsExpanded(Boolean(searchRequestValue));
   }, [searchRequestValue]);
 
+  console.log("BoardRequests: ", BoardRequests);
   return (
     <StyledContainerToCenter>
       <Stack

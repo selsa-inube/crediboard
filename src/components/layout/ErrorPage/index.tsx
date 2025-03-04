@@ -19,7 +19,7 @@ import {
   StyledDiv,
 } from "./styles";
 import { enviroment } from "@config/environment";
-import { errorCodes } from "@config/errorCodes.tsx";
+import { errorCodes } from "@config/errorCodes";
 
 interface ErrorPageProps {
   logo?: string;
