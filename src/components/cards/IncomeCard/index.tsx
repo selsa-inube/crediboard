@@ -7,15 +7,16 @@ import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
 import { Icon } from "@inubekit/icon";
 
-import { CardGray } from "../CardGray";
-import { StyledContainer, StyledTextField, StyledSupport } from "./styles";
-import { incomeCardData } from "./config";
 import {
   currencyFormat,
   handleChangeWithCurrency,
   parseCurrencyString,
   validateCurrencyField,
 } from "@utils/formatData/currency";
+
+import { CardGray } from "../CardGray";
+import { StyledContainer, StyledTextField, StyledSupport } from "./styles";
+import { incomeCardData } from "./config";
 
 export interface IIncomeCardProps {
   title: string;
