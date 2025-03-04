@@ -161,8 +161,8 @@ export interface Iuncovered_wallet {
 
 export interface IPromissoryNotes {
   creditRequestId: string;
-  promisory_note_id: string;
-  promisory_note_code: string;
+  promissory_note_id: string;
+  promissory_note_code: string;
   descriptionUse: string;
   abbreviatedName: string;
   CreditProductId: string;
