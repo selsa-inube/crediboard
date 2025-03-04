@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-
-import { Grid } from "@inubekit/grid";
 import { useMediaQuery } from "@inubekit/hooks";
 import { useFlag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
@@ -29,7 +27,12 @@ import {
   optionButtons,
   errorObserver,
 } from "./config";
-import { StyledToast } from "./styles";
+import {
+  StyledMarginPrint,
+  StyledPageBreak,
+  StyledScreenPrint,
+  StyledToast,
+} from "./styles";
 import { Approvals } from "./Approvals";
 import { Requirements } from "./Requirements";
 import { Management } from "./management";
@@ -55,6 +58,7 @@ export const FinancialReporting = () => {
   const [showAttachments, setShowAttachments] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [collapse, setCollapse] = useState(false);
 
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -144,7 +148,19 @@ export const FinancialReporting = () => {
   const handleActions = configHandleactions({
     buttonReject: () => setShowRejectModal(true),
     buttonCancel: () => setShowCancelModal(true),
-    buttonPrint: () => {},
+    buttonPrint: () => {
+      if (collapse === true) {
+        setCollapse(false);
+        setTimeout(() => {
+          print();
+        }, 1);
+        setTimeout(() => {
+          setCollapse(true);
+        }, 1);
+      } else {
+        print();
+      }
+    },
     buttonAttach: () => setShowAttachments(true),
     buttonViewAttachments: () => setAttachDocuments(true),
     buttonWarranty: () => setShowGuarantee(true),
@@ -199,147 +215,152 @@ export const FinancialReporting = () => {
   };
 
   return (
-    <Stack direction="column" margin={!isMobile ? "20px 40px" : "20px"}>
-      {errors && (
-        <Stack justifyContent="center" alignContent="center">
-          <StyledToast $isMobile={isMobile}>
-            {errors.map((error) => (
-              <ErrorAlert
-                message={error.error_description}
-                onClose={() => handleClose(error.error_issued_id)}
-                key={error.error_issued_id}
-              />
-            ))}
-
-            {errorsService.length > 0 &&
-              errorsService.map((errorService) => (
+    <StyledMarginPrint $isMobile={isMobile}>
+      <Stack direction="column">
+        {errors && (
+          <Stack justifyContent="center" alignContent="center">
+            <StyledToast $isMobile={isMobile}>
+              {errors.map((error) => (
                 <ErrorAlert
-                  message={errorService.message.toString()}
-                  onClose={() => handleCloseErrorService(errorService.id)}
-                  key={errorService.id}
+                  message={error.error_description}
+                  onClose={() => handleClose(error.error_issued_id)}
+                  key={error.error_issued_id}
                 />
               ))}
-          </StyledToast>
-        </Stack>
-      )}
 
-      <ContainerSections
-        isMobile={isMobile}
-        stockTray={
-          <StockTray
-            isMobile={isMobile}
-            actionButtons={handleActions}
-            navigation={() => navigation(-1)}
-          />
-        }
-      >
-        <>
-          <Stack direction="column" gap="20px">
-            <Stack direction="column">
-              <Stack direction="column">
-                <ComercialManagement print={handleGeneratePDF} data={data} />
-              </Stack>
-            </Stack>
-            <Grid
-              templateColumns={!isMobile ? "repeat(2,1fr)" : "1fr"}
-              gap="16px"
-              autoRows="auto"
-            >
-              <Stack direction="column">
-                <ToDo
-                  icon={infoIcon}
-                  isMobile={isMobile}
-                  id={id!}
-                  user={user!.nickname!}
-                />
-              </Stack>
-              <Stack direction="column">
-                <Approvals user={id!} isMobile={isMobile} id={id!} />
-              </Stack>
-              <Stack direction="column">
-                <Requirements
-                  isMobile={isMobile}
-                  id={id!}
-                  user={user!.nickname!}
-                />
-              </Stack>
-              <Stack direction="column">
-                <Management id={id!} isMobile={isMobile} />
-              </Stack>
-              <Stack direction="column">
-                <PromissoryNotes id={id!} isMobile={isMobile} />
-              </Stack>
-              <Stack direction="column">
-                <Postingvouchers />
-              </Stack>
-            </Grid>
+              {errorsService.length > 0 &&
+                errorsService.map((errorService) => (
+                  <ErrorAlert
+                    message={errorService.message.toString()}
+                    onClose={() => handleCloseErrorService(errorService.id)}
+                    key={errorService.id}
+                  />
+                ))}
+            </StyledToast>
           </Stack>
-          {showAttachments && (
-            <ListModal
-              title="Adjuntar"
-              handleClose={() => setShowAttachments(false)}
-              optionButtons={optionButtons}
-              buttonLabel="Guardar"
-              id={id!}
-            />
-          )}
-          {attachDocuments && (
-            <ListModal
-              title="Ver Adjuntos"
-              content={document.map((doc) => (
-                <div key={doc.id}>{doc.name}</div>
-              ))}
-              handleClose={() => setAttachDocuments(false)}
-              buttonLabel="Cerrar"
-              id={id!}
-            />
-          )}
-        </>
-      </ContainerSections>
-      {showRejectModal && (
-        <TextAreaModal
-          title="Rechazar"
-          buttonText="Confirmar"
-          inputLabel="Motivo del Rechazo."
-          inputPlaceholder="Describa el motivo del Rechazo."
-          onCloseModal={() => setShowRejectModal(false)}
-          onSubmit={(values) => {
-            handleConfirmReject(id!, user!.nickname!, values);
-            handleSubmit();
-            setShowRejectModal(false);
-          }}
-        />
-      )}
-      {showGuarantee && (
-        <OfferedGuaranteeModal
-          handleClose={() => setShowGuarantee(false)}
+        )}
+
+        <ContainerSections
           isMobile={isMobile}
-        />
-      )}
-      {showCancelModal && (
-        <TextAreaModal
-          title="Anular"
-          buttonText="Confirmar"
-          inputLabel="Motivo de la anulación."
-          inputPlaceholder="Describa el motivo de la anulación."
-          onCloseModal={() => setShowCancelModal(false)}
-          onSubmit={(values) => {
-            handleConfirmCancel(id!, user!.nickname!, values);
-            handleCancelSubmit();
-            setShowCancelModal(false);
-          }}
-        />
-      )}
-      {showMenu && isMobile && (
-        <MobileMenu
-          onClose={() => setShowMenu(false)}
-          onReject={hanleOnReject}
-          onCancel={handleOnCancel}
-          onAttach={handleOnAttach}
-          onViewAttachments={handleOnViewAttachments}
-          onGuarantee={() => setShowGuarantee(true)}
-        />
-      )}
-    </Stack>
+          stockTray={
+            <StockTray
+              isMobile={isMobile}
+              actionButtons={handleActions}
+              navigation={() => navigation(-1)}
+            />
+          }
+        >
+          <>
+            <Stack direction="column" gap="20px">
+              <Stack direction="column">
+                <Stack direction="column">
+                  <ComercialManagement
+                    print={handleGeneratePDF}
+                    data={data}
+                    collapse={collapse}
+                    setCollapse={setCollapse}
+                  />
+                </Stack>
+              </Stack>
+              <StyledScreenPrint $isMobile={isMobile}>
+                <Stack direction="column">
+                  <ToDo
+                    icon={infoIcon}
+                    isMobile={isMobile}
+                    id={id!}
+                    user={user!.nickname!}
+                  />
+                </Stack>
+                <Stack direction="column" height={isMobile ? "auto" : "277px"}>
+                  <Approvals user={id!} isMobile={isMobile} id={id!} />
+                </Stack>
+                <Stack direction="column" height={isMobile ? "auto" : "340px"}>
+                  <StyledPageBreak />
+                  <Requirements
+                    isMobile={isMobile}
+                    id={id!}
+                    user={user!.nickname!}
+                  />
+                </Stack>
+                <Stack direction="column">
+                  <Management id={id!} isMobile={isMobile} />
+                </Stack>
+                <Stack direction="column" height={isMobile ? "auto" : "163px"}>
+                  <StyledPageBreak />
+                  <PromissoryNotes id={id!} isMobile={isMobile} />
+                </Stack>
+                <Stack direction="column" height={isMobile ? "auto" : "163px"}>
+                  <Postingvouchers />
+                </Stack>
+              </StyledScreenPrint>
+            </Stack>
+            {showAttachments && (
+              <ListModal
+                title="Adjuntar"
+                handleClose={() => setShowAttachments(false)}
+                optionButtons={optionButtons}
+                buttonLabel="Guardar"
+                id={id!}
+              />
+            )}
+            {attachDocuments && (
+              <ListModal
+                title="Ver Adjuntos"
+                content={document.map((doc) => (
+                  <div key={doc.id}>{doc.name}</div>
+                ))}
+                handleClose={() => setAttachDocuments(false)}
+                buttonLabel="Cerrar"
+                id={id!}
+              />
+            )}
+          </>
+        </ContainerSections>
+        {showRejectModal && (
+          <TextAreaModal
+            title="Rechazar"
+            buttonText="Confirmar"
+            inputLabel="Motivo del Rechazo."
+            inputPlaceholder="Describa el motivo del Rechazo."
+            onCloseModal={() => setShowRejectModal(false)}
+            onSubmit={(values) => {
+              handleConfirmReject(id!, user!.nickname!, values);
+              handleSubmit();
+              setShowRejectModal(false);
+            }}
+          />
+        )}
+        {showGuarantee && (
+          <OfferedGuaranteeModal
+            handleClose={() => setShowGuarantee(false)}
+            isMobile={isMobile}
+          />
+        )}
+        {showCancelModal && (
+          <TextAreaModal
+            title="Anular"
+            buttonText="Confirmar"
+            inputLabel="Motivo de la anulación."
+            inputPlaceholder="Describa el motivo de la anulación."
+            onCloseModal={() => setShowCancelModal(false)}
+            onSubmit={(values) => {
+              handleConfirmCancel(id!, user!.nickname!, values);
+              handleCancelSubmit();
+              setShowCancelModal(false);
+            }}
+          />
+        )}
+        {showMenu && isMobile && (
+          <MobileMenu
+            onClose={() => setShowMenu(false)}
+            onReject={hanleOnReject}
+            onCancel={handleOnCancel}
+            onAttach={handleOnAttach}
+            onViewAttachments={handleOnViewAttachments}
+            onGuarantee={() => setShowGuarantee(true)}
+          />
+        )}
+      </Stack>
+    </StyledMarginPrint>
   );
 };

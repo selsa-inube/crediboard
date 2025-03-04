@@ -31,18 +31,24 @@ const StyledLogo = styled.img`
   max-width: 120px;
 `;
 
+const StyledHeaderContainer = styled.div`
+  div > div {
+    cursor: pointer;
+  }
+`;
+
+const StyledContainerNav = styled.div`
+  max-height: calc(100vh - 50px);
+`;
+
 const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   display: flex;
   transition: all 500ms ease;
   position: absolute;
-  top: 13.5px;
+  top: ${({ $isTablet }) => ($isTablet ? "8.5px" : "13px")};
   transform: ${({ $collapse }) =>
     $collapse ? "rotate(-90deg)" : "rotate(90deg)"};
-  left: ${({ $isTablet }) => ($isTablet ? "150px" : "142px")};
-`;
-
-const StyledCollapse = styled.div`
-  position: absolute;
+  left: ${({ $isTablet }) => ($isTablet ? "200px" : "160px")};
 `;
 
 const StyledMenuContainer = styled.div`
@@ -57,25 +63,42 @@ const StyledMenuContainer = styled.div`
   box-shadow: 0px 6px 10px 4px #091e4221;
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
+
+  hr {
+    color: ${({ theme }) =>
+      theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
+  }
 `;
 
+const StyledCollapse = styled.div`
+  position: absolute;
+`;
 const StyledFooter = styled.footer`
-margin-top: auto;
+  margin-top: auto;
   display: flex;
   justify-content: center;
   padding: 16px 24px;
-  background-color:${({ theme }) =>
+  background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
+`;
+
+const StyledPrint = styled.div`
+  @media print {
+    display: none;
+  }
 `;
 
 export {
   StyledAppPage,
+  StyledMenuContainer,
   StyledContainer,
   StyledContentImg,
   StyledLogo,
   StyledMain,
-  StyledMenuContainer,
+  StyledContainerNav,
+  StyledHeaderContainer,
   StyledCollapseIcon,
   StyledCollapse,
-  StyledFooter
+  StyledFooter,
+  StyledPrint,
 };
