@@ -9,3 +9,9 @@ export const StyledHorizontalDivider = styled.hr`
   background-color: ${({ theme }) =>
     theme?.color?.stroke?.divider?.regular || inube.palette.neutral.N40};
 `;
+
+export const StyledPrint = styled.div`
+  @media print {
+    display: none;
+  }
+`;

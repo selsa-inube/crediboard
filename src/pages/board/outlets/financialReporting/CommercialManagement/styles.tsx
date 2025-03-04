@@ -5,6 +5,10 @@ interface IStyledCollapseIcon {
   $collapse: boolean;
 }
 
+interface IStyledCardsCredit {
+  $isMobile: boolean;
+}
+
 const StyledIcon = styled.div`
   display: flex;
   align-items: center;
@@ -28,7 +32,7 @@ const StyledFieldset = styled.div`
   padding: "4px";
 `;
 
-const StyledCardsCredit = styled.div`
+const StyledCardsCredit = styled.div<IStyledCardsCredit>`
   overflow-x: auto;
   align-items: center;
 
@@ -44,11 +48,11 @@ const StyledCardsCredit = styled.div`
   }
 
   @media (max-width: 800px) {
-    height: 500px;
+    height: ${({ $isMobile }) => ($isMobile ? "500px" : "100%")};
     overflow-y: auto;
     display: grid;
     place-items: center;
-    
+
     &::-webkit-scrollbar {
       width: 8px;
     }
@@ -57,6 +61,13 @@ const StyledCardsCredit = styled.div`
       background-color: ${({ theme }) =>
         theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
       border-radius: 8px;
+    }
+  }
+
+  @media print {
+    & > div {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 `;
@@ -76,6 +87,12 @@ const StyledVerticalDivider = styled.hr`
     theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
+const StyledPrint = styled.div`
+  @media print {
+    display: none;
+  }
+`;
+
 export {
   StyledCollapseIcon,
   StyledIcon,
@@ -83,4 +100,5 @@ export {
   StyledCardsCredit,
   StyledContainerIcon,
   StyledVerticalDivider,
+  StyledPrint,
 };

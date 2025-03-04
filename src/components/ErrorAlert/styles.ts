@@ -61,3 +61,9 @@ export const AlertContainer = styled.div`
       theme?.color?.stroke?.gray?.regular || inube.palette.neutral.N30};
   animation: ${slideDown} 2s ease-in-out;
 `;
+
+export const StyledPrint = styled.div`
+  @media print {
+    display: none;
+  }
+`;
