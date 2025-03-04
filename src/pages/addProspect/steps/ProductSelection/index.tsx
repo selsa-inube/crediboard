@@ -8,6 +8,7 @@ import { Divider } from "@inubekit/divider";
 
 import { CardProductSelection } from "@pages/addProspect/components/CardProductSelection";
 import { Fieldset } from "@components/data/Fieldset";
+import { mockGetMoneyDestinations } from "@mocks/add-prospect/money-destinations/moneydestinations.mock";
 import { lineOfCredit } from "@mocks/add-prospect/line-of-credit/lineOfCredit.mock";
 
 import { electionData } from "./config";
@@ -25,6 +26,7 @@ interface IProductSelectionProps {
   };
   onFormValid: (isValid: boolean) => void;
   isMobile: boolean;
+  showQuestion: string;
 }
 
 export function ProductSelection(props: IProductSelectionProps) {
@@ -37,6 +39,7 @@ export function ProductSelection(props: IProductSelectionProps) {
     },
     onFormValid,
     isMobile,
+    showQuestion,
   } = props;
 
   const validationSchema = Yup.object().shape({
@@ -63,6 +66,10 @@ export function ProductSelection(props: IProductSelectionProps) {
       setSelectedProducts([]);
     }
   }, [generalToggleChecked, setSelectedProducts]);
+
+  const selectedQuestions =
+    mockGetMoneyDestinations.find((item) => item.id === showQuestion)
+      ?.question || [];
 
   return (
     <Formik
@@ -138,19 +145,22 @@ export function ProductSelection(props: IProductSelectionProps) {
               </Stack>
             </Fieldset>
             <Fieldset>
-              {Object.entries(electionData.data).map(
-                ([key, question], index) => (
+              {selectedQuestions.map((questionIndex, index) => {
+                const question = Object.entries(electionData.data)[
+                  questionIndex - 1
+                ];
+                return (
                   <Stack
                     direction="column"
-                    key={key}
+                    key={question[0]}
                     gap="16px"
                     padding="4px 10px"
                   >
                     <Text type="body" size="medium">
-                      {question}
+                      {question[1]}
                     </Text>
                     <Stack gap="8px">
-                      <Field name={`togglesState[${index}]`}>
+                      <Field name={`togglesState[${questionIndex - 1}]`}>
                         {({
                           field,
                         }: {
@@ -161,9 +171,9 @@ export function ProductSelection(props: IProductSelectionProps) {
                             value={field.value.toString()}
                             checked={field.value}
                             onChange={() => {
-                              onToggleChange(index);
+                              onToggleChange(questionIndex - 1);
                               setFieldValue(
-                                `togglesState[${index}]`,
+                                `togglesState[${questionIndex - 1}]`,
                                 !field.value
                               );
                             }}
@@ -175,20 +185,22 @@ export function ProductSelection(props: IProductSelectionProps) {
                         size="large"
                         weight="bold"
                         appearance={
-                          values.togglesState[index] ? "success" : "danger"
+                          values.togglesState[questionIndex - 1]
+                            ? "success"
+                            : "danger"
                         }
                       >
-                        {values.togglesState[index]
+                        {values.togglesState[questionIndex - 1]
                           ? electionData.yes
                           : electionData.no}
                       </Text>
                     </Stack>
-                    {index < Object.entries(electionData.data).length - 1 && (
+                    {index !== selectedQuestions.length - 1 && (
                       <Divider dashed />
                     )}
                   </Stack>
-                )
-              )}
+                );
+              })}
             </Fieldset>
           </Stack>
         </Form>

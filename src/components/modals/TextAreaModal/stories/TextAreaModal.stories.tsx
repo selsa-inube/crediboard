@@ -33,7 +33,6 @@ Default.args = {
   inputLabel: "Input Label",
   inputPlaceholder: "Type something...",
   maxLength: 200,
-  portalId: "portal",
 };
 
 export default story;

@@ -117,11 +117,11 @@ function ToDo(props: ToDoProps) {
       setStaff(formattedStaff);
 
       const firstAccountManager = formattedStaff.find(
-        (staffMember) => staffMember.position === "Account_manager"
+        (staffMember) => staffMember.role === "Account_manager"
       );
 
       const firstAnalyst = formattedStaff.find(
-        (staffMember) => staffMember.position === "Analyst"
+        (staffMember) => staffMember.role === "Analyst"
       );
 
       const newStaffState = {
