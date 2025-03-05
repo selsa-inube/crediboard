@@ -68,12 +68,7 @@ function SummaryCardUI(props: SummaryCardProps) {
         <StyledDivider />
         <Stack gap="8px" justifyContent="flex-end" padding="8px 0px">
           {hasMessage && (
-            <Icon
-              icon={<MdOutlineMessage />}
-              appearance="dark"
-              size="20px"
-              cursorHover
-            />
+            <Icon icon={<MdOutlineMessage />} appearance="dark" size="20px" />
           )}
           <Icon
             icon={isPinned ? <MdPushPin /> : <MdOutlinePushPin />}

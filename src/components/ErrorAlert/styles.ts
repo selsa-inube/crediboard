@@ -47,11 +47,12 @@ const slideDown = keyframes`
 
 `;
 
-export const AlertContainer = styled.div`
+export const AlertContainer = styled.div<{ isMobile?: boolean }>`
   display: flex;
   justify-content: center;
   position: relative;
-  width: 100%;
+  width: ${(props) => (props.isMobile ? "calc(100%-10px)" : "100%")};
+  margin: ${(props) => (props.isMobile ? "0px 10px" : "0px")};
   padding: 7px;
   border-radius: 4px;
   background-color: ${({ theme }) =>
