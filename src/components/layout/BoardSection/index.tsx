@@ -134,7 +134,7 @@ function BoardSection(props: BoardSectionProps) {
                   request.creditRequestId,
                   pinnedRequests
                 )}
-                hasMessage={request.unreadNovelties === "Y" ? true : false}
+                hasMessage={request.unreadNovelties === "Y"}
                 onPinChange={() => {
                   if (request.creditRequestId) {
                     handlePinRequest(
