@@ -44,7 +44,6 @@ Default.args = {
     field2: "3122638128",
     field3: "3122638128",
   },
-  portalId: "portal",
 };
 
 export default story;

@@ -20,7 +20,7 @@ const StyledModal = styled.div<IStyledModal>`
   max-height: 180px;
   width: ${({ $isSmallScreen }) => ($isSmallScreen ? "312px" : "400px")};
   border-radius: "8px";
-  margin: "${({ theme }) => theme?.spacing?.s200 || "16px"}";
+  margin: "16px";
   z-index: 3;
 `;
 

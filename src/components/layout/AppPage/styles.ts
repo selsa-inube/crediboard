@@ -82,6 +82,12 @@ const StyledFooter = styled.footer`
     theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
 `;
 
+const StyledPrint = styled.div`
+  @media print {
+    display: none;
+  }
+`;
+
 export {
   StyledAppPage,
   StyledMenuContainer,
@@ -94,4 +100,5 @@ export {
   StyledCollapseIcon,
   StyledCollapse,
   StyledFooter,
+  StyledPrint,
 };

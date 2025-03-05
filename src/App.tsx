@@ -30,7 +30,7 @@ import { FilingApplicationRoutes } from "@routes/filingApplication";
 function LogOut() {
   localStorage.clear();
   const { logout } = useAuth0();
-  logout({ logoutParams: { returnTo: enviroment.REDIRECT_URI } });
+  logout({ logoutParams: { returnTo: enviroment.GOOGLE_REDIRECT_URI } });
   return <AppPage />;
 }
 
@@ -49,7 +49,7 @@ const router = createBrowserRouter(
       <Route path="add-prospect/*" element={<AddProspectRoutes />} />
       <Route path="edit-prospect/*" element={<EditProspectRoutes />} />
       <Route
-        path="filing-application/*"
+        path="submit-credit-application/*"
         element={<FilingApplicationRoutes />}
       />
       <Route path="logout" element={<LogOut />} />

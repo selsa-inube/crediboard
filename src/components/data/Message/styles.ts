@@ -13,6 +13,7 @@ export const MessageWrapper = styled.div<MessageProps>`
 `;
 
 export const MessageContent = styled.div<MessageProps>`
+  display: flex;
   font-family: Roboto;
   color: ${({ theme }) =>
     theme?.palette?.neutral?.N900 || inube.palette.neutral.N900};
@@ -54,4 +55,24 @@ export const Timestamp = styled.div<MessageProps>`
   margin-top: 5px;
   margin-left: 10px;
   margin-right: 10px;
+`;
+
+export const IconWrapper = styled.div<MessageProps>`
+  align-items: center;
+  align-content: center;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 8px;
+  border-radius: 2px;
+    svg {
+    color: ${({ theme }) =>
+      theme?.palette?.neutral?.N900 || inube.palette.neutral.N900};
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+      color: #007bff; /* Color al hacer hover */
+    }
+  }
+  }
 `;

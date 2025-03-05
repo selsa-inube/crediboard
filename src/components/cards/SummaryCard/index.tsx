@@ -24,7 +24,7 @@ const SummaryCard = (props: SummaryCardProps) => {
     toDo,
     path,
     isPinned = false,
-    hasMessage = false,
+    hasMessage,
     onPinChange,
     errorLoadingPins,
   } = props;

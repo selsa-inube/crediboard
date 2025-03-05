@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@inubekit/button";
 
 import { ReportCreditsModal, ReportCreditsModalProps } from ".";
+import { incomeOptions } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 
 const meta: Meta<typeof ReportCreditsModal> = {
   title: "components/modals/ReportCreditsModal",
@@ -27,6 +28,9 @@ const Default: Story = (args: ReportCreditsModalProps) => {
 Default.args = {
   totalFee: 3300000,
   totalBalance: 87000000,
+  onChange: () => {},
+  options: incomeOptions,
+  debtor: "John Doe",
 };
 
 export { Default };
