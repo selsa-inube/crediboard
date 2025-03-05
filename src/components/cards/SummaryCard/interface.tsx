@@ -67,12 +67,11 @@ function SummaryCardUI(props: SummaryCardProps) {
       <Stack direction="column" padding="0px 8px">
         <StyledDivider />
         <Stack gap="8px" justifyContent="flex-end" padding="8px 0px">
-          {hasMessage ?? (
+          {hasMessage && (
             <Icon
               icon={<MdOutlineMessage />}
-              appearance={hasMessage === "Y" ? "dark" : "gray"}
+              appearance={hasMessage ? "dark" : "gray"}
               size="20px"
-              cursorHover={hasMessage === "Y" ? true : false}
             />
           )}
           <Icon

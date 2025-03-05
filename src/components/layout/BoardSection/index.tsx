@@ -65,7 +65,7 @@ function BoardSection(props: BoardSectionProps) {
     }
     return "";
   };
-  console.log("sectionInformation: ", sectionInformation);
+
   return (
     <StyledBoardSection
       $sectionBackground={sectionBackground}
@@ -134,7 +134,7 @@ function BoardSection(props: BoardSectionProps) {
                   request.creditRequestId,
                   pinnedRequests
                 )}
-                hasMessage={request.unreadNovelties}
+                hasMessage={request.unreadNovelties === "Y" ? true : false}
                 onPinChange={() => {
                   if (request.creditRequestId) {
                     handlePinRequest(
