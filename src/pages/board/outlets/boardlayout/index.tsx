@@ -115,12 +115,13 @@ function BoardLayout() {
             return request.stage === "TRAMITE_DESEMBOLSO";
           case "7":
             return request.stage === "CUMPLIMIENTO_REQUISITOS";
+          case "10":
+            return request.unreadNovelties === "Y";
           default:
             return false;
         }
       });
     });
-
     setFilteredRequests(finalFilteredRequests);
   }, [filters, boardData]);
 

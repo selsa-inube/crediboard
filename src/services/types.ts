@@ -11,6 +11,7 @@ export interface ICreditRequest {
   clientIdentificationNumber: string;
   clientName: string;
   taskToBeDone: string;
+  unreadNovelties?: string;
 }
 
 export interface IStaff {
