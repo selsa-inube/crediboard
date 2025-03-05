@@ -5,7 +5,6 @@ import { Icon } from "@inubekit/icon";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 
-import { mockAnchored } from "@mocks/anchored/anchored.mock";
 import { BaseModal } from "@components/modals/baseModal";
 import { ICreditRequest } from "@services/types";
 import { getCreditRequestPin } from "@services/isPinned";
@@ -166,9 +165,14 @@ function BoardLayout() {
     creditRequestId: string | undefined,
     isPinned: string
   ) => {
-    const request = mockAnchored.find((item) => item.id === creditRequestId);
+    const identificationStaff =
+      eventData.user.staff.identificationDocumentNumber;
+    const identificationRequest = creditRequestId
 
-    if (request?.modify === "N") {
+    // console.log("staff: ", identificationStaff);
+    // console.log("request: ",identificationRequest)
+
+    if (identificationStaff !== identificationRequest) {
       setIsOpenModal(true);
       return;
     }
