@@ -31,19 +31,20 @@ const DefaultTemplate: StoryFn<AddSeriesModalProps> = (args) => {
   return (
     <>
       <Button onClick={handleShowModal}>Open Modal</Button>
-      {showModal && (
-        <AddSeriesModal
-          {...args}
-          handleClose={handleShowModal}
-        />
-      )}
+      {showModal && <AddSeriesModal {...args} handleClose={handleShowModal} />}
     </>
   );
 };
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {
-  portalId: "portal",
+  initialValues: {
+    paymentMethod: "",
+    amount: 250000,
+    value: 500000,
+    frequency: "",
+    datePayment: "",
+  },
 };
 
 export default story;

@@ -58,3 +58,8 @@ export const txtOthersOptions = {
   txtDecision: "Decisión",
   txtNoSelect: "No se seleccionó una decisión disponible.",
 };
+
+export const txtTaskQuery = {
+  txtCommercialManager: "Gestor Comercial",
+  txtAnalyst: "Analista",
+};

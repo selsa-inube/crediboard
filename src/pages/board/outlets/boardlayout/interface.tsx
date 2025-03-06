@@ -233,6 +233,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
               pinnedRequests={pinnedRequests}
               handlePinRequest={handlePinRequest}
               errorLoadingPins={errorLoadingPins}
+              searchRequestValue={searchRequestValue}
             />
           ))}
         </StyledBoardContainer>

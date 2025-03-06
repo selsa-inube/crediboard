@@ -4,7 +4,6 @@ import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
 import { Grid } from "@inubekit/grid";
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Text } from "@inubekit/text";
 import { Header } from "@inubekit/header";
 
 import { AppContext } from "@context/AppContext";
@@ -25,6 +24,7 @@ import {
   StyledCollapseIcon,
   StyledCollapse,
   StyledFooter,
+  StyledPrint,
 } from "./styles";
 
 const renderLogo = (imgUrl: string) => {
@@ -96,27 +96,29 @@ function AppPage() {
   return (
     <StyledAppPage>
       <Grid templateRows="auto 1fr" height="100vh" justifyContent="unset">
-        <StyledHeaderContainer>
-          <Header
-            portalId="portal"
-            logoURL={renderLogo(eventData.businessUnit.urlLogo)}
-            userName={eventData.user.userName}
-            client={eventData.businessUnit.abbreviatedName}
-          />
-        </StyledHeaderContainer>
-        <StyledCollapseIcon
-          $collapse={collapse}
-          onClick={() => setCollapse(!collapse)}
-          $isTablet={isTablet}
-          ref={collapseMenuRef}
-        >
-          <Icon
-            icon={<MdOutlineChevronRight />}
-            appearance="primary"
-            size="24px"
-            cursorHover
-          />
-        </StyledCollapseIcon>
+        <StyledPrint>
+          <StyledHeaderContainer>
+            <Header
+              portalId="portal"
+              logoURL={renderLogo(eventData.businessUnit.urlLogo)}
+              userName={eventData.user.userName}
+              client={eventData.businessUnit.abbreviatedName}
+            />
+          </StyledHeaderContainer>
+          <StyledCollapseIcon
+            $collapse={collapse}
+            onClick={() => setCollapse(!collapse)}
+            $isTablet={isTablet}
+            ref={collapseMenuRef}
+          >
+            <Icon
+              icon={<MdOutlineChevronRight />}
+              appearance="primary"
+              size="24px"
+              cursorHover
+            />
+          </StyledCollapseIcon>
+        </StyledPrint>
         {collapse && (
           <StyledCollapse ref={businessUnitChangeRef}>
             <BusinessUnitChange
@@ -160,9 +162,7 @@ function AppPage() {
             <Outlet />
           </StyledMain>
           <StyledFooter>
-            <Text appearance="gray" textAlign="center" size="medium">
-              © 2024 Inube
-            </Text>
+            {renderLogo(eventData.businessManager.urlBrand)}
           </StyledFooter>
         </StyledContainer>
       </Grid>

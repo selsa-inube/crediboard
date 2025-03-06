@@ -1,34 +1,32 @@
 import { useEffect, useState } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
-import { MdInfoOutline, MdOutlineAttachMoney } from "react-icons/md";
+import { MdOutlineAttachMoney } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
 import { Toggle } from "@inubekit/toggle";
 import { Select } from "@inubekit/select";
-import { Icon } from "@inubekit/icon";
 import { inube } from "@inubekit/foundations";
+import { useParams } from "react-router-dom";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { CreditLimit } from "@components/modals/CreditLimit";
-import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
-import { ReciprocityModal } from "@components/modals/ReciprocityModal";
-import { ScoreModal } from "@components/modals/FrcModal";
-
+import { CreditLimitCard } from "@pages/addProspect/components/CreditLimitCard";
 import { currencyFormat } from "@utils/formatData/currency";
 import { get } from "@mocks/utils/dataMock.service";
+import { loanAmount } from "@mocks/add-prospect/loan-amount/loanAmount.mock";
 import {
   mockPayAmount,
   mockPeriodicity,
 } from "@mocks/add-prospect/payment-channel/paymentchannel.mock";
+import { mockCreditLimit } from "@mocks/add-prospect/modals-amount/modalsAmount.mock";
 import { IPaymentChannel } from "@services/types";
 
 import { dataAmount } from "./config";
+import { ScrollableContainer } from "./styles";
 
 export interface ILoanAmountProps {
-  value?: number;
   initialValues: {
     inputValue: string;
     toggleChecked: boolean;
@@ -42,35 +40,17 @@ export interface ILoanAmountProps {
 }
 
 export function LoanAmount(props: ILoanAmountProps) {
-  const {
-    value = 10000000,
-    initialValues,
-    isMobile,
-    handleOnChange,
-    onFormValid,
-  } = props;
+  const { initialValues, isMobile, handleOnChange, onFormValid } = props;
+  const { id } = useParams();
+  const loanId = parseInt(id || "0", 10);
+  const loanText =
+    loanAmount.find((loan) => loan.id === loanId)?.choice || "expectToReceive";
+  const data =
+    dataAmount[
+      loanText === "expectToReceive" ? "expectToReceive" : "amountRequested"
+    ];
   const [requestValue, setRequestValue] = useState<IPaymentChannel[]>();
-  const [openModal, setOpenModal] = useState<string | null>(null);
-  const [creditModal, setCreditModal] = useState(false);
-  const [loadingCredit, setLoadingCredit] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleOpenModal = () => {
-    setCreditModal(true);
-    setLoadingCredit(true);
-    setTimeout(() => {
-      setLoadingCredit(false);
-    }, 2000);
-  };
-
-  const handleOpenModals = (modalName: string) => {
-    setOpenModal(modalName);
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  };
-
+  const creditCardsData = mockCreditLimit;
   useEffect(() => {
     get("mockRequest_value")
       .then((data) => {
@@ -117,34 +97,38 @@ export function LoanAmount(props: ILoanAmountProps) {
             >
               <Stack direction="column" alignItems="center" gap="8px">
                 <Text
-                  appearance="primary"
-                  type="headline"
+                  appearance="dark"
+                  type="label"
                   size={isMobile ? "medium" : "large"}
                   weight="bold"
                 >
-                  {currencyFormat(value)}
+                  {dataAmount.creditText}
                 </Text>
-                <Stack
-                  alignItems="center"
-                  justifyContent="space-between"
-                  gap="8px"
-                >
-                  <Text size="small" appearance="gray" weight="normal">
-                    {dataAmount.availableQuota}
-                  </Text>
-                  <Icon
-                    icon={<MdInfoOutline />}
-                    appearance="primary"
-                    size="16px"
-                    onClick={handleOpenModal}
-                    cursorHover={true}
-                  />
-                </Stack>
+                <ScrollableContainer>
+                  <Stack
+                    direction="row"
+                    gap="24px"
+                    margin="0 auto"
+                    padding=" 0px 5px"
+                  >
+                    {creditCardsData.map((item, index) => (
+                      <CreditLimitCard
+                        key={index}
+                        creditLineTxt={item.creditLineTxt}
+                        creditLine={item.creditLine}
+                        creditLimitData={item.CreditLimitdata}
+                        paymentCapacityData={item.paymentCapacityData}
+                        reciprocityData={item.reciprocityData}
+                        scoreData={item.scoreData}
+                      />
+                    ))}
+                  </Stack>
+                </ScrollableContainer>
               </Stack>
               <Divider dashed />
               <Stack direction="column">
                 <Text type="label" size="medium" weight="bold">
-                  {dataAmount.expectToReceive}
+                  {data}
                 </Text>
                 <Field name="inputValue">
                   {() => (
@@ -270,70 +254,6 @@ export function LoanAmount(props: ILoanAmountProps) {
                 </Stack>
               </Stack>
             </Stack>
-            {creditModal ? (
-              <CreditLimit
-                handleClose={() => setCreditModal(false)}
-                title="Origen de cupo"
-                portalId="portal"
-                loading={loadingCredit}
-                onOpenPaymentCapacityModal={() =>
-                  handleOpenModals("paymentCapacity")
-                }
-                onOpenReciprocityModal={() =>
-                  handleOpenModals("reciprocityModal")
-                }
-                onOpenFrcModal={() => handleOpenModals("scoreModal")}
-              />
-            ) : (
-              <></>
-            )}
-            {openModal === "paymentCapacity" ? (
-              <PaymentCapacity
-                title="Cupo máx. capacidad de pago"
-                portalId="portal"
-                loading={loading}
-                handleClose={() => setOpenModal(null)}
-                reportedIncomeSources={2000000}
-                reportedFinancialObligations={6789000}
-                subsistenceReserve={2000000}
-                availableForNewCommitments={5000000}
-                maxVacationTerm={12}
-                maxAmount={1000000}
-                iconVisible={true}
-              />
-            ) : (
-              <></>
-            )}
-            {openModal === "reciprocityModal" ? (
-              <ReciprocityModal
-                portalId="portal"
-                loading={loading}
-                handleClose={() => setOpenModal(null)}
-                balanceOfContributions={40000000}
-                accordingToRegulation={2}
-                assignedQuota={1000000}
-              />
-            ) : (
-              <></>
-            )}
-            {openModal === "scoreModal" ? (
-              <ScoreModal
-                title="Score Details"
-                handleClose={() => setOpenModal(null)}
-                subTitle="Your Financial Score"
-                loading={loading}
-                totalScore={150}
-                seniority={150}
-                centralRisk={50}
-                employmentStability={230}
-                maritalStatus={30}
-                economicActivity={118}
-                monthlyIncome={3000000}
-                maxIndebtedness={50000000}
-              />
-            ) : (
-              <></>
-            )}
           </Form>
         )}
       </Formik>
