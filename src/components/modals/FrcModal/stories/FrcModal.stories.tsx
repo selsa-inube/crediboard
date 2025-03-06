@@ -24,7 +24,6 @@ export const Default: Story = (args: ScoreModalProps) => {
         <ScoreModal
           {...args}
           handleClose={() => setShowModal(false)}
-          portalId="portal" 
         />
       )}
     </>
