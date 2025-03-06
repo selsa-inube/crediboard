@@ -168,11 +168,6 @@ function BoardLayout() {
   ) => {
     const identificationStaff =
       eventData.user.staff.identificationDocumentNumber;
-    const identificationRequest = creditRequestId;
-
-    console.log("staff: ", identificationStaff);
-    console.log("request: ", identificationRequest);
-    console.log("identificationNumber: ", identificationNumber);
 
     if (!identificationNumber.includes(identificationStaff) && isPinned === "N") {
       setIsOpenModal(true);
