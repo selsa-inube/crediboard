@@ -24,7 +24,7 @@ const StyledContainerClose = styled.div`
 `;
 
 const StyledContainerTextField = styled.div<IStyledModal>`
-  height: ${({ $smallScreen }) => ($smallScreen ? "40px" : "65px")};
+  height: 65px;
   width: auto;
   border-radius: 8px;
   padding: 6px 16px 6px 16px;

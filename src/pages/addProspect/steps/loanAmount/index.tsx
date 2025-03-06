@@ -10,6 +10,7 @@ import { Toggle } from "@inubekit/toggle";
 import { Select } from "@inubekit/select";
 import { Icon } from "@inubekit/icon";
 import { inube } from "@inubekit/foundations";
+import { useParams } from "react-router-dom";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditLimit } from "@components/modals/CreditLimit";
@@ -19,6 +20,7 @@ import { ScoreModal } from "@components/modals/FrcModal";
 
 import { currencyFormat } from "@utils/formatData/currency";
 import { get } from "@mocks/utils/dataMock.service";
+import { loanAmount } from "@mocks/add-prospect/loan-amount/loanAmount.mock";
 import {
   mockPayAmount,
   mockPeriodicity,
@@ -49,6 +51,18 @@ export function LoanAmount(props: ILoanAmountProps) {
     handleOnChange,
     onFormValid,
   } = props;
+
+  const { id } = useParams();
+  const loanId = parseInt(id || "0", 10);
+
+  const loanText =
+    loanAmount.find((loan) => loan.id === loanId)?.choice || "expectToReceive";
+
+  const data =
+    dataAmount[
+      loanText === "expectToReceive" ? "expectToReceive" : "amountRequested"
+    ];
+
   const [requestValue, setRequestValue] = useState<IPaymentChannel[]>();
   const [openModal, setOpenModal] = useState<string | null>(null);
   const [creditModal, setCreditModal] = useState(false);
@@ -144,7 +158,7 @@ export function LoanAmount(props: ILoanAmountProps) {
               <Divider dashed />
               <Stack direction="column">
                 <Text type="label" size="medium" weight="bold">
-                  {dataAmount.expectToReceive}
+                  {data}
                 </Text>
                 <Field name="inputValue">
                   {() => (
@@ -274,7 +288,6 @@ export function LoanAmount(props: ILoanAmountProps) {
               <CreditLimit
                 handleClose={() => setCreditModal(false)}
                 title="Origen de cupo"
-                portalId="portal"
                 loading={loadingCredit}
                 onOpenPaymentCapacityModal={() =>
                   handleOpenModals("paymentCapacity")
@@ -290,7 +303,6 @@ export function LoanAmount(props: ILoanAmountProps) {
             {openModal === "paymentCapacity" ? (
               <PaymentCapacity
                 title="Cupo máx. capacidad de pago"
-                portalId="portal"
                 loading={loading}
                 handleClose={() => setOpenModal(null)}
                 reportedIncomeSources={2000000}
@@ -306,7 +318,6 @@ export function LoanAmount(props: ILoanAmountProps) {
             )}
             {openModal === "reciprocityModal" ? (
               <ReciprocityModal
-                portalId="portal"
                 loading={loading}
                 handleClose={() => setOpenModal(null)}
                 balanceOfContributions={40000000}
