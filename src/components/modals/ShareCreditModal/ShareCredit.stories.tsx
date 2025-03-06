@@ -25,7 +25,6 @@ export const Default: Story = (args: IShareCreditModalProps) => {
 };
 
 Default.args = {
-  portalId: "portal",
   isMobile: false,
 };
 
