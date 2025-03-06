@@ -12,6 +12,7 @@ import { TraceDetailsModal } from "@components/modals/TraceDetailsModal";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 import { CreditRequest } from "@services/types";
 import { addItem, getById } from "@mocks/utils/dataMock.service";
+import { traceDetailsMock } from "@mocks/financialReporting/trace-details/tracedetails.mock";
 
 import { errorObserver, traceObserver } from "../config";
 import {
@@ -211,6 +212,7 @@ export const Requirements = (props: IRequirementsProps) => {
         <TraceDetailsModal
           isMobile={isMobile}
           handleClose={() => setShowSeeDetailsModal(false)}
+          data={traceDetailsMock[0]}
         />
       )}
       {showAprovalsModal && (
