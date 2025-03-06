@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
 
 export const ScrollableContainer = styled.div`
-  height: 2000%;
+  height: 100%;
   overflow: auto;
 
   &::-webkit-scrollbar {

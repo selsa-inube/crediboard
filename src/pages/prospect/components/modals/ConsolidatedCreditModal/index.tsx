@@ -29,7 +29,7 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
       nextButton={ModalConfig.keep}
       disabledNext={true}
       handleNext={handleClose}
-      width={isMobile ? "300px" : "644px"}
+      width={isMobile ? "300px" : "640px"}
       height={isMobile ? "auto" : "688px"}
       handleBack={handleClose}
       finalDivider={true}
@@ -73,8 +73,9 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
         <ScrollableContainer>
           <Stack
             direction="column"
-            gap="24px"
+            gap="16px"
             height={isMobile ? "auto" : "420px"}
+            padding="0px 0px 0px 2px"
           >
             <Text type="body" appearance="gray" size="small" weight="bold">
               {ModalConfig.selectedText}
