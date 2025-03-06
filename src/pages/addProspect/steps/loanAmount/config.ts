@@ -8,4 +8,5 @@ export const dataAmount = {
   Requested: "(Requerido)",
   paymentDate: "Fecha de pago",
   selectOption: "Seleccione una opción",
+  creditText: "Cupo disponible sin garantía por línea de crédito",
 };

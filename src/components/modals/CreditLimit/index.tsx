@@ -8,13 +8,19 @@ import { SkeletonLine } from "@inubekit/skeleton";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { currencyFormat } from "@utils/formatData/currency";
-import { mockCreditLimit } from "@mocks/add-prospect/modals-amount/modalsAmount.mock";
 
 import { creditLimitTexts } from "./creditLimitConfig";
 import { StyledList } from "./styles";
 
 export interface ICreditLimitProps {
   title: string;
+  maxPaymentCapacity: number;
+  maxReciprocity: number;
+  maxDebtFRC: number;
+  assignedLimit: number;
+  currentPortfolio: number;
+  maxUsableLimit: number;
+  availableLimitWithoutGuarantee: number;
   loading?: boolean;
   handleClose: () => void;
   onOpenPaymentCapacityModal?: () => void;
@@ -30,10 +36,16 @@ export const CreditLimit = (props: ICreditLimitProps) => {
     onOpenPaymentCapacityModal,
     onOpenReciprocityModal,
     onOpenFrcModal,
+    maxPaymentCapacity,
+    maxReciprocity,
+    maxDebtFRC,
+    assignedLimit,
+    currentPortfolio,
+    maxUsableLimit,
+    availableLimitWithoutGuarantee,
   } = props;
 
   const isMobile = useMediaQuery("(max-width: 700px)");
-  const data = mockCreditLimit[0];
 
   return (
     <BaseModal
@@ -61,7 +73,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                     <SkeletonLine width="70px" animated={true} />
                   ) : (
                     <Text type="body" size="medium" appearance="dark">
-                      {currencyFormat(data.maxPaymentCapacity, false)}
+                      {currencyFormat(maxPaymentCapacity, false)}
                     </Text>
                   )}
                   <Stack margin="0px 0px 0px 5px">
@@ -90,7 +102,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                     <SkeletonLine width="70px" animated={true} />
                   ) : (
                     <Text type="body" size="medium" appearance="dark">
-                      {currencyFormat(data.maxReciprocity, false)}
+                      {currencyFormat(maxReciprocity, false)}
                     </Text>
                   )}
                   <Stack margin="0px 0px 0px 5px">
@@ -124,7 +136,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                       size="medium"
                       appearance="dark"
                     >
-                      {currencyFormat(data.maxDebtFRC, false)}
+                      {currencyFormat(maxDebtFRC, false)}
                     </Text>
                   )}
                   <Stack margin="0px 0px 0px 5px">
@@ -158,7 +170,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                       size="medium"
                       appearance="dark"
                     >
-                      {currencyFormat(data.assignedLimit, false)}
+                      {currencyFormat(assignedLimit, false)}
                     </Text>
                   )}
                 </Stack>
@@ -189,7 +201,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                 <SkeletonLine width="70px" animated={true} />
               ) : (
                 <Text type="body" size="medium" appearance="dark">
-                  {currencyFormat(data.maxUsableLimit, false)}
+                  {currencyFormat(maxUsableLimit, false)}
                 </Text>
               )}
             </Stack>
@@ -204,7 +216,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
                 <SkeletonLine width="70px" animated={true} />
               ) : (
                 <Text type="body" size="medium" appearance="dark">
-                  {currencyFormat(data.currentPortfolio, false)}
+                  {currencyFormat(currentPortfolio, false)}
                 </Text>
               )}
             </Stack>
@@ -220,7 +232,7 @@ export const CreditLimit = (props: ICreditLimitProps) => {
               <SkeletonLine width="70px" animated={true} />
             ) : (
               <Text weight="bold" type="body" size="medium" appearance="dark">
-                {currencyFormat(data.availableLimitWithoutGuarantee, false)}
+                {currencyFormat(availableLimitWithoutGuarantee, false)}
               </Text>
             )}
           </Stack>

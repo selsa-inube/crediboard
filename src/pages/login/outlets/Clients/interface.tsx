@@ -84,7 +84,7 @@ function BusinessUnitsUI({
           >
             <Stack
               direction="column"
-              padding="s0 s100"
+              padding="0px 8px"
               alignItems="center"
               gap="8px"
             >

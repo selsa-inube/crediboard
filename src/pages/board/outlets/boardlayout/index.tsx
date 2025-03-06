@@ -51,30 +51,28 @@ function BoardLayout() {
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
-  useEffect(() => {
-    getCreditRequestInProgress(businessUnitPublicCode)
-      .then((data) => {
-        setBoardData((prevState) => ({
-          ...prevState,
-          boardRequests: data,
-        }));
-        setFilteredRequests(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching requests data:", error);
-      });
+  const fetchBoardData = async () => {
+    try {
+      const [boardRequests, requestsPinned] = await Promise.all([
+        getCreditRequestInProgress(businessUnitPublicCode),
+        getCreditRequestPin(),
+      ]);
 
-    getCreditRequestPin()
-      .then((data) => {
-        setBoardData((prevState) => ({
-          ...prevState,
-          requestsPinned: data,
-        }));
-      })
-      .catch((error) => {
-        setErrorLoadingPins(true);
-        console.error("Error fetching requests pinned data:", error.message);
-      });
+      setBoardData((prevState) => ({
+        ...prevState,
+        boardRequests,
+        requestsPinned,
+      }));
+      setFilteredRequests(boardRequests);
+    } catch (error) {
+      console.error("Error fetching board data:", error);
+      setErrorLoadingPins(true);
+    }
+  };
+
+  useEffect(() => {
+    fetchBoardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [businessUnitPublicCode]);
 
   useEffect(() => {
@@ -124,12 +122,13 @@ function BoardLayout() {
             return request.stage === "TRAMITE_DESEMBOLSO";
           case "7":
             return request.stage === "CUMPLIMIENTO_REQUISITOS";
+          case "10":
+            return request.unreadNovelties === "Y";
           default:
             return false;
         }
       });
     });
-
     setFilteredRequests(finalFilteredRequests);
   }, [filters, boardData]);
 
@@ -181,11 +180,11 @@ function BoardLayout() {
       ),
     }));
     await ChangeAnchorToCreditRequest(creditRequestId, isPinned);
+    await fetchBoardData();
   };
 
   return (
     <>
-      {console.log(JSON.parse(businessUnitSigla).businessUnitPublicCode)}
       <BoardLayoutUI
         isMobile={isMobile}
         selectOptions={filters.selectOptions}

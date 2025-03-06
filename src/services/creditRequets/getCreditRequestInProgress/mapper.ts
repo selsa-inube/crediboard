@@ -16,6 +16,7 @@ export const mapCreditRequestToEntity = (
     clientIdentificationNumber: data.clientIdentificationNumber as string,
     clientName: data.clientName as string,
     taskToBeDone: data.taskToBeDone as string,
+    unreadNovelties: data.unreadNovelties as string,
     usersByCreditRequests: data.usersByCreditRequests as IUsersByCreditRequests
   };
   return creditRequest;
