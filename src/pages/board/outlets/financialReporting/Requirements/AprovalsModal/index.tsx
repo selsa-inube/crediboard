@@ -69,7 +69,9 @@ export function AprovalsModal(props: AprovalsModalProps) {
             portalId={portalId}
             backButton={aprovalsConfig.Cancel}
             nextButton={aprovalsConfig.confirm}
-            disabledNext={!values.isApproved || isSubmitting}
+            disabledNext={
+              !values.isApproved || isSubmitting || !values.textarea.trim()
+            }
           >
             <Stack direction="column" gap="24px">
               <Stack gap="8px">
