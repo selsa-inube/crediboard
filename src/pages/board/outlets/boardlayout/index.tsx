@@ -40,6 +40,8 @@ function BoardLayout() {
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
+  const identificationStaff = eventData.user.staff.identificationDocumentNumber;
+
   useEffect(() => {
     const orientation = isMobile ? "horizontal" : "vertical";
     setFilters((prevFilters) => ({
@@ -105,6 +107,13 @@ function BoardLayout() {
 
       return activeFilterIds.some((filterId) => {
         switch (filterId) {
+          case "1":
+            return Object.values(request.usersByCreditRequests || {})
+              .map(
+                (user: { identificationNumber: string }) =>
+                  user.identificationNumber
+              )
+              .includes(identificationStaff);
           case "2":
             return [
               "GESTION_COMERCIAL",
@@ -130,6 +139,7 @@ function BoardLayout() {
       });
     });
     setFilteredRequests(finalFilteredRequests);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, boardData]);
 
   const handleFiltersChange = (newFilters: Partial<typeof filters>) => {
@@ -165,10 +175,10 @@ function BoardLayout() {
     identificationNumber: string[],
     isPinned: string
   ) => {
-    const identificationStaff =
-      eventData.user.staff.identificationDocumentNumber;
-
-    if (!identificationNumber.includes(identificationStaff) && isPinned === "N") {
+    if (
+      !identificationNumber.includes(identificationStaff) &&
+      isPinned === "N"
+    ) {
       setIsOpenModal(true);
       return;
     }
