@@ -26,22 +26,14 @@ export interface DeductibleExpensesModalProps {
   loading?: boolean;
 }
 
-const calculateTotalExpenses = (
-  data: (typeof mockDeductibleExpenses)[0]
-): number => {
-  const { adjustmentInterest, bail, ...sures } = data;
-  const totalSures = Object.values(sures).reduce((acc, sure) => acc + sure, 0);
-  return adjustmentInterest + bail + totalSures;
-};
+export function DeductibleExpensesModal(props: DeductibleExpensesModalProps) {
+  const { handleClose, portalId, loading = false } = props;
 
-export function DeductibleExpensesModal({
-  portalId,
-  handleClose,
-  loading,
-}: DeductibleExpensesModalProps) {
+  const calculateTotalExpenses = () => {
+    return mockDeductibleExpenses.reduce((acc, item) => acc + item.value, 0);
+  };
+
   const isMobile = useMediaQuery("(max-width:880px)");
-  const data = mockDeductibleExpenses[0];
-  const totalExpenses = calculateTotalExpenses(data);
   const node = document.getElementById(portalId ?? "portal");
   if (!node) {
     throw new Error(validationMessages.errorNodo);
@@ -74,96 +66,56 @@ export function DeductibleExpensesModal({
           </Stack>
           <Divider />
           <ScrollableContainer>
-            <Stack justifyContent="space-between">
-              <Text size="medium" appearance="gray" weight="bold">
-                {deductibleexpenses.adjustmentInterest}
-              </Text>
-              <Stack>
-                <Text type="body" size="medium" appearance="success">
-                  $
-                </Text>
-                {loading ? (
-                  <SkeletonLine width="70px" animated={true} />
-                ) : (
-                  <Text
-                    type="body"
-                    size="medium"
-                    appearance="gray"
-                    weight="bold"
-                  >
-                    {currencyFormat(data.adjustmentInterest, false)}
-                  </Text>
-                )}
-              </Stack>
-            </Stack>
-            <Stack justifyContent="space-between">
-              <Text size="medium" appearance="gray" weight="bold">
-                {deductibleexpenses.bail}
-              </Text>
-              <Stack>
-                <Text type="body" size="medium" appearance="success">
-                  $
-                </Text>
-                {loading ? (
-                  <SkeletonLine width="70px" animated={true} />
-                ) : (
-                  <Text
-                    type="body"
-                    size="medium"
-                    appearance="gray"
-                    weight="bold"
-                  >
-                    {currencyFormat(data.bail, false)}
-                  </Text>
-                )}
-              </Stack>
-            </Stack>
-            {Object.entries(data)
-              .filter(([key]) => key.startsWith("sure"))
-              .map(([key, sure], index) => (
-                <Stack key={key} justifyContent="space-between">
-                  <Text size="medium" appearance="gray" weight="bold">
-                    {deductibleexpenses.sure + " " + (index + 1)}
-                  </Text>
-                  <Stack>
-                    <Text type="body" size="medium" appearance="success">
-                      $
+            <Stack direction="column" padding="8px" gap="10px">
+              {mockDeductibleExpenses.map((item, index) => (
+                <Stack key={index} justifyContent="space-between">
+                  {loading ? (
+                    <SkeletonLine width="50%" animated={true} />
+                  ) : (
+                    <Text type="label" weight="bold" size="large">
+                      {item.type}
                     </Text>
-                    {loading ? (
-                      <SkeletonLine width="70px" animated={true} />
-                    ) : (
+                  )}
+                  {loading ? (
+                    <SkeletonLine width="30%" animated={true} />
+                  ) : (
+                    <Stack alignItems="center">
                       <Text
                         type="body"
-                        size="medium"
-                        appearance="gray"
                         weight="bold"
+                        size="small"
+                        appearance="success"
                       >
-                        {currencyFormat(sure, false)}{" "}
+                        $
                       </Text>
-                    )}
-                  </Stack>
+                      <Text type="body" size="medium">
+                        {currencyFormat(item.value, false)}
+                      </Text>
+                    </Stack>
+                  )}
                 </Stack>
               ))}
+            </Stack>
           </ScrollableContainer>
           <Stack direction="column" justifyContent="space-between" gap="12px">
             <Stack justifyContent="space-between">
-              <Text size="medium" appearance="dark" weight="bold">
+              <Text type="label" weight="bold" size="large">
                 {deductibleexpenses.totalExpenses}
               </Text>
               <Stack>
-                <Text type="body" size="medium" appearance="success">
+                <Text
+                  type="body"
+                  weight="bold"
+                  size="small"
+                  appearance="success"
+                >
                   $
                 </Text>
                 {loading ? (
                   <SkeletonLine width="70px" animated={true} />
                 ) : (
-                  <Text
-                    type="body"
-                    size="medium"
-                    appearance="dark"
-                    weight="bold"
-                  >
-                    {currencyFormat(totalExpenses, false)}
+                  <Text type="body" weight="bold" size="medium">
+                    {currencyFormat(calculateTotalExpenses(), false)}
                   </Text>
                 )}
               </Stack>
