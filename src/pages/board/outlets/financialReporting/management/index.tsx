@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import { MdOutlineSend, MdAttachFile, MdInfoOutline } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
@@ -14,6 +14,7 @@ import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequest
 import { registerNewsToCreditRequest } from "@services/trace/registerNewsToCreditRequest";
 import { ICreditRequest } from "@services/types";
 import { DetailsModal } from "@pages/board/outlets/financialReporting/management/DetailsModal";
+import { AppContext } from "@context/AppContext";
 
 import { traceObserver, errorObserver } from "../config";
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
@@ -36,6 +37,14 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
   const [selectedMessage, setSelectedMessage] = useState<ITraceType | null>(
     null
   );
+  const { businessUnitSigla, eventData } = useContext(AppContext);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
+  const { userAccount } =
+    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
+
   const chatContentRef = useRef<HTMLDivElement>(null);
 
   const notifyError = useCallback((message: string) => {
@@ -44,13 +53,13 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
 
   const fetchCreditRequest = useCallback(async () => {
     try {
-      const data = await getCreditRequestByCode(id);
+      const data = await getCreditRequestByCode(businessUnitPublicCode, id);
       setCreditRequest(data[0] as ICreditRequest);
     } catch (error) {
       console.error(error);
       notifyError((error as Error).message);
     }
-  }, [id, notifyError]);
+  }, [businessUnitPublicCode, id, notifyError]);
 
   useEffect(() => {
     if (id) fetchCreditRequest();
@@ -64,6 +73,7 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
 
     try {
       const data = await getTraceByCreditRequestId(
+        businessUnitPublicCode,
         creditRequest.creditRequestId
       );
       setTraces(Array.isArray(data) ? data.flat() : []);
@@ -73,7 +83,7 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
     } finally {
       setLoading(false);
     }
-  }, [creditRequest?.creditRequestId, notifyError]);
+  }, [businessUnitPublicCode, creditRequest?.creditRequestId, notifyError]);
 
   useEffect(() => {
     fetchData();
@@ -101,7 +111,11 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
     };
 
     try {
-      await registerNewsToCreditRequest(newTrace);
+      await registerNewsToCreditRequest(
+        businessUnitPublicCode,
+        userAccount,
+        newTrace
+      );
       setTraces((prev) => [...prev, newTrace]);
       setNewMessage("");
     } catch (error) {

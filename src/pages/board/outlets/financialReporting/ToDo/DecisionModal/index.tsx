@@ -53,6 +53,7 @@ export function DecisionModal(props: DecisionModalProps) {
 
   const navigate = useNavigate();
   const { addFlag } = useFlag();
+
   const isMobile = useMediaQuery("(max-width: 700px)");
 
   const validationSchema = Yup.object().shape({
@@ -66,6 +67,8 @@ export function DecisionModal(props: DecisionModalProps) {
   const sendData = async (value: string) => {
     try {
       const response = await makeDecisions(
+        data.businessUnit,
+        data.user,
         {
           creditRequestId: data.makeDecision.creditRequestId,
           humanDecision: data.makeDecision.humanDecision,
@@ -114,15 +117,17 @@ export function DecisionModal(props: DecisionModalProps) {
         sendData(values.textarea);
       }}
     >
-      {({ errors, touched }) => (
+      {({ errors, touched, handleSubmit, values }) => (
         <BaseModal
           title={title}
           nextButton={buttonText}
           backButton={secondaryButtonText}
-          handleNext={readOnly ? onCloseModal : () => {}}
+          handleNext={handleSubmit}
           handleBack={onSecondaryButtonClick}
           handleClose={onCloseModal}
-          disabledNext={data.makeDecision.humanDecision ? false : true}
+          disabledNext={
+            data.makeDecision.humanDecision && values.textarea ? false : true
+          }
           width={isMobile ? "290px" : "500px"}
         >
           <Form>

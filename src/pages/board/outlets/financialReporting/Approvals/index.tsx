@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 
 import { useFlag } from "@inubekit/flag";
 import userNotFound from "@assets/images/ItemNotFound.png";
@@ -22,6 +22,7 @@ import {
   infoItems,
   entriesApprovals,
 } from "@config/pages/board/outlet/financialReporting/configApprovals";
+import { AppContext } from "@context/AppContext";
 
 import { errorObserver } from "../config";
 interface IApprovalsProps {
@@ -40,10 +41,14 @@ export const Approvals = (props: IApprovalsProps) => {
   const [selectedData, setSelectedData] = useState<IEntries | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { addFlag } = useFlag();
+  const { businessUnitSigla } = useContext(AppContext);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
   const fetchCreditRequest = useCallback(async () => {
     try {
-      const data = await getCreditRequestByCode(id);
+      const data = await getCreditRequestByCode(businessUnitPublicCode, id);
       setRequests(data[0] as ICreditRequest);
     } catch (error) {
       console.error(error);
@@ -52,7 +57,7 @@ export const Approvals = (props: IApprovalsProps) => {
         message: (error as Error).message.toString(),
       });
     }
-  }, [id]);
+  }, [businessUnitPublicCode, id]);
 
   useEffect(() => {
     if (id) fetchCreditRequest();
@@ -63,7 +68,10 @@ export const Approvals = (props: IApprovalsProps) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getAprovalsById(requests.creditRequestId);
+      const data = await getAprovalsById(
+        businessUnitPublicCode,
+        requests.creditRequestId
+      );
       if (data && Array.isArray(data)) {
         const entries: IEntries[] = entriesApprovals(data).map((entry) => ({
           ...entry,
@@ -81,7 +89,7 @@ export const Approvals = (props: IApprovalsProps) => {
     } finally {
       setLoading(false);
     }
-  }, [requests?.creditRequestId]);
+  }, [businessUnitPublicCode, requests?.creditRequestId]);
 
   useEffect(() => {
     fetchAprovalsData();

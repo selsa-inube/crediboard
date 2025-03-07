@@ -6,6 +6,8 @@ import {
 import { ITraceType } from "@services/types";
 
 export const registerNewsToCreditRequest = async (
+  businessUnitPublicCode: string,
+  userAccount: string,
   payload: ITraceType
 ): Promise<void> => {
   const maxRetries = maxRetriesServices;
@@ -20,8 +22,8 @@ export const registerNewsToCreditRequest = async (
         method: "PATCH",
         headers: {
           "X-Action": "RegisterNewsToACreditRequest",
-          "X-Business-Unit": enviroment.BUSINESS_UNIT,
-          "X-User-Name": "Erg",
+          "X-Business-Unit": businessUnitPublicCode,
+          "X-User-Name": userAccount,
           "Content-type": "application/json; charset=UTF-8",
         },
         body: JSON.stringify(payload),

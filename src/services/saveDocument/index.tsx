@@ -5,6 +5,7 @@ import {
 } from "@config/environment";
 
 export const saveDocument = async (
+  businessUnitPublicCode: string,
   creditRequestId: string | undefined,
   abbreviatedName: string | undefined,
   file: File | undefined
@@ -29,7 +30,7 @@ export const saveDocument = async (
         method: "POST",
         headers: {
           "X-Action": "SaveDocument",
-          "X-Business-Unit": enviroment.BUSINESS_UNIT,
+          "X-Business-Unit": businessUnitPublicCode,
         },
         body: formData,
       };
