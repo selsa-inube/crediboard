@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
 import { useFlag } from "@inubekit/flag";
@@ -20,6 +20,7 @@ import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { getSearchDecisionById } from "@services/todo/SearchDecisionById";
 import { truncateTextToMaxLength } from "@utils/formatData/text";
+import { AppContext } from "@context/AppContext";
 
 import { StaffModal } from "./StaffModal";
 import {
@@ -29,8 +30,8 @@ import {
   txtTaskQuery,
 } from "./config";
 import { IICon, IButton } from "./types";
-import { StyledHorizontalDivider, StyledTextField } from "../styles";
 import { getXAction } from "./util/utils";
+import { StyledHorizontalDivider, StyledTextField } from "../styles";
 import { errorObserver } from "../config";
 
 interface ToDoProps {
@@ -65,11 +66,18 @@ function ToDo(props: ToDoProps) {
   });
 
   const { addFlag } = useFlag();
+  const { businessUnitSigla, eventData } = useContext(AppContext);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
+  const { userAccount } =
+    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
 
   useEffect(() => {
     const fetchCreditRequest = async () => {
       try {
-        const data = await getCreditRequestByCode(id);
+        const data = await getCreditRequestByCode(businessUnitPublicCode, id);
         setRequests(data[0] as ICreditRequest);
       } catch (error) {
         console.error(error);
@@ -83,14 +91,17 @@ function ToDo(props: ToDoProps) {
     if (id) {
       fetchCreditRequest();
     }
-  }, [id]);
+  }, [businessUnitPublicCode, id]);
 
   useEffect(() => {
     const fetchToDoData = async () => {
       if (!requests?.creditRequestId) return;
       setLoading(true);
       try {
-        const data = await getToDoByCreditRequestId(requests.creditRequestId);
+        const data = await getToDoByCreditRequestId(
+          businessUnitPublicCode,
+          requests.creditRequestId
+        );
         setTaskData(data);
       } catch (error) {
         console.error(error);
@@ -104,7 +115,7 @@ function ToDo(props: ToDoProps) {
     };
 
     fetchToDoData();
-  }, [requests?.creditRequestId]);
+  }, [businessUnitPublicCode, requests?.creditRequestId]);
 
   useEffect(() => {
     if (taskData?.usersByCreditRequestResponse) {
@@ -138,7 +149,10 @@ function ToDo(props: ToDoProps) {
     setLoading(true);
     if (requests?.creditRequestId) {
       try {
-        const data = await getToDoByCreditRequestId(requests.creditRequestId);
+        const data = await getToDoByCreditRequestId(
+          businessUnitPublicCode,
+          requests.creditRequestId
+        );
         setTaskData(data);
       } catch (error) {
         console.error(error);
@@ -188,12 +202,20 @@ function ToDo(props: ToDoProps) {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+  const isFetching = useRef(false);
 
   const handleSelectOpen = async () => {
+    if (isFetching.current) return; // Evita dobles peticiones
+    //if (!requests?.creditRequestId) return; // Evita ejecutar sin ID válido
+
+    isFetching.current = true;
     setLoading(true);
     if (requests?.creditRequestId) {
       try {
-        const decision = await getSearchDecisionById(requests.creditRequestId);
+        const decision = await getSearchDecisionById(
+          businessUnitPublicCode,
+          requests.creditRequestId
+        );
         const formattedDecisions = Array.isArray(decision)
           ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
             decision.map((decisions: any, index: number) => ({
@@ -221,7 +243,8 @@ function ToDo(props: ToDoProps) {
       humanDecision: selectedDecision?.label.split(":")[0] || "",
       justification: "",
     },
-
+    businessUnit: businessUnitPublicCode,
+    user: userAccount,
     xAction: getXAction(selectedDecision?.label.split(":")[0] || ""),
     humanDecisionDescription: selectedDecision?.label || "",
   };
