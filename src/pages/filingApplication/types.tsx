@@ -18,9 +18,13 @@ export interface IStep {
   name?: string;
 }
 
-interface ContactInformation {
+export interface IContactInformation {
   email: string;
   phone: string;
+  document: string;
+  documentNumber: string;
+  name: string;
+  lastName: string;
 }
 
 export interface IVehicleOffered {
@@ -37,17 +41,40 @@ export interface IPropertyOffered {
   description: string;
 }
 export interface IBorrowerData {
-  name: string;
-  lastName: string;
-  email: string;
-  income: number;
-  obligations: number;
+  initialBorrowers: {
+    id: string;
+    name: string;
+    debtorDetail: {
+      age: string;
+      document: string;
+      documentNumber: string;
+      email: string;
+      lastName: string;
+      name: string;
+      number: string;
+      relation: string;
+      sex: string;
+    };
+  };
 }
 export interface IBail {
   client: boolean;
 }
+
+export interface IDebtorDetail {
+  document: string;
+  documentNumber: string;
+  name: string;
+  lastName: string;
+  email: string;
+  number: string;
+  sex: string;
+  age: string;
+  relation: string;
+}
+
 export interface FormData {
-  contactInformation: ContactInformation;
+  contactInformation: IContactInformation;
   propertyOffered: IPropertyOffered;
   vehicleOffered: IVehicleOffered;
   borrowerData: IBorrowerData;
