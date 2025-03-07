@@ -66,4 +66,11 @@ const seePinned = {
   viewPinned: "Ver unicamente los anclados",
 };
 
-export { boardColumns, seePinned, selectConfig };
+const dataInformationModal = {
+  tilte: "Información",
+  button: "Entendido",
+  description:
+    "No cuenta con los privilegios requeridos para quitar el ancla de esta tarjeta.",
+};
+
+export { boardColumns, seePinned, dataInformationModal, selectConfig };
