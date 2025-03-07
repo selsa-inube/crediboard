@@ -2,7 +2,7 @@ import { useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { AppContext } from "@context/AppContext";
-import { validateBusinessUnities } from "@pages/login/utils";
+import { validateBusinessUnits } from "@pages/login/utils";
 
 const useLogin = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const useLogin = () => {
 
   useEffect(() => {
     if (eventData.portal.publicCode) {
-      validateBusinessUnities(
+      validateBusinessUnits(
         eventData.portal.publicCode,
         eventData.user.userAccount
       ).then((data) => {

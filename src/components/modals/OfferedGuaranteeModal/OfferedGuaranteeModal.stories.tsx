@@ -30,7 +30,6 @@ export const Default: Story = (args: IOfferedGuaranteeModalProps) => {
 };
 
 Default.args = {
-  portalId: "portal",
   isMobile: false,
 };
 

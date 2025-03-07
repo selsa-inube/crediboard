@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { createPortal } from "react-dom";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Blanket } from "@inubekit/blanket";
 
 import { stepsAddBorrower } from "./config/addBorrower.config";
 import { DebtorAddModalUI } from "./interface";
@@ -11,17 +9,10 @@ interface DebtorAddModalProps {
   onSubmit: () => void;
   handleClose: () => void;
   title: string;
-  portalId?: string;
 }
 export function DebtorAddModal(props: DebtorAddModalProps) {
-  const { title, portalId, handleClose } = props;
+  const { title, handleClose } = props;
 
-  const node = document.getElementById(portalId ?? "portal");
-  if (!node) {
-    throw new Error(
-      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
-    );
-  }
   const [currentStep, setCurrentStep] = useState<number>(
     stepsAddBorrower.generalInformation.id
   );
@@ -72,25 +63,22 @@ export function DebtorAddModal(props: DebtorAddModalProps) {
     }));
   };
 
-  return createPortal(
-    <Blanket>
-      <DebtorAddModalUI
-        steps={steps}
-        currentStep={currentStep}
-        isCurrentFormValid={isCurrentFormValid}
-        setIsCurrentFormValid={setIsCurrentFormValid}
-        formData={formData}
-        handleFormChange={handleFormChange}
-        handleNextStep={handleNextStep}
-        handlePreviousStep={handlePreviousStep}
-        setCurrentStep={setCurrentStep}
-        currentStepsNumber={currentStepsNumber}
-        handleSubmitClick={handleSubmitClick}
-        handleClose={handleClose}
-        title={title}
-        isMobile={isMobile}
-      />
-    </Blanket>,
-    node
+  return (
+    <DebtorAddModalUI
+      steps={steps}
+      currentStep={currentStep}
+      isCurrentFormValid={isCurrentFormValid}
+      setIsCurrentFormValid={setIsCurrentFormValid}
+      formData={formData}
+      handleFormChange={handleFormChange}
+      handleNextStep={handleNextStep}
+      handlePreviousStep={handlePreviousStep}
+      setCurrentStep={setCurrentStep}
+      currentStepsNumber={currentStepsNumber}
+      handleSubmitClick={handleSubmitClick}
+      handleClose={handleClose}
+      title={title}
+      isMobile={isMobile}
+    />
   );
 }

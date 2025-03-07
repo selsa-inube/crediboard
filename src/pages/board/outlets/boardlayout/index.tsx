@@ -12,7 +12,7 @@ import { selectCheckOptions } from "./config/select";
 import { IBoardData } from "./types";
 
 function BoardLayout() {
-  const { eventData, setEventData } = useContext(AppContext);
+  const { businessUnitSigla, eventData, setEventData } = useContext(AppContext);
 
   const [boardData, setBoardData] = useState<IBoardData>({
     boardRequests: [],
@@ -41,31 +41,32 @@ function BoardLayout() {
     }));
   }, [isMobile]);
 
-  useEffect(() => {
-    getCreditRequestInProgress()
-      .then((data) => {
-        setBoardData((prevState) => ({
-          ...prevState,
-          boardRequests: data,
-        }));
-        setFilteredRequests(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching requests data:", error);
-      });
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
-    getCreditRequestPin()
-      .then((data) => {
-        setBoardData((prevState) => ({
-          ...prevState,
-          requestsPinned: data,
-        }));
-      })
-      .catch((error) => {
-        setErrorLoadingPins(true);
-        console.error("Error fetching requests pinned data:", error.message);
-      });
-  }, []);
+  const fetchBoardData = async () => {
+    try {
+      const [boardRequests, requestsPinned] = await Promise.all([
+        getCreditRequestInProgress(businessUnitPublicCode),
+        getCreditRequestPin(),
+      ]);
+
+      setBoardData((prevState) => ({
+        ...prevState,
+        boardRequests,
+        requestsPinned,
+      }));
+      setFilteredRequests(boardRequests);
+    } catch (error) {
+      console.error("Error fetching board data:", error);
+      setErrorLoadingPins(true);
+    }
+  };
+
+  useEffect(() => {
+    fetchBoardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [businessUnitPublicCode]);
 
   useEffect(() => {
     const filteredRequests = boardData.boardRequests.filter((request) => {
@@ -114,12 +115,13 @@ function BoardLayout() {
             return request.stage === "TRAMITE_DESEMBOLSO";
           case "7":
             return request.stage === "CUMPLIMIENTO_REQUISITOS";
+          case "10":
+            return request.unreadNovelties === "Y";
           default:
             return false;
         }
       });
     });
-
     setFilteredRequests(finalFilteredRequests);
   }, [filters, boardData]);
 
@@ -162,38 +164,41 @@ function BoardLayout() {
       ),
     }));
     await ChangeAnchorToCreditRequest(creditRequestId, isPinned);
+    await fetchBoardData();
   };
 
   return (
-    <BoardLayoutUI
-      isMobile={isMobile}
-      selectOptions={filters.selectOptions}
-      boardOrientation={filters.boardOrientation}
-      BoardRequests={filteredRequests}
-      searchRequestValue={filters.searchRequestValue}
-      showPinnedOnly={filters.showPinnedOnly}
-      pinnedRequests={boardData.requestsPinned}
-      errorLoadingPins={errorLoadingPins}
-      handleSelectCheckChange={(e) =>
-        handleFiltersChange({
-          selectOptions: filters.selectOptions.map((option) =>
-            option.id === e.target.name
-              ? { ...option, checked: e.target.checked }
-              : option
-          ),
-        })
-      }
-      handlePinRequest={handlePinRequest}
-      handleShowPinnedOnly={(e) =>
-        handleFiltersChange({ showPinnedOnly: e.target.checked })
-      }
-      handleSearchRequestsValue={(e) =>
-        handleFiltersChange({ searchRequestValue: e.target.value })
-      }
-      onOrientationChange={(orientation) =>
-        handleFiltersChange({ boardOrientation: orientation })
-      }
-    />
+    <>
+      <BoardLayoutUI
+        isMobile={isMobile}
+        selectOptions={filters.selectOptions}
+        boardOrientation={filters.boardOrientation}
+        BoardRequests={filteredRequests}
+        searchRequestValue={filters.searchRequestValue}
+        showPinnedOnly={filters.showPinnedOnly}
+        pinnedRequests={boardData.requestsPinned}
+        errorLoadingPins={errorLoadingPins}
+        handleSelectCheckChange={(e) =>
+          handleFiltersChange({
+            selectOptions: filters.selectOptions.map((option) =>
+              option.id === e.target.name
+                ? { ...option, checked: e.target.checked }
+                : option
+            ),
+          })
+        }
+        handlePinRequest={handlePinRequest}
+        handleShowPinnedOnly={(e) =>
+          handleFiltersChange({ showPinnedOnly: e.target.checked })
+        }
+        handleSearchRequestsValue={(e) =>
+          handleFiltersChange({ searchRequestValue: e.target.value })
+        }
+        onOrientationChange={(orientation) =>
+          handleFiltersChange({ boardOrientation: orientation })
+        }
+      />
+    </>
   );
 }
 
