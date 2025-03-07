@@ -30,14 +30,6 @@ export const props: Partial<ArgTypes<ExtraordinaryPaymentModalProps>> = {
       },
     },
   },
-  portalId: {
-    description: "Id of the portal element",
-    table: {
-      type: {
-        summary: "string",
-      },
-    },
-  },
   onClickDetails: {
     description: "Function to handle the click on the details button",
     table: {

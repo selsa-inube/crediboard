@@ -1,23 +1,25 @@
-import { ErrorPage, ErrorPageProps } from "./index";
-import selsaLogo from "@assets/images/selsa.png";
-import errorImage from "@assets/images/timeout.png";
+import { Meta } from "@storybook/react";
 
-const story = {
+import selsaLogo from "@assets/images/logoInube.png";
+import errorImage from "@assets/images/img-team-building-68.png";
+
+import { ErrorPage, ErrorPageProps } from "./index";
+
+const meta: Meta<typeof ErrorPage> = {
+  title: "layout/Error",
   component: ErrorPage,
-  title: "layouts/Error",
 };
 
-const Default = (args: ErrorPageProps) => <ErrorPage {...args} />;
+export const Default = (args: ErrorPageProps) => <ErrorPage {...args} />;
+
 Default.args = {
   logo: selsaLogo,
   logoAlt: "Sistemas Enlinea",
-  heading: "!Oh! Algo ha salido mal",
+  heading: "¡Ups! Algo salió mal...",
   description:
-    "El servicio no se encuentra disponible en el momento. Por favor intenta de nuevo más tarde.",
+    "La compañía donde trabajas NO tiene los privilegios requeridos para acceder al portal.Confirma que estés usando la url adecuada",
   image: errorImage,
   imageAlt: "Ha surgido un error. Revisa la descripción",
 };
 
-export default story;
-
-export { Default };
+export default meta;

@@ -2,10 +2,10 @@ import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
 
 interface IStyledContainerFieldset {
-  $aspectRatio?: string;
-  $isMobile: boolean;
-  $hasOverflow?: boolean;
   $isSelected: boolean;
+  $isMobile: boolean;
+  $aspectRatio?: string;
+  $hasOverflow?: boolean;
   $isClickable?: boolean;
   $hasTable: boolean;
   $height?: string;
@@ -56,4 +56,10 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
       border-radius: 8px;
     }
   `}
+`;
+
+export const StyledPrint = styled.div`
+  @media print {
+    display: none;
+  }
 `;

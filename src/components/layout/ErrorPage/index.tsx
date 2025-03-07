@@ -1,14 +1,26 @@
-import { MdChevronLeft } from "react-icons/md";
+import { Tag } from "@inubekit/tag";
+import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
-import { Text } from "@inubekit/text";
+import { Divider } from "@inubekit/divider";
 import { useMediaQueries } from "@inubekit/hooks";
-import { Grid } from "@inubekit/grid";
 
-import selsaLogo from "@assets/images/selsa.png";
-import errorImage from "@assets/images/timeout.png";
+import selsaLogo from "@assets/images/logoInube.png";
+import errorImage from "@assets/images/img-team-building-68.png";
 
-import { StyledCompanyLogo, StyledErrorImage } from "./styles";
+import {
+  StyledCompanyLogo,
+  StyledErrorImage,
+  StyledFooter,
+  StyledCertificationsContainer,
+  VerticalDivider,
+  StyledMainContent,
+  StyledContainer,
+  StyledDiv,
+} from "./styles";
+import { enviroment } from "@config/environment";
+import { errorCodes } from "@config/errorCodes";
+
 interface ErrorPageProps {
   logo?: string;
   logoAlt?: string;
@@ -16,48 +28,135 @@ interface ErrorPageProps {
   description?: string;
   image?: string;
   imageAlt?: string;
+  nameButton?: string;
+  onClick?: () => void;
+  errorCode?: number;
 }
+
+const ListContent = ({ items }: { items: string[] }) => (
+  <ul>
+    {items.map((item, index) => (
+      <li key={index}>{item}</li>
+    ))}
+  </ul>
+);
 
 function ErrorPage(props: ErrorPageProps) {
   const {
     logo = selsaLogo,
     logoAlt = "Sistemas Enlinea",
-    heading = "!Oh! Algo ha salido mal",
-    description = "El servicio no se encuentra disponible en el momento. Por favor intenta de nuevo más tarde.",
+    heading = "¡Ups! Algo salió mal...",
     image = errorImage,
     imageAlt = "Ha surgido un error. Revisa la descripción",
+    nameButton = "Regresar",
+    onClick,
+    errorCode = 0,
   } = props;
 
-  const mediaQueries = ["(max-width: 1000px)", "(max-width: 600px)"];
+  const mediaQueries = ["(max-width: 600px)"];
   const matches = useMediaQueries(mediaQueries);
+  const queriesMatches = matches["(max-width: 600px)"];
+
+  const errorDetail = errorCodes[errorCode] || {
+    whatWentWrong: ["No se proporcionó información sobre el error."],
+    howToFix: ["Intenta nuevamente más tarde."],
+  };
 
   return (
-    <Stack
-      padding={matches["(max-width: 600px)"] ? "32px" : "80px"}
-      gap={matches["(max-width: 1000px)"] ? "64px" : "120px"}
-      direction="column"
-    >
-      <StyledCompanyLogo src={logo} alt={logoAlt} />
-      <Grid
-        templateRows={matches["(max-width: 600px)"] ? "repeat(2, 1fr)" : "1fr"}
-        templateColumns={
-          matches["(max-width: 600px)"] ? "auto" : "repeat(2, 1fr)"
-        }
-        alignItems="center"
-        gap={matches["(max-width: 600px)"] ? "64px" : "120px"}
-      >
-        <Stack gap="24px" direction="column">
-          <Stack gap="16px" direction="column">
-            <Text type="title">{heading}</Text>
-            <Text type="title" size="medium">
-              {description}
-            </Text>
+    <StyledContainer>
+      <StyledMainContent>
+        <Stack justifyContent="center">
+          <Stack gap="64px" direction="column" alignItems="center" width="100%">
+            <Stack width="90%">
+              <StyledCompanyLogo
+                src={logo}
+                alt={logoAlt}
+                width={queriesMatches ? "40px" : "54px"}
+                height={queriesMatches ? "40px" : "54px"}
+              />
+            </Stack>
+
+            <Stack direction="column" alignItems="center">
+              <Stack
+                direction="column"
+                alignItems="center"
+                gap={queriesMatches ? "24px" : "32px"}
+              >
+                <Text
+                  type="headline"
+                  textAlign="center"
+                  weight="bold"
+                  size={queriesMatches ? "small" : "large"}
+                >
+                  {heading}
+                </Text>
+                <Tag
+                  appearance="gray"
+                  label={`Código de error: ${errorCode}`}
+                  weight="strong"
+                />
+                <StyledErrorImage
+                  src={image}
+                  alt={imageAlt}
+                  width={queriesMatches ? "180px" : "256px"}
+                  height={queriesMatches ? "160px" : "240px"}
+                />
+              </Stack>
+            </Stack>
+
+            <StyledCertificationsContainer $isMobile={queriesMatches}>
+              <Stack
+                direction={queriesMatches ? "column" : "row"}
+                gap="32px"
+                justifyContent="space-between"
+                width="100%"
+              >
+                <Stack direction="column" gap="24px" width="100%">
+                  <Text type="headline" size="medium" weight="bold">
+                    ¿Qué salió mal?
+                  </Text>
+                  <StyledDiv>
+                    <ListContent items={errorDetail.whatWentWrong} />
+                  </StyledDiv>
+                </Stack>
+
+                <VerticalDivider $isVertical={!queriesMatches} />
+                {queriesMatches && <Divider dashed />}
+
+                <Stack direction="column" gap="24px" width="100%">
+                  <Text type="headline" size="medium" weight="bold">
+                    ¿Cómo solucionarlo?
+                  </Text>
+                  <StyledDiv>
+                    <ListContent items={errorDetail.howToFix} />
+                  </StyledDiv>
+                  <Stack justifyContent="center">
+                    <Button
+                      appearance="primary"
+                      spacing="wide"
+                      variant="filled"
+                      fullwidth={queriesMatches}
+                      onClick={() =>
+                        onClick
+                          ? onClick()
+                          : window.open(enviroment.REDIRECT_URI, "_self")
+                      }
+                    >
+                      {nameButton}
+                    </Button>
+                  </Stack>
+                </Stack>
+              </Stack>
+            </StyledCertificationsContainer>
           </Stack>
-          <Button iconBefore={<MdChevronLeft size={18} />}>Exit</Button>
         </Stack>
-        <StyledErrorImage src={image} alt={imageAlt} />
-      </Grid>
-    </Stack>
+      </StyledMainContent>
+      <StyledFooter>
+        <Text appearance="gray" textAlign="center" size="small" weight="bold">
+          © 2024 Inube
+        </Text>
+      </StyledFooter>
+    </StyledContainer>
   );
 }
 

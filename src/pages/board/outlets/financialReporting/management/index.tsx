@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { MdOutlineSend, MdAttachFile } from "react-icons/md";
+import { MdOutlineSend, MdAttachFile, MdInfoOutline } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 import { Stack } from "@inubekit/stack";
 import { Textfield } from "@inubekit/textfield";
@@ -13,6 +13,7 @@ import { getTraceByCreditRequestId } from "@services/trace/getTraceByCreditReque
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { registerNewsToCreditRequest } from "@services/trace/registerNewsToCreditRequest";
 import { ICreditRequest } from "@services/types";
+import { DetailsModal } from "@pages/board/outlets/financialReporting/management/DetailsModal";
 
 import { traceObserver, errorObserver } from "../config";
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
@@ -31,6 +32,10 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState<ITraceType | null>(
+    null
+  );
   const chatContentRef = useRef<HTMLDivElement>(null);
 
   const notifyError = useCallback((message: string) => {
@@ -89,14 +94,10 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
     if (!newMessage.trim()) return;
 
     const newTrace: ITraceType = {
-      useCase: "Novelty",
-      userName: "Usuario de Prueba",
       creditRequestId: creditRequest?.creditRequestId,
       traceValue: newMessage,
-      userId: "user_001",
-      traceType: "Novelty",
-      decision_of_concept: "decision",
-      excecutionDate: new Date().toISOString(),
+      traceType: "Message",
+      executionDate: new Date().toISOString(),
     };
 
     try {
@@ -133,13 +134,22 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
       </SkeletonContainer>
     ));
 
+  const handleIconClick = (trace: ITraceType) => {
+    setSelectedMessage(trace);
+    setDetailsOpen(true);
+  };
+
   const renderMessages = () =>
     traces.map((trace, index) => (
       <Message
         key={index}
         type="sent"
-        timestamp={trace.excecutionDate}
+        timestamp={trace.executionDate || ""}
         message={trace.traceValue}
+        icon={<MdInfoOutline size={14} />}
+        onIconClick={() => {
+          handleIconClick(trace);
+        }}
       />
     ));
 
@@ -159,40 +169,48 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
           onRetry={handleRetry}
         />
       ) : (
-        <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
-          <ChatContent ref={chatContentRef}>
-            {loading ? renderSkeletons() : renderMessages()}
-          </ChatContent>
-          <form>
-            <Stack
-              alignItems="center"
-              direction="row"
-              gap="16px"
-              margin="2px 4px"
-            >
-              <Icon
-                appearance="primary"
-                cursorHover
-                size="24px"
-                icon={<MdAttachFile />}
-              />
-              <Textfield
-                id="text"
-                placeholder="Ej.: Escriba su mensaje"
-                fullwidth
-                value={newMessage}
-                onChange={handleInputChange}
-              />
-              <Icon
-                appearance="primary"
-                cursorHover
-                size="24px"
-                icon={<MdOutlineSend />}
-                onClick={handleFormSubmit}
-              />
-            </Stack>
-          </form>
-        </Stack>
+        <>
+          <Stack direction="column" height={!isMobile ? "100%" : "292px"}>
+            <ChatContent ref={chatContentRef}>
+              {loading ? renderSkeletons() : renderMessages()}
+            </ChatContent>
+            <form>
+              <Stack
+                alignItems="center"
+                direction="row"
+                gap="16px"
+                margin="2px 4px"
+              >
+                <Icon
+                  appearance="primary"
+                  cursorHover
+                  size="24px"
+                  icon={<MdAttachFile />}
+                />
+                <Textfield
+                  id="text"
+                  placeholder="Ej.: Escriba su mensaje"
+                  fullwidth
+                  value={newMessage}
+                  onChange={handleInputChange}
+                />
+                <Icon
+                  appearance="primary"
+                  cursorHover
+                  size="24px"
+                  icon={<MdOutlineSend />}
+                  onClick={handleFormSubmit}
+                />
+              </Stack>
+            </form>
+          </Stack>
+          {detailsOpen && selectedMessage && (
+            <DetailsModal
+              data={selectedMessage as ITraceType}
+              handleClose={() => setDetailsOpen(false)}
+            />
+          )}
+        </>
       )}
     </Fieldset>
   );

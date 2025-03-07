@@ -4,7 +4,7 @@ import { Icon } from "@inubekit/icon";
 
 import { parseCunstomFormat } from "@utils/formatData/currency";
 
-import { Container, IconWrapper, ContentWrapper } from "./styles";
+import { Container, IconWrapper, ContentWrapper, StyledPrint } from "./styles";
 
 export interface CardValuesProps {
   items: {
@@ -67,12 +67,13 @@ export function CardValues(props: CardValuesProps) {
                   {parseCunstomFormat(item.amount)}
                 </Text>
                 {item.miniIcon && (
-                  <Icon
-                    appearance="primary"
-                    icon={item.icon}
-                    cursorHover
-                    size="16px"
-                    onClick={() => {
+                  <StyledPrint>
+                    <Icon
+                      appearance="primary"
+                      icon={item.icon}
+                      cursorHover
+                      size="16px"
+                      onClick={() => {
                       if (item.modal === "edit") {
                         handleEdit();
                       } else if (item.modal === "view") {
@@ -80,14 +81,17 @@ export function CardValues(props: CardValuesProps) {
                       }
                     }}
                   />
+                  </StyledPrint>
                 )}
               </Stack>
             </Stack>
-            {!isMobile && (
-              <Text type="title" size="large" appearance="gray">
-                {item.operation}
-              </Text>
-            )}
+            <StyledPrint>
+              {!isMobile && (
+                <Text type="title" size="large" appearance="gray">
+                  {item.operation}
+                </Text>
+              )}
+            </StyledPrint>
           </Stack>
         ))}
       </ContentWrapper>
