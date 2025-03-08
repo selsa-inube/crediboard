@@ -17,6 +17,13 @@ export function FilingApplication() {
   const { id } = useParams();
   const userId = parseInt(id || "0", 10);
 
+  const { businessUnitSigla, eventData } = useContext(AppContext);
+  const { userAccount } =
+    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
   const userChoice =
     choiceBorrowers.find((choice) => choice.id === userId)?.choice ||
     "borrowers";
@@ -229,41 +236,34 @@ export function FilingApplication() {
         ],
       },
     ],
-    modesOfDisbursement: [
-      {
+    modesOfDisbursement: Object.entries(formData.disbursementGeneral).map(
+      ([key, value]) => ({
         accountBankCode: "100",
-        accountBankName: "Bancolombia",
-        accountNumber: "102685",
-        accountType: "AH",
-        disbursementAmount: 250000,
+        accountBankName: value.accountType || "none",
+        accountNumber: value.accountNumber || "none",
+        accountType: value.account || "none",
+        disbursementAmount: value.amount || 1,
         disbursementDate: "01/01/2025",
         disbursementReference: "1234",
         isInTheNameOfBorrower: "N",
         modeOfDisbursementCode: "<string>",
-        modeOfDisbursementType: "InternalAccount",
-        observation: "Text",
-        payeeBiologicalSex: "M",
-        payeeBirthday: "03/02/2000",
-        payeeCityOfResidence: "11001",
-        payeeEmail: "Brandon@gmail.com",
-        payeeIdentificationNumber: "33333",
-        payeeIdentificationType: "CC",
-        payeeName: "Brandon",
+        modeOfDisbursementType: key,
+        observation: value.description || "none",
+        payeeBiologicalSex: value.sex === "man" ? "M" : "F",
+        payeeBirthday: value.birthdate || "01/01/2000",
+        payeeCityOfResidence: value.city || "none",
+        payeeEmail: value.mail || "none",
+        payeeIdentificationNumber: value.identification || "none",
+        payeeIdentificationType: value.documentType || "none",
+        payeeName: value.name || "none",
         payeePersonType: "N",
-        payeePhoneNumber: "305632985",
-        payeeSurname: "Rodriguez",
+        payeePhoneNumber: value.phone || "none",
+        payeeSurname: value.lastName || "none",
         paymentOrderReference: "326513",
         transactionOperation: "Insert",
-      },
-    ],
+      })
+    ),
   };
-
-  const { businessUnitSigla, eventData } = useContext(AppContext);
-  const { userAccount } =
-    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
-
-  const businessUnitPublicCode: string =
-    JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
   const handleSubmit = async () => {
     try {
