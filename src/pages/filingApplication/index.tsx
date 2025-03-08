@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
+import { Button } from "@inubekit/button";
 
+import { AppContext } from "@context/AppContext";
+import { getSubmitCredit } from "@services/submitCredit";
 import { userStepsMock } from "@mocks/filing-application/userSteps/users.mock";
 import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
 
@@ -167,6 +170,117 @@ export function FilingApplication() {
     },
   });
 
+  const submitData = {
+    clientEmail: formData.contactInformation.email,
+    clientIdentificationNumber: formData.contactInformation.documentNumber,
+    clientIdentificationType: formData.contactInformation.document,
+    clientName:
+      formData.contactInformation.name +
+      " " +
+      formData.contactInformation.lastName,
+    clientId: "33333",
+    clientPhoneNumber: formData.contactInformation.phone.toString(),
+    loanAmount: 155555,
+    moneyDestinationAbreviatedName: "Vehiculo",
+    moneyDestinationId: "13698",
+    clientType: "333333",
+    prospectId: "000000000001",
+    guarantees: [
+      {
+        guaranteeType: crypto.randomUUID().toString(),
+        transactionOperation: "Insert",
+        mortgages: [
+          {
+            descriptionUse:
+              formData.propertyOffered.description === ""
+                ? "none"
+                : formData.propertyOffered.description,
+            propertyAge:
+              formData.propertyOffered.antique === ""
+                ? 1
+                : formData.propertyOffered.antique,
+            propertyPrice:
+              formData.propertyOffered.estimated === ""
+                ? 1
+                : formData.propertyOffered.estimated,
+            propertyType:
+              formData.propertyOffered.state === ""
+                ? "none"
+                : formData.propertyOffered.state,
+            transactionOperation: "Insert",
+          },
+        ],
+        pledges: [
+          {
+            descriptionUse:
+              formData.vehicleOffered.description === ""
+                ? "none"
+                : formData.vehicleOffered.description,
+            transactionOperation: "Insert",
+            vehiculeAge:
+              formData.vehicleOffered.model === ""
+                ? new Date().getFullYear()
+                : formData.vehicleOffered.model,
+            vehiculePrice:
+              formData.vehicleOffered.value === ""
+                ? 1
+                : formData.vehicleOffered.value,
+          },
+        ],
+      },
+    ],
+    modesOfDisbursement: [
+      {
+        accountBankCode: "100",
+        accountBankName: "Bancolombia",
+        accountNumber: "102685",
+        accountType: "AH",
+        disbursementAmount: 250000,
+        disbursementDate: "01/01/2025",
+        disbursementReference: "1234",
+        isInTheNameOfBorrower: "N",
+        modeOfDisbursementCode: "<string>",
+        modeOfDisbursementType: "InternalAccount",
+        observation: "Text",
+        payeeBiologicalSex: "M",
+        payeeBirthday: "03/02/2000",
+        payeeCityOfResidence: "11001",
+        payeeEmail: "Brandon@gmail.com",
+        payeeIdentificationNumber: "33333",
+        payeeIdentificationType: "CC",
+        payeeName: "Brandon",
+        payeePersonType: "N",
+        payeePhoneNumber: "305632985",
+        payeeSurname: "Rodriguez",
+        paymentOrderReference: "326513",
+        transactionOperation: "Insert",
+      },
+    ],
+  };
+
+  const { businessUnitSigla, eventData } = useContext(AppContext);
+  const { userAccount } =
+    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
+  const handleSubmit = async () => {
+    try {
+      console.log("Enviando datos:", submitData);
+      const response = await getSubmitCredit(
+        businessUnitPublicCode,
+        userAccount,
+        submitData
+      );
+      console.log("Respuesta del servidor:", response);
+      alert("Solicitud enviada con éxito");
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+      alert("Hubo un error al enviar la solicitud");
+    }
+  };
+
   const isMobile = useMediaQuery("(max-width:880px)");
 
   const currentStepIndex = steps.findIndex((step) => step.id === currentStep);
@@ -226,6 +340,7 @@ export function FilingApplication() {
         handleSubmitClick={handleSubmitClick}
         isMobile={isMobile}
       />
+      <Button onClick={handleSubmit}>send</Button>
     </>
   );
 }
