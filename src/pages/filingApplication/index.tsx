@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Button } from "@inubekit/button";
 
 import { AppContext } from "@context/AppContext";
 import { getSubmitCredit } from "@services/submitCredit";
@@ -177,16 +176,20 @@ export function FilingApplication() {
     },
   });
 
+  const {
+    contactInformation,
+    propertyOffered,
+    vehicleOffered,
+    disbursementGeneral,
+  } = formData;
+
   const submitData = {
-    clientEmail: formData.contactInformation.email,
-    clientIdentificationNumber: formData.contactInformation.documentNumber,
-    clientIdentificationType: formData.contactInformation.document,
-    clientName:
-      formData.contactInformation.name +
-      " " +
-      formData.contactInformation.lastName,
+    clientEmail: contactInformation.email,
+    clientIdentificationNumber: contactInformation.documentNumber,
+    clientIdentificationType: contactInformation.document,
+    clientName: `${contactInformation.name} ${contactInformation.lastName}`,
     clientId: "33333",
-    clientPhoneNumber: formData.contactInformation.phone.toString(),
+    clientPhoneNumber: contactInformation.phone.toString(),
     loanAmount: 155555,
     moneyDestinationAbreviatedName: "Vehiculo",
     moneyDestinationId: "13698",
@@ -198,45 +201,24 @@ export function FilingApplication() {
         transactionOperation: "Insert",
         mortgages: [
           {
-            descriptionUse:
-              formData.propertyOffered.description === ""
-                ? "none"
-                : formData.propertyOffered.description,
-            propertyAge:
-              formData.propertyOffered.antique === ""
-                ? 1
-                : formData.propertyOffered.antique,
-            propertyPrice:
-              formData.propertyOffered.estimated === ""
-                ? 1
-                : formData.propertyOffered.estimated,
-            propertyType:
-              formData.propertyOffered.state === ""
-                ? "none"
-                : formData.propertyOffered.state,
+            descriptionUse: propertyOffered.description || "none",
+            propertyAge: propertyOffered.antique || 1,
+            propertyPrice: propertyOffered.estimated || 1,
+            propertyType: propertyOffered.state || "none",
             transactionOperation: "Insert",
           },
         ],
         pledges: [
           {
-            descriptionUse:
-              formData.vehicleOffered.description === ""
-                ? "none"
-                : formData.vehicleOffered.description,
+            descriptionUse: vehicleOffered.description || "none",
             transactionOperation: "Insert",
-            vehiculeAge:
-              formData.vehicleOffered.model === ""
-                ? new Date().getFullYear()
-                : formData.vehicleOffered.model,
-            vehiculePrice:
-              formData.vehicleOffered.value === ""
-                ? 1
-                : formData.vehicleOffered.value,
+            vehiculeAge: vehicleOffered.model || new Date().getFullYear(),
+            vehiculePrice: vehicleOffered.value || 1,
           },
         ],
       },
     ],
-    modesOfDisbursement: Object.entries(formData.disbursementGeneral).map(
+    modesOfDisbursement: Object.entries(disbursementGeneral).map(
       ([key, value]) => ({
         accountBankCode: "100",
         accountBankName: value.accountType || "none",
@@ -274,10 +256,8 @@ export function FilingApplication() {
         submitData
       );
       console.log("Respuesta del servidor:", response);
-      alert("Solicitud enviada con éxito");
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
-      alert("Hubo un error al enviar la solicitud");
     }
   };
 
@@ -308,6 +288,7 @@ export function FilingApplication() {
 
   function handleSubmitClick() {
     console.log("data: ", formData);
+    handleSubmit();
   }
 
   const handleFormChange = (updatedValues: Partial<FormData>) => {
@@ -340,7 +321,6 @@ export function FilingApplication() {
         handleSubmitClick={handleSubmitClick}
         isMobile={isMobile}
       />
-      <Button onClick={handleSubmit}>send</Button>
     </>
   );
 }
