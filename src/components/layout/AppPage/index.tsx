@@ -66,7 +66,9 @@ function AppPage() {
   };
 
   const isTablet: boolean = useMediaQuery("(max-width: 1024px)");
-  const [selectedClient, setSelectedClient] = useState<string>("");
+  const [selectedClient, setSelectedClient] = useState<string>(
+    eventData.businessUnit.abbreviatedName
+  );
   useEffect(() => {
     const selectUser = document.querySelector("header div div:nth-child(2)");
     const handleToggleuserMenu = () => {

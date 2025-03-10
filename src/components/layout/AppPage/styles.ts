@@ -72,6 +72,7 @@ const StyledMenuContainer = styled.div`
 
 const StyledCollapse = styled.div`
   position: absolute;
+  top: 48px;
 `;
 const StyledFooter = styled.footer`
   margin-top: auto;
