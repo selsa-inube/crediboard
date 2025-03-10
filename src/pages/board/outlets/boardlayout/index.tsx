@@ -53,19 +53,31 @@ function BoardLayout() {
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
-  const fetchBoardData = async () => {
-    try {
-      const [boardRequests, requestsPinned] = await Promise.all([
-        getCreditRequestInProgress(businessUnitPublicCode),
-        getCreditRequestPin(),
-      ]);
+  const { userAccount } =
+    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
 
-      setBoardData((prevState) => ({
-        ...prevState,
-        boardRequests,
-        requestsPinned,
-      }));
-      setFilteredRequests(boardRequests);
+  const fetchBoardData = async (businessUnitPublicCode: string) => {
+    try {
+      const [boardRequestsResult, requestsPinnedResult] =
+        await Promise.allSettled([
+          getCreditRequestInProgress(businessUnitPublicCode),
+          getCreditRequestPin(businessUnitPublicCode),
+        ]);
+
+      if (boardRequestsResult.status === "fulfilled") {
+        setBoardData((prevState) => ({
+          ...prevState,
+          boardRequests: boardRequestsResult.value,
+        }));
+        setFilteredRequests(boardRequestsResult.value);
+      }
+
+      if (requestsPinnedResult.status === "fulfilled") {
+        setBoardData((prevState) => ({
+          ...prevState,
+          requestsPinned: requestsPinnedResult.value,
+        }));
+      }
     } catch (error) {
       console.error("Error fetching board data:", error);
       setErrorLoadingPins(true);
@@ -73,8 +85,7 @@ function BoardLayout() {
   };
 
   useEffect(() => {
-    fetchBoardData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchBoardData(businessUnitPublicCode);
   }, [businessUnitPublicCode]);
 
   useEffect(() => {
@@ -191,8 +202,13 @@ function BoardLayout() {
         card.creditRequestId === creditRequestId ? { ...card, isPinned } : card
       ),
     }));
-    await ChangeAnchorToCreditRequest(creditRequestId, isPinned);
-    await fetchBoardData();
+    await ChangeAnchorToCreditRequest(
+      businessUnitPublicCode,
+      userAccount,
+      creditRequestId,
+      isPinned
+    );
+    await fetchBoardData(businessUnitPublicCode);
   };
 
   return (
