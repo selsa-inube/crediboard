@@ -1,5 +1,5 @@
-import { Button } from "@inubekit/button";
 import { useState } from "react";
+import { Button } from "@inubekit/button";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Divider } from "@inubekit/divider";
@@ -11,7 +11,6 @@ import { InvestmentCreditCard } from "@pages/addProspect/components/InvestmentCr
 import { BaseModal } from "@components/modals/baseModal";
 import { CardConsolidatedCredit } from "@pages/addProspect/components/CardConsolidatedCredit";
 import { mockConsolidatedCreditModal } from "@mocks/add-prospect/consolidated-credit-modal/consolidatedcreditmodal.mock";
-import { mockConsolidatedCredit } from "@mocks/add-prospect/consolidated-credit-modal/consolidated.mock";
 
 import { ScrollableContainer } from "./styles";
 import { ModalConfig } from "./config";
@@ -24,8 +23,7 @@ export interface ConsolidatedCreditsProps {
 export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
   const { loading, handleClose } = props;
   const isMobile = useMediaQuery("(max-width:880px)");
-  const data = mockConsolidatedCreditModal[0];
-  const datas = mockConsolidatedCredit[0];
+  const debtorData = mockConsolidatedCreditModal[0];
   const [editOpen, setEditOpen] = useState(true);
 
   return (
@@ -38,7 +36,6 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
       height={isMobile ? "auto" : "688px"}
       handleBack={handleClose}
       finalDivider={true}
-      portalId="portal"
       backButton={ModalConfig.close}
     >
       <Stack direction="column" gap="24px">
@@ -58,7 +55,7 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
               $
               {loading
                 ? ModalConfig.loading
-                : currencyFormat(data.collectedValue, false)}
+                : currencyFormat(debtorData.collectedValue, false)}
             </Text>
             <Text type="body" appearance="gray" size="small" textAlign="center">
               {ModalConfig.collectedValue}
@@ -94,9 +91,9 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
                   gap="16px"
                   width="0%"
                 >
-                  {datas.dataNew_card.map((item, index) => (
+                  {debtorData.dataNew_card.map((item) => (
                     <CardConsolidatedCredit
-                      key={index}
+                      key={item.consolidated_credit_id}
                       code={item.consolidated_credit_code}
                       date={new Date(item.date)}
                       expiredValue={item.expired_value}
@@ -119,7 +116,7 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
               width="0%"
             >
               {editOpen
-                ? data.investments.map((item, index) => (
+                ? debtorData.investments.map((item, index) => (
                     <InvestmentCreditCard
                       key={index}
                       code={item.code}
@@ -129,9 +126,9 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
                       title={ModalConfig.creditInvestment}
                     />
                   ))
-                : datas.data_card.map((item, index) => (
+                : debtorData.data_card.map((item) => (
                     <CardConsolidatedCredit
-                      key={index}
+                      key={item.consolidated_credit_id}
                       code={item.consolidated_credit_code}
                       date={new Date(item.date)}
                       expiredValue={item.expired_value}
