@@ -131,6 +131,8 @@ function BoardLayout() {
             return request.stage === "TRAMITE_DESEMBOLSO";
           case "7":
             return request.stage === "CUMPLIMIENTO_REQUISITOS";
+          case "9":
+            return request.stage === "GESTION_COMERCIAL";
           case "10":
             return request.unreadNovelties === "Y";
           default:
