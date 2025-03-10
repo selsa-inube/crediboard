@@ -1,4 +1,8 @@
-import { DmEtapasPrs, ICreditRequest, IUsersByCreditRequests } from "@services/types";
+import {
+  DmEtapasPrs,
+  ICreditRequest,
+  IUsersByCreditRequests,
+} from "@services/types";
 
 export const mapCreditRequestToEntity = (
   data: Record<string, string | number | object>
@@ -17,7 +21,8 @@ export const mapCreditRequestToEntity = (
     clientName: data.clientName as string,
     taskToBeDone: data.taskToBeDone as string,
     unreadNovelties: data.unreadNovelties as string,
-    usersByCreditRequests: data.usersByCreditRequests as IUsersByCreditRequests
+    userWhoPinnnedId: data.userWhoPinnnedId as string,
+    usersByCreditRequests: data.usersByCreditRequests as IUsersByCreditRequests,
   };
   return creditRequest;
 };
