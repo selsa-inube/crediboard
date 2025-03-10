@@ -5,7 +5,7 @@ export interface IUsersByCreditRequests {
   userName: string;
   identificationType: string;
   identificationNumber: string;
-  role: string
+  role: string;
 }
 export interface ICreditRequest {
   creditRequestId?: string;
@@ -20,7 +20,8 @@ export interface ICreditRequest {
   clientName: string;
   taskToBeDone: string;
   unreadNovelties?: string;
-  usersByCreditRequests?: IUsersByCreditRequests
+  userWhoPinnnedId?: string;
+  usersByCreditRequests?: IUsersByCreditRequests;
 }
 
 export interface IStaff {
