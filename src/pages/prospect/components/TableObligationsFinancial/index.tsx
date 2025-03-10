@@ -14,7 +14,7 @@ import {
 import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Stack } from "@inubekit/stack";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
 
 import { EditFinancialObligationModal } from "@components/modals/editFinancialObligationModal";
