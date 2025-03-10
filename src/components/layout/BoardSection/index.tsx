@@ -18,7 +18,11 @@ interface BoardSectionProps {
   orientation: SectionOrientation;
   sectionInformation: ICreditRequest[];
   pinnedRequests: ICreditRequestPinned[];
-  handlePinRequest: (requestId: string, isPinned: string) => void;
+  handlePinRequest: (
+    requestId: string,
+    identificationNumber: string[],
+    isPinned: string
+  ) => void;
   errorLoadingPins: boolean;
   searchRequestValue: string;
 }
@@ -139,6 +143,10 @@ function BoardSection(props: BoardSectionProps) {
                   if (request.creditRequestId) {
                     handlePinRequest(
                       request.creditRequestId,
+                      Object.values(request.usersByCreditRequests || {}).map(
+                        (user: { identificationNumber: string }) =>
+                          user.identificationNumber
+                      ),
                       isRequestPinned(request.creditRequestId, pinnedRequests)
                         ? "N"
                         : "Y"

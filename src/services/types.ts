@@ -1,4 +1,12 @@
 import { Schedule, GracePeriodType, BorrowerProperties } from "@services/enums";
+
+export interface IUsersByCreditRequests {
+  userId: string;
+  userName: string;
+  identificationType: string;
+  identificationNumber: string;
+  role: string
+}
 export interface ICreditRequest {
   creditRequestId?: string;
   creditRequestCode: string;
@@ -12,6 +20,7 @@ export interface ICreditRequest {
   clientName: string;
   taskToBeDone: string;
   unreadNovelties?: string;
+  usersByCreditRequests?: IUsersByCreditRequests
 }
 
 export interface IStaff {
