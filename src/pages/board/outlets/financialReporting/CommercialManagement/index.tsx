@@ -10,10 +10,9 @@ import {
   MdOutlineVideocam,
   MdOutlinePayments,
 } from "react-icons/md";
-import { Icon } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { Divider } from "@inubekit/divider";
 

@@ -4,13 +4,12 @@ import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 
 import { Toggle } from "@inubekit/toggle";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
 import { Button } from "@inubekit/button";
 import { Textarea } from "@inubekit/textarea";
 import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/inubekit";
 
 import { StyledModal, StyledContainerClose } from "./styles";
 interface FormValues {

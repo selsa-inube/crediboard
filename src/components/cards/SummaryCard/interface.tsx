@@ -1,7 +1,6 @@
 import { MdOutlineMessage, MdOutlinePushPin, MdPushPin } from "react-icons/md";
-import { Icon } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Icon } from "@inubekit/inubekit";
 
 import {
   truncateTextToMaxLength,

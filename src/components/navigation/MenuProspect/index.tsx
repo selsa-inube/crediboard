@@ -1,6 +1,5 @@
-import { Icon } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Icon } from "@inubekit/inubekit";
 
 import { StyledMenu, StyledContainerLabel, StyledA } from "./styles";
 import { IOptions } from "./types";

@@ -1,11 +1,10 @@
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
-import { Icon } from "@inubekit/inubekit";
 
 import {
   currencyFormat,

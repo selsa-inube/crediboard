@@ -1,6 +1,5 @@
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
 import { useMediaQuery } from "@inubekit/hooks";
 import {

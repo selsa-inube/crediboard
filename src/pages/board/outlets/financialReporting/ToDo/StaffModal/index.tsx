@@ -4,13 +4,12 @@ import { MdClear } from "react-icons/md";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
 import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
 import { Select } from "@inubekit/select";
-import { Icon } from "@inubekit/inubekit";
 import { Spinner } from "@inubekit/spinner";
 
 import { IStaff } from "@services/types";
