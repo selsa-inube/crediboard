@@ -5,7 +5,7 @@ import { Stack } from "@inubekit/inubekit";
 import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 
 import {
   currencyFormat,

@@ -7,7 +7,7 @@ import { Button } from "@inubekit/button";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 import { useFlag } from "@inubekit/flag";
 import { Divider } from "@inubekit/divider";
 

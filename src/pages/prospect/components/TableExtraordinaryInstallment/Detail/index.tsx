@@ -1,5 +1,5 @@
 import { Stack } from "@inubekit/inubekit";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 
 import { icons } from "./config";
 

@@ -10,7 +10,7 @@ import { Blanket } from "@inubekit/blanket";
 import { Button } from "@inubekit/button";
 import { Textarea } from "@inubekit/textarea";
 import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 
 import { StyledModal, StyledContainerClose } from "./styles";
 interface FormValues {

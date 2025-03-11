@@ -8,7 +8,7 @@ import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 
 import { formatPrimaryDate } from "@utils/formatData/date";
 

@@ -5,7 +5,7 @@ import { MdOutlineAttachMoney, MdOutlineTag } from "react-icons/md";
 import { Textfield } from "@inubekit/textfield";
 import { Select } from "@inubekit/select";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 import { Grid } from "@inubekit/grid";
 
 import { BaseModal } from "@components/modals/baseModal";

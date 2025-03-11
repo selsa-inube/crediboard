@@ -3,7 +3,7 @@ import { MdOutlineChevronRight } from "react-icons/md";
 
 import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 import { useMediaQueries } from "@inubekit/hooks";
 import { SummaryCard } from "@components/cards/SummaryCard";
 import { ICreditRequestPinned, ICreditRequest } from "@services/types";

@@ -8,7 +8,7 @@ import {
   MdOutlineShare,
 } from "react-icons/md";
 import { Button } from "@inubekit/button";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 import { Stack } from "@inubekit/inubekit";
 
 import { MenuProspect } from "@components/navigation/MenuProspect";
