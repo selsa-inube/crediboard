@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -17,6 +17,7 @@ import { getById } from "@mocks/utils/dataMock.service";
 import { Ierror_issued, IErrorService, ICreditRequest } from "@services/types";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { generatePDF } from "@utils/pdf/generetePDF";
+import { AppContext } from "@context/AppContext";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -80,6 +81,11 @@ export const FinancialReporting = () => {
 
   const [errorsService, setErrorsService] = useState<IErrorService[]>([]);
 
+  const { businessUnitSigla } = useContext(AppContext);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
   useEffect(() => {
     Promise.allSettled([
       getById("document", "credit_request_id", id!, true),
@@ -97,14 +103,14 @@ export const FinancialReporting = () => {
       }
     });
 
-    getCreditRequestByCode(id!)
+    getCreditRequestByCode(businessUnitPublicCode, id!)
       .then((data) => {
         setData(data[0]);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [id]);
+  }, [businessUnitPublicCode, id]);
 
   useEffect(() => {
     const handleErrorsService = (newError: IErrorService) => {

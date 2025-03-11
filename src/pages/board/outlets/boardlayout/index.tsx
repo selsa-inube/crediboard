@@ -1,12 +1,18 @@
 import { useContext, useEffect, useState } from "react";
+import { MdInfoOutline } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
+import { Icon } from "@inubekit/icon";
+import { Text } from "@inubekit/text";
+import { Stack } from "@inubekit/stack";
 
+import { BaseModal } from "@components/modals/baseModal";
 import { ICreditRequest } from "@services/types";
 import { getCreditRequestPin } from "@services/isPinned";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
 import { ChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
 import { AppContext } from "@context/AppContext";
 
+import { dataInformationModal } from "./config/board";
 import { BoardLayoutUI } from "./interface";
 import { selectCheckOptions } from "./config/select";
 import { IBoardData } from "./types";
@@ -30,8 +36,11 @@ function BoardLayout() {
     []
   );
   const [errorLoadingPins, setErrorLoadingPins] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
+
+  const staffId = eventData.user.staff.staffId;
 
   useEffect(() => {
     const orientation = isMobile ? "horizontal" : "vertical";
@@ -44,19 +53,31 @@ function BoardLayout() {
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
-  const fetchBoardData = async () => {
-    try {
-      const [boardRequests, requestsPinned] = await Promise.all([
-        getCreditRequestInProgress(businessUnitPublicCode),
-        getCreditRequestPin(),
-      ]);
+  const { userAccount } =
+    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
 
-      setBoardData((prevState) => ({
-        ...prevState,
-        boardRequests,
-        requestsPinned,
-      }));
-      setFilteredRequests(boardRequests);
+  const fetchBoardData = async (businessUnitPublicCode: string) => {
+    try {
+      const [boardRequestsResult, requestsPinnedResult] =
+        await Promise.allSettled([
+          getCreditRequestInProgress(businessUnitPublicCode),
+          getCreditRequestPin(businessUnitPublicCode),
+        ]);
+
+      if (boardRequestsResult.status === "fulfilled") {
+        setBoardData((prevState) => ({
+          ...prevState,
+          boardRequests: boardRequestsResult.value,
+        }));
+        setFilteredRequests(boardRequestsResult.value);
+      }
+
+      if (requestsPinnedResult.status === "fulfilled") {
+        setBoardData((prevState) => ({
+          ...prevState,
+          requestsPinned: requestsPinnedResult.value,
+        }));
+      }
     } catch (error) {
       console.error("Error fetching board data:", error);
       setErrorLoadingPins(true);
@@ -64,8 +85,7 @@ function BoardLayout() {
   };
 
   useEffect(() => {
-    fetchBoardData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchBoardData(businessUnitPublicCode);
   }, [businessUnitPublicCode]);
 
   useEffect(() => {
@@ -98,6 +118,8 @@ function BoardLayout() {
 
       return activeFilterIds.some((filterId) => {
         switch (filterId) {
+          case "1":
+            return request.userWhoPinnnedId;
           case "2":
             return [
               "GESTION_COMERCIAL",
@@ -115,6 +137,8 @@ function BoardLayout() {
             return request.stage === "TRAMITE_DESEMBOLSO";
           case "7":
             return request.stage === "CUMPLIMIENTO_REQUISITOS";
+          case "9":
+            return request.stage === "GESTION_COMERCIAL";
           case "10":
             return request.unreadNovelties === "Y";
           default:
@@ -155,16 +179,27 @@ function BoardLayout() {
 
   const handlePinRequest = async (
     creditRequestId: string | undefined,
+    userWhoPinnnedId: string,
     isPinned: string
   ) => {
+    if (userWhoPinnnedId !== staffId && isPinned === "N") {
+      setIsOpenModal(true);
+      return;
+    }
+
     setBoardData((prevState) => ({
       ...prevState,
       requestsPinned: prevState.requestsPinned.map((card) =>
         card.creditRequestId === creditRequestId ? { ...card, isPinned } : card
       ),
     }));
-    await ChangeAnchorToCreditRequest(creditRequestId, isPinned);
-    await fetchBoardData();
+    await ChangeAnchorToCreditRequest(
+      businessUnitPublicCode,
+      userAccount,
+      creditRequestId,
+      isPinned
+    );
+    await fetchBoardData(businessUnitPublicCode);
   };
 
   return (
@@ -198,6 +233,22 @@ function BoardLayout() {
           handleFiltersChange({ boardOrientation: orientation })
         }
       />
+      {isOpenModal && (
+        <BaseModal
+          title={dataInformationModal.tilte}
+          nextButton={dataInformationModal.button}
+          handleNext={() => setIsOpenModal(false)}
+          handleClose={() => setIsOpenModal(false)}
+          width={isMobile ? "290px" : "403px"}
+        >
+          <Stack direction="column" alignItems="center" gap="16px">
+            <Icon icon={<MdInfoOutline />} size="68px" appearance="primary" />
+            <Text type="body" size="medium" appearance="gray">
+              {dataInformationModal.description}
+            </Text>
+          </Stack>
+        </BaseModal>
+      )}
     </>
   );
 }

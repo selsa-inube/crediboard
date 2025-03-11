@@ -8,6 +8,7 @@ import { ICreditRequest } from "@services/types";
 import { mapCreditRequestToEntities } from "./mapper";
 
 export const getCreditRequestByCode = async (
+  businessUnitPublicCode: string,
   creditRequestCode: string
 ): Promise<ICreditRequest[]> => {
   const maxRetries = maxRetriesServices;
@@ -23,7 +24,7 @@ export const getCreditRequestByCode = async (
         method: "GET",
         headers: {
           "X-Action": "SearchAllCreditRequestsInProgress",
-          "X-Business-Unit": enviroment.BUSINESS_UNIT,
+          "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,

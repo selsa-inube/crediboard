@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import { createPortal } from "react-dom";
 import { MdClear, MdDeleteOutline } from "react-icons/md";
 
@@ -15,6 +15,7 @@ import { StyledItem } from "@pages/board/outlets/financialReporting/styles";
 import { saveDocument } from "@services/saveDocument";
 import { optionFlags } from "@pages/board/outlets/financialReporting/config";
 import { validationMessages } from "@validations/validationMessages";
+import { AppContext } from "@context/AppContext";
 
 import {
   StyledContainerClose,
@@ -78,6 +79,10 @@ export const ListModal = (props: IListModalProps) => {
     { id: string; name: string; file: File }[]
   >([]);
   const [loading, setLoading] = useState(false);
+  const { businessUnitSigla } = useContext(AppContext);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
   interface IListdataProps {
     data: { id: string; name: string }[];
@@ -166,6 +171,7 @@ export const ListModal = (props: IListModalProps) => {
     try {
       uploadedFiles.forEach(async (fileData) => {
         await saveDocument(
+          businessUnitPublicCode,
           "1",
           fileData.name.split(".").slice(0, -1).join("."),
           fileData.file
