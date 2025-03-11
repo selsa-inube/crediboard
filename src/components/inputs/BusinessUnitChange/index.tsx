@@ -1,5 +1,5 @@
 import { MdCheck } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
 

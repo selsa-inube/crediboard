@@ -2,7 +2,7 @@ import { MdClose } from "react-icons/md";
 
 import { Button } from "@inubekit/button";
 import { Blanket } from "@inubekit/blanket";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { useMediaQuery } from "@inubekit/hooks";

@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import { Blanket } from "@inubekit/blanket";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { MdClear } from "react-icons/md";

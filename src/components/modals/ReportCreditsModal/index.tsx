@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { MdAdd } from "react-icons/md";
 import { Button } from "@inubekit/button";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { SkeletonLine } from "@inubekit/skeleton";
 

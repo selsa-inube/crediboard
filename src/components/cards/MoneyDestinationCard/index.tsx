@@ -1,7 +1,7 @@
 import { Grid } from "@inubekit/grid";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import * as Icons from "react-icons/md";
 import { IconType } from "react-icons";
 

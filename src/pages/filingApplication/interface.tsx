@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Assisted } from "@inubekit/assisted";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
 
 import { disbursemenTabs } from "@pages/filingApplication/steps/disbursementGeneral/config";

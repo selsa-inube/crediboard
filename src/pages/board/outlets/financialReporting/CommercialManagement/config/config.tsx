@@ -6,7 +6,7 @@ import {
   MdOutlineEdit,
   MdOutlineRemoveRedEye,
 } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 
 import { TableBoard } from "@components/data/TableBoard";

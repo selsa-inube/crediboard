@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
 

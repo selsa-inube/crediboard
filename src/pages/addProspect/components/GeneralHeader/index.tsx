@@ -1,4 +1,4 @@
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { Button } from "@inubekit/button";

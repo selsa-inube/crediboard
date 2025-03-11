@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MdInfoOutline } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";

@@ -3,7 +3,7 @@ import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
 import { Toggle } from "@inubekit/toggle";

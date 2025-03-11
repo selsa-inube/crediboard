@@ -1,6 +1,6 @@
 import { SkeletonLine } from "@inubekit/skeleton";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { Divider } from "@inubekit/divider";
 

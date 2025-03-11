@@ -1,5 +1,5 @@
 import { Assisted } from "@inubekit/assisted";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
 
 import { GeneralHeader } from "./components/GeneralHeader";

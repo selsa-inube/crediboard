@@ -1,4 +1,4 @@
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 
 import { StyledContainerToCenter } from "./styles";
 interface IContainerSectionsProps {

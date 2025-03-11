@@ -4,7 +4,7 @@ import { Button } from "@inubekit/button";
 import { useFlag } from "@inubekit/flag";
 import { Icon } from "@inubekit/icon";
 import { SkeletonLine } from "@inubekit/skeleton";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { IOption } from "@inubekit/select";
 

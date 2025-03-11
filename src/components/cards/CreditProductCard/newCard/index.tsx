@@ -1,7 +1,7 @@
 import { MdOutlineAdd } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
 import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 
 import { StyledCreditProductCard } from "../styles";
 import { dataNewCard } from "./config";

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import { MdOutlineSend, MdAttachFile, MdInfoOutline } from "react-icons/md";
 import { Icon } from "@inubekit/icon";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Textfield } from "@inubekit/textfield";
 
 import { Fieldset } from "@components/data/Fieldset";

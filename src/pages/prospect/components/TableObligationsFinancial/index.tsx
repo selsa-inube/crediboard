@@ -13,7 +13,7 @@ import {
 } from "@inubekit/table";
 import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Icon } from "@inubekit/icon";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
 

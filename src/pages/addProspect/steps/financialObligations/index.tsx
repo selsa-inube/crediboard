@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FormikValues } from "formik";
 import { MdAdd, MdCached } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { Divider } from "@inubekit/divider";
 import { Button } from "@inubekit/button";

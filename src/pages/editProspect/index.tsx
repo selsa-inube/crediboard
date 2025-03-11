@@ -4,7 +4,7 @@ import { MdOutlineBeachAccess, MdOutlineShare } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
 

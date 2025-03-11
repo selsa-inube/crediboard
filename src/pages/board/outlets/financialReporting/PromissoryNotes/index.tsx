@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, useContext } from "react";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { useFlag } from "@inubekit/flag";
 import { Tag } from "@inubekit/tag";
 

@@ -5,7 +5,7 @@ import { Toggle } from "@inubekit/toggle";
 import { Icon } from "@inubekit/icon";
 import { Textfield } from "@inubekit/textfield";
 import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Divider } from "@inubekit/divider";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
