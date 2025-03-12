@@ -1,5 +1,5 @@
 import { MdOutlineMessage, MdOutlinePushPin, MdPushPin } from "react-icons/md";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 

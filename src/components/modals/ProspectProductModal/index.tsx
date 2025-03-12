@@ -4,7 +4,7 @@ import { MdAttachMoney, MdPercent } from "react-icons/md";
 import { Textfield } from "@inubekit/textfield";
 import { Select } from "@inubekit/select";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 import { Stack } from "@inubekit/stack";
 
 import { BaseModal } from "@components/modals/baseModal";

@@ -4,7 +4,7 @@ import { MdOutlineInfo } from "react-icons/md";
 import { InfoModal } from "@components/modals/InfoModal";
 import { Text } from "@inubekit/text";
 import { SkeletonLine } from "@inubekit/skeleton";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 
 import { IAction, IEntries, ITitle, appearances } from "./types";
 import {

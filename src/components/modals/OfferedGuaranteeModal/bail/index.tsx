@@ -1,4 +1,4 @@
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { MdInfoOutline } from "react-icons/md";

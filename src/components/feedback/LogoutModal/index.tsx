@@ -4,7 +4,7 @@ import { Button } from "@inubekit/button";
 import { Blanket } from "@inubekit/blanket";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { StyledBackdropBlanket, StyledModal } from "./styles";

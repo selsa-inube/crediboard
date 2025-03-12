@@ -3,7 +3,7 @@ import { MdInfoOutline } from "react-icons/md";
 import { Stack } from "@inubekit/stack";
 import { Divider } from "@inubekit/divider";
 import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
+import { Icon } from "@inubekit/inubekit";
 
 import { currencyFormat } from "@utils/formatData/currency";
 import { CreditLimit } from "@components/modals/CreditLimit";
