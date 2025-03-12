@@ -11,7 +11,7 @@ import {
   Thead,
   Tr,
 } from "@inubekit/table";
-import { Text } from "@inubekit/text";
+import { Text } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Stack, Icon } from "@inubekit/inubekit";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";

@@ -1,9 +1,7 @@
 import { createPortal } from "react-dom";
-
 import { Blanket } from "@inubekit/blanket";
 import { Spinner } from "@inubekit/spinner";
-import { Stack } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
+import { Stack, Text } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { dataConsulting } from "./config";

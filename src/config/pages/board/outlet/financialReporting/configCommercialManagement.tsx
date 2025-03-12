@@ -1,5 +1,4 @@
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Text } from "@inubekit/inubekit";
 
 import { TableBoard } from "@components/data/TableBoard";
 

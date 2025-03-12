@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { MdInfoOutline } from "react-icons/md";
-import { Stack, Icon } from "@inubekit/inubekit";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
 import { Divider } from "@inubekit/divider";
-import { Text } from "@inubekit/text";
 
 import { currencyFormat } from "@utils/formatData/currency";
 import { CreditLimit } from "@components/modals/CreditLimit";

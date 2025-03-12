@@ -1,9 +1,8 @@
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Stack, Icon } from "@inubekit/inubekit";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
 import { Divider } from "@inubekit/divider";
-import { Text } from "@inubekit/text";
 import { Textfield } from "@inubekit/textfield";
 
 import {
@@ -13,9 +12,9 @@ import {
   validateCurrencyField,
 } from "@utils/formatData/currency";
 
-import { CardGray } from "../CardGray";
 import { StyledContainer, StyledTextField, StyledSupport } from "./styles";
 import { incomeCardData } from "./config";
+import { CardGray } from "../CardGray";
 
 export interface IIncomeCardProps {
   title: string;
