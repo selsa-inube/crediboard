@@ -24,6 +24,8 @@ export function DeductibleExpensesModal(props: DeductibleExpensesModalProps) {
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
+  const lenght = mockDeductibleExpenses.length < 5;
+
   return (
     <BaseModal
       title={deductibleexpenses.deductibleExpenses}
@@ -33,9 +35,9 @@ export function DeductibleExpensesModal(props: DeductibleExpensesModalProps) {
       width={!isMobile ? "540px" : "290px"}
       finalDivider={true}
     >
-      <Stack direction="column" gap="24px">
-        <ScrollableContainer>
-          <Stack direction="column" padding="8px" gap="10px">
+      <Stack direction="column" gap={lenght ? "10px" : "24px"} height="186px">
+        <ScrollableContainer $length={lenght}>
+          <Stack direction="column" padding={lenght ? "0px" : "8px"} gap="10px">
             {mockDeductibleExpenses.map((item, index) => (
               <Stack key={index} justifyContent="space-between">
                 {loading ? (

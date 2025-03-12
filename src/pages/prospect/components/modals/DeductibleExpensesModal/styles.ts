@@ -1,24 +1,28 @@
 import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
 
+interface IScrollableContainer {
+  $length: boolean;
+}
+
 export const StyledContainerClose = styled.div`
   cursor: pointer;
 `;
 
 export const StyledContainer = styled.div`
   background-color: ${({ theme }) =>
-    theme?.palette?.neutral?.N0 || inube.palette.neutral.N0}; 
+    theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   border-radius: 8px;
 `;
 
-export const ScrollableContainer = styled.div`
-  height: 132px;
+export const ScrollableContainer = styled.div<IScrollableContainer>`
+  height: ${({ $length }) => ($length ? "auto" : "132px")};
   overflow: auto;
-  border: 1px solid
-    ${({ theme }) =>
-    theme?.palette?.neutral?.N100 || "rgba(223, 225, 230, 1)"}; 
+  border: ${({ $length }) => ($length ? "0px" : "1px solid")};
+  border-color: ${({ theme }) =>
+    theme?.palette?.neutral?.N50 || inube.palette.neutral.N50};
   border-radius: 8px;
-  padding: 8px 8px 0 8px;
+  padding: ${({ $length }) => ($length ? "0px" : "8px 8px 0 8px")};
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -27,11 +31,11 @@ export const ScrollableContainer = styled.div`
     width: 8px;
     border-radius: 8px;
     background: ${({ theme }) =>
-    theme?.palette?.neutral?.N100 || "rgba(235, 236, 240, 1)"}; 
+      theme?.palette?.neutral?.N100 || "rgba(235, 236, 240, 1)"};
   }
   &::-webkit-scrollbar-thumb {
     background-color: ${({ theme }) =>
-    theme?.palette?.neutral?.N50 || inube.palette.neutral.N50};
+      theme?.palette?.neutral?.N50 || inube.palette.neutral.N50};
     border-radius: 8px;
   }
 `;
