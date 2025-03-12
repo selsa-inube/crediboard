@@ -14,8 +14,8 @@ import {
   validateCurrencyField,
 } from "@utils/formatData/currency";
 
-import { IVehicleOffered } from "../../types";
 import { dataVehicule } from "./config";
+import { IVehicleOffered } from "../../types";
 
 interface IVehicleOfferedProps {
   isMobile: boolean;

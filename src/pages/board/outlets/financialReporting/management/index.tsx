@@ -15,8 +15,8 @@ import { ICreditRequest } from "@services/types";
 import { DetailsModal } from "@pages/board/outlets/financialReporting/management/DetailsModal";
 import { AppContext } from "@context/AppContext";
 
-import { traceObserver, errorObserver } from "../config";
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
+import { traceObserver, errorObserver } from "../config";
 
 interface IManagementProps {
   id: string;

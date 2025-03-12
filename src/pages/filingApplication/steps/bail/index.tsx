@@ -7,10 +7,10 @@ import { Stack, Icon } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 
 import { Fieldset } from "@components/data/Fieldset";
+import { bailMock } from "@mocks/filing-application/bail/bail.mock";
 
 import { dataBail } from "./config";
 import { IBail } from "../../types";
-import { bailMock } from "@mocks/filing-application/bail/bail.mock";
 
 interface IBailProps {
   initialValues: IBail;

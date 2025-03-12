@@ -2,11 +2,11 @@ import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
 
-import { GeneralHeader } from "./components/GeneralHeader";
 import { ButtonRequirements } from "@pages/prospect/components/buttonRequirements";
 import { RequirementsModal } from "@pages/prospect/components/modals/RequirementsModal";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 
+import { GeneralHeader } from "./components/GeneralHeader";
 import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
 import { stepsAddProspect } from "./config/addProspect.config";
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";

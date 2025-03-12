@@ -11,13 +11,13 @@ import {
   handleChangeWithCurrency,
   validateCurrencyField,
 } from "@utils/formatData/currency";
-
-import { IAddBorrowed } from "./types";
 import {
   MockTipeOfDocument,
   MockTipeOfFamily,
   MockTipeOfSex,
 } from "@mocks/filing-application/add-borrower/addborrower.mock";
+
+import { IAddBorrowed } from "./types";
 import { dataAddModal } from "./config";
 
 export interface IAddBorrowedProps {

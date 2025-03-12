@@ -1,6 +1,7 @@
 import { MdWarningAmber, MdClear } from "react-icons/md";
 import { Stack, Icon } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
+
 import { AlertContainer, StyledPrint } from "./styles";
 import { messages } from "./config";
 

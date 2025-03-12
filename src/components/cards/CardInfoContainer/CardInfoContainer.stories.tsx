@@ -1,7 +1,7 @@
+import { MdAndroid } from "react-icons/md";
 import { Meta, StoryObj } from "@storybook/react";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/inubekit";
-import { MdAndroid } from "react-icons/md";
 import { Button } from "@inubekit/button";
 
 import { CardInfoContainer } from ".";

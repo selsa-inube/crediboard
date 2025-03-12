@@ -2,6 +2,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/inubekit";
+
 import { StyledImage } from "./styles";
 
 interface UnfoundDataProps {

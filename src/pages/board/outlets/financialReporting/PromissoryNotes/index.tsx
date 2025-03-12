@@ -19,7 +19,6 @@ import {
 } from "@services/types";
 import { AppContext } from "@context/AppContext";
 
-import { errorObserver } from "../config";
 import {
   appearanceTag,
   getTableBoardActionMobile,
@@ -27,6 +26,7 @@ import {
   titlesFinanacialReporting,
   infoItems,
 } from "./config";
+import { errorObserver } from "../config";
 
 interface IPromissoryNotesProps {
   id: string;

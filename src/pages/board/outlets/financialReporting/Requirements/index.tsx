@@ -11,7 +11,6 @@ import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 import { CreditRequest } from "@services/types";
 import { addItem, getById } from "@mocks/utils/dataMock.service";
 
-import { errorObserver, traceObserver } from "../config";
 import {
   dataButton,
   infoItems,
@@ -21,6 +20,7 @@ import {
 } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
+import { errorObserver, traceObserver } from "../config";
 
 interface IRequirementsData {
   id: string;

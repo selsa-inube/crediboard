@@ -1,6 +1,7 @@
+import { Stack } from "@inubekit/inubekit";
+
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 import { Fieldset } from "@components/data/Fieldset";
-import { Stack } from "@inubekit/inubekit";
 
 interface ISourcesOfIncomeProps {
   isMobile: boolean;

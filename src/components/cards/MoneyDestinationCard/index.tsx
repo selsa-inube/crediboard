@@ -1,8 +1,8 @@
+import { IconType } from "react-icons";
+import * as Icons from "react-icons/md";
 import { Grid } from "@inubekit/grid";
 import { Text } from "@inubekit/text";
 import { Stack, Icon } from "@inubekit/inubekit";
-import * as Icons from "react-icons/md";
-import { IconType } from "react-icons";
 
 import { StyledMoneyDestinationCard, StyledRadio } from "./styles";
 
