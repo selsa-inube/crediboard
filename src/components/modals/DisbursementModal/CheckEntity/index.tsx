@@ -1,5 +1,4 @@
-import { Grid } from "@inubekit/grid";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Grid } from "@inubekit/inubekit";
 
 import { disbursementCheckEntity } from "@mocks/disbursement/disbursement.mock";
 import { CardGray } from "@components/cards/CardGray";
