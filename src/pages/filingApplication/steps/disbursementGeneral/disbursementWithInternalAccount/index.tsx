@@ -3,10 +3,9 @@ import { Checkbox } from "@inubekit/checkbox";
 import { Divider } from "@inubekit/divider";
 import { Toggle } from "@inubekit/toggle";
 import { Select } from "@inubekit/select";
-import { Stack } from "@inubekit/stack";
+import { Stack, Text } from "@inubekit/inubekit";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
-import { Text } from "@inubekit/text";
 
 import { optionLocalAccount } from "@mocks/filing-application/disbursement-general/disbursementgeneral.mock";
 import {

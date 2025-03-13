@@ -1,4 +1,4 @@
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
