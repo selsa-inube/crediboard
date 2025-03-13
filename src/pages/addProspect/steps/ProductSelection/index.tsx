@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { Stack } from "@inubekit/stack";
@@ -10,6 +10,9 @@ import { CardProductSelection } from "@pages/addProspect/components/CardProductS
 import { Fieldset } from "@components/data/Fieldset";
 import { mockGetMoneyDestinations } from "@mocks/add-prospect/money-destinations/moneydestinations.mock";
 import { lineOfCredit } from "@mocks/add-prospect/line-of-credit/lineOfCredit.mock";
+import { postBusinessUnitRules } from "@services/businessUnitRules";
+import { AppContext } from "@context/AppContext";
+import { CustomerContext } from "@context/CustomerContext";
 
 import { electionData } from "./config";
 
@@ -70,6 +73,60 @@ export function ProductSelection(props: IProductSelectionProps) {
   const selectedQuestions =
     mockGetMoneyDestinations.find((item) => item.id === showQuestion)
       ?.question || [];
+
+  const { businessUnitSigla, eventData } = useContext(AppContext);
+  const { userAccount } =
+    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
+  const { customerData } = useContext(CustomerContext);
+
+  const rulesData = {
+    ruleName: "LineOfCredit",
+    conditions: [
+      {
+        condition: "moneyDestination",
+        value: {
+          description: showQuestion,
+        },
+      },
+      {
+        condition: "clientType",
+        value: {
+          description:
+            customerData.generalAttributeClientNaturalPersons[0].associateType,
+        },
+      },
+      {
+        condition: "contractType",
+        value: {
+          description:
+            customerData.generalAttributeClientNaturalPersons[0].employmentType.substring(
+              0,
+              2
+            ),
+        },
+      },
+    ],
+  };
+
+  const handleSubmit = async () => {
+    try {
+      console.log("Enviando datos:", rulesData);
+      const response = await postBusinessUnitRules(
+        businessUnitPublicCode,
+        userAccount,
+        rulesData
+      );
+      console.log("Respuesta del servidor:", response);
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+    }
+  };
+
+  console.log(handleSubmit);
 
   return (
     <Formik

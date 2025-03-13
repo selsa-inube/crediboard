@@ -3,8 +3,12 @@ export interface ICustomerData {
   publicCode: string;
   fullName: string;
   natureClient: string;
+  generalAttributeClientNaturalPersons: {
+    employmentType: string;
+    associateType: string;
+  }[];
 }
 
 export interface ICustomerContext {
-    customerData: ICustomerData;
+  customerData: ICustomerData;
 }

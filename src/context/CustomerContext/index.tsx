@@ -20,6 +20,9 @@ export function CustomerContextProvider({
     publicCode: "",
     fullName: "",
     natureClient: "",
+    generalAttributeClientNaturalPersons: [
+      { employmentType: "", associateType: "" },
+    ],
   });
 
   useEffect(() => {
@@ -40,6 +43,11 @@ export function CustomerContextProvider({
           publicCode: customer.publicCode,
           fullName: customer.fullName,
           natureClient: customer.natureClient,
+          generalAttributeClientNaturalPersons: Array.isArray(
+            customer.generalAttributeClientNaturalPersons
+          )
+            ? customer.generalAttributeClientNaturalPersons
+            : [],
         });
       }
     } catch (error) {
