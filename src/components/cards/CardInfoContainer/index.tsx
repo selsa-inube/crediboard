@@ -1,6 +1,4 @@
-import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
 
 import { StyledContainerCardInfo } from "./styles";
 

@@ -1,8 +1,7 @@
 import { MdOutlineChevronLeft, MdMenu } from "react-icons/md";
 
 import { Button } from "@inubekit/button";
-import { Icon } from "@inubekit/icon";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon } from "@inubekit/inubekit";
 
 import { StyledHorizontalDivider, StyledPrint } from "./styled";
 import { configButtons } from "../config";

@@ -1,7 +1,6 @@
 import React from "react";
-import { Stack } from "@inubekit/stack";
+import { Stack, Text } from "@inubekit/inubekit";
 import { Searchfield } from "@inubekit/input";
-import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
 import { useMediaQuery } from "@inubekit/hooks";
 
