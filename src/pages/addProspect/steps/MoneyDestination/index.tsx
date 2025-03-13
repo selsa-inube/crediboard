@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-import { get } from "@mocks/utils/dataMock.service";
-import { IMoneyDestination } from "@services/types";
+import { getMoneyDestination } from "@services/moneyDestination";
+import { IMoneyDestination } from "@services/moneyDestination/types";
+import { AppContext } from "@context/AppContext";
 
 import { MoneyDestinationUI } from "./interface";
 
@@ -17,11 +18,16 @@ interface IMoneyDestinationProps {
 function MoneyDestination(props: IMoneyDestinationProps) {
   const { initialValues, isTablet, handleOnChange, onFormValid } = props;
 
+  const { businessUnitSigla } = useContext(AppContext);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
   const [moneyDestinations, setMoneyDestinations] =
     useState<IMoneyDestination[]>();
 
   useEffect(() => {
-    get("money_destinations")
+    getMoneyDestination(businessUnitPublicCode)
       .then((data) => {
         if (data && Array.isArray(data)) {
           setMoneyDestinations(data);
@@ -30,14 +36,10 @@ function MoneyDestination(props: IMoneyDestinationProps) {
       .catch((error) => {
         console.error("Error fetching money destinations data:", error.message);
       });
-  }, []);
+  }, [businessUnitPublicCode]);
 
   useEffect(() => {
-    if (!initialValues) {
-      onFormValid(false);
-    } else {
-      onFormValid(true);
-    }
+    onFormValid(Boolean(initialValues));
   }, [initialValues, onFormValid]);
 
   const MoneyDestinationSchema = Yup.object().shape({
