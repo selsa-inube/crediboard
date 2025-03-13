@@ -13,9 +13,9 @@ import {
   validateCurrencyField,
 } from "@utils/formatData/currency";
 
-import { CardGray } from "../CardGray";
 import { StyledContainer, StyledTextField, StyledSupport } from "./styles";
 import { incomeCardData } from "./config";
+import { CardGray } from "../CardGray";
 
 export interface IIncomeCardProps {
   title: string;

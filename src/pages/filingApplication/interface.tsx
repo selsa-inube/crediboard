@@ -4,8 +4,8 @@ import { Stack } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
 
 import { disbursemenTabs } from "@pages/filingApplication/steps/disbursementGeneral/config";
-
 import { GeneralHeader } from "@pages/addProspect/components/GeneralHeader/";
+
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";

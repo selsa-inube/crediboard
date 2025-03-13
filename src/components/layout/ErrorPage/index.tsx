@@ -5,6 +5,8 @@ import { Button } from "@inubekit/button";
 import { Divider } from "@inubekit/divider";
 import { useMediaQueries } from "@inubekit/hooks";
 
+import { enviroment } from "@config/environment";
+import { errorCodes } from "@config/errorCodes";
 import selsaLogo from "@assets/images/logoInube.png";
 import errorImage from "@assets/images/img-team-building-68.png";
 
@@ -18,8 +20,6 @@ import {
   StyledContainer,
   StyledDiv,
 } from "./styles";
-import { enviroment } from "@config/environment";
-import { errorCodes } from "@config/errorCodes";
 
 interface ErrorPageProps {
   logo?: string;
