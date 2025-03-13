@@ -2,7 +2,6 @@ import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
-
 import { Toggle } from "@inubekit/toggle";
 import { Stack, Icon, Text } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";

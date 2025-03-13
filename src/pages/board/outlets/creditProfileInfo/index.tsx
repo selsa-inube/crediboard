@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdOutlineChevronLeft } from "react-icons/md";
-
 import { Button } from "@inubekit/button";
 import { Grid } from "@inubekit/grid";
 import { Stack, Text } from "@inubekit/inubekit";
@@ -12,7 +11,6 @@ import { ICreditRequest, IRiskScoring } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
-
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { AppContext } from "@context/AppContext";
 
