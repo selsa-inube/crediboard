@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Grid } from "@inubekit/grid";
 import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";

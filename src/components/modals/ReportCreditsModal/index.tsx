@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { MdAdd } from "react-icons/md";
 import { Button } from "@inubekit/button";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { SkeletonLine } from "@inubekit/skeleton";
+import { Select } from "@inubekit/select";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 import { dataReport } from "@pages/prospect/components/TableObligationsFinancial/config";
-import { Select } from "@inubekit/select";
 
 import { NewPrice } from "./components/newPrice";
 

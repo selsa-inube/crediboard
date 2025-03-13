@@ -1,6 +1,5 @@
 import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
-import { Icon } from "@inubekit/icon";
+import { Stack, Icon } from "@inubekit/inubekit";
 
 import { parseCunstomFormat } from "@utils/formatData/currency";
 

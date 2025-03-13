@@ -1,8 +1,8 @@
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
 import { MdClose } from "react-icons/md";
+import { Stack, Icon } from "@inubekit/inubekit";
+import { Text } from "@inubekit/text";
 
+import { dataActions } from "./types";
 import {
   StyledContainer,
   StyledLi,
@@ -10,7 +10,6 @@ import {
   StyledActions,
   StyledContainerClose,
 } from "./styles";
-import { dataActions } from "./types";
 
 interface ActionModalProps {
   handleDelete: () => void;

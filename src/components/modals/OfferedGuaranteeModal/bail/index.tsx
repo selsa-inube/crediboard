@@ -1,7 +1,6 @@
-import { Icon } from "@inubekit/icon";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
 import { MdInfoOutline } from "react-icons/md";
+import { Stack, Icon } from "@inubekit/inubekit";
+import { Text } from "@inubekit/text";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { mockGuaranteeBail } from "@mocks/guarantee/offeredguarantee.mock";

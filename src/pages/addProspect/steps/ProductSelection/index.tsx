@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { Toggle } from "@inubekit/toggle";
 import { Divider } from "@inubekit/divider";

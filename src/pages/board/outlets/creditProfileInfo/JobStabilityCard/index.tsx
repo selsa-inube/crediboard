@@ -1,6 +1,6 @@
 import { MdOutlineBusinessCenter } from "react-icons/md";
 import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 
 import { CardInfoContainer } from "@components/cards/CardInfoContainer";
 import { StyledDivider } from "@components/cards/SummaryCard/styles";

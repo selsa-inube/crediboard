@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Divider } from "@inubekit/divider";
 

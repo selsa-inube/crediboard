@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Textarea } from "@inubekit/textarea";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
 import { useFlag } from "@inubekit/flag";

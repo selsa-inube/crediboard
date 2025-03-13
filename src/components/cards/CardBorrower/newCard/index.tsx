@@ -1,6 +1,5 @@
 import { MdAdd } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
-import { Icon } from "@inubekit/icon";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 
 import { StyledContainer } from "../styles";

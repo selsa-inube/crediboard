@@ -1,9 +1,8 @@
 import { createPortal } from "react-dom";
-import { Blanket } from "@inubekit/blanket";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
 import { MdClear } from "react-icons/md";
+import { Blanket } from "@inubekit/blanket";
+import { Stack, Icon } from "@inubekit/inubekit";
+import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
 import { Divider } from "@inubekit/divider";
 

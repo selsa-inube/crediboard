@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MdCached, MdOutlineEdit } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Grid } from "@inubekit/grid";

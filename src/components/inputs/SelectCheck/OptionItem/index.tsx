@@ -1,4 +1,4 @@
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Label } from "@inubekit/label";
 
 import { StyledOptionItemChecked } from "./styles";

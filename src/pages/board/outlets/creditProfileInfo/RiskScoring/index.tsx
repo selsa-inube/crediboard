@@ -1,5 +1,5 @@
 import { MdQueryStats } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { SkeletonLine } from "@inubekit/skeleton";
 import { Text } from "@inubekit/text";
 

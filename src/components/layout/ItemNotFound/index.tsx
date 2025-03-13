@@ -1,6 +1,6 @@
 import { useMediaQuery } from "@inubekit/hooks";
 import { Button } from "@inubekit/button";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { StyledImage } from "./styles";
 

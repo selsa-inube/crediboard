@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { MdOutlineAdd } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
-import { Icon } from "@inubekit/icon";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
 import { useMediaQuery } from "@inubekit/hooks";
 
