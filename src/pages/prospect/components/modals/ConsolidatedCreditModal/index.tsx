@@ -80,7 +80,29 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
             height={isMobile ? "auto" : "420px"}
             padding="0px 0px 0px 2px"
           >
-            {!editOpen && (
+            {editOpen ? (
+              <>
+                <Text type="body" appearance="gray" size="small" weight="bold">
+                  {ModalConfig.selectedText}
+                </Text>
+                <Grid
+                  autoRows="auto"
+                  templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"}
+                  gap="16px"
+                  width="0%"
+                >
+                  {debtorData.investments.map((item) => (
+                    <InvestmentCreditCard
+                      code={item.code}
+                      codeValue={item.codeValue}
+                      expired={item.expired}
+                      expiredValue={item.expiredValue}
+                      title={ModalConfig.creditInvestment}
+                    />
+                  ))}
+                </Grid>
+              </>
+            ) : (
               <>
                 <Text type="body" appearance="gray" size="small" weight="bold">
                   {ModalConfig.newObligations}
@@ -93,7 +115,27 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
                 >
                   {debtorData.dataNew_card.map((item) => (
                     <CardConsolidatedCredit
-                      key={item.consolidated_credit_id}
+                      code={item.consolidated_credit_code}
+                      date={new Date(item.date)}
+                      expiredValue={item.expired_value}
+                      fullPayment={item.full_payment}
+                      nextDueDate={item.next_due_date}
+                      onUpdateTotal={() => {}}
+                      title={item.consolidated_credit_title}
+                    />
+                  ))}
+                </Grid>
+                <Text type="body" appearance="gray" size="small" weight="bold">
+                  {ModalConfig.selectedText}
+                </Text>
+                <Grid
+                  autoRows="auto"
+                  templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"}
+                  gap="16px"
+                  width="0%"
+                >
+                  {debtorData.data_card.map((item) => (
+                    <CardConsolidatedCredit
                       code={item.consolidated_credit_code}
                       date={new Date(item.date)}
                       expiredValue={item.expired_value}
@@ -106,39 +148,6 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
                 </Grid>
               </>
             )}
-            <Text type="body" appearance="gray" size="small" weight="bold">
-              {ModalConfig.selectedText}
-            </Text>
-            <Grid
-              autoRows="auto"
-              templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"}
-              gap="16px"
-              width="0%"
-            >
-              {editOpen
-                ? debtorData.investments.map((item, index) => (
-                    <InvestmentCreditCard
-                      key={index}
-                      code={item.code}
-                      codeValue={item.codeValue}
-                      expired={item.expired}
-                      expiredValue={item.expiredValue}
-                      title={ModalConfig.creditInvestment}
-                    />
-                  ))
-                : debtorData.data_card.map((item) => (
-                    <CardConsolidatedCredit
-                      key={item.consolidated_credit_id}
-                      code={item.consolidated_credit_code}
-                      date={new Date(item.date)}
-                      expiredValue={item.expired_value}
-                      fullPayment={item.full_payment}
-                      nextDueDate={item.next_due_date}
-                      onUpdateTotal={() => {}}
-                      title={item.consolidated_credit_title}
-                    />
-                  ))}
-            </Grid>
           </Stack>
         </ScrollableContainer>
       </Stack>
