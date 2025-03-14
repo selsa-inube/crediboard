@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
 
+import { AppContext } from "@context/AppContext";
+import { getSubmitCredit } from "@services/submitCredit";
 import { userStepsMock } from "@mocks/filing-application/userSteps/users.mock";
 import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
 
@@ -13,6 +15,13 @@ import { dataFillingApplication } from "./config/config";
 export function FilingApplication() {
   const { id } = useParams();
   const userId = parseInt(id || "0", 10);
+
+  const { businessUnitSigla, eventData } = useContext(AppContext);
+  const { userAccount } =
+    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
   const userChoice =
     choiceBorrowers.find((choice) => choice.id === userId)?.choice ||
@@ -167,6 +176,91 @@ export function FilingApplication() {
     },
   });
 
+  const {
+    contactInformation,
+    propertyOffered,
+    vehicleOffered,
+    disbursementGeneral,
+  } = formData;
+
+  const submitData = {
+    clientEmail: contactInformation.email,
+    clientIdentificationNumber: contactInformation.documentNumber,
+    clientIdentificationType: contactInformation.document,
+    clientName: `${contactInformation.name} ${contactInformation.lastName}`,
+    clientId: "33333",
+    clientPhoneNumber: contactInformation.phone.toString(),
+    loanAmount: 155555,
+    moneyDestinationAbreviatedName: "Vehiculo",
+    moneyDestinationId: "13698",
+    clientType: "333333",
+    prospectId: "000000000001",
+    guarantees: [
+      {
+        guaranteeType: crypto.randomUUID().toString(),
+        transactionOperation: "Insert",
+        mortgages: [
+          {
+            descriptionUse: propertyOffered.description || "none",
+            propertyAge: propertyOffered.antique || 1,
+            propertyPrice: propertyOffered.estimated || 1,
+            propertyType: propertyOffered.state || "none",
+            transactionOperation: "Insert",
+          },
+        ],
+        pledges: [
+          {
+            descriptionUse: vehicleOffered.description || "none",
+            transactionOperation: "Insert",
+            vehiculeAge: vehicleOffered.model || new Date().getFullYear(),
+            vehiculePrice: vehicleOffered.value || 1,
+          },
+        ],
+      },
+    ],
+    modesOfDisbursement: Object.entries(disbursementGeneral).map(
+      ([key, value]) => ({
+        accountBankCode: "100",
+        accountBankName: value.accountType || "none",
+        accountNumber: value.accountNumber || "none",
+        accountType: value.account || "none",
+        disbursementAmount: value.amount || 1,
+        disbursementDate: "01/01/2025",
+        disbursementReference: "1234",
+        isInTheNameOfBorrower: "N",
+        modeOfDisbursementCode: "<string>",
+        modeOfDisbursementType: key,
+        observation: value.description || "none",
+        payeeBiologicalSex: value.sex === "man" ? "M" : "F",
+        payeeBirthday: value.birthdate || "01/01/2000",
+        payeeCityOfResidence: value.city || "none",
+        payeeEmail: value.mail || "none",
+        payeeIdentificationNumber: value.identification || "none",
+        payeeIdentificationType: value.documentType || "none",
+        payeeName: value.name || "none",
+        payeePersonType: "N",
+        payeePhoneNumber: value.phone || "none",
+        payeeSurname: value.lastName || "none",
+        paymentOrderReference: "326513",
+        transactionOperation: "Insert",
+      })
+    ),
+  };
+
+  const handleSubmit = async () => {
+    try {
+      console.log("Enviando datos:", submitData);
+      const response = await getSubmitCredit(
+        businessUnitPublicCode,
+        userAccount,
+        submitData
+      );
+      console.log("Respuesta del servidor:", response);
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+    }
+  };
+
   const isMobile = useMediaQuery("(max-width:880px)");
 
   const currentStepIndex = steps.findIndex((step) => step.id === currentStep);
@@ -194,6 +288,7 @@ export function FilingApplication() {
 
   function handleSubmitClick() {
     console.log("data: ", formData);
+    handleSubmit();
   }
 
   const handleFormChange = (updatedValues: Partial<FormData>) => {

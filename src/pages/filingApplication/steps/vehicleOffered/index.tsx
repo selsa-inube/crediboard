@@ -95,6 +95,7 @@ export function VehicleOffered(props: IVehicleOfferedProps) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             disabled={formik.values.state === "nuevo"}
+            type="number"
             fullwidth
           />
           <Textfield
