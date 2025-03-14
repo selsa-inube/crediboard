@@ -1,17 +1,14 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdOutlineChevronLeft } from "react-icons/md";
-
 import { Button } from "@inubekit/button";
-import { Stack, Text, Grid } from "@inubekit/inubekit";
-import { useMediaQueries } from "@inubekit/hooks";
+import { Stack, Text, Grid, useMediaQueries } from "@inubekit/inubekit";
 
 import { get, getById } from "@mocks/utils/dataMock.service";
 import { ICreditRequest, IRiskScoring } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
-
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { AppContext } from "@context/AppContext";
 

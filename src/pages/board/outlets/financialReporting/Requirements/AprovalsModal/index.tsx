@@ -3,9 +3,8 @@ import { MdClear } from "react-icons/md";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 
+import { Stack, Icon, Text, useMediaQuery } from "@inubekit/inubekit";
 import { Toggle } from "@inubekit/toggle";
-import { Stack, Icon, Text } from "@inubekit/inubekit";
-import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
 import { Button } from "@inubekit/button";
 import { Textarea } from "@inubekit/textarea";

@@ -1,12 +1,12 @@
-import { inube } from "@inubekit/foundations";
 import styled from "styled-components";
+import { inube } from "@inubekit/inubekit";
 
 interface IStyledContainer {
   disabled?: boolean;
   $isMobile?: boolean;
 }
 
-const StyledContainer = styled.div<IStyledContainer>`
+export const StyledContainer = styled.div<IStyledContainer>`
   width: ${({ $isMobile }) => ($isMobile ? "276px" : "296px")};
   display: flex;
   flex-direction: column;
@@ -24,12 +24,10 @@ const StyledContainer = styled.div<IStyledContainer>`
         : theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
 `;
 
-const StyledInput = styled.div`
+export const StyledInput = styled.div`
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
 `;
-
-export { StyledContainer, StyledInput };

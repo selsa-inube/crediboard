@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
-const StyledContainer = styled.div`
+export const StyledContainer = styled.div`
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   box-shadow: 0px 2px 6px
@@ -12,7 +12,7 @@ const StyledContainer = styled.div`
   overflow: hidden;
 `;
 
-const StyledTextField = styled.div`
+export const StyledTextField = styled.div`
   margin: 5px 0px;
   div > div:nth-child(2) {
     background-color: ${({ theme }) =>
@@ -20,8 +20,6 @@ const StyledTextField = styled.div`
   }
 `;
 
-const StyledSupport = styled.div`
+export const StyledSupport = styled.div`
   cursor: pointer;
 `;
-
-export { StyledContainer, StyledTextField, StyledSupport };

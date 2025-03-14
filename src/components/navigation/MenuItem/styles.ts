@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 import { MenuItemSpacingType } from "./types";
 
@@ -9,7 +9,7 @@ interface IStyledMenuItemLink {
   $disabled: boolean;
 }
 
-const StyledMenuItemLink = styled(Link)<IStyledMenuItemLink>`
+export const StyledMenuItemLink = styled(Link)<IStyledMenuItemLink>`
   display: flex;
   justify-content: space-between;
   text-decoration: none;
@@ -28,5 +28,3 @@ const StyledMenuItemLink = styled(Link)<IStyledMenuItemLink>`
       theme.color?.surface?.gray?.hover || inube.palette.neutral.N20};
   }
 `;
-
-export { StyledMenuItemLink };

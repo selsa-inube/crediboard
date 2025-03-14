@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
-import { SkeletonLine as OriginalSkeletonLine } from "@inubekit/inubekit";
+import { SkeletonLine as OriginalSkeletonLine , inube } from "@inubekit/inubekit";
 
 export const ChatContent = styled.div`
   flex: 1;

@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMediaQuery } from "@inubekit/hooks";
+import { Stack, useMediaQuery } from "@inubekit/inubekit";
 import { useFlag } from "@inubekit/flag";
-import { Stack } from "@inubekit/inubekit";
 
 import { OfferedGuaranteeModal } from "@components/modals/OfferedGuaranteeModal";
 import { ErrorAlert } from "@components/ErrorAlert";

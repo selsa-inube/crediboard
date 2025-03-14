@@ -1,4 +1,4 @@
-import { useMediaQuery } from "@inubekit/hooks";
+import { useMediaQuery } from "@inubekit/inubekit";
 import { useFlag } from "@inubekit/flag";
 
 import { BaseModal } from "@components/modals/baseModal";
