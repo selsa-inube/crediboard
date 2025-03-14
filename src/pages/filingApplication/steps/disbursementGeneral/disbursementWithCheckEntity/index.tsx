@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Checkbox } from "@inubekit/checkbox";
-import { Divider } from "@inubekit/divider";
 import { Toggle } from "@inubekit/toggle";
-import { Stack, Text } from "@inubekit/inubekit";
+import { Stack, Text, Divider } from "@inubekit/inubekit";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
 

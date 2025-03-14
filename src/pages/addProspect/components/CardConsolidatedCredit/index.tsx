@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import { MdClear } from "react-icons/md";
-import { Divider } from "@inubekit/divider";
-import { Stack, Text } from "@inubekit/inubekit";
+import { Stack, Text, Divider } from "@inubekit/inubekit";
 import { Tag } from "@inubekit/tag";
 import { Button } from "@inubekit/button";
 

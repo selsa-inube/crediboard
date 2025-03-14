@@ -3,10 +3,9 @@ import { createPortal } from "react-dom";
 import { MdClear, MdDeleteOutline } from "react-icons/md";
 import { Blanket } from "@inubekit/blanket";
 import { Button } from "@inubekit/button";
-import { Stack, Icon, Text } from "@inubekit/inubekit";
+import { Stack, Icon, Text, Divider } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { useFlag } from "@inubekit/flag";
-import { Divider } from "@inubekit/divider";
 
 import { StyledItem } from "@pages/board/outlets/financialReporting/styles";
 import { saveDocument } from "@services/saveDocument";
