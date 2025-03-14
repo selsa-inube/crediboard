@@ -1,4 +1,4 @@
-export const dataSharModal = {
+export const dataShareModal = {
   title: "Compartir prospecto",
   close: "Cerrar",
   share: "Compartir",

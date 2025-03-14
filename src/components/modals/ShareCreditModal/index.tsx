@@ -8,7 +8,7 @@ import { Textfield } from "@inubekit/textfield";
 
 import { BaseModal } from "@components/modals/baseModal";
 
-import { dataSharModal } from "./config";
+import { dataShareModal } from "./config";
 
 export interface IShareCreditModalProps {
   handleClose: () => void;
@@ -40,9 +40,9 @@ export function ShareCreditModal(props: IShareCreditModalProps) {
     >
       {(formik) => (
         <BaseModal
-          title={dataSharModal.title}
-          nextButton={dataSharModal.share}
-          backButton={dataSharModal.cancel}
+          title={dataShareModal.title}
+          nextButton={dataShareModal.share}
+          backButton={dataShareModal.cancel}
           handleNext={() => {
             formik.submitForm();
             handleClose();
@@ -55,16 +55,16 @@ export function ShareCreditModal(props: IShareCreditModalProps) {
             <Stack direction="column">
               <Stack gap="4px">
                 <Text type="label" weight="bold" size="medium">
-                  {dataSharModal.name}
+                  {dataShareModal.name}
                 </Text>
                 <Text type="body" size="small" appearance="danger">
-                  {dataSharModal.required}
+                  {dataShareModal.required}
                 </Text>
               </Stack>
               <Textfield
                 name="name"
                 id="name"
-                placeholder={dataSharModal.placeHolderName}
+                placeholder={dataShareModal.placeHolderName}
                 value={formik.values.name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -74,16 +74,16 @@ export function ShareCreditModal(props: IShareCreditModalProps) {
             <Stack direction="column">
               <Stack gap="4px">
                 <Text type="label" weight="bold" size="medium">
-                  {dataSharModal.email}
+                  {dataShareModal.email}
                 </Text>
                 <Text type="body" size="small" appearance="danger">
-                  {dataSharModal.required}
+                  {dataShareModal.required}
                 </Text>
               </Stack>
               <Textfield
                 name="email"
                 id="email"
-                placeholder={dataSharModal.placeHolderEmail}
+                placeholder={dataShareModal.placeHolderEmail}
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -93,14 +93,14 @@ export function ShareCreditModal(props: IShareCreditModalProps) {
             <Stack direction="column">
               <Stack gap="4px">
                 <Text type="label" weight="bold" size="medium">
-                  {dataSharModal.aditionalEmail}
+                  {dataShareModal.aditionalEmail}
                 </Text>
               </Stack>
               <Stack direction="column" gap="4px">
                 <Textfield
                   name="aditionalEmail"
                   id="aditionalEmail"
-                  placeholder={dataSharModal.placeHolderAditionalEmail}
+                  placeholder={dataShareModal.placeHolderAditionalEmail}
                   value={formik.values.aditionalEmail}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -113,7 +113,7 @@ export function ShareCreditModal(props: IShareCreditModalProps) {
                     size="14px"
                   ></Icon>
                   <Text type="label" size="small">
-                    {dataSharModal.optional}
+                    {dataShareModal.optional}
                   </Text>
                 </Stack>
               </Stack>
