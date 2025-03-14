@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import { MdOutlineSend, MdAttachFile, MdInfoOutline } from "react-icons/md";
-import { Icon } from "@inubekit/icon";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { Textfield } from "@inubekit/textfield";
 
 import { Fieldset } from "@components/data/Fieldset";
@@ -16,8 +15,8 @@ import { ICreditRequest } from "@services/types";
 import { DetailsModal } from "@pages/board/outlets/financialReporting/management/DetailsModal";
 import { AppContext } from "@context/AppContext";
 
-import { traceObserver, errorObserver } from "../config";
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
+import { traceObserver, errorObserver } from "../config";
 
 interface IManagementProps {
   id: string;

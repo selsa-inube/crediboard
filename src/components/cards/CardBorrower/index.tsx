@@ -1,7 +1,4 @@
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
-import { Divider } from "@inubekit/divider";
-import { Icon } from "@inubekit/icon";
+import { Stack, Icon, Text, Divider } from "@inubekit/inubekit";
 import {
   MdOutlineAttachMoney,
   MdOutlineDelete,

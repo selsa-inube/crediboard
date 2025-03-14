@@ -1,8 +1,6 @@
 import { Tag } from "@inubekit/tag";
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
+import { Stack, Text, Divider } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
-import { Divider } from "@inubekit/divider";
 import { useMediaQueries } from "@inubekit/hooks";
 
 import selsaLogo from "@assets/images/logoInube.png";

@@ -2,22 +2,21 @@ import { useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Stack } from "@inubekit/stack";
+import { Stack, Grid } from "@inubekit/inubekit";
 import { Select } from "@inubekit/select";
 import { Textfield } from "@inubekit/textfield";
-import { Grid } from "@inubekit/grid";
 
 import {
   handleChangeWithCurrency,
   validateCurrencyField,
 } from "@utils/formatData/currency";
-
-import { IAddBorrowed } from "./types";
 import {
   MockTipeOfDocument,
   MockTipeOfFamily,
   MockTipeOfSex,
 } from "@mocks/filing-application/add-borrower/addborrower.mock";
+
+import { IAddBorrowed } from "./types";
 import { dataAddModal } from "./config";
 
 export interface IAddBorrowedProps {

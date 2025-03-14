@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import { Tabs } from "@inubekit/tabs";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Fieldset } from "@components/data/Fieldset";
 
 import { disbursemenTabs } from "./config";

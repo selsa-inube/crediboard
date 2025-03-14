@@ -1,6 +1,6 @@
-import { Stack } from "@inubekit/stack";
-import { Icon } from "@inubekit/icon";
 import { MdCheck, MdClose, MdRemove } from "react-icons/md";
+import { Stack, Icon } from "@inubekit/inubekit";
+
 import { StyledContainer, StyledUl } from "./styles";
 import { InfoItemComponent } from "./interface";
 

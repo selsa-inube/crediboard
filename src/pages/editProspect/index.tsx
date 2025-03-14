@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { MdOutlineBeachAccess, MdOutlineShare } from "react-icons/md";
-import { Divider } from "@inubekit/divider";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Icon } from "@inubekit/icon";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
+import { Stack, Icon, Text, Divider } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
 
 import { Fieldset } from "@components/data/Fieldset";
