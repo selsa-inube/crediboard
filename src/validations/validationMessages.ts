@@ -12,6 +12,7 @@ const validationMessages = {
   validPhone: "Este campo debe tener un número de teléfono válido",
   validPassword: `Este campo debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número`,
   passwordMatch: "Las contraseñas no coinciden",
+  limitedTxt:"El número de caracteres es demasiado largo",
   errorNodo:
     "El nodo del portal no está definido. Esto puede ocurrir cuando el nodo para representar el portal no se ha definido correctamente.",
 };
