@@ -11,10 +11,9 @@ import {
   Thead,
   Tr,
 } from "@inubekit/table";
-import { Text } from "@inubekit/inubekit";
+import { Stack, Icon, Text, SkeletonLine, SkeletonIcon } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
+
 
 import { ExtraDebtorModal } from "@components/modals/extraDebtorModal";
 

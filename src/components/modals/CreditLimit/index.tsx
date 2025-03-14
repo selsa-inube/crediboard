@@ -1,7 +1,6 @@
 import { MdOutlineVisibility, MdInfoOutline, MdCached } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Stack, Icon, Text, Divider } from "@inubekit/inubekit";
-import { SkeletonLine } from "@inubekit/skeleton";
+import { Stack, Icon, Text, Divider, SkeletonLine } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { currencyFormat } from "@utils/formatData/currency";
