@@ -1,47 +1,47 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 interface IStyledCollapseIcon {
   $collapse: boolean;
   $isTablet: boolean;
 }
 
-const StyledAppPage = styled.div`
+export const StyledAppPage = styled.div`
   display: inherit;
   box-sizing: border-box;
 `;
 
-const StyledContainer = styled.div`
+export const StyledContainer = styled.div`
   display: inherit;
   overflow: hidden;
 `;
 
-const StyledMain = styled.main`
+export const StyledMain = styled.main`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
 `;
 
-const StyledContentImg = styled(Link)`
+export const StyledContentImg = styled(Link)`
   width: 100px;
 `;
 
-const StyledLogo = styled.img`
+export const StyledLogo = styled.img`
   max-width: 120px;
 `;
 
-const StyledHeaderContainer = styled.div`
+export const StyledHeaderContainer = styled.div`
   div > div {
     cursor: pointer;
   }
 `;
 
-const StyledContainerNav = styled.div`
+export const StyledContainerNav = styled.div`
   max-height: calc(100vh - 50px);
 `;
 
-const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
+export const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   display: flex;
   transition: all 500ms ease;
   position: absolute;
@@ -51,7 +51,7 @@ const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   left: ${({ $isTablet }) => ($isTablet ? "200px" : "160px")};
 `;
 
-const StyledMenuContainer = styled.div`
+export const StyledMenuContainer = styled.div`
   position: absolute;
   top: 48px;
   right: 15px;
@@ -70,11 +70,11 @@ const StyledMenuContainer = styled.div`
   }
 `;
 
-const StyledCollapse = styled.div`
+export const StyledCollapse = styled.div`
   position: absolute;
   top: 48px;
 `;
-const StyledFooter = styled.footer`
+export const StyledFooter = styled.footer`
   margin-top: auto;
   display: flex;
   justify-content: center;
@@ -83,23 +83,8 @@ const StyledFooter = styled.footer`
     theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
 `;
 
-const StyledPrint = styled.div`
+export const StyledPrint = styled.div`
   @media print {
     display: none;
   }
 `;
-
-export {
-  StyledAppPage,
-  StyledMenuContainer,
-  StyledContainer,
-  StyledContentImg,
-  StyledLogo,
-  StyledMain,
-  StyledContainerNav,
-  StyledHeaderContainer,
-  StyledCollapseIcon,
-  StyledCollapse,
-  StyledFooter,
-  StyledPrint,
-};

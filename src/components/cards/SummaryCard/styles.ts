@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
 import { Link } from "react-router-dom";
+import { inube } from "@inubekit/inubekit";
 
-const StyledLink = styled(Link)`
+export const StyledLink = styled(Link)`
   display: flex;
   text-decoration: none;
   flex-direction: column;
@@ -11,7 +11,7 @@ const StyledLink = styled(Link)`
   height: 100%;
 `;
 
-const StyledSummaryCard = styled.div`
+export const StyledSummaryCard = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -26,7 +26,7 @@ const StyledSummaryCard = styled.div`
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);
 `;
 
-const StyledDivider = styled.hr`
+export const StyledDivider = styled.hr`
   margin: 0;
   width: 100%;
   border: none;
@@ -34,5 +34,3 @@ const StyledDivider = styled.hr`
   border-top-color: ${({ theme }) =>
     theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
-
-export { StyledLink, StyledSummaryCard, StyledDivider };

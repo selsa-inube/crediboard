@@ -14,9 +14,7 @@ import {
   Thead,
   Tr,
 } from "@inubekit/table";
-import { Text } from "@inubekit/text";
-import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
-import { Icon } from "@inubekit/icon";
+import { Icon, Text, SkeletonLine, SkeletonIcon} from "@inubekit/inubekit";
 
 import { get } from "@mocks/utils/dataMock.service";
 import { mockAttachedDocuments } from "@mocks/filing-application/attached-documents/attacheddocuments.mock";

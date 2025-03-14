@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 interface IStyledModal {
   $smallScreen: boolean;
 }
 
-const ScrollableContainer = styled.div<IStyledModal>`
+export const ScrollableContainer = styled.div<IStyledModal>`
   width: 600px;
   padding: 10px;
   overflow: ${({ $smallScreen }) => ($smallScreen ? "auto" : "visable")};
@@ -21,5 +21,3 @@ const ScrollableContainer = styled.div<IStyledModal>`
     border-radius: 8px;
   }
 `;
-
-export { ScrollableContainer };

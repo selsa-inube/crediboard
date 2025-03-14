@@ -1,6 +1,6 @@
 import { Select } from "@inubekit/select";
 import { Input } from "@inubekit/input";
-import { Grid } from "@inubekit/grid";
+import { Grid } from "@inubekit/inubekit";
 import { Datefield } from "@inubekit/datefield";
 
 import { disbursemenOptionAccount } from "@pages/filingApplication/steps/disbursementGeneral/config";

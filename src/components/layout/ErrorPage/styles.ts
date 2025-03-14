@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 interface StyledCertificationsContainerProps {
   $isMobile: boolean;
@@ -17,13 +17,13 @@ interface VerticalDividerProps {
   color?: string;
 }
 
-const StyledContainer = styled.div`
+export const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 98vh;
 `;
 
-const StyledCompanyLogo = styled.img`
+export const StyledCompanyLogo = styled.img`
   max-width: 300px;
 
   @media screen and (max-width: 1000px) {
@@ -32,12 +32,12 @@ const StyledCompanyLogo = styled.img`
   }
 `;
 
-const StyledErrorImage = styled.img`
+export const StyledErrorImage = styled.img`
   justify-self: center;
   max-width: 100%;
 `;
 
-const StyledFooter = styled.footer<Theme>`
+export const StyledFooter = styled.footer<Theme>`
   width: 100%;
   justify-content: center;
   padding: 16px 0px;
@@ -46,7 +46,7 @@ const StyledFooter = styled.footer<Theme>`
   margin-top: 30px;
 `;
 
-const StyledCertificationsContainer = styled.div<StyledCertificationsContainerProps>`
+export const StyledCertificationsContainer = styled.div<StyledCertificationsContainerProps>`
   display: flex;
   flex-direction: column;
   width: 1232px;
@@ -61,7 +61,7 @@ const StyledCertificationsContainer = styled.div<StyledCertificationsContainerPr
   padding: ${({ $isMobile }) => ($isMobile ? "24px 12px" : "24px")};
 `;
 
-const VerticalDivider = styled.div<VerticalDividerProps>`
+export const VerticalDivider = styled.div<VerticalDividerProps>`
   width: 0;
   height: ${({ height }) => height ?? "100%"};
   border-left: 1px dashed
@@ -70,7 +70,7 @@ const VerticalDivider = styled.div<VerticalDividerProps>`
   margin: 0 auto;
 `;
 
-const StyledMainContent = styled.div`
+export const StyledMainContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -78,21 +78,10 @@ const StyledMainContent = styled.div`
   padding: 40px 20px 0px 20px;
 `;
 
-const StyledDiv = styled.div`
+export const StyledDiv = styled.div`
   font-family: "Roboto", sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #59667a;
   font-weight: 400;
 `;
-
-export {
-  StyledContainer,
-  StyledCompanyLogo,
-  StyledErrorImage,
-  StyledFooter,
-  StyledCertificationsContainer,
-  VerticalDivider,
-  StyledMainContent,
-  StyledDiv,
-};

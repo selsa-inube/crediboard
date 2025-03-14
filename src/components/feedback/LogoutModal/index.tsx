@@ -1,11 +1,7 @@
 import { MdClose } from "react-icons/md";
-
 import { Button } from "@inubekit/button";
 import { Blanket } from "@inubekit/blanket";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
-import { useMediaQuery } from "@inubekit/hooks";
+import { Stack, Icon, Text, useMediaQuery } from "@inubekit/inubekit";
 
 import { StyledBackdropBlanket, StyledModal } from "./styles";
 

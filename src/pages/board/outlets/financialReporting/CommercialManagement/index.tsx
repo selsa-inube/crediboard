@@ -10,12 +10,8 @@ import {
   MdOutlineVideocam,
   MdOutlinePayments,
 } from "react-icons/md";
-import { Icon } from "@inubekit/icon";
-import { useMediaQuery } from "@inubekit/hooks";
+import { Stack, Icon, Text, Divider, useMediaQuery } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
-import { Divider } from "@inubekit/divider";
 
 import { MenuProspect } from "@components/navigation/MenuProspect";
 import {

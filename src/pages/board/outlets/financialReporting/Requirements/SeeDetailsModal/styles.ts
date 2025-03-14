@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 interface IStyledModal {
   $smallScreen: boolean;
   theme?: typeof inube;
 }
 
-const StyledModal = styled.div<IStyledModal>`
+export const StyledModal = styled.div<IStyledModal>`
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -18,14 +18,12 @@ const StyledModal = styled.div<IStyledModal>`
   border-radius: ${"8px"};
 `;
 
-const StyledTextarea = styled.div`
+export const StyledTextarea = styled.div`
   && div div :nth-child(2) {
     display: none;
   }
 `;
 
-const StyledContainerClose = styled.div`
+export const StyledContainerClose = styled.div`
   cursor: pointer;
 `;
-
-export { StyledModal, StyledTextarea, StyledContainerClose };
