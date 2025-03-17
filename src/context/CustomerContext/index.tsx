@@ -1,6 +1,9 @@
 import { createContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+
 import { getCustomer } from "@services/customers";
+import { mockProspectCode } from "@mocks/filing-application/prospect-code/prospectcode.mock";
+
 import { ICustomerContext, ICustomerData } from "./types";
 
 export const CustomerContext = createContext<ICustomerContext>(
@@ -28,11 +31,13 @@ export function CustomerContextProvider({
     }
   }, [id]);
 
-  const fetchCustomerData = async (publicCode: string) => {
+  const fetchCustomerData = async (idParam: string) => {
     try {
+      const prospect = mockProspectCode.find((p) => p.code === idParam);
+      const searchPublicCode = prospect ? prospect.identification : idParam;
+
       const customers = await getCustomer();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const customer = customers.find((c: any) => c.publicCode === publicCode);
+      const customer = customers.find((c) => c.publicCode === searchPublicCode);
 
       if (customer) {
         setCustomerData({
