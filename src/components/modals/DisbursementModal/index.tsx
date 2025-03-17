@@ -15,17 +15,20 @@ import { DisbursementCash } from "./Cash";
 export interface IDisbursementModalProps {
   handleClose: () => void;
   isMobile: boolean;
+  handleModalOpen?: () => void;
+  loading?: boolean;
 }
 
 export function DisbursementModal(
   props: IDisbursementModalProps
 ): JSX.Element | null {
-  const { handleClose, isMobile } = props;
+  const { handleClose, isMobile, handleModalOpen } = props;
 
   const [currentTab, setCurrentTab] = useState(dataTabs[0].id);
   const onChange = (tabId: string) => {
     setCurrentTab(tabId);
   };
+  console.log("DisbursementModal", handleModalOpen);
 
   return (
     <BaseModal

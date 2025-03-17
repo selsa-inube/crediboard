@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import {
   MdOutlineAdd,
@@ -32,6 +32,9 @@ import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
 import { ICreditProductProspect, ICreditRequest } from "@services/types";
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { getModeOfDisbursement } from "@services/creditRequets/getModeOfDisbursement";
+import { AppContext } from "@context/AppContext";
 
 import { menuOptions, tittleOptions } from "./config/config";
 import {
@@ -48,18 +51,27 @@ interface ComercialManagementProps {
   setCollapse: React.Dispatch<React.SetStateAction<boolean>>;
   print: () => void;
   isPrint?: boolean;
+  id: string;
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { data, print, isPrint = false, collapse, setCollapse } = props;
+  const { data, print, isPrint = false, collapse, setCollapse, id } = props;
   const [showMenu, setShowMenu] = useState(false);
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [prospectProducts, setProspectProducts] =
     useState<ICreditProductProspect>();
 
-  const { prospectCode, id } = useParams();
+  const [requests, setRequests] = useState<ICreditRequest | null>(null);
+
+  const { prospectCode } = useParams();
 
   const isMobile = useMediaQuery("(max-width: 720px)");
+
+  const { businessUnitSigla } = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
   const handleOpenModal = (modalName: string) => {
     setModalHistory((prevHistory) => [...prevHistory, modalName]);
@@ -86,6 +98,39 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       console.log("error", error);
     }
   }, [prospectCode]);
+
+  useEffect(() => {
+    const fetchCreditRequest = async () => {
+      try {
+        const data = await getCreditRequestByCode(businessUnitPublicCode, id);
+        setRequests(data[0] as ICreditRequest);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (id) {
+      fetchCreditRequest();
+    }
+  }, [businessUnitPublicCode, id]);
+
+  const handleModalOpen = async () => {
+    console.log("entro al handle");
+    if (requests?.creditRequestId) {
+      setLoading(true);
+      try {
+        const disbursement = await getModeOfDisbursement(
+          businessUnitPublicCode,
+          requests.creditRequestId
+        );
+        console.log(disbursement);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   const handleCloseModal = () => {
     setModalHistory((prevHistory) => {
@@ -386,6 +431,8 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <DisbursementModal
             isMobile={isMobile}
             handleClose={handleCloseModal}
+            handleModalOpen={handleModalOpen}
+            loading={loading}
           />
         )}
       </StyledFieldset>

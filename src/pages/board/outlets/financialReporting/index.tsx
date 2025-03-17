@@ -267,6 +267,7 @@ export const FinancialReporting = () => {
                     data={data}
                     collapse={collapse}
                     setCollapse={setCollapse}
+                    id={id!}
                   />
                 </Stack>
               </Stack>
