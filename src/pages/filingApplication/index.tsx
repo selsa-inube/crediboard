@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
 
 import { AppContext } from "@context/AppContext";
-import { getSubmitCredit } from "@services/submitCredit";
+import { postSubmitCredit } from "@services/submitCredit";
 import { userStepsMock } from "@mocks/filing-application/userSteps/users.mock";
 import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
 
@@ -194,10 +194,10 @@ export function FilingApplication() {
     moneyDestinationAbreviatedName: "Vehiculo",
     moneyDestinationId: "13698",
     clientType: "333333",
-    prospectId: "000000000001",
+    prospectId: id ? id : crypto.randomUUID().toString(),
     guarantees: [
       {
-        guaranteeType: crypto.randomUUID().toString(),
+        guaranteeType: "mortgage",
         transactionOperation: "Insert",
         mortgages: [
           {
@@ -208,6 +208,10 @@ export function FilingApplication() {
             transactionOperation: "Insert",
           },
         ],
+      },
+      {
+        guaranteeType: "pledge",
+        transactionOperation: "Insert",
         pledges: [
           {
             descriptionUse: vehicleOffered.description || "none",
@@ -226,8 +230,7 @@ export function FilingApplication() {
         accountType: value.account || "none",
         disbursementAmount: value.amount || 1,
         disbursementDate: "01/01/2025",
-        disbursementReference: "1234",
-        isInTheNameOfBorrower: "N",
+        isInTheNameOfBorrower: value.check ? "Y" : "N",
         modeOfDisbursementCode: "<string>",
         modeOfDisbursementType: key,
         observation: value.description || "none",
@@ -241,7 +244,6 @@ export function FilingApplication() {
         payeePersonType: "N",
         payeePhoneNumber: value.phone || "none",
         payeeSurname: value.lastName || "none",
-        paymentOrderReference: "326513",
         transactionOperation: "Insert",
       })
     ),
@@ -249,13 +251,7 @@ export function FilingApplication() {
 
   const handleSubmit = async () => {
     try {
-      console.log("Enviando datos:", submitData);
-      const response = await getSubmitCredit(
-        businessUnitPublicCode,
-        userAccount,
-        submitData
-      );
-      console.log("Respuesta del servidor:", response);
+      await postSubmitCredit(businessUnitPublicCode, userAccount, submitData);
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
     }
@@ -287,7 +283,6 @@ export function FilingApplication() {
   };
 
   function handleSubmitClick() {
-    console.log("data: ", formData);
     handleSubmit();
   }
 

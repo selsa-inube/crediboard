@@ -2,7 +2,7 @@ import { enviroment } from "@config/environment";
 
 import { ISubmitCredit } from "./types";
 
-const getSubmitCredit = async (
+const postSubmitCredit = async (
   businessUnitPublicCode: string,
   userAccount: string,
   submitData: ISubmitCredit
@@ -47,4 +47,4 @@ const getSubmitCredit = async (
   }
 };
 
-export { getSubmitCredit };
+export { postSubmitCredit };
