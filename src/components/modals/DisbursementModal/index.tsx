@@ -11,24 +11,34 @@ import { DisbursementExternal } from "./External";
 import { DisbursementCheckEntity } from "./CheckEntity";
 import { DisbursementChequeManagement } from "./ChequeManagement";
 import { DisbursementCash } from "./Cash";
+import { dataTabsDisbursement } from "./types";
 
 export interface IDisbursementModalProps {
   handleClose: () => void;
   isMobile: boolean;
-  handleModalOpen?: () => void;
   loading?: boolean;
+  data: {
+    internal: dataTabsDisbursement;
+    external: dataTabsDisbursement;
+    CheckEntity: dataTabsDisbursement;
+    checkManagementData: dataTabsDisbursement;
+    cash: dataTabsDisbursement;
+  };
 }
 
 export function DisbursementModal(
   props: IDisbursementModalProps
 ): JSX.Element | null {
-  const { handleClose, isMobile, handleModalOpen } = props;
+  const {
+    handleClose,
+    isMobile,
+    data,
+  } = props;
 
   const [currentTab, setCurrentTab] = useState(dataTabs[0].id);
   const onChange = (tabId: string) => {
     setCurrentTab(tabId);
   };
-  console.log("DisbursementModal", handleModalOpen);
 
   return (
     <BaseModal
@@ -51,18 +61,26 @@ export function DisbursementModal(
       <Fieldset heightFieldset="469px">
         <>
           {currentTab === "Internal" && (
-            <DisbursementInternal isMobile={isMobile} />
+            <DisbursementInternal isMobile={isMobile} data={data.internal} />
           )}
           {currentTab === "External" && (
-            <DisbursementExternal isMobile={isMobile} />
+            <DisbursementExternal isMobile={isMobile} data={data.external} />
           )}
           {currentTab === "CheckEntity" && (
-            <DisbursementCheckEntity isMobile={isMobile} />
+            <DisbursementCheckEntity
+              isMobile={isMobile}
+              data={data.CheckEntity}
+            />
           )}
-          {currentTab === "ChequeManagement" && (
-            <DisbursementChequeManagement isMobile={isMobile} />
+          {currentTab === "CheckManagement" && (
+            <DisbursementChequeManagement
+              isMobile={isMobile}
+              data={data.checkManagementData}
+            />
           )}
-          {currentTab === "Cash" && <DisbursementCash isMobile={isMobile} />}
+          {currentTab === "Cash" && (
+            <DisbursementCash isMobile={isMobile} data={data.cash} />
+          )}
         </>
       </Fieldset>
     </BaseModal>

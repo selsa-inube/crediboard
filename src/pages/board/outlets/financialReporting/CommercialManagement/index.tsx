@@ -31,10 +31,15 @@ import { getById } from "@mocks/utils/dataMock.service";
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
-import { ICreditProductProspect, ICreditRequest } from "@services/types";
+import {
+  ICreditProductProspect,
+  ICreditRequest,
+  IModeOfDisbursement,
+} from "@services/types";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { getModeOfDisbursement } from "@services/creditRequets/getModeOfDisbursement";
 import { AppContext } from "@context/AppContext";
+import { dataTabsDisbursement } from "@components/modals/DisbursementModal/types";
 
 import { menuOptions, tittleOptions } from "./config/config";
 import {
@@ -60,6 +65,15 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [prospectProducts, setProspectProducts] =
     useState<ICreditProductProspect>();
+
+  const [internal, setInternal] = useState<IModeOfDisbursement | null>(null);
+  const [external, setExternal] = useState<IModeOfDisbursement | null>(null);
+  const [checkEntity, setCheckEntity] = useState<IModeOfDisbursement | null>(
+    null
+  );
+  const [checkManagement, setCheckManagement] =
+    useState<IModeOfDisbursement | null>(null);
+  const [cash, setCash] = useState<IModeOfDisbursement | null>(null);
 
   const [requests, setRequests] = useState<ICreditRequest | null>(null);
 
@@ -114,8 +128,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     }
   }, [businessUnitPublicCode, id]);
 
-  const handleModalOpen = async () => {
-    console.log("entro al handle");
+  const handleDisbursement = async () => {
     if (requests?.creditRequestId) {
       setLoading(true);
       try {
@@ -123,7 +136,31 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           businessUnitPublicCode,
           requests.creditRequestId
         );
-        console.log(disbursement);
+        const internalData =
+          disbursement.find(
+            (item) => item.modeOfDisbursementType === "Internal"
+          ) || null;
+        const externalData =
+          disbursement.find(
+            (item) => item.modeOfDisbursementType === "External"
+          ) || null;
+        const checkEntityData =
+          disbursement.find(
+            (item) => item.modeOfDisbursementType === "CheckEntity"
+          ) || null;
+        const checkManagementData =
+          disbursement.find(
+            (item) => item.modeOfDisbursementType === "CheckManagement"
+          ) || null;
+        const cashData =
+          disbursement.find((item) => item.modeOfDisbursementType === "Cash") ||
+          null;
+
+        setInternal(internalData);
+        setExternal(externalData);
+        setCheckEntity(checkEntityData);
+        setCheckManagement(checkManagementData);
+        setCash(cashData);
       } catch (error) {
         console.error(error);
       } finally {
@@ -145,6 +182,24 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   };
 
   const currentModal = modalHistory[modalHistory.length - 1];
+
+  const dataDefault: dataTabsDisbursement = {
+    disbursementAmount: 0,
+    isInTheNameOfBorrower: "",
+    payeeName: "",
+    payeeSurname: "",
+    payeeBiologicalSex: "",
+    payeeIdentificationType: "",
+    payeeIdentificationNumber: "",
+    payeeBirthday: "",
+    payeePhoneNumber: "",
+    payeeEmail: "",
+    payeeCityOfResidence: "",
+    accountBankName: "",
+    accountType: "",
+    accountNumber: "",
+    observation: "",
+  };
 
   return (
     <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
@@ -231,7 +286,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                         type="button"
                         spacing="compact"
                         variant="outlined"
-                        onClick={() => handleOpenModal("disbursementModal")}
+                        onClick={() => {
+                          handleDisbursement();
+                          handleOpenModal("disbursementModal");
+                        }}
                       >
                         {tittleOptions.titleDisbursement}
                       </Button>
@@ -286,7 +344,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   type="button"
                   spacing="compact"
                   variant="outlined"
-                  onClick={() => handleOpenModal("disbursementModal")}
+                  onClick={() => {
+                    handleDisbursement();
+                    handleOpenModal("disbursementModal");
+                  }}
                   fullwidth
                 >
                   {tittleOptions.titleDisbursement}
@@ -431,8 +492,14 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <DisbursementModal
             isMobile={isMobile}
             handleClose={handleCloseModal}
-            handleModalOpen={handleModalOpen}
             loading={loading}
+            data={{
+              internal: internal || dataDefault,
+              external: external || dataDefault,
+              CheckEntity: checkEntity || dataDefault,
+              checkManagementData: checkManagement || dataDefault,
+              cash: cash || dataDefault,
+            }}
           />
         )}
       </StyledFieldset>

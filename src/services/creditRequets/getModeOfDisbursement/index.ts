@@ -3,28 +3,20 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { ICreditRequest } from "@services/types";
-
-//import { mapCreditRequestToEntities } from "./mapper";
+import { IModeOfDisbursement } from "@services/types";
+import { mapCreditRequestToEntities } from "./mapper";
 
 export const getModeOfDisbursement = async (
   businessUnitPublicCode: string,
   creditRequestId: string
-): Promise<ICreditRequest[]> => {
+): Promise<IModeOfDisbursement[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
-  console.log(
-    "businessUnitPublicCode",
-    businessUnitPublicCode,
-    creditRequestId
-  );
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      const queryParams = new URLSearchParams({
-        creditRequestCode: creditRequestId,
-      });
+
       const options: RequestInit = {
         method: "GET",
         headers: {
@@ -36,7 +28,7 @@ export const getModeOfDisbursement = async (
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests?${queryParams.toString()}`,
+        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/mode-of-disbursement/${creditRequestId}?`,
         options
       );
 
@@ -56,7 +48,11 @@ export const getModeOfDisbursement = async (
         };
       }
 
-      return [];
+      const normalizedCredit = Array.isArray(data)
+        ? mapCreditRequestToEntities(data)
+        : [];
+
+      return normalizedCredit;
     } catch (error) {
       if (attempt === maxRetries) {
         throw new Error(
