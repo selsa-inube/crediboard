@@ -12,6 +12,7 @@ import { mockGetMoneyDestinations } from "@mocks/add-prospect/money-destinations
 import { postBusinessUnitRules } from "@services/businessUnitRules";
 import { AppContext } from "@context/AppContext";
 import { CustomerContext } from "@context/CustomerContext";
+import { removeDuplicates } from "@utils/mappingData/mappings";
 
 import { electionData } from "./config";
 
@@ -101,7 +102,7 @@ export function ProductSelection(props: IProductSelectionProps) {
           ),
       },
       {
-        condition: "ContractType",
+        condition: "EmploymentContractTermType",
         value:
           customerData.generalAttributeClientNaturalPersons[0].employmentType.substring(
             0,
@@ -128,6 +129,8 @@ export function ProductSelection(props: IProductSelectionProps) {
   };
 
   handleSubmit();
+
+  const uniqueServerResponse = removeDuplicates(serverResponse, "value");
 
   return (
     <Formik
@@ -173,8 +176,8 @@ export function ProductSelection(props: IProductSelectionProps) {
                 padding={isMobile ? "0px 6px" : "0px 12px"}
                 wrap="wrap"
               >
-                {serverResponse.length > 0 ? (
-                  serverResponse.map((item, index) => (
+                {uniqueServerResponse.length > 0 ? (
+                  uniqueServerResponse.map((item, index) => (
                     <Stack key={index} direction="column">
                       <CardProductSelection
                         key={index}
