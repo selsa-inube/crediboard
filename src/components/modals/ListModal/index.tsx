@@ -5,9 +5,8 @@ import { MdClear, MdDeleteOutline } from "react-icons/md";
 import { Blanket } from "@inubekit/blanket";
 import { Button } from "@inubekit/button";
 import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Icon } from "@inubekit/icon";
 import { useFlag } from "@inubekit/flag";
 import { Divider } from "@inubekit/divider";
 

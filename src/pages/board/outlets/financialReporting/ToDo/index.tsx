@@ -2,25 +2,24 @@ import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
 import { useFlag } from "@inubekit/flag";
-import { Icon } from "@inubekit/icon";
 import { SkeletonLine } from "@inubekit/skeleton";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { IOption } from "@inubekit/select";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
-import { IStaff, IToDo, ICreditRequest } from "@services/types";
-import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
-import { TodoConsult } from "@mocks/financialReporting/to-doconsult.mock";
-import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
-import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
-import userNotFound from "@assets/images/ItemNotFound.png";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { getSearchDecisionById } from "@services/todo/SearchDecisionById";
+import { IStaff, IToDo, ICreditRequest } from "@services/types";
+import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
+import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { truncateTextToMaxLength } from "@utils/formatData/text";
+import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
+import { TodoConsult } from "@mocks/financialReporting/to-doconsult.mock";
 import { AppContext } from "@context/AppContext";
+import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StaffModal } from "./StaffModal";
 import {

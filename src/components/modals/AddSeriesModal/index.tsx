@@ -6,7 +6,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { inube } from "@inubekit/foundations";
 import { Textfield } from "@inubekit/textfield";
 import { Select } from "@inubekit/select";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Datefield } from "@inubekit/datefield";
 
 import { BaseModal } from "@components/modals/baseModal";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Searchfield } from "@inubekit/input";
 import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";

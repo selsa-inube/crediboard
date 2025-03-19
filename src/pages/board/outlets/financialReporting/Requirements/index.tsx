@@ -1,8 +1,7 @@
 import { useState, isValidElement, useEffect } from "react";
 import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
-import { Icon } from "@inubekit/icon";
 import { useFlag } from "@inubekit/flag";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon } from "@inubekit/inubekit";
 
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
@@ -12,7 +11,6 @@ import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 import { CreditRequest } from "@services/types";
 import { addItem, getById } from "@mocks/utils/dataMock.service";
 
-import { errorObserver, traceObserver } from "../config";
 import {
   dataButton,
   infoItems,
@@ -22,6 +20,7 @@ import {
 } from "./config";
 import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
+import { errorObserver, traceObserver } from "../config";
 
 interface IRequirementsData {
   id: string;
