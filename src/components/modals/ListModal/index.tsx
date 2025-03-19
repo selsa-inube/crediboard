@@ -72,7 +72,6 @@ export const ListModal = (props: IListModalProps) => {
     handleSubmit,
     onSubmit,
     buttonLabel,
-    //id,
     dataDocument,
     isViewing,
   } = props;

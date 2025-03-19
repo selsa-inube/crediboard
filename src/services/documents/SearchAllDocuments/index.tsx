@@ -1,5 +1,5 @@
 import {
-  //enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
@@ -17,14 +17,14 @@ export const getSearchAllDocumentsById = async (creditRequestId: string) => {
         method: "GET",
         headers: {
           "X-Action": "SearchAllDocumentsById",
-          "X-Business-Unit": "test", //enviroment.BUSINESS_UNIT,
+          "X-Business-Unit": environment.BUSINESS_UNIT,
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,
       };
 
       const res = await fetch(
-        `http://localhost:8077/icorebanking-vi-crediboard-query-process-service/api/credit-requests/documents/${creditRequestId}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/documents/${creditRequestId}`,
         options
       );
       clearTimeout(timeoutId);

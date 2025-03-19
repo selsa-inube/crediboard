@@ -19,13 +19,13 @@ import { BoardRoutes } from "./routes/board";
 import { AddProspectRoutes } from "./routes/addProspect";
 import { FilingApplicationRoutes } from "./routes/filingApplication";
 import { GlobalStyles } from "./styles/global";
-import { enviroment } from "./config/environment";
+import { environment } from "./config/environment";
 import { EditProspectRoutes } from "./routes/editProspect";
 
 function LogOut() {
   localStorage.clear();
   const { logout } = useAuth0();
-  logout({ logoutParams: { returnTo: enviroment.REDIRECT_URI } });
+  logout({ logoutParams: { returnTo: environment.REDIRECT_URI } });
   return <BoardRoutes />;
 }
 
@@ -43,7 +43,10 @@ const router = createBrowserRouter(
       <Route path="/*" element={<BoardRoutes />} />
       <Route path="add-prospect/*" element={<AddProspectRoutes />} />
       <Route path="edit-prospect/*" element={<EditProspectRoutes />} />
-      <Route path="filing-application/*" element={<FilingApplicationRoutes />} />
+      <Route
+        path="filing-application/*"
+        element={<FilingApplicationRoutes />}
+      />
       <Route path="logout" element={<LogOut />} />
     </>
   )

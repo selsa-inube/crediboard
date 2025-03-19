@@ -1,6 +1,3 @@
-//import { Worker, Viewer } from "@react-pdf-viewer/core";
-//import "@react-pdf-viewer/core/lib/styles/index.css";
-
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
@@ -37,7 +34,6 @@ export const DocumentViewer = (props: IDocumentViewerProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFile]);
 
-  //ojo para validar con el visor de google
   const googleViewerUrl = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(selectedFile)}`;
 
   return createPortal(

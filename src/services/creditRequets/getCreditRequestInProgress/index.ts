@@ -1,5 +1,5 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
@@ -19,14 +19,14 @@ export const getCreditRequestInProgress = async (): Promise<
         method: "GET",
         headers: {
           "X-Action": "SearchAllCreditRequestsInProgress",
-          "X-Business-Unit": enviroment.BUSINESS_UNIT,
+          "X-Business-Unit": environment.BUSINESS_UNIT,
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests`,
         options
       );
 
