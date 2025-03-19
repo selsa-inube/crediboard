@@ -1,5 +1,8 @@
-import { enviroment } from "@config/environment";
-
+import {
+  enviroment,
+  fetchTimeoutServices,
+  maxRetriesServices,
+} from "@config/environment";
 import { IMoneyDestination } from "./types";
 import { mapMoneyDestinationToEntity } from "./mappers";
 
@@ -7,33 +10,50 @@ const getMoneyDestination = async (
   businessUnitPublicCode: string
 ): Promise<IMoneyDestination[]> => {
   const requestUrl = `${enviroment.ICOREBANKING_API_URL_QUERY}/money-destinations`;
+  const maxRetries = maxRetriesServices;
+  const fetchTimeout = fetchTimeoutServices;
 
-  try {
-    const options: RequestInit = {
-      method: "GET",
-      headers: {
-        "X-Action": "SearchAllMoneyDestination",
-        "Content-type": "application/json; charset=UTF-8",
-        "X-Business-Unit": businessUnitPublicCode,
-      },
-    };
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
 
-    const res = await fetch(requestUrl, options);
-    if (res.status === 204) {
-      return [];
+      const options: RequestInit = {
+        method: "GET",
+        headers: {
+          "X-Action": "SearchAllMoneyDestination",
+          "Content-type": "application/json; charset=UTF-8",
+          "X-Business-Unit": businessUnitPublicCode,
+        },
+        signal: controller.signal,
+      };
+
+      const res = await fetch(requestUrl, options);
+      clearTimeout(timeoutId);
+
+      if (res.status === 204) {
+        return [];
+      }
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw {
+          message: "Error al obtener los datos",
+          status: res.status,
+          data,
+        };
+      }
+
+      return data.map((item: Record<string, string | number | object>) =>
+        mapMoneyDestinationToEntity(item)
+      );
+    } catch (error) {
+      if (attempt === maxRetries) {
+        throw new Error(
+          "Todos los intentos fallaron. No se pudieron obtener los destinos de dinero."
+        );
+      }
     }
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(`Error al obtener los datos: ${res.status}`);
-    }
-
-    return data.map((item: Record<string, string | number | object>) =>
-      mapMoneyDestinationToEntity(item)
-    );
-  } catch (error) {
-    console.error(error);
   }
 
   return [];
