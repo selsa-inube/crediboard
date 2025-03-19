@@ -1,8 +1,7 @@
 import { MdQueryStats } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
 import { Divider } from "@inubekit/divider";
 import { SkeletonLine } from "@inubekit/skeleton";
 
