@@ -1,10 +1,6 @@
-interface IValue {
-  description: string;
-}
-
 interface ICondition {
   condition: string;
-  value: IValue;
+  value: string;
 }
 
 export interface IBusinessUnitRules {

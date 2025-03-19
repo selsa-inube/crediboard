@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { Stack } from "@inubekit/stack";
@@ -9,7 +9,6 @@ import { Divider } from "@inubekit/divider";
 import { CardProductSelection } from "@pages/addProspect/components/CardProductSelection";
 import { Fieldset } from "@components/data/Fieldset";
 import { mockGetMoneyDestinations } from "@mocks/add-prospect/money-destinations/moneydestinations.mock";
-import { lineOfCredit } from "@mocks/add-prospect/line-of-credit/lineOfCredit.mock";
 import { postBusinessUnitRules } from "@services/businessUnitRules";
 import { AppContext } from "@context/AppContext";
 import { CustomerContext } from "@context/CustomerContext";
@@ -59,6 +58,9 @@ export function ProductSelection(props: IProductSelectionProps) {
     togglesState,
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [serverResponse, setServerResponse] = useState<any[]>([]);
+
   useEffect(() => {
     const isValid = generalToggleChecked || selectedProducts.length > 0;
     onFormValid(isValid);
@@ -87,46 +89,45 @@ export function ProductSelection(props: IProductSelectionProps) {
     ruleName: "LineOfCredit",
     conditions: [
       {
-        condition: "moneyDestination",
-        value: {
-          description: showQuestion,
-        },
+        condition: "MoneyDestination",
+        value: showQuestion,
       },
       {
-        condition: "clientType",
-        value: {
-          description:
-            customerData.generalAttributeClientNaturalPersons[0].associateType,
-        },
+        condition: "ClientType",
+        value:
+          customerData.generalAttributeClientNaturalPersons[0].associateType.substring(
+            0,
+            1
+          ),
       },
       {
-        condition: "contractType",
-        value: {
-          description:
-            customerData.generalAttributeClientNaturalPersons[0].employmentType.substring(
-              0,
-              2
-            ),
-        },
+        condition: "ContractType",
+        value:
+          customerData.generalAttributeClientNaturalPersons[0].employmentType.substring(
+            0,
+            2
+          ),
       },
     ],
   };
 
   const handleSubmit = async () => {
     try {
-      console.log("Enviando datos:", rulesData);
       const response = await postBusinessUnitRules(
         businessUnitPublicCode,
         userAccount,
         rulesData
       );
-      console.log("Respuesta del servidor:", response);
+
+      if (response) {
+        setServerResponse(Array.isArray(response) ? response : [response]);
+      }
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
     }
   };
 
-  console.log(handleSubmit);
+  handleSubmit();
 
   return (
     <Formik
@@ -172,33 +173,38 @@ export function ProductSelection(props: IProductSelectionProps) {
                 padding={isMobile ? "0px 6px" : "0px 12px"}
                 wrap="wrap"
               >
-                {lineOfCredit.slice(0, 3).map((credit) => (
-                  <CardProductSelection
-                    key={credit.line_of_credit_id}
-                    amount={credit.loan_amount_limit}
-                    rate={credit.interest_rate}
-                    term={credit.loan_term_limit}
-                    description={credit.description_use}
-                    disabled={generalToggleChecked}
-                    isSelected={values.selectedProducts.includes(
-                      credit.line_of_credit_id
-                    )}
-                    onSelect={() => {
-                      const newSelected = values.selectedProducts.includes(
-                        credit.line_of_credit_id
-                      )
-                        ? values.selectedProducts.filter(
-                            (id) => id !== credit.line_of_credit_id
+                {serverResponse.length > 0 ? (
+                  serverResponse.map((item, index) => (
+                    <Stack key={index} direction="column">
+                      <CardProductSelection
+                        key={index}
+                        amount={item.loan_amount_limit}
+                        rate={item.interest_rate}
+                        term={item.loan_term_limit}
+                        description={item.value}
+                        disabled={generalToggleChecked}
+                        isSelected={values.selectedProducts.includes(
+                          index.toString()
+                        )}
+                        onSelect={() => {
+                          const newSelected = values.selectedProducts.includes(
+                            index.toString()
                           )
-                        : [
-                            ...values.selectedProducts,
-                            credit.line_of_credit_id,
-                          ];
-                      setFieldValue("selectedProducts", newSelected);
-                      setSelectedProducts(newSelected);
-                    }}
-                  />
-                ))}
+                            ? values.selectedProducts.filter(
+                                (id) => id !== index.toString()
+                              )
+                            : [...values.selectedProducts, index.toString()];
+                          setFieldValue("selectedProducts", newSelected);
+                          setSelectedProducts(newSelected);
+                        }}
+                      />
+                    </Stack>
+                  ))
+                ) : (
+                  <Text type="body" size="medium">
+                    {electionData.load}
+                  </Text>
+                )}
               </Stack>
             </Fieldset>
             <Fieldset>
