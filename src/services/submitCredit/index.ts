@@ -1,4 +1,4 @@
-import { enviroment } from "@config/environment";
+import { environment } from "@config/environment";
 
 import { ISubmitCredit } from "./types";
 
@@ -7,7 +7,7 @@ const postSubmitCredit = async (
   userAccount: string,
   submitData: ISubmitCredit
 ): Promise<ISubmitCredit | undefined> => {
-  const requestUrl = `${enviroment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`;
+  const requestUrl = `${environment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`;
 
   try {
     const options: RequestInit = {
