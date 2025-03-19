@@ -1,5 +1,3 @@
-import { IIncome } from "@services/types";
-
 export const titleButtonTextAssited = {
   goBackText: "Anterior",
   goNextText: "Siguiente",
@@ -69,11 +67,21 @@ export interface LoanAmountState {
 }
 
 export interface IBorrowerData {
-  name: string;
-  lastName: string;
-  email: string;
-  income: number;
-  obligations: number;
+  initialBorrowers: {
+    id: string;
+    name: string;
+    debtorDetail: {
+      age: string;
+      document: string;
+      documentNumber: string;
+      email: string;
+      lastName: string;
+      name: string;
+      number: string;
+      relation: string;
+      sex: string;
+    };
+  };
 }
 
 export interface FormData {
@@ -90,7 +98,6 @@ export interface FormData {
   borrowerData: IBorrowerData;
   generalToggleChecked: boolean;
   togglesState: boolean[];
-  incomeData: IIncome;
   loanAmountState: {
     inputValue: string;
     toggleChecked: boolean;

@@ -44,15 +44,29 @@ export function FilingApplication() {
   const [isCurrentFormValid, setIsCurrentFormValid] = useState(true);
   const [formData, setFormData] = useState<FormData>({
     contactInformation: {
+      document: "",
+      documentNumber: "",
+      name: "",
+      lastName: "",
       email: "",
       phone: "",
     },
     borrowerData: {
-      name: "",
-      lastName: "",
-      email: "",
-      income: 0,
-      obligations: 0,
+      initialBorrowers: {
+        id: "",
+        name: "",
+        debtorDetail: {
+          document: "",
+          documentNumber: "",
+          name: "",
+          lastName: "",
+          email: "",
+          number: "",
+          sex: "",
+          age: "",
+          relation: "",
+        },
+      },
     },
     propertyOffered: {
       antique: "",
@@ -165,6 +179,8 @@ export function FilingApplication() {
     const currentIndex = steps.findIndex((step) => step.id === currentStep);
     if (currentIndex < steps.length - 1) {
       setCurrentStep(steps[currentIndex + 1].id);
+    } else if (currentStep === steps.length) {
+      handleSubmitClick();
     }
   };
 
@@ -177,7 +193,7 @@ export function FilingApplication() {
   };
 
   function handleSubmitClick() {
-    console.log("Enviar paso: ", currentStep);
+    console.log("data: ", formData);
   }
 
   const handleFormChange = (updatedValues: Partial<FormData>) => {

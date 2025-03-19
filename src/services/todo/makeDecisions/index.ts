@@ -6,6 +6,8 @@ import {
 import { IMakeDecisionsCreditRequest } from "@services/types";
 
 export const makeDecisions = async (
+  businessUnitPublicCode: string,
+  userAccount: string,
   makeDecisions: IMakeDecisionsCreditRequest,
   xAction: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,8 +30,8 @@ export const makeDecisions = async (
         method: "PATCH",
         headers: {
           "X-Action": xAction,
-          "X-Business-Unit": environment.BUSINESS_UNIT,
-          "X-User-Name": "Erg",
+          "X-Business-Unit": businessUnitPublicCode,
+          "X-User-Name": userAccount,
           "Content-type": "application/json; charset=UTF-8",
         },
         body: JSON.stringify(makeDecisions),

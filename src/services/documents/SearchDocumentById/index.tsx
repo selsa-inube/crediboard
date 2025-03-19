@@ -4,7 +4,11 @@ import {
   maxRetriesServices,
 } from "@config/environment";
 
-export const getSearchDocumentById = async (documentId: string) => {
+export const getSearchDocumentById = async (
+  documentId: string,
+  userAccount: string,
+  businessUnitPublicCode: string
+) => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -17,7 +21,8 @@ export const getSearchDocumentById = async (documentId: string) => {
         method: "GET",
         headers: {
           "X-Action": "SearchDocumentById",
-          "X-Business-Unit": environment.BUSINESS_UNIT,
+          "X-Business-Unit": businessUnitPublicCode,
+          "X-User-Name": userAccount,
           "Content-Type": "application/pdf",
         },
         signal: controller.signal,

@@ -4,7 +4,11 @@ import {
   maxRetriesServices,
 } from "@config/environment";
 
-export const getSearchAllDocumentsById = async (creditRequestId: string) => {
+export const getSearchAllDocumentsById = async (
+  creditRequestId: string,
+  userAccount: string,
+  businessUnitPublicCode: string
+) => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -17,7 +21,8 @@ export const getSearchAllDocumentsById = async (creditRequestId: string) => {
         method: "GET",
         headers: {
           "X-Action": "SearchAllDocumentsById",
-          "X-Business-Unit": environment.BUSINESS_UNIT,
+          "X-Business-Unit": businessUnitPublicCode,
+          "X-User-Name": userAccount,
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,

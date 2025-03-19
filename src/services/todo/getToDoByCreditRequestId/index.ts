@@ -7,6 +7,7 @@ import {
 import { IToDo } from "@services/types";
 
 export const getToDoByCreditRequestId = async (
+  businessUnitPublicCode: string,
   creditRequestId: string
 ): Promise<IToDo> => {
   const maxRetries = maxRetriesServices;
@@ -21,7 +22,7 @@ export const getToDoByCreditRequestId = async (
         method: "GET",
         headers: {
           "X-Action": "SearchToDo",
-          "X-Business-Unit": environment.BUSINESS_UNIT,
+          "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,

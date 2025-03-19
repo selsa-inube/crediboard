@@ -22,10 +22,6 @@ const props: Partial<ArgTypes<TextAreaModalProps>> = {
     control: "number",
     description: "Maximum length of the textarea input",
   },
-  portalId: {
-    control: "text",
-    description: "ID of the portal node",
-  },
   onSubmit: {
     action: "submitted",
     description: "Function called when the form is submitted",

@@ -1,19 +1,12 @@
 import styled from "styled-components";
 import { inube } from "@inubekit/foundations";
 
-export const StyledContainerClose = styled.div`
-  cursor: pointer;
-`;
+interface IScrollableContainer {
+  $isMobile: boolean;
+}
 
-export const StyledContainer = styled.div`
-  background-color: ${({ theme }) =>
-    theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
-  border-radius: 8px;
-  overflow: hidden;
-`;
-
-export const ScrollableContainer = styled.div`
-  height: 100%;
+export const ScrollableContainer = styled.div<IScrollableContainer>`
+  height: ${({ $isMobile }) => ($isMobile ? "auto" : "469px")};
   overflow: auto;
 
   &::-webkit-scrollbar {

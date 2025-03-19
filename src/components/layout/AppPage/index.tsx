@@ -1,21 +1,18 @@
-import { useContext, useState, useRef, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
-
 import { Grid } from "@inubekit/grid";
-import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
+import { useMediaQuery } from "@inubekit/hooks";
 import { Header } from "@inubekit/header";
-import { Text } from "@inubekit/text";
 
-import { AppContext } from "@context/AppContext/AppContext";
+import { AppContext } from "@context/AppContext";
 import { MenuSection } from "@components/navigation/MenuSection";
 import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
 import { BusinessUnitChange } from "@components/inputs/BusinessUnitChange";
-import { clientsDataMock } from "@mocks/login/clients.mock";
+import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
 
-import { logoutConfig } from "./config/apps.config";
 import {
   StyledAppPage,
   StyledContainer,
@@ -23,9 +20,11 @@ import {
   StyledLogo,
   StyledMain,
   StyledMenuContainer,
+  StyledHeaderContainer,
   StyledCollapseIcon,
   StyledCollapse,
   StyledFooter,
+  StyledPrint,
 } from "./styles";
 
 const renderLogo = (imgUrl: string) => {
@@ -37,20 +36,24 @@ const renderLogo = (imgUrl: string) => {
 };
 
 function AppPage() {
-  const { user } = useContext(AppContext);
+  const { eventData, businessUnitsToTheStaff, setBusinessUnitSigla } =
+    useContext(AppContext);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [collapse, setCollapse] = useState(false);
-  const collapseMenuRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const collapseMenuRef = useRef<HTMLDivElement>(null);
   const businessUnitChangeRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (event.target instanceof HTMLElement) {
-      if (userMenuRef.current && event.target !== userMenuRef.current) {
-        setShowUserMenu(false);
-      }
+    if (
+      userMenuRef.current &&
+      !userMenuRef.current.contains(event.target as Node) &&
+      event.target !== userMenuRef.current
+    ) {
+      setShowUserMenu(false);
     }
+
     if (
       collapseMenuRef.current &&
       !collapseMenuRef.current.contains(event.target as Node) &&
@@ -63,7 +66,9 @@ function AppPage() {
   };
 
   const isTablet: boolean = useMediaQuery("(max-width: 1024px)");
-
+  const [selectedClient, setSelectedClient] = useState<string>(
+    eventData.businessUnit.abbreviatedName
+  );
   useEffect(() => {
     const selectUser = document.querySelector("header div div:nth-child(2)");
     const handleToggleuserMenu = () => {
@@ -83,55 +88,75 @@ function AppPage() {
     setShowUserMenu(false);
   };
 
-  const sections = [
-    {
-      links: [
-        {
-          title: "Cerrar sesión",
-          iconBefore: <MdLogout />,
-          onClick: handleToggleLogoutModal,
-        },
-      ],
-    },
-  ];
+  const handleLogoClick = (businessUnit: IBusinessUnitsPortalStaff) => {
+    const selectJSON = JSON.stringify(businessUnit);
+    setBusinessUnitSigla(selectJSON);
+    setSelectedClient(businessUnit.abbreviatedName);
+    setCollapse(false);
+  };
 
   return (
     <StyledAppPage>
       <Grid templateRows="auto 1fr" height="100vh" justifyContent="unset">
-        <Header
-          portalId="portal"
-          logoURL={renderLogo(user.operator.logo)}
-          userName={user.username}
-          client={user.company}
-        />
-        <StyledCollapseIcon
-          $collapse={collapse}
-          onClick={() => setCollapse(!collapse)}
-          $isTablet={isTablet}
-          ref={collapseMenuRef}
-        >
-          <Icon
-            icon={<MdOutlineChevronRight />}
-            appearance="primary"
-            size="24px"
-            cursorHover
-          />
-        </StyledCollapseIcon>
+        <StyledPrint>
+          <StyledHeaderContainer>
+            <Header
+              portalId="portal"
+              logoURL={renderLogo(eventData.businessUnit.urlLogo)}
+              userName={eventData.user.userName}
+              client={eventData.businessUnit.abbreviatedName}
+            />
+          </StyledHeaderContainer>
+          <StyledCollapseIcon
+            $collapse={collapse}
+            onClick={() => setCollapse(!collapse)}
+            $isTablet={isTablet}
+            ref={collapseMenuRef}
+          >
+            <Icon
+              icon={<MdOutlineChevronRight />}
+              appearance="primary"
+              size="24px"
+              cursorHover
+            />
+          </StyledCollapseIcon>
+        </StyledPrint>
         {collapse && (
           <StyledCollapse ref={businessUnitChangeRef}>
-            <BusinessUnitChange clients={clientsDataMock} />
+            <BusinessUnitChange
+              businessUnits={businessUnitsToTheStaff}
+              selectedClient={selectedClient}
+              onLogoClick={handleLogoClick}
+            />
           </StyledCollapse>
         )}
         <StyledContainer>
           {showUserMenu && (
             <StyledMenuContainer ref={userMenuRef}>
-              <MenuUser userName={user.username} businessUnit={user.company} />
-              <MenuSection sections={sections} divider={true} />
+              <MenuUser
+                userName={eventData.user.userName}
+                businessUnit={eventData.businessUnit.abbreviatedName}
+              />
+              <MenuSection
+                sections={[
+                  {
+                    links: [
+                      {
+                        title: "Cerrar sesión",
+                        iconBefore: <MdLogout />,
+                        onClick: handleToggleLogoutModal,
+                      },
+                    ],
+                  },
+                ]}
+                divider={true}
+              />
             </StyledMenuContainer>
           )}
+
           {showLogoutModal && (
             <LogoutModal
-              logoutPath={logoutConfig.logoutPath}
+              logoutPath="/logout"
               handleShowBlanket={handleToggleLogoutModal}
             />
           )}
@@ -139,9 +164,7 @@ function AppPage() {
             <Outlet />
           </StyledMain>
           <StyledFooter>
-            <Text appearance="gray" textAlign="center" size="medium">
-              © 2024 Inube
-            </Text>
+            {renderLogo(eventData.businessManager.urlBrand)}
           </StyledFooter>
         </StyledContainer>
       </Grid>
