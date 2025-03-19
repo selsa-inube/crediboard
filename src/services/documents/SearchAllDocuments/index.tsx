@@ -4,12 +4,11 @@ import {
   maxRetriesServices,
 } from "@config/environment";
 
-import { IDecisionsToDo } from "@services/types";
-
-export const getSearchDecisionById = async (
-  businessUnitPublicCode: string,
-  creditRequestId: string
-): Promise<IDecisionsToDo> => {
+export const getSearchAllDocumentsById = async (
+  creditRequestId: string,
+  userAccount: string,
+  businessUnitPublicCode: string
+) => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -17,34 +16,33 @@ export const getSearchDecisionById = async (
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      const queryParams = new URLSearchParams();
-      queryParams.set("sort", "decision");
+
       const options: RequestInit = {
         method: "GET",
         headers: {
-          "X-Action": "SearchDecisionByTaskToBeDone",
+          "X-Action": "SearchAllDocumentsById",
           "X-Business-Unit": businessUnitPublicCode,
+          "X-User-Name": userAccount,
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,
       };
 
       const res = await fetch(
-        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/${creditRequestId}?${queryParams.toString()}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/documents/${creditRequestId}`,
         options
       );
-
       clearTimeout(timeoutId);
 
       if (res.status === 204) {
-        throw new Error("No hay decisiones disponibles a tomar.");
+        throw new Error("No hay documentos disponibles.");
       }
 
       const data = await res.json();
 
       if (!res.ok) {
         throw {
-          message: "Error al obtener las decisiones disponbiles.",
+          message: "Error al obtener los documentos",
           status: res.status,
           data,
         };
@@ -55,13 +53,13 @@ export const getSearchDecisionById = async (
       console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
         throw new Error(
-          "Todos los intentos fallaron. No se pudo obtener el listado de decisiones."
+          "Todos los intentos fallaron. No se pudo obtener los documentos."
         );
       }
     }
   }
 
   throw new Error(
-    "No se lograron obtener las decisiones después de varios intentos."
+    "No se lograron obtener los documentos después de varios intentos."
   );
 };

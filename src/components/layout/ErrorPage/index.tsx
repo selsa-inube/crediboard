@@ -21,6 +21,9 @@ import {
   StyledDiv,
 } from "./styles";
 
+import { environment } from "@config/environment";
+import { errorCodes } from "@config/errorCodes";
+
 interface ErrorPageProps {
   logo?: string;
   logoAlt?: string;
@@ -139,7 +142,7 @@ function ErrorPage(props: ErrorPageProps) {
                       onClick={() =>
                         onClick
                           ? onClick()
-                          : window.open(enviroment.REDIRECT_URI, "_self")
+                          : window.open(environment.REDIRECT_URI, "_self")
                       }
                     >
                       {nameButton}
