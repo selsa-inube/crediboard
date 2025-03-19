@@ -226,10 +226,6 @@ export const Requirements = (props: IRequirementsProps) => {
 
       {showAprovalsModal && (
         <AprovalsModal
-          title="Aprobaciones"
-          buttonText="Confirmar"
-          inputLabel="Observaciones de aprobación o rechazo"
-          inputPlaceholder="Observaciones para la aprobación o rechazo."
           isApproved={isApproved}
           onCloseModal={toggleAprovalsModal}
           onChangeApprove={changeApprove}
