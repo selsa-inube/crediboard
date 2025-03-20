@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdOutlineChevronRight } from "react-icons/md";
-
+import { useFlag } from "@inubekit/flag";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
 import { useMediaQueries } from "@inubekit/hooks";
+
 import { SummaryCard } from "@components/cards/SummaryCard";
 import { ICreditRequestPinned, ICreditRequest } from "@services/types";
+import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
@@ -45,6 +47,9 @@ function BoardSection(props: BoardSectionProps) {
 
   const [collapse, setCollapse] = useState(false);
 
+  const flagRef = useRef(false);
+  const flagMessage = useRef(false);
+
   const handleCollapse = () => {
     if (!disabledCollapse) {
       setCollapse(!collapse);
@@ -61,6 +66,17 @@ function BoardSection(props: BoardSectionProps) {
     return pinnedRequest && pinnedRequest.isPinned === "Y" ? true : false;
   }
 
+  const { addFlag } = useFlag();
+
+  const handleFlag = (title: string, description: string) => {
+    addFlag({
+      title: title,
+      description: description,
+      appearance: "danger",
+      duration: 5000,
+    });
+  };
+
   const getNoDataMessage = () => {
     if (!sectionInformation || sectionInformation.length === 0) {
       return searchRequestValue
@@ -69,6 +85,34 @@ function BoardSection(props: BoardSectionProps) {
     }
     return "";
   };
+
+  const errorData = mockErrorBoard[0];
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (
+        !flagRef.current &&
+        (!sectionInformation || sectionInformation.length === 0)
+      ) {
+        handleFlag(errorData.Summary[0], errorData.Summary[1]);
+        flagRef.current = true;
+      }
+
+      const hasUnreadNoveltiesError = sectionInformation.some(
+        (request) => request.unreadNovelties === undefined
+      );
+
+      if (!flagMessage.current && hasUnreadNoveltiesError) {
+        handleFlag(errorData.messages[0], errorData.Summary[1]);
+        flagMessage.current = true;
+      }
+
+      console.log(sectionInformation);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sectionInformation]);
 
   return (
     <StyledBoardSection

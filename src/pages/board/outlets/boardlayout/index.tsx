@@ -4,6 +4,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
+import { useFlag } from "@inubekit/flag";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { ICreditRequest } from "@services/types";
@@ -11,6 +12,7 @@ import { getCreditRequestPin } from "@services/isPinned";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
 import { ChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
 import { AppContext } from "@context/AppContext";
+import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
 
 import { dataInformationModal } from "./config/board";
 import { BoardLayoutUI } from "./interface";
@@ -177,6 +179,18 @@ function BoardLayout() {
     }
   };
 
+  const { addFlag } = useFlag();
+
+  const handleFlag = () => {
+    const errorData = mockErrorBoard[0].anchor;
+    addFlag({
+      title: errorData[0],
+      description: errorData[1],
+      appearance: "danger",
+      duration: 5000,
+    });
+  };
+
   const handlePinRequest = async (
     creditRequestId: string | undefined,
     userWhoPinnnedId: string,
@@ -193,13 +207,18 @@ function BoardLayout() {
         card.creditRequestId === creditRequestId ? { ...card, isPinned } : card
       ),
     }));
-    await ChangeAnchorToCreditRequest(
-      businessUnitPublicCode,
-      userAccount,
-      creditRequestId,
-      isPinned
-    );
-    await fetchBoardData(businessUnitPublicCode);
+
+    try {
+      await ChangeAnchorToCreditRequest(
+        businessUnitPublicCode,
+        userAccount,
+        creditRequestId,
+        isPinned
+      );
+      await fetchBoardData(businessUnitPublicCode);
+    } catch (error) {
+      handleFlag();
+    }
   };
 
   return (
