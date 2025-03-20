@@ -21,7 +21,12 @@ export function CustomerContextProvider({
     fullName: "",
     natureClient: "",
     generalAttributeClientNaturalPersons: [
-      { employmentType: "", associateType: "" },
+      { employmentType: "", associateType: "",},
+    ],
+    generalAssociateAttributes: [
+      {
+        affiliateSeniorityDate: "",
+      },
     ],
   });
 
@@ -47,6 +52,11 @@ export function CustomerContextProvider({
             customer.generalAttributeClientNaturalPersons
           )
             ? customer.generalAttributeClientNaturalPersons
+            : [],
+          generalAssociateAttributes: Array.isArray(
+            customer.generalAssociateAttributes
+          )
+            ? customer.generalAssociateAttributes
             : [],
         });
       }

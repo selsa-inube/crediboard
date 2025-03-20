@@ -83,6 +83,16 @@ export function ProductSelection(props: IProductSelectionProps) {
 
   const { customerData } = useContext(CustomerContext);
 
+  const calculateSeniorityInYears = (seniorityDate: string): number => {
+    const currentDate = new Date();
+    const affiliateDate = new Date(seniorityDate);
+
+    const timeDifference = currentDate.getTime() - affiliateDate.getTime();
+    const yearsDifference = timeDifference / (1000 * 60 * 60 * 24 * 360);
+
+    return Math.round(yearsDifference);
+  };
+
   const rulesData = {
     ruleName: "LineOfCredit",
     conditions: [
@@ -112,13 +122,59 @@ export function ProductSelection(props: IProductSelectionProps) {
     ],
   };
 
+  const newRulesData = {
+    ruleName: "PercentagePayableViaExtraInstallments",
+    conditions: [
+      {
+        condition: "LineOfCredit",
+        value: {
+          description: "",
+        },
+      },
+      {
+        condition: "PrimaryIncomeType",
+        value: {
+          description: "",
+        },
+      },
+      {
+        condition: "ClientType",
+        value: {
+          description:
+            customerData.generalAttributeClientNaturalPersons[0].associateType,
+        },
+      },
+      {
+        condition: "LoanAmount",
+        value: {
+          amount: 0,
+        },
+      },
+      {
+        condition: "LoanTerm",
+        value: {
+          term: "",
+        },
+      },
+      {
+        condition: "AffiliateSeniority",
+        value: {
+          seniority: calculateSeniorityInYears(
+            customerData.generalAssociateAttributes[0].affiliateSeniorityDate
+          ),
+        },
+      },
+    ],
+  };
+
   const handleSubmit = async () => {
     try {
-      console.log("Enviando datos:", rulesData);
+      console.log("Enviando datos:", rulesData, newRulesData);
       const response = await postBusinessUnitRules(
         businessUnitPublicCode,
         userAccount,
         rulesData
+        // newRulesData
       );
       console.log("Respuesta del servidor:", response);
     } catch (error) {
@@ -127,7 +183,7 @@ export function ProductSelection(props: IProductSelectionProps) {
   };
 
   console.log(handleSubmit);
-
+  // console.log(customerData);
   return (
     <Formik
       initialValues={initialValues}
