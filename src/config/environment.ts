@@ -25,5 +25,7 @@ const environment = {
 
 const maxRetriesServices = 5;
 const fetchTimeoutServices = 3000;
+const addCardsBoardServices = 5;
+const maxDataBoardServices = 100;
 
-export { environment, fetchTimeoutServices, maxRetriesServices };
+export { environment, fetchTimeoutServices, maxRetriesServices, addCardsBoardServices, maxDataBoardServices };
