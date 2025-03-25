@@ -1,6 +1,5 @@
 import { createPortal } from "react-dom";
 import { MdClear, MdOutlineCalendarMonth } from "react-icons/md";
-
 import { Stack, Icon, Text } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
