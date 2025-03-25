@@ -361,6 +361,7 @@ export const SummaryProspectCredit = [
         title: "Obligaciones recogidas",
         miniIcon: true,
         icon: <MdOutlineEdit />,
+        modal: "edit",
         operation: "-",
       },
       {
@@ -403,33 +404,33 @@ export const menuOptions = (
   handleOpenModal: (modalName: string) => void,
   visibleExtraPayments: boolean
 ): IOptions[] => [
-  {
-    title: "Origen de cupo",
-    onClick: () => handleOpenModal("creditLimit"),
-    icon: <MdOutlineBalance />,
-    visible: true,
-  },
-  {
-    title: "Fuentes de ingreso",
-    onClick: () => handleOpenModal("IncomeModal"),
-    icon: <MdOutlineAccountBalanceWallet />,
-    visible: true,
-  },
-  {
-    title: "Obligaciones financieras",
-    onClick: () => handleOpenModal("reportCreditsModal"),
-    icon: <MdOutlineMonetizationOn />,
-    visible: true,
-  },
-  {
-    title: "Pagos extras",
-    onClick: () => {
-      handleOpenModal("extraPayments");
+    {
+      title: "Origen de cupo",
+      onClick: () => handleOpenModal("creditLimit"),
+      icon: <MdOutlineBalance />,
+      visible: true,
     },
-    icon: <MdOutlinePayments />,
-    visible: visibleExtraPayments,
-  },
-];
+    {
+      title: "Fuentes de ingreso",
+      onClick: () => handleOpenModal("IncomeModal"),
+      icon: <MdOutlineAccountBalanceWallet />,
+      visible: true,
+    },
+    {
+      title: "Obligaciones financieras",
+      onClick: () => handleOpenModal("reportCreditsModal"),
+      icon: <MdOutlineMonetizationOn />,
+      visible: true,
+    },
+    {
+      title: "Pagos extras",
+      onClick: () => {
+        handleOpenModal("extraPayments");
+      },
+      icon: <MdOutlinePayments />,
+      visible: visibleExtraPayments,
+    },
+  ];
 
 export const tittleOptions = {
   titleCreditId: "No. Rad.: ",
