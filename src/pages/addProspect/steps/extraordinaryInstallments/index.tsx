@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { FormikValues } from "formik";
 import { MdOutlineAdd } from "react-icons/md";
-import { Stack, Icon } from "@inubekit/inubekit";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
-import { Text } from "@inubekit/text";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { AddSeriesModal } from "@components/modals/AddSeriesModal";

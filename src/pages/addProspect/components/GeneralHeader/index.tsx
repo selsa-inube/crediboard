@@ -5,8 +5,7 @@ import {
   MdCancel,
   MdOutlineManageAccounts,
 } from "react-icons/md";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
 import { useMediaQuery } from "@inubekit/hooks";
 

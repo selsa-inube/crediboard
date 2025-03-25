@@ -4,8 +4,7 @@ import {
   MdOutlineEdit,
   MdOutlineRemoveRedEye,
 } from "react-icons/md";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
 
 import {
   StyledContainer,

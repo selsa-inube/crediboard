@@ -3,9 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { MdOutlineChevronLeft } from "react-icons/md";
 
 import { Button } from "@inubekit/button";
-import { Grid } from "@inubekit/grid";
-import { Stack } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
+import { Stack, Text, Grid } from "@inubekit/inubekit";
 import { useMediaQueries } from "@inubekit/hooks";
 
 import { get, getById } from "@mocks/utils/dataMock.service";

@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { MdInfoOutline } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Text } from "@inubekit/text";
-import { Stack, Icon } from "@inubekit/inubekit";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { ICreditRequest } from "@services/types";

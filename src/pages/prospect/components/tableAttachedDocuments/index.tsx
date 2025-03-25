@@ -14,7 +14,7 @@ import {
   Thead,
   Tr,
 } from "@inubekit/table";
-import { Text } from "@inubekit/text";
+import { Text } from "@inubekit/inubekit";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
 import { Icon } from "@inubekit/inubekit";
 

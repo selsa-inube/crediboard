@@ -3,11 +3,9 @@ import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-
-import { Stack, Icon } from "@inubekit/inubekit";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Blanket } from "@inubekit/blanket";
-import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
 import { Select } from "@inubekit/select";
 import { Spinner } from "@inubekit/spinner";

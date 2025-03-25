@@ -3,8 +3,7 @@ import { useParams } from "react-router-dom";
 import { MdOutlineBeachAccess, MdOutlineShare } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
 
 import { ShareCreditModal } from "@components/modals/ShareCreditModal";

@@ -9,8 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import { Blanket } from "@inubekit/blanket";
 import { Button } from "@inubekit/button";
-import { Text } from "@inubekit/text";
-import { Stack, Icon } from "@inubekit/inubekit";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { useFlag } from "@inubekit/flag";
 import { Divider } from "@inubekit/divider";
@@ -20,13 +19,13 @@ import { optionFlags } from "@pages/board/outlets/financialReporting/config";
 import { saveDocument } from "@services/saveDocument";
 import { validationMessages } from "@validations/validationMessages";
 import { AppContext } from "@context/AppContext";
+import { getSearchDocumentById } from "@services/documents/SearchDocumentById";
 
 import {
   StyledContainerClose,
   StyledContainerContent,
   StyledModal,
 } from "./styles";
-import { getSearchDocumentById } from "@services/documents/SearchDocumentById";
 import { DocumentViewer } from "../DocumentViewer";
 
 export interface IOptionButtons {
