@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { Stack } from "@inubekit/stack";
+import { MdOutlineEdit } from "react-icons/md";
+import { Stack } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Divider } from "@inubekit/divider";
-import { MdOutlineEdit } from "react-icons/md";
 
 import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { NewCreditProductCard } from "@components/cards/CreditProductCard/newCard";
@@ -14,7 +14,7 @@ import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.se
 import { mockProspectCredit } from "@mocks/prospect/prospectCredit.mock";
 import { mockCommercialManagement } from "@mocks/financialReporting/commercialmanagement.mock";
 
-import { StyledCardsCredit } from "./styles";
+import { StyledCardsCredit, StyledPrint } from "./styles";
 
 interface CardCommercialManagementProps {
   id: string;
@@ -65,7 +65,7 @@ export const CardCommercialManagement = (
 
   return (
     <div ref={dataRef}>
-      <StyledCardsCredit>
+      <StyledCardsCredit $isMobile={isMobile}>
         <Stack
           gap="24px"
           width="fit-content"
@@ -91,7 +91,9 @@ export const CardCommercialManagement = (
               onDelete={() => handleDeleteClick(entry.credit_product_code)}
             />
           ))}
-          <NewCreditProductCard onClick={onClick} />
+          <StyledPrint>
+            <NewCreditProductCard onClick={onClick} />
+          </StyledPrint>
         </Stack>
       </StyledCardsCredit>
       {isMobile && <Divider />}

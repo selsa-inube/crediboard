@@ -2,10 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
 import { Toggle } from "@inubekit/toggle";
-import { Icon } from "@inubekit/icon";
 import { Textfield } from "@inubekit/textfield";
 import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { Divider } from "@inubekit/divider";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
@@ -33,7 +32,12 @@ interface BoardLayoutProps {
   showPinnedOnly: boolean;
   pinnedRequests: ICreditRequestPinned[];
   handleSelectCheckChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handlePinRequest: (requestId: string, isPinned: string) => void;
+  handlePinRequest: (
+    requestId: string,
+    identificationNumber: string[],
+    userWhoPinnnedId: string,
+    isPinned: string
+  ) => void;
   handleShowPinnedOnly: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
@@ -233,6 +237,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
               pinnedRequests={pinnedRequests}
               handlePinRequest={handlePinRequest}
               errorLoadingPins={errorLoadingPins}
+              searchRequestValue={searchRequestValue}
             />
           ))}
         </StyledBoardContainer>

@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import { Tabs } from "@inubekit/tabs";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Fieldset } from "@components/data/Fieldset";
 
 import { disbursemenTabs } from "./config";
@@ -54,6 +54,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
             tabs={Object.values(disbursemenTabs)}
             selectedTab={isSelected}
             onChange={handleTabChange}
+            scroll={isMobile}
           />
           {isSelected === disbursemenTabs.internal.id && (
             <DisbursementWithInternalAccount

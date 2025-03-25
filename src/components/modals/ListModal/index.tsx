@@ -1,13 +1,17 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import { createPortal } from "react-dom";
-import { MdClear, MdDeleteOutline } from "react-icons/md";
+import {
+  MdClear,
+  MdDeleteOutline,
+  MdOutlineRemoveRedEye,
+} from "react-icons/md";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import { Blanket } from "@inubekit/blanket";
 import { Button } from "@inubekit/button";
 import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Icon } from "@inubekit/icon";
 import { useFlag } from "@inubekit/flag";
 import { Divider } from "@inubekit/divider";
 
@@ -15,12 +19,16 @@ import { StyledItem } from "@pages/board/outlets/financialReporting/styles";
 import { optionFlags } from "@pages/board/outlets/financialReporting/config";
 import { saveDocument } from "@services/saveDocument";
 import { validationMessages } from "@validations/validationMessages";
+import { AppContext } from "@context/AppContext";
 
 import {
   StyledContainerClose,
   StyledContainerContent,
   StyledModal,
 } from "./styles";
+import { getSearchDocumentById } from "@services/documents/SearchDocumentById";
+import { DocumentViewer } from "../DocumentViewer";
+
 export interface IOptionButtons {
   label: string;
   variant: "filled" | "outlined" | "none";
@@ -50,6 +58,8 @@ export interface IListModalProps {
   optionButtons?: IOptionButtons;
   uploadMode?: string;
   id?: string;
+  dataDocument?: { id: string; name: string }[];
+  isViewing?: boolean;
 }
 
 export const ListModal = (props: IListModalProps) => {
@@ -65,7 +75,8 @@ export const ListModal = (props: IListModalProps) => {
     onSubmit,
     buttonLabel,
     uploadMode,
-    //id,
+    dataDocument,
+    isViewing,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -81,15 +92,25 @@ export const ListModal = (props: IListModalProps) => {
     { id: string; name: string; file: File }[]
   >([]);
   const [loading, setLoading] = useState(false);
+  const { businessUnitSigla } = useContext(AppContext);
+
+  const { user } = useAuth0();
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+  const [fileName, setFileName] = useState<string | null>(null);
 
   interface IListdataProps {
     data: { id: string; name: string }[];
+    onDelete?: (id: string) => void;
     icon?: React.ReactNode;
-    onDelete: (id: string) => void;
+    onPreview?: (id: string, name: string) => void;
   }
 
   const Listdata = (props: IListdataProps) => {
-    const { data, icon, onDelete } = props;
+    const { data, icon, onDelete, onPreview } = props;
 
     if (data.length === 0) {
       return <Text>No hay documentos adjuntos.</Text>;
@@ -111,7 +132,13 @@ export const ListModal = (props: IListModalProps) => {
               spacing="narrow"
               size="24px"
               cursorHover
-              onClick={() => onDelete(element.id)}
+              onClick={() => {
+                if (onDelete) {
+                  onDelete(element.id);
+                } else if (onPreview) {
+                  onPreview(element.id, element.name);
+                }
+              }}
             />
           </StyledItem>
         ))}
@@ -175,8 +202,9 @@ export const ListModal = (props: IListModalProps) => {
     try {
       for (const fileData of uploadedFiles) {
         await saveDocument(
-          "1", // id
-          fileData.name,
+          businessUnitPublicCode,
+          "1",
+          fileData.name.split(".").slice(0, -1).join("."),
           fileData.file
         );
       }
@@ -194,6 +222,22 @@ export const ListModal = (props: IListModalProps) => {
         optionFlags.description,
         optionFlags.appearanceError as FlagAppearance
       );
+    }
+  };
+
+  const handlePreview = async (id: string, name: string) => {
+    try {
+      const documentData = await getSearchDocumentById(
+        id,
+        user?.email ?? "",
+        businessUnitPublicCode
+      );
+      const fileUrl = URL.createObjectURL(documentData);
+      setSelectedFile(fileUrl);
+      setFileName(name);
+      setOpen(true);
+    } catch (error) {
+      console.error("Error obteniendo el documento:", error);
     }
   };
 
@@ -225,9 +269,12 @@ export const ListModal = (props: IListModalProps) => {
           ) : (
             <StyledContainerContent $smallScreen={isMobile}>
               <Listdata
-                data={uploadedFiles}
-                icon={<MdDeleteOutline />}
-                onDelete={handleDeleteFile}
+                data={isViewing ? (dataDocument ?? []) : uploadedFiles}
+                icon={
+                  isViewing ? <MdOutlineRemoveRedEye /> : <MdDeleteOutline />
+                }
+                onDelete={!isViewing ? handleDeleteFile : undefined}
+                onPreview={isViewing ? handlePreview : undefined}
               />
             </StyledContainerContent>
           )}
@@ -275,6 +322,13 @@ export const ListModal = (props: IListModalProps) => {
             </Button>
             <Button onClick={onSubmit ?? handleClose}>{buttonLabel}</Button>
           </Stack>
+        )}
+        {selectedFile && open && (
+          <DocumentViewer
+            selectedFile={selectedFile}
+            handleClose={() => setOpen(false)}
+            title={fileName || ""}
+          />
         )}
       </StyledModal>
     </Blanket>,

@@ -1,7 +1,6 @@
-import { Icon } from "@inubekit/icon";
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
 import { MdOutlineEdit, MdOutlineDelete } from "react-icons/md";
+import { Text } from "@inubekit/text";
+import { Stack, Icon } from "@inubekit/inubekit";
 
 import {
   truncateTextToMaxLength,
@@ -10,9 +9,9 @@ import {
 import { currencyFormat } from "@utils/formatData/currency";
 import { getScheduleInSpanish } from "@utils/mappingData/mappings";
 
-import { StyledCreditProductCard, StyledDivider } from "./styles";
-import { CreditProductCardProps } from ".";
+import { StyledCreditProductCard, StyledDivider, StyledPrint } from "./styles";
 import { CREDIT_PRODUCT_TEXTS } from "./config";
+import { CreditProductCardProps } from ".";
 
 function CreditProductCardUI(props: CreditProductCardProps) {
   const {
@@ -78,23 +77,25 @@ function CreditProductCardUI(props: CreditProductCardProps) {
         </Stack>
       </Stack>
       <Stack direction="column" padding="0px 12px">
-        <StyledDivider />
-        <Stack gap="8px" justifyContent="flex-end" padding="8px 0px">
-          <Icon
-            icon={<MdOutlineEdit />}
-            appearance="primary"
-            size="24px"
-            cursorHover
-            onClick={onEdit}
-          />
-          <Icon
-            icon={<MdOutlineDelete />}
-            appearance="primary"
-            size="24px"
-            cursorHover
-            onClick={onDelete}
-          />
-        </Stack>
+        <StyledPrint>
+          <StyledDivider />
+          <Stack gap="8px" justifyContent="flex-end" padding="8px 0px">
+            <Icon
+              icon={<MdOutlineEdit />}
+              appearance="primary"
+              size="24px"
+              cursorHover
+              onClick={onEdit}
+            />
+            <Icon
+              icon={<MdOutlineDelete />}
+              appearance="primary"
+              size="24px"
+              cursorHover
+              onClick={onDelete}
+            />
+          </Stack>
+        </StyledPrint>
       </Stack>
     </StyledCreditProductCard>
   );

@@ -1,5 +1,5 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
@@ -7,6 +7,7 @@ import {
 import { IApprovals } from "@pages/board/outlets/financialReporting/Approvals/types";
 
 export const getAprovalsById = async (
+  businessUnitPublicCode: string,
   creditRequestId: string
 ): Promise<IApprovals> => {
   const maxRetries = maxRetriesServices;
@@ -21,14 +22,14 @@ export const getAprovalsById = async (
         method: "GET",
         headers: {
           "X-Action": "SearchAllAprovalsById",
-          "X-Business-Unit": enviroment.BUSINESS_UNIT,
+          "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/aprovals/${creditRequestId}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/aprovals/${creditRequestId}`,
         options
       );
 

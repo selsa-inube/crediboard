@@ -1,4 +1,4 @@
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 
 import { IMoneyDestination } from "@services/types";
 import { MoneyDestinationCard } from "@components/cards/MoneyDestinationCard";
@@ -32,8 +32,12 @@ function MoneyDestinationUI(props: MoneyDestinationUIProps) {
               value={destination.description_use}
               label={destination.abbreviated_name}
               icon={destination.icon}
-              handleChange={() => handleChange(destination.description_use)}
-              isSelected={selectedDestination === destination.description_use}
+              handleChange={() =>
+                handleChange(destination.money_destination_id)
+              }
+              isSelected={
+                selectedDestination === destination.money_destination_id
+              }
             />
           ))}
       </Stack>

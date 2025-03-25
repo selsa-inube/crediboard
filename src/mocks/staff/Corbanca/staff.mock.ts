@@ -6,7 +6,7 @@ export const mockAnalyst: IStaff[] = [
     userName: "Carlos Andrés Martínez Torres",
     identificationType: "C",
     identificationNumber: "3003456789",
-    position: "Analyst",
+    role: "Analyst",
   },
 ];
 

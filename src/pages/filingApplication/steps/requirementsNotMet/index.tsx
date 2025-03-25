@@ -1,4 +1,4 @@
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { UnfulfilledRequirements } from "@components/cards/UnfulfilledRequirements";
 import { Fieldset } from "@components/data/Fieldset";
 
@@ -12,7 +12,7 @@ export function RequirementsNotMet(props: IRequirementsNotMetProps) {
   const { isMobile } = props;
 
   return (
-    <Fieldset slim>
+    <Fieldset >
       <Stack
         gap="16px"
         margin={isMobile ? "8px" : "16px"}

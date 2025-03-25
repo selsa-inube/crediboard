@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdOutlineChevronLeft } from "react-icons/md";
 
 import { Button } from "@inubekit/button";
 import { Grid } from "@inubekit/grid";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { useMediaQueries } from "@inubekit/hooks";
 
@@ -15,6 +15,8 @@ import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
 
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { AppContext } from "@context/AppContext";
+
 import { CreditBehavior } from "./CreditBehaviorCard";
 import { Guarantees } from "./Guarantees";
 import { JobStabilityCard } from "./JobStabilityCard";
@@ -95,6 +97,11 @@ export const CreditProfileInfo = () => {
 
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { businessUnitSigla } = useContext(AppContext);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
   const { "(max-width: 1200px)": isTablet, "(max-width: 751px)": isMobile } =
     useMediaQueries(["(max-width: 1200px)", "(max-width: 751px)"]);
@@ -198,7 +205,7 @@ export const CreditProfileInfo = () => {
       }
     })();
 
-    getCreditRequestByCode(id!)
+    getCreditRequestByCode(businessUnitPublicCode, id!)
       .then((data) => {
         setRequests(data[0] as ICreditRequest);
       })
@@ -206,6 +213,7 @@ export const CreditProfileInfo = () => {
         console.error(error);
       });
   }, [
+    businessUnitPublicCode,
     id,
     dataWereObtained,
     dataBehaviorError,

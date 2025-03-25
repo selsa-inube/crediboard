@@ -1,29 +1,36 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
 import { useFlag } from "@inubekit/flag";
-import { Icon } from "@inubekit/icon";
 import { SkeletonLine } from "@inubekit/skeleton";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
-import { Textfield } from "@inubekit/textfield";
 import { IOption } from "@inubekit/select";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
-import { IStaff, IToDo, ICreditRequest } from "@services/types";
-import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
-import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
-import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
-import userNotFound from "@assets/images/ItemNotFound.png";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { getSearchDecisionById } from "@services/todo/SearchDecisionById";
+import { IStaff, IToDo, ICreditRequest } from "@services/types";
+import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
+import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
+import { truncateTextToMaxLength } from "@utils/formatData/text";
+import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
+import { TodoConsult } from "@mocks/financialReporting/to-doconsult.mock";
+import { AppContext } from "@context/AppContext";
+import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StaffModal } from "./StaffModal";
-import { errorMessagge, txtLabels, txtLabelsNoData } from "./config";
+import {
+  errorMessagge,
+  txtLabels,
+  txtLabelsNoData,
+  txtTaskQuery,
+} from "./config";
 import { IICon, IButton } from "./types";
 import { getXAction } from "./util/utils";
+import { StyledHorizontalDivider, StyledTextField } from "../styles";
 import { errorObserver } from "../config";
 
 interface ToDoProps {
@@ -58,11 +65,18 @@ function ToDo(props: ToDoProps) {
   });
 
   const { addFlag } = useFlag();
+  const { businessUnitSigla, eventData } = useContext(AppContext);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
+  const { userAccount } =
+    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
 
   useEffect(() => {
     const fetchCreditRequest = async () => {
       try {
-        const data = await getCreditRequestByCode(id);
+        const data = await getCreditRequestByCode(businessUnitPublicCode, id);
         setRequests(data[0] as ICreditRequest);
       } catch (error) {
         console.error(error);
@@ -76,14 +90,17 @@ function ToDo(props: ToDoProps) {
     if (id) {
       fetchCreditRequest();
     }
-  }, [id]);
+  }, [businessUnitPublicCode, id]);
 
   useEffect(() => {
     const fetchToDoData = async () => {
       if (!requests?.creditRequestId) return;
       setLoading(true);
       try {
-        const data = await getToDoByCreditRequestId(requests.creditRequestId);
+        const data = await getToDoByCreditRequestId(
+          businessUnitPublicCode,
+          requests.creditRequestId
+        );
         setTaskData(data);
       } catch (error) {
         console.error(error);
@@ -97,7 +114,7 @@ function ToDo(props: ToDoProps) {
     };
 
     fetchToDoData();
-  }, [requests?.creditRequestId]);
+  }, [businessUnitPublicCode, requests?.creditRequestId]);
 
   useEffect(() => {
     if (taskData?.usersByCreditRequestResponse) {
@@ -110,11 +127,11 @@ function ToDo(props: ToDoProps) {
       setStaff(formattedStaff);
 
       const firstAccountManager = formattedStaff.find(
-        (staffMember) => staffMember.position === "Account_manager"
+        (staffMember) => staffMember.role === "Account_manager"
       );
 
       const firstAnalyst = formattedStaff.find(
-        (staffMember) => staffMember.position === "Analyst"
+        (staffMember) => staffMember.role === "Analyst"
       );
 
       const newStaffState = {
@@ -131,7 +148,10 @@ function ToDo(props: ToDoProps) {
     setLoading(true);
     if (requests?.creditRequestId) {
       try {
-        const data = await getToDoByCreditRequestId(requests.creditRequestId);
+        const data = await getToDoByCreditRequestId(
+          businessUnitPublicCode,
+          requests.creditRequestId
+        );
         setTaskData(data);
       } catch (error) {
         console.error(error);
@@ -181,12 +201,20 @@ function ToDo(props: ToDoProps) {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+  const isFetching = useRef(false);
 
   const handleSelectOpen = async () => {
+    if (isFetching.current) return; // Evita dobles peticiones
+    //if (!requests?.creditRequestId) return; // Evita ejecutar sin ID válido
+
+    isFetching.current = true;
     setLoading(true);
     if (requests?.creditRequestId) {
       try {
-        const decision = await getSearchDecisionById(requests.creditRequestId);
+        const decision = await getSearchDecisionById(
+          businessUnitPublicCode,
+          requests.creditRequestId
+        );
         const formattedDecisions = Array.isArray(decision)
           ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
             decision.map((decisions: any, index: number) => ({
@@ -214,10 +242,12 @@ function ToDo(props: ToDoProps) {
       humanDecision: selectedDecision?.label.split(":")[0] || "",
       justification: "",
     },
-
+    businessUnit: businessUnitPublicCode,
+    user: userAccount,
     xAction: getXAction(selectedDecision?.label.split(":")[0] || ""),
     humanDecisionDescription: selectedDecision?.label || "",
   };
+  const datamock = TodoConsult[0];
 
   return (
     <>
@@ -296,10 +326,11 @@ function ToDo(props: ToDoProps) {
             </Stack>
             <Divider />
             <Stack
-              direction={isMobile ? "column" : "row"}
-              gap="16px"
+              padding="16px 0"
+              justifyContent="space-between"
+              direction="row"
               alignItems="center"
-              padding="8px 0px 0px 0px"
+              gap="16px"
             >
               {isModalOpen && (
                 <DecisionModal
@@ -313,39 +344,80 @@ function ToDo(props: ToDoProps) {
                   data={data}
                 />
               )}
-              <Stack direction="column" width="100%" alignItems="end">
-                {icon && isMobile && (
-                  <Icon
-                    icon={icon.icon}
-                    appearance="primary"
-                    size="24px"
-                    onClick={handleToggleStaffModal}
-                    cursorHover
-                  />
-                )}
-                <Textfield
-                  id="gestorComercial"
-                  name="gestorComercial"
-                  label="Gestor Comercial"
-                  placeholder="Gestor Comercial"
-                  value={assignedStaff.commercialManager}
-                  fullwidth
-                  disabled={staff === null}
-                  size="compact"
-                />
+              <Stack
+                gap="16px"
+                justifyContent="flex-start"
+                direction={isMobile ? "column" : "row"}
+              >
+                <Stack justifyContent="start">
+                  <Stack
+                    direction="column"
+                    alignItems="flex-start"
+                    gap="16px"
+                    padding={isMobile ? "0px" : "0px 100px 0px 0px"}
+                  >
+                    <StyledTextField>
+                      <Text
+                        type="body"
+                        weight="bold"
+                        size="small"
+                        appearance="gray"
+                        textAlign="start"
+                      >
+                        {txtTaskQuery.txtCommercialManager}
+                      </Text>
+                    </StyledTextField>
+                    <StyledTextField>
+                      <Text
+                        type="title"
+                        size="medium"
+                        appearance="dark"
+                        textAlign="start"
+                      >
+                        {truncateTextToMaxLength(
+                          datamock.CommercialManager,
+                          30
+                        )}
+                      </Text>
+                    </StyledTextField>
+                  </Stack>
+                  <StyledHorizontalDivider $isMobile={isMobile} />
+                </Stack>
+                <Stack>
+                  <Stack
+                    direction="column"
+                    alignItems="flex-start"
+                    gap="16px"
+                    padding={isMobile ? "0px" : "0px 100px 0px 0px"}
+                  >
+                    <StyledTextField>
+                      <Text
+                        type="body"
+                        weight="bold"
+                        size="small"
+                        appearance="gray"
+                        textAlign="start"
+                      >
+                        {txtTaskQuery.txtAnalyst}
+                      </Text>
+                    </StyledTextField>
+                    <StyledTextField>
+                      <Text
+                        type="title"
+                        size="medium"
+                        appearance="dark"
+                        textAlign="start"
+                      >
+                        {truncateTextToMaxLength(datamock.Analyst, 30)}
+                      </Text>
+                    </StyledTextField>
+                  </Stack>
+
+                  <StyledHorizontalDivider $isMobile={isMobile} />
+                </Stack>
               </Stack>
-              <Textfield
-                id="analista"
-                name="analista"
-                label="Analista"
-                placeholder="Analista"
-                value={assignedStaff.analyst}
-                fullwidth
-                disabled={staff === null}
-                size="compact"
-              />
-              {icon && !isMobile && (
-                <Stack width="100px" height="50px" alignItems="end">
+              {icon && (
+                <Stack alignItems="center" padding="0px 15px 0px  0px">
                   <Icon
                     icon={icon.icon}
                     appearance="primary"

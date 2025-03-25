@@ -1,6 +1,7 @@
-import { Icon } from "@inubekit/icon";
 import { useState } from "react";
 import { MdOutlineMoreVert } from "react-icons/md";
+import { Icon } from "@inubekit/inubekit";
+
 import { ActionModal } from "./actions";
 
 export function Details() {

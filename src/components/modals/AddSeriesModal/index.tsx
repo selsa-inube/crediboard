@@ -1,20 +1,15 @@
 import * as Yup from "yup";
-import { Formik, FormikValues } from "formik";
 import localforage from "localforage";
-import { createPortal } from "react-dom";
-import { MdClear, MdOutlineAttachMoney } from "react-icons/md";
+import { Formik, FormikValues } from "formik";
+import { MdOutlineAttachMoney } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Text } from "@inubekit/text";
 import { inube } from "@inubekit/foundations";
-import { Blanket } from "@inubekit/blanket";
-import { Divider } from "@inubekit/divider";
-import { Icon } from "@inubekit/icon";
 import { Textfield } from "@inubekit/textfield";
 import { Select } from "@inubekit/select";
-import { Stack } from "@inubekit/stack";
-import { Button } from "@inubekit/button";
+import { Stack } from "@inubekit/inubekit";
 import { Datefield } from "@inubekit/datefield";
 
+import { BaseModal } from "@components/modals/baseModal";
 import { TableExtraordinaryInstallmentProps } from "@pages/prospect/components/TableExtraordinaryInstallment";
 import {
   handleChangeWithCurrency,
@@ -24,13 +19,7 @@ import {
   frequencyOptionsMock,
   paymentMethodOptionsMock,
 } from "@mocks/prospect/extraordinaryInstallment.mock";
-import { validationMessages } from "@validations/validationMessages";
 
-import {
-  StyledModal,
-  StyledContainerClose,
-  StyledContainerTitle,
-} from "./styles";
 import { dataAddSeriesModal } from "./config";
 
 export interface AddSeriesModalProps {
@@ -38,22 +27,10 @@ export interface AddSeriesModalProps {
   onSubmit: () => void;
   onConfirm: (values: FormikValues) => void;
   initialValues: FormikValues;
-  portalId?: string;
 }
 
 export function AddSeriesModal(props: AddSeriesModalProps) {
-  const {
-    portalId = "portal",
-    initialValues,
-    onConfirm,
-    handleClose,
-    onSubmit,
-  } = props;
-
-  const node = document.getElementById(portalId ?? "portal");
-  if (!node) {
-    throw new Error(validationMessages.errorNodo);
-  }
+  const { handleClose, onSubmit, onConfirm, initialValues } = props;
 
   const isMobile = useMediaQuery("(max-width: 700px)");
 
@@ -93,7 +70,7 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
     onConfirm(updatedValues);
   };
 
-  return createPortal(
+  return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
@@ -104,63 +81,56 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
       }}
     >
       {(formik) => (
-        <Blanket>
-          <StyledModal $smallScreen={isMobile}>
-            <StyledContainerTitle>
-              <Text type="headline" size="small">
-                {dataAddSeriesModal.title}
-              </Text>
-              <StyledContainerClose onClick={handleClose}>
-                <Stack alignItems="center" gap="8px">
-                  <Text>{dataAddSeriesModal.close}</Text>
-                  <Icon
-                    appearance="dark"
-                    icon={<MdClear />}
-                    size="24px"
-                    cursorHover
-                  />
-                </Stack>
-              </StyledContainerClose>
-            </StyledContainerTitle>
-            <Divider />
-            <Stack gap="24px" direction="column">
-              <Select
-                name="paymentMethod"
-                id="paymentMethod"
-                label={dataAddSeriesModal.labelPaymentMethod}
-                placeholder={dataAddSeriesModal.placeHolderSelect}
-                options={paymentMethodOptionsMock}
-                value={formik.values.paymentMethod}
-                onChange={(name, value) => formik.setFieldValue(name, value)}
-                onBlur={formik.handleBlur}
-                size="wide"
-                fullwidth
-              />
-              <Textfield
-                name="amount"
-                id="amount"
-                label={dataAddSeriesModal.labelAmount}
-                placeholder={dataAddSeriesModal.placeHolderAmount}
-                onChange={(e) => handleChangeWithCurrency(formik, e)}
-                value={validateCurrencyField("amount", formik, false, "")}
-                onBlur={formik.handleBlur}
-                size="wide"
-                fullwidth
-              />
-              <Textfield
-                name="value"
-                id="value"
-                label={dataAddSeriesModal.labelValue}
-                placeholder={dataAddSeriesModal.placeHolderValue}
-                iconBefore={
-                  <MdOutlineAttachMoney color={inube.palette.green.G400} />
-                }
-                onChange={(e) => handleChangeWithCurrency(formik, e)}
-                value={validateCurrencyField("value", formik, false, "")}
-                onBlur={formik.handleBlur}
-                fullwidth
-              />
-            </Stack>
+        <BaseModal
+          title={dataAddSeriesModal.title}
+          backButton={dataAddSeriesModal.cancel}
+          nextButton={dataAddSeriesModal.add}
+          handleBack={onSubmit}
+          handleNext={formik.submitForm}
+          handleClose={handleClose}
+          disabledNext={!formik.dirty || !formik.isValid}
+          width={isMobile ? "280px" : "425px"}
+          height={isMobile ? "auto" : "639px"}
+          finalDivider={true}
+        >
+          <Stack gap="24px" direction="column">
+            <Select
+              name="paymentMethod"
+              id="paymentMethod"
+              label={dataAddSeriesModal.labelPaymentMethod}
+              placeholder={dataAddSeriesModal.placeHolderSelect}
+              options={paymentMethodOptionsMock}
+              value={formik.values.paymentMethod}
+              onChange={(name, value) => formik.setFieldValue(name, value)}
+              onBlur={formik.handleBlur}
+              size="wide"
+              fullwidth
+            />
+            <Textfield
+              name="amount"
+              id="amount"
+              label={dataAddSeriesModal.labelAmount}
+              placeholder={dataAddSeriesModal.placeHolderAmount}
+              onChange={(e) => handleChangeWithCurrency(formik, e)}
+              value={validateCurrencyField("amount", formik, false, "")}
+              onBlur={formik.handleBlur}
+              size="wide"
+              fullwidth
+            />
+            <Textfield
+              name="value"
+              id="value"
+              label={dataAddSeriesModal.labelValue}
+              placeholder={dataAddSeriesModal.placeHolderValue}
+              iconBefore={
+                <MdOutlineAttachMoney color={inube.palette.green.G400} />
+              }
+              onChange={(e) => handleChangeWithCurrency(formik, e)}
+              value={validateCurrencyField("value", formik, false, "")}
+              onBlur={formik.handleBlur}
+              fullwidth
+            />
+
             <Select
               name="frequency"
               id="frequency"
@@ -184,28 +154,9 @@ export function AddSeriesModal(props: AddSeriesModalProps) {
               onBlur={formik.handleBlur}
               fullwidth
             />
-            <Divider />
-            <Stack justifyContent="flex-end" margin="16px 0px" gap="10px">
-              <Button
-                type="button"
-                onClick={onSubmit}
-                appearance="gray"
-                variant="outlined"
-              >
-                {dataAddSeriesModal.cancel}
-              </Button>
-              <Button
-                type="button"
-                disabled={!formik.dirty || !formik.isValid}
-                onClick={formik.submitForm}
-              >
-                {dataAddSeriesModal.add}
-              </Button>
-            </Stack>
-          </StyledModal>
-        </Blanket>
+          </Stack>
+        </BaseModal>
       )}
-    </Formik>,
-    node
+    </Formik>
   );
 }

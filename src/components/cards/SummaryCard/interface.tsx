@@ -1,7 +1,6 @@
 import { MdOutlineMessage, MdOutlinePushPin, MdPushPin } from "react-icons/md";
-import { Icon } from "@inubekit/icon";
 import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon } from "@inubekit/inubekit";
 
 import {
   truncateTextToMaxLength,
@@ -68,12 +67,7 @@ function SummaryCardUI(props: SummaryCardProps) {
         <StyledDivider />
         <Stack gap="8px" justifyContent="flex-end" padding="8px 0px">
           {hasMessage && (
-            <Icon
-              icon={<MdOutlineMessage />}
-              appearance="dark"
-              size="20px"
-              cursorHover
-            />
+            <Icon icon={<MdOutlineMessage />} appearance="dark" size="20px" />
           )}
           <Icon
             icon={isPinned ? <MdPushPin /> : <MdOutlinePushPin />}

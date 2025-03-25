@@ -8,19 +8,19 @@ import {
   MdOutlineShare,
 } from "react-icons/md";
 import { Button } from "@inubekit/button";
-import { Icon } from "@inubekit/icon";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon } from "@inubekit/inubekit";
 
 import { MenuProspect } from "@components/navigation/MenuProspect";
 import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
 import { ReciprocityModal } from "@components/modals/ReciprocityModal";
 import { ScoreModal } from "@components/modals/FrcModal";
 import { EditProductModal } from "@components/modals/ProspectProductModal";
-import { IncomeModal } from "@components/modals/IncomeModal";
+import { IncomeModal } from "@pages/prospect/components/modals/IncomeModal";
 import { ReportCreditsModal } from "@components/modals/ReportCreditsModal";
 import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
 import { CreditLimit } from "@components/modals/CreditLimit";
 
+import { ShareCreditModal } from "@components/modals/ShareCreditModal";
 import { ICreditProductProspect } from "@services/types";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { addCreditProduct } from "@mocks/utils/addCreditProductMock.service";
@@ -36,19 +36,22 @@ import {
 import { CardCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/CardCommercialManagement";
 
 import { dataCreditProspect } from "./config";
+import { StyledPrint } from "./styles";
 
 interface ICreditProspectProps {
   showMenu: () => void;
   isMobile: boolean;
-  isPrint?: boolean | undefined;
+  isPrint?: boolean;
   showPrint?: boolean;
 }
 
 export function CreditProspect(props: ICreditProspectProps) {
-  const { showMenu, isMobile, isPrint, showPrint } = props;
+  const { showMenu, isMobile, isPrint = false, showPrint = true } = props;
 
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [openModal, setOpenModal] = useState<string | null>(null);
+  const [showShareModal, setShowShareModal] = useState(false);
+
   const handleOpenModal = (modalName: string) => {
     setModalHistory((prevHistory) => [...prevHistory, modalName]);
   };
@@ -140,73 +143,77 @@ export function CreditProspect(props: ICreditProspectProps) {
   return (
     <Stack direction="column" gap="24px">
       {!isMobile && (
-        <Stack gap="16px" justifyContent="end" alignItems="center">
-          <Button
-            type="button"
-            appearance="primary"
-            spacing="compact"
-            iconBefore={
-              <Icon
-                icon={<MdOutlineAdd />}
-                appearance="light"
-                size="18px"
-                spacing="narrow"
-              />
-            }
-            onClick={() => handleOpenModal("editProductModal")}
-          >
-            {dataCreditProspect.addProduct}
-          </Button>
-          {prospectProducts?.ordinary_installment_for_principal && (
+        <StyledPrint>
+          <Stack gap="16px" justifyContent="end" alignItems="center">
             <Button
               type="button"
               appearance="primary"
               spacing="compact"
-              variant="outlined"
               iconBefore={
                 <Icon
-                  icon={<MdOutlinePayments />}
-                  appearance="primary"
+                  icon={<MdOutlineAdd />}
+                  appearance="light"
                   size="18px"
                   spacing="narrow"
                 />
               }
-              onClick={() => handleOpenModal("extraPayments")}
+              onClick={() => handleOpenModal("editProductModal")}
             >
-              {dataCreditProspect.extraPayment}
+              {dataCreditProspect.addProduct}
             </Button>
-          )}
-          <StyledVerticalDivider />
-          <StyledContainerIcon>
-            {showPrint && (
-              <Stack gap="8px">
-                <Icon
-                  icon={<MdOutlinePictureAsPdf />}
-                  appearance="primary"
-                  size="24px"
-                  disabled={isPrint}
-                  cursorHover
-                  onClick={print}
-                />
-                <Icon
-                  icon={<MdOutlineShare />}
-                  appearance="primary"
-                  size="24px"
-                  cursorHover
-                />
-                <StyledVerticalDivider />
-              </Stack>
+
+            {prospectProducts?.ordinary_installment_for_principal && (
+              <Button
+                type="button"
+                appearance="primary"
+                spacing="compact"
+                variant="outlined"
+                iconBefore={
+                  <Icon
+                    icon={<MdOutlinePayments />}
+                    appearance="primary"
+                    size="18px"
+                    spacing="narrow"
+                  />
+                }
+                onClick={() => handleOpenModal("extraPayments")}
+              >
+                {dataCreditProspect.extraPayment}
+              </Button>
             )}
-            <MenuProspect
-              only
-              options={menuOptions(
-                handleOpenModal,
-                !prospectProducts?.ordinary_installment_for_principal
+            <StyledVerticalDivider />
+            <StyledContainerIcon>
+              {showPrint && (
+                <Stack gap="8px">
+                  <Icon
+                    icon={<MdOutlinePictureAsPdf />}
+                    appearance="primary"
+                    size="24px"
+                    disabled={!isPrint}
+                    cursorHover
+                    onClick={print}
+                  />
+                  <Icon
+                    icon={<MdOutlineShare />}
+                    appearance="primary"
+                    size="24px"
+                    onClick={() => setShowShareModal(true)}
+                  cursorHover
+                  />
+                  <StyledVerticalDivider />
+                </Stack>
               )}
-              onMouseLeave={showMenu}
-            />
-          </StyledContainerIcon>
-        </Stack>
+              <MenuProspect
+                only
+                options={menuOptions(
+                  handleOpenModal,
+                  !prospectProducts?.ordinary_installment_for_principal
+                )}
+                onMouseLeave={showMenu}
+              />
+            </StyledContainerIcon>
+          </Stack>
+        </StyledPrint>
       )}
       <Stack direction="column">
         <CardCommercialManagement
@@ -219,16 +226,21 @@ export function CreditProspect(props: ICreditProspectProps) {
         <CreditLimit
           handleClose={handleCloseModal}
           title="Origen de cupo"
-          portalId="portal"
           onOpenPaymentCapacityModal={() => setOpenModal("paymentCapacity")}
           onOpenReciprocityModal={() => setOpenModal("reciprocityModal")}
           onOpenFrcModal={() => setOpenModal("scoreModal")}
+          maxPaymentCapacity={50000000}
+          maxReciprocity={40000000}
+          maxDebtFRC={45000000}
+          assignedLimit={0}
+          currentPortfolio={10000000}
+          maxUsableLimit={20000000}
+          availableLimitWithoutGuarantee={15000000}
         />
       )}
       {openModal === "paymentCapacity" && (
         <PaymentCapacity
           title="Cupo máx. capacidad de pago"
-          portalId="portal"
           handleClose={() => setOpenModal(null)}
           reportedIncomeSources={2000000}
           reportedFinancialObligations={6789000}
@@ -240,7 +252,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       )}
       {openModal === "reciprocityModal" && (
         <ReciprocityModal
-          portalId="portal"
           handleClose={() => setOpenModal(null)}
           balanceOfContributions={4000000}
           accordingToRegulation={2}
@@ -264,7 +275,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       )}
       {currentModal === "editProductModal" && (
         <EditProductModal
-          portalId="portal"
           title="Agregar productos"
           confirmButtonText="Guardar"
           initialValues={initialValues}
@@ -275,16 +285,18 @@ export function CreditProspect(props: ICreditProspectProps) {
       )}
       {currentModal === "IncomeModal" && (
         <IncomeModal
-          onChange={onChanges}
-          form={form}
           handleClose={handleCloseModal}
-          options={incomeOptions}
+          onlyDebtor={true}
+          disabled={true}
+          openModal={() => setOpenModal("IncomeModalEdit")}
         />
+      )}
+      {openModal === "IncomeModalEdit" && (
+        <IncomeModal handleClose={() => setOpenModal(null)} />
       )}
       {currentModal === "reportCreditsModal" && (
         <ReportCreditsModal
           handleClose={handleCloseModal}
-          portalId="portal"
           totalBalance={87000000}
           totalFee={3300000}
           options={incomeOptions}
@@ -295,8 +307,13 @@ export function CreditProspect(props: ICreditProspectProps) {
       {currentModal === "extraPayments" && (
         <ExtraordinaryPaymentModal
           dataTable={extraordinaryInstallmentMock}
-          portalId="portal"
           handleClose={handleCloseModal}
+        />
+      )}
+      {showShareModal && (
+        <ShareCreditModal
+          handleClose={() => setShowShareModal(false)}
+          isMobile={isMobile}
         />
       )}
     </Stack>

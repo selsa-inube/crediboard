@@ -1,5 +1,5 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
@@ -7,6 +7,7 @@ import {
 import { IDecisionsToDo } from "@services/types";
 
 export const getSearchDecisionById = async (
+  businessUnitPublicCode: string,
   creditRequestId: string
 ): Promise<IDecisionsToDo> => {
   const maxRetries = maxRetriesServices;
@@ -16,21 +17,20 @@ export const getSearchDecisionById = async (
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      const queryParams = new URLSearchParams({
-        sort: "decision",
-      });
+      const queryParams = new URLSearchParams();
+      queryParams.set("sort", "decision");
       const options: RequestInit = {
         method: "GET",
         headers: {
           "X-Action": "SearchDecisionByTaskToBeDone",
-          "X-Business-Unit": enviroment.BUSINESS_UNIT,
+          "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/${creditRequestId}?${queryParams.toString()}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/${creditRequestId}?${queryParams.toString()}`,
         options
       );
 

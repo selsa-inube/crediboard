@@ -63,7 +63,6 @@ export const Create: Story = (args: EditProductModalProps) => {
 };
 
 Create.args = {
-  portalId: "portal",
   title: "Agregar producto",
   confirmButtonText: "Agregar",
   iconBefore: <MdAdd />,
@@ -107,7 +106,6 @@ export const Edit: Story = (args: EditProductModalProps) => {
 };
 
 Edit.args = {
-  portalId: "portal",
   title: "Nombre de producto",
   confirmButtonText: "Actualizar",
   iconAfter: <MdCached />,

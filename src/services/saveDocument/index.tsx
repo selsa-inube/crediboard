@@ -1,10 +1,11 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
 
 export const saveDocument = async (
+  businessUnitPublicCode: string,
   creditRequestId: string | undefined,
   abbreviatedName: string | undefined,
   file: File | undefined
@@ -29,13 +30,13 @@ export const saveDocument = async (
         method: "POST",
         headers: {
           "X-Action": "SaveDocument",
-          "X-Business-Unit": "test", //enviroment.BUSINESS_UNIT,
+          "X-Business-Unit": businessUnitPublicCode,
         },
         body: formData,
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
+        `${environment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
         options
       );
 

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { useParams } from "react-router-dom";
+import { useFormik } from "formik";
 import { Grid } from "@inubekit/grid";
 import { Button } from "@inubekit/button";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 
 import { CardBorrower } from "@components/cards/CardBorrower";
 import { NewCardBorrower } from "@components/cards/CardBorrower/newCard";
@@ -12,30 +13,92 @@ import { DeleteModal } from "@components/modals/DeleteModal";
 import { DebtorAddModal } from "@pages/prospect/components/modals/DebtorAddModal";
 import { DebtorDetailsModal } from "@pages/prospect/components/modals/DebtorDetailsModal";
 import { DebtorEditModal } from "@pages/prospect/components/modals/DebtorEditModal";
-import { mockGuaranteeBorrower } from "@mocks/guarantee/offeredguarantee.mock";
 import { dataFillingApplication } from "@pages/filingApplication/config/config";
+import { mockGuaranteeBorrower } from "@mocks/guarantee/offeredguarantee.mock";
 import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
+import { MockDataDebtor } from "@mocks/filing-application/add-borrower/addborrower.mock";
+import { income } from "@mocks/add-prospect/income/income.mock";
+import { mockFinancialObligation } from "@mocks/add-prospect/financial-obligation/financialobligation.mock";
 
 interface borrowersProps {
   isMobile: boolean;
-  initialValues: {
-    name: string;
-    lastName: string;
-    email: string;
-    income: number;
-    obligations: number;
-  };
   onFormValid: (isValid: boolean) => void;
-  handleOnChange: (values: {
-    name: string;
-    lastName: string;
-    email: string;
-    income: number;
-    obligations: number;
-  }) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  initialValues: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleOnChange: (values: any) => void;
 }
 export function Borrowers(props: borrowersProps) {
-  const { isMobile } = props;
+  const { handleOnChange, initialValues, isMobile } = props;
+
+  const dataDebtorDetail = MockDataDebtor[0];
+  const dataIncome = income[0];
+
+  const initialBorrowers = mockGuaranteeBorrower.reduce(
+    (acc, item, index) => {
+      const financialDetails = mockFinancialObligation.map((financial) => ({
+        id: financial.id,
+        type: financial.type,
+        balance: financial.balance,
+        entity: financial.entity,
+        payment: financial.payment,
+        idUser: financial.idUser,
+        feePaid: financial.feePaid,
+      }));
+
+      acc[`borrower${index + 1}`] = {
+        id: item.id,
+        name: item.name,
+        debtorDetail: {
+          document: dataDebtorDetail?.TypeDocument || "",
+          documentNumber: dataDebtorDetail?.NumberDocument || "",
+          name: dataDebtorDetail?.Name || "",
+          lastName: dataDebtorDetail?.LastName || "",
+          email: dataDebtorDetail?.Email || "",
+          number: dataDebtorDetail?.Number || "",
+          sex: dataDebtorDetail?.Sex || "",
+          age: dataDebtorDetail?.Age || "",
+          relation: dataDebtorDetail?.Relation || "",
+        },
+        incomeDetail: {
+          borrower: dataIncome?.borrower || "",
+          leases: dataIncome?.capital[0] || "",
+          dividends: dataIncome?.capital[1] || "",
+          yields: dataIncome?.capital[2] || "",
+          salary: dataIncome?.employment[0] || "",
+          otherPay: dataIncome?.employment[1] || "",
+          allowances: dataIncome?.employment[2] || "",
+          revenue: dataIncome?.businesses[0] || "",
+          fee: dataIncome?.businesses[1] || "",
+        },
+        financialDetail: financialDetails,
+      };
+      return acc;
+    },
+    {} as Record<
+      string,
+      {
+        name: string;
+        id: string;
+        debtorDetail: Record<string, string | number>;
+        incomeDetail: Record<string, string | number>;
+        financialDetail: Array<Record<string, string | number>>;
+      }
+    >
+  );
+
+  const formik = useFormik({
+    initialValues: {
+      ...initialValues,
+      initialBorrowers,
+    },
+    validateOnMount: true,
+    onSubmit: () => {},
+  });
+
+  useEffect(() => {
+    handleOnChange(formik.values);
+  }, [formik.values, handleOnChange]);
 
   const [isModalAdd, setIsModalAdd] = useState(false);
   const [isModalView, setIsModalView] = useState(false);
@@ -80,7 +143,13 @@ export function Borrowers(props: borrowersProps) {
               income={item.income}
               obligations={item.obligations}
               isMobile={isMobile}
-              handleView={() => setIsModalView(true)}
+              handleView={() => {
+                setIsModalView(true);
+                formik.setFieldValue(
+                  "debtorDetail",
+                  initialBorrowers[`borrower${index + 1}`].debtorDetail
+                );
+              }}
               handleEdit={() => setIsModalEdit(true)}
               handleDelete={() => setIsModalDelete(true)}
             />
@@ -101,6 +170,7 @@ export function Borrowers(props: borrowersProps) {
             <DebtorDetailsModal
               handleClose={() => setIsModalView(false)}
               isMobile={isMobile}
+              initialValues={formik.values.debtorDetail}
             />
           )}
           {isModalDelete && (

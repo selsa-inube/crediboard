@@ -1,22 +1,9 @@
-import { useEffect, useContext } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLogin } from "@hooks/useLogin";
+
 import { LoginUI } from "./interface";
-import { AppContext } from "@context/AppContext/AppContext";
 
 function Login() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { user } = useContext(AppContext);
-
-  useEffect(() => {
-    if (
-      location.pathname === "/login" ||
-      location.pathname === "/login/" ||
-      location.pathname === "/"
-    ) {
-      navigate(`/login/${user.id}/checking-credentials/`);
-    }
-  }, [location, navigate, user]);
+  useLogin();
 
   return <LoginUI />;
 }

@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { MdCached } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
+import { useEffect, useState } from "react";
+import { MdCached, MdOutlineEdit } from "react-icons/md";
+import { Stack } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Grid } from "@inubekit/grid";
@@ -10,57 +10,82 @@ import { Button } from "@inubekit/button";
 import { incomeCardData } from "@components/cards/IncomeCard/config";
 import { ListModal } from "@components/modals/ListModal";
 import { CardGray } from "@components/cards/CardGray";
-import { currencyFormat } from "@utils/formatData/currency";
+import { IncomeModal } from "@pages/prospect/components/modals/IncomeModal";
+import {
+  currencyFormat,
+  parseCurrencyString,
+} from "@utils/formatData/currency";
+import { get } from "@mocks/utils/dataMock.service";
+import { IIncome } from "@services/types";
 
 import { IncomeEmployment, IncomeCapital, MicroBusinesses } from "./config";
 import { StyledContainer } from "./styles";
+import { dataReport } from "../TableObligationsFinancial/config";
 
 interface ISourceIncomeProps {
-  onChange: (name: string, newValue: string) => void;
-  form: {
-    borrower: string;
-    monthly_salary?: number;
-    other_monthly_payments?: number;
-    pension_allowances?: number;
-    leases?: number;
-    dividends_or_shares?: number;
-    financial_returns?: number;
-    average_monthly_profit?: number;
-    monthly_fees?: number;
-  };
-  options: { id: string; label: string; value: string }[];
+  openModal?: (state: boolean) => void;
   ShowSupport?: boolean;
   onlyDebtor?: boolean;
+  disabled?: boolean;
 }
 
 export function SourceIncome(props: ISourceIncomeProps) {
-  const { form, onChange, options, ShowSupport, onlyDebtor } = props;
+  const { openModal, ShowSupport, onlyDebtor, disabled } = props;
 
   const [isOpenModal, setIsOpenModal] = useState(false);
-
-  const handleFieldChange = (
-    fields: string[],
-    index: number,
-    newValue: string
-  ) => {
-    const field = fields[index];
-    if (field) {
-      onChange(field, newValue);
-    }
-  };
+  const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+  const [values, setValues] = useState<IIncome | null>(null);
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
+  const handleSelectChange = (name: string, newValue: string) => {
+    setValues((prev) => (prev ? { ...prev, [name]: newValue } : null));
+  };
+
   const totalSum = () => {
-    return (
-      (form.monthly_salary ?? 0) +
-      (form.other_monthly_payments ?? 0) +
-      (form.pension_allowances ?? 0) +
-      (form.leases ?? 0) +
-      (form.dividends_or_shares ?? 0) +
-      (form.financial_returns ?? 0) +
-      (form.average_monthly_profit ?? 0) +
-      (form.monthly_fees ?? 0)
+    const sumCapital =
+      values?.capital.reduce((acc, val) => acc + parseCurrencyString(val), 0) ??
+      0;
+    const sumEmployment =
+      values?.employment.reduce(
+        (acc, val) => acc + parseCurrencyString(val),
+        0
+      ) ?? 0;
+    const sumBusinesses =
+      values?.businesses.reduce(
+        (acc, val) => acc + parseCurrencyString(val),
+        0
+      ) ?? 0;
+
+    return sumCapital + sumEmployment + sumBusinesses;
+  };
+
+  useEffect(() => {
+    get<IIncome[]>("income_mock")
+      .then((data) => {
+        if (data && Array.isArray(data) && data.length > 0) {
+          setValues(data[0]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching money destinations data:", error.message);
+      });
+  }, []);
+
+  const handleIncomeChange = (
+    category: "employment" | "capital" | "businesses",
+    index: number,
+    newValue: string
+  ) => {
+    setValues((prev) =>
+      prev
+        ? {
+            ...prev,
+            [category]: prev[category].map((val, i) =>
+              i === index ? newValue : val
+            ),
+          }
+        : null
     );
   };
 
@@ -86,9 +111,9 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   name="borrower"
                   label="Deudor"
                   placeholder="Seleccione una opción"
-                  options={options}
-                  value={form.borrower}
-                  onChange={(name, value) => onChange(name, value)}
+                  options={values?.borrowers || []}
+                  value={values?.borrower || ""}
+                  onChange={handleSelectChange}
                   size="compact"
                   fullwidth
                 />
@@ -100,12 +125,12 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   {incomeCardData.borrower}
                 </Text>
                 <Text type="title" size="medium">
-                  {form.borrower}
+                  {values?.borrower}
                 </Text>
               </Stack>
             )}
             {onlyDebtor && isMobile && (
-              <CardGray label="Deudor" placeHolder={form.borrower} />
+              <CardGray label="Deudor" placeHolder={values?.borrower} />
             )}
             <Stack
               width={!isMobile ? "end" : "auto"}
@@ -126,7 +151,11 @@ export function SourceIncome(props: ISourceIncomeProps) {
               </Text>
             </Stack>
             {onlyDebtor && (
-              <Stack alignItems="end" width={isMobile ? "100%" : "auto"}>
+              <Stack
+                width={isMobile ? "100%" : "auto"}
+                gap="16px"
+                margin="auto 0 0 0"
+              >
                 <Button
                   variant="outlined"
                   iconBefore={<MdCached />}
@@ -134,6 +163,14 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   onClick={() => setIsOpenModal(true)}
                 >
                   {incomeCardData.restore}
+                </Button>
+                <Button
+                  iconBefore={<MdOutlineEdit />}
+                  onClick={() =>
+                    openModal ? openModal(true) : setIsOpenEditModal(true)
+                  }
+                >
+                  {dataReport.edit}
                 </Button>
               </Stack>
             )}
@@ -145,46 +182,34 @@ export function SourceIncome(props: ISourceIncomeProps) {
             gap="16px"
             autoRows="auto"
           >
-            <IncomeEmployment
-              values={[
-                form.monthly_salary?.toString() ?? "",
-                form.other_monthly_payments?.toString() ?? "",
-                form.pension_allowances?.toString() ?? "",
-              ]}
-              onChange={(index, newValue) =>
-                handleFieldChange(
-                  ["salarioMensual", "otrosPagos", "mesadaPensional"],
-                  index,
-                  newValue
-                )
-              }
-              ShowSupport={ShowSupport}
-            />
-            <IncomeCapital
-              values={[
-                form.leases?.toString() ?? "",
-                form.dividends_or_shares?.toString() ?? "",
-                form.financial_returns?.toString() ?? "",
-              ]}
-              onChange={(index, newValue) =>
-                handleFieldChange(
-                  ["arrendamientos", "dividendos", "rendimientosFinancieros"],
-                  index,
-                  newValue
-                )
-              }
-              ShowSupport={ShowSupport}
-            />
-            <MicroBusinesses
-              values={[
-                form.average_monthly_profit?.toString() ?? "",
-                form.monthly_fees?.toString() ?? "",
-              ]}
-              onChange={(index, newValue) =>
-                handleFieldChange(["gananciaPromedio"], index, newValue)
-              }
-              ShowSupport={ShowSupport}
-            />
+            {values && (
+              <>
+                <IncomeEmployment
+                  values={values.employment}
+                  ShowSupport={ShowSupport}
+                  disabled={disabled}
+                  onValueChange={(index, newValue) =>
+                    handleIncomeChange("employment", index, newValue)
+                  }
+                />
+                <IncomeCapital
+                  values={values.capital}
+                  ShowSupport={ShowSupport}
+                  disabled={disabled}
+                  onValueChange={(index, newValue) =>
+                    handleIncomeChange("capital", index, newValue)
+                  }
+                />
+                <MicroBusinesses
+                  values={values.businesses}
+                  ShowSupport={ShowSupport}
+                  disabled={disabled}
+                  onValueChange={(index, newValue) =>
+                    handleIncomeChange("businesses", index, newValue)
+                  }
+                />
+              </>
+            )}
           </Grid>
         </Stack>
       </Stack>
@@ -197,6 +222,13 @@ export function SourceIncome(props: ISourceIncomeProps) {
           appearanceCancel="gray"
           buttonLabel={incomeCardData.restore}
           content={incomeCardData.description}
+        />
+      )}
+      {isOpenEditModal && (
+        <IncomeModal
+          handleClose={() => setIsOpenEditModal(false)}
+          onlyDebtor={false}
+          disabled={false}
         />
       )}
     </StyledContainer>

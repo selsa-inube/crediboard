@@ -3,19 +3,21 @@ import { useParams } from "react-router-dom";
 import { MdOutlineBeachAccess, MdOutlineShare } from "react-icons/md";
 import { Divider } from "@inubekit/divider";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Icon } from "@inubekit/icon";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon } from "@inubekit/inubekit";
 import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
 
+import { ShareCreditModal } from "@components/modals/ShareCreditModal";
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
 import { mockEditProspect } from "@mocks/add-prospect/edit-prospect/editprospect.mock";
 
+import { StyledMarginPrint, StyledPrint } from "./styles";
 import { dataEditProspect } from "./config";
 
 export function EditProspect() {
   const [showMenu, setShowMenu] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   const isMobile = useMediaQuery("(max-width:880px)");
   const { id } = useParams();
@@ -23,6 +25,7 @@ export function EditProspect() {
   const data = mockEditProspect[0];
 
   return (
+    <StyledMarginPrint>
     <Stack padding="24px">
       <Stack
         width={isMobile ? "-webkit-fill-available" : "min(100%,1440px)"}
@@ -44,12 +47,15 @@ export function EditProspect() {
                   #{id}
                 </Text>
               </Stack>
-              <Icon
-                icon={<MdOutlineShare />}
-                appearance="primary"
-                size="20px"
-                cursorHover
+              <StyledPrint>
+                <Icon
+                  icon={<MdOutlineShare />}
+                  appearance="primary"
+                  size="20px"
+                  cursorHover
+                  onClick={() => setShowShareModal(true)}
               />
+              </StyledPrint>
             </Stack>
             <Divider dashed />
             <Stack
@@ -84,14 +90,24 @@ export function EditProspect() {
                 </Text>
               </Stack>
               <Stack direction="column" alignItems="center" gap="8px">
-                <Text
-                  type="headline"
-                  weight="bold"
-                  size="large"
-                  appearance="primary"
-                >
-                  $ {data.value}
-                </Text>
+                <Stack gap="8px">
+                  <Text
+                    type="headline"
+                    weight="bold"
+                    size="large"
+                    appearance="primary"
+                  >
+                    $
+                  </Text>
+                  <Text
+                    type="headline"
+                    weight="bold"
+                    size="large"
+                    appearance="primary"
+                  >
+                    {data.value}
+                  </Text>
+                </Stack>
                 <Text type="body" size="small" appearance="gray">
                   {dataEditProspect.value}
                 </Text>
@@ -103,16 +119,27 @@ export function EditProspect() {
           <CreditProspect
             isMobile={isMobile}
             showMenu={() => setShowMenu(false)}
+            showPrint={true}
+            isPrint={true}
           />
         </Fieldset>
-        <Stack gap="20px" justifyContent="end">
-          <Button appearance="danger" variant="outlined">
-            {dataEditProspect.delete}
-          </Button>
-          <Button>{dataEditProspect.confirm}</Button>
-        </Stack>
+        <StyledPrint>
+          <Stack gap="20px" justifyContent="end">
+            <Button appearance="danger" variant="outlined">
+              {dataEditProspect.delete}
+            </Button>
+            <Button>{dataEditProspect.confirm}</Button>
+          </Stack>
+        </StyledPrint>
       </Stack>
       {showMenu && <Stack></Stack>}
+      {showShareModal && (
+        <ShareCreditModal
+          isMobile={isMobile}
+          handleClose={() => setShowShareModal(false)}
+        />
+      )}
     </Stack>
+    </StyledMarginPrint>
   );
 }
