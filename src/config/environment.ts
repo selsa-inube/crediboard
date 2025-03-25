@@ -2,7 +2,7 @@ const IS_PRODUCTION = import.meta.env.PROD;
 export const AUTH_REDIRECT_URI = import.meta.env.VITE_AUTH0_REDIRECT_URI;
 const GOOGLE_REDIRECT_URI = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
 
-const enviroment = {
+const environment = {
   CLIENT_ID: import.meta.env.VITE_AUTH0_CLIENT_ID,
   CLIENT_SECRET: import.meta.env.VITE_AUTH0_CLIENT_SECRET,
   REDIRECT_URI: !IS_PRODUCTION ? window.location.origin : AUTH_REDIRECT_URI,
@@ -11,7 +11,7 @@ const enviroment = {
     : GOOGLE_REDIRECT_URI,
   AUTH0_DOMAIN: import.meta.env.VITE_AUTH0_DOMAIN,
   TEMP_BUSINESS_UNIT: "public",
-  BUSINESS_UNIT: import.meta.env.VITE_BUSINESS_UNIT,
+  //BUSINESS_UNIT: import.meta.env.VITE_BUSINESS_UNIT, --ojo
   ICOREBANKING_API_URL_QUERY: import.meta.env.VITE_ICOREBANKING_API_URL_QUERY,
   ICOREBANKING_API_URL_PERSISTENCE: import.meta.env
     .VITE_ICOREBANKING_API_URL_PERSISTENCE,
@@ -26,4 +26,4 @@ const enviroment = {
 const maxRetriesServices = 5;
 const fetchTimeoutServices = 3000;
 
-export { enviroment, fetchTimeoutServices, maxRetriesServices };
+export { environment, fetchTimeoutServices, maxRetriesServices };

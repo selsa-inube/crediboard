@@ -1,11 +1,12 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
 import { IPromissoryNotes } from "@services/types";
 
 export const getPromissoryNotesById = async (
+  businessUnitPublicCode: string,
   creditRequestId: string
 ): Promise<IPromissoryNotes[]> => {
   const maxRetries = maxRetriesServices;
@@ -20,14 +21,14 @@ export const getPromissoryNotesById = async (
         method: "GET",
         headers: {
           "X-Action": "SearchAllPromissoryNotesById",
-          "X-Business-Unit": enviroment.BUSINESS_UNIT,
+          "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/promissory-notes/${creditRequestId}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/promissory-notes/${creditRequestId}`,
         options
       );
 

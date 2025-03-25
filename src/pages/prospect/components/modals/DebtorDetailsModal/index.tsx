@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Tabs } from "@inubekit/tabs";
 
 import { BaseModal } from "@components/modals/baseModal";
+import { IDebtorDetail } from "@pages/filingApplication/types";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 
 import { dataDetails, dataTabs } from "./config";
@@ -11,11 +12,12 @@ import { IncomeDebtor } from "./incomeDebtor";
 
 interface IDebtorDetailsModalProps {
   handleClose: () => void;
+  initialValues: IDebtorDetail;
   isMobile?: boolean;
 }
 
 export function DebtorDetailsModal(props: IDebtorDetailsModalProps) {
-  const { handleClose, isMobile } = props;
+  const { handleClose, initialValues, isMobile } = props;
 
   const [currentTab, setCurrentTab] = useState(dataTabs[0].id);
 
@@ -40,7 +42,7 @@ export function DebtorDetailsModal(props: IDebtorDetailsModalProps) {
           tabs={dataTabs}
           onChange={onChange}
         />
-        {currentTab === "data" && <DataDebtor />}
+        {currentTab === "data" && <DataDebtor initialValues={initialValues} />}
         {currentTab === "sources" && <IncomeDebtor />}
         {currentTab === "obligations" && <TableFinancialObligations />}
       </Stack>

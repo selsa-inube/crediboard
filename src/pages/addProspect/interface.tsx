@@ -1,12 +1,12 @@
 import { Assisted } from "@inubekit/assisted";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
 
-import { GeneralHeader } from "./components/GeneralHeader";
 import { ButtonRequirements } from "@pages/prospect/components/buttonRequirements";
 import { RequirementsModal } from "@pages/prospect/components/modals/RequirementsModal";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 
+import { GeneralHeader } from "./components/GeneralHeader";
 import { ExtraordinaryInstallments } from "./steps/extraordinaryInstallments";
 import { stepsAddProspect } from "./config/addProspect.config";
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
@@ -22,19 +22,12 @@ import { LoanCondition } from "./steps/loanCondition";
 import { ExtraDebtors } from "./steps/extraDebtors";
 
 interface AddPositionUIProps {
-  currentStep: number;
-  steps: IStep[];
-  isCurrentFormValid: boolean;
-  isModalOpenRequirements: boolean;
   setIsModalOpenRequirements: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;
   handleNextStep: () => void;
   handlePreviousStep: () => void;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   handleSubmitClick: () => void;
-  currentStepsNumber?: StepDetails;
-  formData: FormData;
-  selectedProducts: string[];
   setSelectedProducts: React.Dispatch<React.SetStateAction<string[]>>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleFormDataChange: (field: string, newValue: any) => void;
@@ -43,26 +36,33 @@ interface AddPositionUIProps {
     oldValue: number,
     newValue: number
   ) => void;
+  currentStep: number;
+  steps: IStep[];
+  isCurrentFormValid: boolean;
+  isModalOpenRequirements: boolean;
+  formData: FormData;
+  selectedProducts: string[];
   isMobile: boolean;
   isTablet: boolean;
+  currentStepsNumber?: StepDetails;
 }
 
 export function AddProspectUI(props: AddPositionUIProps) {
   const {
-    currentStepsNumber,
-    handleSubmitClick,
-    steps,
-    isCurrentFormValid,
-    isModalOpenRequirements,
     setIsModalOpenRequirements,
     setIsCurrentFormValid,
     handleNextStep,
     handlePreviousStep,
-    formData,
+    handleSubmitClick,
     handleFormDataChange,
-    selectedProducts,
     setSelectedProducts,
     handleConsolidatedCreditChange,
+    currentStepsNumber,
+    steps,
+    isCurrentFormValid,
+    isModalOpenRequirements,
+    formData,
+    selectedProducts,
     isMobile,
     isTablet,
   } = props;

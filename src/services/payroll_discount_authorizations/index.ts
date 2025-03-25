@@ -1,11 +1,12 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
 import { IPayrollDiscountAuthorization } from "@services/types";
 
 export const getPayrollDiscountAuthorizationById = async (
+  businessUnitPublicCode: string,
   creditRequestId: string
 ): Promise<IPayrollDiscountAuthorization[]> => {
   const maxRetries = maxRetriesServices;
@@ -20,14 +21,14 @@ export const getPayrollDiscountAuthorizationById = async (
         method: "GET",
         headers: {
           "X-Action": "SearchAllPayrollDiscountAuthorizationsById",
-          "X-Business-Unit": enviroment.BUSINESS_UNIT,
+          "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/payroll-discount-authorizations/${creditRequestId}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/payroll-discount-authorizations/${creditRequestId}`,
         options
       );
 

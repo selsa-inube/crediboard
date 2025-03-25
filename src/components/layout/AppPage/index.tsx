@@ -1,8 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
-import { Grid } from "@inubekit/grid";
-import { Icon } from "@inubekit/icon";
+import { Icon, Grid } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Header } from "@inubekit/header";
 
@@ -66,7 +65,9 @@ function AppPage() {
   };
 
   const isTablet: boolean = useMediaQuery("(max-width: 1024px)");
-  const [selectedClient, setSelectedClient] = useState<string>("");
+  const [selectedClient, setSelectedClient] = useState<string>(
+    eventData.businessUnit.abbreviatedName
+  );
   useEffect(() => {
     const selectUser = document.querySelector("header div div:nth-child(2)");
     const handleToggleuserMenu = () => {

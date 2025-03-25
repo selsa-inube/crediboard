@@ -1,26 +1,27 @@
 import { useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Grid } from "@inubekit/grid";
+import { Grid } from "@inubekit/inubekit";
 import { Textfield } from "@inubekit/textfield";
 
 import { CardGray } from "@components/cards/CardGray";
 import { Fieldset } from "@components/data/Fieldset";
+import { IContactInformation } from "@pages/filingApplication/types";
+import { mockContactInformation } from "@mocks/filing-application/contact-information/contactinformation.mock";
 
 import { dataContactInformation } from "./config";
 
 interface IContactInformationProps {
-  isMobile: boolean;
-  initialValues: {
-    email: string;
-    phone: string;
-  };
   onFormValid: (isValid: boolean) => void;
-  handleOnChange: (values: { email: string; phone: string }) => void;
+  handleOnChange: (values: IContactInformation) => void;
+  isMobile: boolean;
+  initialValues: IContactInformation;
 }
 
 export function ContactInformation(props: IContactInformationProps) {
-  const { isMobile, initialValues, onFormValid, handleOnChange } = props;
+  const { onFormValid, handleOnChange, isMobile, initialValues } = props;
+
+  const data = mockContactInformation[0];
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -28,7 +29,13 @@ export function ContactInformation(props: IContactInformationProps) {
   });
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues: {
+      ...initialValues,
+      document: data.document,
+      documentNumber: data.documentNumber,
+      name: data.name,
+      lastName: data.lastName,
+    },
     validationSchema,
     validateOnMount: true,
     onSubmit: () => {},
@@ -60,19 +67,19 @@ export function ContactInformation(props: IContactInformationProps) {
       >
         <CardGray
           label={dataContactInformation.cardDocument}
-          placeHolder={dataContactInformation.placeDocument}
+          placeHolder={formik.values.document}
         />
         <CardGray
           label={dataContactInformation.cardDocumentNumber}
-          placeHolder={dataContactInformation.placeDocumentNumber}
+          placeHolder={formik.values.documentNumber}
         />
         <CardGray
           label={dataContactInformation.cardName}
-          placeHolder={dataContactInformation.placeName}
+          placeHolder={formik.values.name}
         />
         <CardGray
           label={dataContactInformation.cardLastName}
-          placeHolder={dataContactInformation.placeLastName}
+          placeHolder={formik.values.lastName}
         />
         <Textfield
           name="email"
