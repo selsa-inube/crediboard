@@ -2,7 +2,7 @@ import { CreditRequest } from "@services/types";
 
 export const requirementsMock: CreditRequest[] = [
   {
-    credit_request_id: "999990",
+    credit_request_id: "SC-171008156",
     system_validations: {
       "Que el asociado sea activo": "Y",
       "Que este al día con las obligaciones": "Y",

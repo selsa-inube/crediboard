@@ -38,6 +38,7 @@ function BoardLayout() {
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
+  const identificationStaff = eventData.user.staff.identificationDocumentNumber;
   const staffId = eventData.user.staff.staffId;
 
   useEffect(() => {
@@ -117,7 +118,7 @@ function BoardLayout() {
       return activeFilterIds.some((filterId) => {
         switch (filterId) {
           case "1":
-            return request.userWhoPinnnedId;
+            return request.userWhoPinnnedId === staffId;
           case "2":
             return [
               "GESTION_COMERCIAL",
@@ -145,6 +146,7 @@ function BoardLayout() {
       });
     });
     setFilteredRequests(finalFilteredRequests);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, boardData]);
 
   const handleFiltersChange = (newFilters: Partial<typeof filters>) => {
@@ -177,27 +179,33 @@ function BoardLayout() {
 
   const handlePinRequest = async (
     creditRequestId: string | undefined,
+    identificationNumber: string[],
     userWhoPinnnedId: string,
     isPinned: string
   ) => {
-    if (userWhoPinnnedId !== staffId && isPinned === "N") {
+    if (
+      userWhoPinnnedId === staffId ||
+      identificationNumber.includes(identificationStaff)
+    ) {
+      setBoardData((prevState) => ({
+        ...prevState,
+        requestsPinned: prevState.requestsPinned.map((card) =>
+          card.creditRequestId === creditRequestId
+            ? { ...card, isPinned }
+            : card
+        ),
+      }));
+      await ChangeAnchorToCreditRequest(
+        businessUnitPublicCode,
+        userAccount,
+        creditRequestId,
+        isPinned
+      );
+      await fetchBoardData(businessUnitPublicCode);
+    } else {
       setIsOpenModal(true);
       return;
     }
-
-    setBoardData((prevState) => ({
-      ...prevState,
-      requestsPinned: prevState.requestsPinned.map((card) =>
-        card.creditRequestId === creditRequestId ? { ...card, isPinned } : card
-      ),
-    }));
-    await ChangeAnchorToCreditRequest(
-      businessUnitPublicCode,
-      userAccount,
-      creditRequestId,
-      isPinned
-    );
-    await fetchBoardData(businessUnitPublicCode);
   };
 
   return (
