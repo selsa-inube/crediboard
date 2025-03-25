@@ -39,9 +39,6 @@ export interface IOptionButtons {
 
 export interface IListModalProps {
   title: string;
-  handleClose: () => void;
-  handleSubmit?: () => void;
-  onSubmit?: () => void;
   buttonLabel: string;
   cancelButton?: string;
   appearanceCancel?:
@@ -60,6 +57,9 @@ export interface IListModalProps {
   id?: string;
   dataDocument?: { id: string; name: string }[];
   isViewing?: boolean;
+  handleClose: () => void;
+  handleSubmit?: () => void;
+  onSubmit?: () => void;
 }
 
 export const ListModal = (props: IListModalProps) => {
@@ -70,13 +70,13 @@ export const ListModal = (props: IListModalProps) => {
     optionButtons,
     cancelButton,
     appearanceCancel = "primary",
-    handleClose,
-    handleSubmit,
-    onSubmit,
     buttonLabel,
     uploadMode,
     dataDocument,
     isViewing,
+    handleClose,
+    handleSubmit,
+    onSubmit,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
