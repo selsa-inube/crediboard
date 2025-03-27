@@ -1,5 +1,5 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
@@ -9,7 +9,7 @@ import { mapMoneyDestinationToEntity } from "./mappers";
 const getMoneyDestinations = async (
   businessUnitPublicCode: string
 ): Promise<IMoneyDestination[]> => {
-  const requestUrl = `${enviroment.ICOREBANKING_API_URL_QUERY}/money-destinations`;
+  const requestUrl = `${environment.ICOREBANKING_API_URL_QUERY}/money-destinations`;
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 

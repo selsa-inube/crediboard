@@ -1,11 +1,10 @@
-import { enviroment } from "@config/environment";
+import { environment } from "@config/environment";
 
 import { IStaff } from "./types";
 import { mapStaffToEntity } from "./mappers";
 
-const getStaff = async (
-): Promise<IStaff[]> => {
-  const requestUrl = `${enviroment.IVITE_IPORTAL_STAFF_QUERY_PROCESS_SERVICE}/staffs`;
+const getStaff = async (): Promise<IStaff[]> => {
+  const requestUrl = `${environment.IVITE_IPORTAL_STAFF_QUERY_PROCESS_SERVICE}/staffs`;
 
   try {
     const options: RequestInit = {
@@ -28,7 +27,7 @@ const getStaff = async (
     }
 
     return data.map((item: Record<string, string | number | object>) =>
-        mapStaffToEntity(item)
+      mapStaffToEntity(item)
     );
   } catch (error) {
     console.error(error);

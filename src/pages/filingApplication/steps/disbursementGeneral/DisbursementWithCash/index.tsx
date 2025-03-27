@@ -2,10 +2,9 @@ import { useEffect, useRef } from "react";
 import { Checkbox } from "@inubekit/checkbox";
 import { Divider } from "@inubekit/divider";
 import { Toggle } from "@inubekit/toggle";
-import { Stack } from "@inubekit/stack";
+import { Stack, Text } from "@inubekit/inubekit";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
-import { Text } from "@inubekit/text";
 
 import {
   handleChangeWithCurrency,

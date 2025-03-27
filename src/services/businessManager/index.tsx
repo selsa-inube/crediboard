@@ -1,4 +1,4 @@
-import { enviroment } from "@config/environment";
+import { environment } from "@config/environment";
 
 import { IBusinessManagers } from "./types";
 import { mapResendApiToEntity } from "./mappers";
@@ -6,7 +6,7 @@ import { mapResendApiToEntity } from "./mappers";
 const getBusinessManagers = async (
   businessManagerId: string
 ): Promise<IBusinessManagers> => {
-  const requestUrl = `${enviroment.IVITE_ISAAS_QUERY_PROCESS_SERVICE}/business-managers/${businessManagerId}`;
+  const requestUrl = `${environment.IVITE_ISAAS_QUERY_PROCESS_SERVICE}/business-managers/${businessManagerId}`;
 
   try {
     const options: RequestInit = {
