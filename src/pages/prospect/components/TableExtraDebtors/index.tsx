@@ -14,7 +14,6 @@ import {
 import { Stack, Icon, Text, SkeletonLine, SkeletonIcon } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 
-
 import { ExtraDebtorModal } from "@components/modals/extraDebtorModal";
 
 import { headers, dataReport } from "./config";

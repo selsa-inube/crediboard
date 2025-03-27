@@ -18,6 +18,7 @@ interface BoardSectionProps {
   pinnedRequests: ICreditRequestPinned[];
   handlePinRequest: (
     requestId: string,
+    identificationNumber: string[],
     userWhoPinnnedId: string,
     isPinned: string
   ) => void;
@@ -141,6 +142,10 @@ function BoardSection(props: BoardSectionProps) {
                   if (request.creditRequestId) {
                     handlePinRequest(
                       request.creditRequestId,
+                      Object.values(request.usersByCreditRequests || {}).map(
+                        (user: { identificationNumber: string }) =>
+                          user.identificationNumber
+                      ),
                       request.userWhoPinnnedId || "",
                       isRequestPinned(request.creditRequestId, pinnedRequests)
                         ? "N"
