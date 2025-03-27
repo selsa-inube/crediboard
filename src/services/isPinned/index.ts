@@ -1,5 +1,5 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
@@ -31,7 +31,7 @@ export const getCreditRequestPin = async (
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests?${queryParams.toString()}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests?${queryParams.toString()}`,
         options
       );
 
