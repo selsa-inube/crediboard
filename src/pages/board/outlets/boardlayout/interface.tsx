@@ -3,8 +3,7 @@ import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
 import { Toggle } from "@inubekit/toggle";
 import { Textfield } from "@inubekit/textfield";
-import { Stack, Icon, Text } from "@inubekit/inubekit";
-import { Divider } from "@inubekit/divider";
+import { Stack, Icon, Text, Divider } from "@inubekit/inubekit";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { BoardSection } from "@components/layout/BoardSection";

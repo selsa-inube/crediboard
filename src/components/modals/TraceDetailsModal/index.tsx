@@ -1,4 +1,4 @@
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 
 import { CardGray } from "@components/cards/CardGray";
 import { BaseModal } from "@components/modals/baseModal";

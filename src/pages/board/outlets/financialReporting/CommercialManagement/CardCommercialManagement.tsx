@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Divider } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Divider } from "@inubekit/divider";
 
 import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { NewCreditProductCard } from "@components/cards/CreditProductCard/newCard";
