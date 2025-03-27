@@ -6,6 +6,7 @@ import { AppContext } from "@context/AppContext";
 import { postSubmitCredit } from "@services/submitCredit";
 import { userStepsMock } from "@mocks/filing-application/userSteps/users.mock";
 import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
+import { CustomerContext } from "@context/CustomerContext";
 
 import { stepsFilingApplication } from "./config/filingApplication.config";
 import { FilingApplicationUI } from "./interface";
@@ -14,6 +15,8 @@ import { dataFillingApplication } from "./config/config";
 
 export function FilingApplication() {
   const { id } = useParams();
+  const { customerData } = useContext(CustomerContext);
+
   const userId = parseInt(id || "0", 10);
 
   const { businessUnitSigla, eventData } = useContext(AppContext);
@@ -32,6 +35,8 @@ export function FilingApplication() {
     ];
 
   const fixedSteps = [1, 2, 7, 8];
+
+  const dataHeader = { name: customerData.fullName };
 
   const intermediateSteps =
     userStepsMock.find((user) => user.id === userId)?.intermediateSteps || [];
@@ -308,6 +313,7 @@ export function FilingApplication() {
         isCurrentFormValid={isCurrentFormValid}
         setIsCurrentFormValid={setIsCurrentFormValid}
         formData={formData}
+        dataHeader={dataHeader}
         handleFormChange={handleFormChange}
         handleNextStep={handleNextStep}
         handlePreviousStep={handlePreviousStep}

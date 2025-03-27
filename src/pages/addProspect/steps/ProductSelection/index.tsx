@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { Stack, Text } from "@inubekit/inubekit";
@@ -9,6 +9,9 @@ import { CardProductSelection } from "@pages/addProspect/components/CardProductS
 import { Fieldset } from "@components/data/Fieldset";
 import { mockGetMoneyDestinations } from "@mocks/add-prospect/money-destinations/moneydestinations.mock";
 import { lineOfCredit } from "@mocks/add-prospect/line-of-credit/lineOfCredit.mock";
+import { postBusinessUnitRules } from "@services/businessUnitRules";
+import { AppContext } from "@context/AppContext";
+import { CustomerContext } from "@context/CustomerContext";
 
 import { electionData } from "./config";
 
@@ -70,6 +73,116 @@ export function ProductSelection(props: IProductSelectionProps) {
     mockGetMoneyDestinations.find((item) => item.id === showQuestion)
       ?.question || [];
 
+  const { businessUnitSigla, eventData } = useContext(AppContext);
+  const { userAccount } =
+    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
+  const { customerData } = useContext(CustomerContext);
+
+  const calculateSeniorityInYears = (seniorityDate: string): number => {
+    const currentDate = new Date();
+    const affiliateDate = new Date(seniorityDate);
+
+    const timeDifference = currentDate.getTime() - affiliateDate.getTime();
+    const yearsDifference = timeDifference / (1000 * 60 * 60 * 24 * 360);
+
+    return Math.round(yearsDifference);
+  };
+
+  const rulesData = {
+    ruleName: "LineOfCredit",
+    conditions: [
+      {
+        condition: "moneyDestination",
+        value: {
+          description: showQuestion,
+        },
+      },
+      {
+        condition: "clientType",
+        value: {
+          description:
+            customerData.generalAttributeClientNaturalPersons[0].associateType,
+        },
+      },
+      {
+        condition: "contractType",
+        value: {
+          description:
+            customerData.generalAttributeClientNaturalPersons[0].employmentType.substring(
+              0,
+              2
+            ),
+        },
+      },
+    ],
+  };
+
+  const newRulesData = {
+    ruleName: "PercentagePayableViaExtraInstallments",
+    conditions: [
+      {
+        condition: "LineOfCredit",
+        value: {
+          description: "",
+        },
+      },
+      {
+        condition: "PrimaryIncomeType",
+        value: {
+          description: "",
+        },
+      },
+      {
+        condition: "ClientType",
+        value: {
+          description:
+            customerData.generalAttributeClientNaturalPersons[0].associateType,
+        },
+      },
+      {
+        condition: "LoanAmount",
+        value: {
+          amount: 0,
+        },
+      },
+      {
+        condition: "LoanTerm",
+        value: {
+          term: "",
+        },
+      },
+      {
+        condition: "AffiliateSeniority",
+        value: {
+          seniority: calculateSeniorityInYears(
+            customerData.generalAssociateAttributes[0].affiliateSeniorityDate
+          ),
+        },
+      },
+    ],
+  };
+
+  const handleSubmit = async () => {
+    try {
+      console.log("Enviando datos:", rulesData, newRulesData);
+      const response = await postBusinessUnitRules(
+        businessUnitPublicCode,
+        userAccount,
+        rulesData
+        // newRulesData
+      );
+      console.log("Respuesta del servidor:", response);
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+    }
+  };
+
+  console.log(handleSubmit);
+  // console.log(customerData);
   return (
     <Formik
       initialValues={initialValues}
