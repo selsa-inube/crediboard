@@ -6,7 +6,7 @@ import {
 import { IMoneyDestination } from "./types";
 import { mapMoneyDestinationToEntity } from "./mappers";
 
-const getMoneyDestination = async (
+const getMoneyDestinations = async (
   businessUnitPublicCode: string
 ): Promise<IMoneyDestination[]> => {
   const requestUrl = `${enviroment.ICOREBANKING_API_URL_QUERY}/money-destinations`;
@@ -59,4 +59,4 @@ const getMoneyDestination = async (
   return [];
 };
 
-export { getMoneyDestination };
+export { getMoneyDestinations };

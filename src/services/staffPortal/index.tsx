@@ -3,7 +3,7 @@ import { enviroment } from "@config/environment";
 import { IStaffPortalByBusinessManager } from "./types";
 import { mapResendApiToEntities } from "./mappers";
 
-const getStaffPortalByBusinessManager = async (): Promise<
+const getStaffPortalsByBusinessManager = async (): Promise<
   IStaffPortalByBusinessManager[]
 > => {
   const requestUrl = `${enviroment.IVITE_ISAAS_QUERY_PROCESS_SERVICE}/staff-portals-by-business-manager`;
@@ -41,4 +41,4 @@ const getStaffPortalByBusinessManager = async (): Promise<
   return [];
 };
 
-export { getStaffPortalByBusinessManager };
+export { getStaffPortalsByBusinessManager };
