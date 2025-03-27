@@ -1,5 +1,5 @@
 export interface dataTabsDisbursement {
-  disbursementAmount: number;
+  disbursementAmount: string | number;
   isInTheNameOfBorrower: string;
   payeeName: string;
   payeeSurname: string;

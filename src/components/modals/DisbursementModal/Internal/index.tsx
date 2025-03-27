@@ -29,7 +29,7 @@ export function DisbursementInternal(props: IDisbursement) {
       >
         <CardGray
           label={disbursementGeneral.label}
-          placeHolder={currencyFormat(data.disbursementAmount, false)}
+          placeHolder={currencyFormat(Number(data.disbursementAmount), false)}
         />
         <CardGray
           label={disbursementGeneral.labelToggle}

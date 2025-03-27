@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Stack } from "@inubekit/stack";
 import { Tabs } from "@inubekit/tabs";
 
@@ -35,7 +35,36 @@ export function DisbursementModal(
     data,
   } = props;
 
-  const [currentTab, setCurrentTab] = useState(dataTabs[0].id);
+  const availableTabs = dataTabs.filter((tab) => {
+    const hasValidData = (tabData: dataTabsDisbursement) =>
+      tabData && Object.values(tabData).some((value) => value !== "");
+  
+    switch (tab.id) {
+      case "Internal":
+        return hasValidData(data.internal);
+      case "External":
+        return hasValidData(data.external);
+      case "CheckEntity":
+        return hasValidData(data.CheckEntity);
+      case "CheckManagement":
+        return hasValidData(data.checkManagementData);
+      case "Cash":
+        return hasValidData(data.cash);
+      default:
+        return false;
+    }
+  });
+
+  const [currentTab, setCurrentTab] = useState(() =>
+    availableTabs.length > 0 ? availableTabs[0].id : ""
+  );
+  
+  useEffect(() => {
+    if (availableTabs.length > 0 && !availableTabs.some(tab => tab.id === currentTab)) {
+      setCurrentTab(availableTabs[0].id);
+    }
+  }, [availableTabs, currentTab]);
+  
   const onChange = (tabId: string) => {
     setCurrentTab(tabId);
   };
@@ -54,7 +83,7 @@ export function DisbursementModal(
         <Tabs
           scroll={isMobile}
           selectedTab={currentTab}
-          tabs={dataTabs}
+          tabs={availableTabs}
           onChange={onChange}
         />
       </Stack>

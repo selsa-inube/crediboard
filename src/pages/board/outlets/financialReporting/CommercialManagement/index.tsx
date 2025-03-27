@@ -138,19 +138,19 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         );
         const internalData =
           disbursement.find(
-            (item) => item.modeOfDisbursementType === "Internal"
+            (item) => item.modeOfDisbursementType === "Internal_account"
           ) || null;
         const externalData =
           disbursement.find(
-            (item) => item.modeOfDisbursementType === "External"
+            (item) => item.modeOfDisbursementType === "External_account"
           ) || null;
         const checkEntityData =
           disbursement.find(
-            (item) => item.modeOfDisbursementType === "CheckEntity"
+            (item) => item.modeOfDisbursementType === "Certified_check"
           ) || null;
         const checkManagementData =
           disbursement.find(
-            (item) => item.modeOfDisbursementType === "CheckManagement"
+            (item) => item.modeOfDisbursementType === "Business_check"
           ) || null;
         const cashData =
           disbursement.find((item) => item.modeOfDisbursementType === "Cash") ||
@@ -184,7 +184,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const currentModal = modalHistory[modalHistory.length - 1];
 
   const dataDefault: dataTabsDisbursement = {
-    disbursementAmount: 0,
+    disbursementAmount: "",
     isInTheNameOfBorrower: "",
     payeeName: "",
     payeeSurname: "",
