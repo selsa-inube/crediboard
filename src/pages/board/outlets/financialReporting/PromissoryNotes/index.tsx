@@ -10,7 +10,7 @@ import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 import { UnfoundData } from "@components/layout/UnfoundData";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
-import { getPayrollDiscountAuthorizationById } from "@services/payroll_discount_authorizations";
+import { getPayrollDiscountAuthorizationsById } from "@services/payroll_discount_authorizations";
 import { getPromissoryNotesById } from "@services/promissory_notes";
 import {
   IPayrollDiscountAuthorization,
@@ -76,7 +76,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     try {
       const [payrollDiscountResult, promissoryNotesResult] =
         await Promise.allSettled([
-          getPayrollDiscountAuthorizationById(
+          getPayrollDiscountAuthorizationsById(
             businessUnitPublicCode,
             creditRequets.creditRequestId
           ),

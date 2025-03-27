@@ -1,6 +1,6 @@
 import { Stack } from "@inubekit/inubekit";
 
-import { IMoneyDestination } from "@services/types";
+import { IMoneyDestination } from "@services/moneyDestination/types";
 import { MoneyDestinationCard } from "@components/cards/MoneyDestinationCard";
 import { Fieldset } from "@components/data/Fieldset";
 
@@ -26,17 +26,15 @@ function MoneyDestinationUI(props: MoneyDestinationUIProps) {
         {destinations &&
           destinations.map((destination) => (
             <MoneyDestinationCard
-              key={destination.money_destination_id}
-              id={destination.money_destination_id}
-              name={destination.money_destination_unique_reference}
-              value={destination.description_use}
-              label={destination.abbreviated_name}
-              icon={destination.icon}
-              handleChange={() =>
-                handleChange(destination.money_destination_id)
-              }
+              key={destination.moneyDestinationId}
+              id={destination.moneyDestinationId}
+              name={destination.abbreviatedName}
+              value={destination.descriptionUse}
+              label={destination.abbreviatedName}
+              icon={destination.iconReference}
+              handleChange={() => handleChange(destination.moneyDestinationId)}
               isSelected={
-                selectedDestination === destination.money_destination_id
+                selectedDestination === destination.moneyDestinationId
               }
             />
           ))}
