@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
-import { useFlag } from "@inubekit/flag";
+import { useFlag } from "@inubekit/inubekit";
 import { Icon } from "@inubekit/icon";
 import { SkeletonLine } from "@inubekit/skeleton";
 import { Stack } from "@inubekit/stack";

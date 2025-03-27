@@ -5,7 +5,7 @@ import { Textarea } from "@inubekit/textarea";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { useMediaQuery } from "@inubekit/hooks";
-import { useFlag } from "@inubekit/flag";
+import { useFlag } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { makeDecisions } from "@services/todo/makeDecisions";

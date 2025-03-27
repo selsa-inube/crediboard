@@ -4,7 +4,7 @@ import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
 import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
-import { useFlag } from "@inubekit/flag";
+import { useFlag } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { ICreditRequest } from "@services/types";

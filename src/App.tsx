@@ -6,7 +6,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { FlagProvider } from "@inubekit/flag";
+import { FlagProvider } from "@inubekit/inubekit";
 
 import { AppContext, AppContextProvider } from "@context/AppContext";
 import { usePortalLogic } from "@hooks/usePortalRedirect";

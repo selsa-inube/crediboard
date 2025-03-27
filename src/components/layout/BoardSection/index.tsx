@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { MdOutlineChevronRight } from "react-icons/md";
-import { useFlag } from "@inubekit/flag";
+import { useFlag } from "@inubekit/inubekit";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 import { Icon } from "@inubekit/icon";
@@ -106,8 +106,6 @@ function BoardSection(props: BoardSectionProps) {
         handleFlag(errorData.messages[0], errorData.Summary[1]);
         flagMessage.current = true;
       }
-
-      console.log(sectionInformation);
     }, 1000);
 
     return () => clearTimeout(timeout);

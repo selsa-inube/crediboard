@@ -8,7 +8,7 @@ import { Text } from "@inubekit/text";
 import { Stack } from "@inubekit/stack";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Icon } from "@inubekit/icon";
-import { useFlag } from "@inubekit/flag";
+import { useFlag } from "@inubekit/inubekit";
 import { Divider } from "@inubekit/divider";
 
 import { StyledItem } from "@pages/board/outlets/financialReporting/styles";
