@@ -14,12 +14,13 @@ import {
   Thead,
   Tr,
 } from "@inubekit/table";
-import { Text } from "@inubekit/text";
 import { SkeletonLine, SkeletonIcon } from "@inubekit/skeleton";
-import { Icon } from "@inubekit/icon";
+import { Icon, Text } from "@inubekit/inubekit";
 
 import { get } from "@mocks/utils/dataMock.service";
 import { mockAttachedDocuments } from "@mocks/filing-application/attached-documents/attacheddocuments.mock";
+import { ListModal } from "@components/modals/ListModal";
+import { optionButtons } from "@pages/board/outlets/financialReporting/config";
 
 import { headers, dataReport } from "./config";
 import { usePagination } from "./utils";
@@ -32,6 +33,7 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
   const { isMobile } = props;
 
   const [loading, setLoading] = useState(true);
+  const [showAttachment, setShowAttachments] = useState(false);
 
   const {
     totalRecords,
@@ -143,6 +145,7 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
                           appearance="dark"
                           size="16px"
                           cursorHover
+                          onClick={() => setShowAttachments(true)}
                         />
                       ) : (
                         cellData
@@ -187,6 +190,16 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
             </Td>
           </Tr>
         </Tfoot>
+      )}
+      {showAttachment && (
+        <ListModal
+          title="Adjuntar"
+          handleClose={() => setShowAttachments(false)}
+          optionButtons={optionButtons}
+          buttonLabel="Guardar"
+          uploadMode="local"
+          //id={id!}
+        />
       )}
     </Table>
   );

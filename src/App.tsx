@@ -10,17 +10,13 @@ import { FlagProvider } from "@inubekit/inubekit";
 
 import { AppContext, AppContextProvider } from "@context/AppContext";
 import { usePortalLogic } from "@hooks/usePortalRedirect";
-
 import { ErrorPage } from "@components/layout/ErrorPage";
 import { AppPage } from "@components/layout/AppPage";
-
 import { GlobalStyles } from "@styles/global";
 import { Login } from "@pages/login";
 import { ErrorNotClient } from "@pages/login/errors/ErrorNotClient";
-
-import { enviroment } from "@config/environment";
+import { environment } from "@config/environment";
 import { initializeDataDB } from "@mocks/utils/initializeDataDB";
-
 import { LoginRoutes } from "@routes/login";
 import { BoardRoutes } from "@routes/board";
 import { AddProspectRoutes } from "@routes/addProspect";
@@ -30,7 +26,7 @@ import { FilingApplicationRoutes } from "@routes/filingApplication";
 function LogOut() {
   localStorage.clear();
   const { logout } = useAuth0();
-  logout({ logoutParams: { returnTo: enviroment.GOOGLE_REDIRECT_URI } });
+  logout({ logoutParams: { returnTo: environment.GOOGLE_REDIRECT_URI } });
   return <AppPage />;
 }
 

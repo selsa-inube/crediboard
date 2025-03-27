@@ -1,5 +1,5 @@
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
+import { Stack, Text } from "@inubekit/inubekit";
+
 import { currencyFormat } from "@utils/formatData/currency";
 
 interface INewPriceProps {

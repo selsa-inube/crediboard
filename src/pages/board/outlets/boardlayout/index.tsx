@@ -1,9 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { MdInfoOutline } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Icon } from "@inubekit/icon";
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
 import { useFlag } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
@@ -42,6 +40,7 @@ function BoardLayout() {
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
+  const identificationStaff = eventData.user.staff.identificationDocumentNumber;
   const staffId = eventData.user.staff.staffId;
 
   useEffect(() => {
@@ -121,7 +120,7 @@ function BoardLayout() {
       return activeFilterIds.some((filterId) => {
         switch (filterId) {
           case "1":
-            return request.userWhoPinnnedId;
+            return request.userWhoPinnnedId === staffId;
           case "2":
             return [
               "GESTION_COMERCIAL",
@@ -149,6 +148,7 @@ function BoardLayout() {
       });
     });
     setFilteredRequests(finalFilteredRequests);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, boardData]);
 
   const handleFiltersChange = (newFilters: Partial<typeof filters>) => {
@@ -193,31 +193,37 @@ function BoardLayout() {
 
   const handlePinRequest = async (
     creditRequestId: string | undefined,
+    identificationNumber: string[],
     userWhoPinnnedId: string,
     isPinned: string
   ) => {
-    if (userWhoPinnnedId !== staffId && isPinned === "N") {
-      setIsOpenModal(true);
-      return;
-    }
-
-    setBoardData((prevState) => ({
-      ...prevState,
-      requestsPinned: prevState.requestsPinned.map((card) =>
-        card.creditRequestId === creditRequestId ? { ...card, isPinned } : card
-      ),
-    }));
-
     try {
-      await ChangeAnchorToCreditRequest(
-        businessUnitPublicCode,
-        userAccount,
-        creditRequestId,
-        isPinned
-      );
-      await fetchBoardData(businessUnitPublicCode);
+      if (
+        userWhoPinnnedId === staffId ||
+        identificationNumber.includes(identificationStaff)
+      ) {
+        setBoardData((prevState) => ({
+          ...prevState,
+          requestsPinned: prevState.requestsPinned.map((card) =>
+            card.creditRequestId === creditRequestId
+              ? { ...card, isPinned }
+              : card
+          ),
+        }));
+  
+        await ChangeAnchorToCreditRequest(
+          businessUnitPublicCode,
+          userAccount,
+          creditRequestId,
+          isPinned
+        );
+        await fetchBoardData(businessUnitPublicCode);
+      } else {
+        setIsOpenModal(true);
+        return;
+      }
     } catch (error) {
-      handleFlag();
+      handleFlag(); 
     }
   };
 

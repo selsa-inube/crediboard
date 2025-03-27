@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState, useContext } from "react";
-import { Stack } from "@inubekit/stack";
-import { useFlag } from "@inubekit/inubekit";
+import { Stack, useFlag } from "@inubekit/inubekit";
 import { Tag } from "@inubekit/tag";
 
 import userNotFound from "@assets/images/ItemNotFound.png";
@@ -19,7 +18,6 @@ import {
 } from "@services/types";
 import { AppContext } from "@context/AppContext";
 
-import { errorObserver } from "../config";
 import {
   appearanceTag,
   getTableBoardActionMobile,
@@ -27,6 +25,7 @@ import {
   titlesFinanacialReporting,
   infoItems,
 } from "./config";
+import { errorObserver } from "../config";
 
 interface IPromissoryNotesProps {
   id: string;
