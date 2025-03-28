@@ -1,13 +1,12 @@
-import { enviroment } from "@config/environment";
+import { environment } from "@config/environment";
 
 import { IBusinessUnitRules } from "./types";
 
 const postBusinessUnitRules = async (
   businessUnitPublicCode: string,
-  userAccount: string,
   submitData: IBusinessUnitRules
 ): Promise<IBusinessUnitRules | undefined> => {
-  const requestUrl = `${enviroment.ICOREBANKING_API_URL_PERSISTENCE}/business-unit-rules`;
+  const requestUrl = `${environment.ICOREBANKING_API_URL_PERSISTENCE}/business-unit-rules`;
 
   try {
     const options: RequestInit = {
@@ -15,7 +14,6 @@ const postBusinessUnitRules = async (
       headers: {
         "X-Action": "EvaluteRuleByBusinessUnit",
         "X-Business-Unit": businessUnitPublicCode,
-        "X-User-Name": userAccount,
         "Content-type": "application/json; charset=UTF-8",
       },
       body: JSON.stringify(submitData),

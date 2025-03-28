@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getCustomer } from "@services/customers";
+import { getCustomers } from "@services/customers/AllCustomers";
 import { ICustomerContext, ICustomerData } from "./types";
 
 export const CustomerContext = createContext<ICustomerContext>(
@@ -33,20 +33,18 @@ export function CustomerContextProvider({
 
   const fetchCustomerData = async (publicCode: string) => {
     try {
-      const customers = await getCustomer();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const customer = customers.find((c: any) => c.publicCode === publicCode);
+      const customers = await getCustomers(publicCode);
 
-      if (customer) {
+      if (customers) {
         setCustomerData({
-          customerId: customer.customerId,
-          publicCode: customer.publicCode,
-          fullName: customer.fullName,
-          natureClient: customer.natureClient,
+          customerId: customers.customerId,
+          publicCode: customers.publicCode,
+          fullName: customers.fullName,
+          natureClient: customers.natureClient,
           generalAttributeClientNaturalPersons: Array.isArray(
-            customer.generalAttributeClientNaturalPersons
+            customers.generalAttributeClientNaturalPersons
           )
-            ? customer.generalAttributeClientNaturalPersons
+            ? customers.generalAttributeClientNaturalPersons
             : [],
         });
       }

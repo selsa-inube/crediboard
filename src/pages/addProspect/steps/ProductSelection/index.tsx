@@ -14,6 +14,7 @@ import { CustomerContext } from "@context/CustomerContext";
 import { removeDuplicates } from "@utils/mappingData/mappings";
 
 import { electionData } from "./config";
+import { useFlag } from "@inubekit/flag";
 
 interface IProductSelectionProps {
   initialValues: {
@@ -28,7 +29,7 @@ interface IProductSelectionProps {
   };
   onFormValid: (isValid: boolean) => void;
   isMobile: boolean;
-  showQuestion: string;
+  choiceMoneyDestination: string;
 }
 
 export function ProductSelection(props: IProductSelectionProps) {
@@ -41,7 +42,7 @@ export function ProductSelection(props: IProductSelectionProps) {
     },
     onFormValid,
     isMobile,
-    showQuestion,
+    choiceMoneyDestination,
   } = props;
 
   const validationSchema = Yup.object().shape({
@@ -59,7 +60,18 @@ export function ProductSelection(props: IProductSelectionProps) {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [serverResponse, setServerResponse] = useState<any[]>([]);
+  const [creditLines, setCreditLines] = useState<any[]>([]);
+
+  const { addFlag } = useFlag();
+
+  const handleFlag = (error: unknown) => {
+    addFlag({
+      title: "Error",
+      description: `Error al enviar la solicitud: ${error}`,
+      appearance: "danger",
+      duration: 5000,
+    });
+  };
 
   useEffect(() => {
     const isValid = generalToggleChecked || selectedProducts.length > 0;
@@ -73,12 +85,10 @@ export function ProductSelection(props: IProductSelectionProps) {
   }, [generalToggleChecked, setSelectedProducts]);
 
   const selectedQuestions =
-    mockGetMoneyDestinations.find((item) => item.id === showQuestion)
+    mockGetMoneyDestinations.find((item) => item.id === choiceMoneyDestination)
       ?.question || [];
 
-  const { businessUnitSigla, eventData } = useContext(AppContext);
-  const { userAccount } =
-    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
+  const { businessUnitSigla } = useContext(AppContext);
 
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
@@ -90,7 +100,7 @@ export function ProductSelection(props: IProductSelectionProps) {
     conditions: [
       {
         condition: "MoneyDestination",
-        value: showQuestion,
+        value: choiceMoneyDestination,
       },
       {
         condition: "ClientType",
@@ -115,21 +125,21 @@ export function ProductSelection(props: IProductSelectionProps) {
     try {
       const response = await postBusinessUnitRules(
         businessUnitPublicCode,
-        userAccount,
         rulesData
       );
 
       if (response) {
-        setServerResponse(Array.isArray(response) ? response : [response]);
+        setCreditLines(Array.isArray(response) ? response : [response]);
       }
     } catch (error) {
+      handleFlag(error);
       console.error("Error al enviar la solicitud:", error);
     }
   };
 
   handleSubmit();
 
-  const uniqueServerResponse = removeDuplicates(serverResponse, "value");
+  const uniqueServerResponse = removeDuplicates(creditLines, "value");
 
   return (
     <Formik
