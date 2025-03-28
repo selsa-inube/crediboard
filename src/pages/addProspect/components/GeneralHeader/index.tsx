@@ -1,8 +1,3 @@
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
-import { Button } from "@inubekit/button";
-import { useMediaQuery } from "@inubekit/hooks";
 import {
   MdAdd,
   MdCheckCircle,
@@ -10,6 +5,10 @@ import {
   MdCancel,
   MdOutlineManageAccounts,
 } from "react-icons/md";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
+import { Button } from "@inubekit/button";
+import { useMediaQuery } from "@inubekit/hooks";
+
 import { StyledContainerGeneralHeader, StyledPerfil } from "./styles";
 
 interface IGeneralHeaderProps {

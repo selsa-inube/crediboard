@@ -1,9 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Grid } from "@inubekit/grid";
 import { Select } from "@inubekit/select";
-import { Stack } from "@inubekit/stack";
+import { Stack, Grid } from "@inubekit/inubekit";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
 
@@ -14,8 +13,8 @@ import {
   validateCurrencyField,
 } from "@utils/formatData/currency";
 
-import { IVehicleOffered } from "../../types";
 import { dataVehicule } from "./config";
+import { IVehicleOffered } from "../../types";
 
 interface IVehicleOfferedProps {
   isMobile: boolean;
@@ -95,6 +94,7 @@ export function VehicleOffered(props: IVehicleOfferedProps) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             disabled={formik.values.state === "nuevo"}
+            type="number"
             fullwidth
           />
           <Textfield
