@@ -1,6 +1,5 @@
 import { Button } from "@inubekit/button";
-import { Text, Stack, Grid, Divider } from "@inubekit/inubekit";
-import { useMediaQuery } from "@inubekit/hooks";
+import { Text, Stack, Grid, Divider, useMediaQuery } from "@inubekit/inubekit";
 
 import { currencyFormat } from "@utils/formatData/currency";
 import { InvestmentCreditCard } from "@pages/addProspect/components/InvestmentCreditCard";
