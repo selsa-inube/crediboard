@@ -9,10 +9,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import { Blanket } from "@inubekit/blanket";
 import { Button } from "@inubekit/button";
-import { Stack, Icon, Text } from "@inubekit/inubekit";
-import { useMediaQuery } from "@inubekit/hooks";
+import { Stack, Icon, Text, Divider, useMediaQuery } from "@inubekit/inubekit";
 import { useFlag } from "@inubekit/flag";
-import { Divider } from "@inubekit/divider";
 
 import { StyledItem } from "@pages/board/outlets/financialReporting/styles";
 import { optionFlags } from "@pages/board/outlets/financialReporting/config";

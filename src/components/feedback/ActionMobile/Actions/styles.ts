@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
-const StyledContainer = styled.div`
+export const StyledContainer = styled.div`
   position: relative;
   z-index: 99;
 
@@ -15,19 +15,19 @@ const StyledContainer = styled.div`
   }
 `;
 
-const StyledUl = styled.ul`
+export const StyledUl = styled.ul`
   margin: 0px 30px 0px 0px;
   padding: 0px;
 `;
 
-const StyledLi = styled.li`
+export const StyledLi = styled.li`
   list-style: none;
   display: flex;
   align-items: center;
   padding: 6px 0px;
   cursor: pointer;
 `;
-const StyledActions = styled.div`
+export const StyledActions = styled.div`
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   position: absolute;
@@ -38,14 +38,6 @@ const StyledActions = styled.div`
     ${({ theme }) => theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
-const StyledContainerClose = styled.div`
+export const StyledContainerClose = styled.div`
   cursor: pointer;
 `;
-
-export {
-  StyledContainer,
-  StyledUl,
-  StyledLi,
-  StyledActions,
-  StyledContainerClose,
-};

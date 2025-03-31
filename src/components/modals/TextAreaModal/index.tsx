@@ -1,7 +1,7 @@
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Textarea } from "@inubekit/textarea";
-import { useMediaQuery } from "@inubekit/hooks";
+import { useMediaQuery } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 

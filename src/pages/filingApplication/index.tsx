@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useMediaQuery } from "@inubekit/hooks";
+import { useMediaQuery } from "@inubekit/inubekit";
 
 import { AppContext } from "@context/AppContext";
 import { postSubmitCredit } from "@services/submitCredit";

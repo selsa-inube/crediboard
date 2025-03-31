@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { MdOutlineChevronRight } from "react-icons/md";
-import { Stack, Icon, Text } from "@inubekit/inubekit";
-import { useMediaQueries } from "@inubekit/hooks";
+import { Stack, Icon, Text, useMediaQueries } from "@inubekit/inubekit";
 
 import { SummaryCard } from "@components/cards/SummaryCard";
 import { ICreditRequestPinned, ICreditRequest } from "@services/types";

@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
-const StyledMoneyDestinationCard = styled.label`
+export const StyledMoneyDestinationCard = styled.label`
   width: 455px;
   min-width: 290px;
   & div:nth-child(1) {
@@ -27,9 +27,7 @@ const StyledMoneyDestinationCard = styled.label`
   }
 `;
 
-const StyledRadio = styled.input`
+export const StyledRadio = styled.input`
   margin: 0px;
   height: 12px;
 `;
-
-export { StyledMoneyDestinationCard, StyledRadio };

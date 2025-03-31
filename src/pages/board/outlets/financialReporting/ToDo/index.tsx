@@ -2,8 +2,7 @@ import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
 import { useFlag } from "@inubekit/flag";
-import { SkeletonLine } from "@inubekit/skeleton";
-import { Stack, Icon, Text } from "@inubekit/inubekit";
+import { Stack, Icon, Text, SkeletonLine } from "@inubekit/inubekit";
 import { IOption } from "@inubekit/select";
 
 import { Fieldset } from "@components/data/Fieldset";

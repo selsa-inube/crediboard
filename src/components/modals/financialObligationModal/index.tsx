@@ -4,8 +4,7 @@ import * as Yup from "yup";
 import { MdOutlineAttachMoney, MdOutlineTag } from "react-icons/md";
 import { Textfield } from "@inubekit/textfield";
 import { Select } from "@inubekit/select";
-import { useMediaQuery } from "@inubekit/hooks";
-import { Icon, Grid } from "@inubekit/inubekit";
+import { Icon, Grid, useMediaQuery } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { ITableFinancialObligationsProps } from "@pages/prospect/components/TableObligationsFinancial";

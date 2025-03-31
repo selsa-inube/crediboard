@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useMediaQuery } from "@inubekit/hooks";
-import { Stack, Grid } from "@inubekit/inubekit";
+import { Stack, Grid, useMediaQuery } from "@inubekit/inubekit";
 import { Select } from "@inubekit/select";
 import { Textfield } from "@inubekit/textfield";
 
