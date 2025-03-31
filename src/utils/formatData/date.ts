@@ -1,6 +1,6 @@
 function formatISODatetoCustomFormat(isoDateString: string) {
   const date = new Date(isoDateString);
-  const day = date.getDate().toString().padStart(2, "0"); 
+  const day = date.getDate().toString().padStart(2, "0");
   const month = date.toLocaleString("es-CO", { month: "long" });
   const year = date.getFullYear().toString().slice(-2);
 
@@ -42,7 +42,7 @@ const formatPrimaryDate = (date: Date, withTime?: boolean): string => {
   const year = date.getUTCFullYear();
 
   if (withTime) {
-    let hours = date.getHours(); 
+    let hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, "0");
     const ampm = hours >= 12 ? "pm" : "am";
     hours = hours % 12;
@@ -54,9 +54,30 @@ const formatPrimaryDate = (date: Date, withTime?: boolean): string => {
   }
 };
 
+const getMonthsElapsed = (dateString: string): number => {
+  const startDate = new Date(dateString);
+  const currentDate = new Date();
+
+  const yearsDiff = currentDate.getFullYear() - startDate.getFullYear();
+  const monthsDiff = currentDate.getMonth() - startDate.getMonth();
+  const daysDiff = currentDate.getDate() - startDate.getDate();
+
+  let totalMonths = yearsDiff * 12 + monthsDiff;
+
+  if (daysDiff > 0) {
+    totalMonths += daysDiff / 30;
+  }
+
+  const years = Math.floor(totalMonths / 12);
+  const months = (totalMonths % 12) / 12;
+
+  return parseFloat((years + months).toFixed(2));
+};
+
 export {
   formatISODatetoCustomFormat,
   formatDateWithFullYear,
   isValidDate,
   formatPrimaryDate,
+  getMonthsElapsed,
 };

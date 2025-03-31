@@ -1,20 +1,21 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { Stack, Text } from "@inubekit/inubekit";
 import { Toggle } from "@inubekit/toggle";
 import { Divider } from "@inubekit/divider";
+import { useFlag } from "@inubekit/flag";
 
+import { IBusinessUnitRules } from "@services/businessUnitRules/types";
 import { CardProductSelection } from "@pages/addProspect/components/CardProductSelection";
 import { Fieldset } from "@components/data/Fieldset";
-import { mockGetMoneyDestinations } from "@mocks/add-prospect/money-destinations/moneydestinations.mock";
 import { postBusinessUnitRules } from "@services/businessUnitRules";
 import { AppContext } from "@context/AppContext";
 import { CustomerContext } from "@context/CustomerContext";
 import { removeDuplicates } from "@utils/mappingData/mappings";
+import { getMonthsElapsed } from "@utils/formatData/date";
 
 import { electionData } from "./config";
-import { useFlag } from "@inubekit/flag";
 
 interface IProductSelectionProps {
   initialValues: {
@@ -61,17 +62,20 @@ export function ProductSelection(props: IProductSelectionProps) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [creditLines, setCreditLines] = useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [percentagePayable, setPercentagePayable] = useState<any[]>([]);
+  const [showFirstQuestion, setShowFirstQuestion] = useState(false);
+
+  useEffect(() => {
+    if (percentagePayable.length > 0) {
+      const allValuesZero = percentagePayable.every(
+        (item) => item.value === "0"
+      );
+      setShowFirstQuestion(!allValuesZero);
+    }
+  }, [percentagePayable]);
 
   const { addFlag } = useFlag();
-
-  const handleFlag = (error: unknown) => {
-    addFlag({
-      title: "Error",
-      description: `Error al enviar la solicitud: ${error}`,
-      appearance: "danger",
-      duration: 5000,
-    });
-  };
 
   useEffect(() => {
     const isValid = generalToggleChecked || selectedProducts.length > 0;
@@ -84,10 +88,6 @@ export function ProductSelection(props: IProductSelectionProps) {
     }
   }, [generalToggleChecked, setSelectedProducts]);
 
-  const selectedQuestions =
-    mockGetMoneyDestinations.find((item) => item.id === choiceMoneyDestination)
-      ?.question || [];
-
   const { businessUnitSigla } = useContext(AppContext);
 
   const businessUnitPublicCode: string =
@@ -95,51 +95,113 @@ export function ProductSelection(props: IProductSelectionProps) {
 
   const { customerData } = useContext(CustomerContext);
 
-  const rulesData = {
-    ruleName: "LineOfCredit",
-    conditions: [
-      {
-        condition: "MoneyDestination",
-        value: choiceMoneyDestination,
-      },
-      {
-        condition: "ClientType",
-        value:
-          customerData.generalAttributeClientNaturalPersons[0].associateType.substring(
-            0,
-            1
-          ),
-      },
-      {
-        condition: "EmploymentContractTermType",
-        value:
-          customerData.generalAttributeClientNaturalPersons[0].employmentType.substring(
-            0,
-            2
-          ),
-      },
-    ],
-  };
+  const lineOfCreditRules = useMemo(
+    () => ({
+      ruleName: "LineOfCredit",
+      conditions: [
+        {
+          condition: "MoneyDestination",
+          value: choiceMoneyDestination,
+        },
+        {
+          condition: "ClientType",
+          value:
+            customerData.generalAttributeClientNaturalPersons[0].associateType.substring(
+              0,
+              1
+            ),
+        },
+        {
+          condition: "EmploymentContractTermType",
+          value:
+            customerData.generalAttributeClientNaturalPersons[0].employmentType.substring(
+              0,
+              2
+            ),
+        },
+      ],
+    }),
+    [choiceMoneyDestination, customerData]
+  );
 
-  const handleSubmit = async () => {
-    try {
-      const response = await postBusinessUnitRules(
-        businessUnitPublicCode,
-        rulesData
-      );
+  const percentagePayableRules = useMemo(
+    () => ({
+      ruleName: "PercentagePayableViaExtraInstallments",
+      conditions: [
+        {
+          condition: "LineOfCredit",
+          value: "Educación",
+        },
+        // {
+        //   condition: "PrimaryIncomeType",
+        //   value: "PeriodicSalary",
+        // },
+        {
+          condition: "ClientType",
+          value:
+            customerData.generalAttributeClientNaturalPersons[0].associateType.substring(
+              0,
+              1
+            ),
+        },
+        // {
+        //   condition: "LoanAmount",
+        //   value: 0,
+        // },
+        // {
+        //   condition: "LoanTerm",
+        //   value: "",
+        // },
+        {
+          condition: "AffiliateSeniority",
+          value: getMonthsElapsed(
+            customerData.generalAssociateAttributes[0].affiliateSeniorityDate
+          ),
+        },
+      ],
+    }),
+    [customerData]
+  );
 
-      if (response) {
-        setCreditLines(Array.isArray(response) ? response : [response]);
+  const handleSubmit = useCallback(
+    async (
+      rules: IBusinessUnitRules,
+      setState: React.Dispatch<IBusinessUnitRules[]>
+    ) => {
+      const handleFlag = (error: unknown) => {
+        addFlag({
+          title: "Error",
+          description: `Error al enviar la solicitud: ${error}`,
+          appearance: "danger",
+          duration: 5000,
+        });
+      };
+
+      try {
+        const response = await postBusinessUnitRules(
+          businessUnitPublicCode,
+          rules
+        );
+
+        if (response) {
+          setState(Array.isArray(response) ? response : [response]);
+        }
+      } catch (error) {
+        handleFlag(error);
       }
-    } catch (error) {
-      handleFlag(error);
-      console.error("Error al enviar la solicitud:", error);
-    }
-  };
+    },
+    [businessUnitPublicCode, addFlag]
+  );
 
-  handleSubmit();
+  useEffect(() => {
+    handleSubmit(lineOfCreditRules, setCreditLines);
+  }, [lineOfCreditRules, handleSubmit]);
 
-  const uniqueServerResponse = removeDuplicates(creditLines, "value");
+  const lineOfCreditResponse = removeDuplicates(creditLines, "value");
+
+  useEffect(() => {
+    handleSubmit(percentagePayableRules, setPercentagePayable);
+  }, [percentagePayableRules, handleSubmit]);
 
   return (
     <Formik
@@ -185,8 +247,8 @@ export function ProductSelection(props: IProductSelectionProps) {
                 padding={isMobile ? "0px 6px" : "0px 12px"}
                 wrap="wrap"
               >
-                {uniqueServerResponse.length > 0 ? (
-                  uniqueServerResponse.map((item, index) => (
+                {lineOfCreditResponse.length > 0 ? (
+                  lineOfCreditResponse.map((item, index) => (
                     <Stack key={index} direction="column">
                       <CardProductSelection
                         key={index}
@@ -220,22 +282,20 @@ export function ProductSelection(props: IProductSelectionProps) {
               </Stack>
             </Fieldset>
             <Fieldset>
-              {selectedQuestions.map((questionIndex, index) => {
-                const question = Object.entries(electionData.data)[
-                  questionIndex - 1
-                ];
-                return (
+              {Object.entries(electionData.data)
+                .filter((_, index) => index !== 0 || showFirstQuestion)
+                .map(([key, question], index) => (
                   <Stack
                     direction="column"
-                    key={question[0]}
+                    key={key}
                     gap="16px"
                     padding="4px 10px"
                   >
                     <Text type="body" size="medium">
-                      {question[1]}
+                      {question}
                     </Text>
                     <Stack gap="8px">
-                      <Field name={`togglesState[${questionIndex - 1}]`}>
+                      <Field name={`togglesState[${index}]`}>
                         {({
                           field,
                         }: {
@@ -246,9 +306,9 @@ export function ProductSelection(props: IProductSelectionProps) {
                             value={field.value.toString()}
                             checked={field.value}
                             onChange={() => {
-                              onToggleChange(questionIndex - 1);
+                              onToggleChange(index);
                               setFieldValue(
-                                `togglesState[${questionIndex - 1}]`,
+                                `togglesState[${index}]`,
                                 !field.value
                               );
                             }}
@@ -260,22 +320,19 @@ export function ProductSelection(props: IProductSelectionProps) {
                         size="large"
                         weight="bold"
                         appearance={
-                          values.togglesState[questionIndex - 1]
-                            ? "success"
-                            : "danger"
+                          values.togglesState[index] ? "success" : "danger"
                         }
                       >
-                        {values.togglesState[questionIndex - 1]
+                        {values.togglesState[index]
                           ? electionData.yes
                           : electionData.no}
                       </Text>
                     </Stack>
-                    {index !== selectedQuestions.length - 1 && (
+                    {index < Object.entries(electionData.data).length - 1 && (
                       <Divider dashed />
                     )}
                   </Stack>
-                );
-              })}
+                ))}
             </Fieldset>
           </Stack>
         </Form>

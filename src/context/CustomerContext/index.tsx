@@ -23,6 +23,11 @@ export function CustomerContextProvider({
     generalAttributeClientNaturalPersons: [
       { employmentType: "", associateType: "" },
     ],
+    generalAssociateAttributes: [
+      {
+        affiliateSeniorityDate: "",
+      },
+    ],
   });
 
   useEffect(() => {
@@ -45,6 +50,11 @@ export function CustomerContextProvider({
             customers.generalAttributeClientNaturalPersons
           )
             ? customers.generalAttributeClientNaturalPersons
+            : [],
+          generalAssociateAttributes: Array.isArray(
+            customers.generalAssociateAttributes
+          )
+            ? customers.generalAssociateAttributes
             : [],
         });
       }
