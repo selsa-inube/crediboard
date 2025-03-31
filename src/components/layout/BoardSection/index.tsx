@@ -45,7 +45,6 @@ function BoardSection(props: BoardSectionProps) {
 
   const [collapse, setCollapse] = useState(false);
 
-  const flagRef = useRef(false);
   const flagMessage = useRef(false);
 
   const handleCollapse = () => {
@@ -88,14 +87,6 @@ function BoardSection(props: BoardSectionProps) {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (
-        !flagRef.current &&
-        (!sectionInformation || sectionInformation.length === 0)
-      ) {
-        handleFlag(errorData.Summary[0], errorData.Summary[1]);
-        flagRef.current = true;
-      }
-
       const hasUnreadNoveltiesError = sectionInformation.some(
         (request) => request.unreadNovelties === undefined
       );

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { MdInfoOutline } from "react-icons/md";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Stack, Icon, Text } from "@inubekit/inubekit";
@@ -56,6 +56,8 @@ function BoardLayout() {
 
   const { userAccount } =
     typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
+
+  const errorData = mockErrorBoard[0];
 
   const fetchBoardData = async (businessUnitPublicCode: string) => {
     try {
@@ -181,15 +183,17 @@ function BoardLayout() {
 
   const { addFlag } = useFlag();
 
-  const handleFlag = () => {
-    const errorData = mockErrorBoard[0].anchor;
-    addFlag({
-      title: errorData[0],
-      description: errorData[1],
-      appearance: "danger",
-      duration: 5000,
-    });
-  };
+  const handleFlag = useCallback(
+    (title: string, description: string) => {
+      addFlag({
+        title: title,
+        description: description,
+        appearance: "danger",
+        duration: 5000,
+      });
+    },
+    [addFlag]
+  );
 
   const handlePinRequest = async (
     creditRequestId: string | undefined,
@@ -200,7 +204,8 @@ function BoardLayout() {
     try {
       if (
         userWhoPinnnedId === staffId ||
-        identificationNumber.includes(identificationStaff)
+        identificationNumber.includes(identificationStaff) ||
+        isPinned === "Y"
       ) {
         setBoardData((prevState) => ({
           ...prevState,
@@ -210,7 +215,7 @@ function BoardLayout() {
               : card
           ),
         }));
-  
+
         await ChangeAnchorToCreditRequest(
           businessUnitPublicCode,
           userAccount,
@@ -223,9 +228,19 @@ function BoardLayout() {
         return;
       }
     } catch (error) {
-      handleFlag(); 
+      handleFlag(errorData.anchor[0], errorData.anchor[1]);
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (filteredRequests.length === 0) {
+        handleFlag(errorData.Summary[0], errorData.Summary[1]);
+      }
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [filteredRequests, errorData.Summary, handleFlag]);
 
   return (
     <>
