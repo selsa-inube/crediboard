@@ -13,7 +13,7 @@ import { DebtorAddModal } from "@pages/prospect/components/modals/DebtorAddModal
 import { DebtorDetailsModal } from "@pages/prospect/components/modals/DebtorDetailsModal";
 import { DebtorEditModal } from "@pages/prospect/components/modals/DebtorEditModal";
 import { mockGuaranteeBorrower } from "@mocks/guarantee/offeredguarantee.mock";
-import { dataFillingApplication } from "@pages/filingApplication/config/config";
+import { dataFillingApplication } from "@pages/SubmitCreditApplication/config/config";
 import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
 import { MockDataDebtor } from "@mocks/filing-application/add-borrower/addborrower.mock";
 

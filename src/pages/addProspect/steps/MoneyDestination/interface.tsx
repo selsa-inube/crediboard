@@ -32,9 +32,9 @@ function MoneyDestinationUI(props: MoneyDestinationUIProps) {
               value={destination.descriptionUse}
               label={destination.abbreviatedName}
               icon={destination.iconReference}
-              handleChange={() => handleChange(destination.moneyDestinationId)}
+              handleChange={() => handleChange(destination.abbreviatedName)}
               isSelected={
-                selectedDestination === destination.moneyDestinationId
+                selectedDestination === destination.abbreviatedName
               }
             />
           ))}

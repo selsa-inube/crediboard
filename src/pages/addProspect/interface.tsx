@@ -147,7 +147,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
                   }}
                   onFormValid={setIsCurrentFormValid}
                   isMobile={isMobile}
-                  showQuestion={formData.selectedDestination}
+                  choiceMoneyDestination={formData.selectedDestination}
                 />
               )}
             {currentStepsNumber &&
