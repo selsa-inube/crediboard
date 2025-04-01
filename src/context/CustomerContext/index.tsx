@@ -33,18 +33,18 @@ export function CustomerContextProvider({
 
   const fetchCustomerData = async (publicCode: string) => {
     try {
-      const customers = await getCustomers(publicCode);
+      const customer = await getCustomers(publicCode);
 
-      if (customers) {
+      if (customer) {
         setCustomerData({
-          customerId: customers.customerId,
-          publicCode: customers.publicCode,
-          fullName: customers.fullName,
-          natureClient: customers.natureClient,
+          customerId: customer.customerId,
+          publicCode: customer.publicCode,
+          fullName: customer.fullName,
+          natureClient: customer.natureClient,
           generalAttributeClientNaturalPersons: Array.isArray(
-            customers.generalAttributeClientNaturalPersons
+            customer.generalAttributeClientNaturalPersons
           )
-            ? customers.generalAttributeClientNaturalPersons
+            ? customer.generalAttributeClientNaturalPersons
             : [],
         });
       }
