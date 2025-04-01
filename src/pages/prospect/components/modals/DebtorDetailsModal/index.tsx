@@ -3,7 +3,7 @@ import { Stack } from "@inubekit/inubekit";
 import { Tabs } from "@inubekit/tabs";
 
 import { BaseModal } from "@components/modals/baseModal";
-import { IDebtorDetail } from "@pages/filingApplication/types";
+import { IDebtorDetail } from "@pages/SubmitCreditApplication/types";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 
 import { dataDetails, dataTabs } from "./config";

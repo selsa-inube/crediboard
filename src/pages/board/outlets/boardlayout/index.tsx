@@ -6,9 +6,9 @@ import { useFlag } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { ICreditRequest } from "@services/types";
-import { getCreditRequestPin } from "@services/isPinned";
+import { getCreditRequestPinned } from "@services/isPinned";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
-import { ChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
+import { patchChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
 import { AppContext } from "@context/AppContext";
 import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
 
@@ -64,7 +64,7 @@ function BoardLayout() {
       const [boardRequestsResult, requestsPinnedResult] =
         await Promise.allSettled([
           getCreditRequestInProgress(businessUnitPublicCode),
-          getCreditRequestPin(businessUnitPublicCode),
+          getCreditRequestPinned(businessUnitPublicCode),
         ]);
 
       if (boardRequestsResult.status === "fulfilled") {
@@ -216,7 +216,7 @@ function BoardLayout() {
           ),
         }));
 
-        await ChangeAnchorToCreditRequest(
+        await patchChangeAnchorToCreditRequest(
           businessUnitPublicCode,
           userAccount,
           creditRequestId,
