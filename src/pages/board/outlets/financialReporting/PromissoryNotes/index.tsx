@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { Stack } from "@inubekit/stack";
+import { useCallback, useEffect, useState, useContext } from "react";
+import { Stack } from "@inubekit/inubekit";
 import { useFlag } from "@inubekit/flag";
 import { Tag } from "@inubekit/tag";
 
@@ -10,15 +10,15 @@ import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 import { UnfoundData } from "@components/layout/UnfoundData";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
-import { getPayrollDiscountAuthorizationById } from "@services/payroll_discount_authorizations";
+import { getPayrollDiscountAuthorizationsById } from "@services/payroll_discount_authorizations";
 import { getPromissoryNotesById } from "@services/promissory_notes";
 import {
   IPayrollDiscountAuthorization,
   IPromissoryNotes,
   ICreditRequest,
 } from "@services/types";
+import { AppContext } from "@context/AppContext";
 
-import { errorObserver } from "../config";
 import {
   appearanceTag,
   getTableBoardActionMobile,
@@ -26,6 +26,7 @@ import {
   titlesFinanacialReporting,
   infoItems,
 } from "./config";
+import { errorObserver } from "../config";
 
 interface IPromissoryNotesProps {
   id: string;
@@ -46,11 +47,15 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   );
   const [showRetry, setShowRetry] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const { businessUnitSigla } = useContext(AppContext);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
   useEffect(() => {
     const fetchCreditRequest = async () => {
       try {
-        const data = await getCreditRequestByCode(id);
+        const data = await getCreditRequestByCode(businessUnitPublicCode, id);
         setCreditRequests(data[0] as ICreditRequest);
       } catch (error) {
         errorObserver.notify({
@@ -60,7 +65,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
       }
     };
     if (id) fetchCreditRequest();
-  }, [id]);
+  }, [businessUnitPublicCode, id]);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -71,8 +76,14 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     try {
       const [payrollDiscountResult, promissoryNotesResult] =
         await Promise.allSettled([
-          getPayrollDiscountAuthorizationById(creditRequets.creditRequestId),
-          getPromissoryNotesById(creditRequets.creditRequestId),
+          getPayrollDiscountAuthorizationsById(
+            businessUnitPublicCode,
+            creditRequets.creditRequestId
+          ),
+          getPromissoryNotesById(
+            businessUnitPublicCode,
+            creditRequets.creditRequestId
+          ),
         ]);
 
       const processResult = (
@@ -121,7 +132,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     } finally {
       setLoading(false);
     }
-  }, [creditRequets]);
+  }, [businessUnitPublicCode, creditRequets]);
 
   useEffect(() => {
     if (creditRequets?.creditRequestId) fetchData();

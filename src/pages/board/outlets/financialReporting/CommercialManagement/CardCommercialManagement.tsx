@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { MdOutlineEdit } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Divider } from "@inubekit/divider";
 
@@ -8,6 +7,7 @@ import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { NewCreditProductCard } from "@components/cards/CreditProductCard/newCard";
 import { CardValues } from "@components/cards/cardValues";
 import { DeleteModal } from "@components/modals/DeleteModal";
+import { ConsolidatedCredits } from "@pages/prospect/components/modals/ConsolidatedCreditModal";
 import { ICreditProductProspect } from "@services/types";
 import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.service";
@@ -32,7 +32,7 @@ export const CardCommercialManagement = (
   >([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState("");
-
+  const [showConsolidatedModal, setShowConsolidatedModal] = useState(false);
   const loadProspectProducts = useCallback(() => {
     const foundProspect = mockProspectCredit.find(
       (prospect) => prospect.public_code === id
@@ -110,9 +110,10 @@ export const CardCommercialManagement = (
               ...item,
               amount: mockCommercialManagement[index]?.amount,
             }))}
-            firstIcon={<MdOutlineEdit />}
             showIcon={entry.iconEdit}
             isMobile={isMobile}
+            handleEdit={() => setShowConsolidatedModal(true)}
+            handleView={() => true}
           />
         ))}
       </Stack>
@@ -120,6 +121,11 @@ export const CardCommercialManagement = (
         <DeleteModal
           handleClose={() => setShowDeleteModal(false)}
           handleDelete={handleDelete}
+        />
+      )}
+      {showConsolidatedModal && (
+        <ConsolidatedCredits
+          handleClose={() => setShowConsolidatedModal(false)}
         />
       )}
     </div>

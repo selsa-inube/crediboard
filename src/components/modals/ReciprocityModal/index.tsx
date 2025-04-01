@@ -1,7 +1,6 @@
 import { SkeletonLine } from "@inubekit/skeleton";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
+import { Stack, Text } from "@inubekit/inubekit";
 import { Divider } from "@inubekit/divider";
 
 import { BaseModal } from "@components/modals/baseModal";

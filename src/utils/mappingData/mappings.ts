@@ -36,3 +36,10 @@ export const getScheduleInSpanish = (schedule: Schedule): string => {
       return schedule;
   }
 };
+
+export const removeDuplicates = <T, K extends keyof T>(
+  array: T[],
+  key: K
+): T[] => {
+  return [...new Map(array.map((item) => [item[key], item])).values()];
+};

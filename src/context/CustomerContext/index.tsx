@@ -1,9 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
-import { getCustomer } from "@services/customers";
-import { mockProspectCode } from "@mocks/filing-application/prospect-code/prospectcode.mock";
-
+import { getCustomers } from "@services/customers/AllCustomers";
 import { ICustomerContext, ICustomerData } from "./types";
 
 export const CustomerContext = createContext<ICustomerContext>(
@@ -23,6 +20,9 @@ export function CustomerContextProvider({
     publicCode: "",
     fullName: "",
     natureClient: "",
+    generalAttributeClientNaturalPersons: [
+      { employmentType: "", associateType: "" },
+    ],
   });
 
   useEffect(() => {
@@ -31,13 +31,9 @@ export function CustomerContextProvider({
     }
   }, [id]);
 
-  const fetchCustomerData = async (idParam: string) => {
+  const fetchCustomerData = async (publicCode: string) => {
     try {
-      const prospect = mockProspectCode.find((p) => p.code === idParam);
-      const searchPublicCode = prospect ? prospect.identification : idParam;
-
-      const customers = await getCustomer();
-      const customer = customers.find((c) => c.publicCode === searchPublicCode);
+      const customer = await getCustomers(publicCode);
 
       if (customer) {
         setCustomerData({
@@ -45,6 +41,11 @@ export function CustomerContextProvider({
           publicCode: customer.publicCode,
           fullName: customer.fullName,
           natureClient: customer.natureClient,
+          generalAttributeClientNaturalPersons: Array.isArray(
+            customer.generalAttributeClientNaturalPersons
+          )
+            ? customer.generalAttributeClientNaturalPersons
+            : [],
         });
       }
     } catch (error) {

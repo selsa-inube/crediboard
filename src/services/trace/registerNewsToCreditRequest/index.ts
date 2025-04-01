@@ -1,11 +1,13 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
 import { ITraceType } from "@services/types";
 
 export const registerNewsToCreditRequest = async (
+  businessUnitPublicCode: string,
+  userAccount: string,
   payload: ITraceType
 ): Promise<void> => {
   const maxRetries = maxRetriesServices;
@@ -20,8 +22,8 @@ export const registerNewsToCreditRequest = async (
         method: "PATCH",
         headers: {
           "X-Action": "RegisterNewsToACreditRequest",
-          "X-Business-Unit": enviroment.BUSINESS_UNIT,
-          "X-User-Name": "Erg",
+          "X-Business-Unit": businessUnitPublicCode,
+          "X-User-Name": userAccount,
           "Content-type": "application/json; charset=UTF-8",
         },
         body: JSON.stringify(payload),
@@ -29,7 +31,7 @@ export const registerNewsToCreditRequest = async (
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
+        `${environment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
         options
       );
 
