@@ -7,6 +7,9 @@ export interface ICustomerData {
     employmentType: string;
     associateType: string;
   }[];
+  generalAssociateAttributes: {
+    affiliateSeniorityDate: string;
+  }[];
 }
 
 export interface ICustomerContext {
