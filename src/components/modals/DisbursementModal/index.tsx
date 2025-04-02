@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 import { Tabs } from "@inubekit/tabs";
 
 import { BaseModal } from "@components/modals/baseModal";

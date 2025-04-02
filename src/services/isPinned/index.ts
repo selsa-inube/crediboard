@@ -1,12 +1,12 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
 
 import { ICreditRequestPinned } from "@services/types";
 
-export const getCreditRequestPin = async (
+export const getCreditRequestPinned = async (
   businessUnitPublicCode: string
 ): Promise<ICreditRequestPinned[]> => {
   const maxRetries = maxRetriesServices;
@@ -31,7 +31,7 @@ export const getCreditRequestPin = async (
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests?${queryParams.toString()}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests?${queryParams.toString()}`,
         options
       );
 

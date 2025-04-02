@@ -1,12 +1,12 @@
-import { enviroment } from "@config/environment";
+import { environment } from "@config/environment";
 
-import { IBusinessmanagers } from "./types";
+import { IBusinessManagers } from "./types";
 import { mapResendApiToEntity } from "./mappers";
 
-const getBusinessmanagers = async (
+const getBusinessManagers = async (
   businessManagerId: string
-): Promise<IBusinessmanagers> => {
-  const requestUrl = `${enviroment.IVITE_ISAAS_QUERY_PROCESS_SERVICE}/business-managers/${businessManagerId}`;
+): Promise<IBusinessManagers> => {
+  const requestUrl = `${environment.IVITE_ISAAS_QUERY_PROCESS_SERVICE}/business-managers/${businessManagerId}`;
 
   try {
     const options: RequestInit = {
@@ -19,7 +19,7 @@ const getBusinessmanagers = async (
 
     const res = await fetch(requestUrl, options);
     if (res.status === 204) {
-      return {} as IBusinessmanagers;
+      return {} as IBusinessManagers;
     }
 
     const data = await res.json();
@@ -33,7 +33,7 @@ const getBusinessmanagers = async (
     console.error(error);
   }
 
-  return {} as IBusinessmanagers;
+  return {} as IBusinessManagers;
 };
 
-export { getBusinessmanagers };
+export { getBusinessManagers };

@@ -1,12 +1,10 @@
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
 import {
   MdClose,
   MdDeleteOutline,
   MdOutlineEdit,
   MdOutlineRemoveRedEye,
 } from "react-icons/md";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
 
 import {
   StyledContainer,

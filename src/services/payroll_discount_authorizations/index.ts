@@ -1,11 +1,11 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
 import { IPayrollDiscountAuthorization } from "@services/types";
 
-export const getPayrollDiscountAuthorizationById = async (
+export const getPayrollDiscountAuthorizationsById = async (
   businessUnitPublicCode: string,
   creditRequestId: string
 ): Promise<IPayrollDiscountAuthorization[]> => {
@@ -28,7 +28,7 @@ export const getPayrollDiscountAuthorizationById = async (
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/payroll-discount-authorizations/${creditRequestId}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/payroll-discount-authorizations/${creditRequestId}`,
         options
       );
 

@@ -1,5 +1,5 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
@@ -28,7 +28,7 @@ export const getModeOfDisbursement = async (
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests/mode-of-disbursement/${creditRequestId}?`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/mode-of-disbursement/${creditRequestId}?`,
         options
       );
 
