@@ -27,6 +27,12 @@ export function CustomerContextProvider({
     generalAttributeClientNaturalPersons: [
       { employmentType: "", associateType: "" },
     ],
+    generalAssociateAttributes: [
+      {
+        affiliateSeniorityDate: "",
+        partnerStatus: "",
+      },
+    ],
   });
 
   const { businessUnitSigla } = useContext(AppContext);
@@ -53,18 +59,23 @@ export function CustomerContextProvider({
 
   const fetchCustomerData = async (publicCode: string) => {
     try {
-      const customer = await getCustomers(publicCode);
+      const customers = await getCustomers(publicCode);
 
-      if (customer) {
+      if (customers) {
         setCustomerData({
-          customerId: customer.customerId,
-          publicCode: customer.publicCode,
-          fullName: customer.fullName,
-          natureClient: customer.natureClient,
+          customerId: customers.customerId,
+          publicCode: customers.publicCode,
+          fullName: customers.fullName,
+          natureClient: customers.natureClient,
           generalAttributeClientNaturalPersons: Array.isArray(
-            customer.generalAttributeClientNaturalPersons
+            customers.generalAttributeClientNaturalPersons
           )
-            ? customer.generalAttributeClientNaturalPersons
+            ? customers.generalAttributeClientNaturalPersons
+            : [],
+          generalAssociateAttributes: Array.isArray(
+            customers.generalAssociateAttributes
+          )
+            ? customers.generalAssociateAttributes
             : [],
         });
       }

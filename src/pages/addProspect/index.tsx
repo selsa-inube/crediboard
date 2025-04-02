@@ -25,7 +25,11 @@ export function AddProspect() {
   const navigate = useNavigate();
 
   const { customerData } = useContext(CustomerContext);
-  const dataHeader = { name: customerData.fullName };
+  const dataHeader = {
+    name: customerData.fullName,
+    status:
+      customerData.generalAssociateAttributes[0].partnerStatus.substring(2),
+  };
 
   const [formData, setFormData] = useState<FormData>({
     selectedDestination: "",

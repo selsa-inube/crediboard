@@ -27,7 +27,11 @@ export function SubmitCreditApplication() {
 
   const fixedSteps = [1, 2, 7, 8];
 
-  const dataHeader = { name: customerData.fullName };
+  const dataHeader = {
+    name: customerData.fullName,
+    status:
+      customerData.generalAssociateAttributes[0].partnerStatus.substring(2),
+  };
 
   const intermediateSteps =
     userStepsMock.find((user) => user.id === userId)?.intermediateSteps || [];
