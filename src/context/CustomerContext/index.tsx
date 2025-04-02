@@ -1,6 +1,10 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
+
 import { getCustomers } from "@services/customers/AllCustomers";
+import { getAllProspects } from "@services/prospects/AllProspects";
+import { AppContext } from "@context/AppContext";
+
 import { ICustomerContext, ICustomerData } from "./types";
 
 export const CustomerContext = createContext<ICustomerContext>(
@@ -14,7 +18,7 @@ interface ICustomerContextProviderProps {
 export function CustomerContextProvider({
   children,
 }: ICustomerContextProviderProps) {
-  const { id } = useParams();
+  const { id, prospectCode } = useParams();
   const [customerData, setCustomerData] = useState<ICustomerData>({
     customerId: "",
     publicCode: "",
@@ -25,11 +29,27 @@ export function CustomerContextProvider({
     ],
   });
 
+  const { businessUnitSigla } = useContext(AppContext);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
   useEffect(() => {
-    if (id) {
-      fetchCustomerData(id);
-    }
-  }, [id]);
+    const fetchData = async () => {
+      if (id) {
+        fetchCustomerData(id);
+      } else if (prospectCode) {
+        const prospects = await getAllProspects(
+          businessUnitPublicCode,
+          prospectCode
+        );
+        const prospect_code =
+          prospects.borrowers[0].borrower_identification_number;
+        fetchCustomerData(prospect_code);
+      }
+    };
+    fetchData();
+  }, [id, prospectCode, businessUnitPublicCode]);
 
   const fetchCustomerData = async (publicCode: string) => {
     try {

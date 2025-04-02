@@ -10,7 +10,7 @@ function EditProspectRoutes() {
     <Routes>
       <Route path="/" element={<Board />}>
         <Route
-          path="/:id"
+          path="/:prospectCode"
           element={
             <CustomerContextProvider>
               <EditProspect />
