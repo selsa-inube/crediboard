@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { Assisted } from "@inubekit/assisted";
-import { Stack } from "@inubekit/stack";
+import { MdArrowBack } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@inubekit/button";
+import { Assisted, Breadcrumbs, Icon, Text, Stack } from "@inubekit/inubekit";
 
 import { disbursemenTabs } from "@pages/SubmitCreditApplication/steps/disbursementGeneral/config";
-
 import { GeneralHeader } from "@pages/addProspect/components/GeneralHeader/";
+
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
-import { StyledContainerAssisted } from "./styles";
+import { StyledArrowBack, StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { stepsFilingApplication } from "./config/filingApplication.config";
 import { ContactInformation } from "./steps/contactInformation";
@@ -17,6 +18,7 @@ import { VehicleOffered } from "./steps/vehicleOffered";
 import { Bail } from "./steps/bail";
 import { AttachedDocuments } from "./steps/attachedDocuments";
 import { DisbursementGeneral } from "./steps/disbursementGeneral";
+import { submitCreditApplicationConfig } from "./config/submitCreditApplication.config";
 
 interface SubmitCreditApplicationUIProps {
   currentStep: number;
@@ -34,7 +36,9 @@ interface SubmitCreditApplicationUIProps {
   setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function SubmitCreditApplicationUI(props: SubmitCreditApplicationUIProps) {
+export function SubmitCreditApplicationUI(
+  props: SubmitCreditApplicationUIProps
+) {
   const {
     currentStepsNumber,
     currentStep,
@@ -54,6 +58,12 @@ export function SubmitCreditApplicationUI(props: SubmitCreditApplicationUIProps)
 
   const handleTabChange = (tabId: string) => {
     setIsSelected(tabId);
+  };
+
+  const navigate = useNavigate();
+
+  const handleHome = () => {
+    navigate(submitCreditApplicationConfig.route);
   };
 
   return (
@@ -77,6 +87,15 @@ export function SubmitCreditApplicationUI(props: SubmitCreditApplicationUIProps)
           height="100%"
           width={isMobile ? "-webkit-fill-available" : "min(100%,1440px)"}
         >
+          <Breadcrumbs crumbs={submitCreditApplicationConfig.crumbs} />
+          <StyledArrowBack onClick={handleHome}>
+            <Stack gap="8px" alignItems="center">
+              <Icon icon={<MdArrowBack />} appearance="dark" size="20px" />
+              <Text type="title" size="large">
+                {submitCreditApplicationConfig.title}
+              </Text>
+            </Stack>
+          </StyledArrowBack>
           <StyledContainerAssisted $cursorDisabled={!isCurrentFormValid}>
             <Assisted
               step={currentStepsNumber!}
@@ -87,6 +106,7 @@ export function SubmitCreditApplicationUI(props: SubmitCreditApplicationUIProps)
               onSubmitClick={handleSubmitClick}
               disableNext={!isCurrentFormValid}
               disableSubmit={!isCurrentFormValid}
+              showCurrentStepNumber={false}
               size={isMobile ? "small" : "large"}
             />
           </StyledContainerAssisted>

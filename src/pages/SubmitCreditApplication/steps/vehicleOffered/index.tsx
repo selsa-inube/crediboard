@@ -33,7 +33,7 @@ export function VehicleOffered(props: IVehicleOfferedProps) {
       parent.state === "nuevo" ? Yup.number() : Yup.number().required("")
     ),
     value: Yup.number().required(),
-    description: Yup.string().required(),
+    description: Yup.string().required().max(200),
   });
 
   const formik = useFormik({
@@ -117,6 +117,7 @@ export function VehicleOffered(props: IVehicleOfferedProps) {
           value={formik.values.description}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          maxLength={200}
           fullwidth
         />
       </Stack>
