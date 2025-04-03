@@ -1,9 +1,9 @@
 import CryptoJS from "crypto-js";
 
-import { enviroment } from "@config/environment";
+import { environment } from "@config/environment";
 
-const secretKey = CryptoJS.enc.Hex.parse(enviroment.VITE_SECRET_KEY_PORTAL_ID);
-const iv = CryptoJS.enc.Hex.parse(enviroment.VITE_SECRET_KEY_PORTAL_NAME);
+const secretKey = CryptoJS.enc.Hex.parse(environment.VITE_SECRET_KEY_PORTAL_ID);
+const iv = CryptoJS.enc.Hex.parse(environment.VITE_SECRET_KEY_PORTAL_NAME);
 
 const encrypt = (data: string) => {
   return CryptoJS.AES.encrypt(data, secretKey, { iv }).toString();

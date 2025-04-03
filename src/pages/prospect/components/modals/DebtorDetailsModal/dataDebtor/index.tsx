@@ -1,8 +1,8 @@
 import { useFormik } from "formik";
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 
 import { CardGray } from "@components/cards/CardGray";
-import { IDebtorDetail } from "@pages/filingApplication/types";
+import { IDebtorDetail } from "@pages/SubmitCreditApplication/types";
 
 import { dataDebtor } from "./config";
 

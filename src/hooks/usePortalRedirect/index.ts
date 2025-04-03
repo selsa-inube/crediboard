@@ -2,17 +2,17 @@ import { useState, useEffect, useCallback } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { IStaffPortalByBusinessManager } from "@services/staffPortal/types";
-import { IBusinessmanagers } from "@services/businessManager/types";
-import { getStaffPortalByBusinessManager } from "@services/staffPortal";
-import { getBusinessmanagers } from "@services/businessManager";
+import { IBusinessManagers } from "@services/businessManager/types";
+import { getStaffPortalsByBusinessManager } from "@services/staffPortal";
+import { getBusinessManagers } from "@services/businessManager";
 import { encrypt } from "@utils/encrypt/encrypt";
 
 const usePortalLogic = () => {
   const [portalPublicCode, setPortalPublicCode] = useState<
     IStaffPortalByBusinessManager[]
   >([]);
-  const [businessManagers, setBusinessManagers] = useState<IBusinessmanagers>(
-    {} as IBusinessmanagers
+  const [businessManagers, setBusinessManagers] = useState<IBusinessManagers>(
+    {} as IBusinessManagers
   );
   const [hasError, setHasError] = useState(false);
   const [hasRedirected, setHasRedirected] = useState(false);
@@ -21,7 +21,7 @@ const usePortalLogic = () => {
 
   const validateConsultation = async () => {
     try {
-      const StaffPortalData = await getStaffPortalByBusinessManager();
+      const StaffPortalData = await getStaffPortalsByBusinessManager();
       setPortalPublicCode(StaffPortalData);
     } catch (error) {
       console.info(error);
@@ -50,7 +50,7 @@ const usePortalLogic = () => {
 
     if (portalPublicCodeFiltered.length > 0 && foundBusiness) {
       try {
-        const newData = await getBusinessmanagers(foundBusiness);
+        const newData = await getBusinessManagers(foundBusiness);
         setBusinessManagers(newData);
       } catch (error) {
         console.info(error);

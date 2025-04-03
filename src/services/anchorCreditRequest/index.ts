@@ -1,10 +1,10 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
 
-export const ChangeAnchorToCreditRequest = async (
+export const patchChangeAnchorToCreditRequest = async (
   businessUnitPublicCode: string,
   userAccount: string,
   creditRequestId: string | undefined,
@@ -31,7 +31,7 @@ export const ChangeAnchorToCreditRequest = async (
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
+        `${environment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
         options
       );
 
