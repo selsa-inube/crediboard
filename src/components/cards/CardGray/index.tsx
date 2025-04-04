@@ -5,7 +5,7 @@ import { StyledContainer } from "./styles";
 export interface ICardGrayProps {
   label: string;
   placeHolder?: string;
-  data?: string;
+  data?: string | number;
   apparencePlaceHolder?: "dark" | "gray";
   height?: string;
   isMobile?: boolean;
