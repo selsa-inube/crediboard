@@ -165,3 +165,9 @@ export interface IDisbursementGeneral {
     city: string;
   };
 }
+
+export interface IOptionsSelect {
+  id: string;
+  label: string;
+  value: string;
+}
