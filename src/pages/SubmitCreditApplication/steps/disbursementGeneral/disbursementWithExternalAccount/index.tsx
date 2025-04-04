@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Checkbox } from "@inubekit/checkbox";
 import { Divider } from "@inubekit/divider";
 import { Toggle } from "@inubekit/toggle";
@@ -9,10 +9,7 @@ import { Textfield } from "@inubekit/textfield";
 import { Text } from "@inubekit/text";
 import { Input } from "@inubekit/input";
 
-import {
-  Bank,
-  typeAccount,
-} from "@mocks/filing-application/disbursement-general/disbursementgeneral.mock";
+import { typeAccount } from "@mocks/filing-application/disbursement-general/disbursementgeneral.mock";
 import {
   handleChangeWithCurrency,
   validateCurrencyField,
@@ -22,7 +19,11 @@ import {
   disbursemenOptionAccount,
 } from "@pages/SubmitCreditApplication/steps/disbursementGeneral/config";
 import { GeneralInformationForm } from "@pages/SubmitCreditApplication/components/GeneralInformationForm";
-import { IDisbursementGeneral } from "@pages/SubmitCreditApplication/types";
+import {
+  IDisbursementGeneral,
+  IOptionsSelect,
+} from "@pages/SubmitCreditApplication/types";
+import { getAllBancks } from "@services/banckAccount";
 
 interface IDisbursementWithExternalAccountProps {
   isMobile: boolean;
@@ -47,6 +48,8 @@ export function DisbursementWithExternalAccount(
   } = props;
 
   const prevValues = useRef(formik.values[optionNameForm]);
+
+  const [banks, setBanks] = useState<IOptionsSelect[]>([]);
 
   useEffect(() => {
     onFormValid(formik.isValid);
@@ -76,6 +79,24 @@ export function DisbursementWithExternalAccount(
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     formik.setFieldValue(`${optionNameForm}.toggle`, event.target.checked);
   };
+
+  useEffect(() => {
+    const fetchBanks = async () => {
+      try {
+        const response = await getAllBancks();
+        const formattedBanks = response.map((bank) => ({
+          id: bank.bankId,
+          label: bank.bankName,
+          value: bank.bankName,
+        }));
+        setBanks(formattedBanks);
+      } catch (error) {
+        console.error("Error al cargar los bancos:", error);
+      }
+    };
+
+    fetchBanks();
+  }, []);
 
   return (
     <Stack
@@ -157,7 +178,7 @@ export function DisbursementWithExternalAccount(
           label={disbursemenOptionAccount.labelBank}
           placeholder={disbursemenOptionAccount.placeOption}
           size="compact"
-          options={Bank}
+          options={banks}
           onBlur={formik.handleBlur}
           onChange={(name, value) => formik.setFieldValue(name, value)}
           value={formik.values[optionNameForm]?.bank || ""}
