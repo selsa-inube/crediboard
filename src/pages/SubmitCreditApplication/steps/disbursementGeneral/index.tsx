@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Tabs } from "@inubekit/tabs";
 import { Stack } from "@inubekit/stack";
 import { Fieldset } from "@components/data/Fieldset";
@@ -15,10 +15,10 @@ interface IDisbursementGeneralProps {
   isMobile: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialValues: any;
+  isSelected: string;
   onFormValid: (isValid: boolean) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnChange: (values: any) => void;
-  isSelected: string;
   handleTabChange: (id: string) => void;
 }
 
@@ -26,11 +26,13 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
   const {
     isMobile,
     initialValues,
+    isSelected,
     onFormValid,
     handleOnChange,
-    isSelected,
     handleTabChange,
   } = props;
+
+  const [tabChanged, setTabChanged] = useState(false);
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -41,6 +43,36 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
   useEffect(() => {
     handleOnChange(formik.values);
   }, [formik.values, handleOnChange]);
+
+  const getTotalAmount = useCallback(() => {
+    const disbursementForms = [
+      "Internal",
+      "External",
+      "CheckEntity",
+      "CheckManagement",
+      "Cash",
+    ];
+
+    return disbursementForms.reduce((total, key) => {
+      const amount = formik.values[key]?.amount || 0;
+      return total + Number(amount);
+    }, 0);
+  }, [formik.values]);
+
+  useEffect(() => {
+    setTabChanged((prev) => !prev);
+  }, [isSelected]);
+
+  useEffect(() => {
+    const totalAmount = getTotalAmount();
+    onFormValid(totalAmount >= initialValues.amount);
+  }, [
+    formik.values,
+    onFormValid,
+    tabChanged,
+    getTotalAmount,
+    initialValues.amount,
+  ]);
 
   return (
     <Fieldset>
@@ -64,6 +96,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               handleOnChange={handleOnChange}
               formik={formik}
               optionNameForm="Internal"
+              getTotalAmount={getTotalAmount}
             />
           )}
           {isSelected === disbursemenTabs.external.id && (
@@ -74,6 +107,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               handleOnChange={handleOnChange}
               formik={formik}
               optionNameForm="External"
+              getTotalAmount={getTotalAmount}
             />
           )}
           {isSelected === disbursemenTabs.check.id && (
@@ -84,6 +118,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               handleOnChange={handleOnChange}
               formik={formik}
               optionNameForm="CheckEntity"
+              getTotalAmount={getTotalAmount}
             />
           )}
           {isSelected === disbursemenTabs.management.id && (
@@ -94,6 +129,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               handleOnChange={handleOnChange}
               formik={formik}
               optionNameForm="CheckManagement"
+              getTotalAmount={getTotalAmount}
             />
           )}
           {isSelected === disbursemenTabs.cash.id && (
@@ -104,6 +140,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               handleOnChange={handleOnChange}
               formik={formik}
               optionNameForm="Cash"
+              getTotalAmount={getTotalAmount}
             />
           )}
         </Stack>

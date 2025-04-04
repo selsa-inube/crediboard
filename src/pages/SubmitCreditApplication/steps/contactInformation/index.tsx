@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Grid } from "@inubekit/grid";
-import { Textfield } from "@inubekit/textfield";
+import { Textfield } from "@inubekit/inubekit";
 
 import { CardGray } from "@components/cards/CardGray";
 import { Fieldset } from "@components/data/Fieldset";
@@ -24,8 +24,12 @@ export function ContactInformation(props: IContactInformationProps) {
   const data = mockContactInformation[0];
 
   const validationSchema = Yup.object({
-    email: Yup.string().email().required(),
-    phone: Yup.number().required(),
+    email: Yup.string()
+      .matches(/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/)
+      .required(),
+    phone: Yup.string()
+      .matches(/^(\+\d{1,3})?\d{7,14}$/)
+      .required(),
   });
 
   const formik = useFormik({

@@ -21,11 +21,12 @@ import { IDisbursementGeneral } from "@pages/SubmitCreditApplication/types";
 interface IDisbursementWithCheckEntityProps {
   isMobile: boolean;
   initialValues: IDisbursementGeneral;
-  onFormValid: (isValid: boolean) => void;
-  handleOnChange: (values: IDisbursementGeneral) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formik: any;
   optionNameForm: string;
+  onFormValid: (isValid: boolean) => void;
+  handleOnChange: (values: IDisbursementGeneral) => void;
+  getTotalAmount: () => number;
 }
 
 export function DisbursementWithCheckEntity(
@@ -34,10 +35,11 @@ export function DisbursementWithCheckEntity(
   const {
     isMobile,
     initialValues,
-    onFormValid,
-    handleOnChange,
     formik,
     optionNameForm,
+    onFormValid,
+    handleOnChange,
+    getTotalAmount,
   } = props;
 
   const prevValues = useRef(formik.values[optionNameForm]);
@@ -64,9 +66,23 @@ export function DisbursementWithCheckEntity(
   }, [formik.values, handleOnChange, initialValues, optionNameForm]);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    formik.setFieldValue(`${optionNameForm}.check`, event.target.checked);
-  };
+    const isChecked = event.target.checked;
+    formik.setFieldValue(`${optionNameForm}.check`, isChecked);
 
+    if (isChecked) {
+      const totalAmount = getTotalAmount();
+      const remainingAmount = initialValues.amount - totalAmount;
+
+      if (remainingAmount > 0) {
+        const currentAmount = Number(
+          formik.values[optionNameForm]?.amount || 0
+        );
+        const newAmount = currentAmount + remainingAmount;
+
+        formik.setFieldValue(`${optionNameForm}.amount`, newAmount);
+      }
+    }
+  };
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     formik.setFieldValue(`${optionNameForm}.toggle`, event.target.checked);
   };
