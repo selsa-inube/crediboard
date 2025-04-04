@@ -1,21 +1,20 @@
 import { useFormik } from "formik";
 import { useEffect, useContext, useState, useRef, useCallback } from "react";
-import { useParams } from "react-router-dom";
 import { Tabs } from "@inubekit/tabs";
 import { Stack } from "@inubekit/inubekit";
 import { Fieldset } from "@components/data/Fieldset";
 import { postBusinessUnitRules } from "@services/businessUnitRules";
 import { AppContext } from "@context/AppContext";
 import { CustomerContext } from "@context/CustomerContext";
-import { removeDuplicates } from "@utils/mappingData/mappings";
-import { getSearchAllProspect } from "@services/prospects";
+import { ruleConfig } from "@pages/SubmitCreditApplication/config/configRules";
+import { evaluateRule } from "@pages/SubmitCreditApplication/evaluateRule";
 
-import { disbursemenTabs } from "./config";
 import { DisbursementWithInternalAccount } from "./disbursementWithInternalAccount/index";
 import { DisbursementWithExternalAccount } from "./disbursementWithExternalAccount";
 import { DisbursementWithCheckEntity } from "./disbursementWithCheckEntity";
 import { DisbursementWithCheckManagement } from "./DisbursementWithCheckManagement";
 import { DisbursementWithCash } from "./DisbursementWithCash";
+import { disbursemenTabs } from "./config";
 
 interface IDisbursementGeneralProps {
   isMobile: boolean;
@@ -26,6 +25,8 @@ interface IDisbursementGeneralProps {
   handleOnChange: (values: any) => void;
   isSelected: string;
   handleTabChange: (id: string) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
 }
 
 export function DisbursementGeneral(props: IDisbursementGeneralProps) {
@@ -36,105 +37,70 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
     handleOnChange,
     isSelected,
     handleTabChange,
+    data,
   } = props;
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues,
     validateOnMount: true,
     onSubmit: () => {},
   });
+
+  interface Tab {
+    id: string;
+    disabled: boolean;
+    label: string;
+  }
+
+  const { businessUnitSigla } = useContext(AppContext);
+  const { customerData } = useContext(CustomerContext);
+  const userHasChangedTab = useRef(false);
+
+  const [validTabs, setValidTabs] = useState<Tab[]>([]);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
   useEffect(() => {
     handleOnChange(formik.values);
   }, [formik.values, handleOnChange]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [serverResponse, setServerResponse] = useState<any[]>([]);
-
-  const userHasChangedTab = useRef(false);
-
-  const { businessUnitSigla } = useContext(AppContext);
-
-  const businessUnitPublicCode: string =
-    JSON.parse(businessUnitSigla).businessUnitPublicCode;
-
-  const { customerData } = useContext(CustomerContext);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [prospectData, setProspectData] = useState<Record<string, any>>({});
-
-  const { prospectCode } = useParams();
-
-  const fetchProspectData = useCallback(async () => {
-    try {
-      const prospect = await getSearchAllProspect(
-        businessUnitPublicCode,
-        prospectCode || ""
-      );
-
-      if (prospect && typeof prospect === "object") {
-        if (JSON.stringify(prospect) !== JSON.stringify(prospectData)) {
-          setProspectData(prospect);
-        }
-        return prospect;
-      } else {
-        return null;
-      }
-    } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
-      return null;
-    }
-  }, [businessUnitPublicCode, prospectCode, prospectData]);
-
   const fetchTabs = useCallback(async () => {
     try {
-      if (
-        !prospectData?.requested_amount ||
-        !prospectData.credit_products?.length
-      ) {
-        return;
-      }
-
-      const rulesData = {
-        ruleName: "ModeOfDisbursementType",
-        conditions: [
-          {
-            condition: "LineOfCredit",
-            value:
-              prospectData.credit_products[0].line_of_credit_abbreviated_name,
-          },
-          {
-            condition: "ClientType",
-            value:
-              customerData.generalAttributeClientNaturalPersons?.[0]?.associateType?.substring(
-                0,
-                1
-              ) || "",
-          },
-          {
-            condition: "LoanAmount",
-            value: prospectData.requested_amount || 0,
-          },
-        ],
+      if (!data?.requested_amount || !data.credit_products?.length) return;
+      const dataRules = {
+        LineOfCredit:
+          data.credit_products?.[0]?.line_of_credit_abbreviated_name,
+        ClientType:
+          customerData.generalAttributeClientNaturalPersons?.[0]?.associateType?.substring(
+            0,
+            1
+          ) || "",
+        LoanAmount: data.requested_amount,
       };
 
-      const response = await postBusinessUnitRules(
-        businessUnitPublicCode,
-        rulesData
+      const rule = ruleConfig["ModeOfDisbursementType"]?.(dataRules);
+      if (!rule) return;
+
+      const values = await evaluateRule(
+        rule,
+        (code, data) => postBusinessUnitRules(code, data),
+        "value",
+        businessUnitPublicCode
       );
 
-      if (!response || !Array.isArray(response) || response.length === 0) {
-        return;
-      }
+      const validDisbursements =
+        Array.isArray(values) && typeof values[0] === "string"
+          ? values
+          : values.map((item) => item.value);
 
-      const uniqueResponse = removeDuplicates(response, "value");
-      setServerResponse(uniqueResponse);
+      const allTabs = Object.values(disbursemenTabs);
 
-      const validDisbursements = uniqueResponse.map((item) => item.value);
-
-      const availableTabs = Object.values(disbursemenTabs).filter((tab) =>
+      const availableTabs = allTabs.filter((tab) =>
         validDisbursements.includes(tab.id)
       );
+
+      setValidTabs(availableTabs);
 
       if (availableTabs.length > 0 && !userHasChangedTab.current) {
         handleTabChange(availableTabs[0].id);
@@ -144,33 +110,16 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
     }
   }, [
     businessUnitPublicCode,
-    prospectData,
-    customerData,
+    customerData.generalAttributeClientNaturalPersons,
+    data.credit_products,
+    data.requested_amount,
     handleTabChange,
-    userHasChangedTab,
   ]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!prospectData?.requested_amount) {
-        await fetchProspectData();
-      }
-      if (
-        prospectData?.requested_amount &&
-        prospectData?.credit_products?.length > 0
-      ) {
-        fetchTabs();
-      }
-    };
-    fetchData();
+    fetchTabs();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prospectData]);
-
-  const uniqueServerResponse = removeDuplicates(serverResponse, "value");
-
-  const validTabs = Object.values(disbursemenTabs).filter((tab) =>
-    uniqueServerResponse.some((response) => response.value === tab.id)
-  );
+  }, []);
 
   const handleManualTabChange = (tabId: string) => {
     userHasChangedTab.current = true;
@@ -184,7 +133,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
         padding={isMobile ? "4px 10px" : "10px 16px"}
         gap="20px"
       >
-        {uniqueServerResponse.length > 0 ? (
+        {validTabs.length > 0 && (
           <Stack direction="column">
             <Tabs
               tabs={validTabs}
@@ -192,6 +141,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               onChange={handleManualTabChange}
               scroll={isMobile}
             />
+
             {isSelected === disbursemenTabs.internal.id && (
               <DisbursementWithInternalAccount
                 isMobile={isMobile}
@@ -243,7 +193,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               />
             )}
           </Stack>
-        ) : null}
+        )}
       </Stack>
     </Fieldset>
   );

@@ -151,6 +151,7 @@ export function ExtraDebtors(props: IExtraDebtorsProps) {
             <DebtorEditModal
               handleClose={() => setIsModalEdit(false)}
               isMobile={isMobile}
+              initialValues={formik.values.debtorDetail}
             />
           )}
         </Grid>

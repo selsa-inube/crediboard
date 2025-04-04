@@ -25,7 +25,15 @@ export function CustomerContextProvider({
     fullName: "",
     natureClient: "",
     generalAttributeClientNaturalPersons: [
-      { employmentType: "", associateType: "" },
+      {
+        employmentType: "",
+        associateType: "",
+        typeIdentification: "",
+        firstNames: "",
+        lastNames: "",
+        emailContact: "",
+        cellPhoneContact: "",
+      },
     ],
     generalAssociateAttributes: [
       {
