@@ -201,7 +201,7 @@ export const ListModal = (props: IListModalProps) => {
       for (const fileData of uploadedFiles) {
         await saveDocument(
           businessUnitPublicCode,
-          "1",
+          "9ccff734-7df7-46e6-9ea8-f03f9570ab62",
           fileData.name.split(".").slice(0, -1).join("."),
           fileData.file
         );
