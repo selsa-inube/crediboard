@@ -3,11 +3,10 @@ import { Checkbox } from "@inubekit/checkbox";
 import { Divider } from "@inubekit/divider";
 import { Toggle } from "@inubekit/toggle";
 import { Select } from "@inubekit/select";
-import { Stack } from "@inubekit/stack";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
-import { Text } from "@inubekit/text";
 import { Input } from "@inubekit/input";
+import { useFlag, Stack, Text } from "@inubekit/inubekit";
 
 import { typeAccount } from "@mocks/filing-application/disbursement-general/disbursementgeneral.mock";
 import {
@@ -47,9 +46,11 @@ export function DisbursementWithExternalAccount(
     optionNameForm,
   } = props;
 
+  const [banks, setBanks] = useState<IOptionsSelect[]>([]);
+
   const prevValues = useRef(formik.values[optionNameForm]);
 
-  const [banks, setBanks] = useState<IOptionsSelect[]>([]);
+  const { addFlag } = useFlag();
 
   useEffect(() => {
     onFormValid(formik.isValid);
@@ -81,6 +82,15 @@ export function DisbursementWithExternalAccount(
   };
 
   useEffect(() => {
+    const handleFlag = (error: unknown) => {
+      addFlag({
+        title: "Error",
+        description: `Error al cargar los bancos: ${error}`,
+        appearance: "danger",
+        duration: 5000,
+      });
+    };
+
     const fetchBanks = async () => {
       try {
         const response = await getAllBancks();
@@ -92,11 +102,12 @@ export function DisbursementWithExternalAccount(
         setBanks(formattedBanks);
       } catch (error) {
         console.error("Error al cargar los bancos:", error);
+        handleFlag(error);
       }
     };
 
     fetchBanks();
-  }, []);
+  }, [addFlag]);
 
   return (
     <Stack
