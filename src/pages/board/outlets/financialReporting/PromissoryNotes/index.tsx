@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState, useContext } from "react";
-import { Stack, Tag } from "@inubekit/inubekit";
-import { useFlag } from "@inubekit/flag";
+import { Stack, useFlag, Tag } from "@inubekit/inubekit";
 
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
