@@ -33,7 +33,7 @@ export function SubmitCreditApplication() {
       userChoice === "borrowers" ? "borrowers" : "coBorrowers"
     ];
 
-  const fixedSteps = [1, 2, 7, 8];
+  const fixedSteps = [1, 2, 3, 4, 5, 6, 7, 8];
 
   const dataHeader = { name: customerData.fullName };
 
@@ -98,6 +98,7 @@ export function SubmitCreditApplication() {
       client: false,
     },
     disbursementGeneral: {
+      amount: 10000000,
       Internal: {
         amount: "",
         account: "",

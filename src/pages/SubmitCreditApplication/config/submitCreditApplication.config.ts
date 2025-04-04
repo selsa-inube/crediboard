@@ -1,7 +1,7 @@
 export const submitCreditApplicationConfig = {
   id: 1,
   title: "Radicar solicitud de crédito",
-  route: "/",
+  route: "/edit-prospect/:prospectCode",
   crumbs: [
     {
       path: "/",
