@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
+import { useFlag } from "@inubekit/flag";
 
 import { userStepsMock } from "@mocks/filing-application/userSteps/users.mock";
 import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
@@ -12,10 +13,10 @@ import { FormData } from "./types";
 import { dataFillingApplication } from "./config/config";
 
 export function SubmitCreditApplication() {
-  const { id } = useParams();
+  const { prospectCode } = useParams();
   const { customerData } = useContext(CustomerContext);
 
-  const userId = parseInt(id || "0", 10);
+  const userId = parseInt(prospectCode || "0", 10);
 
   const userChoice =
     choiceBorrowers.find((choice) => choice.id === userId)?.choice ||
@@ -45,6 +46,8 @@ export function SubmitCreditApplication() {
     [...fixedSteps, ...intermediateSteps].includes(step.id)
   );
 
+  const [sentModal, setSentModal] = useState(false);
+  const [approvedRequestModal, setApprovedRequestModal] = useState(false);
   const [currentStep, setCurrentStep] = useState<number>(steps[0]?.id || 1);
   const [isCurrentFormValid, setIsCurrentFormValid] = useState(true);
   const [formData, setFormData] = useState<FormData>({
@@ -174,6 +177,17 @@ export function SubmitCreditApplication() {
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
+  const { addFlag } = useFlag();
+
+  const handleFlag = () => {
+    addFlag({
+      title: "Error al enviar el radicado",
+      description: "El radicado no se ha podido enviar correctamente.",
+      appearance: "danger",
+      duration: 5000,
+    });
+  };
+
   const currentStepIndex = steps.findIndex((step) => step.id === currentStep);
   const currentStepsNumber = {
     ...steps[currentStepIndex],
@@ -184,7 +198,7 @@ export function SubmitCreditApplication() {
     const currentIndex = steps.findIndex((step) => step.id === currentStep);
     if (currentIndex < steps.length - 1) {
       setCurrentStep(steps[currentIndex + 1].id);
-    } else if (currentStep === steps.length) {
+    } else if (currentStep === steps[steps.length - 1].id) {
       handleSubmitClick();
     }
   };
@@ -198,7 +212,16 @@ export function SubmitCreditApplication() {
   };
 
   function handleSubmitClick() {
-    console.log("data: ", formData);
+    setSentModal(true);
+  }
+
+  function handleSendModal() {
+    try {
+      setSentModal(false);
+      setApprovedRequestModal(true);
+    } catch (error) {
+      handleFlag();
+    }
   }
 
   const handleFormChange = (updatedValues: Partial<FormData>) => {
@@ -224,12 +247,18 @@ export function SubmitCreditApplication() {
         setIsCurrentFormValid={setIsCurrentFormValid}
         formData={formData}
         dataHeader={dataHeader}
+        sentModal={sentModal}
+        approvedRequestModal={approvedRequestModal}
+        numberProspectCode={prospectCode || ""}
+        setApprovedRequestModal={setApprovedRequestModal}
+        setSentModal={setSentModal}
         handleFormChange={handleFormChange}
         handleNextStep={handleNextStep}
         handlePreviousStep={handlePreviousStep}
         setCurrentStep={setCurrentStep}
         currentStepsNumber={currentStepsNumber}
         handleSubmitClick={handleSubmitClick}
+        handleSendModal={handleSendModal}
         isMobile={isMobile}
       />
     </>
