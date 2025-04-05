@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import { useEffect, useContext, useState, useRef, useCallback } from "react";
-import { Tabs } from "@inubekit/tabs";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Tabs } from "@inubekit/inubekit";
 import { Fieldset } from "@components/data/Fieldset";
 import { postBusinessUnitRules } from "@services/businessUnitRules";
 import { AppContext } from "@context/AppContext";

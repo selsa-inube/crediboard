@@ -57,9 +57,13 @@ export function CustomerContextProvider({
           businessUnitPublicCode,
           prospectCode
         );
-        const prospect_code =
-          prospects.borrowers[0].borrower_identification_number;
-        fetchCustomerData(prospect_code);
+        const mainBorrower = prospects.borrowers.find(
+          (borrower) => borrower.borrower_type === "main_borrower"
+        );
+
+        if (mainBorrower?.borrower_identification_number) {
+          fetchCustomerData(mainBorrower.borrower_identification_number);
+        }
       }
     };
     fetchData();
