@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
-import { Icon, Grid } from "@inubekit/inubekit";
+import { Icon, Grid, useFlag } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
 import { Header } from "@inubekit/header";
 
@@ -11,6 +11,7 @@ import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
 import { BusinessUnitChange } from "@components/inputs/BusinessUnitChange";
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
+import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
 
 import {
   StyledAppPage,
@@ -93,6 +94,25 @@ function AppPage() {
     setSelectedClient(businessUnit.abbreviatedName);
     setCollapse(false);
   };
+
+  const { addFlag } = useFlag();
+
+  const handleFlag = () => {
+    const errorData = mockErrorBoard[0].business;
+    addFlag({
+      title: errorData[0],
+      description: errorData[1],
+      appearance: "danger",
+      duration: 5000,
+    });
+  };
+
+  useEffect(() => {
+    if (!businessUnitsToTheStaff || businessUnitsToTheStaff.length === 0) {
+      handleFlag();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [businessUnitsToTheStaff]);
 
   return (
     <StyledAppPage>

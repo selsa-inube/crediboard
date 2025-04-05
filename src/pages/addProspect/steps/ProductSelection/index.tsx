@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
-import { Stack, Text } from "@inubekit/inubekit";
+import { Stack, Text, useFlag } from "@inubekit/inubekit";
 import { Toggle } from "@inubekit/toggle";
 import { Divider } from "@inubekit/divider";
 
@@ -14,7 +14,6 @@ import { CustomerContext } from "@context/CustomerContext";
 import { removeDuplicates } from "@utils/mappingData/mappings";
 
 import { electionData } from "./config";
-import { useFlag } from "@inubekit/flag";
 
 interface IProductSelectionProps {
   initialValues: {
