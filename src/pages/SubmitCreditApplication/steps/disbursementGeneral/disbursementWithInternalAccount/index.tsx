@@ -67,12 +67,14 @@ export function DisbursementWithInternalAccount(
     }
   }, [formik.values, handleOnChange, initialValues, optionNameForm]);
 
+  const totalAmount = getTotalAmount();
+  const isDisabled = totalAmount >= initialValues.amount;
+
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.target.checked;
     formik.setFieldValue(`${optionNameForm}.check`, isChecked);
 
     if (isChecked) {
-      const totalAmount = getTotalAmount();
       const remainingAmount = initialValues.amount - totalAmount;
 
       if (remainingAmount > 0) {
@@ -89,6 +91,16 @@ export function DisbursementWithInternalAccount(
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     formik.setFieldValue(`${optionNameForm}.toggle`, event.target.checked);
   };
+
+  useEffect(() => {
+    const currentAmount = Number(formik.values[optionNameForm]?.amount || 0);
+    const totalAmount = props.getTotalAmount();
+
+    if (currentAmount + totalAmount - currentAmount !== initialValues.amount) {
+      formik.setFieldValue(`${optionNameForm}.check`, false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.values[optionNameForm]?.amount]);
 
   return (
     <Stack
@@ -119,6 +131,7 @@ export function DisbursementWithInternalAccount(
             indeterminate={false}
             onChange={handleCheckboxChange}
             value="featureCheckbox"
+            disabled={isDisabled}
           />
           <Text type="label" size="medium">
             {disbursementGeneral.labelCheck}

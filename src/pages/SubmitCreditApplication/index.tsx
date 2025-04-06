@@ -14,7 +14,7 @@ import { FormData } from "./types";
 import { dataFillingApplication } from "./config/config";
 
 export function SubmitCreditApplication() {
-  const { id } = useParams();
+  const { id, prospectCode } = useParams();
   const { customerData } = useContext(CustomerContext);
   const { businessUnitSigla, eventData } = useContext(AppContext);
   const { userAccount } =
@@ -49,11 +49,6 @@ export function SubmitCreditApplication() {
     },
   };
 
-  const steps = Object.values(updatedSteps).filter((step) =>
-    [...fixedSteps, ...intermediateSteps].includes(step.id)
-  );
-
-  const [currentStep, setCurrentStep] = useState<number>(steps[0]?.id || 1);
   const [isCurrentFormValid, setIsCurrentFormValid] = useState(true);
   const [formData, setFormData] = useState<FormData>({
     contactInformation: {
@@ -180,6 +175,16 @@ export function SubmitCreditApplication() {
       },
     },
   });
+
+  const hasBorrowers = Object.keys(
+    formData.borrowerData.initialBorrowers
+  ).length;
+
+  const steps = Object.values(updatedSteps)
+    .filter((step) => [...fixedSteps, ...intermediateSteps].includes(step.id))
+    .filter((step) => !(step.id === 6 && hasBorrowers >= 1));
+
+  const [currentStep, setCurrentStep] = useState<number>(steps[0]?.id || 1);
 
   const {
     contactInformation,
@@ -320,6 +325,7 @@ export function SubmitCreditApplication() {
         setIsCurrentFormValid={setIsCurrentFormValid}
         formData={formData}
         dataHeader={dataHeader}
+        prospectCode={prospectCode || ""}
         handleFormChange={handleFormChange}
         handleNextStep={handleNextStep}
         handlePreviousStep={handlePreviousStep}

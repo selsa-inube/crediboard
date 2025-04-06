@@ -28,6 +28,7 @@ interface SubmitCreditApplicationUIProps {
   formData: FormData;
   isMobile: boolean;
   dataHeader: { name: string };
+  prospectCode: string;
   handleFormChange: (updatedValues: Partial<FormData>) => void;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   handleNextStep: () => void;
@@ -47,6 +48,7 @@ export function SubmitCreditApplicationUI(
     formData,
     isMobile,
     dataHeader,
+    prospectCode,
     handleFormChange,
     handleNextStep,
     handlePreviousStep,
@@ -63,7 +65,9 @@ export function SubmitCreditApplicationUI(
   const navigate = useNavigate();
 
   const handleHome = () => {
-    navigate(submitCreditApplicationConfig.route);
+    navigate(
+      submitCreditApplicationConfig.route.replace(":prospectCode", prospectCode)
+    );
   };
 
   return (

@@ -65,7 +65,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
 
   useEffect(() => {
     const totalAmount = getTotalAmount();
-    onFormValid(totalAmount >= initialValues.amount);
+    onFormValid(totalAmount === initialValues.amount);
   }, [
     formik.values,
     onFormValid,
