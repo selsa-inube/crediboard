@@ -6,8 +6,7 @@ import {
   MdRemove,
   MdWarningAmber,
 } from "react-icons/md";
-import { Icon } from "@inubekit/inubekit";
-import { Tag } from "@inubekit/tag";
+import { Icon, Tag } from "@inubekit/inubekit";
 
 import { IEntries } from "@components/data/TableBoard/types";
 import { IApprovals } from "@pages/board/outlets/financialReporting/Approvals/types";

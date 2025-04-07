@@ -1,4 +1,4 @@
-import { Tag } from "@inubekit/tag";
+import { Tag } from "@inubekit/inubekit";
 
 export const mockAttachedDocuments = [
   {

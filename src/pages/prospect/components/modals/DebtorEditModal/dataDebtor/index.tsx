@@ -2,12 +2,12 @@ import { Stack } from "@inubekit/inubekit";
 import { Textfield } from "@inubekit/textfield";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { MockEditDebtor } from "@mocks/filing-application/add-borrower/addborrower.mock";
+import { getPropertyValue } from "@pages/SubmitCreditApplication/util";
 
 import { DataEditBorrower } from "./config";
-
-export function DataDebtor() {
-  const data = MockEditDebtor[0];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function DataDebtor(initialValues: any) {
+  const { data } = initialValues;
 
   return (
     <Fieldset>
@@ -16,7 +16,7 @@ export function DataDebtor() {
           name="email"
           id="email"
           label={DataEditBorrower.email}
-          value={data.email}
+          value={getPropertyValue(data.borrower_properties, "email")}
           size="compact"
           fullwidth
         />
@@ -24,7 +24,7 @@ export function DataDebtor() {
           name="phone"
           id="phone"
           label={DataEditBorrower.phone}
-          value={data.phone}
+          value={getPropertyValue(data.borrower_properties, "phone_number")}
           size="compact"
           fullwidth
         />
@@ -32,7 +32,7 @@ export function DataDebtor() {
           name="relation"
           id="relation"
           label={DataEditBorrower.relation}
-          value={data.relation}
+          value={getPropertyValue(data.borrower_properties, "relationship")}
           size="compact"
           fullwidth
         />

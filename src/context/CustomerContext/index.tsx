@@ -2,7 +2,7 @@ import { createContext, useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import { getCustomers } from "@services/customers/AllCustomers";
-import { getAllProspects } from "@services/prospects/AllProspects";
+import { getSearchProspectById } from "@services/prospects";
 import { AppContext } from "@context/AppContext";
 
 import { ICustomerContext, ICustomerData } from "./types";
@@ -25,7 +25,15 @@ export function CustomerContextProvider({
     fullName: "",
     natureClient: "",
     generalAttributeClientNaturalPersons: [
-      { employmentType: "", associateType: "" },
+      {
+        employmentType: "",
+        associateType: "",
+        typeIdentification: "",
+        firstNames: "",
+        lastNames: "",
+        emailContact: "",
+        cellPhoneContact: "",
+      },
     ],
     generalAssociateAttributes: [
       {
@@ -45,7 +53,7 @@ export function CustomerContextProvider({
       if (id) {
         fetchCustomerData(id);
       } else if (prospectCode) {
-        const prospects = await getAllProspects(
+        const prospects = await getSearchProspectById(
           businessUnitPublicCode,
           prospectCode
         );

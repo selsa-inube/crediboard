@@ -7,21 +7,21 @@ import { Textfield } from "@inubekit/textfield";
 import { CardGray } from "@components/cards/CardGray";
 import { Fieldset } from "@components/data/Fieldset";
 import { IContactInformation } from "@pages/SubmitCreditApplication/types";
-import { mockContactInformation } from "@mocks/filing-application/contact-information/contactinformation.mock";
 
 import { dataContactInformation } from "./config";
+import { ICustomerData } from "@context/CustomerContext/types";
 
 interface IContactInformationProps {
   onFormValid: (isValid: boolean) => void;
   handleOnChange: (values: IContactInformation) => void;
   isMobile: boolean;
   initialValues: IContactInformation;
+  customerData: ICustomerData;
 }
 
 export function ContactInformation(props: IContactInformationProps) {
-  const { onFormValid, handleOnChange, isMobile, initialValues } = props;
-
-  const data = mockContactInformation[0];
+  const { onFormValid, handleOnChange, isMobile, initialValues, customerData } =
+    props;
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -31,10 +31,14 @@ export function ContactInformation(props: IContactInformationProps) {
   const formik = useFormik({
     initialValues: {
       ...initialValues,
-      document: data.document,
-      documentNumber: data.documentNumber,
-      name: data.name,
-      lastName: data.lastName,
+      document:
+        customerData.generalAttributeClientNaturalPersons[0].typeIdentification,
+      documentNumber: customerData.publicCode,
+      name: customerData.generalAttributeClientNaturalPersons[0].firstNames,
+      lastName: customerData.generalAttributeClientNaturalPersons[0].lastNames,
+      email: customerData.generalAttributeClientNaturalPersons[0].emailContact,
+      phone:
+        customerData.generalAttributeClientNaturalPersons[0].cellPhoneContact,
     },
     validationSchema,
     validateOnMount: true,
