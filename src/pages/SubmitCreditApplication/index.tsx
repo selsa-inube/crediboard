@@ -6,7 +6,7 @@ import { userStepsMock } from "@mocks/filing-application/userSteps/users.mock";
 import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
 import { CustomerContext } from "@context/CustomerContext";
 import { AppContext } from "@context/AppContext";
-import { getSearchAllProspect } from "@services/prospects";
+import { getSearchProspectById } from "@services/prospects";
 import { postBusinessUnitRules } from "@services/businessUnitRules";
 
 import { stepsFilingApplication } from "./config/filingApplication.config";
@@ -50,7 +50,12 @@ export function SubmitCreditApplication() {
     [...fixedSteps, ...intermediateSteps].includes(step.id)
   );
 
-  const dataHeader = { name: customerData?.fullName ?? "" };
+  const dataHeader = {
+    name: customerData?.fullName ?? "",
+    status:
+      customerData?.generalAssociateAttributes[0].partnerStatus.substring(2) ??
+      "",
+  };
 
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
@@ -189,7 +194,7 @@ export function SubmitCreditApplication() {
 
   const fetchProspectData = useCallback(async () => {
     try {
-      const prospect = await getSearchAllProspect(
+      const prospect = await getSearchProspectById(
         businessUnitPublicCode,
         prospectCode || ""
       );

@@ -2,7 +2,7 @@ import { createContext, useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import { getCustomers } from "@services/customers/AllCustomers";
-import { getSearchAllProspect } from "@services/prospects";
+import { getSearchProspectById } from "@services/prospects";
 import { AppContext } from "@context/AppContext";
 
 import { ICustomerContext, ICustomerData } from "./types";
@@ -53,7 +53,7 @@ export function CustomerContextProvider({
       if (id) {
         fetchCustomerData(id);
       } else if (prospectCode) {
-        const prospects = await getSearchAllProspect(
+        const prospects = await getSearchProspectById(
           businessUnitPublicCode,
           prospectCode
         );

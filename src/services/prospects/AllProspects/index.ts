@@ -5,7 +5,7 @@ import {
 } from "@config/environment";
 import { IProspect } from "./types";
 
-const getSearchProspectById = async (
+const getAllProspects = async (
   businessUnitPublicCode: string,
   prospectCode: string
 ): Promise<IProspect> => {
@@ -69,4 +69,4 @@ const getSearchProspectById = async (
   throw new Error("No se pudo obtener la tarea después de varios intentos.");
 };
 
-export { getSearchProspectById };
+export { getAllProspects };
