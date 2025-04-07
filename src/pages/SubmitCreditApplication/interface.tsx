@@ -7,6 +7,7 @@ import { Icon, Text, Stack } from "@inubekit/inubekit";
 import { BaseModal } from "@components/modals/baseModal";
 import { disbursemenTabs } from "@pages/SubmitCreditApplication/steps/disbursementGeneral/config";
 import { GeneralHeader } from "@pages/addProspect/components/GeneralHeader/";
+import { ICustomerData } from "@context/CustomerContext/types";
 
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { StyledContainerAssisted } from "./styles";
@@ -41,6 +42,9 @@ interface SubmitCreditApplicationUIProps {
   handleSubmitClick: () => void;
   handleSendModal: () => void;
   setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
+  customerData?: ICustomerData;
 }
 
 export function SubmitCreditApplicationUI(
@@ -65,6 +69,8 @@ export function SubmitCreditApplicationUI(
     handleSubmitClick,
     handleSendModal,
     setIsCurrentFormValid,
+    data,
+    customerData,
   } = props;
 
   const [isSelected, setIsSelected] = useState<string>();
@@ -114,7 +120,8 @@ export function SubmitCreditApplicationUI(
             )}
           {currentStepsNumber &&
             currentStepsNumber.id ===
-              stepsFilingApplication.contactInformation.id && (
+              stepsFilingApplication.contactInformation.id &&
+            customerData && (
               <ContactInformation
                 isMobile={isMobile}
                 onFormValid={setIsCurrentFormValid}
@@ -122,6 +129,7 @@ export function SubmitCreditApplicationUI(
                 handleOnChange={(values) =>
                   handleFormChange({ contactInformation: values })
                 }
+                customerData={customerData}
               />
             )}
           {currentStepsNumber &&
@@ -134,6 +142,7 @@ export function SubmitCreditApplicationUI(
                 handleOnChange={(values) =>
                   handleFormChange({ borrowerData: values })
                 }
+                data={data}
               />
             )}
           {currentStepsNumber &&
@@ -166,6 +175,7 @@ export function SubmitCreditApplicationUI(
                 onFormValid={setIsCurrentFormValid}
                 initialValues={formData.bail}
                 handleOnChange={(values) => handleFormChange({ bail: values })}
+                data={data}
               />
             )}
           {currentStepsNumber &&
@@ -185,6 +195,7 @@ export function SubmitCreditApplicationUI(
                 }
                 isSelected={isSelected || disbursemenTabs.internal.id}
                 handleTabChange={handleTabChange}
+                data={data}
               />
             )}
           <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">

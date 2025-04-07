@@ -6,6 +6,15 @@ export interface ICustomerData {
   generalAttributeClientNaturalPersons: {
     employmentType: string;
     associateType: string;
+    typeIdentification: string;
+    firstNames: string;
+    lastNames: string;
+    emailContact: string;
+    cellPhoneContact: string;
+  }[];
+  generalAssociateAttributes: {
+    affiliateSeniorityDate: string;
+    partnerStatus: string;
   }[];
 }
 
