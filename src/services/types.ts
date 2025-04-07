@@ -24,6 +24,33 @@ export interface ICreditRequest {
   usersByCreditRequests?: IUsersByCreditRequests;
 }
 
+export interface IModeOfDisbursement {
+  accountBankCode: string;
+  accountBankName: string;
+  accountNumber: string;
+  accountType: string;
+  creditRequestId: string;
+  disbursementAmount: number;
+  disbursementDate: string;
+  disbursementReference: string;
+  isInTheNameOfBorrower: string;
+  modeOfDisbursementCode: string;
+  modeOfDisbursementId: string;
+  modeOfDisbursementType: string;
+  observation: string;
+  payeeBiologicalSex: string;
+  payeeBirthday: string;
+  payeeCityOfResidence: string;
+  payeeEmail: string;
+  payeeIdentificationNumber: string;
+  payeeIdentificationType: string;
+  payeeName: string;
+  payeePersonType: string;
+  payeePhoneNumber: string;
+  payeeSurname: string;
+  paymentOrderReference: string;
+}
+
 export interface IStaff {
   userId: string;
   userName: string;
