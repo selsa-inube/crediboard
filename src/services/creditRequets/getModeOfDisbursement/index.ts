@@ -3,27 +3,24 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { IProspect } from "./types";
+import { IModeOfDisbursement } from "@services/types";
+import { mapCreditRequestToEntities } from "./mapper";
 
-const getSearchProspectById = async (
+export const getModeOfDisbursement = async (
   businessUnitPublicCode: string,
-  prospectCode: string
-): Promise<IProspect> => {
+  creditRequestId: string
+): Promise<IModeOfDisbursement[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
-
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      // const queryParams = new URLSearchParams({
-      //   prospectCode: prospectCode,
-      // });
 
       const options: RequestInit = {
         method: "GET",
         headers: {
-          "X-Action": "SearchByIdProspect",
+          "X-Action": "SearchAllModeOfDisbursementById",
           "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -31,42 +28,39 @@ const getSearchProspectById = async (
       };
 
       const res = await fetch(
-        `${environment.VITE_IPROSPECT_QUERY_PROCESS_SERVICE}/prospects/${prospectCode}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/mode-of-disbursement/${creditRequestId}?`,
         options
       );
 
       clearTimeout(timeoutId);
 
       if (res.status === 204) {
-        throw new Error("No hay tarea disponible.");
+        return [];
       }
 
       const data = await res.json();
 
       if (!res.ok) {
         throw {
-          message: "Error al obtener la tarea.",
+          message: "Error al obtener los ",
           status: res.status,
           data,
         };
       }
 
-      if (Array.isArray(data) && data.length > 0) {
-        return data[0];
-      }
+      const normalizedCredit = Array.isArray(data)
+        ? mapCreditRequestToEntities(data)
+        : [];
 
-      return data;
+      return normalizedCredit;
     } catch (error) {
-      console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
         throw new Error(
-          "Todos los intentos fallaron. No se pudo obtener la tarea."
+          "Todos los intentos fallaron. No se pudieron obtener los procesos de consulta."
         );
       }
     }
   }
 
-  throw new Error("No se pudo obtener la tarea después de varios intentos.");
+  return [];
 };
-
-export { getSearchProspectById };

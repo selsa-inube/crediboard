@@ -10,7 +10,7 @@ function SubmitCreditApplicationRoutes() {
     <Routes>
       <Route path="/" element={<Board />}>
         <Route
-          path="/:prospectCode"
+          path="/:customerPublicCode/:prospectCode"
           element={
             <CustomerContextProvider>
               <SubmitCreditApplication />

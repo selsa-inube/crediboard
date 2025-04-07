@@ -4,17 +4,11 @@ import {
   maxRetriesServices,
 } from "@config/environment";
 
-import { ICustomer } from "./types";
+import { IBanksAll } from "./types";
 
-const getSearchCustomerByCode = async (
-  publicCode: string,
-  businessUnitPublicCode: string
-): Promise<ICustomer> => {
+const getAllBancks = async (): Promise<IBanksAll[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
-  const queryParams = new URLSearchParams({
-    publicCode: publicCode,
-  });
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
@@ -24,17 +18,14 @@ const getSearchCustomerByCode = async (
       const options: RequestInit = {
         method: "GET",
         headers: {
-          "X-Action": "SearchAllCustomerCatalog",
-          "X-Business-Unit": "fondecom",
+          "X-Action": "SearchAllBank",
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,
       };
 
-      // The console.log is requied due to the fondecom business unit
-      console.log(businessUnitPublicCode);
       const res = await fetch(
-        `${environment.VITE_ICLIENT_QUERY_PROCESS_SERVICE}/customers?${queryParams.toString()}`,
+        `${environment.IVITE_ISAAS_QUERY_PROCESS_SERVICE}/banks`,
         options
       );
 
@@ -54,11 +45,11 @@ const getSearchCustomerByCode = async (
         };
       }
 
-      if (Array.isArray(data) && data.length > 0) {
-        return data[0];
+      if (Array.isArray(data)) {
+        return data;
       }
 
-      return data;
+      throw new Error("La respuesta no contiene un array de bancos.");
     } catch (error) {
       console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
@@ -72,4 +63,4 @@ const getSearchCustomerByCode = async (
   throw new Error("No se pudo obtener la tarea después de varios intentos.");
 };
 
-export { getSearchCustomerByCode };
+export { getAllBancks };

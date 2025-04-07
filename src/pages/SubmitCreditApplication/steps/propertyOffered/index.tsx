@@ -31,13 +31,13 @@ export function PropertyOffered(props: IPropertyOfferedProps) {
   const { isMobile, initialValues, onFormValid, handleOnChange } = props;
 
   const validationSchema = Yup.object({
-    type: Yup.string().required(),
-    state: Yup.string().required(),
+    type: Yup.string(),
+    state: Yup.string(),
     antique: Yup.lazy((_, { parent }) =>
-      parent.state === "nuevo" ? Yup.number() : Yup.number().required("")
+      parent.state === "nuevo" ? Yup.number() : Yup.number()
     ),
-    estimated: Yup.number().required(),
-    description: Yup.string().required(),
+    estimated: Yup.number(),
+    description: Yup.string().max(200),
   });
 
   const formik = useFormik({
@@ -136,6 +136,7 @@ export function PropertyOffered(props: IPropertyOfferedProps) {
           value={formik.values.description}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          maxLength={200}
           fullwidth
         />
       </Stack>

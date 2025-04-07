@@ -1,8 +1,7 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 
-import { getCustomers } from "@services/customers/AllCustomers";
-import { getSearchAllProspect } from "@services/prospects";
+import { getSearchCustomerByCode } from "@services/customers/AllCustomers";
 import { AppContext } from "@context/AppContext";
 
 import { ICustomerContext, ICustomerData } from "./types";
@@ -18,7 +17,7 @@ interface ICustomerContextProviderProps {
 export function CustomerContextProvider({
   children,
 }: ICustomerContextProviderProps) {
-  const { id, prospectCode } = useParams();
+  const { customerPublicCode } = useParams();
   const [customerData, setCustomerData] = useState<ICustomerData>({
     customerId: "",
     publicCode: "",
@@ -49,29 +48,18 @@ export function CustomerContextProvider({
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (id) {
-        fetchCustomerData(id);
-      } else if (prospectCode) {
-        const prospects = await getSearchAllProspect(
-          businessUnitPublicCode,
-          prospectCode
-        );
-        const mainBorrower = prospects.borrowers.find(
-          (borrower) => borrower.borrower_type === "main_borrower"
-        );
+    fetchCustomerData(customerPublicCode!, businessUnitPublicCode);
+  }, [customerPublicCode, businessUnitPublicCode]);
 
-        if (mainBorrower?.borrower_identification_number) {
-          fetchCustomerData(mainBorrower.borrower_identification_number);
-        }
-      }
-    };
-    fetchData();
-  }, [id, prospectCode, businessUnitPublicCode]);
-
-  const fetchCustomerData = async (publicCode: string) => {
+  const fetchCustomerData = async (
+    publicCode: string,
+    businessUnitPublicCode: string
+  ) => {
     try {
-      const customers = await getCustomers(publicCode);
+      const customers = await getSearchCustomerByCode(
+        publicCode,
+        businessUnitPublicCode
+      );
 
       if (customers) {
         setCustomerData({

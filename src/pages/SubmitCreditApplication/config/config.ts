@@ -11,4 +11,16 @@ export const dataSubmitApplication = {
     addButton: "Agregar co-deudor",
     borrowerLabel: "Codeudor",
   },
+  modals: {
+    file: "Radicar",
+    fileDescription:
+      "Se radicará la solicitud de crédito {numberProspectCode}. ¿Realmente desea continuar?",
+    continue: "Continuar",
+    cancel: "Cerrar",
+    filed: "Radicado",
+    understand: "Entendido",
+    share: "Compartir",
+    filedDescription:
+      "La solicitud de crédito fue correctamente radicada y será gestionada en el portal correspondiente.",
+  },
 };
