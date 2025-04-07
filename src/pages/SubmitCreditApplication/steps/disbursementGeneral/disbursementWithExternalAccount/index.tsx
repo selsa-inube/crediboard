@@ -27,11 +27,12 @@ import { getAllBancks } from "@services/banckAccount";
 interface IDisbursementWithExternalAccountProps {
   isMobile: boolean;
   initialValues: IDisbursementGeneral;
-  onFormValid: (isValid: boolean) => void;
-  handleOnChange: (values: IDisbursementGeneral) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formik: any;
   optionNameForm: string;
+  onFormValid: (isValid: boolean) => void;
+  handleOnChange: (values: IDisbursementGeneral) => void;
+  getTotalAmount: () => number;
 }
 
 export function DisbursementWithExternalAccount(
@@ -40,10 +41,11 @@ export function DisbursementWithExternalAccount(
   const {
     isMobile,
     initialValues,
-    onFormValid,
-    handleOnChange,
     formik,
     optionNameForm,
+    onFormValid,
+    handleOnChange,
+    getTotalAmount,
   } = props;
 
   const [banks, setBanks] = useState<IOptionsSelect[]>([]);
@@ -73,13 +75,41 @@ export function DisbursementWithExternalAccount(
     }
   }, [formik.values, handleOnChange, initialValues, optionNameForm]);
 
+  const totalAmount = getTotalAmount();
+  const isDisabled = totalAmount >= initialValues.amount;
+
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    formik.setFieldValue(`${optionNameForm}.check`, event.target.checked);
+    const isChecked = event.target.checked;
+    formik.setFieldValue(`${optionNameForm}.check`, isChecked);
+
+    if (isChecked) {
+      const totalAmount = getTotalAmount();
+      const remainingAmount = initialValues.amount - totalAmount;
+
+      if (remainingAmount > 0) {
+        const currentAmount = Number(
+          formik.values[optionNameForm]?.amount || 0
+        );
+        const newAmount = currentAmount + remainingAmount;
+
+        formik.setFieldValue(`${optionNameForm}.amount`, newAmount);
+      }
+    }
   };
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     formik.setFieldValue(`${optionNameForm}.toggle`, event.target.checked);
   };
+
+  useEffect(() => {
+    const currentAmount = Number(formik.values[optionNameForm]?.amount || 0);
+    const totalAmount = props.getTotalAmount();
+
+    if (currentAmount + totalAmount - currentAmount !== initialValues.amount) {
+      formik.setFieldValue(`${optionNameForm}.check`, false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.values[optionNameForm]?.amount]);
 
   useEffect(() => {
     const handleFlag = (error: unknown) => {
@@ -138,6 +168,7 @@ export function DisbursementWithExternalAccount(
             indeterminate={false}
             onChange={handleCheckboxChange}
             value={"featureCheckbox"}
+            disabled={isDisabled}
           />
           <Text type="label" size="medium">
             {disbursementGeneral.labelCheck}

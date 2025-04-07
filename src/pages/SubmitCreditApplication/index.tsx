@@ -7,6 +7,7 @@ import { userStepsMock } from "@mocks/filing-application/userSteps/users.mock";
 import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
 import { CustomerContext } from "@context/CustomerContext";
 import { AppContext } from "@context/AppContext";
+import { postSubmitCredit } from "@services/submitCredit";
 import { getSearchProspectById } from "@services/prospects";
 import { postBusinessUnitRules } from "@services/businessUnitRules";
 
@@ -19,11 +20,17 @@ import { ruleConfig } from "./config/configRules";
 import { getMonthsElapsed } from "@utils/formatData/currency";
 
 export function SubmitCreditApplication() {
-  const { prospectCode } = useParams();
+  const { id, prospectCode } = useParams();
   const { customerData } = useContext(CustomerContext);
-  const { businessUnitSigla } = useContext(AppContext);
+  const { businessUnitSigla, eventData } = useContext(AppContext);
   const [sentModal, setSentModal] = useState(false);
   const [approvedRequestModal, setApprovedRequestModal] = useState(false);
+
+  const { userAccount } =
+    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
   const userId = parseInt(prospectCode || "0", 10);
 
@@ -36,10 +43,10 @@ export function SubmitCreditApplication() {
       userChoice === "borrowers" ? "borrowers" : "coBorrowers"
     ];
 
+  const fixedSteps = [1, 2, 3, 4, 5, 6, 7, 8];
+
   const intermediateSteps =
     userStepsMock.find((user) => user.id === userId)?.intermediateSteps || [];
-
-  const fixedSteps = [1, 2, 3, 6, 7, 8];
 
   const updatedSteps = {
     ...stepsFilingApplication,
@@ -50,10 +57,6 @@ export function SubmitCreditApplication() {
     },
   };
 
-  const steps = Object.values(updatedSteps).filter((step) =>
-    [...fixedSteps, ...intermediateSteps].includes(step.id)
-  );
-
   const dataHeader = {
     name: customerData?.fullName ?? "",
     status:
@@ -61,12 +64,6 @@ export function SubmitCreditApplication() {
       "",
   };
 
-  const businessUnitPublicCode: string =
-    JSON.parse(businessUnitSigla).businessUnitPublicCode;
-
-  const isMobile = useMediaQuery("(max-width:880px)");
-
-  const [currentStep, setCurrentStep] = useState<number>(steps[0]?.id || 1);
   const [isCurrentFormValid, setIsCurrentFormValid] = useState(true);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [prospectData, setProspectData] = useState<Record<string, any>>({});
@@ -114,6 +111,7 @@ export function SubmitCreditApplication() {
       client: false,
     },
     disbursementGeneral: {
+      amount: 10000000,
       Internal: {
         amount: "",
         account: "",
@@ -196,6 +194,104 @@ export function SubmitCreditApplication() {
     },
   });
 
+  const hasBorrowers = Object.keys(
+    formData.borrowerData.initialBorrowers
+  ).length;
+
+  const steps = Object.values(updatedSteps)
+    .filter((step) => [...fixedSteps, ...intermediateSteps].includes(step.id))
+    .filter((step) => !(step.id === 6 && hasBorrowers >= 1));
+
+  const [currentStep, setCurrentStep] = useState<number>(steps[0]?.id || 1);
+
+  const {
+    contactInformation,
+    propertyOffered,
+    vehicleOffered,
+    disbursementGeneral,
+  } = formData;
+
+  const submitData = {
+    clientEmail: contactInformation.email,
+    clientIdentificationNumber: contactInformation.documentNumber,
+    clientIdentificationType: contactInformation.document,
+    clientName: `${contactInformation.name} ${contactInformation.lastName}`,
+    clientId: "33333",
+    clientPhoneNumber: contactInformation.phone.toString(),
+    loanAmount: 155555,
+    moneyDestinationAbreviatedName: "Vehiculo",
+    moneyDestinationId: "13698",
+    clientType: "333333",
+    prospectId: id ? id : crypto.randomUUID().toString(),
+    guarantees: [
+      {
+        guaranteeType: `mortgage${crypto.randomUUID().toString()}`,
+        transactionOperation: "Insert",
+        mortgages: [
+          {
+            descriptionUse: propertyOffered.description || "none",
+            propertyAge: propertyOffered.antique || 1,
+            propertyPrice: propertyOffered.estimated || 1,
+            propertyType: propertyOffered.state || "none",
+            transactionOperation: "Insert",
+          },
+        ],
+      },
+      {
+        guaranteeType: `pledge${crypto.randomUUID().toString()}`,
+        transactionOperation: "Insert",
+        pledges: [
+          {
+            descriptionUse: vehicleOffered.description || "none",
+            transactionOperation: "Insert",
+            vehiculeAge: vehicleOffered.model || new Date().getFullYear(),
+            vehiculePrice: vehicleOffered.value || 1,
+          },
+        ],
+      },
+    ],
+    modesOfDisbursement: Object.entries(disbursementGeneral).map(
+      ([key, value]) => ({
+        accountBankCode: "100",
+        accountBankName: value.accountType || "none",
+        accountNumber: value.accountNumber || "none",
+        accountType: value.account || "none",
+        disbursementAmount: value.amount || 1,
+        disbursementDate: "01/01/2025",
+        isInTheNameOfBorrower: value.check ? "Y" : "N",
+        modeOfDisbursementCode: "<string>",
+        modeOfDisbursementType: key,
+        observation: value.description || "none",
+        payeeBiologicalSex: value.sex === "man" ? "M" : "F",
+        payeeBirthday: value.birthdate || "01/01/2000",
+        payeeCityOfResidence: value.city || "none",
+        payeeEmail: value.mail || "none",
+        payeeIdentificationNumber: value.identification || "none",
+        payeeIdentificationType: value.documentType || "none",
+        payeeName: value.name || "none",
+        payeePersonType: "N",
+        payeePhoneNumber: value.phone || "none",
+        payeeSurname: value.lastName || "none",
+        transactionOperation: "Insert",
+      })
+    ),
+  };
+
+  const handleSubmit = async () => {
+    try {
+      console.log("Enviando datos:", submitData);
+      const response = await postSubmitCredit(
+        businessUnitPublicCode,
+        userAccount,
+        submitData
+      );
+      console.log("Solicitud enviada con éxito:", response);
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
+    }
+  };
+
+  const isMobile = useMediaQuery("(max-width:880px)");
   const { addFlag } = useFlag();
 
   const handleFlag = () => {
@@ -297,6 +393,7 @@ export function SubmitCreditApplication() {
   };
 
   function handleSubmitClick() {
+    handleSubmit();
     setSentModal(true);
   }
 
@@ -324,6 +421,7 @@ export function SubmitCreditApplication() {
         setIsCurrentFormValid={setIsCurrentFormValid}
         formData={formData}
         dataHeader={dataHeader}
+        prospectCode={prospectCode || ""}
         sentModal={sentModal}
         approvedRequestModal={approvedRequestModal}
         numberProspectCode={prospectCode || ""}

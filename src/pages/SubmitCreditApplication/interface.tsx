@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { MdCheckCircle, MdOutlineShare } from "react-icons/md";
-import { Assisted } from "@inubekit/assisted";
+import { MdArrowBack } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@inubekit/button";
-import { Icon, Text, Stack } from "@inubekit/inubekit";
+import { Assisted, Breadcrumbs, Icon, Text, Stack } from "@inubekit/inubekit";
+import { MdCheckCircle, MdOutlineShare } from "react-icons/md";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { disbursemenTabs } from "@pages/SubmitCreditApplication/steps/disbursementGeneral/config";
@@ -10,7 +11,7 @@ import { GeneralHeader } from "@pages/addProspect/components/GeneralHeader/";
 import { ICustomerData } from "@context/CustomerContext/types";
 
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
-import { StyledContainerAssisted } from "./styles";
+import { StyledArrowBack, StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
 import { stepsFilingApplication } from "./config/filingApplication.config";
 import { ContactInformation } from "./steps/contactInformation";
@@ -20,6 +21,7 @@ import { VehicleOffered } from "./steps/vehicleOffered";
 import { Bail } from "./steps/bail";
 import { AttachedDocuments } from "./steps/attachedDocuments";
 import { DisbursementGeneral } from "./steps/disbursementGeneral";
+import { submitCreditApplicationConfig } from "./config/submitCreditApplication.config";
 import { dataFillingApplication } from "./config/config";
 
 interface SubmitCreditApplicationUIProps {
@@ -29,6 +31,7 @@ interface SubmitCreditApplicationUIProps {
   isCurrentFormValid: boolean;
   formData: FormData;
   isMobile: boolean;
+  prospectCode: string;
   sentModal: boolean;
   approvedRequestModal: boolean;
   numberProspectCode: string;
@@ -58,6 +61,7 @@ export function SubmitCreditApplicationUI(
     formData,
     isMobile,
     dataHeader,
+    prospectCode,
     numberProspectCode,
     sentModal,
     approvedRequestModal,
@@ -77,6 +81,14 @@ export function SubmitCreditApplicationUI(
 
   const handleTabChange = (tabId: string) => {
     setIsSelected(tabId);
+  };
+
+  const navigate = useNavigate();
+
+  const handleHome = () => {
+    navigate(
+      submitCreditApplicationConfig.route.replace(":prospectCode", prospectCode)
+    );
   };
 
   return (
@@ -100,6 +112,15 @@ export function SubmitCreditApplicationUI(
           height="100%"
           width={isMobile ? "-webkit-fill-available" : "min(100%,1440px)"}
         >
+          <Breadcrumbs crumbs={submitCreditApplicationConfig.crumbs} />
+          <StyledArrowBack onClick={handleHome}>
+            <Stack gap="8px" alignItems="center">
+              <Icon icon={<MdArrowBack />} appearance="dark" size="20px" />
+              <Text type="title" size="large">
+                {submitCreditApplicationConfig.title}
+              </Text>
+            </Stack>
+          </StyledArrowBack>
           <StyledContainerAssisted $cursorDisabled={!isCurrentFormValid}>
             <Assisted
               step={currentStepsNumber!}
@@ -110,6 +131,7 @@ export function SubmitCreditApplicationUI(
               onSubmitClick={handleSubmitClick}
               disableNext={!isCurrentFormValid}
               disableSubmit={!isCurrentFormValid}
+              showCurrentStepNumber={false}
               size={isMobile ? "small" : "large"}
             />
           </StyledContainerAssisted>
