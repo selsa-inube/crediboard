@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { MdCheckCircle, MdOutlineShare } from "react-icons/md";
 import { Assisted } from "@inubekit/assisted";
-import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
+import { Icon, Text, Stack } from "@inubekit/inubekit";
 
+import { BaseModal } from "@components/modals/baseModal";
 import { disbursemenTabs } from "@pages/SubmitCreditApplication/steps/disbursementGeneral/config";
 import { GeneralHeader } from "@pages/addProspect/components/GeneralHeader/";
 import { ICustomerData } from "@context/CustomerContext/types";
@@ -18,6 +20,8 @@ import { VehicleOffered } from "./steps/vehicleOffered";
 import { Bail } from "./steps/bail";
 import { AttachedDocuments } from "./steps/attachedDocuments";
 import { DisbursementGeneral } from "./steps/disbursementGeneral";
+import { dataFillingApplication } from "./config/config";
+
 interface SubmitCreditApplicationUIProps {
   currentStep: number;
   currentStepsNumber: StepDetails;
@@ -25,12 +29,18 @@ interface SubmitCreditApplicationUIProps {
   isCurrentFormValid: boolean;
   formData: FormData;
   isMobile: boolean;
+  sentModal: boolean;
+  approvedRequestModal: boolean;
+  numberProspectCode: string;
   dataHeader: { name: string; status: string };
+  setSentModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setApprovedRequestModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleFormChange: (updatedValues: Partial<FormData>) => void;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   handleNextStep: () => void;
   handlePreviousStep: () => void;
   handleSubmitClick: () => void;
+  handleSendModal: () => void;
   setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
@@ -48,10 +58,16 @@ export function SubmitCreditApplicationUI(
     formData,
     isMobile,
     dataHeader,
+    numberProspectCode,
+    sentModal,
+    approvedRequestModal,
+    setSentModal,
+    setApprovedRequestModal,
     handleFormChange,
     handleNextStep,
     handlePreviousStep,
     handleSubmitClick,
+    handleSendModal,
     setIsCurrentFormValid,
     data,
     customerData,
@@ -198,6 +214,52 @@ export function SubmitCreditApplicationUI(
             </Button>
           </Stack>
         </Stack>
+        {sentModal && (
+          <BaseModal
+            title={dataFillingApplication.modals.file}
+            nextButton={dataFillingApplication.modals.continue}
+            backButton={dataFillingApplication.modals.cancel}
+            handleNext={handleSendModal}
+            handleBack={() => setSentModal(false)}
+            width={isMobile ? "290px" : "402px"}
+          >
+            <Text type="body" size="large">
+              {dataFillingApplication.modals.fileDescription.replace(
+                "{numberProspectCode}",
+                numberProspectCode
+              )}
+            </Text>
+          </BaseModal>
+        )}
+        {approvedRequestModal && (
+          <BaseModal
+            title={dataFillingApplication.modals.filed}
+            nextButton={dataFillingApplication.modals.cancel}
+            backButton={dataFillingApplication.modals.share}
+            iconBeforeback={
+              <Icon icon={<MdOutlineShare />} appearance="gray" size="16px" />
+            }
+            handleNext={() => setApprovedRequestModal(false)}
+            handleClose={() => setApprovedRequestModal(false)}
+            handleBack={() => console.log("data: ", formData)}
+            width={isMobile ? "290px" : "402px"}
+          >
+            <Stack direction="column" alignItems="center" gap="24px">
+              <Icon icon={<MdCheckCircle />} appearance="success" size="68px" />
+              <Stack gap="6px">
+                <Text type="body" size="large">
+                  {dataFillingApplication.modals.filed}
+                </Text>
+                <Text type="body" size="large" weight="bold">
+                  {numberProspectCode}
+                </Text>
+              </Stack>
+              <Text type="body" size="medium" appearance="gray">
+                {dataFillingApplication.modals.filedDescription}
+              </Text>
+            </Stack>
+          </BaseModal>
+        )}
       </Stack>
     </>
   );

@@ -1,6 +1,7 @@
 import { useContext, useState, useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
+import { useFlag } from "@inubekit/inubekit";
 
 import { userStepsMock } from "@mocks/filing-application/userSteps/users.mock";
 import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
@@ -18,11 +19,14 @@ import { ruleConfig } from "./config/configRules";
 import { getMonthsElapsed } from "@utils/formatData/currency";
 
 export function SubmitCreditApplication() {
-  const { id, prospectCode } = useParams();
+  const { prospectCode } = useParams();
   const { customerData } = useContext(CustomerContext);
   const { businessUnitSigla } = useContext(AppContext);
+  const [sentModal, setSentModal] = useState(false);
+  const [approvedRequestModal, setApprovedRequestModal] = useState(false);
 
-  const userId = parseInt(id || "0", 10);
+  const userId = parseInt(prospectCode || "0", 10);
+
   const userChoice =
     choiceBorrowers.find((choice) => choice.id === userId)?.choice ||
     "borrowers";
@@ -192,6 +196,17 @@ export function SubmitCreditApplication() {
     },
   });
 
+  const { addFlag } = useFlag();
+
+  const handleFlag = () => {
+    addFlag({
+      title: "Error al enviar el radicado",
+      description: "El radicado no se ha podido enviar correctamente.",
+      appearance: "danger",
+      duration: 5000,
+    });
+  };
+
   const fetchProspectData = useCallback(async () => {
     try {
       const prospect = await getSearchProspectById(
@@ -268,7 +283,7 @@ export function SubmitCreditApplication() {
     const currentIndex = steps.findIndex((step) => step.id === currentStep);
     if (currentIndex < steps.length - 1) {
       setCurrentStep(steps[currentIndex + 1].id);
-    } else if (currentStep === steps.length) {
+    } else if (currentStep === steps[steps.length - 1].id) {
       handleSubmitClick();
     }
   };
@@ -281,9 +296,18 @@ export function SubmitCreditApplication() {
     }
   };
 
-  const handleSubmitClick = () => {
-    console.log("data: ", formData);
-  };
+  function handleSubmitClick() {
+    setSentModal(true);
+  }
+
+  function handleSendModal() {
+    try {
+      setSentModal(false);
+      setApprovedRequestModal(true);
+    } catch (error) {
+      handleFlag();
+    }
+  }
 
   const currentStepIndex = steps.findIndex((step) => step.id === currentStep);
   const currentStepsNumber = {
@@ -300,12 +324,18 @@ export function SubmitCreditApplication() {
         setIsCurrentFormValid={setIsCurrentFormValid}
         formData={formData}
         dataHeader={dataHeader}
+        sentModal={sentModal}
+        approvedRequestModal={approvedRequestModal}
+        numberProspectCode={prospectCode || ""}
+        setApprovedRequestModal={setApprovedRequestModal}
+        setSentModal={setSentModal}
         handleFormChange={handleFormChange}
         handleNextStep={handleNextStep}
         handlePreviousStep={handlePreviousStep}
         setCurrentStep={setCurrentStep}
         currentStepsNumber={currentStepsNumber}
         handleSubmitClick={handleSubmitClick}
+        handleSendModal={handleSendModal}
         isMobile={isMobile}
         data={prospectData}
         customerData={customerData}
