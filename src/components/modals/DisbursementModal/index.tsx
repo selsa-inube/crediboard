@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Stack } from "@inubekit/inubekit";
-import { Tabs } from "@inubekit/tabs";
+import { Stack, Tabs } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { Fieldset } from "@components/data/Fieldset";
@@ -29,16 +28,12 @@ export interface IDisbursementModalProps {
 export function DisbursementModal(
   props: IDisbursementModalProps
 ): JSX.Element | null {
-  const {
-    handleClose,
-    isMobile,
-    data,
-  } = props;
+  const { handleClose, isMobile, data } = props;
 
   const availableTabs = dataTabs.filter((tab) => {
     const hasValidData = (tabData: dataTabsDisbursement) =>
       tabData && Object.values(tabData).some((value) => value !== "");
-  
+
     switch (tab.id) {
       case "Internal":
         return hasValidData(data.internal);
@@ -58,13 +53,16 @@ export function DisbursementModal(
   const [currentTab, setCurrentTab] = useState(() =>
     availableTabs.length > 0 ? availableTabs[0].id : ""
   );
-  
+
   useEffect(() => {
-    if (availableTabs.length > 0 && !availableTabs.some(tab => tab.id === currentTab)) {
+    if (
+      availableTabs.length > 0 &&
+      !availableTabs.some((tab) => tab.id === currentTab)
+    ) {
       setCurrentTab(availableTabs[0].id);
     }
   }, [availableTabs, currentTab]);
-  
+
   const onChange = (tabId: string) => {
     setCurrentTab(tabId);
   };
