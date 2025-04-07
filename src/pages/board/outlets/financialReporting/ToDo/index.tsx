@@ -202,9 +202,7 @@ function ToDo(props: ToDoProps) {
   const isFetching = useRef(false);
 
   const handleSelectOpen = async () => {
-    if (isFetching.current) return; // Evita dobles peticiones
-    //if (!requests?.creditRequestId) return; // Evita ejecutar sin ID válido
-
+    if (isFetching.current) return;
     isFetching.current = true;
     setLoading(true);
     if (requests?.creditRequestId) {

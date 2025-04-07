@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Stack } from "@inubekit/inubekit";
 import { Tabs } from "@inubekit/tabs";
 
@@ -11,18 +11,60 @@ import { DisbursementExternal } from "./External";
 import { DisbursementCheckEntity } from "./CheckEntity";
 import { DisbursementChequeManagement } from "./ChequeManagement";
 import { DisbursementCash } from "./Cash";
+import { dataTabsDisbursement } from "./types";
 
 export interface IDisbursementModalProps {
   handleClose: () => void;
   isMobile: boolean;
+  loading?: boolean;
+  data: {
+    internal: dataTabsDisbursement;
+    external: dataTabsDisbursement;
+    CheckEntity: dataTabsDisbursement;
+    checkManagementData: dataTabsDisbursement;
+    cash: dataTabsDisbursement;
+  };
 }
 
 export function DisbursementModal(
   props: IDisbursementModalProps
 ): JSX.Element | null {
-  const { handleClose, isMobile } = props;
+  const {
+    handleClose,
+    isMobile,
+    data,
+  } = props;
 
-  const [currentTab, setCurrentTab] = useState(dataTabs[0].id);
+  const availableTabs = dataTabs.filter((tab) => {
+    const hasValidData = (tabData: dataTabsDisbursement) =>
+      tabData && Object.values(tabData).some((value) => value !== "");
+  
+    switch (tab.id) {
+      case "Internal":
+        return hasValidData(data.internal);
+      case "External":
+        return hasValidData(data.external);
+      case "CheckEntity":
+        return hasValidData(data.CheckEntity);
+      case "CheckManagement":
+        return hasValidData(data.checkManagementData);
+      case "Cash":
+        return hasValidData(data.cash);
+      default:
+        return false;
+    }
+  });
+
+  const [currentTab, setCurrentTab] = useState(() =>
+    availableTabs.length > 0 ? availableTabs[0].id : ""
+  );
+  
+  useEffect(() => {
+    if (availableTabs.length > 0 && !availableTabs.some(tab => tab.id === currentTab)) {
+      setCurrentTab(availableTabs[0].id);
+    }
+  }, [availableTabs, currentTab]);
+  
   const onChange = (tabId: string) => {
     setCurrentTab(tabId);
   };
@@ -41,25 +83,33 @@ export function DisbursementModal(
         <Tabs
           scroll={isMobile}
           selectedTab={currentTab}
-          tabs={dataTabs}
+          tabs={availableTabs}
           onChange={onChange}
         />
       </Stack>
       <Fieldset heightFieldset="469px">
         <>
           {currentTab === "Internal" && (
-            <DisbursementInternal isMobile={isMobile} />
+            <DisbursementInternal isMobile={isMobile} data={data.internal} />
           )}
           {currentTab === "External" && (
-            <DisbursementExternal isMobile={isMobile} />
+            <DisbursementExternal isMobile={isMobile} data={data.external} />
           )}
           {currentTab === "CheckEntity" && (
-            <DisbursementCheckEntity isMobile={isMobile} />
+            <DisbursementCheckEntity
+              isMobile={isMobile}
+              data={data.CheckEntity}
+            />
           )}
-          {currentTab === "ChequeManagement" && (
-            <DisbursementChequeManagement isMobile={isMobile} />
+          {currentTab === "CheckManagement" && (
+            <DisbursementChequeManagement
+              isMobile={isMobile}
+              data={data.checkManagementData}
+            />
           )}
-          {currentTab === "Cash" && <DisbursementCash isMobile={isMobile} />}
+          {currentTab === "Cash" && (
+            <DisbursementCash isMobile={isMobile} data={data.cash} />
+          )}
         </>
       </Fieldset>
     </BaseModal>
