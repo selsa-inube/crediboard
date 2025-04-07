@@ -20,13 +20,19 @@ interface IDisbursementGeneralProps {
   isMobile: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialValues: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
   isSelected: string;
   onFormValid: (isValid: boolean) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnChange: (values: any) => void;
   handleTabChange: (id: string) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
+}
+
+interface Tab {
+  id: string;
+  disabled: boolean;
+  label: string;
 }
 
 export function DisbursementGeneral(props: IDisbursementGeneralProps) {
@@ -34,10 +40,10 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
     isMobile,
     initialValues,
     isSelected,
+    data,
     onFormValid,
     handleOnChange,
     handleTabChange,
-    data,
   } = props;
 
   const [tabChanged, setTabChanged] = useState(false);
@@ -48,17 +54,11 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
     onSubmit: () => {},
   });
 
-  // interface Tab {
-  //   id: string;
-  //   disabled: boolean;
-  //   label: string;
-  // }
-
   const { businessUnitSigla } = useContext(AppContext);
   const { customerData } = useContext(CustomerContext);
   const userHasChangedTab = useRef(false);
 
-  // const [validTabs, setValidTabs] = useState<Tab[]>([]);
+  const [validTabs, setValidTabs] = useState<Tab[]>([]);
 
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
@@ -132,7 +132,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
         validDisbursements.includes(tab.id)
       );
 
-      // setValidTabs(availableTabs);
+      setValidTabs(availableTabs);
 
       if (availableTabs.length > 0 && !userHasChangedTab.current) {
         handleTabChange(availableTabs[0].id);
@@ -153,10 +153,10 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // const handleManualTabChange = (tabId: string) => {
-  //   userHasChangedTab.current = true;
-  //   handleTabChange(tabId);
-  // };
+  const handleManualTabChange = (tabId: string) => {
+    userHasChangedTab.current = true;
+    handleTabChange(tabId);
+  };
 
   return (
     <Fieldset>
@@ -167,11 +167,12 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
       >
         <Stack direction="column">
           <Tabs
-            tabs={Object.values(disbursemenTabs)}
+            tabs={validTabs}
             selectedTab={isSelected}
-            onChange={handleTabChange}
+            onChange={handleManualTabChange}
             scroll={isMobile}
           />
+
           {isSelected === disbursemenTabs.internal.id && (
             <DisbursementWithInternalAccount
               isMobile={isMobile}
