@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { MdCheckCircle, MdOutlineShare } from "react-icons/md";
 import { Assisted } from "@inubekit/assisted";
-import { Stack } from "@inubekit/stack";
 import { Button } from "@inubekit/button";
+import { Icon, Text, Stack } from "@inubekit/inubekit";
 
+import { BaseModal } from "@components/modals/baseModal";
 import { disbursemenTabs } from "@pages/SubmitCreditApplication/steps/disbursementGeneral/config";
-
 import { GeneralHeader } from "@pages/addProspect/components/GeneralHeader/";
+import { ICustomerData } from "@context/CustomerContext/types";
+
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
 import { StyledContainerAssisted } from "./styles";
 import { RequirementsNotMet } from "./steps/requirementsNotMet";
@@ -17,6 +20,7 @@ import { VehicleOffered } from "./steps/vehicleOffered";
 import { Bail } from "./steps/bail";
 import { AttachedDocuments } from "./steps/attachedDocuments";
 import { DisbursementGeneral } from "./steps/disbursementGeneral";
+import { dataFillingApplication } from "./config/config";
 
 interface SubmitCreditApplicationUIProps {
   currentStep: number;
@@ -25,16 +29,27 @@ interface SubmitCreditApplicationUIProps {
   isCurrentFormValid: boolean;
   formData: FormData;
   isMobile: boolean;
-  dataHeader: { name: string };
+  sentModal: boolean;
+  approvedRequestModal: boolean;
+  numberProspectCode: string;
+  dataHeader: { name: string; status: string };
+  setSentModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setApprovedRequestModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleFormChange: (updatedValues: Partial<FormData>) => void;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   handleNextStep: () => void;
   handlePreviousStep: () => void;
   handleSubmitClick: () => void;
+  handleSendModal: () => void;
   setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
+  customerData?: ICustomerData;
 }
 
-export function SubmitCreditApplicationUI(props: SubmitCreditApplicationUIProps) {
+export function SubmitCreditApplicationUI(
+  props: SubmitCreditApplicationUIProps
+) {
   const {
     currentStepsNumber,
     currentStep,
@@ -43,11 +58,19 @@ export function SubmitCreditApplicationUI(props: SubmitCreditApplicationUIProps)
     formData,
     isMobile,
     dataHeader,
+    numberProspectCode,
+    sentModal,
+    approvedRequestModal,
+    setSentModal,
+    setApprovedRequestModal,
     handleFormChange,
     handleNextStep,
     handlePreviousStep,
     handleSubmitClick,
+    handleSendModal,
     setIsCurrentFormValid,
+    data,
+    customerData,
   } = props;
 
   const [isSelected, setIsSelected] = useState<string>();
@@ -60,7 +83,7 @@ export function SubmitCreditApplicationUI(props: SubmitCreditApplicationUIProps)
     <>
       <GeneralHeader
         buttonText="Agregar vinculación"
-        descriptionStatus="Activo"
+        descriptionStatus={dataHeader.status}
         name={dataHeader.name}
         profileImageUrl="https://s3-alpha-sig.figma.com/img/27d0/10fa/3d2630d7b4cf8d8135968f727bd6d965?Expires=1737936000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=h5lEzRE3Uk8fW5GT2LOd5m8eC6TYIJEH84ZLfY7WyFqMx-zv8TC1yzz-OV9FCH9veCgWZ5eBfKi4t0YrdpoWZriy4E1Ic2odZiUbH9uQrHkpxLjFwcMI2VJbWzTXKon-HkgvkcCnKFzMFv3BwmCqd34wNDkLlyDrFSjBbXdGj9NZWS0P3pf8PDWZe67ND1kropkpGAWmRp-qf9Sp4QTJW-7Wcyg1KPRy8G-joR0lsQD86zW6G6iJ7PuNHC8Pq3t7Jnod4tEipN~OkBI8cowG7V5pmY41GSjBolrBWp2ls4Bf-Vr1BKdzSqVvivSTQMYCi8YbRy7ejJo9-ZNVCbaxRg__"
       />
@@ -97,7 +120,8 @@ export function SubmitCreditApplicationUI(props: SubmitCreditApplicationUIProps)
             )}
           {currentStepsNumber &&
             currentStepsNumber.id ===
-              stepsFilingApplication.contactInformation.id && (
+              stepsFilingApplication.contactInformation.id &&
+            customerData && (
               <ContactInformation
                 isMobile={isMobile}
                 onFormValid={setIsCurrentFormValid}
@@ -105,6 +129,7 @@ export function SubmitCreditApplicationUI(props: SubmitCreditApplicationUIProps)
                 handleOnChange={(values) =>
                   handleFormChange({ contactInformation: values })
                 }
+                customerData={customerData}
               />
             )}
           {currentStepsNumber &&
@@ -117,6 +142,7 @@ export function SubmitCreditApplicationUI(props: SubmitCreditApplicationUIProps)
                 handleOnChange={(values) =>
                   handleFormChange({ borrowerData: values })
                 }
+                data={data}
               />
             )}
           {currentStepsNumber &&
@@ -149,6 +175,7 @@ export function SubmitCreditApplicationUI(props: SubmitCreditApplicationUIProps)
                 onFormValid={setIsCurrentFormValid}
                 initialValues={formData.bail}
                 handleOnChange={(values) => handleFormChange({ bail: values })}
+                data={data}
               />
             )}
           {currentStepsNumber &&
@@ -168,6 +195,7 @@ export function SubmitCreditApplicationUI(props: SubmitCreditApplicationUIProps)
                 }
                 isSelected={isSelected || disbursemenTabs.internal.id}
                 handleTabChange={handleTabChange}
+                data={data}
               />
             )}
           <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
@@ -186,6 +214,52 @@ export function SubmitCreditApplicationUI(props: SubmitCreditApplicationUIProps)
             </Button>
           </Stack>
         </Stack>
+        {sentModal && (
+          <BaseModal
+            title={dataFillingApplication.modals.file}
+            nextButton={dataFillingApplication.modals.continue}
+            backButton={dataFillingApplication.modals.cancel}
+            handleNext={handleSendModal}
+            handleBack={() => setSentModal(false)}
+            width={isMobile ? "290px" : "402px"}
+          >
+            <Text type="body" size="large">
+              {dataFillingApplication.modals.fileDescription.replace(
+                "{numberProspectCode}",
+                numberProspectCode
+              )}
+            </Text>
+          </BaseModal>
+        )}
+        {approvedRequestModal && (
+          <BaseModal
+            title={dataFillingApplication.modals.filed}
+            nextButton={dataFillingApplication.modals.cancel}
+            backButton={dataFillingApplication.modals.share}
+            iconBeforeback={
+              <Icon icon={<MdOutlineShare />} appearance="gray" size="16px" />
+            }
+            handleNext={() => setApprovedRequestModal(false)}
+            handleClose={() => setApprovedRequestModal(false)}
+            handleBack={() => console.log("data: ", formData)}
+            width={isMobile ? "290px" : "402px"}
+          >
+            <Stack direction="column" alignItems="center" gap="24px">
+              <Icon icon={<MdCheckCircle />} appearance="success" size="68px" />
+              <Stack gap="6px">
+                <Text type="body" size="large">
+                  {dataFillingApplication.modals.filed}
+                </Text>
+                <Text type="body" size="large" weight="bold">
+                  {numberProspectCode}
+                </Text>
+              </Stack>
+              <Text type="body" size="medium" appearance="gray">
+                {dataFillingApplication.modals.filedDescription}
+              </Text>
+            </Stack>
+          </BaseModal>
+        )}
       </Stack>
     </>
   );

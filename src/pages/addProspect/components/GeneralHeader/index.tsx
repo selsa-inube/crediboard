@@ -55,7 +55,7 @@ export function GeneralHeader(props: IGeneralHeaderProps) {
     > = {
       Activo: { appearance: "success", icon: <MdCheckCircle /> },
       Vinculado: { appearance: "success", icon: <MdCheckCircle /> },
-      Prospecto: { appearance: "warning", icon: <MdCheckCircle /> },
+      Inactivo: { appearance: "warning", icon: <MdCheckCircle /> },
       "En proceso devinculación": {
         appearance: "warning",
         icon: <MdOutlineAccessTime />,

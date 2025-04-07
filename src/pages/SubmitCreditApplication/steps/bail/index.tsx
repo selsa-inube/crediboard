@@ -11,16 +11,17 @@ import { Fieldset } from "@components/data/Fieldset";
 
 import { dataBail } from "./config";
 import { IBail } from "../../types";
-import { bailMock } from "@mocks/filing-application/bail/bail.mock";
-
+import { currencyFormat } from "@utils/formatData/currency";
 interface IBailProps {
   initialValues: IBail;
   onFormValid: (isValid: boolean) => void;
   handleOnChange: (values: IBail) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
 }
 
 export function Bail(props: IBailProps) {
-  const { initialValues, onFormValid, handleOnChange } = props;
+  const { initialValues, onFormValid, handleOnChange, data } = props;
 
   const validationSchema = Yup.object({
     client: Yup.boolean().oneOf([true]).required(),
@@ -49,9 +50,9 @@ export function Bail(props: IBailProps) {
   return (
     <Fieldset>
       <Stack direction="column" alignItems="center" padding="12px" gap="20px">
-        <Stack direction="column" gap="8px">
+        <Stack direction="column" gap="8px" alignItems="center">
           <Text type="headline" weight="bold" size="large" appearance="primary">
-            $ {bailMock.value}
+            {currencyFormat(data.bond_value)}
           </Text>
           <Text type="body" size="small" appearance="gray">
             {dataBail.bail}
