@@ -166,6 +166,11 @@ export interface IDisbursementGeneral {
   };
 }
 
+export interface IOptionsSelect {
+  id: string;
+  label: string;
+  value: string;
+}
 export interface ICondition {
   condition: string;
   value: string | number;

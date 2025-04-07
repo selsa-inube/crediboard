@@ -20,37 +20,39 @@ interface IDisbursementGeneralProps {
   isMobile: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialValues: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
+  isSelected: string;
   onFormValid: (isValid: boolean) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnChange: (values: any) => void;
-  isSelected: string;
   handleTabChange: (id: string) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
+}
+
+interface Tab {
+  id: string;
+  disabled: boolean;
+  label: string;
 }
 
 export function DisbursementGeneral(props: IDisbursementGeneralProps) {
   const {
     isMobile,
     initialValues,
+    isSelected,
+    data,
     onFormValid,
     handleOnChange,
-    isSelected,
     handleTabChange,
-    data,
   } = props;
+
+  const [tabChanged, setTabChanged] = useState(false);
 
   const formik = useFormik({
     initialValues,
     validateOnMount: true,
     onSubmit: () => {},
   });
-
-  interface Tab {
-    id: string;
-    disabled: boolean;
-    label: string;
-  }
 
   const { businessUnitSigla } = useContext(AppContext);
   const { customerData } = useContext(CustomerContext);
@@ -64,6 +66,36 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
   useEffect(() => {
     handleOnChange(formik.values);
   }, [formik.values, handleOnChange]);
+
+  const getTotalAmount = useCallback(() => {
+    const disbursementForms = [
+      "Internal",
+      "External",
+      "CheckEntity",
+      "CheckManagement",
+      "Cash",
+    ];
+
+    return disbursementForms.reduce((total, key) => {
+      const amount = formik.values[key]?.amount || 0;
+      return total + Number(amount);
+    }, 0);
+  }, [formik.values]);
+
+  useEffect(() => {
+    setTabChanged((prev) => !prev);
+  }, [isSelected]);
+
+  useEffect(() => {
+    const totalAmount = getTotalAmount();
+    onFormValid(totalAmount === initialValues.amount);
+  }, [
+    formik.values,
+    onFormValid,
+    tabChanged,
+    getTotalAmount,
+    initialValues.amount,
+  ]);
 
   const fetchTabs = useCallback(async () => {
     try {
@@ -133,67 +165,70 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
         padding={isMobile ? "4px 10px" : "10px 16px"}
         gap="20px"
       >
-        {validTabs.length > 0 && (
-          <Stack direction="column">
-            <Tabs
-              tabs={validTabs}
-              selectedTab={isSelected}
-              onChange={handleManualTabChange}
-              scroll={isMobile}
-            />
+        <Stack direction="column">
+          <Tabs
+            tabs={validTabs}
+            selectedTab={isSelected}
+            onChange={handleManualTabChange}
+            scroll={isMobile}
+          />
 
-            {isSelected === disbursemenTabs.internal.id && (
-              <DisbursementWithInternalAccount
-                isMobile={isMobile}
-                onFormValid={onFormValid}
-                initialValues={initialValues}
-                handleOnChange={handleOnChange}
-                formik={formik}
-                optionNameForm="Internal"
-              />
-            )}
-            {isSelected === disbursemenTabs.external.id && (
-              <DisbursementWithExternalAccount
-                isMobile={isMobile}
-                onFormValid={onFormValid}
-                initialValues={initialValues}
-                handleOnChange={handleOnChange}
-                formik={formik}
-                optionNameForm="External"
-              />
-            )}
-            {isSelected === disbursemenTabs.check.id && (
-              <DisbursementWithCheckEntity
-                isMobile={isMobile}
-                onFormValid={onFormValid}
-                initialValues={initialValues}
-                handleOnChange={handleOnChange}
-                formik={formik}
-                optionNameForm="CheckEntity"
-              />
-            )}
-            {isSelected === disbursemenTabs.management.id && (
-              <DisbursementWithCheckManagement
-                isMobile={isMobile}
-                onFormValid={onFormValid}
-                initialValues={initialValues}
-                handleOnChange={handleOnChange}
-                formik={formik}
-                optionNameForm="CheckManagement"
-              />
-            )}
-            {isSelected === disbursemenTabs.cash.id && (
-              <DisbursementWithCash
-                isMobile={isMobile}
-                onFormValid={onFormValid}
-                initialValues={initialValues}
-                handleOnChange={handleOnChange}
-                formik={formik}
-                optionNameForm="Cash"
-              />
-            )}
-          </Stack>
-        )}
+          {isSelected === disbursemenTabs.internal.id && (
+            <DisbursementWithInternalAccount
+              isMobile={isMobile}
+              onFormValid={onFormValid}
+              initialValues={initialValues}
+              handleOnChange={handleOnChange}
+              formik={formik}
+              optionNameForm="Internal"
+              getTotalAmount={getTotalAmount}
+            />
+          )}
+          {isSelected === disbursemenTabs.external.id && (
+            <DisbursementWithExternalAccount
+              isMobile={isMobile}
+              onFormValid={onFormValid}
+              initialValues={initialValues}
+              handleOnChange={handleOnChange}
+              formik={formik}
+              optionNameForm="External"
+              getTotalAmount={getTotalAmount}
+            />
+          )}
+          {isSelected === disbursemenTabs.check.id && (
+            <DisbursementWithCheckEntity
+              isMobile={isMobile}
+              onFormValid={onFormValid}
+              initialValues={initialValues}
+              handleOnChange={handleOnChange}
+              formik={formik}
+              optionNameForm="CheckEntity"
+              getTotalAmount={getTotalAmount}
+            />
+          )}
+          {isSelected === disbursemenTabs.management.id && (
+            <DisbursementWithCheckManagement
+              isMobile={isMobile}
+              onFormValid={onFormValid}
+              initialValues={initialValues}
+              handleOnChange={handleOnChange}
+              formik={formik}
+              optionNameForm="CheckManagement"
+              getTotalAmount={getTotalAmount}
+            />
+          )}
+          {isSelected === disbursemenTabs.cash.id && (
+            <DisbursementWithCash
+              isMobile={isMobile}
+              onFormValid={onFormValid}
+              initialValues={initialValues}
+              handleOnChange={handleOnChange}
+              formik={formik}
+              optionNameForm="Cash"
+              getTotalAmount={getTotalAmount}
+            />
+          )}
+        </Stack>
       </Stack>
     </Fieldset>
   );

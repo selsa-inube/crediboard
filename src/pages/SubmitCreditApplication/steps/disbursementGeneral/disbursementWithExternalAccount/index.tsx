@@ -1,18 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Checkbox } from "@inubekit/checkbox";
 import { Divider } from "@inubekit/divider";
 import { Toggle } from "@inubekit/toggle";
 import { Select } from "@inubekit/select";
-import { Stack } from "@inubekit/stack";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
-import { Text } from "@inubekit/text";
 import { Input } from "@inubekit/input";
+import { useFlag, Stack, Text } from "@inubekit/inubekit";
 
-import {
-  Bank,
-  typeAccount,
-} from "@mocks/filing-application/disbursement-general/disbursementgeneral.mock";
+import { typeAccount } from "@mocks/filing-application/disbursement-general/disbursementgeneral.mock";
 import {
   handleChangeWithCurrency,
   validateCurrencyField,
@@ -22,16 +18,21 @@ import {
   disbursemenOptionAccount,
 } from "@pages/SubmitCreditApplication/steps/disbursementGeneral/config";
 import { GeneralInformationForm } from "@pages/SubmitCreditApplication/components/GeneralInformationForm";
-import { IDisbursementGeneral } from "@pages/SubmitCreditApplication/types";
+import {
+  IDisbursementGeneral,
+  IOptionsSelect,
+} from "@pages/SubmitCreditApplication/types";
+import { getAllBancks } from "@services/banckAccount";
 
 interface IDisbursementWithExternalAccountProps {
   isMobile: boolean;
   initialValues: IDisbursementGeneral;
-  onFormValid: (isValid: boolean) => void;
-  handleOnChange: (values: IDisbursementGeneral) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formik: any;
   optionNameForm: string;
+  onFormValid: (isValid: boolean) => void;
+  handleOnChange: (values: IDisbursementGeneral) => void;
+  getTotalAmount: () => number;
 }
 
 export function DisbursementWithExternalAccount(
@@ -40,13 +41,18 @@ export function DisbursementWithExternalAccount(
   const {
     isMobile,
     initialValues,
-    onFormValid,
-    handleOnChange,
     formik,
     optionNameForm,
+    onFormValid,
+    handleOnChange,
+    getTotalAmount,
   } = props;
 
+  const [banks, setBanks] = useState<IOptionsSelect[]>([]);
+
   const prevValues = useRef(formik.values[optionNameForm]);
+
+  const { addFlag } = useFlag();
 
   useEffect(() => {
     onFormValid(formik.isValid);
@@ -69,13 +75,69 @@ export function DisbursementWithExternalAccount(
     }
   }, [formik.values, handleOnChange, initialValues, optionNameForm]);
 
+  const totalAmount = getTotalAmount();
+  const isDisabled = totalAmount >= initialValues.amount;
+
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    formik.setFieldValue(`${optionNameForm}.check`, event.target.checked);
+    const isChecked = event.target.checked;
+    formik.setFieldValue(`${optionNameForm}.check`, isChecked);
+
+    if (isChecked) {
+      const totalAmount = getTotalAmount();
+      const remainingAmount = initialValues.amount - totalAmount;
+
+      if (remainingAmount > 0) {
+        const currentAmount = Number(
+          formik.values[optionNameForm]?.amount || 0
+        );
+        const newAmount = currentAmount + remainingAmount;
+
+        formik.setFieldValue(`${optionNameForm}.amount`, newAmount);
+      }
+    }
   };
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     formik.setFieldValue(`${optionNameForm}.toggle`, event.target.checked);
   };
+
+  useEffect(() => {
+    const currentAmount = Number(formik.values[optionNameForm]?.amount || 0);
+    const totalAmount = props.getTotalAmount();
+
+    if (currentAmount + totalAmount - currentAmount !== initialValues.amount) {
+      formik.setFieldValue(`${optionNameForm}.check`, false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.values[optionNameForm]?.amount]);
+
+  useEffect(() => {
+    const handleFlag = (error: unknown) => {
+      addFlag({
+        title: "Error",
+        description: `Error al cargar los bancos: ${error}`,
+        appearance: "danger",
+        duration: 5000,
+      });
+    };
+
+    const fetchBanks = async () => {
+      try {
+        const response = await getAllBancks();
+        const formattedBanks = response.map((bank) => ({
+          id: bank.bankId,
+          label: bank.bankName,
+          value: bank.bankName,
+        }));
+        setBanks(formattedBanks);
+      } catch (error) {
+        console.error("Error al cargar los bancos:", error);
+        handleFlag(error);
+      }
+    };
+
+    fetchBanks();
+  }, [addFlag]);
 
   return (
     <Stack
@@ -106,6 +168,7 @@ export function DisbursementWithExternalAccount(
             indeterminate={false}
             onChange={handleCheckboxChange}
             value={"featureCheckbox"}
+            disabled={isDisabled}
           />
           <Text type="label" size="medium">
             {disbursementGeneral.labelCheck}
@@ -157,7 +220,7 @@ export function DisbursementWithExternalAccount(
           label={disbursemenOptionAccount.labelBank}
           placeholder={disbursemenOptionAccount.placeOption}
           size="compact"
-          options={Bank}
+          options={banks}
           onBlur={formik.handleBlur}
           onChange={(name, value) => formik.setFieldValue(name, value)}
           value={formik.values[optionNameForm]?.bank || ""}
