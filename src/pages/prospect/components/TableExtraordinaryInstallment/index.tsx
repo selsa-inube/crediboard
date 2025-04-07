@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import localforage from "localforage";
-import { Text } from "@inubekit/inubekit";
-import { SkeletonLine } from "@inubekit/skeleton";
+import { Text, SkeletonLine } from "@inubekit/inubekit";
 import {
   Pagination,
   Table,
