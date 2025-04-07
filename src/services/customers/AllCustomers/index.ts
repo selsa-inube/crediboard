@@ -6,7 +6,10 @@ import {
 
 import { ICustomer } from "./types";
 
-const getCustomers = async (publicCode: string): Promise<ICustomer> => {
+const getSearchCustomerByCode = async (
+  publicCode: string,
+  businessUnitPublicCode: string
+): Promise<ICustomer> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
   const queryParams = new URLSearchParams({
@@ -28,6 +31,8 @@ const getCustomers = async (publicCode: string): Promise<ICustomer> => {
         signal: controller.signal,
       };
 
+      // The console.log is requied due to the fondecom business unit
+      console.log(businessUnitPublicCode);
       const res = await fetch(
         `${environment.VITE_ICLIENT_QUERY_PROCESS_SERVICE}/customers?${queryParams.toString()}`,
         options
@@ -50,7 +55,7 @@ const getCustomers = async (publicCode: string): Promise<ICustomer> => {
       }
 
       if (Array.isArray(data) && data.length > 0) {
-        return data[0]; 
+        return data[0];
       }
 
       return data;
@@ -67,5 +72,4 @@ const getCustomers = async (publicCode: string): Promise<ICustomer> => {
   throw new Error("No se pudo obtener la tarea después de varios intentos.");
 };
 
-
-export { getCustomers };
+export { getSearchCustomerByCode };
