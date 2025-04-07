@@ -1,6 +1,14 @@
 export const disbursemenTabs = {
-  internal: { id: "Internal_account", disabled: false, label: "Cuenta interna" },
-  external: { id: "External_account", disabled: false, label: "Cuenta externa" },
+  internal: {
+    id: "Internal_account",
+    disabled: false,
+    label: "Cuenta interna",
+  },
+  external: {
+    id: "External_account",
+    disabled: false,
+    label: "Cuenta externa",
+  },
   check: { id: "Certified_check", disabled: false, label: "Cheque entidad" },
   management: {
     id: "Business_check",

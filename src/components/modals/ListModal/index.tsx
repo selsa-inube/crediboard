@@ -9,9 +9,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import { Blanket } from "@inubekit/blanket";
 import { Button } from "@inubekit/button";
-import { Stack, Icon, Text } from "@inubekit/inubekit";
+import { Stack, Icon, Text, useFlag } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
-import { useFlag } from "@inubekit/flag";
 import { Divider } from "@inubekit/divider";
 
 import { StyledItem } from "@pages/board/outlets/financialReporting/styles";
@@ -202,7 +201,7 @@ export const ListModal = (props: IListModalProps) => {
       for (const fileData of uploadedFiles) {
         await saveDocument(
           businessUnitPublicCode,
-          "1",
+          "9ccff734-7df7-46e6-9ea8-f03f9570ab62",
           fileData.name.split(".").slice(0, -1).join("."),
           fileData.file
         );

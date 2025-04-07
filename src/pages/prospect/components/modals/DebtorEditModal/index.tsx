@@ -12,10 +12,12 @@ import { DataDebtor } from "./dataDebtor";
 interface IDebtorEditModalProps {
   handleClose: () => void;
   isMobile: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  initialValues: any;
 }
 
 export function DebtorEditModal(props: IDebtorEditModalProps) {
-  const { handleClose, isMobile } = props;
+  const { handleClose, isMobile, initialValues } = props;
 
   const [currentTab, setCurrentTab] = useState(dataTabs[0].id);
 
@@ -41,10 +43,13 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
           tabs={dataTabs}
           onChange={onChange}
         />
-        {currentTab === "data" && <DataDebtor />}
-        {currentTab === "sources" && <SourceIncome />}
+        {currentTab === "data" && <DataDebtor data={initialValues} />}
+        {currentTab === "sources" && <SourceIncome data={initialValues} />}
         {currentTab === "obligations" && (
-          <TableFinancialObligations showActions={true} showOnlyEdit={true} />
+          <TableFinancialObligations
+            initialValues={initialValues}
+            showActions={true}
+          />
         )}
       </Stack>
     </BaseModal>
