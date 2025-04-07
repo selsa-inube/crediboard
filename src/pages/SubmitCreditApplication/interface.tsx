@@ -22,7 +22,7 @@ import { Bail } from "./steps/bail";
 import { AttachedDocuments } from "./steps/attachedDocuments";
 import { DisbursementGeneral } from "./steps/disbursementGeneral";
 import { submitCreditApplicationConfig } from "./config/submitCreditApplication.config";
-import { dataFillingApplication } from "./config/config";
+import { dataSubmitApplication } from "./config/config";
 
 interface SubmitCreditApplicationUIProps {
   currentStep: number;
@@ -238,15 +238,15 @@ export function SubmitCreditApplicationUI(
         </Stack>
         {sentModal && (
           <BaseModal
-            title={dataFillingApplication.modals.file}
-            nextButton={dataFillingApplication.modals.continue}
-            backButton={dataFillingApplication.modals.cancel}
+            title={dataSubmitApplication.modals.file}
+            nextButton={dataSubmitApplication.modals.continue}
+            backButton={dataSubmitApplication.modals.cancel}
             handleNext={handleSendModal}
             handleBack={() => setSentModal(false)}
             width={isMobile ? "290px" : "402px"}
           >
             <Text type="body" size="large">
-              {dataFillingApplication.modals.fileDescription.replace(
+              {dataSubmitApplication.modals.fileDescription.replace(
                 "{numberProspectCode}",
                 numberProspectCode
               )}
@@ -255,9 +255,9 @@ export function SubmitCreditApplicationUI(
         )}
         {approvedRequestModal && (
           <BaseModal
-            title={dataFillingApplication.modals.filed}
-            nextButton={dataFillingApplication.modals.cancel}
-            backButton={dataFillingApplication.modals.share}
+            title={dataSubmitApplication.modals.filed}
+            nextButton={dataSubmitApplication.modals.cancel}
+            backButton={dataSubmitApplication.modals.share}
             iconBeforeback={
               <Icon icon={<MdOutlineShare />} appearance="gray" size="16px" />
             }
@@ -270,14 +270,14 @@ export function SubmitCreditApplicationUI(
               <Icon icon={<MdCheckCircle />} appearance="success" size="68px" />
               <Stack gap="6px">
                 <Text type="body" size="large">
-                  {dataFillingApplication.modals.filed}
+                  {dataSubmitApplication.modals.filed}
                 </Text>
                 <Text type="body" size="large" weight="bold">
                   {numberProspectCode}
                 </Text>
               </Stack>
               <Text type="body" size="medium" appearance="gray">
-                {dataFillingApplication.modals.filedDescription}
+                {dataSubmitApplication.modals.filedDescription}
               </Text>
             </Stack>
           </BaseModal>

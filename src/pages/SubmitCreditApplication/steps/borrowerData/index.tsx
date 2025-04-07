@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
-import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import { Grid } from "@inubekit/grid";
 import { Button } from "@inubekit/button";
@@ -13,11 +12,15 @@ import { DeleteModal } from "@components/modals/DeleteModal";
 import { DebtorAddModal } from "@pages/prospect/components/modals/DebtorAddModal";
 import { DebtorDetailsModal } from "@pages/prospect/components/modals/DebtorDetailsModal";
 import { DebtorEditModal } from "@pages/prospect/components/modals/DebtorEditModal";
-import { dataFillingApplication } from "@pages/SubmitCreditApplication/config/config";
-import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
-import { currencyFormat } from "@utils/formatData/currency";
+import { dataSubmitApplication } from "@pages/SubmitCreditApplication/config/config";
+import { currencyFormat, getMonthsElapsed } from "@utils/formatData/currency";
 
 import { getPropertyValue, getTotalFinancialObligations } from "../../util";
+import { ruleConfig } from "@pages/SubmitCreditApplication/config/configRules";
+import { evaluateRule } from "@pages/SubmitCreditApplication/evaluateRule";
+import { postBusinessUnitRules } from "@services/businessUnitRules";
+import { CustomerContext } from "@context/CustomerContext";
+import { AppContext } from "@context/AppContext";
 
 interface borrowersProps {
   isMobile: boolean;
@@ -31,8 +34,13 @@ interface borrowersProps {
 }
 export function Borrowers(props: borrowersProps) {
   const { handleOnChange, initialValues, isMobile, data } = props;
-
   const dataDebtorDetail = Array.isArray(data.borrowers) ? data.borrowers : [];
+  const { customerData } = useContext(CustomerContext);
+  const { businessUnitSigla } = useContext(AppContext);
+  const [valueRule, setValueRule] = useState<string[] | null>(null);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
   const formik = useFormik({
     initialValues: { ...initialValues, borrowers: dataDebtorDetail },
@@ -44,6 +52,46 @@ export function Borrowers(props: borrowersProps) {
     handleOnChange(formik.values);
   }, [formik.values, handleOnChange]);
 
+  useEffect(() => {
+    const clientInfo = customerData?.generalAttributeClientNaturalPersons?.[0];
+    const creditProduct = data?.credit_products?.[0];
+
+    if (!clientInfo || !creditProduct) return;
+
+    const dataRules = {
+      LineOfCredit: creditProduct.line_of_credit_abbreviated_name,
+      ClientType: clientInfo.associateType?.substring(0, 1) || "",
+      LoanAmount: data.requested_amount,
+      PrimaryIncomeType: "",
+      AffiliateSeniority: getMonthsElapsed(
+        customerData.generalAssociateAttributes?.[0]?.affiliateSeniorityDate,
+        0
+      ),
+    };
+
+    const rule = ruleConfig["ValidationCoBorrowwe"]?.(dataRules);
+
+    if (!rule) return;
+
+    (async () => {
+      const values = await evaluateRule(
+        rule,
+        (businessUnitPublicCode, data) =>
+          postBusinessUnitRules(businessUnitPublicCode, data),
+        "value",
+        businessUnitPublicCode
+      );
+
+      const extractedValues = Array.isArray(values)
+        ? values
+            .map((v) => (typeof v === "string" ? v : v?.value))
+            .filter((val): val is string => typeof val === "string")
+        : [];
+
+      setValueRule(extractedValues);
+    })();
+  }, [customerData, data, businessUnitPublicCode]);
+
   const [isModalAdd, setIsModalAdd] = useState(false);
   const [isModalView, setIsModalView] = useState(false);
   const [isModalEdit, setIsModalEdit] = useState(false);
@@ -51,23 +99,14 @@ export function Borrowers(props: borrowersProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [selectedBorrower, setSelectedBorrower] = useState<any>(null);
 
-  const { id } = useParams();
-  const userId = parseInt(id || "0", 10);
-  const userChoice =
-    choiceBorrowers.find((choice) => choice.id === userId)?.choice ||
-    "borrowers";
-
-  const dataOption =
-    dataFillingApplication[
-      userChoice === "borrowers" ? "borrowers" : "coBorrowers"
-    ];
-
   return (
     <Fieldset>
       <Stack direction="column" padding="2px 10px" gap="20px">
         <Stack justifyContent="end">
           <Button onClick={() => setIsModalAdd(true)} iconBefore={<MdAdd />}>
-            {dataOption.addButton}
+            {valueRule?.includes("Codeudor")
+              ? dataSubmitApplication.coBorrowers.borrowerLabel
+              : dataSubmitApplication.borrowers.borrowerLabel}
           </Button>
         </Stack>
         <Grid
@@ -82,7 +121,10 @@ export function Borrowers(props: borrowersProps) {
             (item: any, index: number) => (
               <CardBorrower
                 key={index}
-                title={dataOption.borrowerLabel + ` ${index + 1}`}
+                title={
+                  dataSubmitApplication.borrowers.borrowerLabel +
+                  ` ${index + 1}`
+                }
                 name={getPropertyValue(item.borrower_properties, "name")}
                 lastName={getPropertyValue(item.borrower_properties, "surname")}
                 email={
@@ -111,14 +153,22 @@ export function Borrowers(props: borrowersProps) {
           )}
           <NewCardBorrower
             onClick={() => setIsModalAdd(true)}
-            title={dataOption.borrowerLabel}
+            title={
+              valueRule?.includes("Codeudor")
+                ? dataSubmitApplication.coBorrowers.borrowerLabel
+                : dataSubmitApplication.borrowers.borrowerLabel
+            }
             isMobile={isMobile}
           />
           {isModalAdd && (
             <DebtorAddModal
               onSubmit={() => setIsModalAdd(false)}
               handleClose={() => setIsModalAdd(false)}
-              title={dataOption.addButton}
+              title={
+                valueRule?.includes("Codeudor")
+                  ? dataSubmitApplication.coBorrowers.borrowerLabel
+                  : dataSubmitApplication.borrowers.borrowerLabel
+              }
             />
           )}
           {isModalView && selectedBorrower && (
