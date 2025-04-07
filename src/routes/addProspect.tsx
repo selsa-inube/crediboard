@@ -10,7 +10,7 @@ function AddProspectRoutes() {
     <Routes>
       <Route path="/" element={<Board />}>
         <Route
-          path="/:id"
+          path="/:customerPublicCode"
           element={
             <CustomerContextProvider>
               <AddProspect />

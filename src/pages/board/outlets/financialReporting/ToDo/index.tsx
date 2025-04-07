@@ -1,9 +1,8 @@
 import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
-import { useFlag } from "@inubekit/flag";
 import { SkeletonLine } from "@inubekit/skeleton";
-import { Stack, Icon, Text } from "@inubekit/inubekit";
+import { Stack, Icon, Text, useFlag } from "@inubekit/inubekit";
 import { IOption } from "@inubekit/select";
 
 import { Fieldset } from "@components/data/Fieldset";
@@ -203,9 +202,7 @@ function ToDo(props: ToDoProps) {
   const isFetching = useRef(false);
 
   const handleSelectOpen = async () => {
-    if (isFetching.current) return; // Evita dobles peticiones
-    //if (!requests?.creditRequestId) return; // Evita ejecutar sin ID válido
-
+    if (isFetching.current) return;
     isFetching.current = true;
     setLoading(true);
     if (requests?.creditRequestId) {

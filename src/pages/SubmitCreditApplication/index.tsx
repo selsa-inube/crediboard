@@ -1,41 +1,49 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "@inubekit/hooks";
+import { useFlag } from "@inubekit/inubekit";
 
 import { userStepsMock } from "@mocks/filing-application/userSteps/users.mock";
 import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choiceborrowers.mock";
 import { CustomerContext } from "@context/CustomerContext";
 import { AppContext } from "@context/AppContext";
 import { postSubmitCredit } from "@services/submitCredit";
+import { getSearchProspectById } from "@services/prospects";
+import { postBusinessUnitRules } from "@services/businessUnitRules";
 
 import { stepsFilingApplication } from "./config/filingApplication.config";
 import { SubmitCreditApplicationUI } from "./interface";
 import { FormData } from "./types";
 import { dataFillingApplication } from "./config/config";
+import { evaluateRule } from "./evaluateRule";
+import { ruleConfig } from "./config/configRules";
+import { getMonthsElapsed } from "@utils/formatData/currency";
 
 export function SubmitCreditApplication() {
   const { id, prospectCode } = useParams();
   const { customerData } = useContext(CustomerContext);
   const { businessUnitSigla, eventData } = useContext(AppContext);
+  const [sentModal, setSentModal] = useState(false);
+  const [approvedRequestModal, setApprovedRequestModal] = useState(false);
+
   const { userAccount } =
     typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
 
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
-  const userId = parseInt(id || "0", 10);
+  const userId = parseInt(prospectCode || "0", 10);
 
   const userChoice =
     choiceBorrowers.find((choice) => choice.id === userId)?.choice ||
     "borrowers";
+
   const data =
     dataFillingApplication[
       userChoice === "borrowers" ? "borrowers" : "coBorrowers"
     ];
 
   const fixedSteps = [1, 2, 3, 4, 5, 6, 7, 8];
-
-  const dataHeader = { name: customerData.fullName };
 
   const intermediateSteps =
     userStepsMock.find((user) => user.id === userId)?.intermediateSteps || [];
@@ -49,7 +57,17 @@ export function SubmitCreditApplication() {
     },
   };
 
+  const dataHeader = {
+    name: customerData?.fullName ?? "",
+    status:
+      customerData?.generalAssociateAttributes[0].partnerStatus.substring(2) ??
+      "",
+  };
+
   const [isCurrentFormValid, setIsCurrentFormValid] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [prospectData, setProspectData] = useState<Record<string, any>>({});
+
   const [formData, setFormData] = useState<FormData>({
     contactInformation: {
       document: "",
@@ -274,33 +292,74 @@ export function SubmitCreditApplication() {
   };
 
   const isMobile = useMediaQuery("(max-width:880px)");
+  const { addFlag } = useFlag();
 
-  const currentStepIndex = steps.findIndex((step) => step.id === currentStep);
-  const currentStepsNumber = {
-    ...steps[currentStepIndex],
-    number: currentStepIndex + 1,
+  const handleFlag = () => {
+    addFlag({
+      title: "Error al enviar el radicado",
+      description: "El radicado no se ha podido enviar correctamente.",
+      appearance: "danger",
+      duration: 5000,
+    });
   };
 
-  const handleNextStep = () => {
-    const currentIndex = steps.findIndex((step) => step.id === currentStep);
-    if (currentIndex < steps.length - 1) {
-      setCurrentStep(steps[currentIndex + 1].id);
-    } else if (currentStep === steps.length) {
-      handleSubmitClick();
+  const fetchProspectData = useCallback(async () => {
+    try {
+      const prospect = await getSearchProspectById(
+        businessUnitPublicCode,
+        prospectCode || ""
+      );
+
+      if (prospect && typeof prospect === "object") {
+        if (JSON.stringify(prospect) !== JSON.stringify(prospectData)) {
+          setProspectData(prospect);
+        }
+      }
+    } catch (error) {
+      console.error("Error al enviar la solicitud:", error);
     }
-  };
+  }, [businessUnitPublicCode, prospectCode, prospectData]);
 
-  const handlePreviousStep = () => {
-    const currentIndex = steps.findIndex((step) => step.id === currentStep);
-    if (currentIndex > 0) {
-      setCurrentStep(steps[currentIndex - 1].id);
-      setIsCurrentFormValid(true);
-    }
-  };
+  useEffect(() => {
+    fetchProspectData();
+  }, [fetchProspectData]);
 
-  function handleSubmitClick() {
-    handleSubmit();
-  }
+  useEffect(() => {
+    if (!customerData || !prospectData) return;
+
+    const dataRules = {
+      LineOfCredit:
+        prospectData.credit_products?.[0]?.line_of_credit_abbreviated_name,
+      ClientType:
+        customerData.generalAttributeClientNaturalPersons?.[0]?.associateType?.substring(
+          0,
+          1
+        ) || "",
+      LoanAmount: prospectData.requested_amount,
+      PrimaryIncomeType: "",
+      AffiliateSeniority: getMonthsElapsed(
+        customerData.generalAssociateAttributes?.[0]?.affiliateSeniorityDate,
+        0
+      ),
+    };
+
+    console.log("dataRules", dataRules);
+
+    const rule = ruleConfig["HumanValidationRequirement"]?.(dataRules);
+    console.log("rule_armada", rule);
+    if (!rule) return;
+
+    (async () => {
+      const values = await evaluateRule(
+        rule,
+        (code, data) => postBusinessUnitRules(code, data),
+        "value",
+        businessUnitPublicCode
+      );
+
+      console.log("Valores únicos:", values);
+    })();
+  }, [customerData, prospectData, businessUnitPublicCode]);
 
   const handleFormChange = (updatedValues: Partial<FormData>) => {
     setFormData((prev) => {
@@ -316,6 +375,43 @@ export function SubmitCreditApplication() {
     });
   };
 
+  const handleNextStep = () => {
+    const currentIndex = steps.findIndex((step) => step.id === currentStep);
+    if (currentIndex < steps.length - 1) {
+      setCurrentStep(steps[currentIndex + 1].id);
+    } else if (currentStep === steps[steps.length - 1].id) {
+      handleSubmitClick();
+    }
+  };
+
+  const handlePreviousStep = () => {
+    const currentIndex = steps.findIndex((step) => step.id === currentStep);
+    if (currentIndex > 0) {
+      setCurrentStep(steps[currentIndex - 1].id);
+      setIsCurrentFormValid(true);
+    }
+  };
+
+  function handleSubmitClick() {
+    handleSubmit();
+    setSentModal(true);
+  }
+
+  function handleSendModal() {
+    try {
+      setSentModal(false);
+      setApprovedRequestModal(true);
+    } catch (error) {
+      handleFlag();
+    }
+  }
+
+  const currentStepIndex = steps.findIndex((step) => step.id === currentStep);
+  const currentStepsNumber = {
+    ...steps[currentStepIndex],
+    number: currentStepIndex + 1,
+  };
+
   return (
     <>
       <SubmitCreditApplicationUI
@@ -326,13 +422,21 @@ export function SubmitCreditApplication() {
         formData={formData}
         dataHeader={dataHeader}
         prospectCode={prospectCode || ""}
+        sentModal={sentModal}
+        approvedRequestModal={approvedRequestModal}
+        numberProspectCode={prospectCode || ""}
+        setApprovedRequestModal={setApprovedRequestModal}
+        setSentModal={setSentModal}
         handleFormChange={handleFormChange}
         handleNextStep={handleNextStep}
         handlePreviousStep={handlePreviousStep}
         setCurrentStep={setCurrentStep}
         currentStepsNumber={currentStepsNumber}
         handleSubmitClick={handleSubmitClick}
+        handleSendModal={handleSendModal}
         isMobile={isMobile}
+        data={prospectData}
+        customerData={customerData}
       />
     </>
   );

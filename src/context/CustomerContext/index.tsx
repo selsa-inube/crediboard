@@ -1,6 +1,9 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { getCustomers } from "@services/customers/AllCustomers";
+
+import { getSearchCustomerByCode } from "@services/customers/AllCustomers";
+import { AppContext } from "@context/AppContext";
+
 import { ICustomerContext, ICustomerData } from "./types";
 
 export const CustomerContext = createContext<ICustomerContext>(
@@ -14,37 +17,65 @@ interface ICustomerContextProviderProps {
 export function CustomerContextProvider({
   children,
 }: ICustomerContextProviderProps) {
-  const { id } = useParams();
+  const { customerPublicCode } = useParams();
   const [customerData, setCustomerData] = useState<ICustomerData>({
     customerId: "",
     publicCode: "",
     fullName: "",
     natureClient: "",
     generalAttributeClientNaturalPersons: [
-      { employmentType: "", associateType: "" },
+      {
+        employmentType: "",
+        associateType: "",
+        typeIdentification: "",
+        firstNames: "",
+        lastNames: "",
+        emailContact: "",
+        cellPhoneContact: "",
+      },
+    ],
+    generalAssociateAttributes: [
+      {
+        affiliateSeniorityDate: "",
+        partnerStatus: "",
+      },
     ],
   });
 
+  const { businessUnitSigla } = useContext(AppContext);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
   useEffect(() => {
-    if (id) {
-      fetchCustomerData(id);
-    }
-  }, [id]);
+    fetchCustomerData(customerPublicCode!, businessUnitPublicCode);
+  }, [customerPublicCode, businessUnitPublicCode]);
 
-  const fetchCustomerData = async (publicCode: string) => {
+  const fetchCustomerData = async (
+    publicCode: string,
+    businessUnitPublicCode: string
+  ) => {
     try {
-      const customer = await getCustomers(publicCode);
+      const customers = await getSearchCustomerByCode(
+        publicCode,
+        businessUnitPublicCode
+      );
 
-      if (customer) {
+      if (customers) {
         setCustomerData({
-          customerId: customer.customerId,
-          publicCode: customer.publicCode,
-          fullName: customer.fullName,
-          natureClient: customer.natureClient,
+          customerId: customers.customerId,
+          publicCode: customers.publicCode,
+          fullName: customers.fullName,
+          natureClient: customers.natureClient,
           generalAttributeClientNaturalPersons: Array.isArray(
-            customer.generalAttributeClientNaturalPersons
+            customers.generalAttributeClientNaturalPersons
           )
-            ? customer.generalAttributeClientNaturalPersons
+            ? customers.generalAttributeClientNaturalPersons
+            : [],
+          generalAssociateAttributes: Array.isArray(
+            customers.generalAssociateAttributes
+          )
+            ? customers.generalAssociateAttributes
             : [],
         });
       }
