@@ -41,6 +41,7 @@ export interface IPropertyOffered {
   description: string;
 }
 export interface IBorrowerData {
+  borrowers: Record<string, never>;
   initialBorrowers: {
     id: string;
     name: string;

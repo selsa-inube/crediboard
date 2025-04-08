@@ -5,6 +5,7 @@ import { Button } from "@inubekit/button";
 import { Assisted, Breadcrumbs, Icon, Text, Stack } from "@inubekit/inubekit";
 import { MdCheckCircle, MdOutlineShare } from "react-icons/md";
 
+import userImage from "@assets/images/userImage.jpeg";
 import { BaseModal } from "@components/modals/baseModal";
 import { disbursemenTabs } from "@pages/SubmitCreditApplication/steps/disbursementGeneral/config";
 import { GeneralHeader } from "@pages/addProspect/components/GeneralHeader/";
@@ -35,7 +36,7 @@ interface SubmitCreditApplicationUIProps {
   sentModal: boolean;
   approvedRequestModal: boolean;
   numberProspectCode: string;
-  dataHeader: { name: string; status: string };
+  dataHeader: { name: string; status: string; image?: string };
   setSentModal: React.Dispatch<React.SetStateAction<boolean>>;
   setApprovedRequestModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleFormChange: (updatedValues: Partial<FormData>) => void;
@@ -43,7 +44,7 @@ interface SubmitCreditApplicationUIProps {
   handleNextStep: () => void;
   handlePreviousStep: () => void;
   handleSubmitClick: () => void;
-  handleSendModal: () => void;
+  handleSubmit: () => void;
   setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
@@ -62,7 +63,6 @@ export function SubmitCreditApplicationUI(
     isMobile,
     dataHeader,
     prospectCode,
-    numberProspectCode,
     sentModal,
     approvedRequestModal,
     setSentModal,
@@ -71,7 +71,7 @@ export function SubmitCreditApplicationUI(
     handleNextStep,
     handlePreviousStep,
     handleSubmitClick,
-    handleSendModal,
+    handleSubmit,
     setIsCurrentFormValid,
     data,
     customerData,
@@ -97,7 +97,7 @@ export function SubmitCreditApplicationUI(
         buttonText="Agregar vinculación"
         descriptionStatus={dataHeader.status}
         name={dataHeader.name}
-        profileImageUrl="https://s3-alpha-sig.figma.com/img/27d0/10fa/3d2630d7b4cf8d8135968f727bd6d965?Expires=1737936000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=h5lEzRE3Uk8fW5GT2LOd5m8eC6TYIJEH84ZLfY7WyFqMx-zv8TC1yzz-OV9FCH9veCgWZ5eBfKi4t0YrdpoWZriy4E1Ic2odZiUbH9uQrHkpxLjFwcMI2VJbWzTXKon-HkgvkcCnKFzMFv3BwmCqd34wNDkLlyDrFSjBbXdGj9NZWS0P3pf8PDWZe67ND1kropkpGAWmRp-qf9Sp4QTJW-7Wcyg1KPRy8G-joR0lsQD86zW6G6iJ7PuNHC8Pq3t7Jnod4tEipN~OkBI8cowG7V5pmY41GSjBolrBWp2ls4Bf-Vr1BKdzSqVvivSTQMYCi8YbRy7ejJo9-ZNVCbaxRg__"
+        profileImageUrl={dataHeader.image || userImage}
       />
       <Stack
         direction="column"
@@ -241,14 +241,14 @@ export function SubmitCreditApplicationUI(
             title={dataSubmitApplication.modals.file}
             nextButton={dataSubmitApplication.modals.continue}
             backButton={dataSubmitApplication.modals.cancel}
-            handleNext={handleSendModal}
+            handleNext={handleSubmit}
             handleBack={() => setSentModal(false)}
             width={isMobile ? "290px" : "402px"}
           >
             <Text type="body" size="large">
               {dataSubmitApplication.modals.fileDescription.replace(
                 "{numberProspectCode}",
-                numberProspectCode
+                customerData?.publicCode || ""
               )}
             </Text>
           </BaseModal>
@@ -273,7 +273,7 @@ export function SubmitCreditApplicationUI(
                   {dataSubmitApplication.modals.filed}
                 </Text>
                 <Text type="body" size="large" weight="bold">
-                  {numberProspectCode}
+                  {customerData?.publicCode || ""}
                 </Text>
               </Stack>
               <Text type="body" size="medium" appearance="gray">
