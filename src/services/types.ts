@@ -331,7 +331,7 @@ interface IDebtor {
 }
 
 export interface IIncome {
-  borrowers: IDebtor[];
+  borrowers?: IDebtor[];
   borrower_id: string;
   borrower: string;
   capital: string[];

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { MdCached, MdOutlineEdit } from "react-icons/md";
 import { Stack, Text, Grid } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
-import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
 
 import { incomeCardData } from "@components/cards/IncomeCard/config";
@@ -13,34 +12,29 @@ import {
   currencyFormat,
   parseCurrencyString,
 } from "@utils/formatData/currency";
-import { get } from "@mocks/utils/dataMock.service";
 import { IIncome } from "@services/types";
 
 import { IncomeEmployment, IncomeCapital, MicroBusinesses } from "./config";
 import { StyledContainer } from "./styles";
 import { dataReport } from "../TableObligationsFinancial/config";
+import { IIncomeSources } from "@services/incomeSources/types";
 
 interface ISourceIncomeProps {
   openModal?: (state: boolean) => void;
   ShowSupport?: boolean;
-  onlyDebtor?: boolean;
   disabled?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data?: any;
+  data?: IIncomeSources;
+  showEdit?: boolean;
 }
 
 export function SourceIncome(props: ISourceIncomeProps) {
-  const { openModal, ShowSupport, onlyDebtor, disabled } = props;
+  const { openModal, ShowSupport, disabled, showEdit = true, data } = props;
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [values, setValues] = useState<IIncome | null>(null);
 
   const isMobile = useMediaQuery("(max-width:880px)");
-
-  const handleSelectChange = (name: string, newValue: string) => {
-    setValues((prev) => (prev ? { ...prev, [name]: newValue } : null));
-  };
 
   const totalSum = () => {
     const sumCapital =
@@ -61,16 +55,35 @@ export function SourceIncome(props: ISourceIncomeProps) {
   };
 
   useEffect(() => {
-    get<IIncome[]>("income_mock")
-      .then((data) => {
-        if (data && Array.isArray(data) && data.length > 0) {
-          setValues(data[0]);
+    const fetchIncomeData = async () => {
+      try {
+        if (data) {
+          setValues({
+            borrower_id: data.identificationNumber,
+            borrower: `${data.name} ${data.surname}`,
+            capital: [
+              (data.leases || 0).toString(),
+              (data.dividends ?? 0).toString(),
+              (data.financialIncome ?? 0).toString(),
+            ],
+            employment: [
+              (data.periodicSalary ?? 0).toString(),
+              (data.otherNonSalaryEmoluments ?? 0).toString(),
+              (data.pensionAllowances ?? 0).toString(),
+            ],
+            businesses: [
+              (data.professionalFees ?? 0).toString(),
+              (data.personalBusinessUtilities ?? 0).toString(),
+            ],
+          });
         }
-      })
-      .catch((error) => {
-        console.error("Error fetching money destinations data:", error.message);
-      });
-  }, []);
+      } catch (error) {
+        console.error("Error fetching income data:", error);
+      }
+    };
+
+    fetchIncomeData();
+  }, [data]);
 
   const handleIncomeChange = (
     category: "employment" | "capital" | "businesses",
@@ -104,22 +117,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
             gap="24px"
             direction={!isMobile ? "row" : "column"}
           >
-            {!onlyDebtor && (
-              <Stack width={!isMobile ? "317px" : "auto"}>
-                <Select
-                  id="income"
-                  name="borrower"
-                  label="Deudor"
-                  placeholder="Seleccione una opción"
-                  options={values?.borrowers || []}
-                  value={values?.borrower || ""}
-                  onChange={handleSelectChange}
-                  size="compact"
-                  fullwidth
-                />
-              </Stack>
-            )}
-            {onlyDebtor && !isMobile && (
+            {!isMobile && (
               <Stack direction="column" gap="8px">
                 <Text type="body" size="small" weight="bold" appearance="dark">
                   {incomeCardData.borrower}
@@ -129,7 +127,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
                 </Text>
               </Stack>
             )}
-            {onlyDebtor && isMobile && (
+            {isMobile && (
               <CardGray label="Deudor" placeHolder={values?.borrower} />
             )}
             <Stack
@@ -150,20 +148,21 @@ export function SourceIncome(props: ISourceIncomeProps) {
                 {incomeCardData.income}
               </Text>
             </Stack>
-            {onlyDebtor && (
-              <Stack
-                width={isMobile ? "100%" : "auto"}
-                gap="16px"
-                margin="auto 0 0 0"
+
+            <Stack
+              width={isMobile ? "100%" : "auto"}
+              gap="16px"
+              margin="auto 0 0 0"
+            >
+              <Button
+                variant="outlined"
+                iconBefore={<MdCached />}
+                fullwidth={isMobile}
+                onClick={() => setIsOpenModal(true)}
               >
-                <Button
-                  variant="outlined"
-                  iconBefore={<MdCached />}
-                  fullwidth={isMobile}
-                  onClick={() => setIsOpenModal(true)}
-                >
-                  {incomeCardData.restore}
-                </Button>
+                {incomeCardData.restore}
+              </Button>
+              {showEdit && (
                 <Button
                   iconBefore={<MdOutlineEdit />}
                   onClick={() =>
@@ -172,8 +171,8 @@ export function SourceIncome(props: ISourceIncomeProps) {
                 >
                   {dataReport.edit}
                 </Button>
-              </Stack>
-            )}
+              )}
+            </Stack>
           </Stack>
         </Stack>
         <Stack direction="column">
@@ -227,7 +226,6 @@ export function SourceIncome(props: ISourceIncomeProps) {
       {isOpenEditModal && (
         <IncomeModal
           handleClose={() => setIsOpenEditModal(false)}
-          onlyDebtor={false}
           disabled={false}
         />
       )}

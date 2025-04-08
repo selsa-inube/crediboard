@@ -285,7 +285,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       {currentModal === "IncomeModal" && (
         <IncomeModal
           handleClose={handleCloseModal}
-          onlyDebtor={true}
           disabled={true}
           openModal={() => setOpenModal("IncomeModalEdit")}
         />

@@ -13,7 +13,7 @@ export function SourcesOfIncome(props: ISourcesOfIncomeProps) {
   return (
     <Fieldset>
       <Stack padding={isMobile ? "6px" : "0px"} justifyContent="center">
-        <SourceIncome disabled={true} onlyDebtor={true} />
+        <SourceIncome disabled={true} />
       </Stack>
     </Fieldset>
   );

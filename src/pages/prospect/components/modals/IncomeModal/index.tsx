@@ -9,12 +9,11 @@ import { dataIncomeModal } from "./config";
 interface IncomeModalProps {
   handleClose: () => void;
   openModal?: (state: boolean) => void;
-  onlyDebtor?: boolean;
   disabled?: boolean;
 }
 
 export function IncomeModal(props: IncomeModalProps) {
-  const { handleClose, openModal, onlyDebtor, disabled } = props;
+  const { handleClose, openModal, disabled } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
@@ -42,7 +41,6 @@ export function IncomeModal(props: IncomeModalProps) {
     >
       <SourceIncome
         ShowSupport={false}
-        onlyDebtor={onlyDebtor}
         disabled={disabled}
         openModal={openModal}
       />
