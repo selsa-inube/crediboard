@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
-import { Stack } from "@inubekit/inubekit";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Stack, useFlag } from "@inubekit/inubekit";
 import { Tabs } from "@inubekit/tabs";
 
+import { AppContext } from "@context/AppContext";
 import { BaseModal } from "@components/modals/baseModal";
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
@@ -20,27 +22,36 @@ interface IDebtorEditModalProps {
 
 export function DebtorEditModal(props: IDebtorEditModalProps) {
   const { handleClose, isMobile, initialValues } = props;
-
   const [currentTab, setCurrentTab] = useState(dataTabs[0].id);
-
-  const onChange = (tabId: string) => {
-    setCurrentTab(tabId);
-  };
-
   const [incomeData, setIncomeData] = useState<IIncomeSources | undefined>(
     undefined
   );
+  const [isModified, setIsModified] = useState(false);
+
+  const { prospectCode } = useParams();
+  const { businessUnitSigla } = useContext(AppContext);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
+  const { addFlag } = useFlag();
+
+  const handleFlag = (error: unknown) => {
+    addFlag({
+      title: "Error Fuentes de ingreso",
+      description: `Error al traer los datos: ${error}`,
+      appearance: "danger",
+      duration: 5000,
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const prospectData = await getSearchProspectById(
-          "test", // acuerdese de cambiar las props
-          "67ec4f9115ddc25b00d3df14"
+          businessUnitPublicCode,
+          prospectCode || ""
         );
-
-        console.log("Prospect Data:", prospectData);
-
         const borrower = prospectData.borrowers.find(
           (b) => b.borrower_type === "main_borrower"
         );
@@ -50,7 +61,7 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
             borrower.borrower_properties.find((p) => p.property_name === name)
               ?.property_value;
 
-          const incomeSource: IIncomeSources = {
+          setIncomeData({
             identificationNumber: borrower.borrower_identification_number,
             identificationType: borrower.borrower_identification_type,
             name: getData("name") || "",
@@ -67,16 +78,15 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
               getData("PersonalBusinessUtilities") || "0"
             ),
             professionalFees: parseFloat(getData("professionalFees") || "0"),
-          };
-
-          setIncomeData(incomeSource);
+          });
         }
       } catch (error) {
-        console.error("Error fetching prospect data:", error);
+        handleFlag(error);
       }
     };
 
     fetchData();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -89,17 +99,22 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
       finalDivider={true}
       width={isMobile ? "290px" : "912px"}
       height={isMobile ? "auto" : "680px"}
+      disabledNext={!isModified}
     >
       <Stack direction="column" height={isMobile ? "auto" : "510px"} gap="24px">
         <Tabs
           scroll={isMobile}
           selectedTab={currentTab}
           tabs={dataTabs}
-          onChange={onChange}
+          onChange={setCurrentTab}
         />
         {currentTab === "data" && <DataDebtor data={initialValues} />}
         {currentTab === "sources" && (
-          <SourceIncome data={incomeData} showEdit={false} />
+          <SourceIncome
+            data={incomeData}
+            showEdit={false}
+            onDataChange={() => setIsModified(true)}
+          />
         )}
         {currentTab === "obligations" && (
           <TableFinancialObligations

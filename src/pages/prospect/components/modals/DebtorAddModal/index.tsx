@@ -1,5 +1,8 @@
-import { useState } from "react";
-import { useMediaQuery } from "@inubekit/hooks";
+import { useEffect, useState } from "react";
+import { useFlag, useMediaQuery } from "@inubekit/inubekit";
+
+import { getIncomeSourcesById } from "@services/incomeSources";
+import { IIncomeSources } from "@services/incomeSources/types";
 
 import { stepsAddBorrower } from "./config/addBorrower.config";
 import { DebtorAddModalUI } from "./interface";
@@ -30,6 +33,38 @@ export function DebtorAddModal(props: DebtorAddModalProps) {
       relation: "",
     },
   });
+  const [incomeData, setIncomeData] = useState<IIncomeSources | undefined>(
+    undefined
+  );
+
+  const { addFlag } = useFlag();
+
+  const handleFlag = (error: unknown) => {
+    addFlag({
+      title: "Error Fuentes de ingreso",
+      description: `Error al traer los datos: ${error}`,
+      appearance: "danger",
+      duration: 5000,
+    });
+  };
+
+  const debtorId = formData.personalInfo.documentNumber.toString();
+
+  useEffect(() => {
+    if (!debtorId) return;
+
+    const fetchIncomeData = async () => {
+      try {
+        const response = await getIncomeSourcesById(debtorId);
+        setIncomeData(response);
+      } catch (error) {
+        handleFlag(error);
+      }
+    };
+
+    fetchIncomeData();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debtorId]);
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
@@ -70,6 +105,7 @@ export function DebtorAddModal(props: DebtorAddModalProps) {
       isCurrentFormValid={isCurrentFormValid}
       setIsCurrentFormValid={setIsCurrentFormValid}
       formData={formData}
+      incomeData={incomeData}
       handleFormChange={handleFormChange}
       handleNextStep={handleNextStep}
       handlePreviousStep={handlePreviousStep}

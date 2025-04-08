@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Assisted } from "@inubekit/assisted";
 import { Stack } from "@inubekit/inubekit";
 import { Divider } from "@inubekit/divider";
@@ -6,7 +5,6 @@ import { Divider } from "@inubekit/divider";
 import { BaseModal } from "@components/modals/baseModal";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
-import { getIncomeSourcesById } from "@services/incomeSources";
 import { IIncomeSources } from "@services/incomeSources/types";
 
 import { stepsAddBorrower } from "./config/addBorrower.config";
@@ -21,6 +19,7 @@ interface DebtorAddModalUIProps {
   formData: FormData;
   title: string;
   isMobile: boolean;
+  incomeData: IIncomeSources | undefined;
   handleFormChange: (updatedValues: Partial<FormData>) => void;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   handleNextStep: () => void;
@@ -38,6 +37,7 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
     formData,
     title,
     isMobile,
+    incomeData,
     handleFormChange,
     handleNextStep,
     handlePreviousStep,
@@ -45,27 +45,6 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
     handleClose,
     setIsCurrentFormValid,
   } = props;
-
-  const [incomeData, setIncomeData] = useState<IIncomeSources | undefined>(
-    undefined
-  );
-
-  const debtorId = formData.personalInfo.documentNumber.toString();
-
-  useEffect(() => {
-    if (!debtorId) return;
-
-    const fetchIncomeData = async () => {
-      try {
-        const response = await getIncomeSourcesById(debtorId);
-        setIncomeData(response);
-      } catch (error) {
-        console.error("Error fetching income data:", error);
-      }
-    };
-
-    fetchIncomeData();
-  }, [debtorId]);
 
   return (
     <BaseModal
