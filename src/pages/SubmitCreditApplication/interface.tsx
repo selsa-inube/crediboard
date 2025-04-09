@@ -24,6 +24,9 @@ import { AttachedDocuments } from "./steps/attachedDocuments";
 import { DisbursementGeneral } from "./steps/disbursementGeneral";
 import { submitCreditApplicationConfig } from "./config/submitCreditApplication.config";
 import { dataSubmitApplication } from "./config/config";
+import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
+import { CardValues } from "@components/cards/cardValues";
+import { mockCommercialManagement } from "@mocks/financialReporting/commercialmanagement.mock";
 
 interface SubmitCreditApplicationUIProps {
   currentStep: number;
@@ -121,6 +124,23 @@ export function SubmitCreditApplicationUI(
               </Text>
             </Stack>
           </StyledArrowBack>
+          <Stack direction="column" gap="6px">
+            <Text type="body" weight="bold" size="large">
+              {customerData?.publicCode}
+            </Text>
+            {SummaryProspectCredit.map((entry, index) => (
+              <CardValues
+                key={index}
+                items={entry.item.map((item, index) => ({
+                  ...item,
+                  amount: mockCommercialManagement[index]?.amount,
+                }))}
+                showIcon={false}
+                isMobile={isMobile}
+                showMiniIcons={false}
+              />
+            ))}
+          </Stack>
           <StyledContainerAssisted $cursorDisabled={!isCurrentFormValid}>
             <Assisted
               step={currentStepsNumber!}

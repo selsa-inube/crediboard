@@ -19,6 +19,7 @@ import { saveDocument } from "@services/saveDocument";
 import { validationMessages } from "@validations/validationMessages";
 import { AppContext } from "@context/AppContext";
 import { getSearchDocumentById } from "@services/documents/SearchDocumentById";
+import { IDocumentUpload } from "@pages/SubmitCreditApplication/types";
 
 import {
   StyledContainerClose,
@@ -55,9 +56,13 @@ export interface IListModalProps {
   id?: string;
   dataDocument?: { id: string; name: string }[];
   isViewing?: boolean;
+  uploadedFiles?: IDocumentUpload[];
+  onlyDocumentReceived?: boolean;
   handleClose: () => void;
   handleSubmit?: () => void;
   onSubmit?: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setUploadedFiles?: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export const ListModal = (props: IListModalProps) => {
@@ -72,9 +77,12 @@ export const ListModal = (props: IListModalProps) => {
     uploadMode,
     dataDocument,
     isViewing,
+    uploadedFiles,
+    onlyDocumentReceived,
     handleClose,
     handleSubmit,
     onSubmit,
+    setUploadedFiles,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -86,10 +94,6 @@ export const ListModal = (props: IListModalProps) => {
   const isMobile = useMediaQuery("(max-width: 700px)");
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [uploadedFiles, setUploadedFiles] = useState<
-    { id: string; name: string; file: File }[]
-  >([]);
-  const [loading, setLoading] = useState(false);
   const { businessUnitSigla } = useContext(AppContext);
 
   const { user } = useAuth0();
@@ -101,7 +105,7 @@ export const ListModal = (props: IListModalProps) => {
   const [fileName, setFileName] = useState<string | null>(null);
 
   interface IListdataProps {
-    data: { id: string; name: string }[];
+    data: { id: string; name: string }[] | null | undefined;
     onDelete?: (id: string) => void;
     icon?: React.ReactNode;
     onPreview?: (id: string, name: string) => void;
@@ -110,7 +114,7 @@ export const ListModal = (props: IListModalProps) => {
   const Listdata = (props: IListdataProps) => {
     const { data, icon, onDelete, onPreview } = props;
 
-    if (data.length === 0) {
+    if (!data || !Array.isArray(data) || data.length === 0) {
       return <Text>No hay documentos adjuntos.</Text>;
     }
 
@@ -152,20 +156,37 @@ export const ListModal = (props: IListModalProps) => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (files) {
+    if (!setUploadedFiles) return;
+    if (files && files.length > 0 && onlyDocumentReceived) {
       const newFiles = Array.from(files).map((file) => ({
         id: crypto.randomUUID(),
         name: file.name,
         file: file,
       }));
-      setLoading(true);
-      setUploadedFiles((prev) => [...prev, ...newFiles]);
+      setUploadedFiles(newFiles);
+    } else if (files) {
+      const newFiles = Array.from(files).map((file) => ({
+        id: crypto.randomUUID(),
+        name: file.name,
+        file: file,
+      }));
+      setUploadedFiles(
+        (prev: { id: string; name: string; file: File }[] | null) => [
+          ...(prev || []),
+          ...newFiles,
+        ]
+      );
+    } else {
+      setUploadedFiles([]);
     }
   };
 
   const handleDeleteFile = (id: string) => {
-    setUploadedFiles((prev) => prev.filter((file) => file.id !== id));
-    setLoading(false);
+    if (!setUploadedFiles) return;
+    setUploadedFiles(
+      (prev: { id: string; name: string; file: File }[] | null) =>
+        (prev || []).filter((file) => file.id !== id)
+    );
   };
 
   type FlagAppearance =
@@ -198,16 +219,18 @@ export const ListModal = (props: IListModalProps) => {
     }
 
     try {
-      for (const fileData of uploadedFiles) {
-        await saveDocument(
-          businessUnitPublicCode,
-          "9ccff734-7df7-46e6-9ea8-f03f9570ab62",
-          fileData.name.split(".").slice(0, -1).join("."),
-          fileData.file
-        );
+      if (uploadedFiles) {
+        for (const fileData of uploadedFiles) {
+          await saveDocument(
+            businessUnitPublicCode,
+            "9ccff734-7df7-46e6-9ea8-f03f9570ab62",
+            fileData.name.split(".").slice(0, -1).join("."),
+            fileData.file
+          );
+        }
       }
 
-      setUploadedFiles([]);
+      setUploadedFiles?.([]);
       handleClose();
       handleFlag(
         optionFlags.title,
@@ -237,6 +260,13 @@ export const ListModal = (props: IListModalProps) => {
     } catch (error) {
       console.error("Error obteniendo el documento:", error);
     }
+  };
+
+  const isDisabled = () => {
+    if (onlyDocumentReceived) {
+      return uploadedFiles?.length !== 1;
+    }
+    return !uploadedFiles?.length || uploadedFiles.length < 1;
   };
 
   return createPortal(
@@ -295,10 +325,10 @@ export const ListModal = (props: IListModalProps) => {
               style={{ display: "none" }}
               onChange={handleFileChange}
               accept=".pdf,.jpg,.png"
-              multiple
+              multiple={uploadMode === "local" ? false : true}
             />
             <Stack justifyContent="flex-end" margin="16px 0 0 0" gap="16px">
-              <Button onClick={handleUpload} disabled={loading ? false : true}>
+              <Button onClick={handleUpload} disabled={isDisabled()}>
                 {buttonLabel}
               </Button>
             </Stack>

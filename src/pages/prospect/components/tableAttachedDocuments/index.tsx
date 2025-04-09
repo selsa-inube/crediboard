@@ -14,7 +14,14 @@ import {
   Thead,
   Tr,
 } from "@inubekit/table";
-import { Icon, Text, SkeletonLine, SkeletonIcon } from "@inubekit/inubekit";
+import {
+  Icon,
+  Text,
+  SkeletonLine,
+  SkeletonIcon,
+  useFlag,
+  Tag,
+} from "@inubekit/inubekit";
 
 import { get } from "@mocks/utils/dataMock.service";
 import { mockAttachedDocuments } from "@mocks/filing-application/attached-documents/attacheddocuments.mock";
@@ -47,6 +54,10 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
   const [attachedDocuements, setAttachedDocuements] = useState(
     mockAttachedDocuments
   );
+  const [currentRowId, setCurrentRowId] = useState<string | null>(null);
+  const [uploadedFilesByRow, setUploadedFilesByRow] = useState<{
+    [key: string]: { id: string; name: string; file: File }[];
+  }>({});
 
   useEffect(() => {
     get("attached_documents")
@@ -73,6 +84,58 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
         ["borrower", "attach", "download", "remove"].includes(header.key)
       )
     : headers;
+
+  const { addFlag } = useFlag();
+
+  const handleFlag = () => {
+    addFlag({
+      title: "Eliminar",
+      description: "Se ha elimindado el archivo",
+      appearance: "success",
+      duration: 5000,
+    });
+  };
+
+  const handleOpenAttachment = (rowId: string) => {
+    setCurrentRowId(rowId);
+    setShowAttachments(true);
+  };
+
+  const handleSetUploadedFiles = (
+    files: { id: string; name: string; file: File }[] | null
+  ) => {
+    if (currentRowId) {
+      setUploadedFilesByRow((prev) => ({
+        ...prev,
+        [currentRowId]: files || [],
+      }));
+    }
+  };
+
+  const handleDownloadFile = (rowId: string) => {
+    const files = uploadedFilesByRow[rowId];
+    if (!files || files.length === 0) return;
+
+    files.forEach((fileData) => {
+      const url = URL.createObjectURL(fileData.file);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileData.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    });
+  };
+
+  const handleRemoveAllFiles = (rowId: string) => {
+    setUploadedFilesByRow((prev) => {
+      const updated = { ...prev };
+      delete updated[rowId];
+      handleFlag();
+      return updated;
+    });
+  };
 
   return (
     <Table tableLayout="auto">
@@ -138,23 +201,43 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
                           : "left"
                       }
                     >
-                      {header.key === "attach" ? (
-                        <Icon
-                          icon={<MdAttachFile />}
-                          appearance="dark"
-                          size="16px"
-                          cursorHover
-                          onClick={() => setShowAttachments(true)}
-                        />
-                      ) : (
-                        cellData
-                      )}
+                      {(() => {
+                        if (header.key === "attach") {
+                          return (
+                            <Icon
+                              icon={<MdAttachFile />}
+                              appearance="dark"
+                              size="16px"
+                              cursorHover
+                              onClick={() =>
+                                handleOpenAttachment(rowIndex.toString())
+                              }
+                            />
+                          );
+                        }
+                        if (header.key === "attached") {
+                          if (
+                            uploadedFilesByRow[rowIndex.toString()]?.length > 0
+                          ) {
+                            return <Tag label="Adjunto" appearance="success" />;
+                          }
+                          return <Tag label="No adjunto" appearance="danger" />;
+                        }
+                        return cellData;
+                      })()}
                       {header.key === "download" && (
                         <Icon
                           icon={<MdOutlineFileDownload />}
                           appearance="dark"
                           size="16px"
                           cursorHover
+                          disabled={
+                            !uploadedFilesByRow[rowIndex.toString()] ||
+                            uploadedFilesByRow[rowIndex.toString()].length === 0
+                          }
+                          onClick={() =>
+                            handleDownloadFile(rowIndex.toString())
+                          }
                         />
                       )}
                       {header.key === "remove" && (
@@ -163,6 +246,13 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
                           appearance="danger"
                           size="16px"
                           cursorHover
+                          disabled={
+                            !uploadedFilesByRow[rowIndex.toString()] ||
+                            uploadedFilesByRow[rowIndex.toString()].length === 0
+                          }
+                          onClick={() =>
+                            handleRemoveAllFiles(rowIndex.toString())
+                          }
                         />
                       )}
                     </Td>
@@ -197,7 +287,11 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
           optionButtons={optionButtons}
           buttonLabel="Guardar"
           uploadMode="local"
-          //id={id!}
+          uploadedFiles={
+            currentRowId ? uploadedFilesByRow[currentRowId] || [] : []
+          }
+          setUploadedFiles={handleSetUploadedFiles}
+          onlyDocumentReceived={true}
         />
       )}
     </Table>
