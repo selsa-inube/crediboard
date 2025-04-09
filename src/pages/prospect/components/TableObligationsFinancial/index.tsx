@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import localforage from "localforage";
-import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
+import {
+  MdAdd,
+  MdCached,
+  MdDeleteOutline,
+  MdOutlineEdit,
+} from "react-icons/md";
 import {
   Pagination,
   Table,
@@ -18,6 +23,7 @@ import {
   Text,
   SkeletonLine,
   SkeletonIcon,
+  Button,
 } from "@inubekit/inubekit";
 
 import { EditFinancialObligationModal } from "@components/modals/editFinancialObligationModal";
@@ -133,6 +139,12 @@ export function TableFinancialObligations(
 
   return (
     <>
+      <Stack gap="16px" justifyContent="end">
+        <Button iconAfter={<MdCached />} variant="outlined">
+          {dataReport.restore}
+        </Button>
+        <Button iconAfter={<MdAdd />}>{dataReport.addObligations}</Button>
+      </Stack>
       <Table tableLayout="auto">
         <Thead>
           <Tr>

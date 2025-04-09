@@ -41,6 +41,7 @@ export interface IPropertyOffered {
   description: string;
 }
 export interface IBorrowerData {
+  borrowers: Record<string, never>;
   initialBorrowers: {
     id: string;
     name: string;
@@ -174,6 +175,12 @@ export interface IOptionsSelect {
 export interface ICondition {
   condition: string;
   value: string | number;
+}
+
+export interface IDocumentUpload {
+  id: string;
+  name: string;
+  file: File;
 }
 
 export interface Irule {

@@ -120,7 +120,16 @@ export function DisbursementWithInternalAccount(
           onChange={(e) => {
             handleChangeWithCurrency(formik, e, optionNameForm);
           }}
-          onBlur={formik.handleBlur}
+          onBlur={() => {
+            formik.setFieldTouched(`${optionNameForm}.amount`, true);
+            formik.handleBlur(`amount`);
+          }}
+          status={
+            formik.touched[optionNameForm]?.amount && !isDisabled
+              ? "invalid"
+              : undefined
+          }
+          message={`${disbursemenOptionAccount.valueTurnFail}${initialValues.amount}`}
           fullwidth
         />
         <Stack gap="10px" direction="row" alignItems="center">

@@ -51,26 +51,6 @@ export function SubmitCreditApplication() {
 
   const [valueRule, setValueRule] = useState<string[] | null>(null);
 
-  const steps = useMemo(() => {
-    if (!valueRule) return Object.values(stepsFilingApplication);
-    const hideMortgage = !valueRule.includes("Hipoteca");
-    const hidePledge = !valueRule.includes("Prenda");
-
-    return Object.values(stepsFilingApplication).filter((step) => {
-      if (step.id === 4 && hideMortgage) return false;
-      if (step.id === 5 && hidePledge) return false;
-      return true;
-    });
-  }, [valueRule]);
-
-  const [currentStep, setCurrentStep] = useState<number>(steps[0]?.id || 1);
-
-  useEffect(() => {
-    if (steps.length > 0) {
-      setCurrentStep(steps[0].id);
-    }
-  }, [steps]);
-
   const [formData, setFormData] = useState<FormData>({
     contactInformation: {
       document: "",
@@ -81,6 +61,7 @@ export function SubmitCreditApplication() {
       phone: "",
     },
     borrowerData: {
+      borrowers: {},
       initialBorrowers: {
         id: "",
         name: "",
@@ -197,9 +178,25 @@ export function SubmitCreditApplication() {
     },
   });
 
-  // const hasBorrowers = Object.keys(
-  //   formData.borrowerData.initialBorrowers
-  // ).length;
+  const hasBorrowers = Object.keys(formData.borrowerData.borrowers).length;
+  const bondValue = prospectData.bond_value;
+
+  const steps = useMemo(() => {
+    if (!valueRule) return Object.values(stepsFilingApplication);
+    const hideMortgage = !valueRule.includes("Hipoteca");
+    const hidePledge = !valueRule.includes("Prenda");
+
+    return Object.values(stepsFilingApplication).filter((step) => {
+      if (step.id === 4 && hideMortgage) return false;
+      if (step.id === 5 && hidePledge) return false;
+      if (step.id === 6 && (hasBorrowers >= 1 || bondValue === 0)) {
+        return false;
+      }
+      return true;
+    });
+  }, [valueRule, hasBorrowers, bondValue]);
+
+  const [currentStep, setCurrentStep] = useState<number>(steps[0]?.id || 1);
 
   const {
     contactInformation,
@@ -283,8 +280,12 @@ export function SubmitCreditApplication() {
         submitData
       );
       console.log("Solicitud enviada con éxito:", response);
+
+      setSentModal(false);
+      setApprovedRequestModal(true);
     } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
+      setSentModal(false);
+      handleFlag();
     }
   };
 
@@ -393,17 +394,7 @@ export function SubmitCreditApplication() {
   };
 
   function handleSubmitClick() {
-    handleSubmit();
     setSentModal(true);
-  }
-
-  function handleSendModal() {
-    try {
-      setSentModal(false);
-      setApprovedRequestModal(true);
-    } catch (error) {
-      handleFlag();
-    }
   }
 
   const currentStepIndex = steps.findIndex((step) => step.id === currentStep);
@@ -433,7 +424,7 @@ export function SubmitCreditApplication() {
         setCurrentStep={setCurrentStep}
         currentStepsNumber={currentStepsNumber}
         handleSubmitClick={handleSubmitClick}
-        handleSendModal={handleSendModal}
+        handleSubmit={handleSubmit}
         isMobile={isMobile}
         data={prospectData}
         customerData={customerData}

@@ -68,6 +68,10 @@ export const FinancialReporting = () => {
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
   const [errors, setError] = useState<Ierror_issued[]>([]);
 
+  const [uploadedFiles, setUploadedFiles] = useState<
+    { id: string; name: string; file: File }[]
+  >([]);
+
   const { id } = useParams();
   const { user } = useAuth0();
 
@@ -308,6 +312,8 @@ export const FinancialReporting = () => {
                 buttonLabel="Guardar"
                 id={id!}
                 isViewing={false}
+                uploadedFiles={uploadedFiles}
+                setUploadedFiles={setUploadedFiles}
               />
             )}
             {attachDocuments && (
