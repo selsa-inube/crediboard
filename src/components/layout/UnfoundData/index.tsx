@@ -10,7 +10,7 @@ interface UnfoundDataProps {
   buttonDescription: string;
   image?: string;
   onRetry?: () => void;
-  route: string;
+  route?: string;
 }
 
 function UnfoundData(props: UnfoundDataProps) {
@@ -38,7 +38,7 @@ function UnfoundData(props: UnfoundDataProps) {
           {title}
         </Text>
 
-        <Text  size="large" appearance="gray" textAlign="start">
+        <Text size="large" appearance="gray" textAlign="start">
           {description}
         </Text>
 

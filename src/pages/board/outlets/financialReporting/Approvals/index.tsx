@@ -24,7 +24,7 @@ import {
 } from "@config/pages/board/outlet/financialReporting/configApprovals";
 import { AppContext } from "@context/AppContext";
 
-import { errorObserver } from "../config";
+import { errorObserver, errorMessages } from "../config";
 interface IApprovalsProps {
   user: string;
   isMobile: boolean;
@@ -137,13 +137,12 @@ export const Approvals = (props: IApprovalsProps) => {
   return (
     <>
       <Fieldset title="Aprobaciones" heightFieldset="100%" hasTable>
-        {error ? (
+        {!requests || error ? (
           <ItemNotFound
             image={userNotFound}
-            title="Error al cargar datos"
-            description={error}
-            buttonDescription="Volver a intentar"
-            route="/retry-path"
+            title={errorMessages.approval.title}
+            description={errorMessages.approval.description}
+            buttonDescription={errorMessages.approval.button}
             onRetry={handleRetry}
           />
         ) : (

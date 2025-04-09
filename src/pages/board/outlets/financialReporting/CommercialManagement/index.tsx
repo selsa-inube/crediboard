@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   MdOutlineAdd,
   MdOutlineChevronRight,
@@ -38,8 +38,11 @@ import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequest
 import { getModeOfDisbursement } from "@services/creditRequets/getModeOfDisbursement";
 import { AppContext } from "@context/AppContext";
 import { dataTabsDisbursement } from "@components/modals/DisbursementModal/types";
+import { ItemNotFound } from "@components/layout/ItemNotFound";
+import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { menuOptions, tittleOptions } from "./config/config";
+import { errorMessages } from "../config";
 import {
   StyledCollapseIcon,
   StyledFieldset,
@@ -76,6 +79,8 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const [requests, setRequests] = useState<ICreditRequest | null>(null);
 
   const { prospectCode } = useParams();
+
+  const navigation = useNavigate();
 
   const isMobile = useMediaQuery("(max-width: 720px)");
 
@@ -200,307 +205,322 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   };
 
   return (
-    <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
-      <StyledFieldset>
-        <Stack direction="column" gap="6px">
-          <Stack justifyContent="space-between" alignItems="center">
-            <Stack direction="column">
-              <Stack>
-                <Stack gap="6px" width="max-content">
-                  <Text type="title" size="small" appearance="gray">
-                    {tittleOptions.titleCreditId}
-                  </Text>
-                  <Text type="title" size="small">
-                    {data.creditRequestCode}
-                  </Text>
-                  <Text
-                    type="title"
-                    size="small"
-                    appearance="gray"
-                    padding={`0px 0px 0px 8px`}
+    <>
+      <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
+        {!data ? (
+          <ItemNotFound
+            image={userNotFound}
+            title={errorMessages.comercialManagement.title}
+            description={errorMessages.comercialManagement.description}
+            buttonDescription={errorMessages.comercialManagement.button}
+            onRetry={() => navigation(-2)}
+          />
+        ) : (
+          <StyledFieldset>
+            <Stack direction="column" gap="6px">
+              <Stack justifyContent="space-between" alignItems="center">
+                <Stack direction="column">
+                  <Stack>
+                    <Stack gap="6px" width="max-content">
+                      <Text type="title" size="small" appearance="gray">
+                        {tittleOptions.titleCreditId}
+                      </Text>
+                      <Text type="title" size="small">
+                        {data.creditRequestCode}
+                      </Text>
+                      <Text
+                        type="title"
+                        size="small"
+                        appearance="gray"
+                        padding={`0px 0px 0px 8px`}
+                      >
+                        {formatPrimaryDate(
+                          new Date(data.creditRequestDateOfCreation)
+                        )}
+                      </Text>
+                    </Stack>
+                  </Stack>
+                  {isMobile && (
+                    <Stack margin="4px 0px">
+                      <Text type="title" size={!isMobile ? "large" : "medium"}>
+                        {data.clientName &&
+                          capitalizeFirstLetterEachWord(
+                            truncateTextToMaxLength(data.clientName)
+                          )}
+                      </Text>
+                    </Stack>
+                  )}
+                  <Stack gap={!isMobile ? "4px" : "4px"}>
+                    <Text type="title" size="small" appearance="gray">
+                      {tittleOptions.titleDestination}
+                    </Text>
+                    <Text type="title" size="small">
+                      {data.clientName &&
+                        capitalizeFirstLetter(
+                          truncateTextToMaxLength(data.moneyDestinationId, 60)
+                        )}
+                    </Text>
+                  </Stack>
+                  <Stack gap="4px">
+                    <Text type="title" size="small" appearance="gray">
+                      {tittleOptions.tittleAmount}
+                    </Text>
+                    <Text type="title" size="small">
+                      {data.loanAmount === 0
+                        ? "$ 0"
+                        : currencyFormat(data.loanAmount)}
+                    </Text>
+                  </Stack>
+                </Stack>
+
+                {!isMobile && (
+                  <Stack gap="36px">
+                    <Text type="title">
+                      {data.clientName &&
+                        capitalizeFirstLetterEachWord(
+                          truncateTextToMaxLength(data.clientName)
+                        )}
+                    </Text>
+                  </Stack>
+                )}
+                <Stack gap="2px">
+                  {!isMobile && (
+                    <>
+                      <StyledPrint>
+                        <Stack gap="16px">
+                          <Button
+                            type="link"
+                            spacing="compact"
+                            path={`/extended-card/${id}/credit-profile`}
+                          >
+                            {tittleOptions.titleProfile}
+                          </Button>
+                          <Button
+                            type="button"
+                            spacing="compact"
+                            variant="outlined"
+                            onClick={() => {
+                              handleDisbursement();
+                              handleOpenModal("disbursementModal");
+                            }}
+                          >
+                            {tittleOptions.titleDisbursement}
+                          </Button>
+                        </Stack>
+                      </StyledPrint>
+                      <StyledVerticalDivider />
+                      <StyledPrint>
+                        <Icon
+                          icon={<MdOutlinePhone />}
+                          appearance="primary"
+                          size="24px"
+                          cursorHover
+                        />
+                      </StyledPrint>
+                      <StyledPrint>
+                        <Icon
+                          icon={<MdOutlineVideocam />}
+                          appearance="primary"
+                          size="24px"
+                          cursorHover
+                        />
+                      </StyledPrint>
+                      <StyledVerticalDivider />
+                    </>
+                  )}
+                  <StyledCollapseIcon
+                    $collapse={collapse}
+                    onClick={handleCollapse}
                   >
-                    {formatPrimaryDate(
-                      new Date(data.creditRequestDateOfCreation)
-                    )}
-                  </Text>
+                    <StyledPrint>
+                      <Icon
+                        icon={<MdOutlineChevronRight />}
+                        appearance="primary"
+                        size={isMobile ? "32px" : "24px"}
+                        cursorHover
+                      />
+                    </StyledPrint>
+                  </StyledCollapseIcon>
                 </Stack>
               </Stack>
               {isMobile && (
-                <Stack margin="4px 0px">
-                  <Text type="title" size={!isMobile ? "large" : "medium"}>
-                    {data.clientName &&
-                      capitalizeFirstLetterEachWord(
-                        truncateTextToMaxLength(data.clientName)
-                      )}
-                  </Text>
-                </Stack>
-              )}
-              <Stack gap={!isMobile ? "4px" : "4px"}>
-                <Text type="title" size="small" appearance="gray">
-                  {tittleOptions.titleDestination}
-                </Text>
-                <Text type="title" size="small">
-                  {data.clientName &&
-                    capitalizeFirstLetter(
-                      truncateTextToMaxLength(data.moneyDestinationId, 60)
-                    )}
-                </Text>
-              </Stack>
-              <Stack gap="4px">
-                <Text type="title" size="small" appearance="gray">
-                  {tittleOptions.tittleAmount}
-                </Text>
-                <Text type="title" size="small">
-                  {data.loanAmount === 0
-                    ? "$ 0"
-                    : currencyFormat(data.loanAmount)}
-                </Text>
-              </Stack>
-            </Stack>
-
-            {!isMobile && (
-              <Stack gap="36px">
-                <Text type="title">
-                  {data.clientName &&
-                    capitalizeFirstLetterEachWord(
-                      truncateTextToMaxLength(data.clientName)
-                    )}
-                </Text>
-              </Stack>
-            )}
-            <Stack gap="2px">
-              {!isMobile && (
                 <>
                   <StyledPrint>
-                    <Stack gap="16px">
-                      <Button
-                        type="link"
-                        spacing="compact"
-                        path={`/extended-card/${id}/credit-profile`}
-                      >
-                        {tittleOptions.titleProfile}
-                      </Button>
-                      <Button
-                        type="button"
-                        spacing="compact"
-                        variant="outlined"
-                        onClick={() => {
-                          handleDisbursement();
-                          handleOpenModal("disbursementModal");
-                        }}
-                      >
-                        {tittleOptions.titleDisbursement}
-                      </Button>
-                    </Stack>
-                  </StyledPrint>
-                  <StyledVerticalDivider />
-                  <StyledPrint>
-                    <Icon
-                      icon={<MdOutlinePhone />}
-                      appearance="primary"
-                      size="24px"
-                      cursorHover
-                    />
+                    <Button
+                      type="link"
+                      spacing="compact"
+                      path={`/extended-card/${id}/credit-profile`}
+                      fullwidth
+                    >
+                      {tittleOptions.titleProfile}
+                    </Button>
                   </StyledPrint>
                   <StyledPrint>
-                    <Icon
-                      icon={<MdOutlineVideocam />}
-                      appearance="primary"
-                      size="24px"
-                      cursorHover
-                    />
-                  </StyledPrint>
-                  <StyledVerticalDivider />
-                </>
-              )}
-              <StyledCollapseIcon $collapse={collapse} onClick={handleCollapse}>
-                <StyledPrint>
-                  <Icon
-                    icon={<MdOutlineChevronRight />}
-                    appearance="primary"
-                    size={isMobile ? "32px" : "24px"}
-                    cursorHover
-                  />
-                </StyledPrint>
-              </StyledCollapseIcon>
-            </Stack>
-          </Stack>
-          {isMobile && (
-            <>
-              <StyledPrint>
-                <Button
-                  type="link"
-                  spacing="compact"
-                  path={`/extended-card/${id}/credit-profile`}
-                  fullwidth
-                >
-                  {tittleOptions.titleProfile}
-                </Button>
-              </StyledPrint>
-              <StyledPrint>
-                <Button
-                  type="button"
-                  spacing="compact"
-                  variant="outlined"
-                  onClick={() => {
-                    handleDisbursement();
-                    handleOpenModal("disbursementModal");
-                  }}
-                  fullwidth
-                >
-                  {tittleOptions.titleDisbursement}
-                </Button>
-              </StyledPrint>
-            </>
-          )}
-          {isMobile && (
-            <Stack gap="16px" padding="12px 0px 12px 0px">
-              {isMobile && (
-                <Button
-                  spacing="compact"
-                  variant="outlined"
-                  fullwidth
-                  iconBefore={<MdOutlinePhone />}
-                >
-                  {tittleOptions.titleCall}
-                </Button>
-              )}
-              {isMobile && (
-                <Button
-                  spacing="compact"
-                  variant="outlined"
-                  fullwidth
-                  iconBefore={<MdOutlineVideocam />}
-                >
-                  {tittleOptions.titleVideoCall}
-                </Button>
-              )}
-            </Stack>
-          )}
-          {collapse && <Divider />}
-          {collapse && (
-            <>
-              {isMobile && (
-                <Stack padding="10px 0px" width="100%">
-                  <Button
-                    type="button"
-                    appearance="primary"
-                    spacing="compact"
-                    fullwidth
-                    iconBefore={
-                      <Icon
-                        icon={<MdOutlineAdd />}
-                        appearance="light"
-                        size="18px"
-                        spacing="narrow"
-                      />
-                    }
-                  >
-                    {tittleOptions.titleAddProduct}
-                  </Button>
-                </Stack>
-              )}
-            </>
-          )}
-          {collapse && (
-            <>
-              {isMobile && (
-                <Stack padding="0px 0px 10px">
-                  {prospectProducts?.ordinary_installment_for_principal && (
                     <Button
                       type="button"
-                      appearance="primary"
+                      spacing="compact"
+                      variant="outlined"
+                      onClick={() => {
+                        handleDisbursement();
+                        handleOpenModal("disbursementModal");
+                      }}
+                      fullwidth
+                    >
+                      {tittleOptions.titleDisbursement}
+                    </Button>
+                  </StyledPrint>
+                </>
+              )}
+              {isMobile && (
+                <Stack gap="16px" padding="12px 0px 12px 0px">
+                  {isMobile && (
+                    <Button
                       spacing="compact"
                       variant="outlined"
                       fullwidth
-                      iconBefore={
-                        <Icon
-                          icon={<MdOutlinePayments />}
-                          appearance="primary"
-                          size="18px"
-                          spacing="narrow"
-                        />
-                      }
-                      onClick={() => handleOpenModal("extraPayments")}
+                      iconBefore={<MdOutlinePhone />}
                     >
-                      {tittleOptions.titleExtraPayments}
+                      {tittleOptions.titleCall}
+                    </Button>
+                  )}
+                  {isMobile && (
+                    <Button
+                      spacing="compact"
+                      variant="outlined"
+                      fullwidth
+                      iconBefore={<MdOutlineVideocam />}
+                    >
+                      {tittleOptions.titleVideoCall}
                     </Button>
                   )}
                 </Stack>
               )}
-            </>
-          )}
-          {collapse && (
-            <>
-              {isMobile && (
-                <Stack justifyContent="end">
-                  <StyledContainerIcon>
-                    <Icon
-                      icon={<MdOutlinePictureAsPdf />}
-                      appearance="primary"
-                      size="24px"
-                      disabled={isPrint}
-                      cursorHover
-                      onClick={print}
-                    />
-                    <Icon
-                      icon={<MdOutlineShare />}
-                      appearance="primary"
-                      size="24px"
-                      cursorHover
-                    />
-                    <Icon
-                      icon={<MdOutlineMoreVert />}
-                      appearance="primary"
-                      size="24px"
-                      cursorHover
-                      onClick={() => setShowMenu(!showMenu)}
-                    />
-                    {showMenu && (
-                      <MenuProspect
-                        options={menuOptions(
-                          handleOpenModal,
-                          !prospectProducts?.ordinary_installment_for_principal
-                        )}
-                        onMouseLeave={() => setShowMenu(false)}
-                      />
-                    )}
-                  </StyledContainerIcon>
-                </Stack>
+              {collapse && <Divider />}
+              {collapse && (
+                <>
+                  {isMobile && (
+                    <Stack padding="10px 0px" width="100%">
+                      <Button
+                        type="button"
+                        appearance="primary"
+                        spacing="compact"
+                        fullwidth
+                        iconBefore={
+                          <Icon
+                            icon={<MdOutlineAdd />}
+                            appearance="light"
+                            size="18px"
+                            spacing="narrow"
+                          />
+                        }
+                      >
+                        {tittleOptions.titleAddProduct}
+                      </Button>
+                    </Stack>
+                  )}
+                </>
               )}
-            </>
-          )}
-          {collapse && <Stack>{isMobile && <Divider />}</Stack>}
-          {collapse && (
-            <CreditProspect
-              isMobile={isMobile}
-              isPrint={isPrint}
-              showMenu={() => setShowMenu(false)}
-              showPrint
-            />
-          )}
-        </Stack>
-        {currentModal === "extraPayments" && (
-          <ExtraordinaryPaymentModal
-            dataTable={extraordinaryInstallmentMock}
-            handleClose={handleCloseModal}
-          />
+              {collapse && (
+                <>
+                  {isMobile && (
+                    <Stack padding="0px 0px 10px">
+                      {prospectProducts?.ordinary_installment_for_principal && (
+                        <Button
+                          type="button"
+                          appearance="primary"
+                          spacing="compact"
+                          variant="outlined"
+                          fullwidth
+                          iconBefore={
+                            <Icon
+                              icon={<MdOutlinePayments />}
+                              appearance="primary"
+                              size="18px"
+                              spacing="narrow"
+                            />
+                          }
+                          onClick={() => handleOpenModal("extraPayments")}
+                        >
+                          {tittleOptions.titleExtraPayments}
+                        </Button>
+                      )}
+                    </Stack>
+                  )}
+                </>
+              )}
+              {collapse && (
+                <>
+                  {isMobile && (
+                    <Stack justifyContent="end">
+                      <StyledContainerIcon>
+                        <Icon
+                          icon={<MdOutlinePictureAsPdf />}
+                          appearance="primary"
+                          size="24px"
+                          disabled={isPrint}
+                          cursorHover
+                          onClick={print}
+                        />
+                        <Icon
+                          icon={<MdOutlineShare />}
+                          appearance="primary"
+                          size="24px"
+                          cursorHover
+                        />
+                        <Icon
+                          icon={<MdOutlineMoreVert />}
+                          appearance="primary"
+                          size="24px"
+                          cursorHover
+                          onClick={() => setShowMenu(!showMenu)}
+                        />
+                        {showMenu && (
+                          <MenuProspect
+                            options={menuOptions(
+                              handleOpenModal,
+                              !prospectProducts?.ordinary_installment_for_principal
+                            )}
+                            onMouseLeave={() => setShowMenu(false)}
+                          />
+                        )}
+                      </StyledContainerIcon>
+                    </Stack>
+                  )}
+                </>
+              )}
+              {collapse && <Stack>{isMobile && <Divider />}</Stack>}
+              {collapse && (
+                <CreditProspect
+                  isMobile={isMobile}
+                  isPrint={isPrint}
+                  showMenu={() => setShowMenu(false)}
+                  showPrint
+                />
+              )}
+            </Stack>
+            {currentModal === "extraPayments" && (
+              <ExtraordinaryPaymentModal
+                dataTable={extraordinaryInstallmentMock}
+                handleClose={handleCloseModal}
+              />
+            )}
+            {currentModal === "disbursementModal" && (
+              <DisbursementModal
+                isMobile={isMobile}
+                handleClose={handleCloseModal}
+                loading={loading}
+                data={{
+                  internal: internal || dataDefault,
+                  external: external || dataDefault,
+                  CheckEntity: checkEntity || dataDefault,
+                  checkManagementData: checkManagement || dataDefault,
+                  cash: cash || dataDefault,
+                }}
+              />
+            )}
+          </StyledFieldset>
         )}
-        {currentModal === "disbursementModal" && (
-          <DisbursementModal
-            isMobile={isMobile}
-            handleClose={handleCloseModal}
-            loading={loading}
-            data={{
-              internal: internal || dataDefault,
-              external: external || dataDefault,
-              CheckEntity: checkEntity || dataDefault,
-              checkManagementData: checkManagement || dataDefault,
-              cash: cash || dataDefault,
-            }}
-          />
-        )}
-      </StyledFieldset>
-    </Fieldset>
+      </Fieldset>
+    </>
   );
 };

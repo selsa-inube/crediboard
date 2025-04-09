@@ -28,7 +28,7 @@ function LoginRoutes() {
       </Route>
       <Route path="error/not-available" element={<ErrorNotAvailable />} />
       <Route path="error/not-related-clients" element={<ErrorNotClient />} />
-      <Route path="/*" element={<ErrorPage />} />
+      <Route path="/*" element={<ErrorPage errorCode={404} />} />
     </Routes>
   );
 }

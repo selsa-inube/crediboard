@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { AppContext } from "@context/AppContext";
@@ -8,21 +8,35 @@ const useLogin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { eventData, setBusinessUnitsToTheStaff } = useContext(AppContext);
+  const [hasError, setHasError] = useState(false);
+  const [codeError, setCodeError] = useState<number>();
 
-  useEffect(() => {
-    if (eventData.portal.publicCode) {
-      validateBusinessUnits(
-        eventData.portal.publicCode,
-        eventData.user.userAccount
-      ).then((data) => {
-        setBusinessUnitsToTheStaff(data);
-      });
-    }
-  }, [
-    eventData.portal.publicCode,
-    eventData.user.userAccount,
-    setBusinessUnitsToTheStaff,
-  ]);
+  useEffect(
+    () => {
+      if (eventData.portal.publicCode) {
+        validateBusinessUnits(
+          eventData.portal.publicCode,
+          eventData.user.userAccount
+        ).then((data) => {
+          setBusinessUnitsToTheStaff(data);
+          if (!setBusinessUnitsToTheStaff) {
+            setHasError(true);
+            return;
+          }
+        });
+        if (hasError) {
+          setCodeError(1003);
+          return;
+        }
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      eventData.portal.publicCode,
+      eventData.user.userAccount,
+      setBusinessUnitsToTheStaff,
+    ]
+  );
 
   useEffect(() => {
     if (
@@ -34,7 +48,7 @@ const useLogin = () => {
     }
   }, [location, navigate, eventData.user.userAccount]);
 
-  return { eventData };
+  return { eventData, codeError, hasError };
 };
 
 export { useLogin };

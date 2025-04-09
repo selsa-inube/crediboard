@@ -9,7 +9,7 @@ interface ItemNotFoundProps {
   title: string;
   description: string;
   buttonDescription: string;
-  route: string;
+  route?: string;
   onRetry?: () => void;
 }
 
@@ -32,7 +32,7 @@ function ItemNotFound(props: ItemNotFoundProps) {
         $smallScreen={smallScreen}
       />
 
-      <Stack direction="column" gap="8px" alignItems="normal">
+      <Stack direction="column" gap="8px" alignItems="normal" width="100%">
         <Text type="title" size="large" appearance="primary">
           {title}
         </Text>
