@@ -146,3 +146,44 @@ export const optionFlags = {
   appearance: "success",
   appearanceError: "danger",
 };
+
+export const errorMessages = {
+  comercialManagement: {
+    title: "No se encontró la solicitud de crédito",
+    description:
+      "No hay datos relacionados a la solicitud de crédito seleccionada.",
+    button: "Volver a buscar",
+  },
+  toDo: {
+    title: "No se encontraron tareas",
+    description: "No hay tareas disponibles para mostrar en este momento.",
+    button: "Volver a intentar",
+  },
+  approval: {
+    title: "No se encontraron aprobaciones",
+    description:
+      "No se encontraron datos relacionados con la aprobación del crédito.",
+    button: "Volver a intentar",
+  },
+  Requirements: {
+    title: "No se encontraron requisitos",
+    description: "No hay requisitos disponibles para esta solicitud.",
+    button: "Volver a intentar",
+  },
+  Management: {
+    title: "No se encontró gestión",
+    description: "No se ha registrado gestión para esta solicitud.",
+    button: "Volver a intentar",
+  },
+  PromissoryNotes: {
+    title: "No se encontraron documentos de obligación",
+    description:
+      "No hay documentos disponibles relacionados con pagarés o libranzas.",
+    button: "Volver a intentar",
+  },
+  Postingvouchers: {
+    title: "No se encontraron comprobantes",
+    description: "No hay comprobantes contables asociados a esta solicitud.",
+    button: "Volver a intentar",
+  },
+};

@@ -149,7 +149,7 @@ function ErrorPage(props: ErrorPageProps) {
       </StyledMainContent>
       <StyledFooter>
         <Text appearance="gray" textAlign="center" size="small" weight="bold">
-          © 2024 Inube
+          © 2025 Inube
         </Text>
       </StyledFooter>
     </StyledContainer>

@@ -1,6 +1,7 @@
-import { LoadingAppUI } from "./interface";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+
+import { LoadingAppUI } from "./interface";
 
 function LoadingApp() {
   const navigate = useNavigate();
