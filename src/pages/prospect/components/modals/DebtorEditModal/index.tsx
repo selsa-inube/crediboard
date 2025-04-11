@@ -101,20 +101,28 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
     original: BorrowerProperty[],
     updates: BorrowerProperty[]
   ): BorrowerProperty[] => {
-    const map = new Map<string, string>();
+    const result: BorrowerProperty[] = [];
 
-    original.forEach(({ property_name, property_value }) => {
-      map.set(property_name, property_value);
+    const duplicates = ["FinancialObligation"]; 
+    const seen = new Map<string, BorrowerProperty>();
+
+    original.forEach((prop) => {
+      if (duplicates.includes(prop.property_name)) {
+        result.push(prop);
+      } else {
+        seen.set(prop.property_name, prop);
+      }
     });
 
-    updates.forEach(({ property_name, property_value }) => {
-      map.set(property_name, property_value);
+    updates.forEach((prop) => {
+      if (duplicates.includes(prop.property_name)) {
+        result.push(prop); 
+      } else {
+        seen.set(prop.property_name, prop);
+      }
     });
 
-    return Array.from(map.entries()).map(([property_name, property_value]) => ({
-      property_name,
-      property_value,
-    }));
+    return [...result, ...Array.from(seen.values())];
   };
 
   const handleSave = () => {
