@@ -21,7 +21,6 @@
     "@inubekit/button": "^4.19.0",
     "@inubekit/checkbox": "^0.2.2",
     "@inubekit/datefield": "^2.39.0",
-    "@inubekit/flag": "^7.6.0",
     "@inubekit/header": "^2.36.0",
     "@inubekit/inubekit": "^1.2.0",
     "@inubekit/label": "^2.7.0",
