@@ -44,7 +44,13 @@ interface Borrower {
 export function Borrowers(props: borrowersProps) {
   const { handleOnChange, initialValues, isMobile, data } = props;
 
-  const dataDebtorDetail = Array.isArray(data.borrowers) ? data.borrowers : [];
+  const dataDebtorDetail = Array.isArray(data.borrowers)
+    ? [...data.borrowers].sort((a, b) => {
+        if (a.borrower_type === "main_borrower") return -1;
+        if (b.borrower_type === "main_borrower") return 1;
+        return 0;
+      })
+    : [];
 
   const formik = useFormik<{
     borrowers: Borrower[];

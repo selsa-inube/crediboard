@@ -1,15 +1,16 @@
-import { IIncome } from "@services/types";
+import { IIncomeSources } from "@services/incomeSources/types";
 
-export const income: IIncome[] = [
-  {
-    borrowers: [
-      { id: "1", label: "Maria Lopez", value: "Maria Lopez" },
-      { id: "2", label: "Alfonso Gomez", value: "Alfonso Gomez" },
-    ],
-    borrower_id: "100",
-    borrower: "Maria Lopez",
-    capital: ["60000", "150000", "0"],
-    employment: ["1800000", "0", "0"],
-    businesses: ["2300000", "0"],
-  },
-];
+export const income: IIncomeSources = {
+  Dividends: 1500000,
+  FinancialIncome: 0,
+  identificationNumber: "100222365",
+  identificationType: "Cedula",
+  Leases: 6000000,
+  name: "Maria",
+  OtherNonSalaryEmoluments: 0,
+  PensionAllowances: 0,
+  PeriodicSalary: 1800000,
+  PersonalBusinessUtilities: 0,
+  ProfessionalFees: 2300000,
+  surname: "Lopez",
+};

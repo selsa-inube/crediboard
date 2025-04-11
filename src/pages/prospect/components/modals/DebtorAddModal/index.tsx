@@ -78,6 +78,26 @@ export function DebtorAddModal(props: DebtorAddModalProps) {
           ["name", "surname", "identificationNumber", "identificationType"]
         );
         setIncomeData(formattedData);
+
+        setFormData((prev) => ({
+          ...prev,
+          personalInfo: {
+            ...prev.personalInfo,
+            tipeOfDocument:
+              formattedData?.identificationType ||
+              prev.personalInfo.tipeOfDocument,
+            documentNumber:
+              formattedData?.identificationNumber ||
+              prev.personalInfo.documentNumber,
+            firstName: formattedData?.name || prev.personalInfo.firstName,
+            lastName: formattedData?.surname || prev.personalInfo.lastName,
+            email: prev.personalInfo.email,
+            phone: prev.personalInfo.phone,
+            sex: prev.personalInfo.sex,
+            age: prev.personalInfo.age,
+            relation: prev.personalInfo.relation,
+          },
+        }));
       } catch (error) {
         handleFlag(error);
       }

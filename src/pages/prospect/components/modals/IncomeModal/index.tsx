@@ -3,6 +3,7 @@ import { useFlag } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
+import { income } from "@mocks/add-prospect/income/income.mock";
 
 import { dataIncomeModal } from "./config";
 
@@ -43,6 +44,7 @@ export function IncomeModal(props: IncomeModalProps) {
         ShowSupport={false}
         disabled={disabled}
         openModal={openModal}
+        data={income}
       />
     </BaseModal>
   );
