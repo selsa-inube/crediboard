@@ -16,6 +16,9 @@ export interface ICustomerData {
     affiliateSeniorityDate: string;
     partnerStatus: string;
   }[];
+  generalAssociateAttributes: {
+    affiliateSeniorityDate: string;
+  }[];
 }
 
 export interface ICustomerContext {

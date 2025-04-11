@@ -40,6 +40,11 @@ export function CustomerContextProvider({
         partnerStatus: "",
       },
     ],
+    generalAssociateAttributes: [
+      {
+        affiliateSeniorityDate: "",
+      },
+    ],
   });
 
   const { businessUnitSigla } = useContext(AppContext);
