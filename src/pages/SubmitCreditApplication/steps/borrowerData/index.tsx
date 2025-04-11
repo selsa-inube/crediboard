@@ -18,23 +18,37 @@ import { choiceBorrowers } from "@mocks/filing-application/choice-borrowers/choi
 import { currencyFormat } from "@utils/formatData/currency";
 
 import { getPropertyValue, getTotalFinancialObligations } from "../../util";
+import { BorrowerProperty } from "@services/incomeSources/types";
+import { IBorrowerData } from "@pages/SubmitCreditApplication/types";
 
 interface borrowersProps {
-  isMobile: boolean;
   onFormValid: (isValid: boolean) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  initialValues: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnChange: (values: any) => void;
+  onUpdate?: (updatedBorrower: Borrower) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
+  initialValues: IBorrowerData;
+  isMobile: boolean;
+}
+
+interface Borrower {
+  borrower_identification_number: string;
+  borrower_identification_type: string;
+  borrower_name: string;
+  borrower_type: string;
+  borrower_properties: {
+    [key: string]: BorrowerProperty;
+  };
 }
 export function Borrowers(props: borrowersProps) {
   const { handleOnChange, initialValues, isMobile, data } = props;
 
   const dataDebtorDetail = Array.isArray(data.borrowers) ? data.borrowers : [];
 
-  const formik = useFormik({
+  const formik = useFormik<{
+    borrowers: Borrower[];
+  }>({
     initialValues: { ...initialValues, borrowers: dataDebtorDetail },
     validateOnMount: true,
     onSubmit: () => {},
@@ -47,6 +61,7 @@ export function Borrowers(props: borrowersProps) {
   const [isModalAdd, setIsModalAdd] = useState(false);
   const [isModalView, setIsModalView] = useState(false);
   const [isModalEdit, setIsModalEdit] = useState(false);
+  const [editIndex, setEditIndex] = useState<number | null>(null);
   const [isModalDelete, setIsModalDelete] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [selectedBorrower, setSelectedBorrower] = useState<any>(null);
@@ -77,38 +92,52 @@ export function Borrowers(props: borrowersProps) {
           autoRows="auto"
           gap="20px"
         >
-          {dataDebtorDetail.map(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (item: any, index: number) => (
-              <CardBorrower
-                key={index}
-                title={dataOption.borrowerLabel + ` ${index + 1}`}
-                name={getPropertyValue(item.borrower_properties, "name")}
-                lastName={getPropertyValue(item.borrower_properties, "surname")}
-                email={
-                  getPropertyValue(item.borrower_properties, "email") || ""
-                }
-                income={currencyFormat(
-                  getPropertyValue(item.borrower_properties, "PeriodicSalary"),
-                  false
-                )}
-                obligations={currencyFormat(
-                  getTotalFinancialObligations(item.borrower_properties),
-                  false
-                )}
-                handleView={() => {
-                  setSelectedBorrower(item);
-                  setIsModalView(true);
-                }}
-                isMobile={isMobile}
-                handleEdit={() => {
-                  setSelectedBorrower(item);
-                  setIsModalEdit(true);
-                }}
-                handleDelete={() => setIsModalDelete(true)}
-              />
-            )
-          )}
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          {formik.values.borrowers.map((item: any, index: number) => (
+            <CardBorrower
+              key={index}
+              title={dataOption.borrowerLabel + ` ${index + 1}`}
+              name={getPropertyValue(item.borrower_properties, "name")}
+              lastName={getPropertyValue(item.borrower_properties, "surname")}
+              email={getPropertyValue(item.borrower_properties, "email") || ""}
+              income={currencyFormat(
+                Number(
+                  getPropertyValue(
+                    item.borrower_properties,
+                    "PeriodicSalary"
+                  ) || 0
+                ) +
+                  Number(
+                    getPropertyValue(
+                      item.borrower_properties,
+                      "OtherNonSalaryEmoluments"
+                    ) || 0
+                  ) +
+                  Number(
+                    getPropertyValue(
+                      item.borrower_properties,
+                      "PensionAllowances"
+                    ) || 0
+                  ),
+                false
+              )}
+              obligations={currencyFormat(
+                getTotalFinancialObligations(item.borrower_properties),
+                false
+              )}
+              handleView={() => {
+                setSelectedBorrower(item);
+                setIsModalView(true);
+                setIsModalView(true);
+              }}
+              isMobile={isMobile}
+              handleEdit={() => {
+                setEditIndex(index);
+                setIsModalEdit(true);
+              }}
+              handleDelete={() => setIsModalDelete(true)}
+            />
+          ))}
           <NewCardBorrower
             onClick={() => setIsModalAdd(true)}
             title={dataOption.borrowerLabel}
@@ -123,7 +152,10 @@ export function Borrowers(props: borrowersProps) {
           )}
           {isModalView && selectedBorrower && (
             <DebtorDetailsModal
-              handleClose={() => setIsModalView(false)}
+              handleClose={() => {
+                setIsModalView(false);
+                setEditIndex(null);
+              }}
               isMobile={isMobile}
               initialValues={selectedBorrower}
             />
@@ -131,11 +163,25 @@ export function Borrowers(props: borrowersProps) {
           {isModalDelete && (
             <DeleteModal handleClose={() => setIsModalDelete(false)} />
           )}
-          {isModalEdit && selectedBorrower && (
+          {isModalEdit && editIndex !== null && (
             <DebtorEditModal
-              handleClose={() => setIsModalEdit(false)}
+              handleClose={() => {
+                setIsModalEdit(false);
+                setEditIndex(null);
+              }}
               isMobile={isMobile}
-              initialValues={selectedBorrower}
+              initialValues={{
+                ...formik.values.borrowers[editIndex],
+                borrower_properties: Object.values(
+                  formik.values.borrowers[editIndex].borrower_properties
+                ),
+              }}
+              onUpdate={(updatedBorrower: Borrower) => {
+                const updatedBorrowers = formik.values.borrowers.map((b, i) =>
+                  i === editIndex ? { ...b, ...updatedBorrower } : b
+                );
+                formik.setFieldValue("borrowers", updatedBorrowers);
+              }}
             />
           )}
         </Grid>

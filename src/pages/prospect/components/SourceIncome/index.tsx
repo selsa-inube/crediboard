@@ -21,7 +21,7 @@ import { dataReport } from "../TableObligationsFinancial/config";
 
 interface ISourceIncomeProps {
   openModal?: (state: boolean) => void;
-  onDataChange?: () => void;
+  onDataChange?: (newData: IIncomeSources) => void;
   ShowSupport?: boolean;
   disabled?: boolean;
   data?: IIncomeSources;
@@ -67,18 +67,18 @@ export function SourceIncome(props: ISourceIncomeProps) {
     borrower_id: data!.identificationNumber,
     borrower: `${data!.name} ${data!.surname}`,
     capital: [
-      (data!.leases || 0).toString(),
-      (data!.dividends ?? 0).toString(),
-      (data!.financialIncome ?? 0).toString(),
+      (data!.Leases || 0).toString(),
+      (data!.Dividends ?? 0).toString(),
+      (data!.FinancialIncome ?? 0).toString(),
     ],
     employment: [
-      (data!.periodicSalary ?? 0).toString(),
-      (data!.otherNonSalaryEmoluments ?? 0).toString(),
-      (data!.pensionAllowances ?? 0).toString(),
+      (data!.PeriodicSalary ?? 0).toString(),
+      (data!.OtherNonSalaryEmoluments ?? 0).toString(),
+      (data!.PensionAllowances ?? 0).toString(),
     ],
     businesses: [
-      (data!.professionalFees ?? 0).toString(),
-      (data!.personalBusinessUtilities ?? 0).toString(),
+      (data!.ProfessionalFees ?? 0).toString(),
+      (data!.PersonalBusinessUtilities ?? 0).toString(),
     ],
   };
 
@@ -112,22 +112,50 @@ export function SourceIncome(props: ISourceIncomeProps) {
     setIsOpenModal(false);
   };
 
+  function mapToIncomeSources(values: IIncome): IIncomeSources {
+    return {
+      identificationNumber: values.borrower_id,
+      identificationType: "",
+      name: values.borrower.split(" ")[0] || "",
+      surname: values.borrower.split(" ").slice(1).join(" ") || "",
+      Leases: parseCurrencyString(values.capital[0] || "0"),
+      Dividends: parseCurrencyString(values.capital[1] || "0"),
+      FinancialIncome: parseCurrencyString(values.capital[2] || "0"),
+      PeriodicSalary: parseCurrencyString(values.employment[0] || "0"),
+      OtherNonSalaryEmoluments: parseCurrencyString(
+        values.employment[1] || "0"
+      ),
+      PensionAllowances: parseCurrencyString(values.employment[2] || "0"),
+      ProfessionalFees: parseCurrencyString(values.businesses[0] || "0"),
+      PersonalBusinessUtilities: parseCurrencyString(
+        values.businesses[1] || "0"
+      ),
+    };
+  }
+
   const handleIncomeChange = (
     category: "employment" | "capital" | "businesses",
     index: number,
     newValue: string
   ) => {
-    setValues((prev) =>
-      prev
-        ? {
-            ...prev,
-            [category]: prev[category].map((val, i) =>
-              i === index ? newValue : val
-            ),
-          }
-        : null
-    );
-    onDataChange?.();
+    const cleanedValue = parseCurrencyString(newValue);
+    const cleanedString = cleanedValue.toString(); 
+
+    setValues((prev) => {
+      if (!prev) return null;
+
+      const updated = {
+        ...prev,
+        [category]: prev[category].map((val, i) =>
+          i === index ? cleanedString : val
+        ),
+      };
+
+      const mappedBack: IIncomeSources = mapToIncomeSources(updated);
+      onDataChange?.(mappedBack);
+
+      return updated;
+    });
   };
 
   return (

@@ -1,14 +1,27 @@
 export interface IIncomeSources {
-  dividends: number;
-  financialIncome: number;
+  Dividends: number;
+  FinancialIncome: number;
   identificationNumber: string;
   identificationType: string;
-  leases: number;
+  Leases: number;
   name: string;
-  otherNonSalaryEmoluments: number;
-  pensionAllowances: number;
-  periodicSalary: number;
-  personalBusinessUtilities: number;
-  professionalFees: number;
+  OtherNonSalaryEmoluments: number;
+  PensionAllowances: number;
+  PeriodicSalary: number;
+  PersonalBusinessUtilities: number;
+  ProfessionalFees: number;
   surname: string;
+}
+
+export interface BorrowerProperty {
+  property_name: string;
+  property_value: string;
+}
+
+export interface IIncomeInitial {
+  borrower_identification_number: string;
+  borrower_identification_type: string;
+  borrower_name: string;
+  borrower_properties: BorrowerProperty[];
+  borrower_type: string;
 }

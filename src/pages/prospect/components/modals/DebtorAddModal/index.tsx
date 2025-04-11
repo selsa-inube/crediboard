@@ -50,20 +50,41 @@ export function DebtorAddModal(props: DebtorAddModalProps) {
 
   const debtorId = formData.personalInfo.documentNumber.toString();
 
+  function capitalizeKeysExceptSome<T>(
+    obj: Record<string, unknown>,
+    exclude: string[] = []
+  ): T {
+    const result: Record<string, unknown> = {};
+
+    for (const [key, value] of Object.entries(obj)) {
+      const newKey = exclude.includes(key)
+        ? key
+        : key.charAt(0).toUpperCase() + key.slice(1);
+
+      result[newKey] = value;
+    }
+
+    return result as unknown as T;
+  }
+
   useEffect(() => {
     if (!debtorId) return;
 
     const fetchIncomeData = async () => {
       try {
         const response = await getIncomeSourcesById(debtorId);
-        setIncomeData(response);
+        const formattedData = capitalizeKeysExceptSome<IIncomeSources>(
+          response as unknown as Record<string, unknown>,
+          ["name", "surname", "identificationNumber", "identificationType"]
+        );
+        setIncomeData(formattedData);
       } catch (error) {
         handleFlag(error);
       }
     };
 
     fetchIncomeData();
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debtorId]);
 
   const isMobile = useMediaQuery("(max-width:880px)");

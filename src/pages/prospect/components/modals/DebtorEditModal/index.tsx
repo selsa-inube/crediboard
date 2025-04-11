@@ -1,14 +1,16 @@
-import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Stack, useFlag } from "@inubekit/inubekit";
+import { useEffect, useState } from "react";
+import { Stack } from "@inubekit/inubekit";
 import { Tabs } from "@inubekit/tabs";
 
-import { AppContext } from "@context/AppContext";
 import { BaseModal } from "@components/modals/baseModal";
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
-import { IIncomeSources } from "@services/incomeSources/types";
-import { getSearchProspectById } from "@services/prospects";
+import {
+  BorrowerProperty,
+  IIncomeInitial,
+  IIncomeSources,
+} from "@services/incomeSources/types";
+import { getPropertyValue } from "@pages/SubmitCreditApplication/util";
 
 import { dataEditDebtor, dataTabs } from "./config";
 import { DataDebtor } from "./dataDebtor";
@@ -16,85 +18,128 @@ import { DataDebtor } from "./dataDebtor";
 interface IDebtorEditModalProps {
   handleClose: () => void;
   isMobile: boolean;
+  initialValues: IIncomeInitial;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  initialValues: any;
+  onUpdate?: any;
 }
 
 export function DebtorEditModal(props: IDebtorEditModalProps) {
-  const { handleClose, isMobile, initialValues } = props;
+  const { handleClose, isMobile, initialValues, onUpdate } = props;
   const [currentTab, setCurrentTab] = useState(dataTabs[0].id);
   const [incomeData, setIncomeData] = useState<IIncomeSources | undefined>(
     undefined
   );
+  const [editedIncomeData, setEditedIncomeData] =
+    useState<IIncomeSources | null>(null);
   const [isModified, setIsModified] = useState(false);
 
-  const { prospectCode } = useParams();
-  const { businessUnitSigla } = useContext(AppContext);
+  useEffect(() => {
+    if (initialValues) {
+      setIncomeData({
+        identificationNumber: initialValues.borrower_identification_number,
+        identificationType: initialValues.borrower_identification_type,
+        name: getPropertyValue(initialValues.borrower_properties, "name") || "",
+        surname:
+          getPropertyValue(initialValues.borrower_properties, "surname") || "",
+        Leases: parseFloat(
+          getPropertyValue(initialValues.borrower_properties, "Leases") || "0"
+        ),
+        Dividends: parseFloat(
+          getPropertyValue(initialValues.borrower_properties, "Dividends") ||
+            "0"
+        ),
+        FinancialIncome: parseFloat(
+          getPropertyValue(
+            initialValues.borrower_properties,
+            "FinancialIncome"
+          ) || "0"
+        ),
+        PeriodicSalary: parseFloat(
+          getPropertyValue(
+            initialValues.borrower_properties,
+            "PeriodicSalary"
+          ) || "0"
+        ),
+        OtherNonSalaryEmoluments: parseFloat(
+          getPropertyValue(
+            initialValues.borrower_properties,
+            "OtherNonSalaryEmoluments"
+          ) || "0"
+        ),
+        PensionAllowances: parseFloat(
+          getPropertyValue(
+            initialValues.borrower_properties,
+            "PensionAllowances"
+          ) || "0"
+        ),
+        PersonalBusinessUtilities: parseFloat(
+          getPropertyValue(
+            initialValues.borrower_properties,
+            "PersonalBusinessUtilities"
+          ) || "0"
+        ),
+        ProfessionalFees: parseFloat(
+          getPropertyValue(
+            initialValues.borrower_properties,
+            "ProfessionalFees"
+          ) || "0"
+        ),
+      });
+    }
+  }, [initialValues]);
 
-  const businessUnitPublicCode: string =
-    JSON.parse(businessUnitSigla).businessUnitPublicCode;
-
-  const { addFlag } = useFlag();
-
-  const handleFlag = (error: unknown) => {
-    addFlag({
-      title: "Error Fuentes de ingreso",
-      description: `Error al traer los datos: ${error}`,
-      appearance: "danger",
-      duration: 5000,
-    });
+  const convertToPropertyArray = (
+    income: IIncomeSources
+  ): BorrowerProperty[] => {
+    return Object.entries(income).map(([key, value]) => ({
+      property_name: key,
+      property_value: String(value),
+    }));
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const prospectData = await getSearchProspectById(
-          businessUnitPublicCode,
-          prospectCode || ""
-        );
-        const borrower = prospectData.borrowers.find(
-          (b) => b.borrower_type === "main_borrower"
-        );
+  const mergeProperties = (
+    original: BorrowerProperty[],
+    updates: BorrowerProperty[]
+  ): BorrowerProperty[] => {
+    const map = new Map<string, string>();
 
-        if (borrower) {
-          const getData = (name: string) =>
-            borrower.borrower_properties.find((p) => p.property_name === name)
-              ?.property_value;
+    original.forEach(({ property_name, property_value }) => {
+      map.set(property_name, property_value);
+    });
 
-          setIncomeData({
-            identificationNumber: borrower.borrower_identification_number,
-            identificationType: borrower.borrower_identification_type,
-            name: getData("name") || "",
-            surname: getData("surname") || "",
-            leases: parseFloat(getData("leases") || "0"),
-            dividends: parseFloat(getData("dividends") || "0"),
-            financialIncome: parseFloat(getData("financialIncome") || "0"),
-            periodicSalary: parseFloat(getData("PeriodicSalary") || "0"),
-            otherNonSalaryEmoluments: parseFloat(
-              getData("otherNonSalaryEmoluments") || "0"
-            ),
-            pensionAllowances: parseFloat(getData("pensionAllowances") || "0"),
-            personalBusinessUtilities: parseFloat(
-              getData("PersonalBusinessUtilities") || "0"
-            ),
-            professionalFees: parseFloat(getData("professionalFees") || "0"),
-          });
-        }
-      } catch (error) {
-        handleFlag(error);
-      }
+    updates.forEach(({ property_name, property_value }) => {
+      map.set(property_name, property_value);
+    });
+
+    return Array.from(map.entries()).map(([property_name, property_value]) => ({
+      property_name,
+      property_value,
+    }));
+  };
+
+  const handleSave = () => {
+    if (!initialValues || !incomeData) return;
+
+    const updatedProps = convertToPropertyArray(editedIncomeData ?? incomeData);
+
+    const updatedBorrower: IIncomeInitial = {
+      ...initialValues,
+      borrower_properties: mergeProperties(
+        initialValues.borrower_properties,
+        updatedProps
+      ),
     };
 
-    fetchData();
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    onUpdate?.(updatedBorrower);
+    handleClose();
+  };
 
   return (
     <BaseModal
       title={dataEditDebtor.title}
       nextButton={dataEditDebtor.save}
       backButton={dataEditDebtor.close}
-      handleNext={handleClose}
+      handleNext={handleSave}
       handleBack={handleClose}
       finalDivider={true}
       width={isMobile ? "290px" : "912px"}
@@ -109,11 +154,14 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
           onChange={setCurrentTab}
         />
         {currentTab === "data" && <DataDebtor data={initialValues} />}
-        {currentTab === "sources" && (
+        {currentTab === "sources" && incomeData && (
           <SourceIncome
             data={incomeData}
             showEdit={false}
-            onDataChange={() => setIsModified(true)}
+            onDataChange={(newIncome) => {
+              setIsModified(true);
+              setEditedIncomeData(newIncome);
+            }}
           />
         )}
         {currentTab === "obligations" && (
