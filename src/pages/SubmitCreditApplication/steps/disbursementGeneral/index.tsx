@@ -22,6 +22,7 @@ interface IDisbursementGeneralProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
   isSelected: string;
+  identificationNumber: string;
   onFormValid: (isValid: boolean) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnChange: (values: any) => void;
@@ -40,6 +41,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
     initialValues,
     isSelected,
     data,
+    identificationNumber,
     onFormValid,
     handleOnChange,
     handleTabChange,
@@ -181,6 +183,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               formik={formik}
               optionNameForm="Internal"
               getTotalAmount={getTotalAmount}
+              identificationNumber={identificationNumber}
             />
           )}
           {isSelected === disbursemenTabs.external.id && (

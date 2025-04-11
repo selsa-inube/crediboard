@@ -218,6 +218,7 @@ export function SubmitCreditApplicationUI(
                 isSelected={isSelected || disbursemenTabs.internal.id}
                 handleTabChange={handleTabChange}
                 data={data}
+                identificationNumber={customerData?.publicCode || ""}
               />
             )}
           <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
