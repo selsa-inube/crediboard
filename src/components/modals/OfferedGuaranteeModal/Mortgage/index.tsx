@@ -1,5 +1,4 @@
-import { Divider } from "@inubekit/divider";
-import { Stack, Text, Grid } from "@inubekit/inubekit";
+import { Stack, Text, Grid, Divider } from "@inubekit/inubekit";
 
 import { CardGray } from "@components/cards/CardGray";
 import { Fieldset } from "@components/data/Fieldset";

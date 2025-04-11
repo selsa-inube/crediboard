@@ -1,8 +1,7 @@
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
+import { Stack, Text, useMediaQuery } from "@inubekit/inubekit";
 import { Toggle } from "@inubekit/toggle";
-import { Stack, Text } from "@inubekit/inubekit";
-import { useMediaQuery } from "@inubekit/hooks";
 import { Textarea } from "@inubekit/textarea";
 
 import { validationMessages } from "@validations/validationMessages";

@@ -1,7 +1,12 @@
 import { MdQueryStats } from "react-icons/md";
-import { useMediaQuery } from "@inubekit/hooks";
-import { Stack, Icon, Text, SkeletonLine } from "@inubekit/inubekit";
-import { Divider } from "@inubekit/divider";
+import {
+  Stack,
+  Icon,
+  Text,
+  SkeletonLine,
+  useMediaQuery,
+  Divider,
+} from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { currencyFormat } from "@utils/formatData/currency";
