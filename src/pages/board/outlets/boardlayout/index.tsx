@@ -1,13 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { MdInfoOutline } from "react-icons/md";
-import { Stack, Icon, Text, useMediaQuery } from "@inubekit/inubekit";
+import { Stack, Icon, Text, useMediaQuery, useFlag } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { ICreditRequest } from "@services/types";
-import { getCreditRequestPin } from "@services/isPinned";
+import { getCreditRequestPinned } from "@services/isPinned";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
-import { ChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
+import { patchChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
 import { AppContext } from "@context/AppContext";
+import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
 
 import { dataInformationModal } from "./config/board";
 import { BoardLayoutUI } from "./interface";
@@ -54,12 +55,14 @@ function BoardLayout() {
   const { userAccount } =
     typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
 
+  const errorData = mockErrorBoard[0];
+
   const fetchBoardData = async (businessUnitPublicCode: string) => {
     try {
       const [boardRequestsResult, requestsPinnedResult] =
         await Promise.allSettled([
           getCreditRequestInProgress(businessUnitPublicCode),
-          getCreditRequestPin(businessUnitPublicCode),
+          getCreditRequestPinned(businessUnitPublicCode),
         ]);
 
       if (boardRequestsResult.status === "fulfilled") {
@@ -176,36 +179,66 @@ function BoardLayout() {
     }
   };
 
+  const { addFlag } = useFlag();
+
+  const handleFlag = useCallback(
+    (title: string, description: string) => {
+      addFlag({
+        title: title,
+        description: description,
+        appearance: "danger",
+        duration: 5000,
+      });
+    },
+    [addFlag]
+  );
+
   const handlePinRequest = async (
     creditRequestId: string | undefined,
     identificationNumber: string[],
     userWhoPinnnedId: string,
     isPinned: string
   ) => {
-    if (
-      userWhoPinnnedId === staffId ||
-      identificationNumber.includes(identificationStaff)
-    ) {
-      setBoardData((prevState) => ({
-        ...prevState,
-        requestsPinned: prevState.requestsPinned.map((card) =>
-          card.creditRequestId === creditRequestId
-            ? { ...card, isPinned }
-            : card
-        ),
-      }));
-      await ChangeAnchorToCreditRequest(
-        businessUnitPublicCode,
-        userAccount,
-        creditRequestId,
-        isPinned
-      );
-      await fetchBoardData(businessUnitPublicCode);
-    } else {
-      setIsOpenModal(true);
-      return;
+    try {
+      if (
+        userWhoPinnnedId === staffId ||
+        identificationNumber.includes(identificationStaff) ||
+        isPinned === "Y"
+      ) {
+        setBoardData((prevState) => ({
+          ...prevState,
+          requestsPinned: prevState.requestsPinned.map((card) =>
+            card.creditRequestId === creditRequestId
+              ? { ...card, isPinned }
+              : card
+          ),
+        }));
+
+        await patchChangeAnchorToCreditRequest(
+          businessUnitPublicCode,
+          userAccount,
+          creditRequestId,
+          isPinned
+        );
+        await fetchBoardData(businessUnitPublicCode);
+      } else {
+        setIsOpenModal(true);
+        return;
+      }
+    } catch (error) {
+      handleFlag(errorData.anchor[0], errorData.anchor[1]);
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (filteredRequests.length === 0) {
+        handleFlag(errorData.Summary[0], errorData.Summary[1]);
+      }
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [filteredRequests, errorData.Summary, handleFlag]);
 
   return (
     <>

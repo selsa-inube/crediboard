@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState, useContext } from "react";
-import { Stack } from "@inubekit/inubekit";
-import { useFlag } from "@inubekit/flag";
-import { Tag } from "@inubekit/tag";
+import { Stack, useFlag, Tag } from "@inubekit/inubekit";
 
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
@@ -10,7 +8,7 @@ import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 import { UnfoundData } from "@components/layout/UnfoundData";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
-import { getPayrollDiscountAuthorizationById } from "@services/payroll_discount_authorizations";
+import { getPayrollDiscountAuthorizationsById } from "@services/payroll_discount_authorizations";
 import { getPromissoryNotesById } from "@services/promissory_notes";
 import {
   IPayrollDiscountAuthorization,
@@ -76,7 +74,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     try {
       const [payrollDiscountResult, promissoryNotesResult] =
         await Promise.allSettled([
-          getPayrollDiscountAuthorizationById(
+          getPayrollDiscountAuthorizationsById(
             businessUnitPublicCode,
             creditRequets.creditRequestId
           ),

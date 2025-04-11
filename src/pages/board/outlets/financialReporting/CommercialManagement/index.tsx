@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import {
   MdOutlineAdd,
@@ -27,7 +27,15 @@ import { getById } from "@mocks/utils/dataMock.service";
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
-import { ICreditProductProspect, ICreditRequest } from "@services/types";
+import {
+  ICreditProductProspect,
+  ICreditRequest,
+  IModeOfDisbursement,
+} from "@services/types";
+import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { getModeOfDisbursement } from "@services/creditRequets/getModeOfDisbursement";
+import { AppContext } from "@context/AppContext";
+import { dataTabsDisbursement } from "@components/modals/DisbursementModal/types";
 
 import { menuOptions, tittleOptions } from "./config/config";
 import {
@@ -44,18 +52,36 @@ interface ComercialManagementProps {
   setCollapse: React.Dispatch<React.SetStateAction<boolean>>;
   print: () => void;
   isPrint?: boolean;
+  id: string;
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { data, print, isPrint = false, collapse, setCollapse } = props;
+  const { data, print, isPrint = false, collapse, setCollapse, id } = props;
   const [showMenu, setShowMenu] = useState(false);
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [prospectProducts, setProspectProducts] =
     useState<ICreditProductProspect>();
 
-  const { prospectCode, id } = useParams();
+  const [internal, setInternal] = useState<IModeOfDisbursement | null>(null);
+  const [external, setExternal] = useState<IModeOfDisbursement | null>(null);
+  const [checkEntity, setCheckEntity] = useState<IModeOfDisbursement | null>(
+    null
+  );
+  const [checkManagement, setCheckManagement] =
+    useState<IModeOfDisbursement | null>(null);
+  const [cash, setCash] = useState<IModeOfDisbursement | null>(null);
+
+  const [requests, setRequests] = useState<ICreditRequest | null>(null);
+
+  const { prospectCode } = useParams();
 
   const isMobile = useMediaQuery("(max-width: 720px)");
+
+  const { businessUnitSigla } = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
   const handleOpenModal = (modalName: string) => {
     setModalHistory((prevHistory) => [...prevHistory, modalName]);
@@ -83,6 +109,62 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     }
   }, [prospectCode]);
 
+  useEffect(() => {
+    const fetchCreditRequest = async () => {
+      try {
+        const data = await getCreditRequestByCode(businessUnitPublicCode, id);
+        setRequests(data[0] as ICreditRequest);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (id) {
+      fetchCreditRequest();
+    }
+  }, [businessUnitPublicCode, id]);
+
+  const handleDisbursement = async () => {
+    if (requests?.creditRequestId) {
+      setLoading(true);
+      try {
+        const disbursement = await getModeOfDisbursement(
+          businessUnitPublicCode,
+          requests.creditRequestId
+        );
+        const internalData =
+          disbursement.find(
+            (item) => item.modeOfDisbursementType === "Internal_account"
+          ) || null;
+        const externalData =
+          disbursement.find(
+            (item) => item.modeOfDisbursementType === "External_account"
+          ) || null;
+        const checkEntityData =
+          disbursement.find(
+            (item) => item.modeOfDisbursementType === "Certified_check"
+          ) || null;
+        const checkManagementData =
+          disbursement.find(
+            (item) => item.modeOfDisbursementType === "Business_check"
+          ) || null;
+        const cashData =
+          disbursement.find((item) => item.modeOfDisbursementType === "Cash") ||
+          null;
+
+        setInternal(internalData);
+        setExternal(externalData);
+        setCheckEntity(checkEntityData);
+        setCheckManagement(checkManagementData);
+        setCash(cashData);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   const handleCloseModal = () => {
     setModalHistory((prevHistory) => {
       const newHistory = [...prevHistory];
@@ -96,6 +178,24 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   };
 
   const currentModal = modalHistory[modalHistory.length - 1];
+
+  const dataDefault: dataTabsDisbursement = {
+    disbursementAmount: "",
+    isInTheNameOfBorrower: "",
+    payeeName: "",
+    payeeSurname: "",
+    payeeBiologicalSex: "",
+    payeeIdentificationType: "",
+    payeeIdentificationNumber: "",
+    payeeBirthday: "",
+    payeePhoneNumber: "",
+    payeeEmail: "",
+    payeeCityOfResidence: "",
+    accountBankName: "",
+    accountType: "",
+    accountNumber: "",
+    observation: "",
+  };
 
   return (
     <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
@@ -182,7 +282,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                         type="button"
                         spacing="compact"
                         variant="outlined"
-                        onClick={() => handleOpenModal("disbursementModal")}
+                        onClick={() => {
+                          handleDisbursement();
+                          handleOpenModal("disbursementModal");
+                        }}
                       >
                         {tittleOptions.titleDisbursement}
                       </Button>
@@ -237,7 +340,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   type="button"
                   spacing="compact"
                   variant="outlined"
-                  onClick={() => handleOpenModal("disbursementModal")}
+                  onClick={() => {
+                    handleDisbursement();
+                    handleOpenModal("disbursementModal");
+                  }}
                   fullwidth
                 >
                   {tittleOptions.titleDisbursement}
@@ -382,6 +488,14 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           <DisbursementModal
             isMobile={isMobile}
             handleClose={handleCloseModal}
+            loading={loading}
+            data={{
+              internal: internal || dataDefault,
+              external: external || dataDefault,
+              CheckEntity: checkEntity || dataDefault,
+              checkManagementData: checkManagement || dataDefault,
+              cash: cash || dataDefault,
+            }}
           />
         )}
       </StyledFieldset>

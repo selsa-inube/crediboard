@@ -1,7 +1,6 @@
 import { useState, isValidElement, useEffect } from "react";
 import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
-import { useFlag } from "@inubekit/flag";
-import { Stack, Icon } from "@inubekit/inubekit";
+import { Stack, Icon, useFlag } from "@inubekit/inubekit";
 
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";

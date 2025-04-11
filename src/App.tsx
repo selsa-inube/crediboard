@@ -6,7 +6,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { FlagProvider } from "@inubekit/flag";
+import { FlagProvider } from "@inubekit/inubekit";
 
 import { AppContext, AppContextProvider } from "@context/AppContext";
 import { usePortalLogic } from "@hooks/usePortalRedirect";
@@ -21,7 +21,7 @@ import { LoginRoutes } from "@routes/login";
 import { BoardRoutes } from "@routes/board";
 import { AddProspectRoutes } from "@routes/addProspect";
 import { EditProspectRoutes } from "@routes/editProspect";
-import { FilingApplicationRoutes } from "@routes/filingApplication";
+import { SubmitCreditApplicationRoutes } from "@routes/SubmitCreditApplication";
 
 function LogOut() {
   localStorage.clear();
@@ -46,7 +46,7 @@ const router = createBrowserRouter(
       <Route path="edit-prospect/*" element={<EditProspectRoutes />} />
       <Route
         path="submit-credit-application/*"
-        element={<FilingApplicationRoutes />}
+        element={<SubmitCreditApplicationRoutes />}
       />
       <Route path="logout" element={<LogOut />} />
     </>

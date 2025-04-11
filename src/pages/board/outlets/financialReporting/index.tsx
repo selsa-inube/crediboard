@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Stack, useMediaQuery } from "@inubekit/inubekit";
-import { useFlag } from "@inubekit/flag";
+import { Stack, useFlag, useMediaQuery } from "@inubekit/inubekit";
 
 import { OfferedGuaranteeModal } from "@components/modals/OfferedGuaranteeModal";
 import { ErrorAlert } from "@components/ErrorAlert";
@@ -263,6 +262,7 @@ export const FinancialReporting = () => {
                     data={data}
                     collapse={collapse}
                     setCollapse={setCollapse}
+                    id={id!}
                   />
                 </Stack>
               </Stack>

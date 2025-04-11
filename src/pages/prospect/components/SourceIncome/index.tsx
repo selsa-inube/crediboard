@@ -24,6 +24,8 @@ interface ISourceIncomeProps {
   ShowSupport?: boolean;
   onlyDebtor?: boolean;
   disabled?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data?: any;
 }
 
 export function SourceIncome(props: ISourceIncomeProps) {

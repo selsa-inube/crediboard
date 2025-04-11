@@ -1,9 +1,9 @@
-import { IBusinessmanagers } from "./types";
+import { IBusinessManagers } from "./types";
 
 const mapResendApiToEntity = (
   resend: Record<string, string | number | object>
-): IBusinessmanagers => {
-  const buildResend: IBusinessmanagers = {
+): IBusinessManagers => {
+  const buildResend: IBusinessManagers = {
     businessManagerId: String(resend.businessManagerId),
     publicCode: String(resend.publicCode),
     languageId: String(resend.languageId),

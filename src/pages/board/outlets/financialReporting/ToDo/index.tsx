@@ -1,9 +1,7 @@
 import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
-import { Select } from "@inubekit/select";
+import { Select, IOption } from "@inubekit/select";
 import { Button } from "@inubekit/button";
-import { useFlag } from "@inubekit/flag";
-import { Stack, Icon, Text, SkeletonLine } from "@inubekit/inubekit";
-import { IOption } from "@inubekit/select";
+import { Stack, Icon, Text, useFlag, SkeletonLine } from "@inubekit/inubekit";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
@@ -202,9 +200,7 @@ function ToDo(props: ToDoProps) {
   const isFetching = useRef(false);
 
   const handleSelectOpen = async () => {
-    if (isFetching.current) return; // Evita dobles peticiones
-    //if (!requests?.creditRequestId) return; // Evita ejecutar sin ID válido
-
+    if (isFetching.current) return;
     isFetching.current = true;
     setLoading(true);
     if (requests?.creditRequestId) {

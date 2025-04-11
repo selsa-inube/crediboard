@@ -12,10 +12,12 @@ export function NewPrice(props: INewPriceProps) {
 
   return (
     <Stack direction="column" alignItems="center">
-      <Text type="headline" size="small" appearance="gray">
+      <Text type="title" size="medium" appearance="gray" weight="bold">
         ${currencyFormat(value, false)}
       </Text>
-      <Text appearance="gray">{label}</Text>
+      <Text type="body" size="small" appearance="gray" weight="normal">
+        {label}
+      </Text>
     </Stack>
   );
 }

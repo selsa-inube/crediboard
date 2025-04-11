@@ -5,7 +5,7 @@ import {
 } from "@config/environment";
 import { IPayrollDiscountAuthorization } from "@services/types";
 
-export const getPayrollDiscountAuthorizationById = async (
+export const getPayrollDiscountAuthorizationsById = async (
   businessUnitPublicCode: string,
   creditRequestId: string
 ): Promise<IPayrollDiscountAuthorization[]> => {

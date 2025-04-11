@@ -22,6 +22,8 @@ export interface IBaseModalProps {
   disabledBack?: boolean;
   iconBeforeNext?: React.JSX.Element;
   iconAfterNext?: React.JSX.Element;
+  iconBeforeback?: React.JSX.Element;
+  iconAfterback?: React.JSX.Element;
   backButton?: string;
   initialDivider?: boolean;
   finalDivider?: boolean;
@@ -42,6 +44,8 @@ export function BaseModal(props: IBaseModalProps) {
     disabledBack = false,
     iconBeforeNext,
     iconAfterNext,
+    iconBeforeback,
+    iconAfterback,
     backButton = "",
     initialDivider = true,
     finalDivider = false,
@@ -91,6 +95,8 @@ export function BaseModal(props: IBaseModalProps) {
                 disabled={disabledBack}
                 variant="outlined"
                 appearance="gray"
+                iconAfter={iconAfterback}
+                iconBefore={iconBeforeback}
               >
                 {backButton}
               </Button>

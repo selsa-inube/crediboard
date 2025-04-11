@@ -1,5 +1,4 @@
-import { Tag } from "@inubekit/tag";
-import { Stack, Text, Divider, useMediaQueries } from "@inubekit/inubekit";
+import { Stack, Text, Divider, useMediaQueries, Tag } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
 
 import { environment } from "@config/environment";

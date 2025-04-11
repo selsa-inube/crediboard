@@ -1,50 +1,68 @@
-import { useFormik } from "formik";
 import { Stack } from "@inubekit/inubekit";
 
 import { CardGray } from "@components/cards/CardGray";
-import { IDebtorDetail } from "@pages/filingApplication/types";
+import { getPropertyValue } from "@pages/SubmitCreditApplication/util";
+import { getMonthsElapsed } from "@utils/formatData/currency";
 
 import { dataDebtor } from "./config";
-
 interface IDataDebtor {
-  initialValues: IDebtorDetail;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  initialValues: any;
 }
 
 export function DataDebtor(props: IDataDebtor) {
   const { initialValues } = props;
 
-  const formik = useFormik({
-    initialValues: initialValues,
-    validateOnMount: true,
-    onSubmit: () => {},
-  });
-
   return (
     <Stack direction="column" gap="12px">
       <CardGray
         label={dataDebtor.labelTypeDocument}
-        data={formik.values.document}
+        data={initialValues.borrower_identification_type}
       />
       <CardGray
         label={dataDebtor.labelNumberDocument}
-        data={formik.values.documentNumber}
+        data={initialValues.borrower_identification_number}
       />
-      <CardGray label={dataDebtor.labelName} data={formik.values.name} />
+      <CardGray
+        label={dataDebtor.labelName}
+        data={getPropertyValue(initialValues.borrower_properties, "name")}
+      />
       <CardGray
         label={dataDebtor.labelLastName}
-        data={formik.values.lastName}
+        data={getPropertyValue(initialValues.borrower_properties, "surname")}
       />
       <CardGray
         label={dataDebtor.labelEmail}
-        placeHolder={formik.values.email}
+        data={getPropertyValue(initialValues.borrower_properties, "email")}
         apparencePlaceHolder="gray"
       />
-      <CardGray label={dataDebtor.labelNumber} data={formik.values.number} />
-      <CardGray label={dataDebtor.labelSex} data={formik.values.sex} />
-      <CardGray label={dataDebtor.labelAge} data={formik.values.age} />
+      <CardGray
+        label={dataDebtor.labelNumber}
+        data={getPropertyValue(
+          initialValues.borrower_properties,
+          "phone_number"
+        )}
+      />
+      <CardGray
+        label={dataDebtor.labelSex}
+        data={getPropertyValue(
+          initialValues.borrower_properties,
+          "biological_sex"
+        )}
+      />
+      <CardGray
+        label={dataDebtor.labelAge}
+        data={getMonthsElapsed(
+          getPropertyValue(initialValues.borrower_properties, "birth_date"),
+          0
+        )}
+      />
       <CardGray
         label={dataDebtor.labelRelation}
-        data={formik.values.relation}
+        data={getPropertyValue(
+          initialValues.borrower_properties,
+          "relationship"
+        )}
       />
     </Stack>
   );

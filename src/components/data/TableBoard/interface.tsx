@@ -18,7 +18,6 @@ import {
   StyledTdactions,
 } from "./styles";
 
-
 interface ITableBoardUIProps extends ITableBoardProps {
   loading: boolean;
   isTablet: boolean;
