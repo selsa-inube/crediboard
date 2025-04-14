@@ -56,7 +56,7 @@ export function DisbursementWithInternalAccount(
 
   const handleFlag = (error: unknown) => {
     addFlag({
-      title: "Error al obtener cuentas internas",
+      title: `${disbursemenOptionAccount.errorFlagInternal}`,
       description: `Error: ${error}`,
       appearance: "danger",
       duration: 5000,
@@ -125,7 +125,7 @@ export function DisbursementWithInternalAccount(
         const response = await getAllInternalAccounts(identificationNumber);
         const options = response.map((account) => ({
           id: account.savingProductNumber,
-          label: `${account.productDescription} - ${account.savingProductNumber}`,
+          label: `${account.productDescription} - ${account.savingProductCode}`,
           value: account.savingProductNumber,
         }));
         setAccountOptions(options);

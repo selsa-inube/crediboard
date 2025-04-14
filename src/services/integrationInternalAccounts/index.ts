@@ -34,7 +34,6 @@ const getAllInternalAccounts = async (
         `${environment.VITE_ICLIENT_QUERY_PROCESS_SERVICE}/card-saving-products/?${queryParams.toString()}`,
         options
       );
-      
 
       clearTimeout(timeoutId);
 
@@ -46,7 +45,7 @@ const getAllInternalAccounts = async (
 
       if (!res.ok) {
         throw {
-          message: "Error al obtener la tarea.",
+          message: "Error al obtener los datos de la cuenta.",
           status: res.status,
           data,
         };
@@ -56,7 +55,7 @@ const getAllInternalAccounts = async (
         return data;
       }
 
-      throw new Error("La respuesta no contiene un array de bancos.");
+      throw new Error("La respuesta no contiene un array de cuentas.");
     } catch (error) {
       console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
