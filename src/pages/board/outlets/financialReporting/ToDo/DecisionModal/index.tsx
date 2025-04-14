@@ -2,8 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Textarea } from "@inubekit/textarea";
-import { Stack, Text, useFlag } from "@inubekit/inubekit";
-import { useMediaQuery } from "@inubekit/hooks";
+import { Stack, Text, useFlag, useMediaQuery } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { makeDecisions } from "@services/todo/makeDecisions";

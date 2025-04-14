@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 interface IStyledProduct {
   $new?: boolean;
 }
 
-const StyledCreditProductCard = styled.div<IStyledProduct>`
+export const StyledCreditProductCard = styled.div<IStyledProduct>`
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -24,7 +24,7 @@ const StyledCreditProductCard = styled.div<IStyledProduct>`
   }
 `;
 
-const StyledDivider = styled.hr`
+export const StyledDivider = styled.hr`
   margin: 0;
   width: 100%;
   border: none;
@@ -33,10 +33,8 @@ const StyledDivider = styled.hr`
     theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
-const StyledPrint = styled.div`
+export const StyledPrint = styled.div`
   @media print {
     display: none;
   }
 `;
-
-export { StyledCreditProductCard, StyledDivider, StyledPrint };

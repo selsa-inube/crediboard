@@ -121,15 +121,14 @@ export function SubmitCreditApplicationUI(
               <Stack gap="8px" alignItems="center" width="100%">
                 <Icon icon={<MdArrowBack />} appearance="dark" size="20px" />
                 <Text type="title" size="large">
-                  {submitCreditApplicationConfig.title}{" "}
-                  {data?.prospect_code?.slice(0, 2)}-
-                  {data?.prospect_code?.slice(2)}
+                  {`${submitCreditApplicationConfig.title}
+                  ${data?.prospect_code?.slice(0, 2)}-${data?.prospect_code?.slice(2)}`}
                 </Text>
               </Stack>
             </StyledArrowBack>
             <Text type="body" size="medium" appearance="gray">
-              {dataSubmitApplication.cards.destination}{" "}
-              {data.money_destination_abbreviated_name}
+              {`${dataSubmitApplication.cards.destination}
+              ${data.money_destination_abbreviated_name}`}
             </Text>
           </Stack>
           <Stack direction="column" gap="6px">

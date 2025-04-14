@@ -16,7 +16,6 @@ import {
   Thead,
   Tr,
 } from "@inubekit/table";
-import { useMediaQuery } from "@inubekit/hooks";
 import {
   Stack,
   Icon,
@@ -24,6 +23,7 @@ import {
   SkeletonLine,
   SkeletonIcon,
   Button,
+  useMediaQuery,
 } from "@inubekit/inubekit";
 
 import { EditFinancialObligationModal } from "@components/modals/editFinancialObligationModal";

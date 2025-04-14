@@ -1,7 +1,6 @@
 import { useContext, useState, useCallback, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { useMediaQuery } from "@inubekit/hooks";
-import { useFlag } from "@inubekit/inubekit";
+import { useFlag, useMediaQuery } from "@inubekit/inubekit";
 
 import { CustomerContext } from "@context/CustomerContext";
 import { AppContext } from "@context/AppContext";

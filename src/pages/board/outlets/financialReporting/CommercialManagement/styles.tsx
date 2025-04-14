@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 interface IStyledCollapseIcon {
   $collapse: boolean;
@@ -9,7 +9,7 @@ interface IStyledCardsCredit {
   $isMobile: boolean;
 }
 
-const StyledIcon = styled.div`
+export const StyledIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,18 +21,18 @@ const StyledIcon = styled.div`
   cursor: pointer;
 `;
 
-const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
+export const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   display: flex;
   transition: all 500ms ease;
   transform: ${({ $collapse }) =>
     $collapse ? "rotate(-90deg)" : "rotate(90deg)"};
 `;
 
-const StyledFieldset = styled.div`
+export const StyledFieldset = styled.div`
   padding: "4px";
 `;
 
-const StyledCardsCredit = styled.div<IStyledCardsCredit>`
+export const StyledCardsCredit = styled.div<IStyledCardsCredit>`
   overflow-x: auto;
   align-items: center;
 
@@ -72,13 +72,13 @@ const StyledCardsCredit = styled.div<IStyledCardsCredit>`
   }
 `;
 
-const StyledContainerIcon = styled.div`
+export const StyledContainerIcon = styled.div`
   display: flex;
   gap: 8px;
   position: relative;
 `;
 
-const StyledVerticalDivider = styled.hr`
+export const StyledVerticalDivider = styled.hr`
   margin: 0px 10px;
   width: 2px;
   height: 28px;
@@ -87,18 +87,8 @@ const StyledVerticalDivider = styled.hr`
     theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
-const StyledPrint = styled.div`
+export const StyledPrint = styled.div`
   @media print {
     display: none;
   }
 `;
-
-export {
-  StyledCollapseIcon,
-  StyledIcon,
-  StyledFieldset,
-  StyledCardsCredit,
-  StyledContainerIcon,
-  StyledVerticalDivider,
-  StyledPrint,
-};
