@@ -8,6 +8,7 @@ import { Textfield } from "@inubekit/textfield";
 import { Text } from "@inubekit/text";
 
 import {
+  currencyFormat,
   handleChangeWithCurrency,
   validateCurrencyField,
 } from "@utils/formatData/currency";
@@ -108,8 +109,8 @@ export function DisbursementWithCheckEntity(
     >
       <Stack direction="column" gap="20px">
         <Textfield
-          id={"amount"}
-          name={"amount"}
+          id="amount"
+          name="amount"
           label={disbursementGeneral.label}
           placeholder={disbursementGeneral.place}
           size="compact"
@@ -117,7 +118,16 @@ export function DisbursementWithCheckEntity(
           onChange={(e) => {
             handleChangeWithCurrency(formik, e, optionNameForm);
           }}
-          onBlur={formik.handleBlur}
+          onBlur={() => {
+            formik.setFieldTouched(`${optionNameForm}.amount`, true);
+            formik.handleBlur(`amount`);
+          }}
+          status={
+            formik.touched[optionNameForm]?.amount && !isDisabled
+              ? "invalid"
+              : undefined
+          }
+          message={`${disbursemenOptionAccount.valueTurnFail}${currencyFormat(initialValues.amount, false)}`}
           fullwidth
         />
         <Stack gap="10px" direction="row" alignItems="center">

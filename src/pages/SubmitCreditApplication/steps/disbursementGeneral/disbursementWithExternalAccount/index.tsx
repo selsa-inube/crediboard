@@ -10,6 +10,7 @@ import { useFlag, Stack, Text } from "@inubekit/inubekit";
 
 import { typeAccount } from "@mocks/filing-application/disbursement-general/disbursementgeneral.mock";
 import {
+  currencyFormat,
   handleChangeWithCurrency,
   validateCurrencyField,
 } from "@utils/formatData/currency";
@@ -148,8 +149,8 @@ export function DisbursementWithExternalAccount(
     >
       <Stack direction="column" gap="20px">
         <Textfield
-          id={"amount"}
-          name={"amount"}
+          id="amount"
+          name="amount"
           label={disbursementGeneral.label}
           placeholder={disbursementGeneral.place}
           size="compact"
@@ -157,7 +158,16 @@ export function DisbursementWithExternalAccount(
           onChange={(e) => {
             handleChangeWithCurrency(formik, e, optionNameForm);
           }}
-          onBlur={formik.handleBlur}
+          onBlur={() => {
+            formik.setFieldTouched(`${optionNameForm}.amount`, true);
+            formik.handleBlur(`amount`);
+          }}
+          status={
+            formik.touched[optionNameForm]?.amount && !isDisabled
+              ? "invalid"
+              : undefined
+          }
+          message={`${disbursemenOptionAccount.valueTurnFail}${currencyFormat(initialValues.amount, false)}`}
           fullwidth
         />
         <Stack gap="10px" direction="row" alignItems="center">

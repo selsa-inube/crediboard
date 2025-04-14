@@ -116,18 +116,23 @@ export function SubmitCreditApplicationUI(
           width={isMobile ? "-webkit-fill-available" : "min(100%,1440px)"}
         >
           <Breadcrumbs crumbs={submitCreditApplicationConfig.crumbs} />
-          <StyledArrowBack onClick={handleHome}>
-            <Stack gap="8px" alignItems="center">
-              <Icon icon={<MdArrowBack />} appearance="dark" size="20px" />
-              <Text type="title" size="large">
-                {submitCreditApplicationConfig.title}
-              </Text>
-            </Stack>
-          </StyledArrowBack>
-          <Stack direction="column" gap="6px">
-            <Text type="body" weight="bold" size="large">
-              {customerData?.publicCode}
+          <Stack justifyContent="space-between" alignItems="center">
+            <StyledArrowBack onClick={handleHome}>
+              <Stack gap="8px" alignItems="center" width="100%">
+                <Icon icon={<MdArrowBack />} appearance="dark" size="20px" />
+                <Text type="title" size="large">
+                  {submitCreditApplicationConfig.title}{" "}
+                  {data?.prospect_code?.slice(0, 2)}-
+                  {data?.prospect_code?.slice(2)}
+                </Text>
+              </Stack>
+            </StyledArrowBack>
+            <Text type="body" size="medium" appearance="gray">
+              {dataSubmitApplication.cards.destination}{" "}
+              {data.money_destination_abbreviated_name}
             </Text>
+          </Stack>
+          <Stack direction="column" gap="6px">
             {SummaryProspectCredit.map((entry, index) => (
               <CardValues
                 key={index}
@@ -268,7 +273,8 @@ export function SubmitCreditApplicationUI(
             <Text type="body" size="large">
               {dataSubmitApplication.modals.fileDescription.replace(
                 "{numberProspectCode}",
-                customerData?.publicCode || ""
+                `${data?.prospect_code?.slice(0, 2)}-${data?.prospect_code?.slice(2)}` ||
+                  ""
               )}
             </Text>
           </BaseModal>
@@ -293,7 +299,8 @@ export function SubmitCreditApplicationUI(
                   {dataSubmitApplication.modals.filed}
                 </Text>
                 <Text type="body" size="large" weight="bold">
-                  {customerData?.publicCode || ""}
+                  {`${data?.prospect_code?.slice(0, 2)}-${data?.prospect_code?.slice(2)}` ||
+                    ""}
                 </Text>
               </Stack>
               <Text type="body" size="medium" appearance="gray">

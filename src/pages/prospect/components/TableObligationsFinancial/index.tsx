@@ -42,12 +42,19 @@ export interface ITableFinancialObligationsProps {
   refreshKey?: number;
   showActions?: boolean;
   showOnlyEdit?: boolean;
+  showButtons?: boolean;
 }
 
 export function TableFinancialObligations(
   props: ITableFinancialObligationsProps
 ) {
-  const { refreshKey, showActions, showOnlyEdit, initialValues } = props;
+  const {
+    refreshKey,
+    showActions,
+    showOnlyEdit,
+    initialValues,
+    showButtons = true,
+  } = props;
   const [loading, setLoading] = useState(true);
   const [extraDebtors, setExtraDebtors] = useState<
     ITableFinancialObligationsProps[]
@@ -139,12 +146,14 @@ export function TableFinancialObligations(
 
   return (
     <>
-      <Stack gap="16px" justifyContent="end">
-        <Button iconAfter={<MdCached />} variant="outlined">
-          {dataReport.restore}
-        </Button>
-        <Button iconAfter={<MdAdd />}>{dataReport.addObligations}</Button>
-      </Stack>
+      {showButtons && (
+        <Stack gap="16px" justifyContent="end">
+          <Button iconAfter={<MdCached />} variant="outlined">
+            {dataReport.restore}
+          </Button>
+          <Button iconAfter={<MdAdd />}>{dataReport.addObligations}</Button>
+        </Stack>
+      )}
       <Table tableLayout="auto">
         <Thead>
           <Tr>

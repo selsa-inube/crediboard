@@ -10,6 +10,7 @@ import { Text } from "@inubekit/text";
 
 import { optionLocalAccount } from "@mocks/filing-application/disbursement-general/disbursementgeneral.mock";
 import {
+  currencyFormat,
   handleChangeWithCurrency,
   validateCurrencyField,
 } from "@utils/formatData/currency";
@@ -129,7 +130,7 @@ export function DisbursementWithInternalAccount(
               ? "invalid"
               : undefined
           }
-          message={`${disbursemenOptionAccount.valueTurnFail}${initialValues.amount}`}
+          message={`${disbursemenOptionAccount.valueTurnFail}${currencyFormat(initialValues.amount, false)}`}
           fullwidth
         />
         <Stack gap="10px" direction="row" alignItems="center">

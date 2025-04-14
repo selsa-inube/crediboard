@@ -46,7 +46,10 @@ export function DebtorDetailsModal(props: IDebtorDetailsModalProps) {
           <IncomeDebtor initialValues={initialValues} />
         )}
         {currentTab === "obligations" && (
-          <TableFinancialObligations initialValues={initialValues} />
+          <TableFinancialObligations
+            initialValues={initialValues}
+            showButtons={false}
+          />
         )}
       </Stack>
     </BaseModal>
