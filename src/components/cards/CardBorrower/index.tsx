@@ -1,3 +1,4 @@
+import { Stack, Icon, Text, Divider } from "@inubekit/inubekit";
 import {
   MdOutlineAttachMoney,
   MdOutlineDelete,
@@ -5,9 +6,6 @@ import {
   MdOutlinePerson,
   MdOutlineRemoveRedEye,
 } from "react-icons/md";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
-import { Divider } from "@inubekit/divider";
 
 import { StyledContainer } from "./styles";
 import { newBorrowedDAta } from "./config";

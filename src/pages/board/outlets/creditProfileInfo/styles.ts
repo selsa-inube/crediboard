@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { DefaultTheme } from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 
 interface IStyledDivider {
@@ -10,7 +10,7 @@ interface IStyledDivider {
 interface IStyledUl {
   $isTablet?: boolean;
 }
-const StyledDivider = styled.hr<IStyledDivider>`
+export const StyledDivider = styled.hr<IStyledDivider>`
   margin: 0;
   width: 100%;
   border: none;
@@ -19,7 +19,7 @@ const StyledDivider = styled.hr<IStyledDivider>`
     theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
 `;
 
-const StyledContainerToCenter = styled.div`
+export const StyledContainerToCenter = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 1520px;
@@ -28,7 +28,7 @@ const StyledContainerToCenter = styled.div`
   width: 100%;
 `;
 
-const StyledUl = styled.ul<IStyledUl>`
+export const StyledUl = styled.ul<IStyledUl>`
   display: flex;
   justify-content: space-between;
   width: ${({ $isTablet }) => ($isTablet ? "auto" : "35%")};
@@ -39,11 +39,9 @@ const StyledUl = styled.ul<IStyledUl>`
   gap: 4px;
 `;
 
-const StyledLi = styled.li`
+export const StyledLi = styled.li`
   &::marker {
     color: #5e6c84;
     font-size: 14px;
   }
 `;
-
-export { StyledDivider, StyledContainerToCenter, StyledUl, StyledLi };

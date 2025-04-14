@@ -1,9 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
-import { Stack, Text, useFlag } from "@inubekit/inubekit";
-import { Toggle } from "@inubekit/toggle";
-import { Divider } from "@inubekit/divider";
+import { Stack, Text, useFlag, Toggle, Divider } from "@inubekit/inubekit";
 
 import { CardProductSelection } from "@pages/addProspect/components/CardProductSelection";
 import { Fieldset } from "@components/data/Fieldset";

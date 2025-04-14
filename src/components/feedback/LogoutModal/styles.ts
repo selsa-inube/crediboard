@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 interface IStyledModal {
   $isSmallScreen: boolean;
 }
 
-const StyledBackdropBlanket = styled.div`
+export const StyledBackdropBlanket = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
@@ -13,7 +13,7 @@ const StyledBackdropBlanket = styled.div`
   z-index: 1;
 `;
 
-const StyledModal = styled.div<IStyledModal>`
+export const StyledModal = styled.div<IStyledModal>`
   background-color: ${({ theme }) =>
     theme?.color?.surface?.light?.clear || inube.palette.neutral.N0};
   height: 100%;
@@ -23,5 +23,3 @@ const StyledModal = styled.div<IStyledModal>`
   margin: "16px";
   z-index: 3;
 `;
-
-export { StyledBackdropBlanket, StyledModal };
