@@ -175,6 +175,7 @@ export function SubmitCreditApplication() {
         city: "",
       },
     },
+    attachedDocuments: {},
   });
 
   const hasBorrowers = Object.keys(formData.borrowerData.borrowers).length;
@@ -243,8 +244,11 @@ export function SubmitCreditApplication() {
         ],
       },
     ],
-    modesOfDisbursement: Object.entries(disbursementGeneral).map(
-      ([key, value]) => ({
+    modesOfDisbursement: Object.entries(disbursementGeneral)
+      .filter(([, value]) => {
+        return value.amount && value.amount !== "";
+      })
+      .map(([key, value]) => ({
         accountBankCode: "100",
         accountBankName: value.accountType || "none",
         accountNumber: value.accountNumber || "none",
@@ -266,8 +270,7 @@ export function SubmitCreditApplication() {
         payeePhoneNumber: value.phone || "none",
         payeeSurname: value.lastName || "none",
         transactionOperation: "Insert",
-      })
-    ),
+      })),
   };
 
   const handleSubmit = async () => {

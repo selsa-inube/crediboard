@@ -5,15 +5,25 @@ import { TableAttachedDocuments } from "@pages/prospect/components/tableAttached
 
 interface IAttachedDocumentsProps {
   isMobile: boolean;
+  initialValues: {
+    [key: string]: { id: string; name: string; file: File }[];
+  };
+  handleOnChange: (files: {
+    [key: string]: { id: string; name: string; file: File }[];
+  }) => void;
 }
 
 export function AttachedDocuments(props: IAttachedDocumentsProps) {
-  const { isMobile } = props;
+  const { isMobile, initialValues, handleOnChange } = props;
 
   return (
     <Fieldset>
       <Stack padding="16px">
-        <TableAttachedDocuments isMobile={isMobile} />
+        <TableAttachedDocuments
+          isMobile={isMobile}
+          uploadedFilesByRow={initialValues}
+          setUploadedFilesByRow={handleOnChange}
+        />
       </Stack>
     </Fieldset>
   );

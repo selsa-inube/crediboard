@@ -227,7 +227,13 @@ export function SubmitCreditApplicationUI(
           {currentStepsNumber &&
             currentStepsNumber.id ===
               stepsFilingApplication.attachedDocuments.id && (
-              <AttachedDocuments isMobile={isMobile} />
+              <AttachedDocuments
+                isMobile={isMobile}
+                initialValues={formData.attachedDocuments || {}}
+                handleOnChange={(newDocs) =>
+                  handleFormChange({ attachedDocuments: newDocs })
+                }
+              />
             )}
           {currentStepsNumber &&
             currentStepsNumber.id ===

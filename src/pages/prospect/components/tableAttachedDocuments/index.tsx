@@ -33,10 +33,16 @@ import { usePagination } from "./utils";
 
 interface ITableAttachedDocumentsProps {
   isMobile: boolean;
+  uploadedFilesByRow: {
+    [key: string]: { id: string; name: string; file: File }[];
+  };
+  setUploadedFilesByRow: (files: {
+    [key: string]: { id: string; name: string; file: File }[];
+  }) => void;
 }
 
 export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
-  const { isMobile } = props;
+  const { isMobile, uploadedFilesByRow, setUploadedFilesByRow } = props;
 
   const [loading, setLoading] = useState(true);
   const [showAttachment, setShowAttachments] = useState(false);
@@ -55,9 +61,6 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
     mockAttachedDocuments
   );
   const [currentRowId, setCurrentRowId] = useState<string | null>(null);
-  const [uploadedFilesByRow, setUploadedFilesByRow] = useState<{
-    [key: string]: { id: string; name: string; file: File }[];
-  }>({});
 
   useEffect(() => {
     get("attached_documents")
@@ -105,10 +108,10 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
     files: { id: string; name: string; file: File }[] | null
   ) => {
     if (currentRowId) {
-      setUploadedFilesByRow((prev) => ({
-        ...prev,
+      setUploadedFilesByRow({
+        ...uploadedFilesByRow,
         [currentRowId]: files || [],
-      }));
+      });
     }
   };
 
@@ -129,12 +132,10 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
   };
 
   const handleRemoveAllFiles = (rowId: string) => {
-    setUploadedFilesByRow((prev) => {
-      const updated = { ...prev };
-      delete updated[rowId];
-      handleFlag();
-      return updated;
-    });
+    const updated = { ...uploadedFilesByRow };
+    delete updated[rowId];
+    setUploadedFilesByRow(updated);
+    handleFlag();
   };
 
   return (

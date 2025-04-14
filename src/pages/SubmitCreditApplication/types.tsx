@@ -81,6 +81,9 @@ export interface FormData {
   borrowerData: IBorrowerData;
   bail: IBail;
   disbursementGeneral: IDisbursementGeneral;
+  attachedDocuments?: {
+    [key: string]: { id: string; name: string; file: File }[];
+  };
 }
 
 export interface IDisbursementGeneral {
