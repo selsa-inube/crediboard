@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Checkbox } from "@inubekit/checkbox";
 import { Toggle } from "@inubekit/toggle";
 import { Select } from "@inubekit/select";
@@ -17,6 +17,7 @@ import {
   disbursemenOptionAccount,
 } from "@pages/SubmitCreditApplication/steps/disbursementGeneral/config";
 import { GeneralInformationForm } from "@pages/SubmitCreditApplication/components/GeneralInformationForm";
+import { ICustomerData } from "@context/CustomerContext/types";
 
 interface IDisbursementWithInternalAccountProps {
   isMobile: boolean;
@@ -24,6 +25,7 @@ interface IDisbursementWithInternalAccountProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formik: any;
   optionNameForm: string;
+  customerData?: ICustomerData;
   onFormValid: (isValid: boolean) => void;
   handleOnChange: (values: IDisbursementGeneral) => void;
   getTotalAmount: () => number;
@@ -37,12 +39,16 @@ export function DisbursementWithInternalAccount(
     initialValues,
     formik,
     optionNameForm,
+    customerData,
     getTotalAmount,
     onFormValid,
     handleOnChange,
   } = props;
 
   const prevValues = useRef(formik.values[optionNameForm]);
+
+  const [isAutoCompleted, setIsAutoCompleted] = useState(false);
+  const [autoCompletedId, setAutoCompletedId] = useState<string | null>(null);
 
   useEffect(() => {
     onFormValid(formik.isValid);
@@ -99,6 +105,39 @@ export function DisbursementWithInternalAccount(
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values[optionNameForm]?.amount]);
+
+  useEffect(() => {
+    const identification = formik.values[optionNameForm]?.identification;
+
+    if (identification && identification === customerData?.publicCode) {
+      const customer = customerData?.generalAttributeClientNaturalPersons?.[0];
+
+      if (customer) {
+        formik.setFieldValue(`${optionNameForm}.name`, customer.firstNames);
+        formik.setFieldValue(`${optionNameForm}.lastName`, customer.lastNames);
+        formik.setFieldValue(`${optionNameForm}.sex`, customer.gender);
+        formik.setFieldValue(`${optionNameForm}.birthdate`, customer.dateBirth);
+        formik.setFieldValue(
+          `${optionNameForm}.phone`,
+          customer.cellPhoneContact
+        );
+        formik.setFieldValue(`${optionNameForm}.mail`, customer.emailContact);
+        formik.setFieldValue(
+          `${optionNameForm}.city`,
+          customer.zone.split("-")[1]
+        );
+
+        setIsAutoCompleted(true);
+        setAutoCompletedId(identification);
+      }
+    }
+
+    if (isAutoCompleted && identification !== autoCompletedId) {
+      setIsAutoCompleted(false);
+      setAutoCompletedId(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.values[optionNameForm]?.identification]);
 
   return (
     <Stack
@@ -170,6 +209,7 @@ export function DisbursementWithInternalAccount(
           <GeneralInformationForm
             formik={formik}
             optionNameForm={optionNameForm}
+            isReadOnly={isAutoCompleted}
           />
           <Divider dashed />
         </>

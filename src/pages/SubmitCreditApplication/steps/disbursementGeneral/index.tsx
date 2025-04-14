@@ -181,6 +181,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               formik={formik}
               optionNameForm="Internal"
               getTotalAmount={getTotalAmount}
+              customerData={customerData}
             />
           )}
           {isSelected === disbursemenTabs.external.id && (

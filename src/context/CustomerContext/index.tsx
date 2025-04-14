@@ -32,6 +32,9 @@ export function CustomerContextProvider({
         lastNames: "",
         emailContact: "",
         cellPhoneContact: "",
+        gender: "",
+        dateBirth: "",
+        zone: "",
       },
     ],
     generalAssociateAttributes: [
