@@ -86,6 +86,22 @@ const errorCodes: Record<number, ErrorDetail> = {
     whatWentWrong: ["No se encontraron opciones para el empleado."],
     howToFix: ["Confirma que estés usando la url adecuada."],
   },
+  1010: {
+    whatWentWrong: ["No se encontró el número del prospecto solicitado."],
+    howToFix: ["Confirma que estes usando el id correcto."],
+  },
+  1011: {
+    whatWentWrong: [
+      "Confirma que el ID de prospecto que estás utilizando es correcto y corresponde al cliente actual.",
+    ],
+    howToFix: [
+      "Verifica en el sistema que el prospecto no haya sido tramitado previamente.",
+    ],
+  },
+  1012: {
+    whatWentWrong: ["El prospecto solicitado no existe o ya fue tramitado."],
+    howToFix: ["Confirma el estado del prospecto o valida el ID seleccionado."],
+  },
 };
 
 export { errorCodes };

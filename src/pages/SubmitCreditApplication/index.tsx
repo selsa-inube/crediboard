@@ -8,20 +8,21 @@ import { AppContext } from "@context/AppContext";
 import { postSubmitCredit } from "@services/submitCredit";
 import { getSearchProspectById } from "@services/prospects";
 import { postBusinessUnitRules } from "@services/businessUnitRules";
+import { getMonthsElapsed } from "@utils/formatData/currency";
 
 import { stepsFilingApplication } from "./config/filingApplication.config";
 import { SubmitCreditApplicationUI } from "./interface";
 import { FormData } from "./types";
 import { evaluateRule } from "./evaluateRule";
 import { ruleConfig } from "./config/configRules";
-import { getMonthsElapsed } from "@utils/formatData/currency";
 
 export function SubmitCreditApplication() {
-  const { prospectCode } = useParams();
+  const { customerPublicCode, prospectCode } = useParams();
   const { customerData } = useContext(CustomerContext);
   const { businessUnitSigla, eventData } = useContext(AppContext);
   const [sentModal, setSentModal] = useState(false);
   const [approvedRequestModal, setApprovedRequestModal] = useState(false);
+  const [codeError, setCodeError] = useState<number | null>(null);
 
   const { userAccount } =
     typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
@@ -306,16 +307,28 @@ export function SubmitCreditApplication() {
         businessUnitPublicCode,
         prospectCode || ""
       );
-
       if (prospect && typeof prospect === "object") {
         if (JSON.stringify(prospect) !== JSON.stringify(prospectData)) {
           setProspectData(prospect);
         }
       }
+      const mainBorrower = prospect.borrowers.find(
+        (borrower) => borrower.borrower_type === "main_borrower"
+      );
+
+      if (mainBorrower?.borrower_identification_number !== customerPublicCode) {
+        setCodeError(1011);
+        return;
+      }
+
+      if (prospect.state !== "Created") {
+        setCodeError(1012);
+        return;
+      }
     } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
+      setCodeError(1010);
     }
-  }, [businessUnitPublicCode, prospectCode, prospectData]);
+  }, [businessUnitPublicCode, customerPublicCode, prospectCode, prospectData]);
 
   useEffect(() => {
     fetchProspectData();
@@ -437,6 +450,7 @@ export function SubmitCreditApplication() {
         isMobile={isMobile}
         data={prospectData}
         customerData={customerData}
+        codeError={codeError}
       />
     </>
   );
