@@ -42,7 +42,7 @@ const getSearchProspectById = async (
       }
 
       const data = await res.json();
-
+      console.log("data", data);
       if (!res.ok) {
         throw {
           message: "Error al obtener la tarea.",
