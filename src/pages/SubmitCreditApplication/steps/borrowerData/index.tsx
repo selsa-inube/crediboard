@@ -14,13 +14,14 @@ import { DebtorDetailsModal } from "@pages/prospect/components/modals/DebtorDeta
 import { DebtorEditModal } from "@pages/prospect/components/modals/DebtorEditModal";
 import { dataSubmitApplication } from "@pages/SubmitCreditApplication/config/config";
 import { currencyFormat, getMonthsElapsed } from "@utils/formatData/currency";
-
-import { getPropertyValue, getTotalFinancialObligations } from "../../util";
 import { ruleConfig } from "@pages/SubmitCreditApplication/config/configRules";
 import { evaluateRule } from "@pages/SubmitCreditApplication/evaluateRule";
 import { postBusinessUnitRules } from "@services/businessUnitRules";
 import { CustomerContext } from "@context/CustomerContext";
 import { AppContext } from "@context/AppContext";
+
+import { getPropertyValue, getTotalFinancialObligations } from "../../util";
+import { StyledContainer } from "./styles";
 
 interface borrowersProps {
   isMobile: boolean;
@@ -101,94 +102,102 @@ export function Borrowers(props: borrowersProps) {
 
   return (
     <Fieldset>
-      <Stack direction="column" padding="2px 10px" gap="20px">
-        <Stack justifyContent="end">
+      <Stack direction="column" gap="20px">
+        <Stack justifyContent="end" margin="0 8px">
           <Button onClick={() => setIsModalAdd(true)} iconBefore={<MdAdd />}>
             {valueRule?.includes("Codeudor")
               ? dataSubmitApplication.coBorrowers.borrowerLabel
               : dataSubmitApplication.borrowers.borrowerLabel}
           </Button>
         </Stack>
-        <Grid
-          templateColumns={
-            isMobile ? "1fr" : `repeat(${dataDebtorDetail.length + 1}, 317px)`
-          }
-          autoRows="auto"
-          gap="20px"
-        >
-          {dataDebtorDetail.map(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (item: any, index: number) => (
-              <CardBorrower
-                key={index}
-                title={
-                  dataSubmitApplication.borrowers.borrowerLabel +
-                  ` ${index + 1}`
-                }
-                name={getPropertyValue(item.borrower_properties, "name")}
-                lastName={getPropertyValue(item.borrower_properties, "surname")}
-                email={
-                  getPropertyValue(item.borrower_properties, "email") || ""
-                }
-                income={currencyFormat(
-                  getPropertyValue(item.borrower_properties, "PeriodicSalary"),
-                  false
-                )}
-                obligations={currencyFormat(
-                  getTotalFinancialObligations(item.borrower_properties),
-                  false
-                )}
-                handleView={() => {
-                  setSelectedBorrower(item);
-                  setIsModalView(true);
-                }}
-                isMobile={isMobile}
-                handleEdit={() => {
-                  setSelectedBorrower(item);
-                  setIsModalEdit(true);
-                }}
-                handleDelete={() => setIsModalDelete(true)}
-              />
-            )
-          )}
-          <NewCardBorrower
-            onClick={() => setIsModalAdd(true)}
-            title={
-              valueRule?.includes("Codeudor")
-                ? dataSubmitApplication.coBorrowers.borrowerLabel
-                : dataSubmitApplication.borrowers.borrowerLabel
+        <StyledContainer>
+          <Grid
+            templateColumns={
+              isMobile ? "1fr" : `repeat(${dataDebtorDetail.length + 1}, 317px)`
             }
-            isMobile={isMobile}
-          />
-          {isModalAdd && (
-            <DebtorAddModal
-              onSubmit={() => setIsModalAdd(false)}
-              handleClose={() => setIsModalAdd(false)}
+            autoRows="auto"
+            gap="20px"
+          >
+            {dataDebtorDetail.map(
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (item: any, index: number) => (
+                <CardBorrower
+                  key={index}
+                  title={
+                    dataSubmitApplication.borrowers.borrowerLabel +
+                    ` ${index + 1}`
+                  }
+                  name={getPropertyValue(item.borrower_properties, "name")}
+                  lastName={getPropertyValue(
+                    item.borrower_properties,
+                    "surname"
+                  )}
+                  email={
+                    getPropertyValue(item.borrower_properties, "email") || ""
+                  }
+                  income={currencyFormat(
+                    getPropertyValue(
+                      item.borrower_properties,
+                      "PeriodicSalary"
+                    ),
+                    false
+                  )}
+                  obligations={currencyFormat(
+                    getTotalFinancialObligations(item.borrower_properties),
+                    false
+                  )}
+                  handleView={() => {
+                    setSelectedBorrower(item);
+                    setIsModalView(true);
+                  }}
+                  isMobile={isMobile}
+                  handleEdit={() => {
+                    setSelectedBorrower(item);
+                    setIsModalEdit(true);
+                  }}
+                  handleDelete={() => setIsModalDelete(true)}
+                />
+              )
+            )}
+            <NewCardBorrower
+              onClick={() => setIsModalAdd(true)}
               title={
                 valueRule?.includes("Codeudor")
                   ? dataSubmitApplication.coBorrowers.borrowerLabel
                   : dataSubmitApplication.borrowers.borrowerLabel
               }
-            />
-          )}
-          {isModalView && selectedBorrower && (
-            <DebtorDetailsModal
-              handleClose={() => setIsModalView(false)}
               isMobile={isMobile}
-              initialValues={selectedBorrower}
             />
-          )}
-          {isModalDelete && (
-            <DeleteModal handleClose={() => setIsModalDelete(false)} />
-          )}
-          {isModalEdit && selectedBorrower && (
-            <DebtorEditModal
-              handleClose={() => setIsModalEdit(false)}
-              isMobile={isMobile}
-              initialValues={selectedBorrower}
-            />
-          )}
-        </Grid>
+            {isModalAdd && (
+              <DebtorAddModal
+                onSubmit={() => setIsModalAdd(false)}
+                handleClose={() => setIsModalAdd(false)}
+                title={
+                  valueRule?.includes("Codeudor")
+                    ? dataSubmitApplication.coBorrowers.borrowerLabel
+                    : dataSubmitApplication.borrowers.borrowerLabel
+                }
+              />
+            )}
+            {isModalView && selectedBorrower && (
+              <DebtorDetailsModal
+                handleClose={() => setIsModalView(false)}
+                isMobile={isMobile}
+                initialValues={selectedBorrower}
+              />
+            )}
+            {isModalDelete && (
+              <DeleteModal handleClose={() => setIsModalDelete(false)} />
+            )}
+            {isModalEdit && selectedBorrower && (
+              <DebtorEditModal
+                handleClose={() => setIsModalEdit(false)}
+                isMobile={isMobile}
+                initialValues={selectedBorrower}
+              />
+            )}
+          </Grid>
+        </StyledContainer>
       </Stack>
     </Fieldset>
   );
