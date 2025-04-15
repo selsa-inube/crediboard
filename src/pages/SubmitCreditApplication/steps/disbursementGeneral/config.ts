@@ -51,4 +51,5 @@ export const disbursemenOptionAccount = {
   observation: "Observaciones",
   placeObservation: "Cosas extra que deben tenerse en cuenta.",
   placeOption: "Seleccione una opción",
+  errorFlagInternal: "Error al obtener cuentas internas",
 };
