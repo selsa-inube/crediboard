@@ -2,12 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { Checkbox } from "@inubekit/checkbox";
 import { Toggle } from "@inubekit/toggle";
 import { Select } from "@inubekit/select";
-import { Stack, Text, Divider } from "@inubekit/inubekit";
+import { Stack, Text, Divider, useFlag } from "@inubekit/inubekit";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
-
-import { optionLocalAccount } from "@mocks/filing-application/disbursement-general/disbursementgeneral.mock";
 import {
+  currencyFormat,
   handleChangeWithCurrency,
   validateCurrencyField,
 } from "@utils/formatData/currency";
@@ -19,6 +18,7 @@ import {
 import { GeneralInformationForm } from "@pages/SubmitCreditApplication/components/GeneralInformationForm";
 import { ICustomerData } from "@context/CustomerContext/types";
 import { getSearchCustomerByCode } from "@services/customers/AllCustomers";
+import { getAllInternalAccounts } from "@services/integrationInternalAccounts";
 
 interface IDisbursementWithInternalAccountProps {
   isMobile: boolean;
@@ -26,8 +26,9 @@ interface IDisbursementWithInternalAccountProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formik: any;
   optionNameForm: string;
-  customerData?: ICustomerData;
+  identificationNumber: string;
   businessUnitPublicCode: string;
+  customerData?: ICustomerData;
   onFormValid: (isValid: boolean) => void;
   handleOnChange: (values: IDisbursementGeneral) => void;
   getTotalAmount: () => number;
@@ -41,8 +42,9 @@ export function DisbursementWithInternalAccount(
     initialValues,
     formik,
     optionNameForm,
-    customerData,
+    identificationNumber,
     businessUnitPublicCode,
+    customerData,
     getTotalAmount,
     onFormValid,
     handleOnChange,
@@ -51,6 +53,20 @@ export function DisbursementWithInternalAccount(
   const prevValues = useRef(formik.values[optionNameForm]);
 
   const [isAutoCompleted, setIsAutoCompleted] = useState(false);
+  const [accountOptions, setAccountOptions] = useState<
+    { id: string; label: string; value: string }[]
+  >([]);
+
+  const { addFlag } = useFlag();
+
+  const handleFlag = (error: unknown) => {
+    addFlag({
+      title: `${disbursemenOptionAccount.errorFlagInternal}`,
+      description: `Error: ${error}`,
+      appearance: "danger",
+      duration: 5000,
+    });
+  };
 
   useEffect(() => {
     onFormValid(formik.isValid);
@@ -162,6 +178,29 @@ export function DisbursementWithInternalAccount(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values[optionNameForm]?.identification]);
 
+  useEffect(() => {
+    async function fetchAccounts() {
+      try {
+        const response = await getAllInternalAccounts(
+          identificationNumber,
+          businessUnitPublicCode
+        );
+        const options = response.map((account) => ({
+          id: account.savingProductNumber,
+          label: `${account.productDescription} - ${account.savingProductCode}`,
+          value: account.savingProductNumber,
+        }));
+        setAccountOptions(options);
+      } catch (error) {
+        handleFlag(error);
+        console.error("Error fetching internal accounts:", error);
+      }
+    }
+
+    fetchAccounts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [identificationNumber]);
+
   return (
     <Stack
       direction="column"
@@ -180,7 +219,16 @@ export function DisbursementWithInternalAccount(
           onChange={(e) => {
             handleChangeWithCurrency(formik, e, optionNameForm);
           }}
-          onBlur={formik.handleBlur}
+          onBlur={() => {
+            formik.setFieldTouched(`${optionNameForm}.amount`, true);
+            formik.handleBlur(`amount`);
+          }}
+          status={
+            formik.touched[optionNameForm]?.amount && !isDisabled
+              ? "invalid"
+              : undefined
+          }
+          message={`${disbursemenOptionAccount.valueTurnFail}${currencyFormat(initialValues.amount, false)}`}
           fullwidth
         />
         <Stack gap="10px" direction="row" alignItems="center">
@@ -244,7 +292,7 @@ export function DisbursementWithInternalAccount(
         label={disbursemenOptionAccount.labelAccount}
         placeholder={disbursemenOptionAccount.placeOption}
         size="compact"
-        options={optionLocalAccount}
+        options={accountOptions}
         onBlur={formik.handleBlur}
         onChange={(_, value) =>
           formik.setFieldValue(`${optionNameForm}.account`, value)
