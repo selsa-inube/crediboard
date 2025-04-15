@@ -18,6 +18,7 @@ import {
 } from "@pages/SubmitCreditApplication/steps/disbursementGeneral/config";
 import { GeneralInformationForm } from "@pages/SubmitCreditApplication/components/GeneralInformationForm";
 import { ICustomerData } from "@context/CustomerContext/types";
+import { getSearchCustomerByCode } from "@services/customers/AllCustomers";
 
 interface IDisbursementWithInternalAccountProps {
   isMobile: boolean;
@@ -26,6 +27,7 @@ interface IDisbursementWithInternalAccountProps {
   formik: any;
   optionNameForm: string;
   customerData?: ICustomerData;
+  businessUnitPublicCode: string;
   onFormValid: (isValid: boolean) => void;
   handleOnChange: (values: IDisbursementGeneral) => void;
   getTotalAmount: () => number;
@@ -40,6 +42,7 @@ export function DisbursementWithInternalAccount(
     formik,
     optionNameForm,
     customerData,
+    businessUnitPublicCode,
     getTotalAmount,
     onFormValid,
     handleOnChange,
@@ -48,7 +51,6 @@ export function DisbursementWithInternalAccount(
   const prevValues = useRef(formik.values[optionNameForm]);
 
   const [isAutoCompleted, setIsAutoCompleted] = useState(false);
-  const [autoCompletedId, setAutoCompletedId] = useState<string | null>(null);
 
   useEffect(() => {
     onFormValid(formik.isValid);
@@ -109,33 +111,54 @@ export function DisbursementWithInternalAccount(
   useEffect(() => {
     const identification = formik.values[optionNameForm]?.identification;
 
-    if (identification && identification === customerData?.publicCode) {
-      const customer = customerData?.generalAttributeClientNaturalPersons?.[0];
+    const fetchCustomer = async () => {
+      if (!identification) return;
 
-      if (customer) {
-        formik.setFieldValue(`${optionNameForm}.name`, customer.firstNames);
-        formik.setFieldValue(`${optionNameForm}.lastName`, customer.lastNames);
-        formik.setFieldValue(`${optionNameForm}.sex`, customer.gender);
-        formik.setFieldValue(`${optionNameForm}.birthdate`, customer.dateBirth);
-        formik.setFieldValue(
-          `${optionNameForm}.phone`,
-          customer.cellPhoneContact
-        );
-        formik.setFieldValue(`${optionNameForm}.mail`, customer.emailContact);
-        formik.setFieldValue(
-          `${optionNameForm}.city`,
-          customer.zone.split("-")[1]
+      try {
+        const customer = await getSearchCustomerByCode(
+          identification,
+          businessUnitPublicCode,
+          true
         );
 
-        setIsAutoCompleted(true);
-        setAutoCompletedId(identification);
+        const data = customer?.generalAttributeClientNaturalPersons?.[0];
+
+        const hasData = customer?.publicCode && data;
+
+        if (hasData && customer.publicCode !== customerData?.publicCode) {
+          formik.setFieldValue(`${optionNameForm}.name`, data.firstNames || "");
+          formik.setFieldValue(
+            `${optionNameForm}.lastName`,
+            data.lastNames || ""
+          );
+          formik.setFieldValue(`${optionNameForm}.sex`, data.gender || "");
+          formik.setFieldValue(
+            `${optionNameForm}.birthdate`,
+            data.dateBirth || ""
+          );
+          formik.setFieldValue(
+            `${optionNameForm}.phone`,
+            data.cellPhoneContact || ""
+          );
+          formik.setFieldValue(
+            `${optionNameForm}.mail`,
+            data.emailContact || ""
+          );
+          formik.setFieldValue(
+            `${optionNameForm}.city`,
+            data.zone?.split("-")[1] || ""
+          );
+
+          setIsAutoCompleted(true);
+        } else {
+          setIsAutoCompleted(false);
+        }
+      } catch (error) {
+        setIsAutoCompleted(false);
       }
-    }
+    };
 
-    if (isAutoCompleted && identification !== autoCompletedId) {
-      setIsAutoCompleted(false);
-      setAutoCompletedId(null);
-    }
+    fetchCustomer();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values[optionNameForm]?.identification]);
 
@@ -210,6 +233,7 @@ export function DisbursementWithInternalAccount(
             formik={formik}
             optionNameForm={optionNameForm}
             isReadOnly={isAutoCompleted}
+            customerData={customerData}
           />
           <Divider dashed />
         </>

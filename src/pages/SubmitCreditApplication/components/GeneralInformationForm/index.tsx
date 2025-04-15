@@ -6,16 +6,18 @@ import {
   typesOfDocuments,
   City,
 } from "@mocks/filing-application/disbursement-general/disbursementgeneral.mock";
+import { ICustomerData } from "@context/CustomerContext/types";
 
 interface IGeneralInformationFormProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formik: any;
   optionNameForm: string;
   isReadOnly?: boolean;
+  customerData?: ICustomerData;
 }
 
 export function GeneralInformationForm(props: IGeneralInformationFormProps) {
-  const { formik, optionNameForm, isReadOnly } = props;
+  const { formik, optionNameForm, isReadOnly, customerData } = props;
 
   return (
     <>
@@ -44,6 +46,13 @@ export function GeneralInformationForm(props: IGeneralInformationFormProps) {
           onBlur={formik.handleBlur}
           fullwidth={true}
           size="compact"
+          status={
+            formik.values[optionNameForm]?.identification ===
+            customerData?.publicCode
+              ? "invalid"
+              : undefined
+          }
+          message="El número de identificación ingresado no puede coincidir con el suyo"
         ></Input>
         <Input
           id={"name"}

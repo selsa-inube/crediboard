@@ -75,7 +75,7 @@ export interface ICustomer {
   fullName: string;
   generalAssociateAttributes: IgeneralAssociateAttributes;
   generalAttributeClientLegalEntities: string;
-  generalAttributeClientNaturalPersons: IGeneralAttributeClientNaturalPersons;
+  generalAttributeClientNaturalPersons: IGeneralAttributeClientNaturalPersons[];
   natureClient: string;
   periodicCustomerIncomes: string;
   publicCode: string;

@@ -182,6 +182,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               optionNameForm="Internal"
               getTotalAmount={getTotalAmount}
               customerData={customerData}
+              businessUnitPublicCode={businessUnitPublicCode}
             />
           )}
           {isSelected === disbursemenTabs.external.id && (
