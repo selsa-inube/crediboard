@@ -25,6 +25,7 @@ import { validationMessages } from "@validations/validationMessages";
 import { AppContext } from "@context/AppContext";
 import { getSearchDocumentById } from "@services/documents/SearchDocumentById";
 import { IDocumentUpload } from "@pages/SubmitCreditApplication/types";
+import { ICustomerData } from "@context/CustomerContext/types";
 
 import {
   StyledContainerClose,
@@ -64,6 +65,7 @@ export interface IListModalProps {
   isViewing?: boolean;
   uploadedFiles?: IDocumentUpload[];
   onlyDocumentReceived?: boolean;
+  customerData?: ICustomerData;
   handleClose: () => void;
   handleSubmit?: () => void;
   onSubmit?: () => void;
@@ -85,6 +87,7 @@ export const ListModal = (props: IListModalProps) => {
     isViewing,
     uploadedFiles,
     onlyDocumentReceived,
+    customerData,
     handleClose,
     handleSubmit,
     onSubmit,
@@ -229,7 +232,7 @@ export const ListModal = (props: IListModalProps) => {
         for (const fileData of uploadedFiles) {
           await saveDocument(
             businessUnitPublicCode,
-            "9ccff734-7df7-46e6-9ea8-f03f9570ab62",
+            customerData?.customerId ?? "",
             fileData.name.split(".").slice(0, -1).join("."),
             fileData.file
           );

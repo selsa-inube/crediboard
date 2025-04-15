@@ -27,6 +27,7 @@ import { get } from "@mocks/utils/dataMock.service";
 import { mockAttachedDocuments } from "@mocks/filing-application/attached-documents/attacheddocuments.mock";
 import { ListModal } from "@components/modals/ListModal";
 import { optionButtons } from "@pages/board/outlets/financialReporting/config";
+import { ICustomerData } from "@context/CustomerContext/types";
 
 import { headers, dataReport } from "./config";
 import { usePagination } from "./utils";
@@ -36,13 +37,15 @@ interface ITableAttachedDocumentsProps {
   uploadedFilesByRow: {
     [key: string]: { id: string; name: string; file: File }[];
   };
+  customerData: ICustomerData;
   setUploadedFilesByRow: (files: {
     [key: string]: { id: string; name: string; file: File }[];
   }) => void;
 }
 
 export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
-  const { isMobile, uploadedFilesByRow, setUploadedFilesByRow } = props;
+  const { isMobile, uploadedFilesByRow, customerData, setUploadedFilesByRow } =
+    props;
 
   const [loading, setLoading] = useState(true);
   const [showAttachment, setShowAttachments] = useState(false);
@@ -293,6 +296,7 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
           }
           setUploadedFiles={handleSetUploadedFiles}
           onlyDocumentReceived={true}
+          customerData={customerData}
         />
       )}
     </Table>

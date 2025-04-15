@@ -226,13 +226,15 @@ export function SubmitCreditApplicationUI(
             )}
           {currentStepsNumber &&
             currentStepsNumber.id ===
-              stepsFilingApplication.attachedDocuments.id && (
+              stepsFilingApplication.attachedDocuments.id &&
+            customerData && (
               <AttachedDocuments
                 isMobile={isMobile}
                 initialValues={formData.attachedDocuments || {}}
                 handleOnChange={(newDocs) =>
                   handleFormChange({ attachedDocuments: newDocs })
                 }
+                customerData={customerData}
               />
             )}
           {currentStepsNumber &&
