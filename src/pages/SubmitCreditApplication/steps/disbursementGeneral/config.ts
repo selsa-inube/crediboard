@@ -52,4 +52,5 @@ export const disbursemenOptionAccount = {
   placeObservation: "Cosas extra que deben tenerse en cuenta.",
   placeOption: "Seleccione una opción",
   valueTurnFail: "El valor a girar con esta forma de desembolso es diferente de $",
+  errorFlagInternal: "Error al obtener cuentas internas",
 };
