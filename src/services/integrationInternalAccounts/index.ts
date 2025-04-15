@@ -7,7 +7,8 @@ import {
 import { IAllInternal } from "./types";
 
 const getAllInternalAccounts = async (
-  customerCode: string
+  customerCode: string,
+  businessUnitPublicCode: string
 ): Promise<IAllInternal[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
@@ -41,11 +42,12 @@ const getAllInternalAccounts = async (
         throw new Error("No hay datos disponibles.");
       }
 
+      console.log(businessUnitPublicCode)
       const data = await res.json();
 
       if (!res.ok) {
         throw {
-          message: "Error al obtener los datos de la cuenta.",
+          message: "Error al obtener los datos de las cuentas internas.",
           status: res.status,
           data,
         };
@@ -60,13 +62,13 @@ const getAllInternalAccounts = async (
       console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
         throw new Error(
-          "Todos los intentos fallaron. No se pudo obtener la tarea."
+          "Todos los intentos fallaron. No fue posible establecer comunicación con el servidor"
         );
       }
     }
   }
 
-  throw new Error("No se pudo obtener la tarea después de varios intentos.");
+  throw new Error("No fue posible establecer comunicación con el servidor.");
 };
 
 export { getAllInternalAccounts };

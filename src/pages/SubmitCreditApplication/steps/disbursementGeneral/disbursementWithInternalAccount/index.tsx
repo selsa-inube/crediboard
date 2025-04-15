@@ -24,6 +24,7 @@ interface IDisbursementWithInternalAccountProps {
   formik: any;
   optionNameForm: string;
   identificationNumber: string;
+  businessUnitPublicCode: string;
   onFormValid: (isValid: boolean) => void;
   handleOnChange: (values: IDisbursementGeneral) => void;
   getTotalAmount: () => number;
@@ -38,6 +39,7 @@ export function DisbursementWithInternalAccount(
     formik,
     optionNameForm,
     identificationNumber,
+    businessUnitPublicCode,
     getTotalAmount,
     onFormValid,
     handleOnChange,
@@ -118,7 +120,10 @@ export function DisbursementWithInternalAccount(
   useEffect(() => {
     async function fetchAccounts() {
       try {
-        const response = await getAllInternalAccounts(identificationNumber);
+        const response = await getAllInternalAccounts(
+          identificationNumber,
+          businessUnitPublicCode
+        );
         const options = response.map((account) => ({
           id: account.savingProductNumber,
           label: `${account.productDescription} - ${account.savingProductCode}`,
