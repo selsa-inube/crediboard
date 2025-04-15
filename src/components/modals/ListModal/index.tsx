@@ -32,6 +32,7 @@ import {
   StyledModal,
 } from "./styles";
 import { DocumentViewer } from "../DocumentViewer";
+import { listModalData } from "./config";
 
 export interface IOptionButtons {
   label: string;
@@ -120,7 +121,7 @@ export const ListModal = (props: IListModalProps) => {
     const { data, icon, onDelete, onPreview } = props;
 
     if (!data || !Array.isArray(data) || data.length === 0) {
-      return <Text>No hay documentos adjuntos.</Text>;
+      return <Text>{listModalData.noDocuments}</Text>;
     }
 
     return (

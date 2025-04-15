@@ -29,7 +29,7 @@ export function ContactInformation(props: IContactInformationProps) {
       .required(),
     phone: Yup.string()
       .matches(/^(\+\d{1,3})?\d{7,14}$/)
-      .required("el pepe"),
+      .required(""),
   });
 
   const formik = useFormik({

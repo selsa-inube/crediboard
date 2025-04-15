@@ -92,8 +92,8 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
 
   const handleFlag = () => {
     addFlag({
-      title: "Eliminar",
-      description: "Se ha elimindado el archivo",
+      title: `${dataReport.titleFlagDelete}`,
+      description: `${dataReport.descriptionFlagDelete}`,
       appearance: "success",
       duration: 5000,
     });
