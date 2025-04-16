@@ -53,6 +53,8 @@ export function DisbursementWithInternalAccount(
   const prevValues = useRef(formik.values[optionNameForm]);
 
   const [isAutoCompleted, setIsAutoCompleted] = useState(false);
+  const [currentIdentification, setCurrentIdentification] =
+    useState(identificationNumber);
   const [accountOptions, setAccountOptions] = useState<
     { id: string; label: string; value: string }[]
   >([]);
@@ -142,6 +144,7 @@ export function DisbursementWithInternalAccount(
         const hasData = customer?.publicCode && data;
 
         if (hasData && customer.publicCode !== customerData?.publicCode) {
+          setCurrentIdentification(identification);
           formik.setFieldValue(`${optionNameForm}.name`, data.firstNames || "");
           formik.setFieldValue(
             `${optionNameForm}.lastName`,
@@ -168,6 +171,7 @@ export function DisbursementWithInternalAccount(
           setIsAutoCompleted(true);
         } else {
           setIsAutoCompleted(false);
+          setCurrentIdentification(identificationNumber);
         }
       } catch (error) {
         setIsAutoCompleted(false);
@@ -182,7 +186,7 @@ export function DisbursementWithInternalAccount(
     async function fetchAccounts() {
       try {
         const response = await getAllInternalAccounts(
-          identificationNumber,
+          currentIdentification,
           businessUnitPublicCode
         );
         const options = response.map((account) => ({
@@ -199,7 +203,12 @@ export function DisbursementWithInternalAccount(
 
     fetchAccounts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [identificationNumber]);
+  }, [currentIdentification, businessUnitPublicCode]);
+
+  useEffect(() => {
+    formik.setFieldValue(`${optionNameForm}.account`, "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIdentification]);
 
   return (
     <Stack
