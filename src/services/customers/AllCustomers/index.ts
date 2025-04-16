@@ -8,8 +8,9 @@ import { ICustomer } from "./types";
 
 const getSearchCustomerByCode = async (
   publicCode: string,
-  businessUnitPublicCode: string
-): Promise<ICustomer> => {
+  businessUnitPublicCode: string,
+  silent = false
+): Promise<ICustomer | null> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
   const queryParams = new URLSearchParams({
@@ -60,16 +61,18 @@ const getSearchCustomerByCode = async (
 
       return data;
     } catch (error) {
-      console.error(`Intento ${attempt} fallido:`, error);
-      if (attempt === maxRetries) {
-        throw new Error(
-          "Todos los intentos fallaron. No se pudo obtener la tarea."
-        );
+      if (!silent) {
+        console.error(`Intento ${attempt} fallido:`, error);
+        if (attempt === maxRetries) {
+          throw new Error(
+            "Todos los intentos fallaron. No se pudo obtener la tarea."
+          );
+        }
       }
     }
   }
 
-  throw new Error("No se pudo obtener la tarea después de varios intentos.");
+  return null;
 };
 
 export { getSearchCustomerByCode };

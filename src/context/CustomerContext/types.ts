@@ -11,6 +11,9 @@ export interface ICustomerData {
     lastNames: string;
     emailContact: string;
     cellPhoneContact: string;
+    gender: string;
+    dateBirth: string;
+    zone: string;
   }[];
   generalAssociateAttributes: {
     affiliateSeniorityDate: string;

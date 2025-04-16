@@ -16,6 +16,8 @@ import {
   disbursemenOptionAccount,
 } from "@pages/SubmitCreditApplication/steps/disbursementGeneral/config";
 import { GeneralInformationForm } from "@pages/SubmitCreditApplication/components/GeneralInformationForm";
+import { ICustomerData } from "@context/CustomerContext/types";
+import { getSearchCustomerByCode } from "@services/customers/AllCustomers";
 import { getAllInternalAccounts } from "@services/integrationInternalAccounts";
 
 interface IDisbursementWithInternalAccountProps {
@@ -26,6 +28,7 @@ interface IDisbursementWithInternalAccountProps {
   optionNameForm: string;
   identificationNumber: string;
   businessUnitPublicCode: string;
+  customerData?: ICustomerData;
   onFormValid: (isValid: boolean) => void;
   handleOnChange: (values: IDisbursementGeneral) => void;
   getTotalAmount: () => number;
@@ -41,12 +44,17 @@ export function DisbursementWithInternalAccount(
     optionNameForm,
     identificationNumber,
     businessUnitPublicCode,
+    customerData,
     getTotalAmount,
     onFormValid,
     handleOnChange,
   } = props;
 
   const prevValues = useRef(formik.values[optionNameForm]);
+
+  const [isAutoCompleted, setIsAutoCompleted] = useState(false);
+  const [currentIdentification, setCurrentIdentification] =
+    useState(identificationNumber);
   const [accountOptions, setAccountOptions] = useState<
     { id: string; label: string; value: string }[]
   >([]);
@@ -119,10 +127,66 @@ export function DisbursementWithInternalAccount(
   }, [formik.values[optionNameForm]?.amount]);
 
   useEffect(() => {
+    const identification = formik.values[optionNameForm]?.identification;
+
+    const fetchCustomer = async () => {
+      if (!identification) return;
+
+      try {
+        const customer = await getSearchCustomerByCode(
+          identification,
+          businessUnitPublicCode,
+          true
+        );
+
+        const data = customer?.generalAttributeClientNaturalPersons?.[0];
+
+        const hasData = customer?.publicCode && data;
+
+        if (hasData && customer.publicCode !== customerData?.publicCode) {
+          setCurrentIdentification(identification);
+          formik.setFieldValue(`${optionNameForm}.name`, data.firstNames || "");
+          formik.setFieldValue(
+            `${optionNameForm}.lastName`,
+            data.lastNames || ""
+          );
+          formik.setFieldValue(`${optionNameForm}.sex`, data.gender || "");
+          formik.setFieldValue(
+            `${optionNameForm}.birthdate`,
+            data.dateBirth || ""
+          );
+          formik.setFieldValue(
+            `${optionNameForm}.phone`,
+            data.cellPhoneContact || ""
+          );
+          formik.setFieldValue(
+            `${optionNameForm}.mail`,
+            data.emailContact || ""
+          );
+          formik.setFieldValue(
+            `${optionNameForm}.city`,
+            data.zone?.split("-")[1] || ""
+          );
+
+          setIsAutoCompleted(true);
+        } else {
+          setIsAutoCompleted(false);
+          setCurrentIdentification(identificationNumber);
+        }
+      } catch (error) {
+        setIsAutoCompleted(false);
+      }
+    };
+
+    fetchCustomer();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.values[optionNameForm]?.identification]);
+
+  useEffect(() => {
     async function fetchAccounts() {
       try {
         const response = await getAllInternalAccounts(
-          identificationNumber,
+          currentIdentification,
           businessUnitPublicCode
         );
         const options = response.map((account) => ({
@@ -139,7 +203,12 @@ export function DisbursementWithInternalAccount(
 
     fetchAccounts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [identificationNumber]);
+  }, [currentIdentification, businessUnitPublicCode]);
+
+  useEffect(() => {
+    formik.setFieldValue(`${optionNameForm}.account`, "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIdentification]);
 
   return (
     <Stack
@@ -220,6 +289,8 @@ export function DisbursementWithInternalAccount(
           <GeneralInformationForm
             formik={formik}
             optionNameForm={optionNameForm}
+            isReadOnly={isAutoCompleted}
+            customerData={customerData}
           />
           <Divider dashed />
         </>
