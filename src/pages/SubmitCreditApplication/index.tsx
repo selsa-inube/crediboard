@@ -425,6 +425,7 @@ export function SubmitCreditApplication() {
         sentModal={sentModal}
         approvedRequestModal={approvedRequestModal}
         numberProspectCode={prospectCode || ""}
+        businessUnitPublicCode={businessUnitPublicCode}
         setApprovedRequestModal={setApprovedRequestModal}
         setSentModal={setSentModal}
         handleFormChange={handleFormChange}

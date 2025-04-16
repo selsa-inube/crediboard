@@ -272,6 +272,7 @@ export interface IProspect {
   consolidated_credit: IConsolidatedCredit[];
   credit_product: ICreditProductProspect[];
   outlay: IOutlay[];
+  borrowers?: unknown;
 }
 
 export interface ILineCredit {

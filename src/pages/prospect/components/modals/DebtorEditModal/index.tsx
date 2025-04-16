@@ -7,7 +7,7 @@ import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 import {
   BorrowerProperty,
-  IIncomeInitial,
+  IBorrower,
   IIncomeSources,
 } from "@services/incomeSources/types";
 import { getPropertyValue } from "@pages/SubmitCreditApplication/util";
@@ -18,7 +18,7 @@ import { DataDebtor } from "./dataDebtor";
 interface IDebtorEditModalProps {
   handleClose: () => void;
   isMobile: boolean;
-  initialValues: IIncomeInitial;
+  initialValues: IBorrower;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onUpdate?: any;
 }
@@ -103,7 +103,7 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
   ): BorrowerProperty[] => {
     const result: BorrowerProperty[] = [];
 
-    const duplicates = ["FinancialObligation"]; 
+    const duplicates = ["FinancialObligation"];
     const seen = new Map<string, BorrowerProperty>();
 
     original.forEach((prop) => {
@@ -116,7 +116,7 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
 
     updates.forEach((prop) => {
       if (duplicates.includes(prop.property_name)) {
-        result.push(prop); 
+        result.push(prop);
       } else {
         seen.set(prop.property_name, prop);
       }
@@ -130,7 +130,7 @@ export function DebtorEditModal(props: IDebtorEditModalProps) {
 
     const updatedProps = convertToPropertyArray(editedIncomeData ?? incomeData);
 
-    const updatedBorrower: IIncomeInitial = {
+    const updatedBorrower: IBorrower = {
       ...initialValues,
       borrower_properties: mergeProperties(
         initialValues.borrower_properties,

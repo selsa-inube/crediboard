@@ -18,7 +18,7 @@ export interface BorrowerProperty {
   property_value: string;
 }
 
-export interface IIncomeInitial {
+export interface IBorrower {
   borrower_identification_number: string;
   borrower_identification_type: string;
   borrower_name: string;

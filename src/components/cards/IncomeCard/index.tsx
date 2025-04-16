@@ -71,8 +71,7 @@ export function IncomeCard(props: IIncomeCardProps) {
           {!disabled && (
             <>
               {values.length === 0
-                ? 
-                  Array.from({ length: 3 }).map((_, index) => (
+                ? Array.from({ length: 3 }).map((_, index) => (
                     <SkeletonLine key={index} />
                   ))
                 : labels.map((label, index) => (
@@ -90,9 +89,9 @@ export function IncomeCard(props: IIncomeCardProps) {
                           true,
                           ""
                         )}
-                        onChange={(e) => {
-                          handleChangeWithCurrency(formik, e);
-                          onValueChange?.(index, e.target.value);
+                        onChange={(event) => {
+                          handleChangeWithCurrency(formik, event);
+                          onValueChange?.(index, event.target.value);
                         }}
                         size="compact"
                         disabled={disabled}

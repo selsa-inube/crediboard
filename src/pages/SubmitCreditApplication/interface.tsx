@@ -36,6 +36,7 @@ interface SubmitCreditApplicationUIProps {
   approvedRequestModal: boolean;
   numberProspectCode: string;
   dataHeader: { name: string; status: string };
+  businessUnitPublicCode: string;
   setSentModal: React.Dispatch<React.SetStateAction<boolean>>;
   setApprovedRequestModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleFormChange: (updatedValues: Partial<FormData>) => void;
@@ -65,6 +66,7 @@ export function SubmitCreditApplicationUI(
     numberProspectCode,
     sentModal,
     approvedRequestModal,
+    businessUnitPublicCode,
     setSentModal,
     setApprovedRequestModal,
     handleFormChange,
@@ -165,6 +167,7 @@ export function SubmitCreditApplicationUI(
                   handleFormChange({ borrowerData: values })
                 }
                 data={data}
+                businessUnitPublicCode={businessUnitPublicCode}
               />
             )}
           {currentStepsNumber &&

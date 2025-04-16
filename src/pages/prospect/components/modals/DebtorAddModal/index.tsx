@@ -12,9 +12,10 @@ interface DebtorAddModalProps {
   onSubmit: () => void;
   handleClose: () => void;
   title: string;
+  businessUnitPublicCode?: string;
 }
 export function DebtorAddModal(props: DebtorAddModalProps) {
-  const { title, handleClose } = props;
+  const { title, handleClose, businessUnitPublicCode } = props;
 
   const [currentStep, setCurrentStep] = useState<number>(
     stepsAddBorrower.generalInformation.id
@@ -48,7 +49,7 @@ export function DebtorAddModal(props: DebtorAddModalProps) {
     });
   };
 
-  const debtorId = formData.personalInfo.documentNumber.toString();
+  const borrowerId = formData.personalInfo.documentNumber.toString();
 
   function capitalizeKeysExceptSome<T>(
     obj: Record<string, unknown>,
@@ -68,11 +69,14 @@ export function DebtorAddModal(props: DebtorAddModalProps) {
   }
 
   useEffect(() => {
-    if (!debtorId) return;
+    if (!borrowerId) return;
 
     const fetchIncomeData = async () => {
       try {
-        const response = await getIncomeSourcesById(debtorId);
+        const response = await getIncomeSourcesById(
+          borrowerId,
+          businessUnitPublicCode || ""
+        );
         const formattedData = capitalizeKeysExceptSome<IIncomeSources>(
           response as unknown as Record<string, unknown>,
           ["name", "surname", "identificationNumber", "identificationType"]
@@ -105,7 +109,7 @@ export function DebtorAddModal(props: DebtorAddModalProps) {
 
     fetchIncomeData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debtorId]);
+  }, [borrowerId]);
 
   const isMobile = useMediaQuery("(max-width:880px)");
 

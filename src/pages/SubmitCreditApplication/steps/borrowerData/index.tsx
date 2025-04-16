@@ -20,16 +20,17 @@ import { currencyFormat } from "@utils/formatData/currency";
 import { getPropertyValue, getTotalFinancialObligations } from "../../util";
 import { BorrowerProperty } from "@services/incomeSources/types";
 import { IBorrowerData } from "@pages/SubmitCreditApplication/types";
+import { IProspect } from "@services/types";
 
 interface borrowersProps {
   onFormValid: (isValid: boolean) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnChange: (values: any) => void;
   onUpdate?: (updatedBorrower: Borrower) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
+  data: IProspect;
   initialValues: IBorrowerData;
   isMobile: boolean;
+  businessUnitPublicCode: string;
 }
 
 interface Borrower {
@@ -42,7 +43,7 @@ interface Borrower {
   };
 }
 export function Borrowers(props: borrowersProps) {
-  const { handleOnChange, initialValues, isMobile, data } = props;
+  const { handleOnChange, initialValues, isMobile, data, businessUnitPublicCode } = props;
 
   const dataDebtorDetail = Array.isArray(data.borrowers)
     ? [...data.borrowers].sort((a, b) => {
@@ -154,6 +155,7 @@ export function Borrowers(props: borrowersProps) {
               onSubmit={() => setIsModalAdd(false)}
               handleClose={() => setIsModalAdd(false)}
               title={dataOption.addButton}
+              businessUnitPublicCode={businessUnitPublicCode}
             />
           )}
           {isModalView && selectedBorrower && (

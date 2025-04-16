@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { MdCached, MdOutlineEdit } from "react-icons/md";
 import { Stack, Text, Grid } from "@inubekit/inubekit";
 import { useMediaQuery } from "@inubekit/hooks";
@@ -40,22 +40,48 @@ export function SourceIncome(props: ISourceIncomeProps) {
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
-  const [values, setValues] = useState<IIncome | null>(null);
-  const initialValuesRef = useRef<IIncome | null>(null);
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
+  const dataValues = data
+    ? {
+        borrower_id: data.identificationNumber,
+        borrower: `${data.name} ${data.surname}`,
+        capital: [
+          (data.Leases || 0).toString(),
+          (data.Dividends ?? 0).toString(),
+          (data.FinancialIncome ?? 0).toString(),
+        ],
+        employment: [
+          (data.PeriodicSalary ?? 0).toString(),
+          (data.OtherNonSalaryEmoluments ?? 0).toString(),
+          (data.PensionAllowances ?? 0).toString(),
+        ],
+        businesses: [
+          (data.ProfessionalFees ?? 0).toString(),
+          (data.PersonalBusinessUtilities ?? 0).toString(),
+        ],
+      }
+    : null;
+
+  const [borrowerIncome, setBorrowerIncome] = useState<IIncome | null>(
+    dataValues
+  );
+  const initialValuesRef = useRef<IIncome | null>(dataValues);
+
   const totalSum = () => {
     const sumCapital =
-      values?.capital.reduce((acc, val) => acc + parseCurrencyString(val), 0) ??
-      0;
+      borrowerIncome?.capital.reduce(
+        (acc, val) => acc + parseCurrencyString(val),
+        0
+      ) ?? 0;
     const sumEmployment =
-      values?.employment.reduce(
+      borrowerIncome?.employment.reduce(
         (acc, val) => acc + parseCurrencyString(val),
         0
       ) ?? 0;
     const sumBusinesses =
-      values?.businesses.reduce(
+      borrowerIncome?.businesses.reduce(
         (acc, val) => acc + parseCurrencyString(val),
         0
       ) ?? 0;
@@ -63,51 +89,9 @@ export function SourceIncome(props: ISourceIncomeProps) {
     return sumCapital + sumEmployment + sumBusinesses;
   };
 
-  const dataValues = {
-    borrower_id: data!.identificationNumber,
-    borrower: `${data!.name} ${data!.surname}`,
-    capital: [
-      (data!.Leases || 0).toString(),
-      (data!.Dividends ?? 0).toString(),
-      (data!.FinancialIncome ?? 0).toString(),
-    ],
-    employment: [
-      (data!.PeriodicSalary ?? 0).toString(),
-      (data!.OtherNonSalaryEmoluments ?? 0).toString(),
-      (data!.PensionAllowances ?? 0).toString(),
-    ],
-    businesses: [
-      (data!.ProfessionalFees ?? 0).toString(),
-      (data!.PersonalBusinessUtilities ?? 0).toString(),
-    ],
-  };
-
-  useEffect(() => {
-    const fetchIncomeData = async () => {
-      try {
-        if (data) {
-          setValues(dataValues);
-        }
-      } catch (error) {
-        console.error("Error fetching income data:", error);
-      }
-    };
-
-    fetchIncomeData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
-
-  useEffect(() => {
-    if (data) {
-      initialValuesRef.current = dataValues;
-      setValues(dataValues);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
-
   const handleRestore = () => {
     if (initialValuesRef.current) {
-      setValues(initialValuesRef.current);
+      setBorrowerIncome(initialValuesRef.current);
     }
     setIsOpenModal(false);
   };
@@ -139,9 +123,9 @@ export function SourceIncome(props: ISourceIncomeProps) {
     newValue: string
   ) => {
     const cleanedValue = parseCurrencyString(newValue);
-    const cleanedString = cleanedValue.toString(); 
+    const cleanedString = cleanedValue.toString();
 
-    setValues((prev) => {
+    setBorrowerIncome((prev) => {
       if (!prev) return null;
 
       const updated = {
@@ -179,12 +163,12 @@ export function SourceIncome(props: ISourceIncomeProps) {
                   {incomeCardData.borrower}
                 </Text>
                 <Text type="title" size="medium">
-                  {values?.borrower}
+                  {borrowerIncome?.borrower}
                 </Text>
               </Stack>
             )}
             {isMobile && (
-              <CardGray label="Deudor" placeHolder={values?.borrower} />
+              <CardGray label="Deudor" placeHolder={borrowerIncome?.borrower} />
             )}
             <Stack
               width={!isMobile ? "end" : "auto"}
@@ -237,22 +221,22 @@ export function SourceIncome(props: ISourceIncomeProps) {
             gap="16px"
             autoRows="auto"
           >
-            {values && (
+            {borrowerIncome && (
               <>
                 <IncomeEmployment
-                  values={values.employment}
+                  values={borrowerIncome.employment}
                   ShowSupport={ShowSupport}
                   disabled={disabled}
                   onValueChange={handleIncomeChange.bind(null, "employment")}
                 />
                 <IncomeCapital
-                  values={values.capital}
+                  values={borrowerIncome.capital}
                   ShowSupport={ShowSupport}
                   disabled={disabled}
                   onValueChange={handleIncomeChange.bind(null, "capital")}
                 />
                 <MicroBusinesses
-                  values={values.businesses}
+                  values={borrowerIncome.businesses}
                   ShowSupport={ShowSupport}
                   disabled={disabled}
                   onValueChange={handleIncomeChange.bind(null, "businesses")}
