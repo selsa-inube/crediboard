@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import { useEffect, useContext, useState, useRef, useCallback } from "react";
-import { Tabs } from "@inubekit/tabs";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Tabs } from "@inubekit/inubekit";
 import { Fieldset } from "@components/data/Fieldset";
 import { postBusinessUnitRules } from "@services/businessUnitRules";
 import { AppContext } from "@context/AppContext";
@@ -23,6 +22,7 @@ interface IDisbursementGeneralProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
   isSelected: string;
+  identificationNumber: string;
   onFormValid: (isValid: boolean) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnChange: (values: any) => void;
@@ -41,6 +41,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
     initialValues,
     isSelected,
     data,
+    identificationNumber,
     onFormValid,
     handleOnChange,
     handleTabChange,
@@ -182,6 +183,8 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               formik={formik}
               optionNameForm="Internal"
               getTotalAmount={getTotalAmount}
+              identificationNumber={identificationNumber}
+              businessUnitPublicCode={businessUnitPublicCode}
             />
           )}
           {isSelected === disbursemenTabs.external.id && (

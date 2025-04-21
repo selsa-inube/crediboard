@@ -9,7 +9,7 @@ export const ruleConfig: Record<string, RuleBuilder> = {
       { condition: "LoanAmount", value: data.LoanAmount },
     ],
   }),
-  HumanValidationRequirement: (data) => ({
+  ValidationGuarantee: (data) => ({
     ruleName: "HumanValidationRequirement",
     conditions: [
       { condition: "LineOfCredit", value: data.LineOfCredit },
@@ -17,6 +17,16 @@ export const ruleConfig: Record<string, RuleBuilder> = {
       //{ condition: "PrimaryIncomeType", value: data.PrimaryIncomeType },
       { condition: "LoanAmount", value: data.LoanAmount },
       //{ condition: "AffiliateSeniority", value: data.AffiliateSeniority },
+    ],
+  }),
+  ValidationCoBorrowwe: (data) => ({
+    ruleName: "HumanValidationRequirement",
+    conditions: [
+      { condition: "LineOfCredit", value: data.LineOfCredit },
+      { condition: "ClientType", value: data.ClientType },
+      //{ condition: "PrimaryIncomeType", value: data.PrimaryIncomeType },
+      { condition: "LoanAmount", value: data.LoanAmount },
+      { condition: "AffiliateSeniority", value: data.AffiliateSeniority },
     ],
   }),
 };

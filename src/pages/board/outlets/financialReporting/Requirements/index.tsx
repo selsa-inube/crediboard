@@ -20,7 +20,7 @@ import {
   getAcctionMobile,
 } from "./config";
 import { AprovalsModal } from "./AprovalsModal";
-import { errorObserver, traceObserver } from "../config";
+import { errorObserver, traceObserver, errorMessages } from "../config";
 
 interface IRequirementsData {
   id: string;
@@ -30,7 +30,7 @@ interface IRequirementsData {
 }
 
 export interface IRequirementsProps {
-  isMobile: boolean;
+  isMobile?: boolean;
   id: string;
   user: string;
 }
@@ -168,7 +168,7 @@ export const Requirements = (props: IRequirementsProps) => {
   return (
     <>
       <Fieldset
-        title="Requisitos"
+        title={errorMessages.Requirements.titleCard}
         activeButton={dataButton}
         heightFieldset="100%"
         hasTable={!error}
@@ -176,12 +176,9 @@ export const Requirements = (props: IRequirementsProps) => {
         {error ? (
           <ItemNotFound
             image={userNotFound}
-            title="Error al cargar datos"
-            description={
-              "Error al intentar conectar con el servicio de trazabilidad."
-            }
-            buttonDescription="Volver a intentar"
-            route="#"
+            title={errorMessages.Requirements.title}
+            description={errorMessages.Requirements.description}
+            buttonDescription={errorMessages.Requirements.button}
             onRetry={() => setError(false)}
           />
         ) : (

@@ -15,10 +15,11 @@ export interface CardValuesProps {
   }[];
   isMobile: boolean;
   onIconClick?: () => void;
-  handleView: () => void;
-  handleEdit: () => void;
+  handleView?: () => void;
+  handleEdit?: () => void;
   firstIcon?: React.ReactNode;
   showIcon?: boolean;
+  showMiniIcons?: boolean;
   showSummaryFirstItem?: boolean;
 }
 
@@ -31,6 +32,7 @@ export function CardValues(props: CardValuesProps) {
     handleEdit = () => {},
     handleView = () => {},
     showIcon = true,
+    showMiniIcons = true,
     showSummaryFirstItem = false,
   } = props;
 
@@ -64,7 +66,7 @@ export function CardValues(props: CardValuesProps) {
                 <Text size="large" weight="bold" appearance="dark" type="body">
                   {parseCunstomFormat(item.amount)}
                 </Text>
-                {item.miniIcon && (
+                {item.miniIcon && showMiniIcons && (
                   <StyledPrint>
                     <Icon
                       appearance="primary"

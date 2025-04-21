@@ -1,4 +1,4 @@
-import { Stack } from "@inubekit/stack";
+import { Stack } from "@inubekit/inubekit";
 
 import { CardGray } from "@components/cards/CardGray";
 import { BaseModal } from "@components/modals/baseModal";
@@ -8,7 +8,7 @@ import { dataTrace } from "./config";
 export interface ITraceDetailsModalProps {
   handleClose: () => void;
   data: { evaluation: string; description: string };
-  isMobile: boolean;
+  isMobile?: boolean;
 }
 
 export function TraceDetailsModal(props: ITraceDetailsModalProps) {

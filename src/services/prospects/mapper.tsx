@@ -32,7 +32,6 @@ const mapProspectEntity = (
     credit_products: data.credit_products as ICreditProduct[],
     outlays: data.outlays as IOutlay[],
   };
-  console.log(buildResend, "buildResend");
   return buildResend;
 };
 

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Stack } from "@inubekit/inubekit";
-import { Tabs } from "@inubekit/tabs";
+import { Stack, Tabs } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { CardBorrower } from "@components/cards/CardBorrower";
@@ -46,9 +45,14 @@ export function OfferedGuaranteeModal(props: IOfferedGuaranteeModalProps) {
         {currentTab === "borrower" && (
           <ScrollableContainer>
             {mockGuaranteeBorrower.map((borrower, index) => (
-              <Stack justifyContent="center" margin="8px 0px" width="100%">
+              <Stack
+                key={index}
+                justifyContent="center"
+                margin="8px 0px"
+                width="100%"
+              >
                 <CardBorrower
-                  key={index}
+                  key={borrower.id}
                   title={`${dataGuarantee.borrower} ${index + 1}`}
                   name={borrower.name}
                   lastName={borrower.lastName}

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Stack } from "@inubekit/inubekit";
-import { Tabs } from "@inubekit/tabs";
+import { Stack, Tabs } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { IDebtorDetail } from "@pages/SubmitCreditApplication/types";
@@ -47,7 +46,10 @@ export function DebtorDetailsModal(props: IDebtorDetailsModalProps) {
           <IncomeDebtor initialValues={initialValues} />
         )}
         {currentTab === "obligations" && (
-          <TableFinancialObligations initialValues={initialValues} />
+          <TableFinancialObligations
+            initialValues={initialValues}
+            showButtons={false}
+          />
         )}
       </Stack>
     </BaseModal>

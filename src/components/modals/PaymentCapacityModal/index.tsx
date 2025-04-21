@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useMediaQuery } from "@inubekit/hooks";
+import { useMediaQuery } from "@inubekit/inubekit";
+
 import { PaymentCapacityInterface } from "./interface";
 
 export interface PaymentCapacityProps {

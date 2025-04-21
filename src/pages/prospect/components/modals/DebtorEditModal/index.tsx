@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Stack } from "@inubekit/inubekit";
-import { Tabs } from "@inubekit/tabs";
+import { Stack, Tabs } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";

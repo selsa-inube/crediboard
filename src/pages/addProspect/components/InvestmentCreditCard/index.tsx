@@ -1,6 +1,4 @@
-import { Divider } from "@inubekit/divider";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
+import { Divider, Text, Stack } from "@inubekit/inubekit";
 
 import { currencyFormat } from "@utils/formatData/currency";
 

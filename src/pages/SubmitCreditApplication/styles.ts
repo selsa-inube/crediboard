@@ -13,5 +13,5 @@ export const StyledContainerAssisted = styled.div<IStyledContainerAssisted>`
 
 export const StyledArrowBack = styled.div`
   cursor: pointer;
-  width: 300px;
+  width: 500px;
 `;

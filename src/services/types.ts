@@ -273,6 +273,7 @@ export interface IProspect {
   credit_product: ICreditProductProspect[];
   outlay: IOutlay[];
   borrowers?: unknown;
+  requested_amount?: number;
 }
 
 export interface ILineCredit {

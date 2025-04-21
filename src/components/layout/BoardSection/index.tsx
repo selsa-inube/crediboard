@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { MdOutlineChevronRight } from "react-icons/md";
-import { Stack, Icon, Text, useFlag } from "@inubekit/inubekit";
-import { useMediaQueries } from "@inubekit/hooks";
+import {
+  Stack,
+  Icon,
+  Text,
+  useFlag,
+  useMediaQueries,
+} from "@inubekit/inubekit";
 
 import { SummaryCard } from "@components/cards/SummaryCard";
 import { ICreditRequestPinned, ICreditRequest } from "@services/types";

@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { MdCached, MdOutlineEdit } from "react-icons/md";
-import { Stack, Text, Grid } from "@inubekit/inubekit";
-import { useMediaQuery } from "@inubekit/hooks";
+import { Stack, Text, Grid, useMediaQuery } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
 
 import { incomeCardData } from "@components/cards/IncomeCard/config";

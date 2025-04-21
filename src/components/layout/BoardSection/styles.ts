@@ -1,6 +1,5 @@
 import styled from "styled-components";
-
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 import { SectionBackground, SectionOrientation } from "./types";
 interface IStyledBoardSection {
@@ -14,7 +13,7 @@ interface IStyledCollapseIcon {
   $disabledCollapse: boolean;
 }
 
-const StyledBoardSection = styled.div<IStyledBoardSection>`
+export const StyledBoardSection = styled.div<IStyledBoardSection>`
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -36,7 +35,7 @@ const StyledBoardSection = styled.div<IStyledBoardSection>`
   }
 `;
 
-const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
+export const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   display: flex;
   transition: all 500ms ease;
   transform: ${({ $collapse }) =>
@@ -44,5 +43,3 @@ const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   cursor: ${({ $disabledCollapse }) =>
     $disabledCollapse ? "not-allowed" : "pointer"};
 `;
-
-export { StyledBoardSection, StyledCollapseIcon };

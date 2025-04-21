@@ -368,6 +368,7 @@ export const SummaryProspectCredit = [
         title: "Gastos descontables",
         miniIcon: true,
         icon: <MdOutlineRemoveRedEye />,
+        modal: "view",
         operation: "=",
       },
       {
@@ -404,33 +405,33 @@ export const menuOptions = (
   handleOpenModal: (modalName: string) => void,
   visibleExtraPayments: boolean
 ): IOptions[] => [
-    {
-      title: "Origen de cupo",
-      onClick: () => handleOpenModal("creditLimit"),
-      icon: <MdOutlineBalance />,
-      visible: true,
+  {
+    title: "Origen de cupo",
+    onClick: () => handleOpenModal("creditLimit"),
+    icon: <MdOutlineBalance />,
+    visible: true,
+  },
+  {
+    title: "Fuentes de ingreso",
+    onClick: () => handleOpenModal("IncomeModal"),
+    icon: <MdOutlineAccountBalanceWallet />,
+    visible: true,
+  },
+  {
+    title: "Obligaciones financieras",
+    onClick: () => handleOpenModal("reportCreditsModal"),
+    icon: <MdOutlineMonetizationOn />,
+    visible: true,
+  },
+  {
+    title: "Pagos extras",
+    onClick: () => {
+      handleOpenModal("extraPayments");
     },
-    {
-      title: "Fuentes de ingreso",
-      onClick: () => handleOpenModal("IncomeModal"),
-      icon: <MdOutlineAccountBalanceWallet />,
-      visible: true,
-    },
-    {
-      title: "Obligaciones financieras",
-      onClick: () => handleOpenModal("reportCreditsModal"),
-      icon: <MdOutlineMonetizationOn />,
-      visible: true,
-    },
-    {
-      title: "Pagos extras",
-      onClick: () => {
-        handleOpenModal("extraPayments");
-      },
-      icon: <MdOutlinePayments />,
-      visible: visibleExtraPayments,
-    },
-  ];
+    icon: <MdOutlinePayments />,
+    visible: visibleExtraPayments,
+  },
+];
 
 export const tittleOptions = {
   titleCreditId: "No. Rad.: ",
