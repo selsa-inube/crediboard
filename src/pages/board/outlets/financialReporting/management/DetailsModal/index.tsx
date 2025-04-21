@@ -1,5 +1,4 @@
-import { Stack } from "@inubekit/stack";
-import { useMediaQuery } from "@inubekit/hooks";
+import { Stack, useMediaQuery } from "@inubekit/inubekit";
 
 import { CardGray } from "@components/cards/CardGray";
 import { validationMessages } from "@validations/validationMessages";

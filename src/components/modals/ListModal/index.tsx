@@ -1,26 +1,40 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import { createPortal } from "react-dom";
-import { MdClear, MdDeleteOutline } from "react-icons/md";
+import {
+  MdClear,
+  MdDeleteOutline,
+  MdOutlineRemoveRedEye,
+} from "react-icons/md";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import { Blanket } from "@inubekit/blanket";
 import { Button } from "@inubekit/button";
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
-import { useMediaQuery } from "@inubekit/hooks";
-import { Icon } from "@inubekit/icon";
-import { useFlag } from "@inubekit/flag";
-import { Divider } from "@inubekit/divider";
+import {
+  Stack,
+  Icon,
+  Text,
+  useFlag,
+  useMediaQuery,
+  Divider,
+} from "@inubekit/inubekit";
 
 import { StyledItem } from "@pages/board/outlets/financialReporting/styles";
-import { saveDocument } from "@services/saveDocument";
 import { optionFlags } from "@pages/board/outlets/financialReporting/config";
+import { saveDocument } from "@services/saveDocument";
 import { validationMessages } from "@validations/validationMessages";
+import { AppContext } from "@context/AppContext";
+import { getSearchDocumentById } from "@services/documents/SearchDocumentById";
+import { IDocumentUpload } from "@pages/SubmitCreditApplication/types";
+import { ICustomerData } from "@context/CustomerContext/types";
 
 import {
   StyledContainerClose,
   StyledContainerContent,
   StyledModal,
 } from "./styles";
+import { DocumentViewer } from "../DocumentViewer";
+import { listModalData } from "./config";
+
 export interface IOptionButtons {
   label: string;
   variant: "filled" | "outlined" | "none";
@@ -31,9 +45,6 @@ export interface IOptionButtons {
 
 export interface IListModalProps {
   title: string;
-  handleClose: () => void;
-  handleSubmit?: () => void;
-  onSubmit?: () => void;
   buttonLabel: string;
   cancelButton?: string;
   appearanceCancel?:
@@ -48,7 +59,18 @@ export interface IListModalProps {
   portalId?: string;
   content?: JSX.Element | JSX.Element[] | string;
   optionButtons?: IOptionButtons;
+  uploadMode?: string;
   id?: string;
+  dataDocument?: { id: string; name: string }[];
+  isViewing?: boolean;
+  uploadedFiles?: IDocumentUpload[];
+  onlyDocumentReceived?: boolean;
+  customerData?: ICustomerData;
+  handleClose: () => void;
+  handleSubmit?: () => void;
+  onSubmit?: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setUploadedFiles?: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export const ListModal = (props: IListModalProps) => {
@@ -59,10 +81,17 @@ export const ListModal = (props: IListModalProps) => {
     optionButtons,
     cancelButton,
     appearanceCancel = "primary",
+    buttonLabel,
+    uploadMode,
+    dataDocument,
+    isViewing,
+    uploadedFiles,
+    onlyDocumentReceived,
+    customerData,
     handleClose,
     handleSubmit,
     onSubmit,
-    buttonLabel,
+    setUploadedFiles,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -74,22 +103,28 @@ export const ListModal = (props: IListModalProps) => {
   const isMobile = useMediaQuery("(max-width: 700px)");
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [uploadedFiles, setUploadedFiles] = useState<
-    { id: string; name: string; file: File }[]
-  >([]);
-  const [loading, setLoading] = useState(false);
+  const { businessUnitSigla } = useContext(AppContext);
+
+  const { user } = useAuth0();
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+  const [fileName, setFileName] = useState<string | null>(null);
 
   interface IListdataProps {
-    data: { id: string; name: string }[];
+    data: { id: string; name: string }[] | null | undefined;
+    onDelete?: (id: string) => void;
     icon?: React.ReactNode;
-    onDelete: (id: string) => void;
+    onPreview?: (id: string, name: string) => void;
   }
 
   const Listdata = (props: IListdataProps) => {
-    const { data, icon, onDelete } = props;
+    const { data, icon, onDelete, onPreview } = props;
 
-    if (data.length === 0) {
-      return <Text>No hay documentos adjuntos.</Text>;
+    if (!data || !Array.isArray(data) || data.length === 0) {
+      return <Text>{listModalData.noDocuments}</Text>;
     }
 
     return (
@@ -108,7 +143,13 @@ export const ListModal = (props: IListModalProps) => {
               spacing="narrow"
               size="24px"
               cursorHover
-              onClick={() => onDelete(element.id)}
+              onClick={() => {
+                if (onDelete) {
+                  onDelete(element.id);
+                } else if (onPreview) {
+                  onPreview(element.id, element.name);
+                }
+              }}
             />
           </StyledItem>
         ))}
@@ -124,20 +165,37 @@ export const ListModal = (props: IListModalProps) => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (files) {
+    if (!setUploadedFiles) return;
+    if (files && files.length > 0 && onlyDocumentReceived) {
       const newFiles = Array.from(files).map((file) => ({
         id: crypto.randomUUID(),
         name: file.name,
         file: file,
       }));
-      setUploadedFiles((prev) => [...prev, ...newFiles]);
-      setLoading(true);
+      setUploadedFiles(newFiles);
+    } else if (files) {
+      const newFiles = Array.from(files).map((file) => ({
+        id: crypto.randomUUID(),
+        name: file.name,
+        file: file,
+      }));
+      setUploadedFiles(
+        (prev: { id: string; name: string; file: File }[] | null) => [
+          ...(prev || []),
+          ...newFiles,
+        ]
+      );
+    } else {
+      setUploadedFiles([]);
     }
   };
 
   const handleDeleteFile = (id: string) => {
-    setUploadedFiles((prev) => prev.filter((file) => file.id !== id));
-    setLoading(false);
+    if (!setUploadedFiles) return;
+    setUploadedFiles(
+      (prev: { id: string; name: string; file: File }[] | null) =>
+        (prev || []).filter((file) => file.id !== id)
+    );
   };
 
   type FlagAppearance =
@@ -163,14 +221,25 @@ export const ListModal = (props: IListModalProps) => {
   };
 
   const handleUpload = async () => {
+    if (uploadMode === "local") {
+      console.log("Archivos guardados en estado:", uploadedFiles);
+      handleClose();
+      return;
+    }
+
     try {
-      uploadedFiles.forEach(async (fileData) => {
-        await saveDocument(
-          "1",
-          fileData.name.split(".").slice(0, -1).join("."),
-          fileData.file
-        );
-      });
+      if (uploadedFiles) {
+        for (const fileData of uploadedFiles) {
+          await saveDocument(
+            businessUnitPublicCode,
+            customerData?.customerId ?? "",
+            fileData.name.split(".").slice(0, -1).join("."),
+            fileData.file
+          );
+        }
+      }
+
+      setUploadedFiles?.([]);
       handleClose();
       handleFlag(
         optionFlags.title,
@@ -184,6 +253,29 @@ export const ListModal = (props: IListModalProps) => {
         optionFlags.appearanceError as FlagAppearance
       );
     }
+  };
+
+  const handlePreview = async (id: string, name: string) => {
+    try {
+      const documentData = await getSearchDocumentById(
+        id,
+        user?.email ?? "",
+        businessUnitPublicCode
+      );
+      const fileUrl = URL.createObjectURL(documentData);
+      setSelectedFile(fileUrl);
+      setFileName(name);
+      setOpen(true);
+    } catch (error) {
+      console.error("Error obteniendo el documento:", error);
+    }
+  };
+
+  const isDisabled = () => {
+    if (onlyDocumentReceived) {
+      return uploadedFiles?.length !== 1;
+    }
+    return !uploadedFiles?.length || uploadedFiles.length < 1;
   };
 
   return createPortal(
@@ -214,9 +306,12 @@ export const ListModal = (props: IListModalProps) => {
           ) : (
             <StyledContainerContent $smallScreen={isMobile}>
               <Listdata
-                data={uploadedFiles}
-                icon={<MdDeleteOutline />}
-                onDelete={handleDeleteFile}
+                data={isViewing ? (dataDocument ?? []) : uploadedFiles}
+                icon={
+                  isViewing ? <MdOutlineRemoveRedEye /> : <MdDeleteOutline />
+                }
+                onDelete={!isViewing ? handleDeleteFile : undefined}
+                onPreview={isViewing ? handlePreview : undefined}
               />
             </StyledContainerContent>
           )}
@@ -239,10 +334,10 @@ export const ListModal = (props: IListModalProps) => {
               style={{ display: "none" }}
               onChange={handleFileChange}
               accept=".pdf,.jpg,.png"
-              multiple
+              multiple={uploadMode === "local" ? false : true}
             />
             <Stack justifyContent="flex-end" margin="16px 0 0 0" gap="16px">
-              <Button onClick={handleUpload} disabled={loading ? false : true}>
+              <Button onClick={handleUpload} disabled={isDisabled()}>
                 {buttonLabel}
               </Button>
             </Stack>
@@ -264,6 +359,13 @@ export const ListModal = (props: IListModalProps) => {
             </Button>
             <Button onClick={onSubmit ?? handleClose}>{buttonLabel}</Button>
           </Stack>
+        )}
+        {selectedFile && open && (
+          <DocumentViewer
+            selectedFile={selectedFile}
+            handleClose={() => setOpen(false)}
+            title={fileName || ""}
+          />
         )}
       </StyledModal>
     </Blanket>,

@@ -1,18 +1,17 @@
 import { useState, isValidElement, useEffect } from "react";
 import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
-import { Icon } from "@inubekit/icon";
-import { useFlag } from "@inubekit/flag";
-import { Stack } from "@inubekit/stack";
+import { Stack, Icon, useFlag } from "@inubekit/inubekit";
 
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
+import { TraceDetailsModal } from "@components/modals/TraceDetailsModal";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 import { CreditRequest } from "@services/types";
 import { addItem, getById } from "@mocks/utils/dataMock.service";
+import { traceDetailsMock } from "@mocks/financialReporting/trace-details/tracedetails.mock";
 
-import { errorObserver, traceObserver } from "../config";
 import {
   dataButton,
   infoItems,
@@ -20,8 +19,8 @@ import {
   maperEntries,
   getAcctionMobile,
 } from "./config";
-import { SeeDetailsModal } from "./SeeDetailsModal";
 import { AprovalsModal } from "./AprovalsModal";
+import { errorObserver, traceObserver } from "../config";
 
 interface IRequirementsData {
   id: string;
@@ -39,9 +38,6 @@ export interface IRequirementsProps {
 export const Requirements = (props: IRequirementsProps) => {
   const { isMobile, id, user } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
-  const [modalData, setModalData] = useState<{ date?: Date; details?: string }>(
-    {}
-  );
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [dataRequirements, setDataRequirements] = useState<IRequirementsData[]>(
@@ -85,11 +81,7 @@ export const Requirements = (props: IRequirementsProps) => {
   const toggleAprovalsModal = () => setShowAprovalsModal(!showAprovalsModal);
   const changeApprove = () => setIsApproved(!isApproved);
 
-  const handleToggleSeeDetailsModal = (details?: string) => {
-    setModalData({
-      date: new Date(),
-      details,
-    });
+  const handleToggleSeeDetailsModal = () => {
     setShowSeeDetailsModal((prevState) => !prevState);
   };
 
@@ -133,16 +125,13 @@ export const Requirements = (props: IRequirementsProps) => {
     }
   };
 
-  const renderAddIcon = (entry: IEntries) => {
-    const details =
-      typeof entry.details === "string" ? entry.details : undefined;
-
+  const renderAddIcon = () => {
     return (
       <Stack justifyContent="center">
         <Icon
           icon={<MdAddCircleOutline />}
           appearance="primary"
-          onClick={() => handleToggleSeeDetailsModal(details)}
+          onClick={() => handleToggleSeeDetailsModal()}
           spacing="compact"
           variant="empty"
           size="32px"
@@ -218,19 +207,14 @@ export const Requirements = (props: IRequirementsProps) => {
       </Fieldset>
 
       {showSeeDetailsModal && (
-        <SeeDetailsModal
-          date={modalData.date!}
-          details=""
-          onCloseModal={handleToggleSeeDetailsModal}
+        <TraceDetailsModal
+          isMobile={isMobile}
+          handleClose={() => setShowSeeDetailsModal(false)}
+          data={traceDetailsMock[0]}
         />
       )}
-
       {showAprovalsModal && (
         <AprovalsModal
-          title="Aprobaciones"
-          buttonText="Confirmar"
-          inputLabel="Observaciones de aprobación o rechazo"
-          inputPlaceholder="Observaciones para la aprobación o rechazo."
           isApproved={isApproved}
           onCloseModal={toggleAprovalsModal}
           onChangeApprove={changeApprove}

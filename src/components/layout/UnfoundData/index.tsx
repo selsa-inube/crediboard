@@ -1,7 +1,6 @@
-import { useMediaQuery } from "@inubekit/hooks";
+import { Stack, Text, useMediaQuery } from "@inubekit/inubekit";
 import { Button } from "@inubekit/button";
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
+
 import { StyledImage } from "./styles";
 
 interface UnfoundDataProps {

@@ -22,4 +22,6 @@ export const headers: {
 
 export const dataReport = {
   noData: "No existen documentos adjuntos",
+  titleFlagDelete: "Eliminar",
+  descriptionFlagDelete: "Se ha elimindado el archivo",
 };

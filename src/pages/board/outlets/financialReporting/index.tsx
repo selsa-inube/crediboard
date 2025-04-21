@@ -1,9 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMediaQuery } from "@inubekit/hooks";
-import { useFlag } from "@inubekit/flag";
-import { Stack } from "@inubekit/stack";
+import { Stack, useFlag, useMediaQuery } from "@inubekit/inubekit";
 
 import { OfferedGuaranteeModal } from "@components/modals/OfferedGuaranteeModal";
 import { ErrorAlert } from "@components/ErrorAlert";
@@ -13,10 +11,11 @@ import { ListModal } from "@components/modals/ListModal";
 import { MobileMenu } from "@components/modals/MobileMenu";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
-import { getById } from "@mocks/utils/dataMock.service";
 import { Ierror_issued, IErrorService, ICreditRequest } from "@services/types";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { getSearchAllDocumentsById } from "@services/documents/SearchAllDocuments";
 import { generatePDF } from "@utils/pdf/generetePDF";
+import { AppContext } from "@context/AppContext";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -38,11 +37,10 @@ import { Requirements } from "./Requirements";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
-
 interface IListdataProps {
   data: { id: string; name: string }[];
   icon?: React.ReactNode;
-  onDelete: (id: string) => void;
+  onPreview: (id: string, name: string) => void;
 }
 
 const removeErrorByIdServices = (
@@ -69,6 +67,10 @@ export const FinancialReporting = () => {
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
   const [errors, setError] = useState<Ierror_issued[]>([]);
 
+  const [uploadedFiles, setUploadedFiles] = useState<
+    { id: string; name: string; file: File }[]
+  >([]);
+
   const { id } = useParams();
   const { user } = useAuth0();
 
@@ -80,31 +82,34 @@ export const FinancialReporting = () => {
 
   const [errorsService, setErrorsService] = useState<IErrorService[]>([]);
 
-  useEffect(() => {
-    Promise.allSettled([
-      getById("document", "credit_request_id", id!, true),
-      getById("error_issued", "credit_request_id", id!, true),
-    ]).then(([documents, error_issue]) => {
-      if (documents.status === "fulfilled" && Array.isArray(documents.value)) {
-        const documentsUser = documents.value.map((dataListDocument) => ({
-          id: dataListDocument.document_id,
-          name: dataListDocument.abbreviated_name,
-        }));
-        setDocument(documentsUser);
-      }
-      if (error_issue.status === "fulfilled") {
-        setError(error_issue.value as Ierror_issued[]);
-      }
-    });
+  const { businessUnitSigla } = useContext(AppContext);
 
-    getCreditRequestByCode(id!)
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
+  useEffect(() => {
+    getCreditRequestByCode(businessUnitPublicCode, id!)
       .then((data) => {
         setData(data[0]);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [id]);
+
+    getSearchAllDocumentsById(
+      id!,
+      user?.email ?? "",
+      businessUnitPublicCode
+    ).then((documents) => {
+      const dataToMap = Array.isArray(documents) ? documents : documents.value;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const documentsUser = dataToMap.map((dataListDocument: any) => ({
+        id: dataListDocument.documentId,
+        name: dataListDocument.fileName,
+      }));
+      setDocument(documentsUser);
+    });
+  }, [id, businessUnitPublicCode, user]);
 
   useEffect(() => {
     const handleErrorsService = (newError: IErrorService) => {
@@ -261,6 +266,7 @@ export const FinancialReporting = () => {
                     data={data}
                     collapse={collapse}
                     setCollapse={setCollapse}
+                    id={id!}
                   />
                 </Stack>
               </Stack>
@@ -296,6 +302,7 @@ export const FinancialReporting = () => {
                 </Stack>
               </StyledScreenPrint>
             </Stack>
+
             {showAttachments && (
               <ListModal
                 title="Adjuntar"
@@ -303,17 +310,19 @@ export const FinancialReporting = () => {
                 optionButtons={optionButtons}
                 buttonLabel="Guardar"
                 id={id!}
+                isViewing={false}
+                uploadedFiles={uploadedFiles}
+                setUploadedFiles={setUploadedFiles}
               />
             )}
             {attachDocuments && (
               <ListModal
                 title="Ver Adjuntos"
-                content={document.map((doc) => (
-                  <div key={doc.id}>{doc.name}</div>
-                ))}
                 handleClose={() => setAttachDocuments(false)}
                 buttonLabel="Cerrar"
                 id={id!}
+                isViewing={true}
+                dataDocument={document}
               />
             )}
           </>

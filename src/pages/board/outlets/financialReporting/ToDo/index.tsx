@@ -1,25 +1,21 @@
-import { useState, useEffect, ChangeEvent } from "react";
-import { Select } from "@inubekit/select";
+import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
+import { Select, IOption } from "@inubekit/select";
 import { Button } from "@inubekit/button";
-import { useFlag } from "@inubekit/flag";
-import { Icon } from "@inubekit/icon";
-import { SkeletonLine } from "@inubekit/skeleton";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
-import { IOption } from "@inubekit/select";
+import { Stack, Icon, Text, useFlag, SkeletonLine } from "@inubekit/inubekit";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
-import { IStaff, IToDo, ICreditRequest } from "@services/types";
-import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
-import { TodoConsult } from "@mocks/financialReporting/to-doconsult.mock";
-import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
-import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
-import userNotFound from "@assets/images/ItemNotFound.png";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { getSearchDecisionById } from "@services/todo/SearchDecisionById";
+import { IStaff, IToDo, ICreditRequest } from "@services/types";
+import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
+import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { truncateTextToMaxLength } from "@utils/formatData/text";
+import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
+import { TodoConsult } from "@mocks/financialReporting/to-doconsult.mock";
+import { AppContext } from "@context/AppContext";
+import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StaffModal } from "./StaffModal";
 import {
@@ -29,8 +25,8 @@ import {
   txtTaskQuery,
 } from "./config";
 import { IICon, IButton } from "./types";
-import { StyledHorizontalDivider, StyledTextField } from "../styles";
 import { getXAction } from "./util/utils";
+import { StyledHorizontalDivider, StyledTextField } from "../styles";
 import { errorObserver } from "../config";
 
 interface ToDoProps {
@@ -65,11 +61,18 @@ function ToDo(props: ToDoProps) {
   });
 
   const { addFlag } = useFlag();
+  const { businessUnitSigla, eventData } = useContext(AppContext);
+
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
+  const { userAccount } =
+    typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
 
   useEffect(() => {
     const fetchCreditRequest = async () => {
       try {
-        const data = await getCreditRequestByCode(id);
+        const data = await getCreditRequestByCode(businessUnitPublicCode, id);
         setRequests(data[0] as ICreditRequest);
       } catch (error) {
         console.error(error);
@@ -83,14 +86,17 @@ function ToDo(props: ToDoProps) {
     if (id) {
       fetchCreditRequest();
     }
-  }, [id]);
+  }, [businessUnitPublicCode, id]);
 
   useEffect(() => {
     const fetchToDoData = async () => {
       if (!requests?.creditRequestId) return;
       setLoading(true);
       try {
-        const data = await getToDoByCreditRequestId(requests.creditRequestId);
+        const data = await getToDoByCreditRequestId(
+          businessUnitPublicCode,
+          requests.creditRequestId
+        );
         setTaskData(data);
       } catch (error) {
         console.error(error);
@@ -104,7 +110,7 @@ function ToDo(props: ToDoProps) {
     };
 
     fetchToDoData();
-  }, [requests?.creditRequestId]);
+  }, [businessUnitPublicCode, requests?.creditRequestId]);
 
   useEffect(() => {
     if (taskData?.usersByCreditRequestResponse) {
@@ -138,7 +144,10 @@ function ToDo(props: ToDoProps) {
     setLoading(true);
     if (requests?.creditRequestId) {
       try {
-        const data = await getToDoByCreditRequestId(requests.creditRequestId);
+        const data = await getToDoByCreditRequestId(
+          businessUnitPublicCode,
+          requests.creditRequestId
+        );
         setTaskData(data);
       } catch (error) {
         console.error(error);
@@ -188,12 +197,18 @@ function ToDo(props: ToDoProps) {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+  const isFetching = useRef(false);
 
   const handleSelectOpen = async () => {
+    if (isFetching.current) return;
+    isFetching.current = true;
     setLoading(true);
     if (requests?.creditRequestId) {
       try {
-        const decision = await getSearchDecisionById(requests.creditRequestId);
+        const decision = await getSearchDecisionById(
+          businessUnitPublicCode,
+          requests.creditRequestId
+        );
         const formattedDecisions = Array.isArray(decision)
           ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
             decision.map((decisions: any, index: number) => ({
@@ -221,7 +236,8 @@ function ToDo(props: ToDoProps) {
       humanDecision: selectedDecision?.label.split(":")[0] || "",
       justification: "",
     },
-
+    businessUnit: businessUnitPublicCode,
+    user: userAccount,
     xAction: getXAction(selectedDecision?.label.split(":")[0] || ""),
     humanDecisionDescription: selectedDecision?.label || "",
   };

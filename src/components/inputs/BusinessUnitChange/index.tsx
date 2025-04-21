@@ -1,7 +1,5 @@
 import { MdCheck } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
-import { Icon } from "@inubekit/icon";
-import { Divider } from "@inubekit/divider";
+import { Stack, Icon, Divider } from "@inubekit/inubekit";
 
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
 

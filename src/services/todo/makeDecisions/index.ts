@@ -1,11 +1,13 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
 import { IMakeDecisionsCreditRequest } from "@services/types";
 
 export const makeDecisions = async (
+  businessUnitPublicCode: string,
+  userAccount: string,
   makeDecisions: IMakeDecisionsCreditRequest,
   xAction: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,8 +30,8 @@ export const makeDecisions = async (
         method: "PATCH",
         headers: {
           "X-Action": xAction,
-          "X-Business-Unit": enviroment.BUSINESS_UNIT,
-          "X-User-Name": "Erg",
+          "X-Business-Unit": businessUnitPublicCode,
+          "X-User-Name": userAccount,
           "Content-type": "application/json; charset=UTF-8",
         },
         body: JSON.stringify(makeDecisions),
@@ -37,7 +39,7 @@ export const makeDecisions = async (
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
+        `${environment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
         options
       );
 

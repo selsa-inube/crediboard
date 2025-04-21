@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { MdCached, MdOutlineEdit } from "react-icons/md";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
-import { useMediaQuery } from "@inubekit/hooks";
-import { Grid } from "@inubekit/grid";
+import { Stack, Text, Grid, useMediaQuery } from "@inubekit/inubekit";
 import { Select } from "@inubekit/select";
 import { Button } from "@inubekit/button";
 
@@ -27,6 +24,8 @@ interface ISourceIncomeProps {
   ShowSupport?: boolean;
   onlyDebtor?: boolean;
   disabled?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data?: any;
 }
 
 export function SourceIncome(props: ISourceIncomeProps) {

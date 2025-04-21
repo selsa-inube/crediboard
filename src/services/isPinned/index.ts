@@ -1,14 +1,14 @@
 import {
-  enviroment,
+  environment,
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
 
 import { ICreditRequestPinned } from "@services/types";
 
-export const getCreditRequestPin = async (): Promise<
-  ICreditRequestPinned[]
-> => {
+export const getCreditRequestPinned = async (
+  businessUnitPublicCode: string
+): Promise<ICreditRequestPinned[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -17,21 +17,21 @@ export const getCreditRequestPin = async (): Promise<
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
       const queryParams = new URLSearchParams({
-        sort: "",
+        sort: "desc.isPinned",
       });
 
       const options: RequestInit = {
         method: "GET",
         headers: {
           "X-Action": "SearchAllCreditRequestPinned",
-          "X-Business-Unit": enviroment.BUSINESS_UNIT,
+          "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,
       };
 
       const res = await fetch(
-        `${enviroment.ICOREBANKING_API_URL_QUERY}/credit-requests?${queryParams.toString()}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests?${queryParams.toString()}`,
         options
       );
 

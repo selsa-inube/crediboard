@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Stack } from "@inubekit/stack";
-import { Tabs } from "@inubekit/tabs";
+import { Stack, Tabs } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { CardBorrower } from "@components/cards/CardBorrower";

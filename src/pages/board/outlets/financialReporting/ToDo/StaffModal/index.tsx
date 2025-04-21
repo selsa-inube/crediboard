@@ -3,15 +3,10 @@ import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-
-import { Stack } from "@inubekit/stack";
-import { useMediaQuery } from "@inubekit/hooks";
+import { Stack, Icon, Text, Spinner, useMediaQuery } from "@inubekit/inubekit";
 import { Blanket } from "@inubekit/blanket";
-import { Text } from "@inubekit/text";
 import { Button } from "@inubekit/button";
 import { Select } from "@inubekit/select";
-import { Icon } from "@inubekit/icon";
-import { Spinner } from "@inubekit/spinner";
 
 import { IStaff } from "@services/types";
 import { get } from "@mocks/utils/dataMock.service";

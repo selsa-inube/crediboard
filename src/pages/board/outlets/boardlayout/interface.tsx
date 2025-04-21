@@ -2,11 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
 import { Toggle } from "@inubekit/toggle";
-import { Icon } from "@inubekit/icon";
 import { Textfield } from "@inubekit/textfield";
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/stack";
-import { Divider } from "@inubekit/divider";
+import { Stack, Icon, Text, Divider } from "@inubekit/inubekit";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { BoardSection } from "@components/layout/BoardSection";
@@ -33,7 +30,12 @@ interface BoardLayoutProps {
   showPinnedOnly: boolean;
   pinnedRequests: ICreditRequestPinned[];
   handleSelectCheckChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handlePinRequest: (requestId: string, isPinned: string) => void;
+  handlePinRequest: (
+    requestId: string,
+    identificationNumber: string[],
+    userWhoPinnnedId: string,
+    isPinned: string
+  ) => void;
   handleShowPinnedOnly: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;

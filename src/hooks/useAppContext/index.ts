@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { IStaffPortalByBusinessManager } from "@services/staffPortal/types";
-import { IBusinessmanagers } from "@services/businessManager/types";
+import { IBusinessManagers } from "@services/businessManager/types";
 
 import {
   validateBusinessManagers,
@@ -9,6 +9,8 @@ import {
 } from "@context/AppContext/utils";
 import { ICrediboardData } from "@context/AppContext/types";
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
+import { getStaff } from "@services/staffs";
+
 import { decrypt } from "@utils/encrypt/encrypt";
 
 interface IBusinessUnits {
@@ -23,8 +25,8 @@ function useAppContext() {
   const [portalData, setPortalData] = useState<IStaffPortalByBusinessManager[]>(
     []
   );
-  const [businessManagers, setBusinessManagers] = useState<IBusinessmanagers>(
-    {} as IBusinessmanagers
+  const [businessManagers, setBusinessManagers] = useState<IBusinessManagers>(
+    {} as IBusinessManagers
   );
   const [businessUnitSigla, setBusinessUnitSigla] = useState(
     localStorage.getItem("businessUnitSigla") || ""
@@ -49,6 +51,51 @@ function useAppContext() {
     console.error("Error parsing businessUnitSigla: ", error);
   }
 
+  useEffect(() => {
+    const fetchStaffData = async () => {
+      try {
+        const staffData = await getStaff();
+        if (!staffData.length) return;
+
+        const matchedStaff = staffData.find(
+          (staff) => staff.userAccount === user?.email
+        );
+
+        if (matchedStaff) {
+          setEventData((prev) => ({
+            ...prev,
+            user: {
+              ...prev.user,
+              staff: {
+                biologicalSex: matchedStaff.biologicalSex,
+                birthDay: matchedStaff.birthDay,
+                businessManagerCode: matchedStaff.businessManagerCode,
+                identificationDocumentNumber:
+                  matchedStaff.identificationDocumentNumber,
+                identificationTypeNaturalPerson:
+                  matchedStaff.identificationTypeNaturalPerson,
+                missionName: matchedStaff.missionName,
+                principalEmail: matchedStaff.principalEmail,
+                principalPhone: matchedStaff.principalPhone,
+                staffByBusinessUnitAndRole:
+                  matchedStaff.staffByBusinessUnitAndRole,
+                staffId: matchedStaff.staffId,
+                staffName: matchedStaff.staffName,
+                userAccount: matchedStaff.userAccount,
+              },
+            },
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching staff data:", error);
+      }
+    };
+
+    if (user?.email) {
+      fetchStaffData();
+    }
+  }, [user?.email]);
+
   const [eventData, setEventData] = useState<ICrediboardData>({
     portal: {
       abbreviatedName: "",
@@ -71,6 +118,24 @@ function useAppContext() {
     user: {
       userAccount: user?.email || "",
       userName: user?.name || "",
+      staff: {
+        biologicalSex: "",
+        birthDay: "",
+        businessManagerCode: "",
+        identificationDocumentNumber: "",
+        identificationTypeNaturalPerson: "",
+        missionName: "",
+        principalEmail: "",
+        principalPhone: "",
+        staffByBusinessUnitAndRole: {
+          businessUnitCode: "",
+          roleName: "",
+          staffId: "",
+        },
+        staffId: "",
+        staffName: "",
+        userAccount: "",
+      },
       preferences: {
         boardOrientation: "vertical",
         showPinnedOnly: false,

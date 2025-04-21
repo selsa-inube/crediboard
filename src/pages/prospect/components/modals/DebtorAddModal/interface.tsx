@@ -1,14 +1,13 @@
 import { Assisted } from "@inubekit/assisted";
-import { Stack } from "@inubekit/stack";
-import { Divider } from "@inubekit/divider";
+import { Stack, Divider } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
+import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 
 import { stepsAddBorrower } from "./config/addBorrower.config";
 import { AddBorrower } from "./steps/personalInfo";
 import { FormData, IStep, StepDetails, titleButtonTextAssited } from "./types";
-import { SourceIncome } from "@pages/prospect/components/SourceIncome";
 
 interface DebtorAddModalUIProps {
   currentStep: number;

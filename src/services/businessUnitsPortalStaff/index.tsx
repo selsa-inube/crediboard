@@ -1,4 +1,4 @@
-import { enviroment } from "@config/environment";
+import { environment } from "@config/environment";
 
 import { IBusinessUnitsPortalStaff } from "./types";
 import { mapBusinessUnitsPortalStaffToEntity } from "./mappers";
@@ -7,7 +7,7 @@ const getBusinessUnitsPortalStaff = async (
   publicCode: string,
   userAccount: string
 ): Promise<IBusinessUnitsPortalStaff[]> => {
-  const requestUrl = `${enviroment.IVITE_IPORTAL_STAFF_QUERY_PROCESS_SERVICE}/business-units-portal-staff/${userAccount}/${publicCode}`;
+  const requestUrl = `${environment.IVITE_IPORTAL_STAFF_QUERY_PROCESS_SERVICE}/business-units-portal-staff/${userAccount}/${publicCode}`;
 
   try {
     const options: RequestInit = {

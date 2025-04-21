@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { Stack } from "@inubekit/stack";
-import { useMediaQuery } from "@inubekit/hooks";
-import { Divider } from "@inubekit/divider";
+import { Stack, Divider, useMediaQuery } from "@inubekit/inubekit";
 
 import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { NewCreditProductCard } from "@components/cards/CreditProductCard/newCard";
 import { CardValues } from "@components/cards/cardValues";
 import { DeleteModal } from "@components/modals/DeleteModal";
-import { DeductibleExpensesModal } from "@pages/prospect/components/modals/DeductibleExpensesModal";
+import { ConsolidatedCredits } from "@pages/prospect/components/modals/ConsolidatedCreditModal";
 import { ICreditProductProspect } from "@services/types";
 import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.service";
@@ -32,9 +30,8 @@ export const CardCommercialManagement = (
   >([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState("");
-  const [showDeductibleExpensesModal, setShowDeductibleExpensesModal] =
-    useState(false);
 
+  const [showConsolidatedModal, setShowConsolidatedModal] = useState(false);
   const loadProspectProducts = useCallback(() => {
     const foundProspect = mockProspectCredit.find(
       (prospect) => prospect.public_code === id
@@ -115,7 +112,7 @@ export const CardCommercialManagement = (
             showIcon={entry.iconEdit}
             isMobile={isMobile}
             handleEdit={() => true}
-            handleView={() => setShowDeductibleExpensesModal(true)}
+            handleView={() => setShowConsolidatedModal(true)}
           />
         ))}
       </Stack>
@@ -125,9 +122,9 @@ export const CardCommercialManagement = (
           handleDelete={handleDelete}
         />
       )}
-      {showDeductibleExpensesModal && (
-        <DeductibleExpensesModal
-          handleClose={() => setShowDeductibleExpensesModal(false)}
+      {showConsolidatedModal && (
+        <ConsolidatedCredits
+          handleClose={() => setShowConsolidatedModal(false)}
         />
       )}
     </div>

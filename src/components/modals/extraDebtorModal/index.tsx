@@ -3,8 +3,7 @@ import * as Yup from "yup";
 import localforage from "localforage";
 import { Textfield } from "@inubekit/textfield";
 import { Select } from "@inubekit/select";
-import { useMediaQuery } from "@inubekit/hooks";
-import { Stack } from "@inubekit/stack";
+import { Stack, useMediaQuery } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { ExtraDebtor } from "@pages/prospect/components/TableExtraDebtors";

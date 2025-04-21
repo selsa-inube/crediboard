@@ -2,11 +2,9 @@ import * as Yup from "yup";
 import localforage from "localforage";
 import { Formik, FormikValues } from "formik";
 import { MdOutlineAttachMoney } from "react-icons/md";
-import { useMediaQuery } from "@inubekit/hooks";
-import { inube } from "@inubekit/foundations";
 import { Textfield } from "@inubekit/textfield";
 import { Select } from "@inubekit/select";
-import { Stack } from "@inubekit/stack";
+import { Stack, inube, useMediaQuery } from "@inubekit/inubekit";
 import { Datefield } from "@inubekit/datefield";
 
 import { BaseModal } from "@components/modals/baseModal";

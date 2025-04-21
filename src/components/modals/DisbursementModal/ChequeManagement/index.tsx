@@ -1,17 +1,18 @@
-import { Grid } from "@inubekit/grid";
-import { Stack } from "@inubekit/stack";
+import { Stack, Grid } from "@inubekit/inubekit";
 
-import { disbursementChequeManagement } from "@mocks/disbursement/disbursement.mock";
-import { disbursementGeneral, disbursemenOptionAccount } from "../config";
-
+import { currencyFormat } from "@utils/formatData/currency";
 import { CardGray } from "@components/cards/CardGray";
+
+import { dataTabsDisbursement } from "../types";
+import { disbursementGeneral, disbursemenOptionAccount } from "../config";
 
 export interface IDisbursement {
   isMobile: boolean;
+  data: dataTabsDisbursement;
 }
 
 export function DisbursementChequeManagement(props: IDisbursement) {
-  const { isMobile } = props;
+  const { isMobile, data } = props;
   return (
     <Stack
       direction="column"
@@ -26,52 +27,52 @@ export function DisbursementChequeManagement(props: IDisbursement) {
       >
         <CardGray
           label={disbursementGeneral.label}
-          placeHolder={disbursementChequeManagement.amount}
+          placeHolder={currencyFormat(Number(data.disbursementAmount), false)}
         />
         <CardGray
           label={disbursementGeneral.labelToggle}
-          placeHolder={disbursementChequeManagement.toggleChecked}
+          placeHolder={data.isInTheNameOfBorrower}
         />
         <CardGray
           label={disbursemenOptionAccount.labelName}
-          placeHolder={disbursementChequeManagement.name}
+          placeHolder={data.payeeName}
         />
         <CardGray
           label={disbursemenOptionAccount.labelLastName}
-          placeHolder={disbursementChequeManagement.lastName}
+          placeHolder={data.payeeSurname}
         />
         <CardGray
           label={disbursemenOptionAccount.labelSex}
-          placeHolder={disbursementChequeManagement.sex}
+          placeHolder={data.payeeBiologicalSex}
         />
         <CardGray
           label={disbursemenOptionAccount.labelDocumentType}
-          placeHolder={disbursementChequeManagement.typeDocument}
+          placeHolder={data.payeeIdentificationType}
         />
         <CardGray
           label={disbursemenOptionAccount.labelDocumentNumber}
-          placeHolder={disbursementChequeManagement.identification}
+          placeHolder={data.payeeIdentificationNumber}
         />
         <CardGray
           label={disbursemenOptionAccount.labelBirthdate}
-          placeHolder={disbursementChequeManagement.birthday}
+          placeHolder={data.payeeBirthday}
         />
         <CardGray
           label={disbursemenOptionAccount.labelphone}
-          placeHolder={disbursementChequeManagement.phone}
+          placeHolder={data.payeePhoneNumber}
         />
         <CardGray
           label={disbursemenOptionAccount.labelMail}
-          placeHolder={disbursementChequeManagement.mail}
+          placeHolder={data.payeeEmail}
         />
         <CardGray
           label={disbursemenOptionAccount.labelCity}
-          placeHolder={disbursementChequeManagement.city}
+          placeHolder={data.payeeCityOfResidence}
         />
       </Grid>
       <CardGray
-        label={disbursementChequeManagement.observation}
-        placeHolder={disbursementChequeManagement.observation}
+        label={disbursemenOptionAccount.observation}
+        placeHolder={data.observation}
       />
     </Stack>
   );
