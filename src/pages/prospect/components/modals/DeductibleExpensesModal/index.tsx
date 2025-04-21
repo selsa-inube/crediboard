@@ -1,5 +1,4 @@
-import { SkeletonLine } from "@inubekit/skeleton";
-import { useMediaQuery } from "@inubekit/hooks";
+import { SkeletonLine, useMediaQuery } from "@inubekit/inubekit";
 import { Stack } from "@inubekit/stack";
 import { Text } from "@inubekit/text";
 
