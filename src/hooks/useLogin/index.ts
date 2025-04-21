@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { AppContext } from "@context/AppContext";
@@ -8,6 +8,8 @@ const useLogin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { eventData, setBusinessUnitsToTheStaff } = useContext(AppContext);
+  const [hasError, setHasError] = useState(false);
+  const [codeError, setCodeError] = useState<number>();
 
   useEffect(() => {
     if (eventData.portal.publicCode) {
@@ -16,11 +18,20 @@ const useLogin = () => {
         eventData.user.userAccount
       ).then((data) => {
         setBusinessUnitsToTheStaff(data);
+        if (!setBusinessUnitsToTheStaff) {
+          setHasError(true);
+          return;
+        }
       });
+      if (hasError) {
+        setCodeError(1003);
+        return;
+      }
     }
   }, [
     eventData.portal.publicCode,
     eventData.user.userAccount,
+    hasError,
     setBusinessUnitsToTheStaff,
   ]);
 
@@ -34,7 +45,7 @@ const useLogin = () => {
     }
   }, [location, navigate, eventData.user.userAccount]);
 
-  return { eventData };
+  return { eventData, codeError, hasError };
 };
 
 export { useLogin };

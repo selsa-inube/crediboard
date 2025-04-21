@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Stack } from "@inubekit/inubekit";
-import { useMediaQuery } from "@inubekit/hooks";
-import { Divider } from "@inubekit/divider";
+import { Stack, Divider, useMediaQuery } from "@inubekit/inubekit";
 
 import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { NewCreditProductCard } from "@components/cards/CreditProductCard/newCard";
@@ -32,6 +30,7 @@ export const CardCommercialManagement = (
   >([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState("");
+
   const [showConsolidatedModal, setShowConsolidatedModal] = useState(false);
   const loadProspectProducts = useCallback(() => {
     const foundProspect = mockProspectCredit.find(
@@ -112,8 +111,8 @@ export const CardCommercialManagement = (
             }))}
             showIcon={entry.iconEdit}
             isMobile={isMobile}
-            handleEdit={() => setShowConsolidatedModal(true)}
-            handleView={() => true}
+            handleEdit={() => true}
+            handleView={() => setShowConsolidatedModal(true)}
           />
         ))}
       </Stack>

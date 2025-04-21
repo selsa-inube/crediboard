@@ -32,13 +32,6 @@ export const txtLabels = {
   inputPlaceholder: "Describa el motivo de su decisión.",
 };
 
-export const txtLabelsNoData = {
-  title: "No se encontraron tareas",
-  description: "Parece que no hay tareas disponibles para mostrar.",
-  buttonDescription: "volver a intentar",
-  route: "/retry-path",
-};
-
 export const txtFlags = {
   titleSuccess: "¡Proceso exitoso!",
   descriptionSuccess: `La tarea se ha ejecutado de manera correcta. Nueva tarea asignada.`,

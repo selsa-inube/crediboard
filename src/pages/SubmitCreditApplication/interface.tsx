@@ -5,6 +5,7 @@ import { Button } from "@inubekit/button";
 import { Assisted, Breadcrumbs, Icon, Text, Stack } from "@inubekit/inubekit";
 import { MdCheckCircle, MdOutlineShare } from "react-icons/md";
 
+import userImage from "@assets/images/userImage.jpeg";
 import { BaseModal } from "@components/modals/baseModal";
 import { disbursemenTabs } from "@pages/SubmitCreditApplication/steps/disbursementGeneral/config";
 import { GeneralHeader } from "@pages/addProspect/components/GeneralHeader/";
@@ -23,6 +24,9 @@ import { AttachedDocuments } from "./steps/attachedDocuments";
 import { DisbursementGeneral } from "./steps/disbursementGeneral";
 import { submitCreditApplicationConfig } from "./config/submitCreditApplication.config";
 import { dataSubmitApplication } from "./config/config";
+import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
+import { CardValues } from "@components/cards/cardValues";
+import { mockCommercialManagement } from "@mocks/financialReporting/commercialmanagement.mock";
 
 interface SubmitCreditApplicationUIProps {
   currentStep: number;
@@ -35,7 +39,7 @@ interface SubmitCreditApplicationUIProps {
   sentModal: boolean;
   approvedRequestModal: boolean;
   numberProspectCode: string;
-  dataHeader: { name: string; status: string };
+  dataHeader: { name: string; status: string; image?: string };
   setSentModal: React.Dispatch<React.SetStateAction<boolean>>;
   setApprovedRequestModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleFormChange: (updatedValues: Partial<FormData>) => void;
@@ -43,7 +47,7 @@ interface SubmitCreditApplicationUIProps {
   handleNextStep: () => void;
   handlePreviousStep: () => void;
   handleSubmitClick: () => void;
-  handleSendModal: () => void;
+  handleSubmit: () => void;
   setIsCurrentFormValid: React.Dispatch<React.SetStateAction<boolean>>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
@@ -62,7 +66,6 @@ export function SubmitCreditApplicationUI(
     isMobile,
     dataHeader,
     prospectCode,
-    numberProspectCode,
     sentModal,
     approvedRequestModal,
     setSentModal,
@@ -71,7 +74,7 @@ export function SubmitCreditApplicationUI(
     handleNextStep,
     handlePreviousStep,
     handleSubmitClick,
-    handleSendModal,
+    handleSubmit,
     setIsCurrentFormValid,
     data,
     customerData,
@@ -97,7 +100,7 @@ export function SubmitCreditApplicationUI(
         buttonText="Agregar vinculación"
         descriptionStatus={dataHeader.status}
         name={dataHeader.name}
-        profileImageUrl="https://s3-alpha-sig.figma.com/img/27d0/10fa/3d2630d7b4cf8d8135968f727bd6d965?Expires=1737936000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=h5lEzRE3Uk8fW5GT2LOd5m8eC6TYIJEH84ZLfY7WyFqMx-zv8TC1yzz-OV9FCH9veCgWZ5eBfKi4t0YrdpoWZriy4E1Ic2odZiUbH9uQrHkpxLjFwcMI2VJbWzTXKon-HkgvkcCnKFzMFv3BwmCqd34wNDkLlyDrFSjBbXdGj9NZWS0P3pf8PDWZe67ND1kropkpGAWmRp-qf9Sp4QTJW-7Wcyg1KPRy8G-joR0lsQD86zW6G6iJ7PuNHC8Pq3t7Jnod4tEipN~OkBI8cowG7V5pmY41GSjBolrBWp2ls4Bf-Vr1BKdzSqVvivSTQMYCi8YbRy7ejJo9-ZNVCbaxRg__"
+        profileImageUrl={dataHeader.image || userImage}
       />
       <Stack
         direction="column"
@@ -113,14 +116,35 @@ export function SubmitCreditApplicationUI(
           width={isMobile ? "-webkit-fill-available" : "min(100%,1440px)"}
         >
           <Breadcrumbs crumbs={submitCreditApplicationConfig.crumbs} />
-          <StyledArrowBack onClick={handleHome}>
-            <Stack gap="8px" alignItems="center">
-              <Icon icon={<MdArrowBack />} appearance="dark" size="20px" />
-              <Text type="title" size="large">
-                {submitCreditApplicationConfig.title}
-              </Text>
-            </Stack>
-          </StyledArrowBack>
+          <Stack justifyContent="space-between" alignItems="center">
+            <StyledArrowBack onClick={handleHome}>
+              <Stack gap="8px" alignItems="center" width="100%">
+                <Icon icon={<MdArrowBack />} appearance="dark" size="20px" />
+                <Text type="title" size="large">
+                  {`${submitCreditApplicationConfig.title}
+                  ${data?.prospect_code?.slice(0, 2)}-${data?.prospect_code?.slice(2)}`}
+                </Text>
+              </Stack>
+            </StyledArrowBack>
+            <Text type="body" size="medium" appearance="gray">
+              {`${dataSubmitApplication.cards.destination}
+              ${data.money_destination_abbreviated_name}`}
+            </Text>
+          </Stack>
+          <Stack direction="column" gap="6px">
+            {SummaryProspectCredit.map((entry, index) => (
+              <CardValues
+                key={index}
+                items={entry.item.map((item, index) => ({
+                  ...item,
+                  amount: mockCommercialManagement[index]?.amount,
+                }))}
+                showIcon={false}
+                isMobile={isMobile}
+                showMiniIcons={false}
+              />
+            ))}
+          </Stack>
           <StyledContainerAssisted $cursorDisabled={!isCurrentFormValid}>
             <Assisted
               step={currentStepsNumber!}
@@ -202,8 +226,16 @@ export function SubmitCreditApplicationUI(
             )}
           {currentStepsNumber &&
             currentStepsNumber.id ===
-              stepsFilingApplication.attachedDocuments.id && (
-              <AttachedDocuments isMobile={isMobile} />
+              stepsFilingApplication.attachedDocuments.id &&
+            customerData && (
+              <AttachedDocuments
+                isMobile={isMobile}
+                initialValues={formData.attachedDocuments || {}}
+                handleOnChange={(newDocs) =>
+                  handleFormChange({ attachedDocuments: newDocs })
+                }
+                customerData={customerData}
+              />
             )}
           {currentStepsNumber &&
             currentStepsNumber.id ===
@@ -218,6 +250,7 @@ export function SubmitCreditApplicationUI(
                 isSelected={isSelected || disbursemenTabs.internal.id}
                 handleTabChange={handleTabChange}
                 data={data}
+                identificationNumber={customerData?.publicCode || ""}
               />
             )}
           <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
@@ -241,14 +274,15 @@ export function SubmitCreditApplicationUI(
             title={dataSubmitApplication.modals.file}
             nextButton={dataSubmitApplication.modals.continue}
             backButton={dataSubmitApplication.modals.cancel}
-            handleNext={handleSendModal}
+            handleNext={handleSubmit}
             handleBack={() => setSentModal(false)}
             width={isMobile ? "290px" : "402px"}
           >
             <Text type="body" size="large">
               {dataSubmitApplication.modals.fileDescription.replace(
                 "{numberProspectCode}",
-                numberProspectCode
+                `${data?.prospect_code?.slice(0, 2)}-${data?.prospect_code?.slice(2)}` ||
+                  ""
               )}
             </Text>
           </BaseModal>
@@ -273,7 +307,8 @@ export function SubmitCreditApplicationUI(
                   {dataSubmitApplication.modals.filed}
                 </Text>
                 <Text type="body" size="large" weight="bold">
-                  {numberProspectCode}
+                  {`${data?.prospect_code?.slice(0, 2)}-${data?.prospect_code?.slice(2)}` ||
+                    ""}
                 </Text>
               </Stack>
               <Text type="body" size="medium" appearance="gray">

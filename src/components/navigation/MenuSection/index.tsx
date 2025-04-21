@@ -1,5 +1,4 @@
-import { Stack } from "@inubekit/inubekit";
-import { Divider } from "@inubekit/divider";
+import { Stack, Divider } from "@inubekit/inubekit";
 
 import { ISection } from "./types";
 import { MenuHeading } from "../MenuHeading";

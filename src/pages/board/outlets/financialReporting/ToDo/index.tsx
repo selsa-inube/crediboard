@@ -1,8 +1,7 @@
 import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
-import { Select } from "@inubekit/select";
+import { Select, IOption } from "@inubekit/select";
 import { Button } from "@inubekit/button";
 import { Stack, Icon, Text, useFlag, SkeletonLine } from "@inubekit/inubekit";
-import { IOption } from "@inubekit/select";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
@@ -19,16 +18,11 @@ import { AppContext } from "@context/AppContext";
 import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StaffModal } from "./StaffModal";
-import {
-  errorMessagge,
-  txtLabels,
-  txtLabelsNoData,
-  txtTaskQuery,
-} from "./config";
+import { errorMessagge, txtLabels, txtTaskQuery } from "./config";
 import { IICon, IButton } from "./types";
 import { getXAction } from "./util/utils";
 import { StyledHorizontalDivider, StyledTextField } from "../styles";
-import { errorObserver } from "../config";
+import { errorMessages, errorObserver } from "../config";
 
 interface ToDoProps {
   icon?: IICon;
@@ -247,7 +241,7 @@ function ToDo(props: ToDoProps) {
   return (
     <>
       <Fieldset
-        title="Por hacer"
+        title={errorMessages.toDo.titleCard}
         descriptionTitle={assignedStaff.commercialManager}
         heightFieldset="241px"
         hasOverflow
@@ -256,10 +250,9 @@ function ToDo(props: ToDoProps) {
         {!taskData ? (
           <ItemNotFound
             image={userNotFound}
-            title={txtLabelsNoData.title}
-            description={txtLabelsNoData.description}
-            buttonDescription={txtLabelsNoData.buttonDescription}
-            route={txtLabelsNoData.route}
+            title={errorMessages.toDo.title}
+            description={errorMessages.toDo.description}
+            buttonDescription={errorMessages.toDo.button}
             onRetry={handleRetry}
           />
         ) : (

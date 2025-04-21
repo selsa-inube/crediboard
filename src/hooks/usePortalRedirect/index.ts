@@ -1,123 +1,97 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { IStaffPortalByBusinessManager } from "@services/staffPortal/types";
 import { IBusinessManagers } from "@services/businessManager/types";
 import { getStaffPortalsByBusinessManager } from "@services/staffPortal";
 import { getBusinessManagers } from "@services/businessManager";
-import { encrypt } from "@utils/encrypt/encrypt";
+import { decrypt, encrypt } from "@utils/encrypt/encrypt";
 
 const usePortalLogic = () => {
-  const [portalPublicCode, setPortalPublicCode] = useState<
-    IStaffPortalByBusinessManager[]
-  >([]);
-  const [businessManagers, setBusinessManagers] = useState<IBusinessManagers>(
-    {} as IBusinessManagers
-  );
-  const [hasError, setHasError] = useState(false);
-  const [hasRedirected, setHasRedirected] = useState(false);
-  const [hasErrorNotClient, setHasErrorNotClient] = useState(false);
+  const [portalData, setPortalData] =
+    useState<IStaffPortalByBusinessManager | null>(null);
+  const [businessManager, setBusinessManager] =
+    useState<IBusinessManagers | null>(null);
+  const [codeError, setCodeError] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+
   const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
 
-  const validateConsultation = async () => {
-    try {
-      const StaffPortalData = await getStaffPortalsByBusinessManager();
-      setPortalPublicCode(StaffPortalData);
-    } catch (error) {
-      console.info(error);
-      setHasError(true);
+  const rawPortalCode = useMemo(() => {
+    const urlCode = new URLSearchParams(window.location.search)
+      .get("portal")
+      ?.trim();
+    if (urlCode) {
+      localStorage.setItem("portalCode", encrypt(urlCode));
+      return urlCode;
     }
-  };
 
-  useEffect(() => {
-    validateConsultation();
+    const storedEncrypted = localStorage.getItem("portalCode");
+    if (storedEncrypted) {
+      try {
+        return decrypt(storedEncrypted);
+      } catch (err) {
+        return null;
+      }
+    }
+
+    return null;
   }, []);
 
-  const portalCode = new URLSearchParams(window.location.search).get("portal");
+  useEffect(() => {
+    const loadData = async () => {
+      if (!rawPortalCode) {
+        setCodeError(1000);
+        setLoading(false);
+        return;
+      }
 
-  const portalPublicCodeFiltered = portalPublicCode.filter(
-    (data) => data.staffPortalId === portalCode
-  );
-
-  const validateBusinessManagers = useCallback(async () => {
-    const foundBusiness = portalPublicCodeFiltered.find(
-      (bussines) => bussines
-    )?.businessManagerId;
-
-    if (!foundBusiness) {
-      return setHasErrorNotClient(true);
-    }
-
-    if (portalPublicCodeFiltered.length > 0 && foundBusiness) {
       try {
-        const newData = await getBusinessManagers(foundBusiness);
-        setBusinessManagers(newData);
+        const portals = await getStaffPortalsByBusinessManager();
+        const match = portals.find(
+          (p) => p.staffPortalId?.trim() === rawPortalCode
+        );
+
+        if (!match) {
+          setCodeError(1001);
+          setLoading(false);
+          return;
+        }
+
+        setPortalData(match);
+        const { businessManagerId } = match;
+
+        if (!businessManagerId) {
+          setCodeError(1002);
+          setLoading(false);
+          return;
+        }
+
+        if (!isAuthenticated && !isLoading) {
+          loginWithRedirect();
+          return;
+        }
+
+        const manager = await getBusinessManagers(businessManagerId);
+        setBusinessManager(manager);
+        setLoading(false);
       } catch (error) {
-        console.info(error);
-        setHasError(true);
+        setCodeError(1003);
+        setLoading(false);
       }
-    } else {
-      console.error();
+    };
+
+    if (!isLoading) {
+      loadData();
     }
-  }, [portalPublicCodeFiltered]);
-
-  useEffect(() => {
-    validateBusinessManagers();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [portalPublicCode]);
-
-  const handleAuthentication = useCallback(() => {
-    if (hasRedirected) return;
-
-    if (portalPublicCode.length > 0) {
-      if (
-        portalPublicCodeFiltered.length > 0 &&
-        businessManagers &&
-        !isLoading &&
-        !isAuthenticated
-      ) {
-        const encryptedParamValue = encrypt(portalCode!);
-        localStorage.setItem("portalCode", encryptedParamValue);
-        loginWithRedirect();
-      } else if (isAuthenticated) {
-        setHasRedirected(true);
-      } else {
-        setHasError(true);
-      }
-    } else {
-      setHasError(true);
-    }
-  }, [
-    portalPublicCode,
-    portalPublicCodeFiltered,
-    businessManagers,
-    isLoading,
-    isAuthenticated,
-    hasRedirected,
-    loginWithRedirect,
-    portalCode,
-  ]);
-
-  useEffect(() => {
-    handleAuthentication();
-  }, [
-    businessManagers,
-    portalPublicCode,
-    isLoading,
-    isAuthenticated,
-    loginWithRedirect,
-    hasRedirected,
-    handleAuthentication,
-  ]);
+  }, [rawPortalCode, isAuthenticated, isLoading, loginWithRedirect]);
 
   return {
-    portalPublicCode,
-    businessManagers,
-    hasError,
-    isLoading,
+    portalData,
+    businessManager,
+    codeError,
+    loading,
     isAuthenticated,
-    hasErrorNotClient,
   };
 };
 

@@ -1,5 +1,4 @@
-import { Stack, Text } from "@inubekit/inubekit";
-import { Spinner } from "@inubekit/spinner";
+import { Stack, Text, Spinner } from "@inubekit/inubekit";
 
 function LoadingAppUI() {
   return (
