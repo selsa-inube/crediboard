@@ -113,8 +113,39 @@ export function DisbursementWithInternalAccount(
   };
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    formik.setFieldValue(`${optionNameForm}.toggle`, event.target.checked);
+    const isChecked = event.target.checked;
+    formik.setFieldValue(`${optionNameForm}.toggle`, isChecked);
+
+    if (isChecked) {
+      formik.setFieldValue(`${optionNameForm}.documentType`, "");
+      formik.setFieldValue(`${optionNameForm}.name`, "");
+      formik.setFieldValue(`${optionNameForm}.lastName`, "");
+      formik.setFieldValue(`${optionNameForm}.sex`, "");
+      formik.setFieldValue(`${optionNameForm}.birthdate`, "");
+      formik.setFieldValue(`${optionNameForm}.phone`, "");
+      formik.setFieldValue(`${optionNameForm}.mail`, "");
+      formik.setFieldValue(`${optionNameForm}.city`, "");
+      formik.setFieldValue(`${optionNameForm}.identification`, "");
+      setCurrentIdentification(identificationNumber);
+    }
   };
+
+  const identificationValue = formik.values[optionNameForm]?.identification;
+
+  useEffect(() => {
+    if (isAutoCompleted && identificationValue !== currentIdentification) {
+      formik.setFieldValue(`${optionNameForm}.documentType`, "");
+      formik.setFieldValue(`${optionNameForm}.name`, "");
+      formik.setFieldValue(`${optionNameForm}.lastName`, "");
+      formik.setFieldValue(`${optionNameForm}.sex`, "");
+      formik.setFieldValue(`${optionNameForm}.birthdate`, "");
+      formik.setFieldValue(`${optionNameForm}.phone`, "");
+      formik.setFieldValue(`${optionNameForm}.mail`, "");
+      formik.setFieldValue(`${optionNameForm}.city`, "");
+      setIsAutoCompleted(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [identificationValue, currentIdentification, isAutoCompleted]);
 
   useEffect(() => {
     const currentAmount = Number(formik.values[optionNameForm]?.amount || 0);
@@ -189,12 +220,24 @@ export function DisbursementWithInternalAccount(
           currentIdentification,
           businessUnitPublicCode
         );
-        const options = response.map((account) => ({
-          id: account.savingProductNumber,
-          label: `${account.productDescription} - ${account.savingProductCode}`,
-          value: account.savingProductNumber,
-        }));
-        setAccountOptions(options);
+
+        const uniqueMap = new Map<
+          string,
+          { id: string; label: string; value: string }
+        >();
+
+        response.forEach((account) => {
+          const key = `${account.productDescription}-${account.savingProductCode}`;
+          if (!uniqueMap.has(key)) {
+            uniqueMap.set(key, {
+              id: account.savingProductCode,
+              label: `${account.productDescription} - ${account.savingProductCode}`,
+              value: `${account.productDescription} - ${account.savingProductCode}`,
+            });
+          }
+        });
+
+        setAccountOptions(Array.from(uniqueMap.values()));
       } catch (error) {
         handleFlag(error);
         console.error("Error fetching internal accounts:", error);
@@ -205,8 +248,22 @@ export function DisbursementWithInternalAccount(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIdentification, businessUnitPublicCode]);
 
+  const previousIdentificationRef = useRef<string>();
+
   useEffect(() => {
-    formik.setFieldValue(`${optionNameForm}.account`, "");
+    const timer = setTimeout(() => {
+      if (!previousIdentificationRef.current) {
+        previousIdentificationRef.current = currentIdentification;
+        return;
+      }
+
+      if (previousIdentificationRef.current !== currentIdentification) {
+        formik.setFieldValue(`${optionNameForm}.account`, "");
+        previousIdentificationRef.current = currentIdentification;
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIdentification]);
 

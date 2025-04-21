@@ -53,7 +53,7 @@ export function GeneralInformationForm(props: IGeneralInformationFormProps) {
               : undefined
           }
           message="El número de identificación ingresado no puede coincidir con el suyo"
-        ></Input>
+        />
         <Input
           id={"name"}
           name={`${optionNameForm}.name`}
@@ -65,7 +65,7 @@ export function GeneralInformationForm(props: IGeneralInformationFormProps) {
           fullwidth={true}
           size="compact"
           readOnly={isReadOnly}
-        ></Input>
+        />
         <Input
           id={"lastName"}
           name={`${optionNameForm}.lastName`}
@@ -77,7 +77,7 @@ export function GeneralInformationForm(props: IGeneralInformationFormProps) {
           fullwidth={true}
           size="compact"
           readOnly={isReadOnly}
-        ></Input>
+        />
         <Select
           id={"sex"}
           name={`${optionNameForm}.sex`}
@@ -121,7 +121,7 @@ export function GeneralInformationForm(props: IGeneralInformationFormProps) {
           fullwidth={true}
           size="compact"
           readOnly={isReadOnly}
-        ></Input>
+        />
         <Input
           id={"mail"}
           name={`${optionNameForm}.mail`}
@@ -133,7 +133,7 @@ export function GeneralInformationForm(props: IGeneralInformationFormProps) {
           fullwidth={true}
           size="compact"
           readOnly={isReadOnly}
-        ></Input>
+        />
         <Select
           id={"city"}
           name={`${optionNameForm}.city`}
