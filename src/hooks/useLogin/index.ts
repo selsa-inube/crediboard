@@ -11,32 +11,29 @@ const useLogin = () => {
   const [hasError, setHasError] = useState(false);
   const [codeError, setCodeError] = useState<number>();
 
-  useEffect(
-    () => {
-      if (eventData.portal.publicCode) {
-        validateBusinessUnits(
-          eventData.portal.publicCode,
-          eventData.user.userAccount
-        ).then((data) => {
-          setBusinessUnitsToTheStaff(data);
-          if (!setBusinessUnitsToTheStaff) {
-            setHasError(true);
-            return;
-          }
-        });
-        if (hasError) {
-          setCodeError(1003);
+  useEffect(() => {
+    if (eventData.portal.publicCode) {
+      validateBusinessUnits(
+        eventData.portal.publicCode,
+        eventData.user.userAccount
+      ).then((data) => {
+        setBusinessUnitsToTheStaff(data);
+        if (!setBusinessUnitsToTheStaff) {
+          setHasError(true);
           return;
         }
+      });
+      if (hasError) {
+        setCodeError(1003);
+        return;
       }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      eventData.portal.publicCode,
-      eventData.user.userAccount,
-      setBusinessUnitsToTheStaff,
-    ]
-  );
+    }
+  }, [
+    eventData.portal.publicCode,
+    eventData.user.userAccount,
+    hasError,
+    setBusinessUnitsToTheStaff,
+  ]);
 
   useEffect(() => {
     if (

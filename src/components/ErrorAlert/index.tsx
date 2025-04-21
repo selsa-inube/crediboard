@@ -15,7 +15,7 @@ const ErrorAlert = (props: ErrorAlertProps) => {
 
   return (
     <StyledPrint>
-      <AlertContainer isMobile={isMobile}>
+      <AlertContainer $isMobile={isMobile}>
         <Stack
           alignItems="center"
           justifyContent="space-between"

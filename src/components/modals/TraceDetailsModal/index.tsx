@@ -8,7 +8,7 @@ import { dataTrace } from "./config";
 export interface ITraceDetailsModalProps {
   handleClose: () => void;
   data: { evaluation: string; description: string };
-  isMobile: boolean;
+  isMobile?: boolean;
 }
 
 export function TraceDetailsModal(props: ITraceDetailsModalProps) {

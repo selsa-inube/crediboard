@@ -168,7 +168,7 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
 
   return (
     <Fieldset
-      title="Gestión"
+      title={errorMessages.Management.titleCard}
       heightFieldset="340px"
       aspectRatio={isMobile ? "auto" : "1"}
     >

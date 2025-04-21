@@ -31,7 +31,6 @@ const usePortalLogic = () => {
       try {
         return decrypt(storedEncrypted);
       } catch (err) {
-        console.error("Error al desencriptar portalCode:", err);
         return null;
       }
     }

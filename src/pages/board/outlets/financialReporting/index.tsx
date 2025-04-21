@@ -92,21 +92,32 @@ export const FinancialReporting = () => {
       .catch((error) => {
         console.error(error);
       });
+  }, [id, businessUnitPublicCode]);
 
-    getSearchAllDocumentsById(
-      id!,
-      user?.email ?? "",
-      businessUnitPublicCode
-    ).then((documents) => {
+  const fetchAndShowDocuments = async () => {
+    if (!data?.creditRequestId || !user?.email || !businessUnitPublicCode)
+      return;
+
+    try {
+      const documents = await getSearchAllDocumentsById(
+        data.creditRequestId,
+        user.email,
+        businessUnitPublicCode
+      );
+
       const dataToMap = Array.isArray(documents) ? documents : documents.value;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const documentsUser = dataToMap.map((dataListDocument: any) => ({
         id: dataListDocument.documentId,
         name: dataListDocument.fileName,
       }));
+
       setDocument(documentsUser);
-    });
-  }, [id, businessUnitPublicCode, user]);
+      setAttachDocuments(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     const handleErrorsService = (newError: IErrorService) => {
@@ -164,7 +175,7 @@ export const FinancialReporting = () => {
       }
     },
     buttonAttach: () => setShowAttachments(true),
-    buttonViewAttachments: () => setAttachDocuments(true),
+    buttonViewAttachments: () => fetchAndShowDocuments(),
     buttonWarranty: () => setShowGuarantee(true),
     menuIcon: () => setShowMenu(true),
   });
@@ -306,7 +317,7 @@ export const FinancialReporting = () => {
                 handleClose={() => setShowAttachments(false)}
                 optionButtons={optionButtons}
                 buttonLabel="Guardar"
-                id={id!}
+                id={data.creditRequestId!}
                 isViewing={false}
               />
             )}
@@ -315,7 +326,7 @@ export const FinancialReporting = () => {
                 title="Ver Adjuntos"
                 handleClose={() => setAttachDocuments(false)}
                 buttonLabel="Cerrar"
-                id={id!}
+                id={data.creditRequestId!}
                 isViewing={true}
                 dataDocument={document}
               />

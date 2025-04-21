@@ -206,7 +206,10 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
 
   return (
     <>
-      <Fieldset title="Estado" descriptionTitle="Gestión Comercial">
+      <Fieldset
+        title={errorMessages.comercialManagement.titleCard}
+        descriptionTitle={errorMessages.comercialManagement.descriptionCard}
+      >
         {!data ? (
           <ItemNotFound
             image={userNotFound}

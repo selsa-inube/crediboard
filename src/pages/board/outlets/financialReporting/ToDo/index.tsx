@@ -242,7 +242,7 @@ function ToDo(props: ToDoProps) {
   return (
     <>
       <Fieldset
-        title="Por hacer"
+        title={errorMessages.toDo.titleCard}
         descriptionTitle={assignedStaff.commercialManager}
         heightFieldset="241px"
         hasOverflow

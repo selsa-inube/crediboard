@@ -143,7 +143,11 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   };
 
   return (
-    <Fieldset title="Pagarés y Libranzas" heightFieldset="100%" hasTable>
+    <Fieldset
+      title={errorMessages.PromissoryNotes.titleCard}
+      heightFieldset="100%"
+      hasTable
+    >
       {!creditRequets || showRetry ? (
         <UnfoundData
           image={ItemNotFound}

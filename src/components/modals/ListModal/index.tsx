@@ -75,6 +75,7 @@ export const ListModal = (props: IListModalProps) => {
     handleClose,
     handleSubmit,
     onSubmit,
+    id,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -196,12 +197,11 @@ export const ListModal = (props: IListModalProps) => {
       handleClose();
       return;
     }
-
     try {
       for (const fileData of uploadedFiles) {
         await saveDocument(
           businessUnitPublicCode,
-          "9ccff734-7df7-46e6-9ea8-f03f9570ab62",
+          id,
           fileData.name.split(".").slice(0, -1).join("."),
           fileData.file
         );

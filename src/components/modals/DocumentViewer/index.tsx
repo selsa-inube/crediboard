@@ -34,8 +34,6 @@ export const DocumentViewer = (props: IDocumentViewerProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFile]);
 
-  const googleViewerUrl = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(selectedFile)}`;
-
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
@@ -56,10 +54,10 @@ export const DocumentViewer = (props: IDocumentViewerProps) => {
             </Stack>
           </StyledContainerClose>
         </Stack>
-        {selectedFile && isMobile ? (
+        {selectedFile && !isMobile ? (
           <>
             <iframe
-              src={googleViewerUrl}
+              src={selectedFile}
               height={isMobile ? "376px" : "850px"}
             ></iframe>
           </>

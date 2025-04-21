@@ -136,7 +136,11 @@ export const Approvals = (props: IApprovalsProps) => {
 
   return (
     <>
-      <Fieldset title="Aprobaciones" heightFieldset="100%" hasTable>
+      <Fieldset
+        title={errorMessages.approval.titleCard}
+        heightFieldset="100%"
+        hasTable
+      >
         {!requests || error ? (
           <ItemNotFound
             image={userNotFound}
