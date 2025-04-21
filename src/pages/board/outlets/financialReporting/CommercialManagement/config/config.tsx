@@ -368,6 +368,7 @@ export const SummaryProspectCredit = [
         title: "Gastos descontables",
         miniIcon: true,
         icon: <MdOutlineRemoveRedEye />,
+        modal: "view",
         operation: "=",
       },
       {

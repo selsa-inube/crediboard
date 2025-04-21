@@ -1,6 +1,5 @@
 import styled from "styled-components";
-
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 export const StyledHorizontalDivider = styled.hr`
   margin: 0px;

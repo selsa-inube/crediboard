@@ -29,7 +29,7 @@ export function ContactInformation(props: IContactInformationProps) {
       .required(),
     phone: Yup.string()
       .matches(/^(\+\d{1,3})?\d{7,14}$/)
-      .required(),
+      .required(""),
   });
 
   const getInitialFormValues = () => ({
@@ -89,6 +89,11 @@ export function ContactInformation(props: IContactInformationProps) {
     }
   }, [formik.values, handleOnChange]);
 
+  useEffect(() => {
+    handleOnChange(formik.values);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Fieldset>
       <Grid
@@ -123,6 +128,8 @@ export function ContactInformation(props: IContactInformationProps) {
           value={formik.values.email}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          status={!formik.values.email ? "invalid" : undefined}
+          message={dataContactInformation.failedEmail}
           fullwidth
         />
         <Textfield
@@ -135,6 +142,8 @@ export function ContactInformation(props: IContactInformationProps) {
           value={formik.values.phone}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          status={!formik.values.phone ? "invalid" : undefined}
+          message={dataContactInformation.failedPhone}
           fullwidth
         />
       </Grid>

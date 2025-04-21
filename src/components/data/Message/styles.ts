@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 interface MessageProps {
   type: "sent" | "received";
@@ -71,8 +71,7 @@ export const IconWrapper = styled.div<MessageProps>`
     transition: color 0.2s ease-in-out;
 
     &:hover {
-      color: #007bff; /* Color al hacer hover */
+      color: #007bff;
     }
-  }
   }
 `;

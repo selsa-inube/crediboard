@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMediaQuery } from "@inubekit/hooks";
-import { Stack, useFlag } from "@inubekit/inubekit";
+import { Stack, useFlag, useMediaQuery } from "@inubekit/inubekit";
 
 import { OfferedGuaranteeModal } from "@components/modals/OfferedGuaranteeModal";
 import { ErrorAlert } from "@components/ErrorAlert";
@@ -67,6 +66,10 @@ export const FinancialReporting = () => {
 
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
   const [errors, setError] = useState<Ierror_issued[]>([]);
+
+  const [uploadedFiles, setUploadedFiles] = useState<
+    { id: string; name: string; file: File }[]
+  >([]);
 
   const { id } = useParams();
   const { user } = useAuth0();
@@ -308,6 +311,8 @@ export const FinancialReporting = () => {
                 buttonLabel="Guardar"
                 id={id!}
                 isViewing={false}
+                uploadedFiles={uploadedFiles}
+                setUploadedFiles={setUploadedFiles}
               />
             )}
             {attachDocuments && (
