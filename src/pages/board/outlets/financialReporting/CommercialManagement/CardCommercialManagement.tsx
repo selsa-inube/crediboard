@@ -30,6 +30,7 @@ export const CardCommercialManagement = (
   >([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState("");
+
   const [showConsolidatedModal, setShowConsolidatedModal] = useState(false);
   const loadProspectProducts = useCallback(() => {
     const foundProspect = mockProspectCredit.find(
@@ -110,8 +111,8 @@ export const CardCommercialManagement = (
             }))}
             showIcon={entry.iconEdit}
             isMobile={isMobile}
-            handleEdit={() => setShowConsolidatedModal(true)}
-            handleView={() => true}
+            handleEdit={() => true}
+            handleView={() => setShowConsolidatedModal(true)}
           />
         ))}
       </Stack>

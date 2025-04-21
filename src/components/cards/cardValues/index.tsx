@@ -66,7 +66,7 @@ export function CardValues(props: CardValuesProps) {
                 <Text size="large" weight="bold" appearance="dark" type="body">
                   {parseCunstomFormat(item.amount)}
                 </Text>
-                {item.miniIcon && showMiniIcons &&(
+                {item.miniIcon && showMiniIcons && (
                   <StyledPrint>
                     <Icon
                       appearance="primary"
