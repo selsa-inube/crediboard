@@ -44,8 +44,7 @@ interface ITableAttachedDocumentsProps {
 }
 
 export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
-  const { isMobile, uploadedFilesByRow, customerData, setUploadedFilesByRow } =
-    props;
+  const { isMobile, uploadedFilesByRow, setUploadedFilesByRow } = props;
 
   const [loading, setLoading] = useState(true);
   const [showAttachment, setShowAttachments] = useState(false);
@@ -296,7 +295,6 @@ export function TableAttachedDocuments(props: ITableAttachedDocumentsProps) {
           }
           setUploadedFiles={handleSetUploadedFiles}
           onlyDocumentReceived={true}
-          customerData={customerData}
         />
       )}
     </Table>

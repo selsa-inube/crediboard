@@ -16,7 +16,7 @@ import { DetailsModal } from "@pages/board/outlets/financialReporting/management
 import { AppContext } from "@context/AppContext";
 
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
-import { traceObserver, errorObserver } from "../config";
+import { traceObserver, errorObserver, errorMessages } from "../config";
 
 interface IManagementProps {
   id: string;
@@ -168,17 +168,16 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
 
   return (
     <Fieldset
-      title="Gestión"
+      title={errorMessages.Management.titleCard}
       heightFieldset="340px"
       aspectRatio={isMobile ? "auto" : "1"}
     >
-      {error ? (
+      {!creditRequest || error ? (
         <ItemNotFound
           image={userNotFound}
-          title="Error al cargar datos"
-          description={error}
-          buttonDescription="Volver a intentar"
-          route="#"
+          title={errorMessages.Management.title}
+          description={errorMessages.Management.description}
+          buttonDescription={errorMessages.Management.button}
           onRetry={handleRetry}
         />
       ) : (

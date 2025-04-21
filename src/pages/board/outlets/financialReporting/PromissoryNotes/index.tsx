@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, useContext } from "react";
 import { Stack, useFlag, Tag } from "@inubekit/inubekit";
 
-import userNotFound from "@assets/images/ItemNotFound.png";
+import ItemNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
@@ -24,7 +24,7 @@ import {
   titlesFinanacialReporting,
   infoItems,
 } from "./config";
-import { errorObserver } from "../config";
+import { errorObserver, errorMessages } from "../config";
 
 interface IPromissoryNotesProps {
   id: string;
@@ -143,17 +143,19 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   };
 
   return (
-    <Fieldset title="Pagarés y Libranzas" heightFieldset="100%" hasTable>
-      {showRetry ? (
+    <Fieldset
+      title={errorMessages.PromissoryNotes.titleCard}
+      heightFieldset="100%"
+      hasTable
+    >
+      {!creditRequets || showRetry ? (
         <UnfoundData
-          image={userNotFound}
-          title="Error al cargar datos"
+          image={ItemNotFound}
+          title={errorMessages.PromissoryNotes.title}
           description={
-            errorMessage ||
-            "Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."
+            errorMessages.PromissoryNotes.description || errorMessage
           }
-          buttonDescription="Volver a intentar"
-          route="/retry-path"
+          buttonDescription={errorMessages.PromissoryNotes.button}
           onRetry={handleRetry}
         />
       ) : (

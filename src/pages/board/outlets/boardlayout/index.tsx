@@ -78,6 +78,8 @@ function BoardLayout() {
           ...prevState,
           requestsPinned: requestsPinnedResult.value,
         }));
+      } else {
+        handleFlag(errorData.Summary[0], errorData.Summary[1]);
       }
     } catch (error) {
       console.error("Error fetching board data:", error);
@@ -87,6 +89,7 @@ function BoardLayout() {
 
   useEffect(() => {
     fetchBoardData(businessUnitPublicCode);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [businessUnitPublicCode]);
 
   useEffect(() => {
@@ -229,16 +232,6 @@ function BoardLayout() {
       handleFlag(errorData.anchor[0], errorData.anchor[1]);
     }
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (filteredRequests.length === 0) {
-        handleFlag(errorData.Summary[0], errorData.Summary[1]);
-      }
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [filteredRequests, errorData.Summary, handleFlag]);
 
   return (
     <>
