@@ -1,12 +1,8 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
-
 import { Blanket } from "@inubekit/blanket";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
-import { Icon } from "@inubekit/icon";
-import { useMediaQuery } from "@inubekit/hooks";
+import { Text, Stack, Icon, useMediaQuery } from "@inubekit/inubekit";
 
 import { validationMessages } from "@validations/validationMessages";
 import { StyledContainerClose, StyledModal } from "./styles";

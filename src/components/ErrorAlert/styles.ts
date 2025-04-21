@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 const slideDown = keyframes`
  

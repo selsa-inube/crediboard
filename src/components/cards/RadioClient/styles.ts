@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 
-const StyledRadioClient = styled.label`
+export const StyledRadioClient = styled.label`
   & div {
     box-sizing: border-box;
     min-height: 58px;
@@ -16,7 +16,7 @@ const StyledRadioClient = styled.label`
   }
 `;
 
-const StyledRadio = styled.input`
+export const StyledRadio = styled.input`
   width: 50px;
   height: 16px;
 
@@ -25,7 +25,7 @@ const StyledRadio = styled.input`
   }
 `;
 
-const StyledImage = styled.img`
+export const StyledImage = styled.img`
   font-family: "Roboto";
   font-size: 14px;
   width: 80%;
@@ -36,5 +36,3 @@ const StyledImage = styled.img`
     display: none;
   }
 `;
-
-export { StyledRadioClient, StyledImage, StyledRadio };

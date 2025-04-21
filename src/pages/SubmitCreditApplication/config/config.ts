@@ -23,4 +23,7 @@ export const dataSubmitApplication = {
     filedDescription:
       "La solicitud de crédito fue correctamente radicada y será gestionada en el portal correspondiente.",
   },
+  cards: {
+    destination: "Destino: ",
+  },
 };

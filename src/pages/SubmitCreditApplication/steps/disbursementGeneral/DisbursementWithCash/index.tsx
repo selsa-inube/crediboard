@@ -1,13 +1,12 @@
 import { useEffect, useRef } from "react";
 import { Checkbox } from "@inubekit/checkbox";
-import { Divider } from "@inubekit/divider";
 import { Toggle } from "@inubekit/toggle";
-import { Stack } from "@inubekit/stack";
+import { Stack, Text, Divider } from "@inubekit/inubekit";
 import { Textarea } from "@inubekit/textarea";
 import { Textfield } from "@inubekit/textfield";
-import { Text } from "@inubekit/text";
 
 import {
+  currencyFormat,
   handleChangeWithCurrency,
   validateCurrencyField,
 } from "@utils/formatData/currency";
@@ -107,8 +106,8 @@ export function DisbursementWithCash(props: IDisbursementWithCashProps) {
     >
       <Stack direction="column" gap="20px">
         <Textfield
-          id={"amount"}
-          name={"amount"}
+          id="amount"
+          name="amount"
           label={disbursementGeneral.label}
           placeholder={disbursementGeneral.place}
           size="compact"
@@ -116,7 +115,16 @@ export function DisbursementWithCash(props: IDisbursementWithCashProps) {
           onChange={(e) => {
             handleChangeWithCurrency(formik, e, optionNameForm);
           }}
-          onBlur={formik.handleBlur}
+          onBlur={() => {
+            formik.setFieldTouched(`${optionNameForm}.amount`, true);
+            formik.handleBlur(`amount`);
+          }}
+          status={
+            formik.touched[optionNameForm]?.amount && !isDisabled
+              ? "invalid"
+              : undefined
+          }
+          message={`${disbursemenOptionAccount.valueTurnFail}${currencyFormat(initialValues.amount, false)}`}
           fullwidth
         />
         <Stack gap="10px" direction="row" alignItems="center">

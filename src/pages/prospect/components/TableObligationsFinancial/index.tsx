@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import localforage from "localforage";
-import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
+import {
+  MdAdd,
+  MdCached,
+  MdDeleteOutline,
+  MdOutlineEdit,
+} from "react-icons/md";
 import {
   Pagination,
   Table,
@@ -11,13 +16,14 @@ import {
   Thead,
   Tr,
 } from "@inubekit/table";
-import { useMediaQuery } from "@inubekit/hooks";
 import {
   Stack,
   Icon,
   Text,
   SkeletonLine,
   SkeletonIcon,
+  Button,
+  useMediaQuery,
 } from "@inubekit/inubekit";
 
 import { EditFinancialObligationModal } from "@components/modals/editFinancialObligationModal";
@@ -36,12 +42,19 @@ export interface ITableFinancialObligationsProps {
   refreshKey?: number;
   showActions?: boolean;
   showOnlyEdit?: boolean;
+  showButtons?: boolean;
 }
 
 export function TableFinancialObligations(
   props: ITableFinancialObligationsProps
 ) {
-  const { refreshKey, showActions, showOnlyEdit, initialValues } = props;
+  const {
+    refreshKey,
+    showActions,
+    showOnlyEdit,
+    initialValues,
+    showButtons = true,
+  } = props;
   const [loading, setLoading] = useState(true);
   const [extraDebtors, setExtraDebtors] = useState<
     ITableFinancialObligationsProps[]
@@ -133,6 +146,14 @@ export function TableFinancialObligations(
 
   return (
     <>
+      {showButtons && (
+        <Stack gap="16px" justifyContent="end">
+          <Button iconAfter={<MdCached />} variant="outlined">
+            {dataReport.restore}
+          </Button>
+          <Button iconAfter={<MdAdd />}>{dataReport.addObligations}</Button>
+        </Stack>
+      )}
       <Table tableLayout="auto">
         <Thead>
           <Tr>
