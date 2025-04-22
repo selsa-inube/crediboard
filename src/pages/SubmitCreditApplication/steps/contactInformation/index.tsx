@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Grid } from "@inubekit/grid";
-import { Textfield } from "@inubekit/inubekit";
+import { Input } from "@inubekit/inubekit";
 
 import { CardGray } from "@components/cards/CardGray";
 import { Fieldset } from "@components/data/Fieldset";
@@ -118,7 +118,7 @@ export function ContactInformation(props: IContactInformationProps) {
           label={dataContactInformation.cardLastName}
           placeHolder={formik.values.lastName}
         />
-        <Textfield
+        <Input
           name="email"
           id="email"
           type="email"
@@ -132,7 +132,7 @@ export function ContactInformation(props: IContactInformationProps) {
           message={dataContactInformation.failedEmail}
           fullwidth
         />
-        <Textfield
+        <Input
           name="phone"
           id="phone"
           type="number"

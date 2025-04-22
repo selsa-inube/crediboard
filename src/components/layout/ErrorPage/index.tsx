@@ -27,6 +27,7 @@ interface ErrorPageProps {
   nameButton?: string;
   onClick?: () => void;
   errorCode?: number;
+  addToFix?: string[];
 }
 
 const ListContent = ({ items }: { items: string[] }) => (
@@ -47,6 +48,7 @@ function ErrorPage(props: ErrorPageProps) {
     nameButton = "Regresar",
     onClick,
     errorCode = 0,
+    addToFix,
   } = props;
 
   const mediaQueries = ["(max-width: 600px)"];
@@ -124,7 +126,12 @@ function ErrorPage(props: ErrorPageProps) {
                     ¿Cómo solucionarlo?
                   </Text>
                   <StyledDiv>
-                    <ListContent items={errorDetail.howToFix} />
+                    <ListContent
+                      items={[
+                        ...errorDetail.howToFix,
+                        ...(Array.isArray(addToFix) ? addToFix : []),
+                      ]}
+                    />
                   </StyledDiv>
                   <Stack justifyContent="center">
                     <Button

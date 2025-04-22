@@ -54,6 +54,8 @@ interface SubmitCreditApplicationUIProps {
   data: any;
   customerData?: ICustomerData;
   codeError?: number | null;
+  addToFix?: string[];
+  rule?: string[];
 }
 
 export function SubmitCreditApplicationUI(
@@ -81,6 +83,8 @@ export function SubmitCreditApplicationUI(
     data,
     customerData,
     codeError,
+    addToFix,
+    rule,
   } = props;
 
   const [isSelected, setIsSelected] = useState<string>();
@@ -100,7 +104,7 @@ export function SubmitCreditApplicationUI(
   return (
     <>
       {codeError ? (
-        <ErrorPage errorCode={codeError} />
+        <ErrorPage errorCode={codeError} addToFix={addToFix || []} />
       ) : (
         <>
           <GeneralHeader
@@ -133,7 +137,7 @@ export function SubmitCreditApplicationUI(
                     />
                     <Text type="title" size="large">
                       {`${submitCreditApplicationConfig.title}
-                  ${data?.prospect_code?.slice(0, 2)}-${data?.prospect_code?.slice(2)}`}
+                  ${data?.prospect_code}`}
                     </Text>
                   </Stack>
                 </StyledArrowBack>
@@ -264,6 +268,7 @@ export function SubmitCreditApplicationUI(
                     handleTabChange={handleTabChange}
                     data={data}
                     identificationNumber={customerData?.publicCode || ""}
+                    rule={rule}
                   />
                 )}
               <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
@@ -294,8 +299,7 @@ export function SubmitCreditApplicationUI(
                 <Text type="body" size="large">
                   {dataSubmitApplication.modals.fileDescription.replace(
                     "{numberProspectCode}",
-                    `${data?.prospect_code?.slice(0, 2)}-${data?.prospect_code?.slice(2)}` ||
-                      ""
+                    `${data?.prospect_code}` || ""
                   )}
                 </Text>
               </BaseModal>

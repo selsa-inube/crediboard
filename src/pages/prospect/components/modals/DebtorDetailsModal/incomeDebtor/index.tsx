@@ -29,7 +29,7 @@ const incomeFields = [
 
 export function IncomeDebtor(props: IIncomeDebtor) {
   const { initialValues } = props;
-  console.log("initialValues", initialValues);
+
   return (
     <Fieldset>
       <Stack direction="column" padding="10px 16px" gap="16px">

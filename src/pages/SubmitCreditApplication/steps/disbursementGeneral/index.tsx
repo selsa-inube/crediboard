@@ -2,11 +2,11 @@ import { useFormik } from "formik";
 import { useEffect, useContext, useState, useRef, useCallback } from "react";
 import { Stack, Tabs } from "@inubekit/inubekit";
 import { Fieldset } from "@components/data/Fieldset";
-import { postBusinessUnitRules } from "@services/businessUnitRules";
+//import { postBusinessUnitRules } from "@services/businessUnitRules";
 import { AppContext } from "@context/AppContext";
-import { CustomerContext } from "@context/CustomerContext";
-import { ruleConfig } from "@pages/SubmitCreditApplication/config/configRules";
-import { evaluateRule } from "@pages/SubmitCreditApplication/evaluateRule";
+//import { CustomerContext } from "@context/CustomerContext";
+//import { ruleConfig } from "@pages/SubmitCreditApplication/config/configRules";
+//import { evaluateRule } from "@pages/SubmitCreditApplication/evaluateRule";
 
 import { DisbursementWithInternalAccount } from "./disbursementWithInternalAccount/index";
 import { DisbursementWithExternalAccount } from "./disbursementWithExternalAccount";
@@ -27,6 +27,7 @@ interface IDisbursementGeneralProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnChange: (values: any) => void;
   handleTabChange: (id: string) => void;
+  rule?: string[];
 }
 
 interface Tab {
@@ -40,11 +41,12 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
     isMobile,
     initialValues,
     isSelected,
-    data,
+    //data,
     identificationNumber,
     onFormValid,
     handleOnChange,
     handleTabChange,
+    rule,
   } = props;
 
   const [tabChanged, setTabChanged] = useState(false);
@@ -56,7 +58,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
   });
 
   const { businessUnitSigla } = useContext(AppContext);
-  const { customerData } = useContext(CustomerContext);
+  //const { customerData } = useContext(CustomerContext);
   const userHasChangedTab = useRef(false);
 
   const [validTabs, setValidTabs] = useState<Tab[]>([]);
@@ -98,56 +100,21 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
     initialValues.amount,
   ]);
 
-  const fetchTabs = useCallback(async () => {
-    try {
-      if (!data?.requested_amount || !data.credit_products?.length) return;
-      const dataRules = {
-        LineOfCredit:
-          data.credit_products?.[0]?.line_of_credit_abbreviated_name,
-        ClientType:
-          customerData.generalAttributeClientNaturalPersons?.[0]?.associateType?.substring(
-            0,
-            1
-          ) || "",
-        LoanAmount: data.requested_amount,
-      };
+  const fetchTabs = useCallback(() => {
+    const validDisbursements = Array.isArray(rule) ? rule : [];
 
-      const rule = ruleConfig["ModeOfDisbursementType"]?.(dataRules);
-      if (!rule) return;
+    const allTabs = Object.values(disbursemenTabs);
 
-      const values = await evaluateRule(
-        rule,
-        (code, data) => postBusinessUnitRules(code, data),
-        "value",
-        businessUnitPublicCode
-      );
+    const availableTabs = allTabs.filter((tab) =>
+      validDisbursements.includes(tab.id)
+    );
 
-      const validDisbursements =
-        Array.isArray(values) && typeof values[0] === "string"
-          ? values
-          : values.map((item) => item.value);
+    setValidTabs(availableTabs);
 
-      const allTabs = Object.values(disbursemenTabs);
-
-      const availableTabs = allTabs.filter((tab) =>
-        validDisbursements.includes(tab.id)
-      );
-
-      setValidTabs(availableTabs);
-
-      if (availableTabs.length > 0 && !userHasChangedTab.current) {
-        handleTabChange(availableTabs[0].id);
-      }
-    } catch (error) {
-      console.error("Error al enviar la solicitud:", error);
+    if (availableTabs.length > 0 && !userHasChangedTab.current) {
+      handleTabChange(availableTabs[0].id);
     }
-  }, [
-    businessUnitPublicCode,
-    customerData.generalAttributeClientNaturalPersons,
-    data.credit_products,
-    data.requested_amount,
-    handleTabChange,
-  ]);
+  }, [handleTabChange, rule]);
 
   useEffect(() => {
     fetchTabs();
@@ -158,7 +125,7 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
     userHasChangedTab.current = true;
     handleTabChange(tabId);
   };
-
+  console.log("rule", rule);
   return (
     <Fieldset>
       <Stack

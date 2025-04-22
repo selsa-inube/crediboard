@@ -1,6 +1,7 @@
 interface ErrorDetail {
   whatWentWrong: string[];
   howToFix: string[];
+  addToFix?: string[];
 }
 
 const errorCodes: Record<number, ErrorDetail> = {
@@ -101,6 +102,20 @@ const errorCodes: Record<number, ErrorDetail> = {
   1012: {
     whatWentWrong: ["El prospecto solicitado no existe o ya fue tramitado."],
     howToFix: ["Confirma el estado del prospecto o valida el ID seleccionado."],
+  },
+  1013: {
+    whatWentWrong: [
+      "No se ha realizado la configuración de algunas reglas de negocio",
+    ],
+    howToFix: [
+      "Confirma la configuración de las siguientes reglas de negocio:",
+    ],
+  },
+  1014: {
+    whatWentWrong: [
+      "Es necesario definir el medio de desembolso para el prospecto.",
+    ],
+    howToFix: ["Confirma la configuración de la regla de negocio:"],
   },
 };
 

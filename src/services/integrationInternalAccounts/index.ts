@@ -42,7 +42,7 @@ const getAllInternalAccounts = async (
         throw new Error("No hay datos disponibles.");
       }
 
-      console.log(businessUnitPublicCode)
+      console.log(businessUnitPublicCode);
       const data = await res.json();
 
       if (!res.ok) {
