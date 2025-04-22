@@ -48,6 +48,7 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
     validationSchema,
     validateOnMount: true,
     onSubmit: () => {},
+    enableReinitialize: true,
   });
 
   const prevValues = useRef(formik.values);

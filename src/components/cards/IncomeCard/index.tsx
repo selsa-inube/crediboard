@@ -1,7 +1,7 @@
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Stack, Icon, Text, Divider } from "@inubekit/inubekit";
+import { Stack, Icon, Text, Divider, SkeletonLine } from "@inubekit/inubekit";
 import { Textfield } from "@inubekit/textfield";
 
 import {
@@ -51,6 +51,7 @@ export function IncomeCard(props: IIncomeCardProps) {
     validationSchema,
     validateOnMount: true,
     onSubmit: () => {},
+    enableReinitialize: true,
   });
 
   return (
@@ -68,31 +69,35 @@ export function IncomeCard(props: IIncomeCardProps) {
         <Stack direction="column" padding="10px 8px">
           {!disabled && (
             <>
-              {labels.map((label, index) => (
-                <StyledTextField key={index}>
-                  <Text type="label" weight="bold" size="medium">
-                    {label}
-                  </Text>
-                  <Textfield
-                    name={`field${index}`}
-                    id={`field${index}`}
-                    placeholder={placeholders[index]}
-                    value={validateCurrencyField(
-                      `field${index}`,
-                      formik,
-                      true,
-                      ""
-                    )}
-                    onChange={(e) => {
-                      handleChangeWithCurrency(formik, e);
-                      onValueChange?.(index, e.target.value);
-                    }}
-                    size="compact"
-                    disabled={disabled}
-                    fullwidth
-                  />
-                </StyledTextField>
-              ))}
+              {values.length === 0
+                ? Array.from({ length: 3 }).map((_, index) => (
+                    <SkeletonLine key={index} />
+                  ))
+                : labels.map((label, index) => (
+                    <StyledTextField key={index}>
+                      <Text type="label" weight="bold" size="medium">
+                        {label}
+                      </Text>
+                      <Textfield
+                        name={`field${index}`}
+                        id={`field${index}`}
+                        placeholder={placeholders[index]}
+                        value={validateCurrencyField(
+                          `field${index}`,
+                          formik,
+                          true,
+                          ""
+                        )}
+                        onChange={(event) => {
+                          handleChangeWithCurrency(formik, event);
+                          onValueChange?.(index, event.target.value);
+                        }}
+                        size="compact"
+                        disabled={disabled}
+                        fullwidth
+                      />
+                    </StyledTextField>
+                  ))}
             </>
           )}
           {disabled && (

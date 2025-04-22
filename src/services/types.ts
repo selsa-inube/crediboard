@@ -272,6 +272,8 @@ export interface IProspect {
   consolidated_credit: IConsolidatedCredit[];
   credit_product: ICreditProductProspect[];
   outlay: IOutlay[];
+  borrowers?: unknown;
+  requested_amount?: number;
 }
 
 export interface ILineCredit {
@@ -331,7 +333,7 @@ interface IDebtor {
 }
 
 export interface IIncome {
-  borrowers: IDebtor[];
+  borrowers?: IDebtor[];
   borrower_id: string;
   borrower: string;
   capital: string[];
