@@ -252,7 +252,7 @@ export function SubmitCreditApplication() {
         accountBankCode: "100",
         accountBankName: value.accountType || "none",
         accountNumber: value.accountNumber || "none",
-        accountType: value.account || "none",
+        accountType: value.account?.split("- ")[1]?.trim() || "none",
         disbursementAmount: value.amount || 1,
         disbursementDate: "01/01/2025",
         isInTheNameOfBorrower: value.check ? "Y" : "N",

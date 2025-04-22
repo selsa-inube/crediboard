@@ -89,13 +89,17 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
 
   useEffect(() => {
     const totalAmount = getTotalAmount();
-    onFormValid(totalAmount === initialValues.amount);
+    onFormValid(
+      totalAmount === initialValues.amount &&
+        initialValues.Internal.account !== ""
+    );
   }, [
     formik.values,
     onFormValid,
     tabChanged,
     getTotalAmount,
     initialValues.amount,
+    initialValues.Internal.account,
   ]);
 
   const fetchTabs = useCallback(async () => {
@@ -135,12 +139,32 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
 
       setValidTabs(availableTabs);
 
+      if (availableTabs.length === 1) {
+        const tabId = availableTabs[0].id;
+        if (tabId === disbursemenTabs.internal.id) {
+          formik.setFieldValue("Internal.amount", initialValues.amount);
+        }
+        if (tabId === disbursemenTabs.external.id) {
+          formik.setFieldValue("External.amount", initialValues.amount);
+        }
+        if (tabId === disbursemenTabs.check.id) {
+          formik.setFieldValue("CheckEntity.amount", initialValues.amount);
+        }
+        if (tabId === disbursemenTabs.management.id) {
+          formik.setFieldValue("CheckManagement.amount", initialValues.amount);
+        }
+        if (tabId === disbursemenTabs.cash.id) {
+          formik.setFieldValue("Cash.amount", initialValues.amount);
+        }
+      }
+
       if (availableTabs.length > 0 && !userHasChangedTab.current) {
         handleTabChange(availableTabs[0].id);
       }
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     businessUnitPublicCode,
     customerData.generalAttributeClientNaturalPersons,
@@ -173,7 +197,6 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
             onChange={handleManualTabChange}
             scroll={isMobile}
           />
-
           {isSelected === disbursemenTabs.internal.id && (
             <DisbursementWithInternalAccount
               isMobile={isMobile}
@@ -183,8 +206,9 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               formik={formik}
               optionNameForm="Internal"
               getTotalAmount={getTotalAmount}
-              identificationNumber={identificationNumber}
+              customerData={customerData}
               businessUnitPublicCode={businessUnitPublicCode}
+              identificationNumber={identificationNumber}
             />
           )}
           {isSelected === disbursemenTabs.external.id && (
