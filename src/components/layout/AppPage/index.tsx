@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect, useRef } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
 import { Icon, Grid, useFlag, useMediaQuery } from "@inubekit/inubekit";
 import { Header } from "@inubekit/header";
@@ -43,6 +43,8 @@ function AppPage() {
   const userMenuRef = useRef<HTMLDivElement>(null);
   const collapseMenuRef = useRef<HTMLDivElement>(null);
   const businessUnitChangeRef = useRef<HTMLDivElement>(null);
+
+  const navigate = useNavigate();
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -92,6 +94,7 @@ function AppPage() {
     setBusinessUnitSigla(selectJSON);
     setSelectedClient(businessUnit.abbreviatedName);
     setCollapse(false);
+    navigate("/");
   };
 
   const { addFlag } = useFlag();
