@@ -3,19 +3,14 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
+import { IIncomeSources } from "./types";
 
-import { ICustomer } from "./types";
-
-const getSearchCustomerByCode = async (
+const getIncomeSourcesById = async (
   publicCode: string,
-  businessUnitPublicCode: string,
-  silent = false
-): Promise<ICustomer | null> => {
+  businessUnitPublicCode: string
+): Promise<IIncomeSources> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
-  const queryParams = new URLSearchParams({
-    publicCode: publicCode,
-  });
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
@@ -25,17 +20,16 @@ const getSearchCustomerByCode = async (
       const options: RequestInit = {
         method: "GET",
         headers: {
-          "X-Action": "SearchAllCustomerCatalog",
+          "X-Action": "ClientIncomeSourcesById",
           "X-Business-Unit": "fondecom",
           "Content-type": "application/json; charset=UTF-8",
         },
         signal: controller.signal,
       };
 
-      // The console.log is requied due to the fondecom business unit
       console.log(businessUnitPublicCode);
       const res = await fetch(
-        `${environment.VITE_ICLIENT_QUERY_PROCESS_SERVICE}/customers?${queryParams.toString()}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/client-income-sources/${publicCode}`,
         options
       );
 
@@ -61,18 +55,16 @@ const getSearchCustomerByCode = async (
 
       return data;
     } catch (error) {
-      if (!silent) {
-        console.error(`Intento ${attempt} fallido:`, error);
-        if (attempt === maxRetries) {
-          throw new Error(
-            "Todos los intentos fallaron. No se pudo obtener la tarea."
-          );
-        }
+      console.error(`Intento ${attempt} fallido:`, error);
+      if (attempt === maxRetries) {
+        throw new Error(
+          "Todos los intentos fallaron. No se pudo obtener la tarea."
+        );
       }
     }
   }
 
-  return null;
+  throw new Error("No se pudo obtener la tarea después de varios intentos.");
 };
 
-export { getSearchCustomerByCode };
+export { getIncomeSourcesById };

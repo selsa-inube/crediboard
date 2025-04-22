@@ -86,13 +86,17 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
 
   useEffect(() => {
     const totalAmount = getTotalAmount();
-    onFormValid(totalAmount === initialValues.amount);
+    onFormValid(
+      totalAmount === initialValues.amount &&
+        initialValues.Internal.account !== ""
+    );
   }, [
     formik.values,
     onFormValid,
     tabChanged,
     getTotalAmount,
     initialValues.amount,
+    initialValues.Internal.account,
   ]);
 
   const fetchTabs = useCallback(() => {
@@ -135,7 +139,6 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
             onChange={handleManualTabChange}
             scroll={isMobile}
           />
-
           {isSelected === disbursemenTabs.internal.id && (
             <DisbursementWithInternalAccount
               isMobile={isMobile}
@@ -145,8 +148,8 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
               formik={formik}
               optionNameForm="Internal"
               getTotalAmount={getTotalAmount}
-              identificationNumber={identificationNumber}
               businessUnitPublicCode={businessUnitPublicCode}
+              identificationNumber={identificationNumber}
             />
           )}
           {isSelected === disbursemenTabs.external.id && (
