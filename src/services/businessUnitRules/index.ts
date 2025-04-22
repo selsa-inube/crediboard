@@ -33,14 +33,14 @@ const postBusinessUnitRules = async (
     }
 
     if (!res.ok) {
-      const errorMessage = `Error al crear el rol. Status: ${
+      const errorMessage = `Error al evaluar la regla de negocio Status: ${
         res.status
       }, Data: ${JSON.stringify(data)}`;
       throw new Error(errorMessage);
     }
     return data;
   } catch (error) {
-    console.error("Failed to add roles:", error);
+    console.error("Failed to evaluate rule:", error);
     throw error;
   }
 };

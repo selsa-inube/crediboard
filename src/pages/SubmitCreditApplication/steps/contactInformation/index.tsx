@@ -1,8 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Grid } from "@inubekit/grid";
-import { Textfield } from "@inubekit/inubekit";
+import { Input } from "@inubekit/inubekit";
 
 import { CardGray } from "@components/cards/CardGray";
 import { Fieldset } from "@components/data/Fieldset";
@@ -32,18 +32,32 @@ export function ContactInformation(props: IContactInformationProps) {
       .required(""),
   });
 
+  const getInitialFormValues = () => ({
+    document:
+      customerData?.generalAttributeClientNaturalPersons?.[0]
+        ?.typeIdentification ?? "",
+    documentNumber: customerData?.publicCode ?? "",
+    name:
+      customerData?.generalAttributeClientNaturalPersons?.[0]?.firstNames ?? "",
+    lastName:
+      customerData?.generalAttributeClientNaturalPersons?.[0]?.lastNames ?? "",
+    email:
+      initialValues?.email && initialValues.email.trim() !== ""
+        ? initialValues.email
+        : (customerData?.generalAttributeClientNaturalPersons?.[0]
+            ?.emailContact ?? ""),
+
+    phone:
+      initialValues?.phone !== null && `${initialValues.phone}`.trim() !== ""
+        ? `${initialValues.phone}`
+        : (customerData?.generalAttributeClientNaturalPersons?.[0]
+            ?.cellPhoneContact ?? ""),
+  });
+
+  const [formValues] = useState(getInitialFormValues);
+
   const formik = useFormik({
-    initialValues: {
-      ...initialValues,
-      document:
-        customerData.generalAttributeClientNaturalPersons[0].typeIdentification,
-      documentNumber: customerData.publicCode,
-      name: customerData.generalAttributeClientNaturalPersons[0].firstNames,
-      lastName: customerData.generalAttributeClientNaturalPersons[0].lastNames,
-      email: customerData.generalAttributeClientNaturalPersons[0].emailContact,
-      phone:
-        customerData.generalAttributeClientNaturalPersons[0].cellPhoneContact,
-    },
+    initialValues: formValues,
     validationSchema,
     validateOnMount: true,
     onSubmit: () => {},
@@ -56,12 +70,22 @@ export function ContactInformation(props: IContactInformationProps) {
   }, [formik.isValid, onFormValid]);
 
   useEffect(() => {
-    if (
+    const hasChanged =
       prevValues.current.email !== formik.values.email ||
-      prevValues.current.phone !== formik.values.phone
-    ) {
-      handleOnChange(formik.values);
-      prevValues.current = formik.values;
+      prevValues.current.phone !== formik.values.phone;
+
+    if (hasChanged) {
+      const updatedData = {
+        document: formik.values.document,
+        documentNumber: formik.values.documentNumber,
+        name: formik.values.name,
+        lastName: formik.values.lastName,
+        email: formik.values.email,
+        phone: formik.values.phone,
+      };
+
+      handleOnChange(updatedData);
+      prevValues.current = { ...formik.values };
     }
   }, [formik.values, handleOnChange]);
 
@@ -94,7 +118,7 @@ export function ContactInformation(props: IContactInformationProps) {
           label={dataContactInformation.cardLastName}
           placeHolder={formik.values.lastName}
         />
-        <Textfield
+        <Input
           name="email"
           id="email"
           type="email"
@@ -108,7 +132,7 @@ export function ContactInformation(props: IContactInformationProps) {
           message={dataContactInformation.failedEmail}
           fullwidth
         />
-        <Textfield
+        <Input
           name="phone"
           id="phone"
           type="number"

@@ -1,6 +1,7 @@
 interface ErrorDetail {
   whatWentWrong: string[];
   howToFix: string[];
+  addToFix?: string[];
 }
 
 const errorCodes: Record<number, ErrorDetail> = {
@@ -85,6 +86,36 @@ const errorCodes: Record<number, ErrorDetail> = {
   1005: {
     whatWentWrong: ["No se encontraron opciones para el empleado."],
     howToFix: ["Confirma que estés usando la url adecuada."],
+  },
+  1010: {
+    whatWentWrong: ["No se encontró el número del prospecto solicitado."],
+    howToFix: ["Confirma que estes usando el id correcto."],
+  },
+  1011: {
+    whatWentWrong: [
+      "Confirma que el ID de prospecto que estás utilizando es correcto y corresponde al cliente actual.",
+    ],
+    howToFix: [
+      "Verifica en el sistema que el prospecto no haya sido tramitado previamente.",
+    ],
+  },
+  1012: {
+    whatWentWrong: ["El prospecto solicitado no existe o ya fue tramitado."],
+    howToFix: ["Confirma el estado del prospecto o valida el ID seleccionado."],
+  },
+  1013: {
+    whatWentWrong: [
+      "No se ha realizado la configuración de algunas reglas de negocio",
+    ],
+    howToFix: [
+      "Confirma la configuración de las siguientes reglas de negocio:",
+    ],
+  },
+  1014: {
+    whatWentWrong: [
+      "Es necesario definir el medio de desembolso para el prospecto.",
+    ],
+    howToFix: ["Confirma la configuración de la regla de negocio:"],
   },
 };
 

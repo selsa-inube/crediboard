@@ -19,7 +19,7 @@ export const ruleConfig: Record<string, RuleBuilder> = {
       //{ condition: "AffiliateSeniority", value: data.AffiliateSeniority },
     ],
   }),
-  ValidationCoBorrowwe: (data) => ({
+  ValidationCoBorrower: (data) => ({
     ruleName: "HumanValidationRequirement",
     conditions: [
       { condition: "LineOfCredit", value: data.LineOfCredit },

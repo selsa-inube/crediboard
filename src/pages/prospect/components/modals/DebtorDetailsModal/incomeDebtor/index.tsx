@@ -13,9 +13,18 @@ interface IIncomeDebtor {
 }
 
 const incomeFields = [
-  { label: dataIncomeDebtor.work, key: "PeriodicSalary" },
-  { label: dataIncomeDebtor.capital, key: "PersonalBusinessUtilities" },
-  { label: dataIncomeDebtor.variables, key: "OtherNonSalaryEmoluments" },
+  {
+    label: dataIncomeDebtor.work,
+    keys: ["PeriodicSalary", "OtherNonSalaryEmoluments", "PensionAllowances"],
+  },
+  {
+    label: dataIncomeDebtor.capital,
+    keys: ["FinancialIncome", "Leases", "Dividends"],
+  },
+  {
+    label: dataIncomeDebtor.variables,
+    keys: ["ProfessionalFees", "PersonalBusinessUtilities"],
+  },
 ];
 
 export function IncomeDebtor(props: IIncomeDebtor) {
@@ -24,16 +33,23 @@ export function IncomeDebtor(props: IIncomeDebtor) {
   return (
     <Fieldset>
       <Stack direction="column" padding="10px 16px" gap="16px">
-        {incomeFields.map((field, index) => (
-          <CardGray
-            key={index}
-            label={field.label}
-            placeHolder={currencyFormat(
-              getPropertyValue(initialValues.borrower_properties, field.key)
-            )}
-            apparencePlaceHolder="gray"
-          />
-        ))}
+        {incomeFields.map((field, index) => {
+          const sum = field.keys.reduce((acc, key) => {
+            const val = Number(
+              getPropertyValue(initialValues.borrower_properties, key) ?? 0
+            );
+            return acc + (isNaN(val) ? 0 : val);
+          }, 0);
+
+          return (
+            <CardGray
+              key={index}
+              label={field.label}
+              placeHolder={currencyFormat(sum)}
+              apparencePlaceHolder="gray"
+            />
+          );
+        })}
       </Stack>
     </Fieldset>
   );
