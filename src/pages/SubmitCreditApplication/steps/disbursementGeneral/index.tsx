@@ -1,12 +1,9 @@
 import { useFormik } from "formik";
 import { useEffect, useContext, useState, useRef, useCallback } from "react";
 import { Stack, Tabs } from "@inubekit/inubekit";
+
 import { Fieldset } from "@components/data/Fieldset";
-//import { postBusinessUnitRules } from "@services/businessUnitRules";
 import { AppContext } from "@context/AppContext";
-//import { CustomerContext } from "@context/CustomerContext";
-//import { ruleConfig } from "@pages/SubmitCreditApplication/config/configRules";
-//import { evaluateRule } from "@pages/SubmitCreditApplication/evaluateRule";
 
 import { DisbursementWithInternalAccount } from "./disbursementWithInternalAccount/index";
 import { DisbursementWithExternalAccount } from "./disbursementWithExternalAccount";
@@ -41,7 +38,6 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
     isMobile,
     initialValues,
     isSelected,
-    //data,
     identificationNumber,
     onFormValid,
     handleOnChange,
@@ -58,7 +54,6 @@ export function DisbursementGeneral(props: IDisbursementGeneralProps) {
   });
 
   const { businessUnitSigla } = useContext(AppContext);
-  //const { customerData } = useContext(CustomerContext);
   const userHasChangedTab = useRef(false);
 
   const [validTabs, setValidTabs] = useState<Tab[]>([]);

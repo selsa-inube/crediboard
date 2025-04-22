@@ -196,7 +196,6 @@ export function SubmitCreditApplication() {
   }, [valueRule]);
 
   const steps = useMemo(() => {
-    console.log("valueRule", valueRule);
     if (!valueRule) return Object.values(stepsFilingApplication);
     const hideMortgage = valueRule["ValidationGuarantee"]?.includes("Hipoteca");
     const hidePledge = valueRule["ValidationGuarantee"]?.includes("Prenda");
