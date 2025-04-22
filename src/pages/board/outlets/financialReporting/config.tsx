@@ -149,39 +149,47 @@ export const optionFlags = {
 
 export const errorMessages = {
   comercialManagement: {
+    titleCard: "Estado",
+    descriptionCard: "Gestión Comercial",
     title: "No se encontró la solicitud de crédito",
     description:
       "No hay datos relacionados a la solicitud de crédito seleccionada.",
     button: "Volver a buscar",
   },
   toDo: {
+    titleCard: "Por hacer",
     title: "No se encontraron tareas",
     description: "No hay tareas disponibles para mostrar en este momento.",
     button: "Volver a intentar",
   },
   approval: {
+    titleCard: "Aprobaciones",
     title: "No se encontraron aprobaciones",
     description:
       "No se encontraron datos relacionados con la aprobación del crédito.",
     button: "Volver a intentar",
   },
   Requirements: {
+    titleCard: "Requisitos",
     title: "No se encontraron requisitos",
     description: "No hay requisitos disponibles para esta solicitud.",
     button: "Volver a intentar",
   },
   Management: {
+    titleCard: "Gestión",
     title: "No se encontró gestión",
     description: "No se ha registrado gestión para esta solicitud.",
     button: "Volver a intentar",
   },
   PromissoryNotes: {
+    titleCard: "Pagarés y Libranzas",
     title: "No se encontraron documentos de obligación",
     description:
       "No hay documentos disponibles relacionados con pagarés o libranzas.",
     button: "Volver a intentar",
   },
   Postingvouchers: {
+    titleCard: "Comprobantes de Contabilización",
     title: "No se encontraron comprobantes",
     description: "No hay comprobantes contables asociados a esta solicitud.",
     button: "Volver a intentar",

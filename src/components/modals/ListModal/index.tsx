@@ -25,7 +25,6 @@ import { validationMessages } from "@validations/validationMessages";
 import { AppContext } from "@context/AppContext";
 import { getSearchDocumentById } from "@services/documents/SearchDocumentById";
 import { IDocumentUpload } from "@pages/SubmitCreditApplication/types";
-import { ICustomerData } from "@context/CustomerContext/types";
 
 import {
   StyledContainerClose,
@@ -65,7 +64,6 @@ export interface IListModalProps {
   isViewing?: boolean;
   uploadedFiles?: IDocumentUpload[];
   onlyDocumentReceived?: boolean;
-  customerData?: ICustomerData;
   handleClose: () => void;
   handleSubmit?: () => void;
   onSubmit?: () => void;
@@ -87,11 +85,11 @@ export const ListModal = (props: IListModalProps) => {
     isViewing,
     uploadedFiles,
     onlyDocumentReceived,
-    customerData,
     handleClose,
     handleSubmit,
     onSubmit,
     setUploadedFiles,
+    id,
   } = props;
 
   const node = document.getElementById(portalId ?? "portal");
@@ -226,13 +224,12 @@ export const ListModal = (props: IListModalProps) => {
       handleClose();
       return;
     }
-
     try {
       if (uploadedFiles) {
         for (const fileData of uploadedFiles) {
           await saveDocument(
             businessUnitPublicCode,
-            customerData?.customerId ?? "",
+            id,
             fileData.name.split(".").slice(0, -1).join("."),
             fileData.file
           );

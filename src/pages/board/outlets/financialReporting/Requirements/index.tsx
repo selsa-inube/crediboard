@@ -30,7 +30,7 @@ interface IRequirementsData {
 }
 
 export interface IRequirementsProps {
-  isMobile: boolean;
+  isMobile?: boolean;
   id: string;
   user: string;
 }
@@ -168,7 +168,7 @@ export const Requirements = (props: IRequirementsProps) => {
   return (
     <>
       <Fieldset
-        title="Requisitos"
+        title={errorMessages.Requirements.titleCard}
         activeButton={dataButton}
         heightFieldset="100%"
         hasTable={!error}

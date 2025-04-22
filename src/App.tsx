@@ -39,7 +39,11 @@ function FirstPage() {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="*" element={<FirstPage />} errorElement={<ErrorPage />} />
+      <Route
+        path="*"
+        element={<FirstPage />}
+        errorElement={<ErrorPage errorCode={400} />}
+      />
       <Route path="login/*" element={<LoginRoutes />} />
       <Route path="/*" element={<BoardRoutes />} />
       <Route path="add-prospect/*" element={<AddProspectRoutes />} />
