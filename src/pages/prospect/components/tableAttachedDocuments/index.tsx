@@ -4,7 +4,14 @@ import {
   MdOutlineFileDownload,
   MdOutlineHighlightOff,
 } from "react-icons/md";
+
 import {
+  Icon,
+  Text,
+  SkeletonLine,
+  SkeletonIcon,
+  useFlag,
+  Tag,
   Pagination,
   Table,
   Tbody,
@@ -13,14 +20,6 @@ import {
   Th,
   Thead,
   Tr,
-} from "@inubekit/table";
-import {
-  Icon,
-  Text,
-  SkeletonLine,
-  SkeletonIcon,
-  useFlag,
-  Tag,
 } from "@inubekit/inubekit";
 
 import { get } from "@mocks/utils/dataMock.service";

@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import { MdOutlineSend, MdAttachFile, MdInfoOutline } from "react-icons/md";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { Textfield } from "@inubekit/textfield";
-
+import { Stack, Icon, Textfield } from "@inubekit/inubekit";
 import { Fieldset } from "@components/data/Fieldset";
 import { Message } from "@components/data/Message";
 import { ITraceType } from "@services/types";

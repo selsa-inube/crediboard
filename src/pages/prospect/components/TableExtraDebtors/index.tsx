@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import localforage from "localforage";
 import { MdCached, MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
+
 import {
+  Stack,
+  Icon,
+  Text,
+  SkeletonLine,
+  SkeletonIcon,
+  useMediaQuery,
   Pagination,
   Table,
   Tbody,
@@ -10,14 +17,6 @@ import {
   Th,
   Thead,
   Tr,
-} from "@inubekit/table";
-import {
-  Stack,
-  Icon,
-  Text,
-  SkeletonLine,
-  SkeletonIcon,
-  useMediaQuery,
 } from "@inubekit/inubekit";
 
 import { ExtraDebtorModal } from "@components/modals/extraDebtorModal";

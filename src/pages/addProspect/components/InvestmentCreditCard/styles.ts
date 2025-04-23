@@ -1,4 +1,4 @@
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 import styled from "styled-components";
 
 interface IStyledContainer {
@@ -16,7 +16,8 @@ export const StyledContainer = styled.div<IStyledContainer>`
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   box-shadow: 0px 4px 8px 3px rgba(9, 30, 66, 0.13);
-  border: 1px solid var(--Primary-color-text-primary-regular, rgba(0, 82, 204, 1));
+  border: 1px solid
+    var(--Primary-color-text-primary-regular, rgba(0, 82, 204, 1));
 `;
 
 export const StyledInput = styled.div`
@@ -25,4 +26,3 @@ export const StyledInput = styled.div`
   background-color: ${({ theme }) =>
     theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
 `;
-

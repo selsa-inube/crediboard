@@ -6,16 +6,7 @@ import {
   MdDeleteOutline,
   MdOutlineEdit,
 } from "react-icons/md";
-import {
-  Pagination,
-  Table,
-  Tbody,
-  Td,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
-} from "@inubekit/table";
+
 import {
   Stack,
   Icon,
@@ -24,6 +15,14 @@ import {
   SkeletonIcon,
   Button,
   useMediaQuery,
+  Pagination,
+  Table,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
 } from "@inubekit/inubekit";
 
 import { EditFinancialObligationModal } from "@components/modals/editFinancialObligationModal";

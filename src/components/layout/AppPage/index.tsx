@@ -1,9 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
-import { Icon, Grid, useFlag, useMediaQuery } from "@inubekit/inubekit";
-import { Header } from "@inubekit/header";
-
+import { Icon, Grid, useFlag, useMediaQuery, Header } from "@inubekit/inubekit";
 import { AppContext } from "@context/AppContext";
 import { MenuSection } from "@components/navigation/MenuSection";
 import { MenuUser } from "@components/navigation/MenuUser";
@@ -25,6 +23,7 @@ import {
   StyledFooter,
   StyledPrint,
 } from "./styles";
+import { userMenu } from "@config/menuMainConfiguration";
 
 const renderLogo = (imgUrl: string) => {
   return (
@@ -119,10 +118,12 @@ function AppPage() {
         <StyledPrint>
           <StyledHeaderContainer>
             <Header
-              portalId="portal"
               logoURL={renderLogo(eventData.businessUnit.urlLogo)}
-              userName={eventData.user.userName}
-              client={eventData.businessUnit.abbreviatedName}
+              user={{
+                username: eventData.user.userName,
+                breakpoint: "848px",
+              }}
+              menu={userMenu}
             />
           </StyledHeaderContainer>
           <StyledCollapseIcon

@@ -12,7 +12,7 @@ export const StyledModal = styled.div<IStyledModal>`
   max-height: ${({ $smallScreen }) => ($smallScreen ? "398px" : "382px")};
   width: ${({ $smallScreen }) => ($smallScreen ? "335px" : "430px")};
   background-color: ${({ theme }) =>
-    theme.color?.surface?.light?.clear || inube.palette.neutral.N0};
+    theme.palette?.neutral?.N0 || inube.palette.neutral.N0};
   padding: ${({ $smallScreen }) => ($smallScreen ? "16px" : "24px")};
   gap: ${({ $smallScreen }) => ($smallScreen ? "16px" : "24px")};
   border-radius: 8px;
@@ -37,7 +37,7 @@ export const StyledContainerContent = styled.div<IStyledModal>`
     }
     &::-webkit-scrollbar-thumb {
       background-color: ${
-        theme?.color?.surface?.gray?.regular || inube.palette.neutral.N30
+        theme?.palette?.neutral?.N30 || inube.palette.neutral.N30
       };
       border-radius: 8px;
     }

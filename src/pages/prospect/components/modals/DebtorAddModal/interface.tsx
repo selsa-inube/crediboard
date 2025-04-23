@@ -1,6 +1,4 @@
-import { Assisted } from "@inubekit/assisted";
-import { Stack, Divider } from "@inubekit/inubekit";
-
+import { Stack, Divider, Assisted } from "@inubekit/inubekit";
 import { BaseModal } from "@components/modals/baseModal";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";

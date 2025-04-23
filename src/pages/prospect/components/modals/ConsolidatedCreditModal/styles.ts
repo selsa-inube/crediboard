@@ -1,5 +1,5 @@
+import { inube } from "@inubekit/inubekit";
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
 
 export const ScrollableContainer = styled.div`
   height: 100%;
@@ -9,11 +9,11 @@ export const ScrollableContainer = styled.div`
     width: 8px;
     border-radius: 8px;
     background: ${({ theme }) =>
-    theme?.palette?.neutral?.N100 || "rgba(235, 236, 240, 1)"}; 
+      theme?.palette?.neutral?.N100 || "rgba(235, 236, 240, 1)"};
   }
   &::-webkit-scrollbar-thumb {
     background-color: ${({ theme }) =>
-    theme?.palette?.neutral?.N50 || inube.palette.neutral.N50};
+      theme?.palette?.neutral?.N50 || inube.palette.neutral.N50};
     border-radius: 8px;
   }
 `;

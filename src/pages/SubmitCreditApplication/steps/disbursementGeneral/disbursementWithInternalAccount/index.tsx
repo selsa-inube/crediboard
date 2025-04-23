@@ -1,10 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { Checkbox } from "@inubekit/checkbox";
-import { Toggle } from "@inubekit/toggle";
-import { Select } from "@inubekit/select";
-import { Stack, Text, Divider, useFlag } from "@inubekit/inubekit";
-import { Textarea } from "@inubekit/textarea";
-import { Textfield } from "@inubekit/textfield";
+
+import {
+  Stack,
+  Text,
+  Divider,
+  useFlag,
+  Textfield,
+  Toggle,
+  Select,
+  Textarea,
+  Checkbox,
+} from "@inubekit/inubekit";
+
 import {
   currencyFormat,
   handleChangeWithCurrency,

@@ -1,11 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Grid } from "@inubekit/grid";
-import { Select } from "@inubekit/select";
-import { Stack } from "@inubekit/stack";
-import { Textarea } from "@inubekit/textarea";
-import { Textfield } from "@inubekit/textfield";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { optionsOfferedstate } from "@mocks/filing-application/property-offered/propertyoffered.mock";
@@ -16,6 +11,7 @@ import {
 
 import { IVehicleOffered } from "../../types";
 import { dataVehicule } from "./config";
+import { Grid, Select, Stack, Textarea, Textfield } from "@inubekit/inubekit";
 
 interface IVehicleOfferedProps {
   isMobile: boolean;
