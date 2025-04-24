@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { Stack, Text, useMediaQuery, Button } from "@inubekit/inubekit";
+
 import { StyledContainerFieldset, StyledPrint } from "./styles";
 
 interface IOptionsButton {

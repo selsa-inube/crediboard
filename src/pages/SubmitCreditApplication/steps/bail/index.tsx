@@ -2,9 +2,11 @@ import { useEffect, useRef } from "react";
 import { MdInfoOutline } from "react-icons/md";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Checkbox, Icon, Stack, Text } from "@inubekit/inubekit";
+
 import { Fieldset } from "@components/data/Fieldset";
 import { currencyFormat } from "@utils/formatData/currency";
-import { Checkbox, Icon, Stack, Text } from "@inubekit/inubekit";
+
 import { dataBail } from "./config";
 import { IBail } from "../../types";
 

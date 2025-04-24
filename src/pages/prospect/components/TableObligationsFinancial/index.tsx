@@ -6,7 +6,6 @@ import {
   MdDeleteOutline,
   MdOutlineEdit,
 } from "react-icons/md";
-
 import {
   Stack,
   Icon,
@@ -27,11 +26,11 @@ import {
 
 import { EditFinancialObligationModal } from "@components/modals/editFinancialObligationModal";
 import { ListModal } from "@components/modals/ListModal";
+import { NewPrice } from "@components/modals/ReportCreditsModal/components/newPrice";
 import { currencyFormat } from "@utils/formatData/currency";
 
 import { headers, dataReport } from "./config";
 import { usePagination } from "./utils";
-import { NewPrice } from "@components/modals/ReportCreditsModal/components/newPrice";
 
 export interface ITableFinancialObligationsProps {
   type?: string;

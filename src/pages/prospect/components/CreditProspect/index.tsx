@@ -7,7 +7,6 @@ import {
   MdOutlinePictureAsPdf,
   MdOutlineShare,
 } from "react-icons/md";
-
 import { Stack, Icon, Button } from "@inubekit/inubekit";
 
 import { MenuProspect } from "@components/navigation/MenuProspect";

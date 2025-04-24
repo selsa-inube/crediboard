@@ -1,7 +1,6 @@
 import * as Yup from "yup";
 import { Formik, FormikValues } from "formik";
 import { MdOutlineAttachMoney } from "react-icons/md";
-
 import {
   Select,
   Stack,
@@ -21,6 +20,7 @@ import {
   paymentMethodOptionsMock,
 } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { handleFormSubmit } from "@utils/handleFormSubmit";
+
 import { dataAddSeriesModal } from "./config";
 
 export interface AddSeriesModalProps {

@@ -7,7 +7,7 @@ const userMenu = [
     links: [
       {
         id: "logout",
-        title: "Cerrar sesión",
+        title: "Cerrar sesissón",
         path: "/logout",
         iconBefore: <MdLogout />,
       },

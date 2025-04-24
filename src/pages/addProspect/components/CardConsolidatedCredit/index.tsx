@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { MdClear } from "react-icons/md";
 import { Stack, Text, Tag, Divider, Button } from "@inubekit/inubekit";
+
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 

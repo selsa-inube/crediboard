@@ -32,7 +32,8 @@ export const StyledLogo = styled.img`
 `;
 
 export const StyledHeaderContainer = styled.div`
-  div > div {
+  position: relative;
+  & div > div {
     cursor: pointer;
   }
 `;
@@ -73,6 +74,7 @@ export const StyledMenuContainer = styled.div`
 export const StyledCollapse = styled.div`
   position: absolute;
   top: 48px;
+  z-index: 1;
 `;
 export const StyledFooter = styled.footer`
   margin-top: auto;

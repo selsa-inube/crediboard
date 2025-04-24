@@ -2,12 +2,14 @@ import { useContext, useState, useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
 import { Icon, Grid, useFlag, useMediaQuery, Header } from "@inubekit/inubekit";
+
 import { AppContext } from "@context/AppContext";
 import { MenuSection } from "@components/navigation/MenuSection";
 import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
 import { BusinessUnitChange } from "@components/inputs/BusinessUnitChange";
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
+import { userMenu } from "@config/menuMainConfiguration";
 import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
 
 import {
@@ -23,7 +25,6 @@ import {
   StyledFooter,
   StyledPrint,
 } from "./styles";
-import { userMenu } from "@config/menuMainConfiguration";
 
 const renderLogo = (imgUrl: string) => {
   return (
@@ -68,7 +69,7 @@ function AppPage() {
     eventData.businessUnit.abbreviatedName
   );
   useEffect(() => {
-    const selectUser = document.querySelector("header div div:nth-child(2)");
+    const selectUser = document.querySelector("header div div:nth-child(1)");
     const handleToggleuserMenu = () => {
       setShowUserMenu(!showUserMenu);
     };
@@ -122,6 +123,7 @@ function AppPage() {
               user={{
                 username: eventData.user.userName,
                 breakpoint: "848px",
+                client: eventData.businessUnit.abbreviatedName,
               }}
               menu={userMenu}
             />

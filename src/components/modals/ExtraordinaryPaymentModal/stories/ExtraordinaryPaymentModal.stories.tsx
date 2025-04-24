@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@inubekit/inubekit";
+
 import { IExtraordinaryPayment } from "@services/types";
+
 import { ExtraordinaryPaymentModalProps, ExtraordinaryPaymentModal } from "..";
 import { parameters, props } from "./props";
 

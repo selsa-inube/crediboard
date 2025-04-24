@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Stack, Text, Button } from "@inubekit/inubekit";
+
 import { Fieldset } from ".";
 
 type Story = StoryObj<typeof Fieldset>;
