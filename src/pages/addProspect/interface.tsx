@@ -1,6 +1,4 @@
-import { Assisted } from "@inubekit/assisted";
-import { Stack } from "@inubekit/inubekit";
-import { Button } from "@inubekit/button";
+import { Assisted, Button, Stack } from "@inubekit/inubekit";
 
 import { ButtonRequirements } from "@pages/prospect/components/buttonRequirements";
 import { RequirementsModal } from "@pages/prospect/components/modals/RequirementsModal";
@@ -37,7 +35,7 @@ interface AddPositionUIProps {
     newValue: number
   ) => void;
   currentStep: number;
-  dataHeader: { name: string, status: string };
+  dataHeader: { name: string; status: string };
   steps: IStep[];
   isCurrentFormValid: boolean;
   isModalOpenRequirements: boolean;
@@ -70,7 +68,7 @@ export function AddProspectUI(props: AddPositionUIProps) {
   } = props;
 
   return (
-    <> 
+    <>
       <GeneralHeader
         buttonText="Agregar vinculación"
         descriptionStatus={dataHeader.status}

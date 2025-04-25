@@ -1,8 +1,6 @@
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { Stack, Text, Divider } from "@inubekit/inubekit";
-import { Toggle } from "@inubekit/toggle";
-import { Textfield } from "@inubekit/textfield";
+import { Stack, Text, Divider, Toggle, Textfield } from "@inubekit/inubekit";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { currencyFormat } from "@utils/formatData/currency";

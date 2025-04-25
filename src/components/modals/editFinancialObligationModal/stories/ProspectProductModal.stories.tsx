@@ -1,22 +1,22 @@
 import { useState } from "react";
+import { MdAdd, MdCached } from "react-icons/md";
 import { FormikValues } from "formik";
 import { Meta, StoryObj } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
-import { Button } from "@inubekit/button";
-import { MdAdd, MdCached } from "react-icons/md";
-
+import { Button } from "@inubekit/inubekit";
 import { props, parameters } from "./props";
 import {
   EditFinancialObligationModal,
   IEditFinancialObligationModalProps,
 } from "..";
 
-const editFinancialObligationModal: Meta<typeof EditFinancialObligationModal> = {
-  title: "components/modals/editFinancialObligationModal",
-  component: EditFinancialObligationModal,
-  parameters: parameters,
-  argTypes: props,
-};
+const editFinancialObligationModal: Meta<typeof EditFinancialObligationModal> =
+  {
+    title: "components/modals/editFinancialObligationModal",
+    component: EditFinancialObligationModal,
+    parameters: parameters,
+    argTypes: props,
+  };
 
 type Story = StoryObj<typeof EditFinancialObligationModal>;
 

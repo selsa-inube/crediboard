@@ -1,8 +1,14 @@
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
-import { Blanket } from "@inubekit/blanket";
-import { Stack, Icon, Text, Divider } from "@inubekit/inubekit";
-import { Button } from "@inubekit/button";
+
+import {
+  Stack,
+  Icon,
+  Text,
+  Divider,
+  Button,
+  Blanket,
+} from "@inubekit/inubekit";
 
 import { validationMessages } from "@validations/validationMessages";
 

@@ -3,16 +3,10 @@ import { inube } from "@inubekit/inubekit";
 
 interface StyledCertificationsContainerProps {
   $isMobile: boolean;
-  theme?: typeof inube;
-}
-
-interface Theme {
-  theme?: typeof inube;
 }
 
 interface VerticalDividerProps {
   $isVertical: boolean;
-  theme?: typeof inube;
   height?: string;
   color?: string;
 }
@@ -37,7 +31,7 @@ export const StyledErrorImage = styled.img`
   max-width: 100%;
 `;
 
-export const StyledFooter = styled.footer<Theme>`
+export const StyledFooter = styled.footer`
   width: 100%;
   justify-content: center;
   padding: 16px 0px;

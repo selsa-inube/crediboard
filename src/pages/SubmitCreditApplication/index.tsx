@@ -2,7 +2,7 @@ import { useContext, useState, useCallback, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useFlag, useMediaQuery } from "@inubekit/inubekit";
 
-import { CustomerContext } from "@context/CustomerContext";
+import { CustomerContext } from "@context/CustomerContext/CustomerContextProvider";
 import { AppContext } from "@context/AppContext";
 import { postSubmitCredit } from "@services/submitCredit";
 import { getSearchProspectById } from "@services/prospects";

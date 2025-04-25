@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Button } from "@inubekit/button";
+import { Button } from "@inubekit/inubekit";
 
 import { ReciprocityModal, ReciprocityModalProps } from ".";
 
@@ -26,7 +26,7 @@ const Default: Story = (args: ReciprocityModalProps) => {
 Default.args = {
   balanceOfContributions: 7000000,
   accordingToRegulation: 2,
-  assignedQuota: 14000000
+  assignedQuota: 14000000,
 };
 
 export { Default };

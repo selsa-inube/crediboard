@@ -10,9 +10,14 @@ import {
   MdOutlineVideocam,
   MdOutlinePayments,
 } from "react-icons/md";
-import { Stack, Icon, Text, Divider, useMediaQuery } from "@inubekit/inubekit";
-import { Button } from "@inubekit/button";
-
+import {
+  Stack,
+  Icon,
+  Text,
+  Divider,
+  useMediaQuery,
+  Button,
+} from "@inubekit/inubekit";
 import { MenuProspect } from "@components/navigation/MenuProspect";
 import {
   truncateTextToMaxLength,

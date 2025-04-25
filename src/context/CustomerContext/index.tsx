@@ -1,14 +1,11 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import { getSearchCustomerByCode } from "@services/customers/AllCustomers";
 import { AppContext } from "@context/AppContext";
 
-import { ICustomerContext, ICustomerData } from "./types";
-
-export const CustomerContext = createContext<ICustomerContext>(
-  {} as ICustomerContext
-);
+import { ICustomerData } from "./types";
+import { CustomerContext } from "./CustomerContextProvider";
 
 interface ICustomerContextProviderProps {
   children: React.ReactNode;
