@@ -1,7 +1,8 @@
+import { Stack } from "@inubekit/inubekit";
+
 import { Fieldset } from "@components/data/Fieldset";
 import { TableAttachedDocuments } from "@pages/prospect/components/tableAttachedDocuments";
 import { ICustomerData } from "@context/CustomerContext/types";
-import { Stack } from "@inubekit/inubekit";
 
 interface IAttachedDocumentsProps {
   isMobile: boolean;

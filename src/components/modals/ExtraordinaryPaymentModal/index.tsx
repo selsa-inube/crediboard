@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MdOutlineAdd } from "react-icons/md";
 import { Stack, Icon, useMediaQuery, Button } from "@inubekit/inubekit";
+
 import { BaseModal } from "@components/modals/baseModal";
 import { TableExtraordinaryInstallment } from "@pages/prospect/components/TableExtraordinaryInstallment";
 import { IExtraordinaryPayment } from "@services/types";

@@ -1,14 +1,21 @@
 import * as Yup from "yup";
 import { Formik, FormikValues } from "formik";
 import { MdOutlineAttachMoney } from "react-icons/md";
-import { Select, Textfield } from "@inubekit/inubekit";
-import { Stack, inube, useMediaQuery, Date } from "@inubekit/inubekit";
-import { handleFormSubmit } from "@utils/handleFormSubmit";
+import {
+  Stack,
+  inube,
+  useMediaQuery,
+  Date,
+  Select,
+  Textfield,
+} from "@inubekit/inubekit";
+
 import { BaseModal } from "@components/modals/baseModal";
 import {
   handleChangeWithCurrency,
   validateCurrencyField,
 } from "@utils/formatData/currency";
+import { handleFormSubmit } from "@utils/handleFormSubmit";
 import { paymentMethodOptionsMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 
 import { dataEditSeriesModal } from "./config";

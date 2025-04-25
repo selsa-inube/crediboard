@@ -19,8 +19,8 @@ import { Button, Grid, Stack } from "@inubekit/inubekit";
 import { BorrowerProperty } from "@services/incomeSources/types";
 import { IBorrowerData } from "@pages/SubmitCreditApplication/types";
 import { IProspect } from "@services/types";
-import { getPropertyValue, getTotalFinancialObligations } from "../../util";
 
+import { getPropertyValue, getTotalFinancialObligations } from "../../util";
 import { StyledContainer } from "./styles";
 
 interface borrowersProps {

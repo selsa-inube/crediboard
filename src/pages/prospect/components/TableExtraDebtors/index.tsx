@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import localforage from "localforage";
 import { MdCached, MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
-
 import {
   Stack,
   Icon,
