@@ -17,6 +17,12 @@ export interface IStep {
   number?: number;
   name?: string;
 }
+export interface ICommercialManagerAndAnalyst {
+  identificationDocumentNumber: string;
+  staffId: string;
+  staffName: string;
+  userAccount: string;
+}
 
 export interface IContactInformation {
   email: string;

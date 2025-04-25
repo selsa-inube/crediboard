@@ -14,8 +14,8 @@ import {
   Button,
 } from "@inubekit/inubekit";
 
-import { IStaff } from "@services/types";
-import { get } from "@mocks/utils/dataMock.service";
+import { getCommercialManagerAndAnalyst } from "@services/commercialManagerAndAnalyst";
+import { ICommercialManagerAndAnalyst } from "@pages/SubmitCreditApplication/types";
 
 import { StyledModal, StyledContainerClose } from "./styles";
 
@@ -30,9 +30,12 @@ export interface StaffModalProps {
 
 export function StaffModal(props: StaffModalProps) {
   const { portalId = "portal", onSubmit, onCloseModal } = props;
-
-  const [analystList, setAnalystList] = useState<IStaff[]>([]);
-  const [accountManagerList, setAccountManagerList] = useState<IStaff[]>([]);
+  const [analystList, setAnalystList] = useState<
+    ICommercialManagerAndAnalyst[]
+  >([]);
+  const [accountManagerList, setAccountManagerList] = useState<
+    ICommercialManagerAndAnalyst[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const isMobile = useMediaQuery("(max-width: 700px)");
 
@@ -49,59 +52,37 @@ export function StaffModal(props: StaffModalProps) {
   }
 
   useEffect(() => {
-    let isSubscribed = true;
-
-    const fetchStaffData = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
-        const results = await Promise.allSettled([
-          get("analyst"),
-          get("account-manager"),
+        const [accountManagers, analysts] = await Promise.all([
+          getCommercialManagerAndAnalyst("CredicarAccountManager", "Selsa"),
+          getCommercialManagerAndAnalyst("CredicarAnalyst", "Selsa"),
         ]);
 
-        if (!isSubscribed) return;
-
-        results.forEach((result, index) => {
-          if (result.status === "fulfilled") {
-            const data = result.value;
-            if (data instanceof Array) {
-              if (index === 0) {
-                setAnalystList(data);
-              } else {
-                setAccountManagerList(data);
-              }
-            }
-          } else {
-            console.error(
-              `Error al obtener ${index === 0 ? "analistas" : "gestores"}:`,
-              result.reason
-            );
-          }
-        });
+        setAccountManagerList(accountManagers);
+        setAnalystList(analysts);
       } catch (error) {
-        console.error("Error inesperado al obtener el staff:", error);
+        console.error("Error fetching data:", error);
       } finally {
-        if (isSubscribed) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
-    fetchStaffData();
-    return () => {
-      isSubscribed = false;
-    };
+    fetchData();
   }, []);
 
   const options = {
-    analyst: analystList.map((official) => ({
-      id: official.userId,
-      label: official.userName,
-      value: official.userName,
+    commercialManager: accountManagerList.map((official) => ({
+      id: official.staffId,
+      label: official.staffName,
+      value: official.staffName,
+      document: official.identificationDocumentNumber,
     })),
-    accountManager: accountManagerList.map((official) => ({
-      id: official.userId,
-      label: official.userName,
-      value: official.userName,
+    analyst: analystList.map((official) => ({
+      id: official.staffId,
+      label: official.staffName,
+      value: official.staffName,
     })),
   };
 
@@ -145,21 +126,31 @@ export function StaffModal(props: StaffModalProps) {
                     name="commercialManager"
                     id="commercialManager"
                     label="Gestor Comercial"
-                    placeholder="Seleccione una opción"
-                    options={options.accountManager}
-                    onChange={(name, values) => setFieldValue(name, values)}
+                    placeholder={
+                      options.commercialManager.length > 0
+                        ? "Seleccione una opción"
+                        : "No hay gestores disponibles"
+                    }
+                    options={options.commercialManager}
+                    onChange={(name, value) => setFieldValue(name, value)}
                     value={values.commercialManager}
                     fullwidth
+                    disabled={options.commercialManager.length === 0}
                   />
                   <Select
                     name="analyst"
                     id="analyst"
                     label="Analista"
+                    placeholder={
+                      options.analyst.length > 0
+                        ? "Seleccione una opción"
+                        : "No hay analistas disponibles"
+                    }
                     options={options.analyst}
                     value={values.analyst}
-                    placeholder="Seleccione una opción"
                     onChange={(name, value) => setFieldValue(name, value)}
                     fullwidth
+                    disabled={options.analyst.length === 0}
                   />
                 </Stack>
                 <Stack justifyContent="flex-end" margin="16px 0">
