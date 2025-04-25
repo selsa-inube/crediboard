@@ -1,27 +1,30 @@
-import userNotFound from "@assets/images/ItemNotFound.png";
-import { Stack } from "@inubekit/inubekit";
-import { Fieldset } from "@components/data/Fieldset";
-import { TableBoard } from "@components/data/TableBoard";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useCallback, useContext, useEffect, useState } from "react";
+import { Stack } from "@inubekit/inubekit";
+
 import { IAccountingVouchers, ICreditRequest } from "@services/types";
 import { getAccountingVouchers } from "@services/accountingVouchers";
-import { AppContext } from "@context/AppContext";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { AppContext } from "@context/AppContext";
 import { IEntries } from "@components/data/TableBoard/types";
-import { ItemNotFound } from "@components/layout/ItemNotFound";
+import { UnfoundData } from "@components/layout/UnfoundData";
+import { Fieldset } from "@components/data/Fieldset";
+import { TableBoard } from "@components/data/TableBoard";
+
 import {
   actionsPostingvouchers,
   titlesPostingvouchers,
   actionMobile,
 } from "./config";
 import { errorMessages, errorObserver } from "../config";
+
 interface IApprovalsProps {
   user: string;
   id: string;
+  isMobile: boolean;
 }
 export const Postingvouchers = (props: IApprovalsProps) => {
-  const { id } = props;
+  const { id, isMobile } = props;
   const { user } = useAuth0();
   const [error, setError] = useState(false);
   const [positionsAccountingVouchers, setPositionsAccountingVouchers] =
@@ -48,7 +51,7 @@ export const Postingvouchers = (props: IApprovalsProps) => {
 
   useEffect(() => {
     fetchCreditRequest();
-  }, []);
+  }, [fetchCreditRequest]);
 
   useEffect(() => {
     const fetchAccountingVouchers = async () => {
@@ -73,15 +76,14 @@ export const Postingvouchers = (props: IApprovalsProps) => {
     <Stack direction="column">
       <Fieldset
         title={errorMessages.Postingvouchers.titleCard}
-        heightFieldset="100%"
+        heightFieldset={isMobile ? "100%" : "162px"}
         hasTable
       >
         {error || (!loading && positionsAccountingVouchers.length === 0) ? (
-          <ItemNotFound
-            image={userNotFound}
-            title={errorMessages.Postingvouchers.title}
-            description={errorMessages.Postingvouchers.description}
-            buttonDescription={errorMessages.Postingvouchers.button}
+          <UnfoundData
+            title={errorMessages.PromissoryNotes.title}
+            description={errorMessages.PromissoryNotes.description}
+            buttonDescription={errorMessages.PromissoryNotes.button}
             onRetry={() => {
               setError(false);
               fetchCreditRequest();

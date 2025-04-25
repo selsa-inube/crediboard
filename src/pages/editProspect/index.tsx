@@ -15,7 +15,7 @@ import { Fieldset } from "@components/data/Fieldset";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
 import { mockEditProspect } from "@mocks/add-prospect/edit-prospect/editprospect.mock";
 import { GeneralHeader } from "@pages/addProspect/components/GeneralHeader";
-import { CustomerContext } from "@context/CustomerContext";
+import { CustomerContext } from "@context/CustomerContext/CustomerContextProvider";
 
 import { StyledMarginPrint, StyledPrint } from "./styles";
 import { dataEditProspect } from "./config";

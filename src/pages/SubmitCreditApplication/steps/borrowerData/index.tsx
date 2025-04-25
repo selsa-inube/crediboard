@@ -13,7 +13,7 @@ import { currencyFormat, getMonthsElapsed } from "@utils/formatData/currency";
 import { ruleConfig } from "@pages/SubmitCreditApplication/config/configRules";
 import { evaluateRule } from "@pages/SubmitCreditApplication/evaluateRule";
 import { postBusinessUnitRules } from "@services/businessUnitRules";
-import { CustomerContext } from "@context/CustomerContext";
+import { CustomerContext } from "@context/CustomerContext/CustomerContextProvider";
 import { AppContext } from "@context/AppContext";
 import { Button, Grid, Stack } from "@inubekit/inubekit";
 import { BorrowerProperty } from "@services/incomeSources/types";

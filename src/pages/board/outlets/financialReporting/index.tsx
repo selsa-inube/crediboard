@@ -309,7 +309,7 @@ export const FinancialReporting = () => {
                   <PromissoryNotes id={id!} isMobile={isMobile} />
                 </Stack>
                 <Stack direction="column" height={isMobile ? "auto" : "163px"}>
-                  <Postingvouchers user={id!} id={id!} />
+                  <Postingvouchers user={id!} id={id!} isMobile={isMobile} />
                 </Stack>
               </StyledScreenPrint>
             </Stack>
