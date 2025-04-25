@@ -33,9 +33,6 @@ export const StyledLogo = styled.img`
 
 export const StyledHeaderContainer = styled.div`
   position: relative;
-  & div > div {
-    cursor: pointer;
-  }
 `;
 
 export const StyledContainerNav = styled.div`

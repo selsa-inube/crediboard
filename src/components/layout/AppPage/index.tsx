@@ -69,7 +69,7 @@ function AppPage() {
     eventData.businessUnit.abbreviatedName
   );
   useEffect(() => {
-    const selectUser = document.querySelector("header div div:nth-child(1)");
+    const selectUser = document.querySelector("header div div:nth-child(0)");
     const handleToggleuserMenu = () => {
       setShowUserMenu(!showUserMenu);
     };
