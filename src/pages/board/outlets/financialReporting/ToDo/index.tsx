@@ -1,4 +1,5 @@
 import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
+import { useParams } from "react-router-dom";
 import { Select, IOption } from "@inubekit/select";
 import { Button } from "@inubekit/button";
 import { Stack, Icon, Text, useFlag, SkeletonLine } from "@inubekit/inubekit";
@@ -34,6 +35,8 @@ interface ToDoProps {
 
 function ToDo(props: ToDoProps) {
   const { icon, button, isMobile, id } = props;
+
+  const { approverid } = useParams();
 
   const [requests, setRequests] = useState<ICreditRequest | null>(null);
   const [showStaffModal, setShowStaffModal] = useState(false);
@@ -225,6 +228,14 @@ function ToDo(props: ToDoProps) {
     }
   };
 
+  const validationId = () => {
+    if (approverid === eventData.user.staff.staffId) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const data = {
     makeDecision: {
       creditRequestId: requests?.creditRequestId || "",
@@ -233,7 +244,10 @@ function ToDo(props: ToDoProps) {
     },
     businessUnit: businessUnitPublicCode,
     user: userAccount,
-    xAction: getXAction(selectedDecision?.label.split(":")[0] || ""),
+    xAction: getXAction(
+      selectedDecision?.label.split(":")[0] || "",
+      validationId()
+    ),
     humanDecisionDescription: selectedDecision?.label || "",
   };
   const datamock = TodoConsult[0];
