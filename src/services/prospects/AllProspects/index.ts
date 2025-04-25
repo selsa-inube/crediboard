@@ -8,7 +8,7 @@ import { IProspect } from "./types";
 const getAllProspects = async (
   businessUnitPublicCode: string,
   prospectCode: string
-): Promise<IProspect> => {
+): Promise<IProspect[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -16,14 +16,14 @@ const getAllProspects = async (
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      // const queryParams = new URLSearchParams({
-      //   prospectCode: prospectCode,
-      // });
+      const queryParams = new URLSearchParams({
+        prospectCode: prospectCode,
+      });
 
       const options: RequestInit = {
         method: "GET",
         headers: {
-          "X-Action": "SearchByIdProspect",
+          "X-Action": "SearchAllProspects",
           "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -31,7 +31,7 @@ const getAllProspects = async (
       };
 
       const res = await fetch(
-        `${environment.VITE_IPROSPECT_QUERY_PROCESS_SERVICE}/prospects/${prospectCode}`,
+        `${environment.VITE_IPROSPECT_QUERY_PROCESS_SERVICE}/prospects?${queryParams.toString()}`,
         options
       );
 
@@ -51,8 +51,8 @@ const getAllProspects = async (
         };
       }
 
-      if (Array.isArray(data) && data.length > 0) {
-        return data[0];
+      if (Array.isArray(data)) {
+        return data;
       }
 
       return data;

@@ -356,6 +356,8 @@ export const FinancialReporting = () => {
           <OfferedGuaranteeModal
             handleClose={() => setShowGuarantee(false)}
             isMobile={isMobile}
+            id={id || ""}
+            businessUnitPublicCode={businessUnitPublicCode}
           />
         )}
         {showCancelModal && (

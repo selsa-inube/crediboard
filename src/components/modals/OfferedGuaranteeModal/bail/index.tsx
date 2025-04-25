@@ -2,12 +2,15 @@ import { MdInfoOutline } from "react-icons/md";
 import { Stack, Icon, Text } from "@inubekit/inubekit";
 
 import { Fieldset } from "@components/data/Fieldset";
-import { mockGuaranteeBail } from "@mocks/guarantee/offeredguarantee.mock";
 
 import { dataBail } from "./config";
 
-export function Bail() {
-  const data = mockGuaranteeBail[0];
+interface IBailProps {
+  data: number;
+}
+
+export function Bail(props: IBailProps) {
+  const { data } = props;
 
   return (
     <Fieldset>
@@ -21,7 +24,7 @@ export function Bail() {
       >
         <Stack direction="column" gap="8px">
           <Text type="headline" weight="bold" size="large" appearance="primary">
-            $ {data.value}
+            $ {data}
           </Text>
           <Text type="body" size="small" appearance="gray">
             {dataBail.bail}
