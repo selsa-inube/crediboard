@@ -264,14 +264,8 @@ export const FinancialReporting = () => {
     };
 
     fetchData();
-  }, [
-    data?.creditRequestId,
-    businessUnitPublicCode,
-    user?.email,
-    id,
-    navigate,
-    addFlag,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <StyledMarginPrint $isMobile={isMobile}>
