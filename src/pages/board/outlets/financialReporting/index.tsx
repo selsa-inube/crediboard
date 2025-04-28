@@ -265,7 +265,7 @@ export const FinancialReporting = () => {
 
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data?.creditRequestId, businessUnitPublicCode, user?.email]);
 
   return (
     <StyledMarginPrint $isMobile={isMobile}>
