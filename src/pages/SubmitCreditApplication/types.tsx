@@ -29,17 +29,17 @@ export interface IEnumerator {
 }
 
 export interface ICreditRequests {
-  creditRequestCode: string;
   creditRequestId: string;
-  executed_task: string;
-  execution_date: string;
-  identificationNumber: string;
-  identificationType: string;
-  justification: string;
-  position: string;
-  transactionOperation: string;
-  userId: string;
-  userName: string;
+  creditRequestCode?: string;
+  executed_task?: string;
+  execution_date?: string;
+  identificationNumber?: string;
+  identificationType?: string;
+  justification?: string;
+  position?: string;
+  transactionOperation?: string;
+  userId?: string;
+  userName?: string;
   staffName?: string;
 }
 export interface IContactInformation {

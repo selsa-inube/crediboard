@@ -16,6 +16,8 @@ import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequest
 import { getSearchAllDocumentsById } from "@services/documents/SearchAllDocuments";
 import { generatePDF } from "@utils/pdf/generetePDF";
 import { AppContext } from "@context/AppContext";
+import { saveAssignAccountManager } from "@services/creditRequets/pacthAssignAccountManager";
+import { textFlags } from "@config/pages/staffModal/addFlag";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -229,6 +231,47 @@ export const FinancialReporting = () => {
     setAttachDocuments(true);
     setShowMenu(false);
   };
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!data?.creditRequestId || !businessUnitPublicCode || !user?.email)
+        return;
+      try {
+        await saveAssignAccountManager(
+          data?.creditRequestId ?? "",
+          businessUnitPublicCode,
+          user?.email ?? ""
+        );
+        addFlag({
+          title: textFlags.titleSuccess,
+          description: textFlags.descriptionSuccess,
+          appearance: "success",
+          duration: 5000,
+        });
+      } catch (error) {
+        addFlag({
+          title: textFlags.titleError,
+          description: textFlags.descriptionError,
+          appearance: "danger",
+          duration: 5000,
+        });
+      } finally {
+        handleToggleModal();
+        setTimeout(() => {
+          navigate(`/extended-card/${id}`);
+        }, 6000);
+      }
+    };
+
+    fetchData();
+  }, [
+    data?.creditRequestId,
+    businessUnitPublicCode,
+    user?.email,
+    id,
+    navigate,
+    addFlag,
+  ]);
 
   return (
     <StyledMarginPrint $isMobile={isMobile}>
@@ -386,3 +429,6 @@ export const FinancialReporting = () => {
     </StyledMarginPrint>
   );
 };
+function handleToggleModal() {
+  throw new Error("Function not implemented.");
+}
