@@ -36,7 +36,6 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
     null
   );
   const { businessUnitSigla, eventData } = useContext(AppContext);
-
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
 

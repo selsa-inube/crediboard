@@ -41,7 +41,7 @@ export const mockAnalyst: IStaff[] = [
 export const mockAccountManager: IStaff[] = [
   {
     userId: "67890123",
-    userName: "Andrea Paola Castillo Moralesss",
+    userName: "Andrea Paola Castillo Morales",
     identificationType: "C",
     identificationNumber: "3006789012",
     role: "Account_manager",

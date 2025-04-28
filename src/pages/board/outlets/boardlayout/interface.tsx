@@ -46,6 +46,7 @@ interface BoardLayoutProps {
   handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
   errorLoadingPins: boolean;
+  loading: boolean;
 }
 
 function BoardLayoutUI(props: BoardLayoutProps) {
@@ -94,7 +95,6 @@ function BoardLayoutUI(props: BoardLayoutProps) {
   useEffect(() => {
     setIsExpanded(Boolean(searchRequestValue));
   }, [searchRequestValue]);
-
   return (
     <StyledContainerToCenter>
       <Stack

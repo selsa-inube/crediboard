@@ -23,7 +23,25 @@ export interface ICommercialManagerAndAnalyst {
   staffName: string;
   userAccount: string;
 }
+export interface IEnumerator {
+  code: string;
+  description: string;
+}
 
+export interface ICreditRequests {
+  creditRequestCode: string;
+  creditRequestId: string;
+  executed_task: string;
+  execution_date: string;
+  identificationNumber: string;
+  identificationType: string;
+  justification: string;
+  position: string;
+  transactionOperation: string;
+  userId: string;
+  userName: string;
+  staffName?: string;
+}
 export interface IContactInformation {
   email: string;
   phone: string;
