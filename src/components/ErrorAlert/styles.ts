@@ -47,7 +47,9 @@ const slideDown = keyframes`
 
 `;
 
-export const AlertContainer = styled.div<{ $isMobile?: boolean }>`
+export const AlertContainer = styled.div<{
+  $isMobile?: boolean;
+}>`
   display: flex;
   justify-content: center;
   position: relative;
@@ -56,10 +58,9 @@ export const AlertContainer = styled.div<{ $isMobile?: boolean }>`
   padding: 7px;
   border-radius: 4px;
   background-color: ${({ theme }) =>
-    theme?.color?.stroke?.gray?.regular || inube.palette.yellow.Y50};
+    theme?.palette?.yellow?.Y50 || inube.palette.yellow.Y50};
   border: 1px solid
-    ${({ theme }) =>
-      theme?.color?.stroke?.gray?.regular || inube.palette.neutral.N30};
+    ${({ theme }) => theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
   animation: ${slideDown} 2s ease-in-out;
 `;
 

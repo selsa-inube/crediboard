@@ -4,8 +4,7 @@ import {
   MdCheckCircle,
   MdOutlineArrowDropDown,
 } from "react-icons/md";
-import { Label } from "@inubekit/label";
-import { Stack, Icon, Text } from "@inubekit/inubekit";
+import { Stack, Icon, Text, Label } from "@inubekit/inubekit";
 
 import { OptionItemChecked } from "./OptionItem";
 import { OptionList } from "./OptionList";

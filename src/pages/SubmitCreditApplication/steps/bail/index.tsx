@@ -2,16 +2,14 @@ import { useEffect, useRef } from "react";
 import { MdInfoOutline } from "react-icons/md";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Checkbox } from "@inubekit/checkbox";
-import { Icon } from "@inubekit/icon";
-import { Stack } from "@inubekit/stack";
-import { Text } from "@inubekit/text";
+import { Checkbox, Icon, Stack, Text } from "@inubekit/inubekit";
 
 import { Fieldset } from "@components/data/Fieldset";
+import { currencyFormat } from "@utils/formatData/currency";
 
 import { dataBail } from "./config";
 import { IBail } from "../../types";
-import { currencyFormat } from "@utils/formatData/currency";
+
 interface IBailProps {
   initialValues: IBail;
   onFormValid: (isValid: boolean) => void;

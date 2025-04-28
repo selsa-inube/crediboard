@@ -1,5 +1,5 @@
+import { inube } from "@inubekit/inubekit";
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
 
 interface IScrollableContainer {
   $length: boolean;

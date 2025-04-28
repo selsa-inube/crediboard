@@ -3,14 +3,13 @@ import { inube } from "@inubekit/inubekit";
 
 interface IStyledModal {
   $smallScreen: boolean;
-  theme?: typeof inube;
 }
 
 export const StyledModal = styled.div<IStyledModal>`
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) =>
-    theme?.color?.surface?.light?.clear || inube.palette.neutral.N0};
+    theme?.palette?.neutral?.N0 || inube.palette.neutral.N0};
   max-height: "382px";
   height: ${({ $smallScreen }) => ($smallScreen ? "340px" : "448px")};
   width: ${({ $smallScreen }) => ($smallScreen ? "350px" : "500px")};
@@ -32,7 +31,7 @@ export const StyledContainerTextField = styled.div<IStyledModal>`
   margin: 0 0 24px 0;
   overflow-y: auto;
   background-color: ${({ theme }) =>
-    theme?.color?.surface?.gray?.clear || inube.palette.neutral.N10};
+    theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -41,7 +40,7 @@ export const StyledContainerTextField = styled.div<IStyledModal>`
 
   &::-webkit-scrollbar-thumb {
     background-color: ${({ theme }) =>
-      theme?.color?.surface?.light?.clear || inube.palette.neutral.N30};
+      theme?.palette?.neutral?.N30 || inube.palette.neutral.N30};
     border-radius: 8px;
   }
 `;

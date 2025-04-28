@@ -8,7 +8,7 @@ import { Fieldset } from "@components/data/Fieldset";
 import { mockGetMoneyDestinations } from "@mocks/add-prospect/money-destinations/moneydestinations.mock";
 import { postBusinessUnitRules } from "@services/businessUnitRules";
 import { AppContext } from "@context/AppContext";
-import { CustomerContext } from "@context/CustomerContext";
+import { CustomerContext } from "@context/CustomerContext/CustomerContextProvider";
 import { removeDuplicates } from "@utils/mappingData/mappings";
 
 import { electionData } from "./config";

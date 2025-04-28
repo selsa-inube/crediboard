@@ -1,10 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { useFormik } from "formik";
-import { Grid } from "@inubekit/grid";
-import { Button } from "@inubekit/button";
-import { Stack } from "@inubekit/stack";
-
 import { CardBorrower } from "@components/cards/CardBorrower";
 import { NewCardBorrower } from "@components/cards/CardBorrower/newCard";
 import { Fieldset } from "@components/data/Fieldset";
@@ -17,13 +13,14 @@ import { currencyFormat, getMonthsElapsed } from "@utils/formatData/currency";
 import { ruleConfig } from "@pages/SubmitCreditApplication/config/configRules";
 import { evaluateRule } from "@pages/SubmitCreditApplication/evaluateRule";
 import { postBusinessUnitRules } from "@services/businessUnitRules";
-import { CustomerContext } from "@context/CustomerContext";
+import { CustomerContext } from "@context/CustomerContext/CustomerContextProvider";
 import { AppContext } from "@context/AppContext";
-
-import { getPropertyValue, getTotalFinancialObligations } from "../../util";
+import { Button, Grid, Stack } from "@inubekit/inubekit";
 import { BorrowerProperty } from "@services/incomeSources/types";
 import { IBorrowerData } from "@pages/SubmitCreditApplication/types";
 import { IProspect } from "@services/types";
+
+import { getPropertyValue, getTotalFinancialObligations } from "../../util";
 import { StyledContainer } from "./styles";
 
 interface borrowersProps {
