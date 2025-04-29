@@ -7,6 +7,16 @@ export interface IUsersByCreditRequests {
   identificationNumber: string;
   role: string;
 }
+
+export interface IAccountingVouchers {
+  documentCode: string;
+  obligationCode: string;
+  accountingReference?: string;
+  id: string;
+  creditRequestId?: string;
+  payrollDiscountAuthorizationCode?: string;
+  promissoryNoteCode?: string;
+}
 export interface ICreditRequest {
   creditRequestId?: string;
   creditRequestCode: string;

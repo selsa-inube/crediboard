@@ -3,10 +3,10 @@ import { Stack, Text, useMediaQuery, Button } from "@inubekit/inubekit";
 import { StyledImage } from "./styles";
 
 interface ItemNotFoundProps {
-  image: string;
   title: string;
   description: string;
   buttonDescription: string;
+  image?: string;
   route?: string;
   onRetry?: () => void;
 }
