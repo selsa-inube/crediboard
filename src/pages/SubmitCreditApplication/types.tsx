@@ -36,7 +36,7 @@ export interface ICreditRequests {
   identificationNumber?: string;
   identificationType?: string;
   justification?: string;
-  position?: string;
+  role?: string;
   transactionOperation?: string;
   userId?: string;
   userName?: string;
