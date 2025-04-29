@@ -278,6 +278,7 @@ export const FinancialReporting = () => {
                     collapse={collapse}
                     setCollapse={setCollapse}
                     id={id!}
+                    hideContactIcons={true}
                   />
                 </Stack>
               </Stack>
