@@ -1,4 +1,7 @@
-const getXAction = (humanDecision: string): string => {
+const getXAction = (humanDecision: string, id?: boolean): string => {
+  if (humanDecision === "APROBAR_SOLICITUD" && id === true) {
+    return "RegisterIndividualConceptOfApproval";
+  }
   if (humanDecision === "APROBAR_SOLICITUD") {
     return "ApproveCreditRequest";
   } else if (humanDecision === "SOPORTES_VALIDOS") {
