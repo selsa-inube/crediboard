@@ -17,7 +17,6 @@ import { getSearchAllDocumentsById } from "@services/documents/SearchAllDocument
 import { generatePDF } from "@utils/pdf/generetePDF";
 import { AppContext } from "@context/AppContext";
 import { saveAssignAccountManager } from "@services/creditRequets/pacthAssignAccountManager";
-import { textFlags } from "@config/pages/staffModal/addFlag";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -242,19 +241,9 @@ export const FinancialReporting = () => {
           businessUnitPublicCode,
           user?.email ?? ""
         );
-        addFlag({
-          title: textFlags.titleSuccess,
-          description: textFlags.descriptionSuccess,
-          appearance: "success",
-          duration: 5000,
-        });
+        console.info("Asignación exitosa");
       } catch (error) {
-        addFlag({
-          title: textFlags.titleError,
-          description: textFlags.descriptionError,
-          appearance: "danger",
-          duration: 5000,
-        });
+        console.info("Error en la asignación");
       } finally {
         handleToggleModal();
         setTimeout(() => {
