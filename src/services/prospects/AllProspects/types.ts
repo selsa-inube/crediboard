@@ -1,9 +1,14 @@
+export interface IBorrowerProperty {
+  property_name: string;
+  property_value: string;
+}
+
 export interface IBorrower {
   BorrowerName: string;
   BorrowerType: string;
   BorrowerIdentificationType: string;
   borrower_identification_number: string;
-  BorrowerProperties: string;
+  borrower_properties: IBorrowerProperty[];
 }
 
 export interface IConsolidatedCredit {
@@ -87,4 +92,5 @@ export interface IProspect {
   ConsolidatedCredits: IConsolidatedCredit;
   CreditProducts: ICreditProduct;
   Outlays: IOutlay;
+  bond_value: number;
 }
