@@ -7,8 +7,7 @@ import {
   MdOutlinePictureAsPdf,
   MdOutlineShare,
 } from "react-icons/md";
-import { Button } from "@inubekit/button";
-import { Stack, Icon } from "@inubekit/inubekit";
+import { Stack, Icon, Button } from "@inubekit/inubekit";
 
 import { MenuProspect } from "@components/navigation/MenuProspect";
 import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
@@ -285,7 +284,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       {currentModal === "IncomeModal" && (
         <IncomeModal
           handleClose={handleCloseModal}
-          onlyDebtor={true}
           disabled={true}
           openModal={() => setOpenModal("IncomeModalEdit")}
         />

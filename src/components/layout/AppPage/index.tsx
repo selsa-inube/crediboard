@@ -1,8 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { MdLogout, MdOutlineChevronRight } from "react-icons/md";
-import { Icon, Grid, useFlag, useMediaQuery } from "@inubekit/inubekit";
-import { Header } from "@inubekit/header";
+import { Icon, Grid, useFlag, useMediaQuery, Header } from "@inubekit/inubekit";
 
 import { AppContext } from "@context/AppContext";
 import { MenuSection } from "@components/navigation/MenuSection";
@@ -10,6 +9,7 @@ import { MenuUser } from "@components/navigation/MenuUser";
 import { LogoutModal } from "@components/feedback/LogoutModal";
 import { BusinessUnitChange } from "@components/inputs/BusinessUnitChange";
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
+import { userMenu } from "@config/menuMainConfiguration";
 import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
 
 import {
@@ -44,6 +44,8 @@ function AppPage() {
   const collapseMenuRef = useRef<HTMLDivElement>(null);
   const businessUnitChangeRef = useRef<HTMLDivElement>(null);
 
+  const navigate = useNavigate();
+
   const handleClickOutside = (event: MouseEvent) => {
     if (
       userMenuRef.current &&
@@ -69,7 +71,7 @@ function AppPage() {
     eventData.businessUnit.abbreviatedName
   );
   useEffect(() => {
-    const selectUser = document.querySelector("header div div:nth-child(2)");
+    const selectUser = document.querySelector("header div div:nth-child(0)");
     const handleToggleuserMenu = () => {
       setShowUserMenu(!showUserMenu);
     };
@@ -92,6 +94,7 @@ function AppPage() {
     setBusinessUnitSigla(selectJSON);
     setSelectedClient(businessUnit.abbreviatedName);
     setCollapse(false);
+    navigate("/");
   };
 
   const { addFlag } = useFlag();
@@ -119,10 +122,13 @@ function AppPage() {
         <StyledPrint>
           <StyledHeaderContainer>
             <Header
-              portalId="portal"
               logoURL={renderLogo(eventData.businessUnit.urlLogo)}
-              userName={eventData.user.userName}
-              client={eventData.businessUnit.abbreviatedName}
+              user={{
+                username: eventData.user.userName,
+                breakpoint: "848px",
+                client: eventData.businessUnit.abbreviatedName,
+              }}
+              menu={userMenu}
             />
           </StyledHeaderContainer>
           <StyledCollapseIcon

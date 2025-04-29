@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { MdArrowBack } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@inubekit/button";
-import { Assisted, Breadcrumbs, Icon, Text, Stack } from "@inubekit/inubekit";
+
+import {
+  Assisted,
+  Breadcrumbs,
+  Icon,
+  Text,
+  Stack,
+  Button,
+} from "@inubekit/inubekit";
 import { MdCheckCircle, MdOutlineShare } from "react-icons/md";
 
 import userImage from "@assets/images/userImage.jpeg";
@@ -27,6 +34,7 @@ import { dataSubmitApplication } from "./config/config";
 import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { CardValues } from "@components/cards/cardValues";
 import { mockCommercialManagement } from "@mocks/financialReporting/commercialmanagement.mock";
+import { ErrorPage } from "@components/layout/ErrorPage";
 
 interface SubmitCreditApplicationUIProps {
   currentStep: number;
@@ -52,6 +60,9 @@ interface SubmitCreditApplicationUIProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
   customerData?: ICustomerData;
+  codeError?: number | null;
+  addToFix?: string[];
+  rule?: string[];
 }
 
 export function SubmitCreditApplicationUI(
@@ -78,6 +89,9 @@ export function SubmitCreditApplicationUI(
     setIsCurrentFormValid,
     data,
     customerData,
+    codeError,
+    addToFix,
+    rule,
   } = props;
 
   const [isSelected, setIsSelected] = useState<string>();
@@ -96,228 +110,248 @@ export function SubmitCreditApplicationUI(
 
   return (
     <>
-      <GeneralHeader
-        buttonText="Agregar vinculación"
-        descriptionStatus={dataHeader.status}
-        name={dataHeader.name}
-        profileImageUrl={dataHeader.image || userImage}
-      />
-      <Stack
-        direction="column"
-        alignItems={isMobile ? "normal" : "center"}
-        margin="20px 0px"
-        padding="24px"
-        height="100vh"
-      >
-        <Stack
-          gap="24px"
-          direction="column"
-          height="100%"
-          width={isMobile ? "-webkit-fill-available" : "min(100%,1440px)"}
-        >
-          <Breadcrumbs crumbs={submitCreditApplicationConfig.crumbs} />
-          <Stack justifyContent="space-between" alignItems="center">
-            <StyledArrowBack onClick={handleHome}>
-              <Stack gap="8px" alignItems="center" width="100%">
-                <Icon icon={<MdArrowBack />} appearance="dark" size="20px" />
-                <Text type="title" size="large">
-                  {`${submitCreditApplicationConfig.title}
-                  ${data?.prospect_code?.slice(0, 2)}-${data?.prospect_code?.slice(2)}`}
-                </Text>
-              </Stack>
-            </StyledArrowBack>
-            <Text type="body" size="medium" appearance="gray">
-              {`${dataSubmitApplication.cards.destination}
-              ${data.money_destination_abbreviated_name}`}
-            </Text>
-          </Stack>
-          <Stack direction="column" gap="6px">
-            {SummaryProspectCredit.map((entry, index) => (
-              <CardValues
-                key={index}
-                items={entry.item.map((item, index) => ({
-                  ...item,
-                  amount: mockCommercialManagement[index]?.amount,
-                }))}
-                showIcon={false}
-                isMobile={isMobile}
-                showMiniIcons={false}
-              />
-            ))}
-          </Stack>
-          <StyledContainerAssisted $cursorDisabled={!isCurrentFormValid}>
-            <Assisted
-              step={currentStepsNumber!}
-              totalSteps={steps.length}
-              onBackClick={handlePreviousStep}
-              onNextClick={handleNextStep}
-              controls={titleButtonTextAssited}
-              onSubmitClick={handleSubmitClick}
-              disableNext={!isCurrentFormValid}
-              disableSubmit={!isCurrentFormValid}
-              showCurrentStepNumber={false}
-              size={isMobile ? "small" : "large"}
-            />
-          </StyledContainerAssisted>
-          {currentStepsNumber &&
-            currentStepsNumber.id ===
-              stepsFilingApplication.generalInformation.id && (
-              <RequirementsNotMet isMobile={isMobile} />
-            )}
-          {currentStepsNumber &&
-            currentStepsNumber.id ===
-              stepsFilingApplication.contactInformation.id &&
-            customerData && (
-              <ContactInformation
-                isMobile={isMobile}
-                onFormValid={setIsCurrentFormValid}
-                initialValues={formData.contactInformation}
-                handleOnChange={(values) =>
-                  handleFormChange({ contactInformation: values })
-                }
-                customerData={customerData}
-              />
-            )}
-          {currentStepsNumber &&
-            currentStepsNumber.id ===
-              stepsFilingApplication.BorrowerData.id && (
-              <Borrowers
-                isMobile={isMobile}
-                onFormValid={setIsCurrentFormValid}
-                initialValues={formData.borrowerData}
-                handleOnChange={(values) =>
-                  handleFormChange({ borrowerData: values })
-                }
-                data={data}
-              />
-            )}
-          {currentStepsNumber &&
-            currentStepsNumber.id ===
-              stepsFilingApplication.propertyOffered.id && (
-              <PropertyOffered
-                isMobile={isMobile}
-                onFormValid={setIsCurrentFormValid}
-                initialValues={formData.propertyOffered}
-                handleOnChange={(values) =>
-                  handleFormChange({ propertyOffered: values })
-                }
-              />
-            )}
-          {currentStepsNumber &&
-            currentStepsNumber.id ===
-              stepsFilingApplication.vehicleOffered.id && (
-              <VehicleOffered
-                isMobile={isMobile}
-                onFormValid={setIsCurrentFormValid}
-                initialValues={formData.vehicleOffered}
-                handleOnChange={(values) =>
-                  handleFormChange({ vehicleOffered: values })
-                }
-              />
-            )}
-          {currentStepsNumber &&
-            currentStepsNumber.id === stepsFilingApplication.bail.id && (
-              <Bail
-                onFormValid={setIsCurrentFormValid}
-                initialValues={formData.bail}
-                handleOnChange={(values) => handleFormChange({ bail: values })}
-                data={data}
-              />
-            )}
-          {currentStepsNumber &&
-            currentStepsNumber.id ===
-              stepsFilingApplication.attachedDocuments.id &&
-            customerData && (
-              <AttachedDocuments
-                isMobile={isMobile}
-                initialValues={formData.attachedDocuments || {}}
-                handleOnChange={(newDocs) =>
-                  handleFormChange({ attachedDocuments: newDocs })
-                }
-                customerData={customerData}
-              />
-            )}
-          {currentStepsNumber &&
-            currentStepsNumber.id ===
-              stepsFilingApplication.disbursement.id && (
-              <DisbursementGeneral
-                isMobile={isMobile}
-                onFormValid={setIsCurrentFormValid}
-                initialValues={formData.disbursementGeneral}
-                handleOnChange={(values) =>
-                  handleFormChange({ disbursementGeneral: values })
-                }
-                isSelected={isSelected || disbursemenTabs.internal.id}
-                handleTabChange={handleTabChange}
-                data={data}
-                identificationNumber={customerData?.publicCode || ""}
-              />
-            )}
-          <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
-            <Button
-              variant="outlined"
-              appearance="gray"
-              onClick={handlePreviousStep}
-              disabled={currentStepsNumber === steps[0]}
+      {codeError ? (
+        <ErrorPage errorCode={codeError} addToFix={addToFix || []} />
+      ) : (
+        <>
+          <GeneralHeader
+            buttonText="Agregar vinculación"
+            descriptionStatus={dataHeader.status}
+            name={dataHeader.name}
+            profileImageUrl={dataHeader.image || userImage}
+          />
+          <Stack
+            direction="column"
+            alignItems={isMobile ? "normal" : "center"}
+            margin="20px 0px"
+            padding="24px"
+            height="100vh"
+          >
+            <Stack
+              gap="24px"
+              direction="column"
+              height="100%"
+              width={isMobile ? "-webkit-fill-available" : "min(100%,1440px)"}
             >
-              {titleButtonTextAssited.goBackText}
-            </Button>
-            <Button onClick={handleNextStep} disabled={!isCurrentFormValid}>
-              {currentStep === steps[steps.length - 1].id
-                ? titleButtonTextAssited.submitText
-                : titleButtonTextAssited.goNextText}
-            </Button>
-          </Stack>
-        </Stack>
-        {sentModal && (
-          <BaseModal
-            title={dataSubmitApplication.modals.file}
-            nextButton={dataSubmitApplication.modals.continue}
-            backButton={dataSubmitApplication.modals.cancel}
-            handleNext={handleSubmit}
-            handleBack={() => setSentModal(false)}
-            width={isMobile ? "290px" : "402px"}
-          >
-            <Text type="body" size="large">
-              {dataSubmitApplication.modals.fileDescription.replace(
-                "{numberProspectCode}",
-                `${data?.prospect_code?.slice(0, 2)}-${data?.prospect_code?.slice(2)}` ||
-                  ""
-              )}
-            </Text>
-          </BaseModal>
-        )}
-        {approvedRequestModal && (
-          <BaseModal
-            title={dataSubmitApplication.modals.filed}
-            nextButton={dataSubmitApplication.modals.cancel}
-            backButton={dataSubmitApplication.modals.share}
-            iconBeforeback={
-              <Icon icon={<MdOutlineShare />} appearance="gray" size="16px" />
-            }
-            handleNext={() => setApprovedRequestModal(false)}
-            handleClose={() => setApprovedRequestModal(false)}
-            handleBack={() => console.log("data: ", formData)}
-            width={isMobile ? "290px" : "402px"}
-          >
-            <Stack direction="column" alignItems="center" gap="24px">
-              <Icon icon={<MdCheckCircle />} appearance="success" size="68px" />
-              <Stack gap="6px">
-                <Text type="body" size="large">
-                  {dataSubmitApplication.modals.filed}
-                </Text>
-                <Text type="body" size="large" weight="bold">
-                  {`${data?.prospect_code?.slice(0, 2)}-${data?.prospect_code?.slice(2)}` ||
-                    ""}
+              <Breadcrumbs crumbs={submitCreditApplicationConfig.crumbs} />
+              <Stack justifyContent="space-between" alignItems="center">
+                <StyledArrowBack onClick={handleHome}>
+                  <Stack gap="8px" alignItems="center" width="100%">
+                    <Icon
+                      icon={<MdArrowBack />}
+                      appearance="dark"
+                      size="20px"
+                    />
+                    <Text type="title" size="large">
+                      {`${submitCreditApplicationConfig.title}
+                  ${data?.prospect_code}`}
+                    </Text>
+                  </Stack>
+                </StyledArrowBack>
+                <Text type="body" size="medium" appearance="gray">
+                  {`${dataSubmitApplication.cards.destination}
+              ${data.money_destination_abbreviated_name}`}
                 </Text>
               </Stack>
-              <Text type="body" size="medium" appearance="gray">
-                {dataSubmitApplication.modals.filedDescription}
-              </Text>
+              <Stack direction="column" gap="6px">
+                {SummaryProspectCredit.map((entry, index) => (
+                  <CardValues
+                    key={index}
+                    items={entry.item.map((item, index) => ({
+                      ...item,
+                      amount: mockCommercialManagement[index]?.amount,
+                    }))}
+                    showIcon={false}
+                    isMobile={isMobile}
+                    showMiniIcons={false}
+                  />
+                ))}
+              </Stack>
+              <StyledContainerAssisted $cursorDisabled={!isCurrentFormValid}>
+                <Assisted
+                  step={currentStepsNumber!}
+                  totalSteps={steps.length}
+                  onBackClick={handlePreviousStep}
+                  onNextClick={handleNextStep}
+                  controls={titleButtonTextAssited}
+                  onSubmitClick={handleSubmitClick}
+                  disableNext={!isCurrentFormValid}
+                  disableSubmit={!isCurrentFormValid}
+                  showCurrentStepNumber={false}
+                  size={isMobile ? "small" : "large"}
+                />
+              </StyledContainerAssisted>
+              {currentStepsNumber &&
+                currentStepsNumber.id ===
+                  stepsFilingApplication.generalInformation.id && (
+                  <RequirementsNotMet isMobile={isMobile} />
+                )}
+              {currentStepsNumber &&
+                currentStepsNumber.id ===
+                  stepsFilingApplication.contactInformation.id &&
+                customerData && (
+                  <ContactInformation
+                    isMobile={isMobile}
+                    onFormValid={setIsCurrentFormValid}
+                    initialValues={formData.contactInformation}
+                    handleOnChange={(values) =>
+                      handleFormChange({ contactInformation: values })
+                    }
+                    customerData={customerData}
+                  />
+                )}
+              {currentStepsNumber &&
+                currentStepsNumber.id ===
+                  stepsFilingApplication.BorrowerData.id && (
+                  <Borrowers
+                    isMobile={isMobile}
+                    onFormValid={setIsCurrentFormValid}
+                    initialValues={formData.borrowerData}
+                    handleOnChange={(values) =>
+                      handleFormChange({ borrowerData: values })
+                    }
+                    data={data}
+                  />
+                )}
+              {currentStepsNumber &&
+                currentStepsNumber.id ===
+                  stepsFilingApplication.propertyOffered.id && (
+                  <PropertyOffered
+                    isMobile={isMobile}
+                    onFormValid={setIsCurrentFormValid}
+                    initialValues={formData.propertyOffered}
+                    handleOnChange={(values) =>
+                      handleFormChange({ propertyOffered: values })
+                    }
+                  />
+                )}
+              {currentStepsNumber &&
+                currentStepsNumber.id ===
+                  stepsFilingApplication.vehicleOffered.id && (
+                  <VehicleOffered
+                    isMobile={isMobile}
+                    onFormValid={setIsCurrentFormValid}
+                    initialValues={formData.vehicleOffered}
+                    handleOnChange={(values) =>
+                      handleFormChange({ vehicleOffered: values })
+                    }
+                  />
+                )}
+              {currentStepsNumber &&
+                currentStepsNumber.id === stepsFilingApplication.bail.id && (
+                  <Bail
+                    onFormValid={setIsCurrentFormValid}
+                    initialValues={formData.bail}
+                    handleOnChange={(values) =>
+                      handleFormChange({ bail: values })
+                    }
+                    data={data}
+                  />
+                )}
+              {currentStepsNumber &&
+                currentStepsNumber.id ===
+                  stepsFilingApplication.attachedDocuments.id &&
+                customerData && (
+                  <AttachedDocuments
+                    isMobile={isMobile}
+                    initialValues={formData.attachedDocuments || {}}
+                    handleOnChange={(newDocs) =>
+                      handleFormChange({ attachedDocuments: newDocs })
+                    }
+                    customerData={customerData}
+                  />
+                )}
+              {currentStepsNumber &&
+                currentStepsNumber.id ===
+                  stepsFilingApplication.disbursement.id && (
+                  <DisbursementGeneral
+                    isMobile={isMobile}
+                    onFormValid={setIsCurrentFormValid}
+                    initialValues={formData.disbursementGeneral}
+                    handleOnChange={(values) =>
+                      handleFormChange({ disbursementGeneral: values })
+                    }
+                    isSelected={isSelected || disbursemenTabs.internal.id}
+                    handleTabChange={handleTabChange}
+                    data={data}
+                    identificationNumber={customerData?.publicCode || ""}
+                    rule={rule}
+                  />
+                )}
+              <Stack justifyContent="end" gap="20px" margin="auto 0 0 0">
+                <Button
+                  variant="outlined"
+                  appearance="gray"
+                  onClick={handlePreviousStep}
+                  disabled={currentStepsNumber === steps[0]}
+                >
+                  {titleButtonTextAssited.goBackText}
+                </Button>
+                <Button onClick={handleNextStep} disabled={!isCurrentFormValid}>
+                  {currentStep === steps[steps.length - 1].id
+                    ? titleButtonTextAssited.submitText
+                    : titleButtonTextAssited.goNextText}
+                </Button>
+              </Stack>
             </Stack>
-          </BaseModal>
-        )}
-      </Stack>
+            {sentModal && (
+              <BaseModal
+                title={dataSubmitApplication.modals.file}
+                nextButton={dataSubmitApplication.modals.continue}
+                backButton={dataSubmitApplication.modals.cancel}
+                handleNext={handleSubmit}
+                handleBack={() => setSentModal(false)}
+                width={isMobile ? "290px" : "402px"}
+              >
+                <Text type="body" size="large">
+                  {dataSubmitApplication.modals.fileDescription.replace(
+                    "{numberProspectCode}",
+                    `${data?.prospect_code}` || ""
+                  )}
+                </Text>
+              </BaseModal>
+            )}
+            {approvedRequestModal && (
+              <BaseModal
+                title={dataSubmitApplication.modals.filed}
+                nextButton={dataSubmitApplication.modals.cancel}
+                backButton={dataSubmitApplication.modals.share}
+                iconBeforeback={
+                  <Icon
+                    icon={<MdOutlineShare />}
+                    appearance="gray"
+                    size="16px"
+                  />
+                }
+                handleNext={() => setApprovedRequestModal(false)}
+                handleClose={() => setApprovedRequestModal(false)}
+                handleBack={() => console.log("data: ", formData)}
+                width={isMobile ? "290px" : "402px"}
+              >
+                <Stack direction="column" alignItems="center" gap="24px">
+                  <Icon
+                    icon={<MdCheckCircle />}
+                    appearance="success"
+                    size="68px"
+                  />
+                  <Stack gap="6px">
+                    <Text type="body" size="large">
+                      {dataSubmitApplication.modals.filed}
+                    </Text>
+                    <Text type="body" size="large" weight="bold">
+                      {`${data?.prospect_code?.slice(0, 2)}-${data?.prospect_code?.slice(2)}` ||
+                        ""}
+                    </Text>
+                  </Stack>
+                  <Text type="body" size="medium" appearance="gray">
+                    {dataSubmitApplication.modals.filedDescription}
+                  </Text>
+                </Stack>
+              </BaseModal>
+            )}
+          </Stack>
+        </>
+      )}
     </>
   );
 }

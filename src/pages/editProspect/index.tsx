@@ -1,15 +1,21 @@
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MdOutlineBeachAccess, MdOutlineShare } from "react-icons/md";
-import { Stack, Icon, Text, Divider, useMediaQuery } from "@inubekit/inubekit";
-import { Button } from "@inubekit/button";
+import {
+  Stack,
+  Icon,
+  Text,
+  Divider,
+  useMediaQuery,
+  Button,
+} from "@inubekit/inubekit";
 
 import { ShareCreditModal } from "@components/modals/ShareCreditModal";
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
 import { mockEditProspect } from "@mocks/add-prospect/edit-prospect/editprospect.mock";
 import { GeneralHeader } from "@pages/addProspect/components/GeneralHeader";
-import { CustomerContext } from "@context/CustomerContext";
+import { CustomerContext } from "@context/CustomerContext/CustomerContextProvider";
 
 import { StyledMarginPrint, StyledPrint } from "./styles";
 import { dataEditProspect } from "./config";

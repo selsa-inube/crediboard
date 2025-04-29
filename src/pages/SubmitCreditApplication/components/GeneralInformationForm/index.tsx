@@ -1,7 +1,4 @@
-import { Select } from "@inubekit/select";
-import { Input } from "@inubekit/input";
-import { Grid } from "@inubekit/grid";
-import { Datefield } from "@inubekit/datefield";
+import { Date as DateInube, Input, Select, Grid } from "@inubekit/inubekit";
 
 import { disbursemenOptionAccount } from "@pages/SubmitCreditApplication/steps/disbursementGeneral/config";
 import {
@@ -9,55 +6,22 @@ import {
   typesOfDocuments,
   City,
 } from "@mocks/filing-application/disbursement-general/disbursementgeneral.mock";
+import { ICustomerData } from "@context/CustomerContext/types";
 
 interface IGeneralInformationFormProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formik: any;
   optionNameForm: string;
+  isReadOnly?: boolean;
+  customerData?: ICustomerData;
 }
 
 export function GeneralInformationForm(props: IGeneralInformationFormProps) {
-  const { formik, optionNameForm } = props;
+  const { formik, optionNameForm, isReadOnly, customerData } = props;
 
   return (
     <>
       <Grid templateColumns="repeat(3, 1fr)" gap="16px" autoRows="auto">
-        <Input
-          id={"name"}
-          name={`${optionNameForm}.name`}
-          label={disbursemenOptionAccount.labelName}
-          placeholder={disbursemenOptionAccount.placeName}
-          value={formik.values[optionNameForm]?.name || ""}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          fullwidth={true}
-          size="compact"
-        ></Input>
-        <Input
-          id={"lastName"}
-          name={`${optionNameForm}.lastName`}
-          label={disbursemenOptionAccount.labelLastName}
-          placeholder={disbursemenOptionAccount.placeLastName}
-          value={formik.values[optionNameForm]?.lastName || ""}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          fullwidth={true}
-          size="compact"
-        ></Input>
-        <Select
-          id={"sex"}
-          name={`${optionNameForm}.sex`}
-          label={disbursemenOptionAccount.labelSex}
-          placeholder={disbursemenOptionAccount.placeOption}
-          size="compact"
-          options={Sex}
-          onBlur={formik.handleBlur}
-          onChange={(_, value) =>
-            formik.setFieldValue(`${optionNameForm}.sex`, value)
-          }
-          value={formik.values[optionNameForm]?.sex || ""}
-          fullwidth
-        />
         <Select
           id={"documentType"}
           name={`${optionNameForm}.documentType`}
@@ -82,8 +46,54 @@ export function GeneralInformationForm(props: IGeneralInformationFormProps) {
           onBlur={formik.handleBlur}
           fullwidth={true}
           size="compact"
-        ></Input>
-        <Datefield
+          status={
+            formik.values[optionNameForm]?.identification ===
+            customerData?.publicCode
+              ? "invalid"
+              : undefined
+          }
+          message="El número de identificación ingresado no puede coincidir con el suyo"
+        />
+        <Input
+          id={"name"}
+          name={`${optionNameForm}.name`}
+          label={disbursemenOptionAccount.labelName}
+          placeholder={disbursemenOptionAccount.placeName}
+          value={formik.values[optionNameForm]?.name || ""}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          fullwidth={true}
+          size="compact"
+          readOnly={isReadOnly}
+        />
+        <Input
+          id={"lastName"}
+          name={`${optionNameForm}.lastName`}
+          label={disbursemenOptionAccount.labelLastName}
+          placeholder={disbursemenOptionAccount.placeLastName}
+          value={formik.values[optionNameForm]?.lastName || ""}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          fullwidth={true}
+          size="compact"
+          readOnly={isReadOnly}
+        />
+        <Select
+          id={"sex"}
+          name={`${optionNameForm}.sex`}
+          label={disbursemenOptionAccount.labelSex}
+          placeholder={disbursemenOptionAccount.placeOption}
+          size="compact"
+          options={Sex}
+          onBlur={formik.handleBlur}
+          onChange={(_, value) =>
+            formik.setFieldValue(`${optionNameForm}.sex`, value)
+          }
+          value={formik.values[optionNameForm]?.sex || ""}
+          fullwidth
+          readonly={!isReadOnly}
+        />
+        <DateInube
           id="birthdate"
           name={`${optionNameForm}.birthdate`}
           label={disbursemenOptionAccount.labelBirthdate}
@@ -99,7 +109,7 @@ export function GeneralInformationForm(props: IGeneralInformationFormProps) {
                 : ""
             );
           }}
-        ></Datefield>
+        />
         <Input
           id={"phone"}
           name={`${optionNameForm}.phone`}
@@ -110,7 +120,8 @@ export function GeneralInformationForm(props: IGeneralInformationFormProps) {
           onBlur={formik.handleBlur}
           fullwidth={true}
           size="compact"
-        ></Input>
+          readOnly={isReadOnly}
+        />
         <Input
           id={"mail"}
           name={`${optionNameForm}.mail`}
@@ -121,7 +132,8 @@ export function GeneralInformationForm(props: IGeneralInformationFormProps) {
           onBlur={formik.handleBlur}
           fullwidth={true}
           size="compact"
-        ></Input>
+          readOnly={isReadOnly}
+        />
         <Select
           id={"city"}
           name={`${optionNameForm}.city`}
@@ -135,6 +147,7 @@ export function GeneralInformationForm(props: IGeneralInformationFormProps) {
           }
           value={formik.values[optionNameForm]?.city || ""}
           fullwidth
+          readonly={!isReadOnly}
         />
       </Grid>
     </>

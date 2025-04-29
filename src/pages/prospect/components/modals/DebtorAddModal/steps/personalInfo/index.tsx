@@ -1,9 +1,13 @@
 import { useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Stack, Grid, useMediaQuery } from "@inubekit/inubekit";
-import { Select } from "@inubekit/select";
-import { Textfield } from "@inubekit/textfield";
+import {
+  Stack,
+  Grid,
+  useMediaQuery,
+  Select,
+  Textfield,
+} from "@inubekit/inubekit";
 
 import {
   handleChangeWithCurrency,
@@ -48,6 +52,7 @@ export const AddBorrower = (props: IAddBorrowedProps) => {
     validationSchema,
     validateOnMount: true,
     onSubmit: () => {},
+    enableReinitialize: true,
   });
 
   const prevValues = useRef(formik.values);

@@ -1,6 +1,4 @@
-import { Stack } from "@inubekit/inubekit";
-import { Label } from "@inubekit/label";
-
+import { Label, Stack } from "@inubekit/inubekit";
 import { StyledOptionItemChecked } from "./styles";
 
 export interface IOptionItemCheckedProps {

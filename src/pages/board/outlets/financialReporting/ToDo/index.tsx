@@ -1,7 +1,14 @@
 import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
-import { Select, IOption } from "@inubekit/select";
-import { Button } from "@inubekit/button";
-import { Stack, Icon, Text, useFlag, SkeletonLine } from "@inubekit/inubekit";
+import {
+  Stack,
+  Icon,
+  Text,
+  useFlag,
+  SkeletonLine,
+  IOption,
+  Select,
+  Button,
+} from "@inubekit/inubekit";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";

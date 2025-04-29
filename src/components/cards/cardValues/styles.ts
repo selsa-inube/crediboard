@@ -3,7 +3,6 @@ import { inube } from "@inubekit/inubekit";
 
 interface IStyledCollapseIcon {
   $showIcon: boolean;
-  theme?: typeof inube;
 }
 
 export const Container = styled.div<IStyledCollapseIcon>`

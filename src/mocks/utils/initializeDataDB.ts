@@ -21,7 +21,6 @@ import { mockMoneyDestinations } from "@mocks/add-prospect/money-destinations/mo
 import { mockPaymentChannel } from "@mocks/add-prospect/payment-channel/paymentchannel.mock";
 import { mockExtraDebtors } from "@mocks/add-prospect/extra-debtors/extradebtors.mock";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
-import { income } from "@mocks/add-prospect/income/income.mock";
 import { mockFinancialObligation } from "@mocks/add-prospect/financial-obligation/financialobligation.mock";
 import {
   mockRangeRequeredByTheBusinessUnit,
@@ -101,5 +100,4 @@ export function initializeDataDB(company: string) {
   intializedData("attached_documents", mockAttachedDocuments);
   intializedData("user_steps", userStepsMock);
   intializedData("extraordinary_installments", extraordinaryInstallmentMock);
-  intializedData("income_mock", income);
 }

@@ -1,9 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
-import { Toggle } from "@inubekit/toggle";
-import { Textfield } from "@inubekit/textfield";
-import { Stack, Icon, Text, Divider } from "@inubekit/inubekit";
+
+import {
+  Stack,
+  Icon,
+  Text,
+  Divider,
+  Textfield,
+  Toggle,
+} from "@inubekit/inubekit";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { BoardSection } from "@components/layout/BoardSection";
