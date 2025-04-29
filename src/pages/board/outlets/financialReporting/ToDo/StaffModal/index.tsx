@@ -160,7 +160,7 @@ export function StaffModal(props: StaffModalProps) {
     identificationNumber:
       selectedCommercialManager?.identificationDocumentNumber || "",
     identificationType: "C",
-    position: taskData?.stage || "",
+    role: taskData?.stage || "",
     transactionOperation: "Insert",
     userId: selectedCommercialManager?.staffId || "",
     userName: selectedCommercialManager?.staffName || "",

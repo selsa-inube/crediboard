@@ -9,7 +9,7 @@ const mapCreditRequestsEntity = (data: ICreditRequests): ICreditRequests => {
     identificationNumber: String(data.identificationNumber || ""),
     identificationType: String(data.identificationType || ""),
     justification: String(data.justification || ""),
-    position: String(data.position || ""),
+    role: String(data.role || ""),
     transactionOperation: String(data.transactionOperation || ""),
     userId: String(data.userId || ""),
     userName: String(data.userName || ""),
