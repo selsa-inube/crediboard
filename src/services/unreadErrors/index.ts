@@ -3,12 +3,13 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { IProspect } from "./types";
 
-const getAllProspects = async (
+import { IUnreadErrors, IUnreadErrorsResponse } from "./types";
+
+export const getUnreadErrorsById = async (
   businessUnitPublicCode: string,
-  prospectCode: string
-): Promise<IProspect[]> => {
+  payload: IUnreadErrors
+): Promise<IUnreadErrorsResponse[] | undefined> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -16,57 +17,46 @@ const getAllProspects = async (
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      const queryParams = new URLSearchParams({
-        prospectCode: prospectCode,
-      });
 
       const options: RequestInit = {
-        method: "GET",
+        method: "PATCH",
         headers: {
-          "X-Action": "SearchAllProspects",
+          "X-Action": "SearchAllUnreadErrorsById",
           "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
+        body: JSON.stringify(payload),
         signal: controller.signal,
       };
 
       const res = await fetch(
-        `${environment.VITE_IPROSPECT_QUERY_PROCESS_SERVICE}/prospects?${queryParams.toString()}`,
+        `${environment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
         options
       );
 
       clearTimeout(timeoutId);
 
       if (res.status === 204) {
-        throw new Error("No hay tarea disponible.");
+        return;
       }
 
       const data = await res.json();
 
       if (!res.ok) {
         throw {
-          message: "Error al obtener la tarea.",
+          message: "Error al traer los errores no leídos",
           status: res.status,
           data,
         };
       }
 
-      if (Array.isArray(data)) {
-        return data;
-      }
-
       return data;
     } catch (error) {
-      console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
         throw new Error(
-          "Todos los intentos fallaron. No se pudo obtener la tarea."
+          "Todos los intentos fallaron. No se pudo traer los errores no leídos."
         );
       }
     }
   }
-
-  throw new Error("No se pudo obtener la tarea después de varios intentos.");
 };
-
-export { getAllProspects };

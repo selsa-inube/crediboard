@@ -141,6 +141,7 @@ function useAppContext() {
         showPinnedOnly: false,
       },
     },
+    enumRole: [],
   });
 
   useEffect(() => {

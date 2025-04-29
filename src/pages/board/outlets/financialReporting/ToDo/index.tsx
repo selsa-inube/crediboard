@@ -1,9 +1,9 @@
 import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
+import { useParams } from "react-router-dom";
 import {
   Stack,
   Icon,
   Text,
-  useFlag,
   SkeletonLine,
   IOption,
   Select,
@@ -42,6 +42,8 @@ interface ToDoProps {
 function ToDo(props: ToDoProps) {
   const { icon, button, isMobile, id } = props;
 
+  const { approverid } = useParams();
+
   const [requests, setRequests] = useState<ICreditRequest | null>(null);
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
@@ -62,7 +64,6 @@ function ToDo(props: ToDoProps) {
     decision: "",
   });
 
-  const { addFlag } = useFlag();
   const { businessUnitSigla, eventData } = useContext(AppContext);
 
   const businessUnitPublicCode: string =
@@ -183,13 +184,6 @@ function ToDo(props: ToDoProps) {
   const handleSubmit = () => {
     setAssignedStaff(tempStaff);
     handleToggleStaffModal();
-
-    addFlag({
-      title: "Cambio realizado",
-      description: "El cambio se realizó con éxito.",
-      appearance: "success",
-      duration: 5000,
-    });
   };
 
   const handleSend = () => {
@@ -232,6 +226,14 @@ function ToDo(props: ToDoProps) {
     }
   };
 
+  const validationId = () => {
+    if (approverid === eventData.user.staff.staffId) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const data = {
     makeDecision: {
       creditRequestId: requests?.creditRequestId || "",
@@ -240,7 +242,10 @@ function ToDo(props: ToDoProps) {
     },
     businessUnit: businessUnitPublicCode,
     user: userAccount,
-    xAction: getXAction(selectedDecision?.label.split(":")[0] || ""),
+    xAction: getXAction(
+      selectedDecision?.label.split(":")[0] || "",
+      validationId()
+    ),
     humanDecisionDescription: selectedDecision?.label || "",
   };
   const datamock = TodoConsult[0];
@@ -434,6 +439,7 @@ function ToDo(props: ToDoProps) {
           onChange={handleSelectOfficial}
           onSubmit={handleSubmit}
           onCloseModal={handleToggleStaffModal}
+          taskData={taskData}
         />
       )}
     </>

@@ -13,6 +13,10 @@ function BoardRoutes() {
         <Route path="/" element={<BoardLayout />} />
         <Route path="extended-card/:id" element={<FinancialReporting />} />
         <Route
+          path="extended-card/:id/:approverid"
+          element={<FinancialReporting />}
+        />
+        <Route
           path="extended-card/:id/credit-profile"
           element={<CreditProfileInfo />}
         />

@@ -172,6 +172,7 @@ export const Requirements = (props: IRequirementsProps) => {
         activeButton={dataButton}
         heightFieldset="100%"
         hasTable={!error}
+        hasError={error ? true : false}
       >
         {error ? (
           <ItemNotFound

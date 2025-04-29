@@ -9,10 +9,11 @@ interface IStyledContainerFieldset {
   $isClickable?: boolean;
   $hasTable: boolean;
   $height?: string;
+  $hasError?: boolean;
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
-  align-content: center;
+  align-content: ${({ $hasError }) => ($hasError ? "center" : "flex-start")};
   cursor: ${({ $isClickable }) => ($isClickable ? "pointer" : "auto")};
   overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
   box-sizing: border-box;

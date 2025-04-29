@@ -59,12 +59,21 @@ interface ComercialManagementProps {
   collapse: boolean;
   setCollapse: React.Dispatch<React.SetStateAction<boolean>>;
   print: () => void;
-  isPrint?: boolean;
   id: string;
+  isPrint?: boolean;
+  hideContactIcons?: boolean;
 }
 
 export const ComercialManagement = (props: ComercialManagementProps) => {
-  const { data, print, isPrint = false, collapse, setCollapse, id } = props;
+  const {
+    data,
+    print,
+    isPrint = false,
+    collapse,
+    setCollapse,
+    id,
+    hideContactIcons,
+  } = props;
   const [showMenu, setShowMenu] = useState(false);
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [prospectProducts, setProspectProducts] =
@@ -212,6 +221,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       <Fieldset
         title={errorMessages.comercialManagement.titleCard}
         descriptionTitle={errorMessages.comercialManagement.descriptionCard}
+        hasError={!data ? true : false}
       >
         {!data ? (
           <ItemNotFound
@@ -314,23 +324,27 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                           </Button>
                         </Stack>
                       </StyledPrint>
-                      <StyledVerticalDivider />
-                      <StyledPrint>
-                        <Icon
-                          icon={<MdOutlinePhone />}
-                          appearance="primary"
-                          size="24px"
-                          cursorHover
-                        />
-                      </StyledPrint>
-                      <StyledPrint>
-                        <Icon
-                          icon={<MdOutlineVideocam />}
-                          appearance="primary"
-                          size="24px"
-                          cursorHover
-                        />
-                      </StyledPrint>
+                      {!hideContactIcons && (
+                        <>
+                          <StyledVerticalDivider />
+                          <StyledPrint>
+                            <Icon
+                              icon={<MdOutlinePhone />}
+                              appearance="primary"
+                              size="24px"
+                              cursorHover
+                            />
+                          </StyledPrint>
+                          <StyledPrint>
+                            <Icon
+                              icon={<MdOutlineVideocam />}
+                              appearance="primary"
+                              size="24px"
+                              cursorHover
+                            />
+                          </StyledPrint>
+                        </>
+                      )}
                       <StyledVerticalDivider />
                     </>
                   )}
@@ -377,30 +391,27 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   </StyledPrint>
                 </>
               )}
-              {isMobile && (
+              {isMobile && !hideContactIcons && (
                 <Stack gap="16px" padding="12px 0px 12px 0px">
-                  {isMobile && (
-                    <Button
-                      spacing="compact"
-                      variant="outlined"
-                      fullwidth
-                      iconBefore={<MdOutlinePhone />}
-                    >
-                      {tittleOptions.titleCall}
-                    </Button>
-                  )}
-                  {isMobile && (
-                    <Button
-                      spacing="compact"
-                      variant="outlined"
-                      fullwidth
-                      iconBefore={<MdOutlineVideocam />}
-                    >
-                      {tittleOptions.titleVideoCall}
-                    </Button>
-                  )}
+                  <Button
+                    spacing="compact"
+                    variant="outlined"
+                    fullwidth
+                    iconBefore={<MdOutlinePhone />}
+                  >
+                    {tittleOptions.titleCall}
+                  </Button>
+                  <Button
+                    spacing="compact"
+                    variant="outlined"
+                    fullwidth
+                    iconBefore={<MdOutlineVideocam />}
+                  >
+                    {tittleOptions.titleVideoCall}
+                  </Button>
                 </Stack>
               )}
+
               {collapse && <Divider />}
               {collapse && (
                 <>

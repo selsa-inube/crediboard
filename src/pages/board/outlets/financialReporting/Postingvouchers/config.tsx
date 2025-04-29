@@ -9,32 +9,14 @@ const entrySelection = (data: IEntries) => {
 
 export const titlesPostingvouchers = [
   {
-    id: "No. de Obligación",
+    id: "obligationCode",
     titleName: "No. de Obligación",
     priority: 1,
   },
   {
-    id: "No. de Documento",
+    id: "documentCode",
     titleName: "No. de Documento",
     priority: 2,
-  },
-];
-
-export const entriesPostingvouchers = [
-  {
-    id: "1",
-    "No. de Obligación": "1234554545",
-    "No. de Documento": "NC - 9876543210",
-  },
-  {
-    id: "2",
-    "No. de Obligación": "1234567890",
-    "No. de Documento": "NC - 9876556789",
-  },
-  {
-    id: "3",
-    "No. de Obligación": "1234564321",
-    "No. de Documento": "OP - 3456789123",
   },
 ];
 

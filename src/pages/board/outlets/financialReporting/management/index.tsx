@@ -36,7 +36,6 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
     null
   );
   const { businessUnitSigla, eventData } = useContext(AppContext);
-
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
@@ -170,6 +169,7 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
       title={errorMessages.Management.titleCard}
       heightFieldset="340px"
       aspectRatio={isMobile ? "auto" : "1"}
+      hasError={error ? true : false}
     >
       {!creditRequest || error ? (
         <ItemNotFound

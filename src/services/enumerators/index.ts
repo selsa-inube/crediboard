@@ -3,27 +3,23 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { IProspect } from "./types";
 
-const getAllProspects = async (
-  businessUnitPublicCode: string,
-  prospectCode: string
-): Promise<IProspect[]> => {
+import { IEnumerator } from "@pages/SubmitCreditApplication/types";
+import { mapEnumeratorsEntities } from "./mappers";
+
+export const getEnumerators = async (
+  businessUnitPublicCode: string
+): Promise<IEnumerator[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
-
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      const queryParams = new URLSearchParams({
-        prospectCode: prospectCode,
-      });
-
       const options: RequestInit = {
         method: "GET",
         headers: {
-          "X-Action": "SearchAllProspects",
+          "X-Action": "GetEnum",
           "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -31,42 +27,39 @@ const getAllProspects = async (
       };
 
       const res = await fetch(
-        `${environment.VITE_IPROSPECT_QUERY_PROCESS_SERVICE}/prospects?${queryParams.toString()}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/enumerators/Role`,
         options
       );
 
       clearTimeout(timeoutId);
 
       if (res.status === 204) {
-        throw new Error("No hay tarea disponible.");
+        return [];
       }
 
       const data = await res.json();
 
       if (!res.ok) {
         throw {
-          message: "Error al obtener la tarea.",
+          message: "Error al obtener los ",
           status: res.status,
           data,
         };
       }
 
-      if (Array.isArray(data)) {
-        return data;
-      }
+      const normalizedCredit = Array.isArray(data)
+        ? mapEnumeratorsEntities(data)
+        : [];
 
-      return data;
+      return normalizedCredit;
     } catch (error) {
-      console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
         throw new Error(
-          "Todos los intentos fallaron. No se pudo obtener la tarea."
+          "Todos los intentos fallaron. No se pudieron obtener los procesos de consulta."
         );
       }
     }
   }
 
-  throw new Error("No se pudo obtener la tarea después de varios intentos.");
+  return [];
 };
-
-export { getAllProspects };
