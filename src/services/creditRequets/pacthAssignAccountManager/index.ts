@@ -34,14 +34,14 @@ const saveAssignAccountManager = async (
     }
 
     if (!res.ok) {
-      const errorMessage = `Error al crear el rol. Status: ${
+      const errorMessage = `Error en la asignación automática de funcionarios: ${
         res.status
       }, Data: ${JSON.stringify(data)}`;
       throw new Error(errorMessage);
     }
     return data;
   } catch (error) {
-    console.error("Failed to add roles:", error);
+    console.error("Error en la asignación automática de funcionarios:", error);
     throw error;
   }
 };

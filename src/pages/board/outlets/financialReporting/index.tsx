@@ -17,6 +17,7 @@ import { getSearchAllDocumentsById } from "@services/documents/SearchAllDocument
 import { generatePDF } from "@utils/pdf/generetePDF";
 import { AppContext } from "@context/AppContext";
 import { saveAssignAccountManager } from "@services/creditRequets/pacthAssignAccountManager";
+import { textFlags } from "@config/pages/staffModal/addFlag";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -38,6 +39,7 @@ import { Requirements } from "./Requirements";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
+
 interface IListdataProps {
   data: { id: string; name: string }[];
   icon?: React.ReactNode;
@@ -241,9 +243,13 @@ export const FinancialReporting = () => {
           businessUnitPublicCode,
           user?.email ?? ""
         );
-        console.info("Asignación exitosa");
       } catch (error) {
-        console.info("Error en la asignación");
+        addFlag({
+          title: textFlags.titleError,
+          description: textFlags.descriptionError,
+          appearance: "danger",
+          duration: 5000,
+        });
       } finally {
         handleToggleModal();
         setTimeout(() => {
