@@ -13,11 +13,15 @@ function BoardRoutes() {
         <Route path="/" element={<BoardLayout />} />
         <Route path="extended-card/:id" element={<FinancialReporting />} />
         <Route
+          path="extended-card/:id/:approverid"
+          element={<FinancialReporting />}
+        />
+        <Route
           path="extended-card/:id/credit-profile"
           element={<CreditProfileInfo />}
         />
       </Route>
-      <Route path="/*" element={<ErrorPage />} />
+      <Route path="/*" element={<ErrorPage errorCode={404} />} />
     </Routes>
   );
 }

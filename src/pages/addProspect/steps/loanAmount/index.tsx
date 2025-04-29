@@ -3,13 +3,15 @@ import { Formik, Field, Form } from "formik";
 import { useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { MdOutlineAttachMoney } from "react-icons/md";
-import { Divider } from "@inubekit/divider";
-import { Stack } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
-import { Textfield } from "@inubekit/textfield";
-import { Toggle } from "@inubekit/toggle";
-import { Select } from "@inubekit/select";
-import { inube } from "@inubekit/foundations";
+import {
+  Stack,
+  Text,
+  Divider,
+  inube,
+  Toggle,
+  Select,
+  Textfield,
+} from "@inubekit/inubekit";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { CreditLimitCard } from "@pages/addProspect/components/CreditLimitCard";

@@ -6,8 +6,7 @@ import {
   MdOutlineCheckCircle,
   MdRemove,
 } from "react-icons/md";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { Tag } from "@inubekit/tag";
+import { Stack, Icon, Tag } from "@inubekit/inubekit";
 
 import { IEntries } from "@components/data/TableBoard/types";
 import { CreditRequest } from "@services/types";
@@ -17,11 +16,9 @@ export const dataButton = {
   onClick: () => console.log("Agregar"),
 };
 
-
 const receiveData = (data: IEntries) => {
   console.log(data, "function que recibe data");
 };
-
 
 export const titlesRequirements = [
   [
@@ -186,7 +183,8 @@ export const getAcctionMobile = (
             size="22px"
             onClick={() => showAprovalsModal(true)}
             disabled={
-              isValidElement(data?.tag) && data?.tag?.props?.label === "No Cumple"
+              isValidElement(data?.tag) &&
+              data?.tag?.props?.label === "No Cumple"
             }
           />
         </Stack>

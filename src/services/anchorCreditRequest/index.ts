@@ -4,7 +4,7 @@ import {
   maxRetriesServices,
 } from "@config/environment";
 
-export const ChangeAnchorToCreditRequest = async (
+export const patchChangeAnchorToCreditRequest = async (
   businessUnitPublicCode: string,
   userAccount: string,
   creditRequestId: string | undefined,

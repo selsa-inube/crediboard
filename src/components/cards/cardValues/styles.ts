@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 interface IStyledCollapseIcon {
   $showIcon: boolean;
-  theme?: typeof inube;
 }
 
 export const Container = styled.div<IStyledCollapseIcon>`

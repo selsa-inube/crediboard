@@ -1,11 +1,14 @@
 import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
-import { Select } from "@inubekit/select";
-import { Button } from "@inubekit/button";
-import { useFlag } from "@inubekit/flag";
-import { SkeletonLine } from "@inubekit/skeleton";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
-import { IOption } from "@inubekit/select";
+import { useParams } from "react-router-dom";
+import {
+  Stack,
+  Icon,
+  Text,
+  SkeletonLine,
+  IOption,
+  Select,
+  Button,
+} from "@inubekit/inubekit";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
@@ -22,16 +25,11 @@ import { AppContext } from "@context/AppContext";
 import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StaffModal } from "./StaffModal";
-import {
-  errorMessagge,
-  txtLabels,
-  txtLabelsNoData,
-  txtTaskQuery,
-} from "./config";
+import { errorMessagge, txtLabels, txtTaskQuery } from "./config";
 import { IICon, IButton } from "./types";
 import { getXAction } from "./util/utils";
 import { StyledHorizontalDivider, StyledTextField } from "../styles";
-import { errorObserver } from "../config";
+import { errorMessages, errorObserver } from "../config";
 
 interface ToDoProps {
   icon?: IICon;
@@ -43,6 +41,8 @@ interface ToDoProps {
 
 function ToDo(props: ToDoProps) {
   const { icon, button, isMobile, id } = props;
+
+  const { approverid } = useParams();
 
   const [requests, setRequests] = useState<ICreditRequest | null>(null);
   const [showStaffModal, setShowStaffModal] = useState(false);
@@ -64,7 +64,6 @@ function ToDo(props: ToDoProps) {
     decision: "",
   });
 
-  const { addFlag } = useFlag();
   const { businessUnitSigla, eventData } = useContext(AppContext);
 
   const businessUnitPublicCode: string =
@@ -185,13 +184,6 @@ function ToDo(props: ToDoProps) {
   const handleSubmit = () => {
     setAssignedStaff(tempStaff);
     handleToggleStaffModal();
-
-    addFlag({
-      title: "Cambio realizado",
-      description: "El cambio se realizó con éxito.",
-      appearance: "success",
-      duration: 5000,
-    });
   };
 
   const handleSend = () => {
@@ -204,9 +196,7 @@ function ToDo(props: ToDoProps) {
   const isFetching = useRef(false);
 
   const handleSelectOpen = async () => {
-    if (isFetching.current) return; // Evita dobles peticiones
-    //if (!requests?.creditRequestId) return; // Evita ejecutar sin ID válido
-
+    if (isFetching.current) return;
     isFetching.current = true;
     setLoading(true);
     if (requests?.creditRequestId) {
@@ -236,6 +226,14 @@ function ToDo(props: ToDoProps) {
     }
   };
 
+  const validationId = () => {
+    if (approverid === eventData.user.staff.staffId) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const data = {
     makeDecision: {
       creditRequestId: requests?.creditRequestId || "",
@@ -244,7 +242,10 @@ function ToDo(props: ToDoProps) {
     },
     businessUnit: businessUnitPublicCode,
     user: userAccount,
-    xAction: getXAction(selectedDecision?.label.split(":")[0] || ""),
+    xAction: getXAction(
+      selectedDecision?.label.split(":")[0] || "",
+      validationId()
+    ),
     humanDecisionDescription: selectedDecision?.label || "",
   };
   const datamock = TodoConsult[0];
@@ -252,7 +253,7 @@ function ToDo(props: ToDoProps) {
   return (
     <>
       <Fieldset
-        title="Por hacer"
+        title={errorMessages.toDo.titleCard}
         descriptionTitle={assignedStaff.commercialManager}
         heightFieldset="241px"
         hasOverflow
@@ -261,10 +262,9 @@ function ToDo(props: ToDoProps) {
         {!taskData ? (
           <ItemNotFound
             image={userNotFound}
-            title={txtLabelsNoData.title}
-            description={txtLabelsNoData.description}
-            buttonDescription={txtLabelsNoData.buttonDescription}
-            route={txtLabelsNoData.route}
+            title={errorMessages.toDo.title}
+            description={errorMessages.toDo.description}
+            buttonDescription={errorMessages.toDo.button}
             onRetry={handleRetry}
           />
         ) : (
@@ -439,6 +439,7 @@ function ToDo(props: ToDoProps) {
           onChange={handleSelectOfficial}
           onSubmit={handleSubmit}
           onCloseModal={handleToggleStaffModal}
+          taskData={taskData}
         />
       )}
     </>

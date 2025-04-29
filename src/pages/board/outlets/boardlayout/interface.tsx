@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
-import { Toggle } from "@inubekit/toggle";
-import { Textfield } from "@inubekit/textfield";
-import { Text } from "@inubekit/text";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { Divider } from "@inubekit/divider";
+
+import {
+  Stack,
+  Icon,
+  Text,
+  Divider,
+  Textfield,
+  Toggle,
+} from "@inubekit/inubekit";
 
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { BoardSection } from "@components/layout/BoardSection";
@@ -42,6 +46,7 @@ interface BoardLayoutProps {
   handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
   errorLoadingPins: boolean;
+  loading: boolean;
 }
 
 function BoardLayoutUI(props: BoardLayoutProps) {
@@ -90,7 +95,6 @@ function BoardLayoutUI(props: BoardLayoutProps) {
   useEffect(() => {
     setIsExpanded(Boolean(searchRequestValue));
   }, [searchRequestValue]);
-
   return (
     <StyledContainerToCenter>
       <Stack

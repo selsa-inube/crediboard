@@ -1,9 +1,6 @@
 import { MdAndroid } from "react-icons/md";
 import { Meta, StoryObj } from "@storybook/react";
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/inubekit";
-import { Button } from "@inubekit/button";
-
+import { Stack, Text, Button } from "@inubekit/inubekit";
 import { CardInfoContainer } from ".";
 
 type Story = StoryObj<typeof CardInfoContainer>;

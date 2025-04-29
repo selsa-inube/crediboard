@@ -1,10 +1,14 @@
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
-import { Blanket } from "@inubekit/blanket";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
-import { Button } from "@inubekit/button";
-import { Divider } from "@inubekit/divider";
+
+import {
+  Stack,
+  Icon,
+  Text,
+  Divider,
+  Button,
+  Blanket,
+} from "@inubekit/inubekit";
 
 import { validationMessages } from "@validations/validationMessages";
 
@@ -24,6 +28,8 @@ export interface IBaseModalProps {
   disabledBack?: boolean;
   iconBeforeNext?: React.JSX.Element;
   iconAfterNext?: React.JSX.Element;
+  iconBeforeback?: React.JSX.Element;
+  iconAfterback?: React.JSX.Element;
   backButton?: string;
   initialDivider?: boolean;
   finalDivider?: boolean;
@@ -44,6 +50,8 @@ export function BaseModal(props: IBaseModalProps) {
     disabledBack = false,
     iconBeforeNext,
     iconAfterNext,
+    iconBeforeback,
+    iconAfterback,
     backButton = "",
     initialDivider = true,
     finalDivider = false,
@@ -93,6 +101,8 @@ export function BaseModal(props: IBaseModalProps) {
                 disabled={disabledBack}
                 variant="outlined"
                 appearance="gray"
+                iconAfter={iconAfterback}
+                iconBefore={iconBeforeback}
               >
                 {backButton}
               </Button>

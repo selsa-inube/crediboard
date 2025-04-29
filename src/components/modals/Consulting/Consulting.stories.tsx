@@ -1,25 +1,23 @@
-import { Meta } from "@storybook/react";
-import { Consulting } from ".";
 import { useState } from "react";
-import { Button } from "@inubekit/button";
+import { Meta } from "@storybook/react";
+import { Button } from "@inubekit/inubekit";
+import { Consulting } from ".";
 
 const meta: Meta<typeof Consulting> = {
-    component: Consulting,
-    title: "Components/modals/Consulting",
-}
+  component: Consulting,
+  title: "Components/modals/Consulting",
+};
 
 const Default = () => {
-    const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-    return (
-        <>
-        <Button onClick={() => setShowModal(true)}>Modal Report Credit</Button>
-        {showModal && (<Consulting/>)}
-        </>
-    )
-}
+  return (
+    <>
+      <Button onClick={() => setShowModal(true)}>Modal Report Credit</Button>
+      {showModal && <Consulting />}
+    </>
+  );
+};
 
-export {Default}
-export default meta
-
-
+export { Default };
+export default meta;

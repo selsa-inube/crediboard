@@ -6,7 +6,7 @@ import {
 
 import { ICreditRequestPinned } from "@services/types";
 
-export const getCreditRequestPin = async (
+export const getCreditRequestPinned = async (
   businessUnitPublicCode: string
 ): Promise<ICreditRequestPinned[]> => {
   const maxRetries = maxRetriesServices;

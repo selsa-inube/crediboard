@@ -1,4 +1,4 @@
-export interface IBusinessmanagers {
+export interface IBusinessManagers {
   businessManagerId: string;
   publicCode: string;
   languageId: string;

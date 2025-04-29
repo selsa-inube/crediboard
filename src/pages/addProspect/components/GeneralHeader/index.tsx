@@ -5,10 +5,7 @@ import {
   MdCancel,
   MdOutlineManageAccounts,
 } from "react-icons/md";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
-import { Button } from "@inubekit/button";
-import { useMediaQuery } from "@inubekit/hooks";
+import { Stack, Icon, Text, useMediaQuery, Button } from "@inubekit/inubekit";
 
 import { StyledContainerGeneralHeader, StyledPerfil } from "./styles";
 
@@ -56,7 +53,7 @@ export function GeneralHeader(props: IGeneralHeaderProps) {
     > = {
       Activo: { appearance: "success", icon: <MdCheckCircle /> },
       Vinculado: { appearance: "success", icon: <MdCheckCircle /> },
-      Prospecto: { appearance: "warning", icon: <MdCheckCircle /> },
+      Inactivo: { appearance: "warning", icon: <MdCheckCircle /> },
       "En proceso devinculación": {
         appearance: "warning",
         icon: <MdOutlineAccessTime />,

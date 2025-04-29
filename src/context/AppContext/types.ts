@@ -1,4 +1,5 @@
 import { SectionOrientation } from "@components/layout/BoardSection/types";
+import { IEnumerator } from "@pages/SubmitCreditApplication/types";
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
 
 interface IPortal {
@@ -59,6 +60,7 @@ interface ICrediboardData {
   businessManager: IBusinessManager;
   businessUnit: IBusinessUnit;
   user: IUser;
+  enumRole: IEnumerator[];
 }
 
 interface IAppContext {

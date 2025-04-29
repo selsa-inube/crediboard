@@ -1,24 +1,25 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { MdInfoOutline } from "react-icons/md";
-import { useMediaQuery } from "@inubekit/hooks";
-import { Text } from "@inubekit/text";
-import { Stack, Icon } from "@inubekit/inubekit";
+import { Stack, Icon, Text, useMediaQuery, useFlag } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { ICreditRequest } from "@services/types";
-import { getCreditRequestPin } from "@services/isPinned";
+import { getCreditRequestPinned } from "@services/isPinned";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
-import { ChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
+import { patchChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
 import { AppContext } from "@context/AppContext";
+import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
 
 import { dataInformationModal } from "./config/board";
 import { BoardLayoutUI } from "./interface";
 import { selectCheckOptions } from "./config/select";
 import { IBoardData } from "./types";
+import { getEnumerators } from "@services/enumerators";
+import { IEnumerator } from "@pages/SubmitCreditApplication/types";
 
 function BoardLayout() {
   const { businessUnitSigla, eventData, setEventData } = useContext(AppContext);
-
+  const [enumerators, setEnumerators] = useState<IEnumerator[]>([]);
   const [boardData, setBoardData] = useState<IBoardData>({
     boardRequests: [],
     requestsPinned: [],
@@ -36,7 +37,7 @@ function BoardLayout() {
   );
   const [errorLoadingPins, setErrorLoadingPins] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
-
+  const [loading, setLoading] = useState(true);
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
   const identificationStaff = eventData.user.staff.identificationDocumentNumber;
@@ -56,12 +57,14 @@ function BoardLayout() {
   const { userAccount } =
     typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
 
+  const errorData = mockErrorBoard[0];
+
   const fetchBoardData = async (businessUnitPublicCode: string) => {
     try {
       const [boardRequestsResult, requestsPinnedResult] =
         await Promise.allSettled([
           getCreditRequestInProgress(businessUnitPublicCode),
-          getCreditRequestPin(businessUnitPublicCode),
+          getCreditRequestPinned(businessUnitPublicCode),
         ]);
 
       if (boardRequestsResult.status === "fulfilled") {
@@ -77,6 +80,8 @@ function BoardLayout() {
           ...prevState,
           requestsPinned: requestsPinnedResult.value,
         }));
+      } else {
+        handleFlag(errorData.Summary[0], errorData.Summary[1]);
       }
     } catch (error) {
       console.error("Error fetching board data:", error);
@@ -86,6 +91,7 @@ function BoardLayout() {
 
   useEffect(() => {
     fetchBoardData(businessUnitPublicCode);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [businessUnitPublicCode]);
 
   useEffect(() => {
@@ -150,6 +156,30 @@ function BoardLayout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, boardData]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const accountManagers = await getEnumerators(businessUnitPublicCode);
+
+        setEnumerators(accountManagers);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [businessUnitPublicCode]);
+
+  useEffect(() => {
+    const updatedEventData = { ...eventData };
+    updatedEventData.enumRole = enumerators;
+
+    setEventData(updatedEventData);
+  }, [enumerators, eventData, setEventData]);
+
   const handleFiltersChange = (newFilters: Partial<typeof filters>) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -178,34 +208,54 @@ function BoardLayout() {
     }
   };
 
+  const { addFlag } = useFlag();
+
+  const handleFlag = useCallback(
+    (title: string, description: string) => {
+      addFlag({
+        title: title,
+        description: description,
+        appearance: "danger",
+        duration: 5000,
+      });
+    },
+    [addFlag]
+  );
+
   const handlePinRequest = async (
     creditRequestId: string | undefined,
     identificationNumber: string[],
     userWhoPinnnedId: string,
     isPinned: string
   ) => {
-    if (
-      userWhoPinnnedId === staffId ||
-      identificationNumber.includes(identificationStaff)
-    ) {
-      setBoardData((prevState) => ({
-        ...prevState,
-        requestsPinned: prevState.requestsPinned.map((card) =>
-          card.creditRequestId === creditRequestId
-            ? { ...card, isPinned }
-            : card
-        ),
-      }));
-      await ChangeAnchorToCreditRequest(
-        businessUnitPublicCode,
-        userAccount,
-        creditRequestId,
-        isPinned
-      );
-      await fetchBoardData(businessUnitPublicCode);
-    } else {
-      setIsOpenModal(true);
-      return;
+    try {
+      if (
+        userWhoPinnnedId === staffId ||
+        identificationNumber.includes(identificationStaff) ||
+        isPinned === "Y"
+      ) {
+        setBoardData((prevState) => ({
+          ...prevState,
+          requestsPinned: prevState.requestsPinned.map((card) =>
+            card.creditRequestId === creditRequestId
+              ? { ...card, isPinned }
+              : card
+          ),
+        }));
+
+        await patchChangeAnchorToCreditRequest(
+          businessUnitPublicCode,
+          userAccount,
+          creditRequestId,
+          isPinned
+        );
+        await fetchBoardData(businessUnitPublicCode);
+      } else {
+        setIsOpenModal(true);
+        return;
+      }
+    } catch (error) {
+      handleFlag(errorData.anchor[0], errorData.anchor[1]);
     }
   };
 
@@ -213,6 +263,7 @@ function BoardLayout() {
     <>
       <BoardLayoutUI
         isMobile={isMobile}
+        loading={loading}
         selectOptions={filters.selectOptions}
         boardOrientation={filters.boardOrientation}
         BoardRequests={filteredRequests}

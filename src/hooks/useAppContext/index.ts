@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { IStaffPortalByBusinessManager } from "@services/staffPortal/types";
-import { IBusinessmanagers } from "@services/businessManager/types";
+import { IBusinessManagers } from "@services/businessManager/types";
 
 import {
   validateBusinessManagers,
@@ -9,7 +9,7 @@ import {
 } from "@context/AppContext/utils";
 import { ICrediboardData } from "@context/AppContext/types";
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
-import { getStaff } from "@services/businessUnitsPortalStaff/getStaffs";
+import { getStaff } from "@services/staffs";
 
 import { decrypt } from "@utils/encrypt/encrypt";
 
@@ -25,8 +25,8 @@ function useAppContext() {
   const [portalData, setPortalData] = useState<IStaffPortalByBusinessManager[]>(
     []
   );
-  const [businessManagers, setBusinessManagers] = useState<IBusinessmanagers>(
-    {} as IBusinessmanagers
+  const [businessManagers, setBusinessManagers] = useState<IBusinessManagers>(
+    {} as IBusinessManagers
   );
   const [businessUnitSigla, setBusinessUnitSigla] = useState(
     localStorage.getItem("businessUnitSigla") || ""
@@ -141,6 +141,7 @@ function useAppContext() {
         showPinnedOnly: false,
       },
     },
+    enumRole: [],
   });
 
   useEffect(() => {

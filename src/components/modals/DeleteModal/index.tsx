@@ -1,5 +1,4 @@
-import { useMediaQuery } from "@inubekit/hooks";
-import { Text } from "@inubekit/text";
+import { Text, useMediaQuery } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 

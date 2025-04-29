@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMediaQuery } from "@inubekit/hooks";
+import { useMediaQuery } from "@inubekit/inubekit";
 
 import { Consulting } from "@components/modals/Consulting";
 import { prospectId } from "@mocks/add-prospect/edit-prospect/prospectid.mock";
+import { CustomerContext } from "@context/CustomerContext/CustomerContextProvider";
 
 import { stepsAddProspect } from "./config/addProspect.config";
 import { FormData } from "./types";
@@ -22,6 +23,13 @@ export function AddProspect() {
 
   const steps = Object.values(stepsAddProspect);
   const navigate = useNavigate();
+
+  const { customerData } = useContext(CustomerContext);
+  const dataHeader = {
+    name: customerData.fullName,
+    status:
+      customerData.generalAssociateAttributes[0].partnerStatus.substring(2),
+  };
 
   const [formData, setFormData] = useState<FormData>({
     selectedDestination: "",
@@ -206,6 +214,7 @@ export function AddProspect() {
         handlePreviousStep={handlePreviousStep}
         setCurrentStep={setCurrentStep}
         currentStepsNumber={currentStepsNumber}
+        dataHeader={dataHeader}
         handleSubmitClick={handleSubmitClick}
         formData={formData}
         selectedProducts={selectedProducts}

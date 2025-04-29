@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMediaQuery } from "@inubekit/hooks";
-import { useFlag } from "@inubekit/flag";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, useFlag, useMediaQuery } from "@inubekit/inubekit";
 
 import { OfferedGuaranteeModal } from "@components/modals/OfferedGuaranteeModal";
 import { ErrorAlert } from "@components/ErrorAlert";
@@ -13,11 +11,14 @@ import { ListModal } from "@components/modals/ListModal";
 import { MobileMenu } from "@components/modals/MobileMenu";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
-import { Ierror_issued, IErrorService, ICreditRequest } from "@services/types";
+import { IErrorService, ICreditRequest } from "@services/types";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { getUnreadErrorsById } from "@services/unreadErrors";
 import { getSearchAllDocumentsById } from "@services/documents/SearchAllDocuments";
 import { generatePDF } from "@utils/pdf/generetePDF";
 import { AppContext } from "@context/AppContext";
+import { saveAssignAccountManager } from "@services/creditRequets/pacthAssignAccountManager";
+import { textFlags } from "@config/pages/staffModal/addFlag";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -26,7 +27,6 @@ import {
   handleConfirmReject,
   handleConfirmCancel,
   optionButtons,
-  errorObserver,
 } from "./config";
 import {
   StyledMarginPrint,
@@ -39,6 +39,8 @@ import { Requirements } from "./Requirements";
 import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
+import { IErrorsUnread } from "./types";
+
 interface IListdataProps {
   data: { id: string; name: string }[];
   icon?: React.ReactNode;
@@ -67,7 +69,10 @@ export const FinancialReporting = () => {
   const [showGuarantee, setShowGuarantee] = useState(false);
 
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
-  const [errors, setError] = useState<Ierror_issued[]>([]);
+
+  const [uploadedFiles, setUploadedFiles] = useState<
+    { id: string; name: string; file: File }[]
+  >([]);
 
   const { id } = useParams();
   const { user } = useAuth0();
@@ -93,49 +98,32 @@ export const FinancialReporting = () => {
       .catch((error) => {
         console.error(error);
       });
+  }, [id, businessUnitPublicCode]);
 
-    getSearchAllDocumentsById(
-      id!,
-      user?.email ?? "",
-      businessUnitPublicCode
-    ).then((documents) => {
+  const fetchAndShowDocuments = async () => {
+    if (!data?.creditRequestId || !user?.email || !businessUnitPublicCode)
+      return;
+
+    try {
+      const documents = await getSearchAllDocumentsById(
+        data.creditRequestId,
+        user.email,
+        businessUnitPublicCode
+      );
+
       const dataToMap = Array.isArray(documents) ? documents : documents.value;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const documentsUser = dataToMap.map((dataListDocument: any) => ({
         id: dataListDocument.documentId,
         name: dataListDocument.fileName,
       }));
+
       setDocument(documentsUser);
-    });
-  }, [id, businessUnitPublicCode, user]);
-
-  useEffect(() => {
-    const handleErrorsService = (newError: IErrorService) => {
-      setErrorsService((prevErrors) => {
-        let updatedErrors = [...prevErrors];
-
-        const errorExists = updatedErrors.some(
-          (error) => error.id === newError.id
-        );
-
-        if (!errorExists) {
-          updatedErrors = [...updatedErrors, newError];
-        } else {
-          updatedErrors = updatedErrors.map((i) =>
-            i.id === newError.id ? newError : i
-          );
-        }
-
-        return updatedErrors;
-      });
-    };
-
-    errorObserver.subscribe(handleErrorsService);
-
-    return () => {
-      errorObserver.unsubscribe(handleErrorsService);
-    };
-  }, []);
+      setAttachDocuments(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleGeneratePDF = () => {
     setTimeout(() => {
@@ -165,14 +153,10 @@ export const FinancialReporting = () => {
       }
     },
     buttonAttach: () => setShowAttachments(true),
-    buttonViewAttachments: () => setAttachDocuments(true),
+    buttonViewAttachments: () => fetchAndShowDocuments(),
     buttonWarranty: () => setShowGuarantee(true),
     menuIcon: () => setShowMenu(true),
   });
-
-  const handleClose = (errorId: string) => {
-    setError(errors.filter((error) => error.error_issued_id !== errorId));
-  };
 
   const handleCloseErrorService = (errorId: string) => {
     setErrorsService(removeErrorByIdServices(errorsService, errorId));
@@ -216,35 +200,79 @@ export const FinancialReporting = () => {
     setAttachDocuments(true);
     setShowMenu(false);
   };
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!data?.creditRequestId || !businessUnitPublicCode || !user?.email)
+        return;
+      try {
+        await saveAssignAccountManager(
+          data?.creditRequestId ?? "",
+          businessUnitPublicCode,
+          user?.email ?? ""
+        );
+      } catch (error) {
+        addFlag({
+          title: textFlags.titleError,
+          description: textFlags.descriptionError,
+          appearance: "danger",
+          duration: 5000,
+        });
+      } finally {
+        handleToggleModal();
+        setTimeout(() => {
+          navigate(`/extended-card/${id}`);
+        }, 6000);
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.creditRequestId, businessUnitPublicCode, user?.email]);
+
+  const fetchErrors = async () => {
+    if (!data?.creditRequestId || !businessUnitPublicCode) return;
+
+    try {
+      const unreadErrors = await getUnreadErrorsById(businessUnitPublicCode, {
+        creditRequestId: data.creditRequestId,
+      });
+
+      if (Array.isArray(unreadErrors)) {
+        const mappedErrors = unreadErrors.map((error: IErrorsUnread) => ({
+          id: error.errorIssuedId,
+          message: error.errorDescription,
+        }));
+
+        setErrorsService(mappedErrors);
+      }
+    } catch (error) {
+      console.error("Error fetching unread errors", error);
+    }
+  };
+
+  useEffect(() => {
+    if (data?.creditRequestId) {
+      fetchErrors();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   return (
     <StyledMarginPrint $isMobile={isMobile}>
       <Stack direction="column">
-        {errors && (
-          <Stack justifyContent="center" alignContent="center">
-            <StyledToast $isMobile={isMobile}>
-              {errors.map((error) => (
-                <ErrorAlert
-                  message={error.error_description}
-                  onClose={() => handleClose(error.error_issued_id)}
-                  key={error.error_issued_id}
-                  isMobile={isMobile}
-                />
-              ))}
-
-              {errorsService.length > 0 &&
-                errorsService.map((errorService) => (
-                  <ErrorAlert
-                    message={errorService.message.toString()}
-                    onClose={() => handleCloseErrorService(errorService.id)}
-                    key={errorService.id}
-                    isMobile={isMobile}
-                  />
-                ))}
-            </StyledToast>
-          </Stack>
-        )}
-
+        <Stack justifyContent="center" alignContent="center">
+          <StyledToast $isMobile={isMobile}>
+            {errorsService.map((error) => (
+              <ErrorAlert
+                key={error.id}
+                message={error.message.toString()}
+                onClose={() => handleCloseErrorService(error.id)}
+                isMobile={isMobile}
+              />
+            ))}
+          </StyledToast>
+        </Stack>
         <ContainerSections
           isMobile={isMobile}
           stockTray={
@@ -264,6 +292,8 @@ export const FinancialReporting = () => {
                     data={data}
                     collapse={collapse}
                     setCollapse={setCollapse}
+                    id={id!}
+                    hideContactIcons={true}
                   />
                 </Stack>
               </Stack>
@@ -295,7 +325,7 @@ export const FinancialReporting = () => {
                   <PromissoryNotes id={id!} isMobile={isMobile} />
                 </Stack>
                 <Stack direction="column" height={isMobile ? "auto" : "163px"}>
-                  <Postingvouchers />
+                  <Postingvouchers user={id!} id={id!} isMobile={isMobile} />
                 </Stack>
               </StyledScreenPrint>
             </Stack>
@@ -306,8 +336,10 @@ export const FinancialReporting = () => {
                 handleClose={() => setShowAttachments(false)}
                 optionButtons={optionButtons}
                 buttonLabel="Guardar"
-                id={id!}
+                id={data.creditRequestId!}
                 isViewing={false}
+                uploadedFiles={uploadedFiles}
+                setUploadedFiles={setUploadedFiles}
               />
             )}
             {attachDocuments && (
@@ -315,7 +347,7 @@ export const FinancialReporting = () => {
                 title="Ver Adjuntos"
                 handleClose={() => setAttachDocuments(false)}
                 buttonLabel="Cerrar"
-                id={id!}
+                id={data.creditRequestId!}
                 isViewing={true}
                 dataDocument={document}
               />
@@ -340,6 +372,8 @@ export const FinancialReporting = () => {
           <OfferedGuaranteeModal
             handleClose={() => setShowGuarantee(false)}
             isMobile={isMobile}
+            id={id || ""}
+            businessUnitPublicCode={businessUnitPublicCode}
           />
         )}
         {showCancelModal && (
@@ -370,3 +404,6 @@ export const FinancialReporting = () => {
     </StyledMarginPrint>
   );
 };
+function handleToggleModal() {
+  throw new Error("Function not implemented.");
+}

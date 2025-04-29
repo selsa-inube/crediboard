@@ -6,8 +6,7 @@ import {
   MdOutlineEdit,
   MdOutlineRemoveRedEye,
 } from "react-icons/md";
-import { Stack } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
+import { Stack, Text } from "@inubekit/inubekit";
 
 import { TableBoard } from "@components/data/TableBoard";
 import { Schedule } from "@services/enums";
@@ -362,12 +361,14 @@ export const SummaryProspectCredit = [
         title: "Obligaciones recogidas",
         miniIcon: true,
         icon: <MdOutlineEdit />,
+        modal: "edit",
         operation: "-",
       },
       {
         title: "Gastos descontables",
         miniIcon: true,
         icon: <MdOutlineRemoveRedEye />,
+        modal: "view",
         operation: "=",
       },
       {

@@ -1,7 +1,6 @@
-import { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Button } from "@inubekit/button";
-import { Text } from "@inubekit/text";
+import { Meta, StoryObj } from "@storybook/react";
+import { Text, Button } from "@inubekit/inubekit";
 
 import { BaseModal, IBaseModalProps } from ".";
 

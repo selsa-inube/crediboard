@@ -4,10 +4,7 @@ import {
   MdErrorOutline,
   MdCached,
 } from "react-icons/md";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
-import { Divider } from "@inubekit/divider";
-import { SkeletonLine } from "@inubekit/skeleton";
+import { Stack, Icon, Text, SkeletonLine, Divider } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { currencyFormat } from "@utils/formatData/currency";

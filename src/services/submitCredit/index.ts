@@ -35,14 +35,14 @@ const postSubmitCredit = async (
     }
 
     if (!res.ok) {
-      const errorMessage = `Error al crear el rol. Status: ${
+      const errorMessage = `Error al crear la solicitud de crédito: ${
         res.status
       }, Data: ${JSON.stringify(data)}`;
       throw new Error(errorMessage);
     }
     return data;
   } catch (error) {
-    console.error("Failed to add roles:", error);
+    console.error("Failed to add credit request:", error);
     throw error;
   }
 };

@@ -1,7 +1,5 @@
 import { MdWarningAmber } from "react-icons/md";
-import { Divider } from "@inubekit/divider";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
+import { Stack, Icon, Text, Divider } from "@inubekit/inubekit";
 
 import { Fieldset } from "@components/data/Fieldset";
 

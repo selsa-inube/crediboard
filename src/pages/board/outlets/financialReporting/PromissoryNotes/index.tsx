@@ -1,16 +1,14 @@
 import { useCallback, useEffect, useState, useContext } from "react";
-import { Stack } from "@inubekit/inubekit";
-import { useFlag } from "@inubekit/flag";
-import { Tag } from "@inubekit/tag";
+import { Stack, useFlag, Tag } from "@inubekit/inubekit";
 
-import userNotFound from "@assets/images/ItemNotFound.png";
+import ItemNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 import { UnfoundData } from "@components/layout/UnfoundData";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
-import { getPayrollDiscountAuthorizationById } from "@services/payroll_discount_authorizations";
+import { getPayrollDiscountAuthorizationsById } from "@services/payroll_discount_authorizations";
 import { getPromissoryNotesById } from "@services/promissory_notes";
 import {
   IPayrollDiscountAuthorization,
@@ -26,7 +24,7 @@ import {
   titlesFinanacialReporting,
   infoItems,
 } from "./config";
-import { errorObserver } from "../config";
+import { errorObserver, errorMessages } from "../config";
 
 interface IPromissoryNotesProps {
   id: string;
@@ -76,7 +74,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
     try {
       const [payrollDiscountResult, promissoryNotesResult] =
         await Promise.allSettled([
-          getPayrollDiscountAuthorizationById(
+          getPayrollDiscountAuthorizationsById(
             businessUnitPublicCode,
             creditRequets.creditRequestId
           ),
@@ -145,17 +143,20 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
   };
 
   return (
-    <Fieldset title="Pagarés y Libranzas" heightFieldset="100%" hasTable>
-      {showRetry ? (
+    <Fieldset
+      title={errorMessages.PromissoryNotes.titleCard}
+      heightFieldset="100%"
+      hasTable
+      hasError={!creditRequets ? true : false}
+    >
+      {!creditRequets || showRetry ? (
         <UnfoundData
-          image={userNotFound}
-          title="Error al cargar datos"
+          image={ItemNotFound}
+          title={errorMessages.PromissoryNotes.title}
           description={
-            errorMessage ||
-            "Hubo un error al intentar cargar los datos. Por favor, intente nuevamente."
+            errorMessages.PromissoryNotes.description || errorMessage
           }
-          buttonDescription="Volver a intentar"
-          route="/retry-path"
+          buttonDescription={errorMessages.PromissoryNotes.button}
           onRetry={handleRetry}
         />
       ) : (

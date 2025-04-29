@@ -1,6 +1,5 @@
 import { PiSealCheckBold } from "react-icons/pi";
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Text } from "@inubekit/inubekit";
 
 import { CardInfoContainer } from "@components/cards/CardInfoContainer";
 import { StyledDivider } from "@components/cards/SummaryCard/styles";

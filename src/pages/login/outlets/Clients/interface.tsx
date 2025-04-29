@@ -1,9 +1,11 @@
 import React from "react";
-import { Stack } from "@inubekit/inubekit";
-import { Searchfield } from "@inubekit/input";
-import { Text } from "@inubekit/text";
-import { Button } from "@inubekit/button";
-import { useMediaQuery } from "@inubekit/hooks";
+import {
+  Button,
+  Searchfield,
+  Stack,
+  Text,
+  useMediaQuery,
+} from "@inubekit/inubekit";
 
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
 import { RadioBusinessUnit } from "@components/RadioBusinessUnit";

@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { FormikValues } from "formik";
 import { MdOutlineAdd } from "react-icons/md";
-import { Stack, Icon } from "@inubekit/inubekit";
-import { Button } from "@inubekit/button";
-import { Text } from "@inubekit/text";
-
+import { Stack, Icon, Text, Button } from "@inubekit/inubekit";
 import { Fieldset } from "@components/data/Fieldset";
 import { AddSeriesModal } from "@components/modals/AddSeriesModal";
 import { IExtraordinaryPayment } from "@services/types";

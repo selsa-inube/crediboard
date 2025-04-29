@@ -1,22 +1,16 @@
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { MdCached, MdOutlineEdit } from "react-icons/md";
-import { Stack } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
-import { useMediaQuery } from "@inubekit/hooks";
-import { Grid } from "@inubekit/grid";
-import { Select } from "@inubekit/select";
-import { Button } from "@inubekit/button";
-
+import { Stack, Text, Grid, useMediaQuery, Button } from "@inubekit/inubekit";
 import { incomeCardData } from "@components/cards/IncomeCard/config";
-import { ListModal } from "@components/modals/ListModal";
 import { CardGray } from "@components/cards/CardGray";
 import { IncomeModal } from "@pages/prospect/components/modals/IncomeModal";
 import {
   currencyFormat,
   parseCurrencyString,
 } from "@utils/formatData/currency";
-import { get } from "@mocks/utils/dataMock.service";
 import { IIncome } from "@services/types";
+import { IIncomeSources } from "@services/incomeSources/types";
+import { BaseModal } from "@components/modals/baseModal";
 
 import { IncomeEmployment, IncomeCapital, MicroBusinesses } from "./config";
 import { StyledContainer } from "./styles";
@@ -24,35 +18,67 @@ import { dataReport } from "../TableObligationsFinancial/config";
 
 interface ISourceIncomeProps {
   openModal?: (state: boolean) => void;
+  onDataChange?: (newData: IIncomeSources) => void;
   ShowSupport?: boolean;
-  onlyDebtor?: boolean;
   disabled?: boolean;
+  data?: IIncomeSources;
+  showEdit?: boolean;
 }
 
 export function SourceIncome(props: ISourceIncomeProps) {
-  const { openModal, ShowSupport, onlyDebtor, disabled } = props;
+  const {
+    openModal,
+    onDataChange,
+    ShowSupport,
+    disabled,
+    showEdit = true,
+    data,
+  } = props;
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
-  const [values, setValues] = useState<IIncome | null>(null);
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
-  const handleSelectChange = (name: string, newValue: string) => {
-    setValues((prev) => (prev ? { ...prev, [name]: newValue } : null));
-  };
+  const dataValues = data
+    ? {
+        borrower_id: data.identificationNumber,
+        borrower: `${data.name} ${data.surname}`,
+        capital: [
+          (data.Leases || 0).toString(),
+          (data.Dividends ?? 0).toString(),
+          (data.FinancialIncome ?? 0).toString(),
+        ],
+        employment: [
+          (data.PeriodicSalary ?? 0).toString(),
+          (data.OtherNonSalaryEmoluments ?? 0).toString(),
+          (data.PensionAllowances ?? 0).toString(),
+        ],
+        businesses: [
+          (data.ProfessionalFees ?? 0).toString(),
+          (data.PersonalBusinessUtilities ?? 0).toString(),
+        ],
+      }
+    : null;
+
+  const [borrowerIncome, setBorrowerIncome] = useState<IIncome | null>(
+    dataValues
+  );
+  const initialValuesRef = useRef<IIncome | null>(dataValues);
 
   const totalSum = () => {
     const sumCapital =
-      values?.capital.reduce((acc, val) => acc + parseCurrencyString(val), 0) ??
-      0;
+      borrowerIncome?.capital.reduce(
+        (acc, val) => acc + parseCurrencyString(val),
+        0
+      ) ?? 0;
     const sumEmployment =
-      values?.employment.reduce(
+      borrowerIncome?.employment.reduce(
         (acc, val) => acc + parseCurrencyString(val),
         0
       ) ?? 0;
     const sumBusinesses =
-      values?.businesses.reduce(
+      borrowerIncome?.businesses.reduce(
         (acc, val) => acc + parseCurrencyString(val),
         0
       ) ?? 0;
@@ -60,33 +86,57 @@ export function SourceIncome(props: ISourceIncomeProps) {
     return sumCapital + sumEmployment + sumBusinesses;
   };
 
-  useEffect(() => {
-    get<IIncome[]>("income_mock")
-      .then((data) => {
-        if (data && Array.isArray(data) && data.length > 0) {
-          setValues(data[0]);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching money destinations data:", error.message);
-      });
-  }, []);
+  const handleRestore = () => {
+    if (initialValuesRef.current) {
+      setBorrowerIncome(initialValuesRef.current);
+    }
+    setIsOpenModal(false);
+  };
+
+  function mapToIncomeSources(values: IIncome): IIncomeSources {
+    return {
+      identificationNumber: values.borrower_id,
+      identificationType: "",
+      name: values.borrower.split(" ")[0] || "",
+      surname: values.borrower.split(" ").slice(1).join(" ") || "",
+      Leases: parseCurrencyString(values.capital[0] || "0"),
+      Dividends: parseCurrencyString(values.capital[1] || "0"),
+      FinancialIncome: parseCurrencyString(values.capital[2] || "0"),
+      PeriodicSalary: parseCurrencyString(values.employment[0] || "0"),
+      OtherNonSalaryEmoluments: parseCurrencyString(
+        values.employment[1] || "0"
+      ),
+      PensionAllowances: parseCurrencyString(values.employment[2] || "0"),
+      ProfessionalFees: parseCurrencyString(values.businesses[0] || "0"),
+      PersonalBusinessUtilities: parseCurrencyString(
+        values.businesses[1] || "0"
+      ),
+    };
+  }
 
   const handleIncomeChange = (
     category: "employment" | "capital" | "businesses",
     index: number,
     newValue: string
   ) => {
-    setValues((prev) =>
-      prev
-        ? {
-            ...prev,
-            [category]: prev[category].map((val, i) =>
-              i === index ? newValue : val
-            ),
-          }
-        : null
-    );
+    const cleanedValue = parseCurrencyString(newValue);
+    const cleanedString = cleanedValue.toString();
+
+    setBorrowerIncome((prev) => {
+      if (!prev) return null;
+
+      const updated = {
+        ...prev,
+        [category]: prev[category].map((val, i) =>
+          i === index ? cleanedString : val
+        ),
+      };
+
+      const mappedBack: IIncomeSources = mapToIncomeSources(updated);
+      onDataChange?.(mappedBack);
+
+      return updated;
+    });
   };
 
   return (
@@ -104,33 +154,18 @@ export function SourceIncome(props: ISourceIncomeProps) {
             gap="24px"
             direction={!isMobile ? "row" : "column"}
           >
-            {!onlyDebtor && (
-              <Stack width={!isMobile ? "317px" : "auto"}>
-                <Select
-                  id="income"
-                  name="borrower"
-                  label="Deudor"
-                  placeholder="Seleccione una opción"
-                  options={values?.borrowers || []}
-                  value={values?.borrower || ""}
-                  onChange={handleSelectChange}
-                  size="compact"
-                  fullwidth
-                />
-              </Stack>
-            )}
-            {onlyDebtor && !isMobile && (
+            {!isMobile && (
               <Stack direction="column" gap="8px">
                 <Text type="body" size="small" weight="bold" appearance="dark">
                   {incomeCardData.borrower}
                 </Text>
                 <Text type="title" size="medium">
-                  {values?.borrower}
+                  {borrowerIncome?.borrower}
                 </Text>
               </Stack>
             )}
-            {onlyDebtor && isMobile && (
-              <CardGray label="Deudor" placeHolder={values?.borrower} />
+            {isMobile && (
+              <CardGray label="Deudor" placeHolder={borrowerIncome?.borrower} />
             )}
             <Stack
               width={!isMobile ? "end" : "auto"}
@@ -150,20 +185,21 @@ export function SourceIncome(props: ISourceIncomeProps) {
                 {incomeCardData.income}
               </Text>
             </Stack>
-            {onlyDebtor && (
-              <Stack
-                width={isMobile ? "100%" : "auto"}
-                gap="16px"
-                margin="auto 0 0 0"
+
+            <Stack
+              width={isMobile ? "100%" : "auto"}
+              gap="16px"
+              margin="auto 0 0 0"
+            >
+              <Button
+                variant="outlined"
+                iconBefore={<MdCached />}
+                fullwidth={isMobile}
+                onClick={() => setIsOpenModal(true)}
               >
-                <Button
-                  variant="outlined"
-                  iconBefore={<MdCached />}
-                  fullwidth={isMobile}
-                  onClick={() => setIsOpenModal(true)}
-                >
-                  {incomeCardData.restore}
-                </Button>
+                {incomeCardData.restore}
+              </Button>
+              {showEdit && (
                 <Button
                   iconBefore={<MdOutlineEdit />}
                   onClick={() =>
@@ -172,8 +208,8 @@ export function SourceIncome(props: ISourceIncomeProps) {
                 >
                   {dataReport.edit}
                 </Button>
-              </Stack>
-            )}
+              )}
+            </Stack>
           </Stack>
         </Stack>
         <Stack direction="column">
@@ -182,31 +218,25 @@ export function SourceIncome(props: ISourceIncomeProps) {
             gap="16px"
             autoRows="auto"
           >
-            {values && (
+            {borrowerIncome && (
               <>
                 <IncomeEmployment
-                  values={values.employment}
+                  values={borrowerIncome.employment}
                   ShowSupport={ShowSupport}
                   disabled={disabled}
-                  onValueChange={(index, newValue) =>
-                    handleIncomeChange("employment", index, newValue)
-                  }
+                  onValueChange={handleIncomeChange.bind(null, "employment")}
                 />
                 <IncomeCapital
-                  values={values.capital}
+                  values={borrowerIncome.capital}
                   ShowSupport={ShowSupport}
                   disabled={disabled}
-                  onValueChange={(index, newValue) =>
-                    handleIncomeChange("capital", index, newValue)
-                  }
+                  onValueChange={handleIncomeChange.bind(null, "capital")}
                 />
                 <MicroBusinesses
-                  values={values.businesses}
+                  values={borrowerIncome.businesses}
                   ShowSupport={ShowSupport}
                   disabled={disabled}
-                  onValueChange={(index, newValue) =>
-                    handleIncomeChange("businesses", index, newValue)
-                  }
+                  onValueChange={handleIncomeChange.bind(null, "businesses")}
                 />
               </>
             )}
@@ -214,20 +244,19 @@ export function SourceIncome(props: ISourceIncomeProps) {
         </Stack>
       </Stack>
       {isOpenModal && (
-        <ListModal
+        <BaseModal
           title={incomeCardData.restore}
+          nextButton={incomeCardData.restore}
+          handleNext={handleRestore}
           handleClose={() => setIsOpenModal(false)}
-          handleSubmit={() => setIsOpenModal(false)}
-          cancelButton="Cancelar"
-          appearanceCancel="gray"
-          buttonLabel={incomeCardData.restore}
-          content={incomeCardData.description}
-        />
+          width={isMobile ? "290px" : "400px"}
+        >
+          <Text>{incomeCardData.description}</Text>
+        </BaseModal>
       )}
       {isOpenEditModal && (
         <IncomeModal
           handleClose={() => setIsOpenEditModal(false)}
-          onlyDebtor={false}
           disabled={false}
         />
       )}

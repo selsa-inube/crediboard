@@ -1,7 +1,6 @@
 import { useState, isValidElement, useEffect } from "react";
 import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
-import { useFlag } from "@inubekit/flag";
-import { Stack, Icon } from "@inubekit/inubekit";
+import { Stack, Icon, useFlag } from "@inubekit/inubekit";
 
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
@@ -21,7 +20,7 @@ import {
   getAcctionMobile,
 } from "./config";
 import { AprovalsModal } from "./AprovalsModal";
-import { errorObserver, traceObserver } from "../config";
+import { errorObserver, traceObserver, errorMessages } from "../config";
 
 interface IRequirementsData {
   id: string;
@@ -31,7 +30,7 @@ interface IRequirementsData {
 }
 
 export interface IRequirementsProps {
-  isMobile: boolean;
+  isMobile?: boolean;
   id: string;
   user: string;
 }
@@ -169,20 +168,18 @@ export const Requirements = (props: IRequirementsProps) => {
   return (
     <>
       <Fieldset
-        title="Requisitos"
+        title={errorMessages.Requirements.titleCard}
         activeButton={dataButton}
         heightFieldset="100%"
         hasTable={!error}
+        hasError={error ? true : false}
       >
         {error ? (
           <ItemNotFound
             image={userNotFound}
-            title="Error al cargar datos"
-            description={
-              "Error al intentar conectar con el servicio de trazabilidad."
-            }
-            buttonDescription="Volver a intentar"
-            route="#"
+            title={errorMessages.Requirements.title}
+            description={errorMessages.Requirements.description}
+            buttonDescription={errorMessages.Requirements.button}
             onRetry={() => setError(false)}
           />
         ) : (

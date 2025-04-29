@@ -1,7 +1,5 @@
 import { MdQueryStats } from "react-icons/md";
-import { Stack } from "@inubekit/inubekit";
-import { SkeletonLine } from "@inubekit/skeleton";
-import { Text } from "@inubekit/text";
+import { Stack, Text, SkeletonLine } from "@inubekit/inubekit";
 
 import { CardInfoContainer } from "@components/cards/CardInfoContainer";
 import { StyledDivider } from "@components/cards/SummaryCard/styles";

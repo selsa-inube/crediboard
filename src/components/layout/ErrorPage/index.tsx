@@ -1,9 +1,12 @@
-import { Tag } from "@inubekit/tag";
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/inubekit";
-import { Button } from "@inubekit/button";
-import { Divider } from "@inubekit/divider";
-import { useMediaQueries } from "@inubekit/hooks";
+import {
+  Stack,
+  Text,
+  Divider,
+  useMediaQueries,
+  Tag,
+  Button,
+} from "@inubekit/inubekit";
+
 import { environment } from "@config/environment";
 import { errorCodes } from "@config/errorCodes";
 import selsaLogo from "@assets/images/logoInube.png";
@@ -30,6 +33,7 @@ interface ErrorPageProps {
   nameButton?: string;
   onClick?: () => void;
   errorCode?: number;
+  addToFix?: string[];
 }
 
 const ListContent = ({ items }: { items: string[] }) => (
@@ -50,6 +54,7 @@ function ErrorPage(props: ErrorPageProps) {
     nameButton = "Regresar",
     onClick,
     errorCode = 0,
+    addToFix,
   } = props;
 
   const mediaQueries = ["(max-width: 600px)"];
@@ -127,7 +132,12 @@ function ErrorPage(props: ErrorPageProps) {
                     ¿Cómo solucionarlo?
                   </Text>
                   <StyledDiv>
-                    <ListContent items={errorDetail.howToFix} />
+                    <ListContent
+                      items={[
+                        ...errorDetail.howToFix,
+                        ...(Array.isArray(addToFix) ? addToFix : []),
+                      ]}
+                    />
                   </StyledDiv>
                   <Stack justifyContent="center">
                     <Button
@@ -152,7 +162,7 @@ function ErrorPage(props: ErrorPageProps) {
       </StyledMainContent>
       <StyledFooter>
         <Text appearance="gray" textAlign="center" size="small" weight="bold">
-          © 2024 Inube
+          © 2025 Inube
         </Text>
       </StyledFooter>
     </StyledContainer>

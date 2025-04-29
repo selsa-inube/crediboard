@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { MdAdd } from "react-icons/md";
-import { useMediaQuery } from "@inubekit/hooks";
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/inubekit";
-import { Button } from "@inubekit/button";
+import { Stack, Text, useMediaQuery, Button } from "@inubekit/inubekit";
 
 import { StyledContainerFieldset, StyledPrint } from "./styles";
 
@@ -25,6 +22,7 @@ interface IFieldsetProps {
   isMobile?: boolean;
   isClickable?: boolean;
   selectedState?: boolean;
+  hasError?: boolean;
 }
 
 export const Fieldset = (props: IFieldsetProps) => {
@@ -40,6 +38,7 @@ export const Fieldset = (props: IFieldsetProps) => {
     hasOverflow = false,
     isClickable = false,
     selectedState = false,
+    hasError = false,
   } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
@@ -100,6 +99,7 @@ export const Fieldset = (props: IFieldsetProps) => {
         $isSelected={selectedState ?? isSelected}
         $height={isMobile ? "auto" : heightFieldset}
         $isClickable={isClickable}
+        $hasError={hasError}
       >
         {children}
       </StyledContainerFieldset>

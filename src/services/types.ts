@@ -7,6 +7,16 @@ export interface IUsersByCreditRequests {
   identificationNumber: string;
   role: string;
 }
+
+export interface IAccountingVouchers {
+  documentCode: string;
+  obligationCode: string;
+  accountingReference?: string;
+  id: string;
+  creditRequestId?: string;
+  payrollDiscountAuthorizationCode?: string;
+  promissoryNoteCode?: string;
+}
 export interface ICreditRequest {
   creditRequestId?: string;
   creditRequestCode: string;
@@ -22,6 +32,33 @@ export interface ICreditRequest {
   unreadNovelties?: string;
   userWhoPinnnedId?: string;
   usersByCreditRequests?: IUsersByCreditRequests;
+}
+
+export interface IModeOfDisbursement {
+  accountBankCode: string;
+  accountBankName: string;
+  accountNumber: string;
+  accountType: string;
+  creditRequestId: string;
+  disbursementAmount: number;
+  disbursementDate: string;
+  disbursementReference: string;
+  isInTheNameOfBorrower: string;
+  modeOfDisbursementCode: string;
+  modeOfDisbursementId: string;
+  modeOfDisbursementType: string;
+  observation: string;
+  payeeBiologicalSex: string;
+  payeeBirthday: string;
+  payeeCityOfResidence: string;
+  payeeEmail: string;
+  payeeIdentificationNumber: string;
+  payeeIdentificationType: string;
+  payeeName: string;
+  payeePersonType: string;
+  payeePhoneNumber: string;
+  payeeSurname: string;
+  paymentOrderReference: string;
 }
 
 export interface IStaff {
@@ -245,6 +282,8 @@ export interface IProspect {
   consolidated_credit: IConsolidatedCredit[];
   credit_product: ICreditProductProspect[];
   outlay: IOutlay[];
+  borrowers?: unknown;
+  requested_amount?: number;
 }
 
 export interface ILineCredit {
@@ -304,7 +343,7 @@ interface IDebtor {
 }
 
 export interface IIncome {
-  borrowers: IDebtor[];
+  borrowers?: IDebtor[];
   borrower_id: string;
   borrower: string;
   capital: string[];

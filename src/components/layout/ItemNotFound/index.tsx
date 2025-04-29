@@ -1,15 +1,13 @@
-import { useMediaQuery } from "@inubekit/hooks";
-import { Button } from "@inubekit/button";
-import { Stack } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
+import { Stack, Text, useMediaQuery, Button } from "@inubekit/inubekit";
+
 import { StyledImage } from "./styles";
 
 interface ItemNotFoundProps {
-  image: string;
   title: string;
   description: string;
   buttonDescription: string;
-  route: string;
+  image?: string;
+  route?: string;
   onRetry?: () => void;
 }
 
@@ -32,7 +30,7 @@ function ItemNotFound(props: ItemNotFoundProps) {
         $smallScreen={smallScreen}
       />
 
-      <Stack direction="column" gap="8px" alignItems="normal">
+      <Stack direction="column" gap="8px" alignItems="normal" width="100%">
         <Text type="title" size="large" appearance="primary">
           {title}
         </Text>

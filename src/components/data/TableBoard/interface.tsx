@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { MdOutlineInfo } from "react-icons/md";
-import { Text } from "@inubekit/text";
-import { SkeletonLine } from "@inubekit/skeleton";
-import { Icon } from "@inubekit/inubekit";
+import { Icon, Text, SkeletonLine } from "@inubekit/inubekit";
 
 import { InfoModal } from "@components/modals/InfoModal";
 
@@ -19,7 +17,6 @@ import {
   StyledThactions,
   StyledTdactions,
 } from "./styles";
-
 
 interface ITableBoardUIProps extends ITableBoardProps {
   loading: boolean;

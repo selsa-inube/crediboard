@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { Stack } from "@inubekit/inubekit";
-import { Divider } from "@inubekit/divider";
-import { Text } from "@inubekit/text";
+import { Stack, Text, Divider } from "@inubekit/inubekit";
 
 import { Fieldset } from "@components/data/Fieldset";
 import { CardGray } from "@components/cards/CardGray";

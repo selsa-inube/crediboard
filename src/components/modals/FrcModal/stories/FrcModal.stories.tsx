@@ -1,11 +1,11 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Button } from "@inubekit/button";
-import { ScoreModal, ScoreModalProps } from ".."; 
+import { Button } from "@inubekit/inubekit";
+import { ScoreModal, ScoreModalProps } from "..";
 import { scoreModalArgs } from "./props";
 
 const meta: Meta<typeof ScoreModal> = {
-  title: 'components/modals/FrcModal',
+  title: "components/modals/FrcModal",
   component: ScoreModal,
   argTypes: scoreModalArgs,
 };
@@ -21,17 +21,14 @@ export const Default: Story = (args: ScoreModalProps) => {
     <>
       <Button onClick={() => setShowModal(true)}>Open Score Modal</Button>
       {showModal && (
-        <ScoreModal
-          {...args}
-          handleClose={() => setShowModal(false)}
-        />
+        <ScoreModal {...args} handleClose={() => setShowModal(false)} />
       )}
     </>
   );
 };
 
 Default.args = {
-  title: 'Endeudamiento máximo x FRC',
+  title: "Endeudamiento máximo x FRC",
   totalScore: 150,
   seniority: 10,
   centralRisk: 150,

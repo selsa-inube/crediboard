@@ -1,12 +1,11 @@
-import { Stack } from "@inubekit/inubekit";
-import { Text } from "@inubekit/text";
+import { Stack, Text } from "@inubekit/inubekit";
 
 import { StyledContainer } from "./styles";
 
 export interface ICardGrayProps {
   label: string;
   placeHolder?: string;
-  data?: string;
+  data?: string | number;
   apparencePlaceHolder?: "dark" | "gray";
   height?: string;
   isMobile?: boolean;

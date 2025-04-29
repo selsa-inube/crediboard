@@ -80,5 +80,6 @@ export interface ISubmitCredit {
   modesOfDisbursement: any;
   moneyDestinationAbreviatedName: string;
   moneyDestinationId: string;
-  prospectId: string;
+  prospectId?: string;
+  prospectCode: string;
 }

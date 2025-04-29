@@ -1,10 +1,8 @@
 import styled from "styled-components";
-
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 import { SectionBackground, SectionOrientation } from "./types";
 interface IStyledBoardSection {
-  theme?: typeof inube;
   $sectionBackground?: SectionBackground;
   $orientation?: SectionOrientation;
   $isTablet: boolean;
@@ -14,7 +12,7 @@ interface IStyledCollapseIcon {
   $disabledCollapse: boolean;
 }
 
-const StyledBoardSection = styled.div<IStyledBoardSection>`
+export const StyledBoardSection = styled.div<IStyledBoardSection>`
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -24,11 +22,11 @@ const StyledBoardSection = styled.div<IStyledBoardSection>`
   border-bottom: ${({ $orientation }) =>
     $orientation !== "horizontal" ? "1px solid" : "none"};
   border-color: ${({ theme }) =>
-    theme?.color?.stroke?.divider?.dark || inube.palette.neutral.N40};
+    theme?.palette?.neutral?.N40 || inube.palette.neutral.N40};
   background-color: ${({ theme, $sectionBackground }) =>
     $sectionBackground === "gray"
-      ? theme?.color?.surface?.gray?.regular || inube.palette.neutral.N30
-      : theme?.color?.surface?.light?.regular || inube.palette.neutral.N10};
+      ? theme?.palette?.neutral?.N30 || inube.palette.neutral.N30
+      : theme?.palette?.neutral?.N10 || inube.palette.neutral.N10};
 
   & > div:nth-child(1) {
     justify-content: space-between;
@@ -36,7 +34,7 @@ const StyledBoardSection = styled.div<IStyledBoardSection>`
   }
 `;
 
-const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
+export const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   display: flex;
   transition: all 500ms ease;
   transform: ${({ $collapse }) =>
@@ -44,5 +42,3 @@ const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   cursor: ${({ $disabledCollapse }) =>
     $disabledCollapse ? "not-allowed" : "pointer"};
 `;
-
-export { StyledBoardSection, StyledCollapseIcon };

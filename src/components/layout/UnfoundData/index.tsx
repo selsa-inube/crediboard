@@ -1,7 +1,4 @@
-import { useMediaQuery } from "@inubekit/hooks";
-import { Button } from "@inubekit/button";
-import { Text } from "@inubekit/text";
-import { Stack } from "@inubekit/inubekit";
+import { Stack, Text, useMediaQuery, Button } from "@inubekit/inubekit";
 
 import { StyledImage } from "./styles";
 
@@ -11,7 +8,7 @@ interface UnfoundDataProps {
   buttonDescription: string;
   image?: string;
   onRetry?: () => void;
-  route: string;
+  route?: string;
 }
 
 function UnfoundData(props: UnfoundDataProps) {
@@ -39,7 +36,7 @@ function UnfoundData(props: UnfoundDataProps) {
           {title}
         </Text>
 
-        <Text  size="large" appearance="gray" textAlign="start">
+        <Text size="large" appearance="gray" textAlign="start">
           {description}
         </Text>
 

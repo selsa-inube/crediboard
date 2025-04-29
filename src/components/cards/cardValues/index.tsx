@@ -1,5 +1,4 @@
-import { Text } from "@inubekit/text";
-import { Stack, Icon } from "@inubekit/inubekit";
+import { Stack, Icon, Text } from "@inubekit/inubekit";
 
 import { parseCunstomFormat } from "@utils/formatData/currency";
 
@@ -12,11 +11,15 @@ export interface CardValuesProps {
     operation?: string;
     miniIcon?: boolean;
     icon?: React.ReactNode;
+    modal?: string;
   }[];
   isMobile: boolean;
   onIconClick?: () => void;
+  handleView?: () => void;
+  handleEdit?: () => void;
   firstIcon?: React.ReactNode;
   showIcon?: boolean;
+  showMiniIcons?: boolean;
   showSummaryFirstItem?: boolean;
 }
 
@@ -26,7 +29,10 @@ export function CardValues(props: CardValuesProps) {
     isMobile,
     firstIcon,
     onIconClick = () => {},
+    handleEdit = () => {},
+    handleView = () => {},
     showIcon = true,
+    showMiniIcons = true,
     showSummaryFirstItem = false,
   } = props;
 
@@ -60,13 +66,20 @@ export function CardValues(props: CardValuesProps) {
                 <Text size="large" weight="bold" appearance="dark" type="body">
                   {parseCunstomFormat(item.amount)}
                 </Text>
-                {item.miniIcon && (
+                {item.miniIcon && showMiniIcons && (
                   <StyledPrint>
                     <Icon
                       appearance="primary"
                       icon={item.icon}
                       cursorHover
                       size="16px"
+                      onClick={() => {
+                        if (item.modal === "edit") {
+                          handleEdit();
+                        } else if (item.modal === "view") {
+                          handleView();
+                        }
+                      }}
                     />
                   </StyledPrint>
                 )}

@@ -5,7 +5,7 @@ export const dataTabs = [
   },
   { id: "External", label: "Cuenta Externa" },
   { id: "CheckEntity", label: "Cheque Entidad" },
-  { id: "ChequeManagement", label: "Cheque Gerencia" },
+  { id: "CheckManagement", label: "Cheque Gerencia" },
   { id: "Cash", label: "Dinero Efectivo" },
 ];
 

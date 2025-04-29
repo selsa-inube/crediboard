@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { inube } from "@inubekit/foundations";
+import { inube } from "@inubekit/inubekit";
 
 interface IStyledContainerFieldset {
   $isSelected: boolean;
@@ -9,9 +9,11 @@ interface IStyledContainerFieldset {
   $isClickable?: boolean;
   $hasTable: boolean;
   $height?: string;
+  $hasError?: boolean;
 }
 
 export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
+  align-content: ${({ $hasError }) => ($hasError ? "center" : "flex-start")};
   cursor: ${({ $isClickable }) => ($isClickable ? "pointer" : "auto")};
   overflow-y: ${({ $hasOverflow }) => ($hasOverflow ? "visible" : "auto")};
   box-sizing: border-box;
@@ -25,18 +27,15 @@ export const StyledContainerFieldset = styled.div<IStyledContainerFieldset>`
   aspect-ratio: ${({ $aspectRatio }) => $aspectRatio};
   background-color: ${({ theme, $isSelected }) =>
     !$isSelected
-      ? theme?.radiofield?.background?.color?.active || inube.palette.neutral.N0
-      : theme?.radiofield?.background?.color?.checked ||
-        inube.palette.blue.B50};
+      ? theme?.palette?.neutral?.N0 || inube.palette.neutral.N0
+      : theme?.palette?.blue?.B50 || inube.palette.blue.B50};
   border-color: ${({ theme, $isSelected }) =>
     !$isSelected
       ? theme?.palette?.neutral?.N300 || inube.palette.neutral.N300
       : theme?.palette?.blue?.B300 || inube.palette.blue.B300};
   box-shadow: ${({ theme, $isSelected }) =>
     $isSelected &&
-    `-12px 0px 0px ${
-      theme?.radiofield?.background?.color?.checked || inube.palette.blue.B400
-    }`};
+    `-12px 0px 0px ${theme?.palette?.blue?.B400 || inube.palette.blue.B400}`};
   transition:
     background-color 0.3s ease,
     box-shadow 0.3s ease;

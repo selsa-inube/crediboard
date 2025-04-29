@@ -7,8 +7,7 @@ import {
   MdOutlinePictureAsPdf,
   MdOutlineShare,
 } from "react-icons/md";
-import { Button } from "@inubekit/button";
-import { Stack, Icon } from "@inubekit/inubekit";
+import { Stack, Icon, Button } from "@inubekit/inubekit";
 
 import { MenuProspect } from "@components/navigation/MenuProspect";
 import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
@@ -19,7 +18,6 @@ import { IncomeModal } from "@pages/prospect/components/modals/IncomeModal";
 import { ReportCreditsModal } from "@components/modals/ReportCreditsModal";
 import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPaymentModal";
 import { CreditLimit } from "@components/modals/CreditLimit";
-
 import { ShareCreditModal } from "@components/modals/ShareCreditModal";
 import { ICreditProductProspect } from "@services/types";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
@@ -198,7 +196,7 @@ export function CreditProspect(props: ICreditProspectProps) {
                     appearance="primary"
                     size="24px"
                     onClick={() => setShowShareModal(true)}
-                  cursorHover
+                    cursorHover
                   />
                   <StyledVerticalDivider />
                 </Stack>
@@ -286,7 +284,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       {currentModal === "IncomeModal" && (
         <IncomeModal
           handleClose={handleCloseModal}
-          onlyDebtor={true}
           disabled={true}
           openModal={() => setOpenModal("IncomeModalEdit")}
         />

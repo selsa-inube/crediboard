@@ -1,10 +1,9 @@
-import { Assisted } from "@inubekit/assisted";
-import { Stack } from "@inubekit/inubekit";
-import { Divider } from "@inubekit/divider";
+import { Stack, Divider, Assisted } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 import { SourceIncome } from "@pages/prospect/components/SourceIncome";
+import { IIncomeSources } from "@services/incomeSources/types";
 
 import { stepsAddBorrower } from "./config/addBorrower.config";
 import { AddBorrower } from "./steps/personalInfo";
@@ -18,6 +17,7 @@ interface DebtorAddModalUIProps {
   formData: FormData;
   title: string;
   isMobile: boolean;
+  incomeData: IIncomeSources | undefined;
   handleFormChange: (updatedValues: Partial<FormData>) => void;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   handleNextStep: () => void;
@@ -35,6 +35,7 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
     formData,
     title,
     isMobile,
+    incomeData,
     handleFormChange,
     handleNextStep,
     handlePreviousStep,
@@ -87,7 +88,7 @@ export function DebtorAddModalUI(props: DebtorAddModalUIProps) {
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddBorrower.contactInformation.id && (
-            <SourceIncome />
+            <SourceIncome data={incomeData} showEdit={false} />
           )}
         {currentStepsNumber &&
           currentStepsNumber.id === stepsAddBorrower.BorrowerData.id && (
