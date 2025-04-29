@@ -1,6 +1,7 @@
 import {
   environment,
   fetchTimeoutServices,
+  maxDataBoardServices,
   maxRetriesServices,
 } from "@config/environment";
 import { ICreditRequest } from "@services/types";
@@ -11,11 +12,15 @@ export const getCreditRequestInProgress = async (
 ): Promise<ICreditRequest[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
+  const maxDataBoard = maxDataBoardServices
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      const queryParams = new URLSearchParams();
+      const queryParams = new URLSearchParams({
+        page: "1",
+        per_page: maxDataBoard.toString(),
+      });
       queryParams.set("sort", "desc.isPinned,asc.creditRequestDateOfCreation");
 
       const options: RequestInit = {
