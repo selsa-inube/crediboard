@@ -147,6 +147,7 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
       title={errorMessages.PromissoryNotes.titleCard}
       heightFieldset="100%"
       hasTable
+      hasError={!creditRequets ? true : false}
     >
       {!creditRequets || showRetry ? (
         <UnfoundData

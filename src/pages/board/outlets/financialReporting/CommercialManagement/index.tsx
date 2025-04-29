@@ -221,6 +221,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
       <Fieldset
         title={errorMessages.comercialManagement.titleCard}
         descriptionTitle={errorMessages.comercialManagement.descriptionCard}
+        hasError={!data ? true : false}
       >
         {!data ? (
           <ItemNotFound

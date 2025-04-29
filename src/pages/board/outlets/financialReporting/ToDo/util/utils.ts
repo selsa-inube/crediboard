@@ -5,7 +5,7 @@ const getXAction = (humanDecision: string, id?: boolean): string => {
   if (humanDecision === "APROBAR_SOLICITUD") {
     return "ApproveCreditRequest";
   } else if (humanDecision === "SOPORTES_VALIDOS") {
-    return "ApproveLegadlDocumentsAndWarranties";
+    return "ApproveLegalDocumentsAndWarranties";
   } else if (humanDecision === "CANCELAR_SOLICITUD") {
     return "CancelCreditRequest";
   } else if (humanDecision === "SOPORTES_INVALIDOS") {
@@ -27,15 +27,15 @@ const getXAction = (humanDecision: string, id?: boolean): string => {
   } else if (humanDecision === "ANULAR_SOLICITUD") {
     return "ojo1---->";
   } else if (humanDecision === "SOPORTES_POS_NO_RECIBIDOS") {
-    return "ojo2---->";
+    return "PostDisbursementRequirementsNotCompleted";
   } else if (humanDecision === "SOPORTES_POS_RECIBIDOS") {
-    return "ojo3---->";
+    return "PostDisbursementRequirementsCompleted";
   } else if (humanDecision === "DECLINAR_OBLIGACIONES_DE_CARTERA") {
     return "ojo4---->";
   } else if (humanDecision === "CREAR_OBLIGACIONES_DE_CARTERA") {
-    return "ojo5---->";
+    return "CreatePortfolioObligations";
   } else if (humanDecision === "DESEMBOLSO_DECLINADO") {
-    return "ojo6---->";
+    return "ConfirmDisbursementDeclined";
   }
   return "";
 };

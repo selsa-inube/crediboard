@@ -140,6 +140,7 @@ export const Approvals = (props: IApprovalsProps) => {
         title={errorMessages.approval.titleCard}
         heightFieldset="100%"
         hasTable
+        hasError={!requests ? true : false}
       >
         {!requests || error ? (
           <ItemNotFound

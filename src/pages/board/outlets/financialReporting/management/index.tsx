@@ -170,6 +170,7 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
       title={errorMessages.Management.titleCard}
       heightFieldset="340px"
       aspectRatio={isMobile ? "auto" : "1"}
+      hasError={error ? true : false}
     >
       {!creditRequest || error ? (
         <ItemNotFound
