@@ -17,6 +17,8 @@ import { getUnreadErrorsById } from "@services/unreadErrors";
 import { getSearchAllDocumentsById } from "@services/documents/SearchAllDocuments";
 import { generatePDF } from "@utils/pdf/generetePDF";
 import { AppContext } from "@context/AppContext";
+import { saveAssignAccountManager } from "@services/creditRequets/pacthAssignAccountManager";
+import { textFlags } from "@config/pages/staffModal/addFlag";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -198,6 +200,35 @@ export const FinancialReporting = () => {
     setAttachDocuments(true);
     setShowMenu(false);
   };
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!data?.creditRequestId || !businessUnitPublicCode || !user?.email)
+        return;
+      try {
+        await saveAssignAccountManager(
+          data?.creditRequestId ?? "",
+          businessUnitPublicCode,
+          user?.email ?? ""
+        );
+      } catch (error) {
+        addFlag({
+          title: textFlags.titleError,
+          description: textFlags.descriptionError,
+          appearance: "danger",
+          duration: 5000,
+        });
+      } finally {
+        handleToggleModal();
+        setTimeout(() => {
+          navigate(`/extended-card/${id}`);
+        }, 6000);
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.creditRequestId, businessUnitPublicCode, user?.email]);
 
   const fetchErrors = async () => {
     if (!data?.creditRequestId || !businessUnitPublicCode) return;
@@ -373,3 +404,6 @@ export const FinancialReporting = () => {
     </StyledMarginPrint>
   );
 };
+function handleToggleModal() {
+  throw new Error("Function not implemented.");
+}

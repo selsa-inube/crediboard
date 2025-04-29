@@ -4,7 +4,6 @@ import {
   Stack,
   Icon,
   Text,
-  useFlag,
   SkeletonLine,
   IOption,
   Select,
@@ -65,7 +64,6 @@ function ToDo(props: ToDoProps) {
     decision: "",
   });
 
-  const { addFlag } = useFlag();
   const { businessUnitSigla, eventData } = useContext(AppContext);
 
   const businessUnitPublicCode: string =
@@ -186,13 +184,6 @@ function ToDo(props: ToDoProps) {
   const handleSubmit = () => {
     setAssignedStaff(tempStaff);
     handleToggleStaffModal();
-
-    addFlag({
-      title: "Cambio realizado",
-      description: "El cambio se realizó con éxito.",
-      appearance: "success",
-      duration: 5000,
-    });
   };
 
   const handleSend = () => {
@@ -448,6 +439,7 @@ function ToDo(props: ToDoProps) {
           onChange={handleSelectOfficial}
           onSubmit={handleSubmit}
           onCloseModal={handleToggleStaffModal}
+          taskData={taskData}
         />
       )}
     </>
