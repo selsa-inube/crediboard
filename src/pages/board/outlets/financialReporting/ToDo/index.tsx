@@ -20,7 +20,6 @@ import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestI
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { truncateTextToMaxLength } from "@utils/formatData/text";
 import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
-import { TodoConsult } from "@mocks/financialReporting/to-doconsult.mock";
 import { AppContext } from "@context/AppContext";
 import userNotFound from "@assets/images/ItemNotFound.png";
 
@@ -114,7 +113,6 @@ function ToDo(props: ToDoProps) {
 
     fetchToDoData();
   }, [businessUnitPublicCode, requests?.creditRequestId]);
-
   useEffect(() => {
     if (taskData?.usersByCreditRequestResponse) {
       const formattedStaff = taskData.usersByCreditRequestResponse.map(
@@ -126,11 +124,11 @@ function ToDo(props: ToDoProps) {
       setStaff(formattedStaff);
 
       const firstAccountManager = formattedStaff.find(
-        (staffMember) => staffMember.role === "Account_manager"
+        (staffMember) => staffMember.role === "CredicarAccountManag"
       );
 
       const firstAnalyst = formattedStaff.find(
-        (staffMember) => staffMember.role === "Analyst"
+        (staffMember) => staffMember.role === "CredicarAnalyst"
       );
 
       const newStaffState = {
@@ -248,7 +246,6 @@ function ToDo(props: ToDoProps) {
     ),
     humanDecisionDescription: selectedDecision?.label || "",
   };
-  const datamock = TodoConsult[0];
 
   return (
     <>
@@ -375,7 +372,7 @@ function ToDo(props: ToDoProps) {
                         textAlign="start"
                       >
                         {truncateTextToMaxLength(
-                          datamock.CommercialManager,
+                          assignedStaff.commercialManager,
                           30
                         )}
                       </Text>
@@ -408,7 +405,7 @@ function ToDo(props: ToDoProps) {
                         appearance="dark"
                         textAlign="start"
                       >
-                        {truncateTextToMaxLength(datamock.Analyst, 30)}
+                        {truncateTextToMaxLength(assignedStaff.analyst, 30)}
                       </Text>
                     </StyledTextField>
                   </Stack>

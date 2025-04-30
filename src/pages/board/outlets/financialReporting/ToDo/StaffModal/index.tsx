@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
+import { useNavigate, useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import {
@@ -23,7 +24,7 @@ import {
 
 import { StyledModal, StyledContainerClose } from "./styles";
 import { saveCredit } from "./utils";
-import { useNavigate, useParams } from "react-router-dom";
+
 import { AppContext } from "@context/AppContext";
 import { IToDo } from "@services/types";
 import { textFlags } from "@config/pages/staffModal/addFlag";
@@ -49,6 +50,8 @@ export function StaffModal(props: StaffModalProps) {
   const [loading, setLoading] = useState(true);
   const [selectedCommercialManager, setSelectedCommercialManager] =
     useState<ICommercialManagerAndAnalyst | null>(null);
+  const [selectedAnalyst, setSelectedAnalyst] =
+    useState<ICommercialManagerAndAnalyst | null>(null);
   const isMobile = useMediaQuery("(max-width: 700px)");
   const [showModal, setShowModal] = useState(false);
   const node = document.getElementById(portalId);
@@ -58,35 +61,40 @@ export function StaffModal(props: StaffModalProps) {
   });
   const { id } = useParams();
   const navigate = useNavigate();
+
   if (!node) {
-    throw new Error(
-      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
-    );
+    throw new Error("The portal node is not defined.");
   }
+
   const { businessUnitSigla, eventData } = useContext(AppContext);
   const { userAccount } =
     typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
   const handleCommercialManagerChange = (
     name: string,
     value: string,
     setFieldValue: (field: string, value: string) => void
   ) => {
     setFieldValue(name, value);
-
     const selectedManager = accountManagerList.find(
       (manager) => manager.staffName === value
     );
-
     if (selectedManager) {
-      setSelectedCommercialManager({
-        staffId: selectedManager.staffId,
-        identificationDocumentNumber:
-          selectedManager.identificationDocumentNumber,
-        staffName: selectedManager.staffName,
-        userAccount: selectedManager.userAccount,
-      });
+      setSelectedCommercialManager(selectedManager);
+    }
+  };
+
+  const handleAnalystChange = (
+    name: string,
+    value: string,
+    setFieldValue: (field: string, value: string) => void
+  ) => {
+    setFieldValue(name, value);
+    const selected = analystList.find((analyst) => analyst.staffName === value);
+    if (selected) {
+      setSelectedAnalyst(selected);
     }
   };
 
@@ -98,7 +106,6 @@ export function StaffModal(props: StaffModalProps) {
           getCommercialManagerAndAnalyst("CredicarAccountManager", "Selsa"),
           getCommercialManagerAndAnalyst("CredicarAnalyst", "Selsa"),
         ]);
-
         setAccountManagerList(accountManagers);
         setAnalystList(analysts);
       } catch (error) {
@@ -110,36 +117,74 @@ export function StaffModal(props: StaffModalProps) {
 
     fetchData();
   }, []);
-  const { addFlag } = useFlag();
-  const handleCreditRequests = async (creditRequests: ICreditRequests) => {
-    await saveCredit(businessUnitPublicCode, creditRequests, userAccount)
-      .then(() => {
-        addFlag({
-          title: textFlags.titleSuccess,
-          description: textFlags.descriptionSuccess,
-          appearance: "success",
-          duration: 5000,
-        });
-      })
-      .catch(() => {
-        addFlag({
-          title: textFlags.titleError,
-          description: textFlags.descriptionError,
-          appearance: "danger",
-          duration: 5000,
-        });
-      })
-      .finally(() => {
-        handleToggleModal();
-      });
 
-    setTimeout(() => {
-      navigate(`/extended-card/${id}`);
-    }, 6000);
+  const { addFlag } = useFlag();
+  const buildCreditRequest = (
+    role: string,
+    user: ICommercialManagerAndAnalyst | null
+  ): ICreditRequests | null => {
+    if (!user) return null;
+
+    return {
+      creditRequestId: taskData?.creditRequestId || "",
+      executed_task: taskData?.taskToBeDone || "",
+      execution_date: new Date().toISOString().split("T")[0],
+      identificationNumber: user.identificationDocumentNumber || "",
+      identificationType: "C",
+      role: role,
+      transactionOperation: "Insert",
+      userId: user.staffId || "",
+      userName: user.staffName || "",
+      justification: "Justificacion",
+      creditRequestCode: "",
+    };
   };
+
+  const handleCreditRequests = async () => {
+    const managerRequest = buildCreditRequest(
+      "CredicarAccountManager".substring(0, 20),
+      selectedCommercialManager
+    );
+
+    const analystRequest = buildCreditRequest(
+      "CredicarAnalyst",
+      selectedAnalyst
+    );
+
+    try {
+      if (managerRequest) {
+        await saveCredit(businessUnitPublicCode, managerRequest, userAccount);
+      }
+
+      if (analystRequest) {
+        await saveCredit(businessUnitPublicCode, analystRequest, userAccount);
+      }
+
+      addFlag({
+        title: textFlags.titleSuccess,
+        description: textFlags.descriptionSuccess,
+        appearance: "success",
+        duration: 5000,
+      });
+    } catch (error) {
+      addFlag({
+        title: textFlags.titleError,
+        description: textFlags.descriptionError,
+        appearance: "danger",
+        duration: 5000,
+      });
+    } finally {
+      handleToggleModal();
+      setTimeout(() => {
+        navigate(`/extended-card/${id}`);
+      }, 6000);
+    }
+  };
+
   const handleToggleModal = () => {
     setShowModal(!showModal);
   };
+
   const options = {
     commercialManager: accountManagerList.map((official) => ({
       id: official.staffId,
@@ -153,21 +198,6 @@ export function StaffModal(props: StaffModalProps) {
       value: official.staffName,
     })),
   };
-  const initialValues: ICreditRequests = {
-    creditRequestId: taskData?.creditRequestId || "",
-    executed_task: taskData?.taskToBeDone || "",
-    execution_date: "2025-04-28",
-    identificationNumber:
-      selectedCommercialManager?.identificationDocumentNumber || "",
-    identificationType: "C",
-    role: taskData?.stage || "",
-    transactionOperation: "Insert",
-    userId: selectedCommercialManager?.staffId || "",
-    userName: selectedCommercialManager?.staffName || "",
-    justification: "Justificacion",
-    creditRequestCode: "",
-  };
-
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
@@ -199,6 +229,7 @@ export function StaffModal(props: StaffModalProps) {
             onSubmit={(values, { setSubmitting }) => {
               onSubmit?.(values);
               setSubmitting(false);
+              handleCreditRequests();
             }}
           >
             {({ isSubmitting, setFieldValue, values }) => (
@@ -231,20 +262,16 @@ export function StaffModal(props: StaffModalProps) {
                         : "No hay analistas disponibles"
                     }
                     options={options.analyst}
-                    value={values.analyst}
                     onChange={(name, value) =>
-                      handleCommercialManagerChange(name, value, setFieldValue)
+                      handleAnalystChange(name, value, setFieldValue)
                     }
+                    value={values.analyst}
                     fullwidth
                     disabled={options.analyst.length === 0}
                   />
                 </Stack>
                 <Stack justifyContent="flex-end" margin="16px 0">
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    onClick={() => handleCreditRequests(initialValues)}
-                  >
+                  <Button type="submit" disabled={isSubmitting}>
                     Aceptar
                   </Button>
                 </Stack>
