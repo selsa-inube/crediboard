@@ -1,5 +1,5 @@
 import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Stack,
   Icon,
@@ -8,6 +8,7 @@ import {
   IOption,
   Select,
   Button,
+  useFlag,
 } from "@inubekit/inubekit";
 
 import { Fieldset } from "@components/data/Fieldset";
@@ -22,6 +23,13 @@ import { truncateTextToMaxLength } from "@utils/formatData/text";
 import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
 import { AppContext } from "@context/AppContext";
 import userNotFound from "@assets/images/ItemNotFound.png";
+import {
+  ICommercialManagerAndAnalyst,
+  ICreditRequests,
+} from "@pages/SubmitCreditApplication/types";
+import { saveCredit } from "./StaffModal/utils";
+import { textFlags } from "@config/pages/staffModal/addFlag";
+import { getCommercialManagerAndAnalyst } from "@services/commercialManagerAndAnalyst";
 
 import { StaffModal } from "./StaffModal";
 import { errorMessagge, txtLabels, txtTaskQuery } from "./config";
@@ -40,9 +48,13 @@ interface ToDoProps {
 
 function ToDo(props: ToDoProps) {
   const { icon, button, isMobile, id } = props;
-
   const { approverid } = useParams();
-
+  const [analystList, setAnalystList] = useState<
+    ICommercialManagerAndAnalyst[]
+  >([]);
+  const [accountManagerList, setAccountManagerList] = useState<
+    ICommercialManagerAndAnalyst[]
+  >([]);
   const [requests, setRequests] = useState<ICreditRequest | null>(null);
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [staff, setStaff] = useState<IStaff[]>([]);
@@ -50,6 +62,7 @@ function ToDo(props: ToDoProps) {
   const [selectedDecision, setSelectedDecision] = useState<IOption | null>(
     null
   );
+
   const [loading, setLoading] = useState(true);
   const [taskData, setTaskData] = useState<IToDo | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,12 +75,15 @@ function ToDo(props: ToDoProps) {
   const [decisionValue, setDecisionValue] = useState({
     decision: "",
   });
-
+  const [selectedCommercialManager, setSelectedCommercialManager] =
+    useState<ICommercialManagerAndAnalyst | null>(null);
+  const [selectedAnalyst, setSelectedAnalyst] =
+    useState<ICommercialManagerAndAnalyst | null>(null);
   const { businessUnitSigla, eventData } = useContext(AppContext);
-
+  const { addFlag } = useFlag();
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
-
+  const [showModal, setShowModal] = useState(false);
   const { userAccount } =
     typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
 
@@ -187,7 +203,7 @@ function ToDo(props: ToDoProps) {
   const handleSend = () => {
     setIsModalOpen(true);
   };
-
+  const navigate = useNavigate();
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
@@ -223,7 +239,122 @@ function ToDo(props: ToDoProps) {
       }
     }
   };
+  const handleCommercialManagerChange = (
+    name: string,
+    value: string,
+    setFieldValue: (field: string, value: string) => void
+  ) => {
+    setFieldValue(name, value);
+    const selectedManager = accountManagerList.find(
+      (manager) => manager.staffName === value
+    );
+    if (selectedManager) {
+      setSelectedCommercialManager(selectedManager);
+    }
+  };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [accountManagers, analysts] = await Promise.all([
+          getCommercialManagerAndAnalyst("CredicarAccountManager", "Selsa"),
+          getCommercialManagerAndAnalyst("CredicarAnalyst", "Selsa"),
+        ]);
+        setAccountManagerList(accountManagers);
+        setAnalystList(analysts);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const handleAnalystChange = (
+    name: string,
+    value: string,
+    setFieldValue: (field: string, value: string) => void
+  ) => {
+    setFieldValue(name, value);
+    const selected = analystList.find((analyst) => analyst.staffName === value);
+    if (selected) {
+      setSelectedAnalyst(selected);
+    }
+  };
+  const buildCreditRequest = (
+    role: string,
+    user: ICommercialManagerAndAnalyst | null
+  ): ICreditRequests | null => {
+    if (!user) return null;
+
+    return {
+      creditRequestId: taskData?.creditRequestId || "",
+      executed_task: taskData?.taskToBeDone || "",
+      execution_date: new Date().toISOString().split("T")[0],
+      identificationNumber: user.identificationDocumentNumber || "",
+      identificationType: "C",
+      role: role,
+      transactionOperation: "Insert",
+      userId: user.staffId || "",
+      userName: user.staffName || "",
+      justification: "Justificacion",
+      creditRequestCode: "",
+    };
+  };
+  const handleCreditRequests = async () => {
+    const managerRequest = buildCreditRequest(
+      "CredicarAccountManager".substring(0, 20),
+      selectedCommercialManager
+    );
+
+    const analystRequest = buildCreditRequest(
+      "CredicarAnalyst",
+      selectedAnalyst
+    );
+
+    try {
+      if (managerRequest) {
+        await saveCredit(businessUnitPublicCode, managerRequest, userAccount);
+        setAssignedStaff((prev) => ({
+          ...prev,
+          commercialManager: selectedCommercialManager?.staffName || "",
+        }));
+      }
+
+      if (analystRequest) {
+        await saveCredit(businessUnitPublicCode, analystRequest, userAccount);
+        setAssignedStaff((prev) => ({
+          ...prev,
+          analyst: selectedAnalyst?.staffName || "",
+        }));
+      }
+
+      addFlag({
+        title: textFlags.titleSuccess,
+        description: textFlags.descriptionSuccess,
+        appearance: "success",
+        duration: 5000,
+      });
+    } catch (error) {
+      addFlag({
+        title: textFlags.titleError,
+        description: textFlags.descriptionError,
+        appearance: "danger",
+        duration: 5000,
+      });
+    } finally {
+      handleToggleModal();
+      setTimeout(() => {
+        navigate(`/extended-card/${id}`);
+      }, 6000);
+    }
+  };
+
+  const handleToggleModal = () => {
+    setShowModal(!showModal);
+  };
   const validationId = () => {
     if (approverid === eventData.user.staff.staffId) {
       return true;
@@ -437,6 +568,12 @@ function ToDo(props: ToDoProps) {
           onSubmit={handleSubmit}
           onCloseModal={handleToggleStaffModal}
           taskData={taskData}
+          handleCommercialManagerChange={handleCommercialManagerChange}
+          handleAnalystChange={handleAnalystChange}
+          handleCreditRequests={handleCreditRequests}
+          loading={loading}
+          accountManagerList={accountManagerList}
+          analystList={analystList}
         />
       )}
     </>
