@@ -254,9 +254,18 @@ const actionsMobile = [
 ];
 
 const generateTag = (value: string): JSX.Element => {
-  if (value === "Y") {
+  if (
+    value === "Y" ||
+    value === "PASSED_WITH_SYSTEM_VALIDATION" ||
+    value === "SYSTEM_VALIDATION" ||
+    value === "HUMAN_VALIDATION"
+  ) {
     return <Tag label="Cumple" appearance="success" weight="strong" />;
-  } else if (value === "N") {
+  } else if (
+    value === "N" ||
+    value === "UNVALIDATED" ||
+    value === "FAILED_SYSTEM_VALIDATION"
+  ) {
     return <Tag label="No Cumple" appearance="danger" weight="strong" />;
   } else {
     return <Tag label="Sin Evaluar" appearance="warning" weight="strong" />;
@@ -316,4 +325,19 @@ export const maperDataRequirements = (processedEntries: IEntries[][]) => {
       actionsMovile: actionsMobile,
     },
   ];
+};
+
+export const dataFlags = {
+  requirements: {
+    title: "Error al cargar requisitos",
+    description: "No se encontraron requisitos disponibles.",
+  },
+  documentApproved: {
+    title: "Éxito",
+    description: "Documentación aprobada correctamente.",
+  },
+  documentRejected: {
+    title: "Error",
+    description: "Ocurrió un error al aprobar el documento.",
+  },
 };

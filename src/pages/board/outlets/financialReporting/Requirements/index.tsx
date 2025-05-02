@@ -19,6 +19,7 @@ import {
   maperDataRequirements,
   maperEntries,
   getAcctionMobile,
+  dataFlags,
 } from "./config";
 import { AprovalsModal } from "./AprovalsModal";
 import { traceObserver, errorMessages } from "../config";
@@ -90,8 +91,13 @@ export const Requirements = (props: IRequirementsProps) => {
         const processedEntries = maperEntries(mapped);
         const processedRequirements = maperDataRequirements(processedEntries);
         setDataRequirements(processedRequirements);
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        addFlag({
+          title: dataFlags.requirements.title,
+          description: `${dataFlags.requirements.description}${error}`,
+          appearance: "danger",
+          duration: 5000,
+        });
         setError(true);
       }
     };
@@ -136,15 +142,15 @@ export const Requirements = (props: IRequirementsProps) => {
         await addItem("trace", trace);
         traceObserver.notify(trace);
         addFlag({
-          title: "Éxito",
-          description: "Documentación aprobada correctamente.",
+          title: dataFlags.documentApproved.title,
+          description: dataFlags.documentApproved.description,
           appearance: "success",
           duration: 5000,
         });
       } catch (error) {
         addFlag({
-          title: "Error",
-          description: "Ocurrió un error al aprobar el documento.",
+          title: dataFlags.documentRejected.title,
+          description: dataFlags.documentRejected.description,
           appearance: "danger",
           duration: 5000,
         });
