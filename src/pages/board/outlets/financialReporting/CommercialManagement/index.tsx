@@ -17,7 +17,9 @@ import {
   Divider,
   useMediaQuery,
   Button,
+  useFlag,
 } from "@inubekit/inubekit";
+
 import { MenuProspect } from "@components/navigation/MenuProspect";
 import {
   truncateTextToMaxLength,
@@ -32,6 +34,7 @@ import { getById } from "@mocks/utils/dataMock.service";
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
+import { textFlags } from "@config/pages/staffModal/addFlag";
 import {
   ICreditProductProspect,
   ICreditRequest,
@@ -93,7 +96,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const { prospectCode } = useParams();
 
   const navigation = useNavigate();
-
+  const { addFlag } = useFlag();
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   const { businessUnitSigla } = useContext(AppContext);
@@ -151,6 +154,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           businessUnitPublicCode,
           requests.creditRequestId
         );
+
         const internalData =
           disbursement.find(
             (item) => item.modeOfDisbursementType === "Internal_account"
@@ -170,6 +174,20 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         const cashData =
           disbursement.find((item) => item.modeOfDisbursementType === "Cash") ||
           null;
+        if (
+          !internalData &&
+          !externalData &&
+          !checkEntityData &&
+          !checkManagementData &&
+          !cashData
+        ) {
+          addFlag({
+            title: textFlags.titleWarning,
+            description: textFlags.descriptionWarning,
+            appearance: "danger",
+            duration: 5000,
+          });
+        }
 
         setInternal(internalData);
         setExternal(externalData);
@@ -178,6 +196,12 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         setCash(cashData);
       } catch (error) {
         console.error(error);
+        addFlag({
+          title: textFlags.titleError,
+          description: textFlags.descriptionError,
+          appearance: "danger",
+          duration: 5000,
+        });
       } finally {
         setLoading(false);
       }

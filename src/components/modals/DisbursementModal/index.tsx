@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Stack, Tabs } from "@inubekit/inubekit";
+import { Stack, Tabs, Text } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { Fieldset } from "@components/data/Fieldset";
+import { textFlags } from "@config/pages/staffModal/addFlag";
 
 import { dataDisbursement, dataTabs } from "./config";
 import { DisbursementInternal } from "./Internal";
@@ -86,29 +87,35 @@ export function DisbursementModal(
         />
       </Stack>
       <Fieldset heightFieldset="469px">
-        <>
-          {currentTab === "Internal" && (
-            <DisbursementInternal isMobile={isMobile} data={data.internal} />
-          )}
-          {currentTab === "External" && (
-            <DisbursementExternal isMobile={isMobile} data={data.external} />
-          )}
-          {currentTab === "CheckEntity" && (
-            <DisbursementCheckEntity
-              isMobile={isMobile}
-              data={data.CheckEntity}
-            />
-          )}
-          {currentTab === "CheckManagement" && (
-            <DisbursementChequeManagement
-              isMobile={isMobile}
-              data={data.checkManagementData}
-            />
-          )}
-          {currentTab === "Cash" && (
-            <DisbursementCash isMobile={isMobile} data={data.cash} />
-          )}
-        </>
+        {availableTabs.length === 0 ? (
+          <Text appearance="gray" size="medium" weight="bold">
+            {textFlags.descriptionWarning}
+          </Text>
+        ) : (
+          <>
+            {currentTab === "Internal" && (
+              <DisbursementInternal isMobile={isMobile} data={data.internal} />
+            )}
+            {currentTab === "External" && (
+              <DisbursementExternal isMobile={isMobile} data={data.external} />
+            )}
+            {currentTab === "CheckEntity" && (
+              <DisbursementCheckEntity
+                isMobile={isMobile}
+                data={data.CheckEntity}
+              />
+            )}
+            {currentTab === "CheckManagement" && (
+              <DisbursementChequeManagement
+                isMobile={isMobile}
+                data={data.checkManagementData}
+              />
+            )}
+            {currentTab === "Cash" && (
+              <DisbursementCash isMobile={isMobile} data={data.cash} />
+            )}
+          </>
+        )}
       </Fieldset>
     </BaseModal>
   );
