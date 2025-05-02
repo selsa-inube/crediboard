@@ -28,6 +28,11 @@ export interface IEnumerator {
   description: string;
 }
 
+export interface IDeleteCreditRequest {
+  creditRequestId: string;
+  removalJustification: string;
+}
+
 export interface ICreditRequests {
   creditRequestId: string;
   creditRequestCode?: string;

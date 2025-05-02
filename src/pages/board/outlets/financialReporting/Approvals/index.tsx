@@ -187,6 +187,9 @@ export const Approvals = (props: IApprovalsProps) => {
           readOnly
           disableTextarea={true}
           onCloseModal={() => setShowErrorModal(false)}
+          handleNext={function (): void {
+            throw new Error("Function not implemented.");
+          }}
         />
       )}
     </>

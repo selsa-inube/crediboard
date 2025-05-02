@@ -9,11 +9,18 @@ interface MobileMenuProps {
   onCancel: () => void;
   onAttach: () => void;
   onViewAttachments: () => void;
-  onGuarantee: () => void
+  onGuarantee: () => void;
 }
 
 function MobileMenu(props: MobileMenuProps) {
-  const { onClose, onReject, onCancel, onAttach, onViewAttachments, onGuarantee } = props;
+  const {
+    onClose,
+    onReject,
+    onCancel,
+    onAttach,
+    onViewAttachments,
+    onGuarantee,
+  } = props;
 
   return (
     <StyledMenu>

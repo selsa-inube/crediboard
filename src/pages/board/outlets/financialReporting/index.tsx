@@ -19,15 +19,11 @@ import { generatePDF } from "@utils/pdf/generetePDF";
 import { AppContext } from "@context/AppContext";
 import { saveAssignAccountManager } from "@services/creditRequets/pacthAssignAccountManager";
 import { textFlags } from "@config/pages/staffModal/addFlag";
+import { IDeleteCreditRequest } from "@pages/SubmitCreditApplication/types";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
-import {
-  configHandleactions,
-  handleConfirmReject,
-  handleConfirmCancel,
-  optionButtons,
-} from "./config";
+import { configHandleactions, optionButtons } from "./config";
 import {
   StyledMarginPrint,
   StyledPageBreak,
@@ -40,6 +36,7 @@ import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
 import { IErrorsUnread } from "./types";
+import { deleteCreditRequest } from "./utils";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -61,7 +58,7 @@ export const FinancialReporting = () => {
   const [attachDocuments, setAttachDocuments] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [collapse, setCollapse] = useState(false);
-
+  const [removalJustification, setRemovalJustification] = useState("");
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const { addFlag } = useFlag();
@@ -258,6 +255,36 @@ export const FinancialReporting = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
+  const handleDeleteCreditRequest = async () => {
+    const creditRequests: IDeleteCreditRequest = {
+      creditRequestId: data?.creditRequestId ?? "",
+      removalJustification,
+    };
+    await deleteCreditRequest(businessUnitPublicCode, creditRequests)
+      .then(() => {
+        addFlag({
+          title: textFlags.titleSuccess,
+          description: textFlags.descriptionSuccess,
+          appearance: "success",
+          duration: 5000,
+        });
+      })
+      .catch(() => {
+        addFlag({
+          title: textFlags.titleError,
+          description: textFlags.descriptionError,
+          appearance: "danger",
+          duration: 5000,
+        });
+      })
+      .finally(() => {
+        handleToggleModal();
+        setTimeout(() => {
+          navigation("/");
+        }, 500);
+      });
+  };
+
   return (
     <StyledMarginPrint $isMobile={isMobile}>
       <Stack direction="column">
@@ -361,8 +388,7 @@ export const FinancialReporting = () => {
             inputLabel="Motivo del Rechazo."
             inputPlaceholder="Describa el motivo del Rechazo."
             onCloseModal={() => setShowRejectModal(false)}
-            onSubmit={(values) => {
-              handleConfirmReject(id!, user!.nickname!, values);
+            handleNext={() => {
               handleSubmit();
               setShowRejectModal(false);
             }}
@@ -383,11 +409,12 @@ export const FinancialReporting = () => {
             inputLabel="Motivo de la anulación."
             inputPlaceholder="Describa el motivo de la anulación."
             onCloseModal={() => setShowCancelModal(false)}
-            onSubmit={(values) => {
-              handleConfirmCancel(id!, user!.nickname!, values);
+            handleNext={() => {
+              handleDeleteCreditRequest();
               handleCancelSubmit();
               setShowCancelModal(false);
             }}
+            onChange={(e) => setRemovalJustification(e.target.value)}
           />
         )}
         {showMenu && isMobile && (
