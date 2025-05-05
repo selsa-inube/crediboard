@@ -18,13 +18,16 @@ import { getSearchAllDocumentsById } from "@services/documents/SearchAllDocument
 import { generatePDF } from "@utils/pdf/generetePDF";
 import { AppContext } from "@context/AppContext";
 import { saveAssignAccountManager } from "@services/creditRequets/pacthAssignAccountManager";
-import { textFlags } from "@config/pages/staffModal/addFlag";
+import { lateRejectionOfACreditRequest } from "@services/creditRequets/lateRejectionCreditRequest";
+import {
+  textFlagsReject,
+  textFlagsUsers,
+} from "@config/pages/staffModal/addFlag";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
 import {
   configHandleactions,
-  handleConfirmReject,
   handleConfirmCancel,
   optionButtons,
 } from "./config";
@@ -56,7 +59,6 @@ const removeErrorByIdServices = (
 
 export const FinancialReporting = () => {
   const [data, setData] = useState({} as ICreditRequest);
-
   const [showAttachments, setShowAttachments] = useState(false);
   const [attachDocuments, setAttachDocuments] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -85,10 +87,14 @@ export const FinancialReporting = () => {
 
   const [errorsService, setErrorsService] = useState<IErrorService[]>([]);
 
-  const { businessUnitSigla } = useContext(AppContext);
+  const { businessUnitSigla, eventData } = useContext(AppContext);
 
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
+  const hasPermitRejection = eventData.user.staff.useCases.canReject
+    ? true
+    : false;
 
   useEffect(() => {
     getCreditRequestByCode(businessUnitPublicCode, id!)
@@ -177,14 +183,30 @@ export const FinancialReporting = () => {
     setShowMenu(false);
   };
 
-  const handleSubmit = () => {
-    addFlag({
-      title: "Rechazo confirmado",
-      description:
-        "La solicitud ha sido enviada exitosamente para su aprobación.",
-      appearance: "success",
-      duration: 5000,
-    });
+  const handleSubmit = async (justification: string) => {
+    try {
+      await lateRejectionOfACreditRequest(
+        data?.creditRequestId || "",
+        user?.email || "",
+        businessUnitPublicCode,
+        "RECHAZAR_SOLICITUD", //"RECHAZO_HUMANO",
+        justification
+      );
+      addFlag({
+        title: textFlagsReject.titleSuccess,
+        description: textFlagsReject.descriptionSuccess,
+        appearance: "success",
+        duration: 5000,
+      });
+    } catch (error) {
+      console.error(error);
+      addFlag({
+        title: textFlagsReject.titleError,
+        description: textFlagsReject.descriptionError,
+        appearance: "danger",
+        duration: 5000,
+      });
+    }
   };
 
   const handleCancelSubmit = () => {
@@ -213,8 +235,8 @@ export const FinancialReporting = () => {
         );
       } catch (error) {
         addFlag({
-          title: textFlags.titleError,
-          description: textFlags.descriptionError,
+          title: textFlagsUsers.titleError,
+          description: textFlagsUsers.descriptionError,
           appearance: "danger",
           duration: 5000,
         });
@@ -280,6 +302,7 @@ export const FinancialReporting = () => {
               isMobile={isMobile}
               actionButtons={handleActions}
               navigation={() => navigation(-1)}
+              hasPermitRejection={hasPermitRejection}
             />
           }
         >
@@ -361,9 +384,7 @@ export const FinancialReporting = () => {
             inputPlaceholder="Describa el motivo del Rechazo."
             onCloseModal={() => setShowRejectModal(false)}
             onSubmit={(values) => {
-              handleConfirmReject(id!, user!.nickname!, values);
-              handleSubmit();
-              setShowRejectModal(false);
+              handleSubmit(values.textarea);
             }}
           />
         )}

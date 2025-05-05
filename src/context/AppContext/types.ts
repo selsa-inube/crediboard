@@ -25,6 +25,21 @@ interface IStaffByBusinessUnitAndRole {
   staffId: string;
 }
 
+export interface Ipermissions {
+  canReject: boolean;
+  canCancel: boolean;
+  canPrint: boolean;
+  canAttach: boolean;
+  canViewAttachments: boolean;
+  canManageGuarantees: boolean;
+  canViewCreditProfile: boolean;
+  canManageDisbursementMethods: boolean;
+  canAddRequirements: boolean;
+  canSendDecision: boolean;
+  canChangeUsers: boolean;
+  canApprove: boolean;
+}
+
 interface IStaff {
   biologicalSex: string;
   birthDay: string;
@@ -38,6 +53,7 @@ interface IStaff {
   staffId: string;
   staffName: string;
   userAccount: string;
+  useCases: Ipermissions;
 }
 
 interface IUser {

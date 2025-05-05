@@ -51,17 +51,38 @@ function useAppContext() {
     console.error("Error parsing businessUnitSigla: ", error);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getUserPermissions = (IStaff: any) => {
+    const isAdmon =
+      IStaff.identificationDocumentNumber === "elyerogo@gmail.com";
+    return {
+      canReject: isAdmon,
+      canCancel: isAdmon,
+      canPrint: isAdmon,
+      canAttach: false,
+      canViewAttachments: false,
+      canManageGuarantees: isAdmon,
+      canViewCreditProfile: false,
+      canManageDisbursementMethods: isAdmon,
+      canAddRequirements: false,
+      canSendDecision: isAdmon,
+      canChangeUsers: isAdmon,
+      canApprove: isAdmon,
+    };
+  };
+
   useEffect(() => {
     const fetchStaffData = async () => {
       try {
         const staffData = await getStaff();
         if (!staffData.length) return;
-
         const matchedStaff = staffData.find(
-          (staff) => staff.userAccount === user?.email
+          (staff) =>
+            staff.identificationDocumentNumber === user?.email?.substring(0, 20)
         );
 
         if (matchedStaff) {
+          const userPermissions = getUserPermissions(matchedStaff);
           setEventData((prev) => ({
             ...prev,
             user: {
@@ -82,6 +103,7 @@ function useAppContext() {
                 staffId: matchedStaff.staffId,
                 staffName: matchedStaff.staffName,
                 userAccount: matchedStaff.userAccount,
+                useCases: userPermissions,
               },
             },
           }));
@@ -135,6 +157,20 @@ function useAppContext() {
         staffId: "",
         staffName: "",
         userAccount: "",
+        useCases: {
+          canReject: false,
+          canCancel: false,
+          canPrint: false,
+          canAttach: false,
+          canViewAttachments: false,
+          canManageGuarantees: false,
+          canViewCreditProfile: false,
+          canManageDisbursementMethods: false,
+          canAddRequirements: false,
+          canSendDecision: false,
+          canChangeUsers: false,
+          canApprove: false,
+        },
       },
       preferences: {
         boardOrientation: "vertical",
