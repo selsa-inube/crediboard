@@ -51,21 +51,25 @@ export function TextAreaModal(props: TextAreaModalProps) {
     <Formik
       initialValues={{ textarea: "" }}
       validationSchema={validationSchema}
-      onSubmit={(
+      onSubmit={async (
         values: FormValues,
         { setSubmitting }: FormikHelpers<FormValues>
       ) => {
-        onSubmit?.(values);
-        setSubmitting(false);
-        onCloseModal?.();
+        try {
+          setSubmitting(true);
+          await onSubmit?.(values);
+        } finally {
+          setSubmitting(false);
+          onCloseModal();
+        }
       }}
     >
-      {({ errors, touched, isSubmitting }) => (
+      {({ errors, touched, isSubmitting, submitForm }) => (
         <BaseModal
           title={title}
           nextButton={buttonText}
           backButton={secondaryButtonText}
-          handleNext={readOnly ? onCloseModal : () => {}}
+          handleNext={readOnly ? onCloseModal : submitForm}
           handleBack={onSecondaryButtonClick}
           handleClose={onCloseModal}
           width={isMobile ? "300px" : "500px"}

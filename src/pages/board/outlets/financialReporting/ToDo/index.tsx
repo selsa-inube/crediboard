@@ -28,7 +28,7 @@ import {
   ICreditRequests,
 } from "@pages/SubmitCreditApplication/types";
 import { saveCredit } from "./StaffModal/utils";
-import { textFlags } from "@config/pages/staffModal/addFlag";
+
 import { getCommercialManagerAndAnalyst } from "@services/commercialManagerAndAnalyst";
 
 import { StaffModal } from "./StaffModal";
@@ -37,6 +37,9 @@ import { IICon, IButton } from "./types";
 import { getXAction } from "./util/utils";
 import { StyledHorizontalDivider, StyledTextField } from "../styles";
 import { errorMessages, errorObserver } from "../config";
+import {
+  textFlagsUsers,
+} from "@config/pages/staffModal/addFlag";
 
 interface ToDoProps {
   icon?: IICon;
@@ -332,15 +335,15 @@ function ToDo(props: ToDoProps) {
       }
 
       addFlag({
-        title: textFlags.titleSuccess,
-        description: textFlags.descriptionSuccess,
+        title: textFlagsUsers.titleSuccess,
+        description: textFlagsUsers.descriptionSuccess,
         appearance: "success",
         duration: 5000,
       });
     } catch (error) {
       addFlag({
-        title: textFlags.titleError,
-        description: textFlags.descriptionError,
+        title: textFlagsUsers.titleError,
+        description: textFlagsUsers.descriptionError,
         appearance: "danger",
         duration: 5000,
       });
