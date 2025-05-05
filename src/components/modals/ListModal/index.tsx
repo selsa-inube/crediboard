@@ -17,6 +17,7 @@ import {
   Blanket,
 } from "@inubekit/inubekit";
 
+import { File } from "@components/inputs/File";
 import { StyledItem } from "@pages/board/outlets/financialReporting/styles";
 import { optionFlags } from "@pages/board/outlets/financialReporting/config";
 import { saveDocument } from "@services/saveDocument";
@@ -24,10 +25,14 @@ import { validationMessages } from "@validations/validationMessages";
 import { AppContext } from "@context/AppContext";
 import { getSearchDocumentById } from "@services/documents/SearchDocumentById";
 import { IDocumentUpload } from "@pages/SubmitCreditApplication/types";
+import { formatFileSize } from "@utils/size";
+import { IUploadedFile } from "@services/types";
 
 import {
+  StyledAttachContainer,
   StyledContainerClose,
   StyledContainerContent,
+  StyledFileBox,
   StyledModal,
 } from "./styles";
 import { DocumentViewer } from "../DocumentViewer";
@@ -83,7 +88,6 @@ export const ListModal = (props: IListModalProps) => {
     dataDocument,
     isViewing,
     uploadedFiles,
-    onlyDocumentReceived,
     handleClose,
     handleSubmit,
     onSubmit,
@@ -96,20 +100,22 @@ export const ListModal = (props: IListModalProps) => {
     throw new Error(validationMessages.errorNodo);
   }
   const { addFlag } = useFlag();
-
+  const MAX_FILE_SIZE = 2.5 * 1024 * 1024;
   const isMobile = useMediaQuery("(max-width: 700px)");
-
+  const dragCounter = useRef(0);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { businessUnitSigla } = useContext(AppContext);
 
   const { user } = useAuth0();
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
-
+  const [pendingFiles, setPendingFiles] = useState<
+    { id: string; name: string; file: File }[]
+  >([]);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
-
+  const [isDragging, setIsDragging] = useState(false);
   interface IListdataProps {
     data: { id: string; name: string }[] | null | undefined;
     onDelete?: (id: string) => void;
@@ -120,10 +126,6 @@ export const ListModal = (props: IListModalProps) => {
   const Listdata = (props: IListdataProps) => {
     const { data, icon, onDelete, onPreview } = props;
 
-    if (!data || !Array.isArray(data) || data.length === 0) {
-      return <Text>{listModalData.noDocuments}</Text>;
-    }
-
     return (
       <ul
         style={{
@@ -131,7 +133,7 @@ export const ListModal = (props: IListModalProps) => {
           marginBlock: "8px",
         }}
       >
-        {data.map((element) => (
+        {data?.map((element) => (
           <StyledItem key={element.id}>
             <Text>{element.name}</Text>
             <Icon
@@ -152,39 +154,6 @@ export const ListModal = (props: IListModalProps) => {
         ))}
       </ul>
     );
-  };
-
-  const handleButtonClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!setUploadedFiles) return;
-    if (files && files.length > 0 && onlyDocumentReceived) {
-      const newFiles = Array.from(files).map((file) => ({
-        id: crypto.randomUUID(),
-        name: file.name,
-        file: file,
-      }));
-      setUploadedFiles(newFiles);
-    } else if (files) {
-      const newFiles = Array.from(files).map((file) => ({
-        id: crypto.randomUUID(),
-        name: file.name,
-        file: file,
-      }));
-      setUploadedFiles(
-        (prev: { id: string; name: string; file: File }[] | null) => [
-          ...(prev || []),
-          ...newFiles,
-        ]
-      );
-    } else {
-      setUploadedFiles([]);
-    }
   };
 
   const handleDeleteFile = (id: string) => {
@@ -216,6 +185,50 @@ export const ListModal = (props: IListModalProps) => {
       duration: 5000,
     });
   };
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!setUploadedFiles) return;
+
+    if (files && files.length > 0) {
+      const newFiles = Array.from(files).map((file) => ({
+        id: crypto.randomUUID(),
+        name: file.name,
+        file: file,
+      }));
+      setUploadedFiles((prev: IUploadedFile[]) => [
+        ...(prev || []),
+        ...newFiles,
+      ]);
+    } else {
+      setUploadedFiles([]);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    dragCounter.current = 0;
+    setIsDragging(false);
+
+    if (!setUploadedFiles) return;
+
+    const files = Array.from(e.dataTransfer.files);
+    const validFiles = files.filter(
+      (file) => file.type === "application/pdf" && file.size <= MAX_FILE_SIZE
+    );
+
+    if (validFiles.length !== files.length) {
+      alert(listModalData.onlypdf);
+    }
+
+    const newFiles = validFiles.map((file) => ({
+      id: crypto.randomUUID(),
+      name: file.name,
+      file,
+    }));
+    setUploadedFiles((prev: IUploadedFile[]) => [...(prev || []), ...newFiles]);
+
+    e.dataTransfer.clearData();
+  };
 
   const handleUpload = async () => {
     if (uploadMode === "local") {
@@ -224,7 +237,7 @@ export const ListModal = (props: IListModalProps) => {
       return;
     }
     try {
-      if (uploadedFiles) {
+      if (uploadedFiles && uploadedFiles.length > 0) {
         for (const fileData of uploadedFiles) {
           await saveDocument(
             businessUnitPublicCode,
@@ -233,15 +246,16 @@ export const ListModal = (props: IListModalProps) => {
             fileData.file
           );
         }
+        if (setUploadedFiles) {
+          setUploadedFiles([]);
+        }
+        handleClose();
+        handleFlag(
+          optionFlags.title,
+          optionFlags.description,
+          optionFlags.appearance as FlagAppearance
+        );
       }
-
-      setUploadedFiles?.([]);
-      handleClose();
-      handleFlag(
-        optionFlags.title,
-        optionFlags.description,
-        optionFlags.appearance as FlagAppearance
-      );
     } catch (error) {
       handleFlag(
         optionFlags.title,
@@ -268,12 +282,33 @@ export const ListModal = (props: IListModalProps) => {
   };
 
   const isDisabled = () => {
-    if (onlyDocumentReceived) {
-      return uploadedFiles?.length !== 1;
-    }
-    return !uploadedFiles?.length || uploadedFiles.length < 1;
+    return !uploadedFiles?.length;
   };
 
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    dragCounter.current++;
+    if (dragCounter.current === 1) {
+      setIsDragging(true);
+    }
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    dragCounter.current--;
+    if (dragCounter.current === 0) {
+      setIsDragging(false);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+  const handleBrowseClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
   return createPortal(
     <Blanket>
       <StyledModal $smallScreen={isMobile}>
@@ -300,38 +335,120 @@ export const ListModal = (props: IListModalProps) => {
               <Text>{content}</Text>
             </Stack>
           ) : (
-            <StyledContainerContent $smallScreen={isMobile}>
-              <Listdata
-                data={isViewing ? (dataDocument ?? []) : uploadedFiles}
-                icon={
-                  isViewing ? <MdOutlineRemoveRedEye /> : <MdDeleteOutline />
-                }
-                onDelete={!isViewing ? handleDeleteFile : undefined}
-                onPreview={isViewing ? handlePreview : undefined}
-              />
-            </StyledContainerContent>
+            <>
+              {isViewing && (
+                <StyledContainerContent $smallScreen={isMobile}>
+                  <Listdata
+                    data={isViewing ? (dataDocument ?? []) : uploadedFiles}
+                    icon={
+                      isViewing ? (
+                        <MdOutlineRemoveRedEye />
+                      ) : (
+                        <MdDeleteOutline />
+                      )
+                    }
+                    onDelete={!isViewing ? handleDeleteFile : undefined}
+                    onPreview={isViewing ? handlePreview : undefined}
+                  />
+                </StyledContainerContent>
+              )}
+            </>
           )}
         </StyledContainerContent>
         {optionButtons ? (
           <>
-            <Button
-              spacing="compact"
-              iconBefore={optionButtons?.icon}
-              variant={optionButtons?.variant}
-              onClick={handleButtonClick}
-              fullwidth={optionButtons?.fullwidth}
-              cursorHover
+            <StyledAttachContainer
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              $isDragging={isDragging}
             >
-              {optionButtons?.label}
-            </Button>
-            <input
-              type="file"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              onChange={handleFileChange}
-              accept=".pdf,.jpg,.png"
-              multiple={uploadMode === "local" ? false : true}
-            />
+              <Stack direction="column" alignItems="center">
+                <Text>{listModalData.drag}</Text>
+                <Text>{listModalData.or}</Text>
+              </Stack>
+              <Button spacing="compact" onClick={handleBrowseClick}>
+                {listModalData.search}
+              </Button>
+              <input
+                type="file"
+                accept="application/pdf,.jpg,.jpeg,.png"
+                style={{ display: "none" }}
+                ref={fileInputRef}
+                multiple
+                onChange={handleFileChange}
+              />
+            </StyledAttachContainer>
+            <Text size="medium" appearance="gray">
+              {listModalData.maximum}
+            </Text>
+            {Array.isArray(pendingFiles) && pendingFiles.length > 0 ? (
+              <>
+                <Divider dashed />
+                <Stack direction="column" gap="24px">
+                  <Text
+                    type="title"
+                    size="medium"
+                    weight="bold"
+                    appearance="gray"
+                  >
+                    {listModalData.attachments}
+                  </Text>
+                  <StyledFileBox>
+                    {pendingFiles.map((file) => (
+                      <File
+                        key={file.id}
+                        name={file.name}
+                        size={formatFileSize(file.file.size)}
+                        onDelete={() => {
+                          setPendingFiles((prevFiles) =>
+                            prevFiles.filter((f) => f.id !== file.id)
+                          );
+                          if (
+                            fileInputRef.current &&
+                            pendingFiles.length === 1
+                          ) {
+                            fileInputRef.current.value = "";
+                          }
+                        }}
+                      />
+                    ))}
+                  </StyledFileBox>
+                </Stack>
+              </>
+            ) : (
+              Array.isArray(uploadedFiles) &&
+              uploadedFiles.length > 0 && (
+                <>
+                  <Divider dashed />
+
+                  <Text
+                    type="title"
+                    size="medium"
+                    weight="bold"
+                    appearance="gray"
+                  >
+                    {listModalData.attachments}
+                  </Text>
+                  <StyledFileBox>
+                    {uploadedFiles.map((file: IUploadedFile) => (
+                      <File
+                        name={file.name}
+                        size={
+                          file.file?.size ? formatFileSize(file.file.size) : "-"
+                        }
+                        onDelete={() => {
+                          setUploadedFiles?.((prev: IUploadedFile[] = []) =>
+                            prev.filter((f) => f.id !== file.id)
+                          );
+                        }}
+                      />
+                    ))}
+                  </StyledFileBox>
+                </>
+              )
+            )}
             <Stack justifyContent="flex-end" margin="16px 0 0 0" gap="16px">
               <Button onClick={handleUpload} disabled={isDisabled()}>
                 {buttonLabel}

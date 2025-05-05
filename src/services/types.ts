@@ -7,7 +7,11 @@ export interface IUsersByCreditRequests {
   identificationNumber: string;
   role: string;
 }
-
+export interface IUploadedFile {
+  id: string;
+  name: string;
+  file?: File;
+}
 export interface IAccountingVouchers {
   documentCode: string;
   obligationCode: string;
