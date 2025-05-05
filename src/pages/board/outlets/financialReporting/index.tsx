@@ -329,7 +329,6 @@ export const FinancialReporting = () => {
                 </Stack>
               </StyledScreenPrint>
             </Stack>
-
             {showAttachments && (
               <ListModal
                 title="Adjuntar"
