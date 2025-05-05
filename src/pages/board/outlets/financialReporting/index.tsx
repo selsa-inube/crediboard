@@ -350,6 +350,8 @@ export const FinancialReporting = () => {
                 <Stack direction="column" height={isMobile ? "auto" : "163px"}>
                   <Postingvouchers user={id!} id={id!} isMobile={isMobile} />
                 </Stack>
+                <StyledPageBreak />
+                <StyledPageBreak />
               </StyledScreenPrint>
             </Stack>
             {showAttachments && (
