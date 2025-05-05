@@ -26,7 +26,7 @@ import { saveCredit } from "./utils";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "@context/AppContext";
 import { IToDo } from "@services/types";
-import { textFlags } from "@config/pages/staffModal/addFlag";
+import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
 
 export interface StaffModalProps {
   commercialManager: string;
@@ -115,16 +115,16 @@ export function StaffModal(props: StaffModalProps) {
     await saveCredit(businessUnitPublicCode, creditRequests, userAccount)
       .then(() => {
         addFlag({
-          title: textFlags.titleSuccess,
-          description: textFlags.descriptionSuccess,
+          title: textFlagsUsers.titleSuccess,
+          description: textFlagsUsers.descriptionSuccess,
           appearance: "success",
           duration: 5000,
         });
       })
       .catch(() => {
         addFlag({
-          title: textFlags.titleError,
-          description: textFlags.descriptionError,
+          title: textFlagsUsers.titleError,
+          description: textFlagsUsers.descriptionError,
           appearance: "danger",
           duration: 5000,
         });
