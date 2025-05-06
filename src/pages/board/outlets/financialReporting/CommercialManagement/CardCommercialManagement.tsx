@@ -111,8 +111,8 @@ export const CardCommercialManagement = (
             }))}
             showIcon={entry.iconEdit}
             isMobile={isMobile}
-            handleEdit={() => true}
-            handleView={() => setShowConsolidatedModal(true)}
+            handleEdit={() => setShowConsolidatedModal(true)}
+            handleView={() => ({})}
           />
         ))}
       </Stack>
