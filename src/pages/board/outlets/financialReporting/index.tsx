@@ -23,6 +23,8 @@ import {
   textFlagsReject,
   textFlagsUsers,
 } from "@config/pages/staffModal/addFlag";
+import { getSearchProspectById } from "@services/prospects";
+import { IProspect } from "@services/prospects/types";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
@@ -71,6 +73,8 @@ export const FinancialReporting = () => {
   const [showGuarantee, setShowGuarantee] = useState(false);
 
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
+
+  const [dataProspect, setDataProspect] = useState<IProspect>();
 
   const [uploadedFiles, setUploadedFiles] = useState<
     { id: string; name: string; file: File }[]
@@ -130,6 +134,22 @@ export const FinancialReporting = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getSearchProspectById(
+          businessUnitPublicCode,
+          "67eb62079cdd4c16064c45be" //ojo
+        );
+        setDataProspect(Array.isArray(result) ? result[0] : result);
+      } catch (error) {
+        console.error("Error al obtener los prospectos:", error);
+      }
+    };
+
+    fetchData();
+  }, [businessUnitPublicCode, id]);
 
   const handleGeneratePDF = () => {
     setTimeout(() => {
@@ -317,6 +337,7 @@ export const FinancialReporting = () => {
                     setCollapse={setCollapse}
                     id={id!}
                     hideContactIcons={true}
+                    prospectData={dataProspect!}
                   />
                 </Stack>
               </Stack>
@@ -393,8 +414,7 @@ export const FinancialReporting = () => {
           <OfferedGuaranteeModal
             handleClose={() => setShowGuarantee(false)}
             isMobile={isMobile}
-            id={id || ""}
-            businessUnitPublicCode={businessUnitPublicCode}
+            prospectData={dataProspect!}
           />
         )}
         {showCancelModal && (
