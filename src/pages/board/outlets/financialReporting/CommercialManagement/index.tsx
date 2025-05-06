@@ -96,7 +96,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
 
   const isMobile = useMediaQuery("(max-width: 720px)");
 
-  const { businessUnitSigla } = useContext(AppContext);
+  const { businessUnitSigla, eventData } = useContext(AppContext);
   const [loading, setLoading] = useState(true);
 
   const businessUnitPublicCode: string =
@@ -511,6 +511,8 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   isMobile={isMobile}
                   isPrint={isPrint}
                   showMenu={() => setShowMenu(false)}
+                  prospectCode={eventData.user.staff.staffId}
+                  businessUnitPublicCode={businessUnitPublicCode}
                   showPrint
                 />
               )}

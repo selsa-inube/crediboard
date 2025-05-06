@@ -4,9 +4,9 @@ export interface IBorrowerProperty {
 }
 
 export interface IBorrower {
-  BorrowerName: string;
-  BorrowerType: string;
-  BorrowerIdentificationType: string;
+  borrower_name: string;
+  Borrower_type: string;
+  borrower_identification_type: string;
   borrower_identification_number: string;
   borrower_properties: IBorrowerProperty[];
 }
