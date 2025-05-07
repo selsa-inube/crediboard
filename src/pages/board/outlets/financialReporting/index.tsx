@@ -24,6 +24,7 @@ import { AppContext } from "@context/AppContext";
 import { saveAssignAccountManager } from "@services/creditRequets/pacthAssignAccountManager";
 import { lateRejectionOfACreditRequest } from "@services/creditRequets/lateRejectionCreditRequest";
 import {
+  textFlagsCancel,
   textFlagsReject,
   textFlagsUsers,
 } from "@config/pages/staffModal/addFlag";
@@ -184,15 +185,16 @@ export const FinancialReporting = () => {
     setShowMenu(false);
   };
 
-  const handleSubmit = async (justification: string) => {
+  const handleSubmit = async () => {
     try {
       await lateRejectionOfACreditRequest(
         data?.creditRequestId || "",
         user?.email || "",
         businessUnitPublicCode,
-        "RECHAZAR_SOLICITUD", //"RECHAZO_HUMANO",
-        justification
+        "RECHAZAR_SOLICITUD", // o "RECHAZO_HUMANO"
+        removalJustification
       );
+
       addFlag({
         title: textFlagsReject.titleSuccess,
         description: textFlagsReject.descriptionSuccess,
@@ -208,15 +210,6 @@ export const FinancialReporting = () => {
         duration: 5000,
       });
     }
-  };
-
-  const handleCancelSubmit = () => {
-    addFlag({
-      title: "Anulación confirmada",
-      description: "La solicitud ha sido anulada exitosamente.",
-      appearance: "success",
-      duration: 5000,
-    });
   };
 
   const handleOnViewAttachments = () => {
@@ -293,8 +286,8 @@ export const FinancialReporting = () => {
       })
       .catch(() => {
         addFlag({
-          title: textFlagsUsers.titleError,
-          description: textFlagsUsers.descriptionError,
+          title: textFlagsCancel.titleError,
+          description: textFlagsCancel.descriptionError,
           appearance: "danger",
           duration: 5000,
         });
@@ -414,9 +407,11 @@ export const FinancialReporting = () => {
             inputLabel="Motivo del Rechazo."
             inputPlaceholder="Describa el motivo del Rechazo."
             onCloseModal={() => setShowRejectModal(false)}
-            onSubmit={(values) => {
-              handleSubmit(values.textarea);
+            handleNext={() => {
+              handleSubmit();
+              setShowRejectModal(false);
             }}
+            onChange={(e) => setRemovalJustification(e.target.value)}
           />
         )}
         {showGuarantee && (
@@ -436,7 +431,6 @@ export const FinancialReporting = () => {
             onCloseModal={() => setShowCancelModal(false)}
             handleNext={() => {
               handleDeleteCreditRequest();
-              handleCancelSubmit();
               setShowCancelModal(false);
             }}
             onChange={(e) => setRemovalJustification(e.target.value)}
