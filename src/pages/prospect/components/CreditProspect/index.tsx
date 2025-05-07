@@ -7,7 +7,7 @@ import {
   MdOutlinePictureAsPdf,
   MdOutlineShare,
 } from "react-icons/md";
-import { Stack, Icon, Button, Select, useFlag } from "@inubekit/inubekit";
+import { Stack, Icon, Button, Select } from "@inubekit/inubekit";
 
 import { MenuProspect } from "@components/navigation/MenuProspect";
 import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
@@ -33,9 +33,8 @@ import {
   StyledVerticalDivider,
 } from "@pages/board/outlets/financialReporting/CommercialManagement/styles";
 import { CardCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/CardCommercialManagement";
-import { getAllProspects } from "@services/prospects/AllProspects";
 import { getPropertyValue } from "@pages/SubmitCreditApplication/util";
-import { IProspect } from "@services/prospects/AllProspects/types";
+import { IProspect } from "@services/prospects/types";
 
 import { IncomeDebtor } from "../modals/DebtorDetailsModal/incomeDebtor";
 import { dataCreditProspect } from "./config";
@@ -45,18 +44,16 @@ import { IIncomeSources } from "./types";
 interface ICreditProspectProps {
   showMenu: () => void;
   isMobile: boolean;
-  businessUnitPublicCode: string;
-  prospectCode: string;
+  prospectData?: IProspect;
   isPrint?: boolean;
   showPrint?: boolean;
 }
 
 export function CreditProspect(props: ICreditProspectProps) {
   const {
+    prospectData,
     showMenu,
     isMobile,
-    businessUnitPublicCode,
-    prospectCode,
     isPrint = false,
     showPrint = true,
   } = props;
@@ -156,17 +153,6 @@ export function CreditProspect(props: ICreditProspectProps) {
     if (result) {
       handleCloseModal();
     }
-  };
-
-  const { addFlag } = useFlag();
-
-  const handleFlag = (error: unknown) => {
-    addFlag({
-      title: dataCreditProspect.error,
-      description: `${dataCreditProspect.errorDescription} ${error}`,
-      appearance: "danger",
-      duration: 5000,
-    });
   };
 
   const borrowersProspect =
@@ -286,21 +272,8 @@ export function CreditProspect(props: ICreditProspectProps) {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getAllProspects(
-          businessUnitPublicCode,
-          prospectCode || ""
-        );
-        setDataProspect(result);
-      } catch (error) {
-        handleFlag(error);
-      }
-    };
-
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [businessUnitPublicCode, prospectCode]);
+    setDataProspect(prospectData ? [prospectData] : []);
+  }, [prospectData]);
 
   useEffect(() => {
     if (selectedBorrower) {

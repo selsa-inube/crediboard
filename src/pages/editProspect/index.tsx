@@ -150,8 +150,6 @@ export function EditProspect() {
                 showMenu={() => setShowMenu(false)}
                 showPrint={true}
                 isPrint={true}
-                businessUnitPublicCode=""
-                prospectCode=""
               />
             </Fieldset>
             <StyledPrint>
