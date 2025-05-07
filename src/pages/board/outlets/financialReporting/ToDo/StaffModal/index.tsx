@@ -22,11 +22,9 @@ import { StyledModal, StyledContainerClose } from "./styles";
 export interface StaffModalProps {
   commercialManager: string;
   analyst: string;
-  portalId?: string;
-  onChange: (key: string) => void;
-  onSubmit?: (values: { commercialManager: string; analyst: string }) => void;
-  onCloseModal?: () => void;
-  taskData?: IToDo | null;
+  loading: boolean;
+  accountManagerList: ICommercialManagerAndAnalyst[];
+  analystList: { staffId: string; staffName: string }[];
   handleCommercialManagerChange: (
     name: string,
     value: string,
@@ -38,9 +36,11 @@ export interface StaffModalProps {
     setFieldValue: (field: string, value: string) => void
   ) => void;
   handleCreditRequests: () => void;
-  loading: boolean;
-  accountManagerList: ICommercialManagerAndAnalyst[];
-  analystList: { staffId: string; staffName: string }[];
+  portalId?: string;
+  taskData?: IToDo | null;
+  onChange: (key: string) => void;
+  onSubmit?: (values: { commercialManager: string; analyst: string }) => void;
+  onCloseModal?: () => void;
 }
 
 export function StaffModal(props: StaffModalProps) {

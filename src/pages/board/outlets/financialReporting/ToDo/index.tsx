@@ -39,11 +39,11 @@ import { StyledHorizontalDivider, StyledTextField } from "../styles";
 import { errorMessages, errorObserver } from "../config";
 
 interface ToDoProps {
+  user: string;
+  id: string;
   icon?: IICon;
   button?: IButton;
   isMobile?: boolean;
-  user: string;
-  id: string;
 }
 
 function ToDo(props: ToDoProps) {
@@ -481,14 +481,10 @@ function ToDo(props: ToDoProps) {
                 gap="16px"
                 justifyContent="flex-start"
                 direction={isMobile ? "column" : "row"}
+                width="100%"
               >
-                <Stack justifyContent="start">
-                  <Stack
-                    direction="column"
-                    alignItems="flex-start"
-                    gap="16px"
-                    padding={isMobile ? "0px" : "0px 100px 0px 0px"}
-                  >
+                <Stack justifyContent="space-between" width="50%">
+                  <Stack direction="column" alignItems="flex-start" gap="16px">
                     <StyledTextField>
                       <Text
                         type="body"
@@ -516,7 +512,7 @@ function ToDo(props: ToDoProps) {
                   </Stack>
                   <StyledHorizontalDivider $isMobile={isMobile} />
                 </Stack>
-                <Stack>
+                <Stack width="50%" justifyContent="space-between">
                   <Stack
                     direction="column"
                     alignItems="flex-start"
