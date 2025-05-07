@@ -18,7 +18,7 @@ export interface ITracesInRequirementsManagement {
   traceId: string;
 }
 
-export interface IObligationsById {
+export interface IPackagesOfRequirementsById {
   listsOfRequirementsByPackage: IlistsOfRequirementsByPackage[];
   packageDate: string;
   packageDescription: string;

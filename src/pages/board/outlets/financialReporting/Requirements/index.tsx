@@ -11,7 +11,7 @@ import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 import { CreditRequest } from "@services/types";
 import { addItem } from "@mocks/utils/dataMock.service";
 import { traceDetailsMock } from "@mocks/financialReporting/trace-details/tracedetails.mock";
-import { getAllObligationsById } from "@services/obligations";
+import { getAllPackagesOfRequirementsById } from "@services/packagesOfRequirements";
 
 import {
   dataButton,
@@ -54,7 +54,7 @@ export const Requirements = (props: IRequirementsProps) => {
   useEffect(() => {
     const fetchRequirements = async () => {
       try {
-        const data = await getAllObligationsById(
+        const data = await getAllPackagesOfRequirementsById(
           businessUnitPublicCode,
           creditRequestId
         );

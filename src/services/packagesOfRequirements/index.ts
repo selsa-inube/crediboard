@@ -3,12 +3,12 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { IObligationsById } from "./types";
+import { IPackagesOfRequirementsById } from "./types";
 
-const getAllObligationsById = async (
+const getAllPackagesOfRequirementsById = async (
   businessUnitPublicCode: string,
   uniqueReferenceNumber: string
-): Promise<IObligationsById[]> => {
+): Promise<IPackagesOfRequirementsById[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -23,7 +23,7 @@ const getAllObligationsById = async (
       const options: RequestInit = {
         method: "GET",
         headers: {
-          "X-Action": "SearchAllObligationsById",
+          "X-Action": "SearchAllPackagesOfRequirementsToManage",
           "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -31,7 +31,7 @@ const getAllObligationsById = async (
       };
 
       const res = await fetch(
-        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/obligations?${queryParams.toString()}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/packages-of-requirements-to-manage?${queryParams.toString()}`,
         options
       );
 
@@ -71,4 +71,4 @@ const getAllObligationsById = async (
   );
 };
 
-export { getAllObligationsById };
+export { getAllPackagesOfRequirementsById };
