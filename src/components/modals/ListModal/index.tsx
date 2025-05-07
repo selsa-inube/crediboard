@@ -212,10 +212,16 @@ export const ListModal = (props: IListModalProps) => {
     if (!setUploadedFiles) return;
 
     const files = Array.from(e.dataTransfer.files);
+    const validMimeTypes = [
+      "application/pdf",
+      "image/jpeg",
+      "image/png",
+      "image/jpg",
+      "image/JPG",
+    ];
     const validFiles = files.filter(
-      (file) => file.type === "application/pdf" && file.size <= MAX_FILE_SIZE
+      (file) => validMimeTypes.includes(file.type) && file.size <= MAX_FILE_SIZE
     );
-
     if (validFiles.length !== files.length) {
       alert(listModalData.onlypdf);
     }
@@ -236,19 +242,29 @@ export const ListModal = (props: IListModalProps) => {
       handleClose();
       return;
     }
+
     try {
       if (uploadedFiles && uploadedFiles.length > 0) {
         for (const fileData of uploadedFiles) {
+          const abbreviatedName = fileData.name
+            .split(".")
+            .slice(0, -1)
+            .join(".")
+            .replace(/[^a-zA-Z0-9]/g, "")
+            .substring(0, 10);
+
           await saveDocument(
             businessUnitPublicCode,
             id,
-            fileData.name.split(".").slice(0, -1).join("."),
+            abbreviatedName,
             fileData.file
           );
         }
+
         if (setUploadedFiles) {
           setUploadedFiles([]);
         }
+
         handleClose();
         handleFlag(
           optionFlags.title,
@@ -373,7 +389,7 @@ export const ListModal = (props: IListModalProps) => {
               </Button>
               <input
                 type="file"
-                accept="application/pdf,.jpg,.jpeg,.png"
+                accept=".pdf,image/jpeg,image/jpg,image/png/JPG"
                 style={{ display: "none" }}
                 ref={fileInputRef}
                 multiple

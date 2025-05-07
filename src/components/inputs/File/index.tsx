@@ -1,10 +1,10 @@
 import { FileUI } from "./interface";
 
 interface FileProps {
-  withBorder?: boolean;
   name: string;
   size: string;
   onDelete?: () => void;
+  withBorder?: boolean;
 }
 
 function File(props: FileProps) {

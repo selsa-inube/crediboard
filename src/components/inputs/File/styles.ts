@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { inube } from "@inubekit/inubekit";
 
 interface IStyledFile {
-  $withBorder?: boolean;
   theme: typeof inube;
+  $withBorder?: boolean;
 }
 
 const StyledFile = styled.div<IStyledFile>`

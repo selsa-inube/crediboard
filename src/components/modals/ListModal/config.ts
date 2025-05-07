@@ -7,5 +7,6 @@ export const listModalData = {
   maximum: "Peso máximo por archivo: 2.5MB",
   attachments: "Adjuntos",
   exceedSize: "El archivo supera el tamaño máximo permitido de 2.5MB.",
-  onlypdf: "Solo se permiten archivos PDF.",
+  onlypdf:
+    "Solo se permiten archivos PDF o imágenes (JPG, JPEG, PNG) de máximo 2.5MB.",
 };

@@ -4,10 +4,10 @@ import { Icon, Stack, Text } from "@inubekit/inubekit";
 import { StyledFile } from "./styles";
 
 interface FileUIProps {
-  withBorder?: boolean;
   name: string;
   size: string;
   onDelete?: () => void;
+  withBorder?: boolean;
 }
 
 function FileUI(props: FileUIProps) {
