@@ -1,6 +1,5 @@
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
-
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import {
@@ -14,10 +13,11 @@ import {
   Button,
 } from "@inubekit/inubekit";
 
-import { StyledModal, StyledContainerClose } from "./styles";
-
 import { IToDo } from "@services/types";
 import { ICommercialManagerAndAnalyst } from "@pages/SubmitCreditApplication/types";
+import { validationMessages } from "@validations/validationMessages";
+
+import { StyledModal, StyledContainerClose } from "./styles";
 
 export interface StaffModalProps {
   commercialManager: string;
@@ -65,7 +65,7 @@ export function StaffModal(props: StaffModalProps) {
   });
 
   if (!node) {
-    throw new Error("The portal node is not defined.");
+    throw new Error(validationMessages.errorNodo);
   }
 
   const options = {

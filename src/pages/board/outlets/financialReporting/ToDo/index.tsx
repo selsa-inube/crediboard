@@ -27,19 +27,16 @@ import {
   ICommercialManagerAndAnalyst,
   ICreditRequests,
 } from "@pages/SubmitCreditApplication/types";
-import { saveCredit } from "./StaffModal/utils";
-
 import { getCommercialManagerAndAnalyst } from "@services/commercialManagerAndAnalyst";
+import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
 
+import { saveCredit } from "./StaffModal/utils";
 import { StaffModal } from "./StaffModal";
 import { errorMessagge, txtLabels, txtTaskQuery } from "./config";
 import { IICon, IButton } from "./types";
 import { getXAction } from "./util/utils";
 import { StyledHorizontalDivider, StyledTextField } from "../styles";
 import { errorMessages, errorObserver } from "../config";
-import {
-  textFlagsUsers,
-} from "@config/pages/staffModal/addFlag";
 
 interface ToDoProps {
   icon?: IICon;
@@ -267,14 +264,19 @@ function ToDo(props: ToDoProps) {
         setAccountManagerList(accountManagers);
         setAnalystList(analysts);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        addFlag({
+          title: textFlagsUsers.titleError,
+          description: textFlagsUsers.descriptionError,
+          appearance: "danger",
+          duration: 5000,
+        });
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [addFlag]);
   const handleAnalystChange = (
     name: string,
     value: string,
