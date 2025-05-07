@@ -3,7 +3,6 @@ import { Stack, Tabs, Text } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { Fieldset } from "@components/data/Fieldset";
-import { textFlags } from "@config/pages/staffModal/addFlag";
 
 import { dataDisbursement, dataTabs } from "./config";
 import { DisbursementInternal } from "./Internal";
@@ -12,6 +11,7 @@ import { DisbursementCheckEntity } from "./CheckEntity";
 import { DisbursementChequeManagement } from "./ChequeManagement";
 import { DisbursementCash } from "./Cash";
 import { dataTabsDisbursement } from "./types";
+import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
 
 export interface IDisbursementModalProps {
   handleClose: () => void;
@@ -89,7 +89,7 @@ export function DisbursementModal(
       <Fieldset heightFieldset="469px">
         {availableTabs.length === 0 ? (
           <Text appearance="gray" size="medium" weight="bold">
-            {textFlags.descriptionWarning}
+            {textFlagsUsers.descriptionWarning}
           </Text>
         ) : (
           <>

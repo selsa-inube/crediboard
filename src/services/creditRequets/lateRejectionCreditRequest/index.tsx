@@ -3,12 +3,14 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { IProspect } from "./types";
 
-const getAllProspects = async (
+export const lateRejectionOfACreditRequest = async (
+  creditRequestId: string | undefined,
+  userAccount: string,
   businessUnitPublicCode: string,
-  prospectCode: string
-): Promise<IProspect | IProspect[]> => {
+  humanDecision: string,
+  justificacion: string
+) => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -16,57 +18,47 @@ const getAllProspects = async (
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      const queryParams = new URLSearchParams({
-        prospectCode: prospectCode,
-      });
 
       const options: RequestInit = {
-        method: "GET",
+        method: "PATCH",
         headers: {
-          "X-Action": "SearchAllProspects",
+          "X-Action": "LateRejectionOfACreditRequest",
           "X-Business-Unit": businessUnitPublicCode,
+          "X-User-Name": userAccount,
           "Content-type": "application/json; charset=UTF-8",
         },
+        body: JSON.stringify({ creditRequestId, humanDecision, justificacion }),
         signal: controller.signal,
       };
 
       const res = await fetch(
-        `${environment.VITE_IPROSPECT_QUERY_PROCESS_SERVICE}/prospects?${queryParams.toString()}`,
+        `${environment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
         options
       );
 
       clearTimeout(timeoutId);
 
       if (res.status === 204) {
-        throw new Error("No hay tarea disponible.");
+        return res;
       }
 
       const data = await res.json();
 
       if (!res.ok) {
         throw {
-          message: "Error al obtener la tarea.",
+          message: "Error al rechazar la solicitud de crédito",
           status: res.status,
           data,
         };
       }
-
-      if (Array.isArray(data)) {
-        return data as IProspect[];
-      }
-
-      return data;
+      return { ...data, statusServices: res.status };
     } catch (error) {
-      console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
         throw new Error(
-          "Todos los intentos fallaron. No se pudo obtener la tarea."
+          "Todos los intentos fallaron. No se pudo rechazar la solicitud de crédito."
         );
       }
     }
   }
-
-  throw new Error("No se pudo obtener la tarea después de varios intentos.");
+  throw new Error("No se pudo completar la solicitud.");
 };
-
-export { getAllProspects };

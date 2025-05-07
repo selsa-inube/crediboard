@@ -32,6 +32,7 @@ import {
   StyledVerticalDivider,
 } from "@pages/board/outlets/financialReporting/CommercialManagement/styles";
 import { CardCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/CardCommercialManagement";
+import { IProspect } from "@services/prospects/types";
 
 import { dataCreditProspect } from "./config";
 import { StyledPrint } from "./styles";
@@ -39,12 +40,19 @@ import { StyledPrint } from "./styles";
 interface ICreditProspectProps {
   showMenu: () => void;
   isMobile: boolean;
+  prospectData?: IProspect;
   isPrint?: boolean;
   showPrint?: boolean;
 }
 
 export function CreditProspect(props: ICreditProspectProps) {
-  const { showMenu, isMobile, isPrint = false, showPrint = true } = props;
+  const {
+    prospectData,
+    showMenu,
+    isMobile,
+    isPrint = false,
+    showPrint = true,
+  } = props;
 
   const [modalHistory, setModalHistory] = useState<string[]>([]);
   const [openModal, setOpenModal] = useState<string | null>(null);
@@ -67,6 +75,7 @@ export function CreditProspect(props: ICreditProspectProps) {
 
   const [prospectProducts, setProspectProducts] =
     useState<ICreditProductProspect>();
+
   const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -160,7 +169,7 @@ export function CreditProspect(props: ICreditProspectProps) {
               {dataCreditProspect.addProduct}
             </Button>
 
-            {prospectProducts?.ordinary_installment_for_principal && (
+            {prospectData?.credit_products && (
               <Button
                 type="button"
                 appearance="primary"
@@ -218,6 +227,7 @@ export function CreditProspect(props: ICreditProspectProps) {
           id={id!}
           dataRef={dataCommercialManagementRef}
           onClick={() => handleOpenModal("editProductModal")}
+          prospectData={prospectData || undefined}
         />
       </Stack>
       {currentModal === "creditLimit" && (
