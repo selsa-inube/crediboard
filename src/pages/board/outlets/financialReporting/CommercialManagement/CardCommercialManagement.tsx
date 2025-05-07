@@ -121,6 +121,7 @@ export const CardCommercialManagement = (
       {showConsolidatedModal && (
         <ConsolidatedCredits
           handleClose={() => setShowConsolidatedModal(false)}
+          prospectData={prospectData}
         />
       )}
     </div>
