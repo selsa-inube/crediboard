@@ -51,8 +51,8 @@ interface ICreditProspectProps {
 
 export function CreditProspect(props: ICreditProspectProps) {
   const {
-    prospectData,
     showMenu,
+    prospectData,
     isMobile,
     isPrint = false,
     showPrint = true,
@@ -371,7 +371,7 @@ export function CreditProspect(props: ICreditProspectProps) {
               {dataCreditProspect.addProduct}
             </Button>
 
-            {prospectProducts?.ordinary_installment_for_principal && (
+            {prospectData?.credit_products && (
               <Button
                 type="button"
                 appearance="primary"
@@ -429,6 +429,7 @@ export function CreditProspect(props: ICreditProspectProps) {
           id={id!}
           dataRef={dataCommercialManagementRef}
           onClick={() => handleOpenModal("editProductModal")}
+          prospectData={prospectData || undefined}
         />
       </Stack>
       {currentModal === "creditLimit" && (

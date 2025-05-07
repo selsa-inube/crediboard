@@ -414,8 +414,7 @@ export const FinancialReporting = () => {
           <OfferedGuaranteeModal
             handleClose={() => setShowGuarantee(false)}
             isMobile={isMobile}
-            id={id || ""}
-            businessUnitPublicCode={businessUnitPublicCode}
+            prospectData={dataProspect!}
           />
         )}
         {showCancelModal && (

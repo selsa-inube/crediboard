@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Stack, Tabs } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { CardBorrower } from "@components/cards/CardBorrower";
-import { getAllProspects } from "@services/prospects/AllProspects";
-import { IProspect } from "@services/prospects/AllProspects/types";
+import { IProspect } from "@services/prospects/types";
 import {
   getPropertyValue,
   getTotalFinancialObligations,
@@ -20,34 +19,19 @@ import { ScrollableContainer } from "./styles";
 export interface IOfferedGuaranteeModalProps {
   handleClose: () => void;
   isMobile: boolean;
-  id: string;
-  businessUnitPublicCode: string;
+  prospectData: IProspect;
 }
 
 export function OfferedGuaranteeModal(props: IOfferedGuaranteeModalProps) {
-  const { handleClose, isMobile, id, businessUnitPublicCode } = props;
+  const { handleClose, isMobile, prospectData } = props;
 
   const [currentTab, setCurrentTab] = useState(dataTabs[0].id);
-  const [data, setData] = useState<IProspect[]>([]);
 
   const onChange = (tabId: string) => {
     setCurrentTab(tabId);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getAllProspects(businessUnitPublicCode, id || "");
-        setData(result);
-      } catch (error) {
-        console.error("Error al obtener los prospectos:", error);
-      }
-    };
-
-    fetchData();
-  }, [businessUnitPublicCode, id]);
-
-  const dataResponse = data[0];
+  const dataResponse = prospectData;
 
   return (
     <BaseModal
