@@ -8,7 +8,7 @@ import { IProspect } from "./types";
 const getAllProspects = async (
   businessUnitPublicCode: string,
   prospectCode: string
-): Promise<IProspect[]> => {
+): Promise<IProspect | IProspect[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -52,7 +52,7 @@ const getAllProspects = async (
       }
 
       if (Array.isArray(data)) {
-        return data;
+        return data as IProspect[];
       }
 
       return data;
