@@ -23,6 +23,7 @@ interface IFieldsetProps {
   isClickable?: boolean;
   selectedState?: boolean;
   hasError?: boolean;
+  alignContent?: string;
 }
 
 export const Fieldset = (props: IFieldsetProps) => {
@@ -39,6 +40,7 @@ export const Fieldset = (props: IFieldsetProps) => {
     isClickable = false,
     selectedState = false,
     hasError = false,
+    alignContent,
   } = props;
 
   const isMobile = useMediaQuery("(max-width:880px)");
@@ -100,6 +102,7 @@ export const Fieldset = (props: IFieldsetProps) => {
         $height={isMobile ? "auto" : heightFieldset}
         $isClickable={isClickable}
         $hasError={hasError}
+        $alignContent={alignContent}
       >
         {children}
       </StyledContainerFieldset>

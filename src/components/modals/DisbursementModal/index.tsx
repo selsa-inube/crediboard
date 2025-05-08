@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import { Stack, Tabs, Text } from "@inubekit/inubekit";
+import { Stack, Tabs } from "@inubekit/inubekit";
 
+import userNotFound from "@assets/images/ItemNotFound.png";
 import { BaseModal } from "@components/modals/baseModal";
 import { Fieldset } from "@components/data/Fieldset";
+import { errorMessages } from "@pages/board/outlets/financialReporting/config";
+import { ItemNotFound } from "@components/layout/ItemNotFound";
 
 import { dataDisbursement, dataTabs } from "./config";
 import { DisbursementInternal } from "./Internal";
@@ -11,7 +14,6 @@ import { DisbursementCheckEntity } from "./CheckEntity";
 import { DisbursementChequeManagement } from "./ChequeManagement";
 import { DisbursementCash } from "./Cash";
 import { dataTabsDisbursement } from "./types";
-import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
 
 export interface IDisbursementModalProps {
   handleClose: () => void;
@@ -30,7 +32,7 @@ export function DisbursementModal(
   props: IDisbursementModalProps
 ): JSX.Element | null {
   const { handleClose, isMobile, data } = props;
-
+  const [error, setError] = useState(false);
   const availableTabs = dataTabs.filter((tab) => {
     const hasValidData = (tabData: dataTabsDisbursement) =>
       tabData && Object.values(tabData).some((value) => value !== "");
@@ -76,7 +78,6 @@ export function DisbursementModal(
       handleNext={handleClose}
       nextButton={dataDisbursement.close}
       width={isMobile ? "300px" : "652px"}
-      height={isMobile ? "566px" : "662px"}
     >
       <Stack>
         <Tabs
@@ -86,11 +87,15 @@ export function DisbursementModal(
           onChange={onChange}
         />
       </Stack>
-      <Fieldset heightFieldset="469px">
-        {availableTabs.length === 0 ? (
-          <Text appearance="gray" size="medium" weight="bold">
-            {textFlagsUsers.descriptionWarning}
-          </Text>
+      <Fieldset heightFieldset="469px" alignContent="center">
+        {error || availableTabs.length === 0 ? (
+          <ItemNotFound
+            image={userNotFound}
+            title={errorMessages.Requirements.title}
+            description={errorMessages.Requirements.description}
+            buttonDescription={errorMessages.Requirements.button}
+            onRetry={() => setError(false)}
+          />
         ) : (
           <>
             {currentTab === "Internal" && (
