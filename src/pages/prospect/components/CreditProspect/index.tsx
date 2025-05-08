@@ -33,7 +33,7 @@ import {
   StyledVerticalDivider,
 } from "@pages/board/outlets/financialReporting/CommercialManagement/styles";
 import { CardCommercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement/CardCommercialManagement";
-import { getPropertyValue } from "@pages/SubmitCreditApplication/util";
+import { getPropertyValue } from "@utils/mappingData/mappings";
 import { IProspect } from "@services/prospects/types";
 
 import { IncomeDebtor } from "../modals/DebtorDetailsModal/incomeDebtor";
