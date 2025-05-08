@@ -359,6 +359,8 @@ export const FinancialReporting = () => {
                     isMobile={isMobile}
                     id={id!}
                     user={user!.nickname!}
+                    businessUnitPublicCode={businessUnitPublicCode}
+                    creditRequestCode={data.creditRequestCode!}
                   />
                 </Stack>
                 <Stack direction="column">

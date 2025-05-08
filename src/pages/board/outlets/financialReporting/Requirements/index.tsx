@@ -9,8 +9,9 @@ import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { TraceDetailsModal } from "@components/modals/TraceDetailsModal";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
 import { CreditRequest } from "@services/types";
-import { addItem, getById } from "@mocks/utils/dataMock.service";
+import { addItem } from "@mocks/utils/dataMock.service";
 import { traceDetailsMock } from "@mocks/financialReporting/trace-details/tracedetails.mock";
+import { getAllPackagesOfRequirementsById } from "@services/packagesOfRequirements";
 
 import {
   dataButton,
@@ -18,9 +19,10 @@ import {
   maperDataRequirements,
   maperEntries,
   getAcctionMobile,
+  dataFlags,
 } from "./config";
 import { AprovalsModal } from "./AprovalsModal";
-import { errorObserver, traceObserver, errorMessages } from "../config";
+import { traceObserver, errorMessages } from "../config";
 
 interface IRequirementsData {
   id: string;
@@ -33,10 +35,13 @@ export interface IRequirementsProps {
   isMobile?: boolean;
   id: string;
   user: string;
+  businessUnitPublicCode: string;
+  creditRequestCode: string;
 }
 
 export const Requirements = (props: IRequirementsProps) => {
-  const { isMobile, id, user } = props;
+  const { isMobile, id, user, businessUnitPublicCode, creditRequestCode } =
+    props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
@@ -48,30 +53,58 @@ export const Requirements = (props: IRequirementsProps) => {
   const { addFlag } = useFlag();
 
   useEffect(() => {
-    (async () => {
+    const fetchRequirements = async () => {
       try {
-        const requirements = await getById<CreditRequest>(
-          "requirements",
-          "credit_request_id",
-          id
+        if (!creditRequestCode) {
+          return;
+        }
+
+        const data = await getAllPackagesOfRequirementsById(
+          businessUnitPublicCode,
+          creditRequestCode
         );
 
-        if (!(requirements instanceof Error)) {
-          const processedEntries = maperEntries(requirements);
-          const processedRequirements = maperDataRequirements(processedEntries);
-
-          setDataRequirements(processedRequirements);
+        if (!Array.isArray(data) || data.length === 0) {
+          throw new Error("No hay requisitos disponibles.");
         }
-      } catch (error) {
-        setError(true);
-        errorObserver.notify({
-          id: "Requirements",
-          message: "Error al obtener los datos de los requisitos.",
+
+        const mapped: CreditRequest = {
+          credit_request_id: data[0].uniqueReferenceNumber,
+          SYSTEM_VALIDATION: {},
+          DOCUMENT: {},
+          HUMAN_VALIDATION: {},
+        };
+
+        data.forEach((item) => {
+          item.listsOfRequirementsByPackage.forEach((req) => {
+            const type = req.typeOfRequirementToEvaluated;
+            const key = req.descriptionUse;
+            const value = req.requirementStatus;
+
+            if (
+              type &&
+              key &&
+              value &&
+              Object.prototype.hasOwnProperty.call(mapped, type)
+            ) {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (mapped as any)[type][key] = value;
+            }
+          });
         });
-        console.error(error);
+
+        const processedEntries = maperEntries(mapped);
+        const processedRequirements = maperDataRequirements(processedEntries);
+        setDataRequirements(processedRequirements);
+      } catch (error) {
+        console.error("Error fetching requirements:", error);
+        setError(true);
       }
-    })();
-  }, [id, error]);
+    };
+
+    fetchRequirements();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [creditRequestCode]);
 
   const renderAccion = getAcctionMobile(
     setShowSeeDetailsModal,
@@ -109,15 +142,15 @@ export const Requirements = (props: IRequirementsProps) => {
         await addItem("trace", trace);
         traceObserver.notify(trace);
         addFlag({
-          title: "Éxito",
-          description: "Documentación aprobada correctamente.",
+          title: dataFlags.documentApproved.title,
+          description: dataFlags.documentApproved.description,
           appearance: "success",
           duration: 5000,
         });
       } catch (error) {
         addFlag({
-          title: "Error",
-          description: "Ocurrió un error al aprobar el documento.",
+          title: dataFlags.documentRejected.title,
+          description: dataFlags.documentRejected.description,
           appearance: "danger",
           duration: 5000,
         });
