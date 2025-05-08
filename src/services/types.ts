@@ -391,9 +391,9 @@ type ItemValidation = {
 
 export interface CreditRequest {
   credit_request_id: string;
-  system_validations: ItemValidation;
-  documentary_requirements: ItemValidation;
-  human_validations: ItemValidation;
+  SYSTEM_VALIDATION: ItemValidation;
+  DOCUMENT: ItemValidation;
+  HUMAN_VALIDATION: ItemValidation;
 }
 
 export interface IRiskScoringRangeRequered {

@@ -36,11 +36,12 @@ export interface IRequirementsProps {
   id: string;
   user: string;
   businessUnitPublicCode: string;
-  creditRequestId: string;
+  creditRequestCode: string;
 }
 
 export const Requirements = (props: IRequirementsProps) => {
-  const { isMobile, id, user, businessUnitPublicCode, creditRequestId } = props;
+  const { isMobile, id, user, businessUnitPublicCode, creditRequestCode } =
+    props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
@@ -54,9 +55,13 @@ export const Requirements = (props: IRequirementsProps) => {
   useEffect(() => {
     const fetchRequirements = async () => {
       try {
+        if (!creditRequestCode) {
+          return;
+        }
+
         const data = await getAllPackagesOfRequirementsById(
           businessUnitPublicCode,
-          creditRequestId
+          creditRequestCode
         );
 
         if (!Array.isArray(data) || data.length === 0) {
@@ -65,9 +70,9 @@ export const Requirements = (props: IRequirementsProps) => {
 
         const mapped: CreditRequest = {
           credit_request_id: data[0].uniqueReferenceNumber,
-          system_validations: {},
-          documentary_requirements: {},
-          human_validations: {},
+          SYSTEM_VALIDATION: {},
+          DOCUMENT: {},
+          HUMAN_VALIDATION: {},
         };
 
         data.forEach((item) => {
@@ -92,19 +97,14 @@ export const Requirements = (props: IRequirementsProps) => {
         const processedRequirements = maperDataRequirements(processedEntries);
         setDataRequirements(processedRequirements);
       } catch (error) {
-        addFlag({
-          title: dataFlags.requirements.title,
-          description: `${dataFlags.requirements.description}${error}`,
-          appearance: "danger",
-          duration: 5000,
-        });
+        console.error("Error fetching requirements:", error);
         setError(true);
       }
     };
 
     fetchRequirements();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [creditRequestCode]);
 
   const renderAccion = getAcctionMobile(
     setShowSeeDetailsModal,

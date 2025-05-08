@@ -255,17 +255,14 @@ const actionsMobile = [
 
 const generateTag = (value: string): JSX.Element => {
   if (
-    value === "Y" ||
     value === "PASSED_WITH_SYSTEM_VALIDATION" ||
-    value === "SYSTEM_VALIDATION" ||
-    value === "HUMAN_VALIDATION"
+    value === "DOCUMENT_STORED_WITHOUT_VALIDATION" ||
+    value === "PASSED_WITH_HUMAN_VALIDATION" ||
+    value === "DOCUMENT_VALIDATED_BY_THE_USER" ||
+    value === "IGNORED_BY_THE_USER"
   ) {
     return <Tag label="Cumple" appearance="success" weight="strong" />;
-  } else if (
-    value === "N" ||
-    value === "UNVALIDATED" ||
-    value === "FAILED_SYSTEM_VALIDATION"
-  ) {
+  } else if (value === "FAILED_SYSTEM_VALIDATION") {
     return <Tag label="No Cumple" appearance="danger" weight="strong" />;
   } else {
     return <Tag label="Sin Evaluar" appearance="warning" weight="strong" />;
@@ -276,23 +273,23 @@ export const maperEntries = (data: CreditRequest): IEntries[][] => {
   const result: IEntries[][] = [];
 
   const systemValidations: IEntries[] = Object.entries(
-    data.system_validations
+    data.SYSTEM_VALIDATION
   ).map(([key, value], index) => ({
     id: `sistema-${index + 1}`,
     "Validaciones del sistema": key,
     tag: generateTag(value),
   }));
 
-  const documentaryRequirements: IEntries[] = Object.entries(
-    data.documentary_requirements
-  ).map(([key, value], index) => ({
-    id: `documento-${index + 1}`,
-    "Requisitos documentales": key,
-    tag: generateTag(value),
-  }));
+  const documentaryRequirements: IEntries[] = Object.entries(data.DOCUMENT).map(
+    ([key, value], index) => ({
+      id: `documento-${index + 1}`,
+      "Requisitos documentales": key,
+      tag: generateTag(value),
+    })
+  );
 
   const humanValidations: IEntries[] = Object.entries(
-    data.human_validations
+    data.HUMAN_VALIDATION
   ).map(([key, value], index) => ({
     id: `humano-${index + 1}`,
     "Validaciones humanas": key,

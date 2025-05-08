@@ -300,7 +300,7 @@ export const FinancialReporting = () => {
                     id={id!}
                     user={user!.nickname!}
                     businessUnitPublicCode={businessUnitPublicCode}
-                    creditRequestId={data.creditRequestId!}
+                    creditRequestCode={data.creditRequestCode!}
                   />
                 </Stack>
                 <Stack direction="column">
