@@ -7,6 +7,7 @@ import {
   useFlag,
   useMediaQuery,
   Textarea,
+  Checkpicker,
 } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
@@ -14,11 +15,12 @@ import { makeDecisions } from "@services/todo/makeDecisions";
 import { validationMessages } from "@validations/validationMessages";
 
 import { IMakeDecisionsCreditRequestWithXAction } from "./types";
-import { StyledContainerTextField } from "./styles";
-import { txtFlags, txtOthersOptions } from "./../config";
+import { StyledCheckpicker, StyledContainerTextField } from "./styles";
+import { soporteInvalidOptions, txtFlags, txtOthersOptions } from "./../config";
 
 interface FormValues {
   textarea: string;
+  selectedOptions?: string[];
 }
 
 export interface DecisionModalProps {
@@ -105,10 +107,13 @@ export function DecisionModal(props: DecisionModalProps) {
       onCloseModal?.();
     }
   };
-
+  const initialValues: FormValues = {
+    textarea: "",
+    selectedOptions: [],
+  };
   return (
     <Formik
-      initialValues={{ textarea: "" }}
+      initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(
         values: FormValues,
@@ -151,6 +156,22 @@ export function DecisionModal(props: DecisionModalProps) {
                 </Text>
               </Stack>
             </StyledContainerTextField>
+            {data.makeDecision.humanDecision === "SOPORTES_INVALIDOS" && (
+              <StyledCheckpicker>
+                <Field name="selectedOptions">
+                  {({ field, form }: FieldProps) => (
+                    <Checkpicker
+                      name="selectedOptions"
+                      options={soporteInvalidOptions}
+                      values={field.value}
+                      onChange={(name, values) =>
+                        form.setFieldValue(name, values)
+                      }
+                    />
+                  )}
+                </Field>
+              </StyledCheckpicker>
+            )}
             <Field name="textarea">
               {({ field, form: { setFieldTouched } }: FieldProps) => (
                 <Textarea

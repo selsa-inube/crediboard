@@ -21,7 +21,18 @@ export const StyledModal = styled.div<IStyledModal>`
 export const StyledContainerClose = styled.div`
   cursor: pointer;
 `;
-
+export const StyledCheckpicker = styled.div`
+  margin-bottom: 20px;
+  div {
+    width: 100%;
+  }
+  div ul {
+    width: 100%;
+  }
+  div ul li div {
+    width: auto;
+  }
+`;
 export const StyledContainerTextField = styled.div<IStyledModal>`
   height: 65px;
   width: auto;
