@@ -11,6 +11,7 @@ import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.se
 import { mockCommercialManagement } from "@mocks/financialReporting/commercialmanagement.mock";
 import { IProspect, ICreditProduct } from "@services/prospects/types";
 import { Schedule } from "@services/enums";
+import { DeductibleExpensesModal } from "@pages/prospect/components/modals/DeductibleExpensesModal";
 
 import { StyledCardsCredit, StyledPrint } from "./styles";
 
@@ -33,6 +34,8 @@ export const CardCommercialManagement = (
   const [selectedProductId, setSelectedProductId] = useState("");
 
   const [showConsolidatedModal, setShowConsolidatedModal] = useState(false);
+  const [showDeductibleExpensesModal, setDeductibleExpensesModal] =
+    useState(false);
 
   useEffect(() => {
     if (prospectData?.credit_products) {
@@ -108,7 +111,7 @@ export const CardCommercialManagement = (
             showIcon={entry.iconEdit}
             isMobile={isMobile}
             handleEdit={() => setShowConsolidatedModal(true)}
-            handleView={() => ({})}
+            handleView={() => setDeductibleExpensesModal(true)}
           />
         ))}
       </Stack>
@@ -122,6 +125,11 @@ export const CardCommercialManagement = (
         <ConsolidatedCredits
           handleClose={() => setShowConsolidatedModal(false)}
           prospectData={prospectData}
+        />
+      )}
+      {showDeductibleExpensesModal && (
+        <DeductibleExpensesModal
+          handleClose={() => setDeductibleExpensesModal(false)}
         />
       )}
     </div>
