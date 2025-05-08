@@ -167,6 +167,7 @@ export function DecisionModal(props: DecisionModalProps) {
                       onChange={(name, values) =>
                         form.setFieldValue(name, values)
                       }
+                      fullwidth
                     />
                   )}
                 </Field>

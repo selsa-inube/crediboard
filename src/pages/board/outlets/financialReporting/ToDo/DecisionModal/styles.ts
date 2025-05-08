@@ -23,15 +23,6 @@ export const StyledContainerClose = styled.div`
 `;
 export const StyledCheckpicker = styled.div`
   margin-bottom: 20px;
-  div {
-    width: 100%;
-  }
-  div ul {
-    width: 100%;
-  }
-  div ul li div {
-    width: auto;
-  }
 `;
 export const StyledContainerTextField = styled.div<IStyledModal>`
   height: 65px;
