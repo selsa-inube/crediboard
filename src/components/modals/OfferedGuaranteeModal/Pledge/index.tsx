@@ -2,18 +2,19 @@ import { Stack, Text, Grid, Divider } from "@inubekit/inubekit";
 
 import { CardGray } from "@components/cards/CardGray";
 import { Fieldset } from "@components/data/Fieldset";
-import { mockGuaranteePledge } from "@mocks/guarantee/offeredguarantee.mock";
+import { IPledges } from "@services/guarantees/types";
 
 import { dataPledge } from "./config";
 
 interface IPledge {
   isMobile: boolean;
+  initialValues: IPledges[];
 }
 
 export function Pledge(props: IPledge) {
-  const { isMobile } = props;
+  const { isMobile, initialValues } = props;
 
-  const data = mockGuaranteePledge[0];
+  const data = initialValues[0];
 
   return (
     <Fieldset>
@@ -33,13 +34,16 @@ export function Pledge(props: IPledge) {
           autoRows="auto"
           gap="20px"
         >
-          <CardGray label={dataPledge.state} placeHolder={data.state} />
-          <CardGray label={dataPledge.years} placeHolder={data.years} />
-          <CardGray label={dataPledge.value} placeHolder={`$ ${data.value}`} />
+          <CardGray label={dataPledge.state} placeHolder={data.vehiculeState} />
+          <CardGray label={dataPledge.years} placeHolder={data.vehiculeAge} />
+          <CardGray
+            label={dataPledge.value}
+            placeHolder={`$ ${data.vehiculePrice}`}
+          />
         </Grid>
         <CardGray
           label={dataPledge.description}
-          placeHolder={data.description}
+          placeHolder={data.descriptionUse}
         />
       </Stack>
     </Fieldset>
