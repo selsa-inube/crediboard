@@ -104,7 +104,7 @@ export const TableExtraordinaryInstallment = (
     handleEndPage,
     firstEntryInPage,
     lastEntryInPage,
-  } = usePagination();
+  } = usePagination(extraDebtors);
 
   useEffect(() => {
     if (prospectData?.credit_products) {
@@ -147,13 +147,15 @@ export const TableExtraordinaryInstallment = (
     }
   };
 
+  console.log(selectedDebtor, "selectedDebtor");
+
   return (
     <Table>
       <Thead>
         <Tr>
           {!loading &&
             visbleHeaders.map((header) => (
-              <Th key={header.key} align="left">
+              <Th key={header.key} align="center">
                 {header.label}
               </Th>
             ))}
