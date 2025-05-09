@@ -1,5 +1,5 @@
 import localforage from "localforage";
-import { ICreditProductProspect } from "@services/types";
+import { ICreditProduct } from "@services/prospects/types";
 
 export async function intializedData<T>(option: string, data: T[]) {
   try {
@@ -62,7 +62,7 @@ interface functionActiveById {
   key: string;
   nameDB: string;
   identifier: number | string;
-  editData: { [key: string]: string | ICreditProductProspect[] };
+  editData: { [key: string]: string | ICreditProduct[] };
 }
 
 export async function updateActive(props: functionActiveById) {
@@ -99,15 +99,13 @@ export async function addItem<T>(option: string, newItem: T) {
     const updatedData = Array.isArray(data) ? data : [];
     const newTrace = {
       ...newItem,
-      trace_id: crypto.randomUUID(), 
+      trace_id: crypto.randomUUID(),
     };
 
     updatedData.push(newTrace as T);
     await localforage.setItem(option, updatedData);
     return newTrace;
-    
   } catch (error) {
     return "Failed to add item: " + error;
   }
 }
-

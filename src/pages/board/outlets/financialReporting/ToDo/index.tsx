@@ -75,6 +75,27 @@ function ToDo(props: ToDoProps) {
   const [decisionValue, setDecisionValue] = useState({
     decision: "",
   });
+  const [maxCharacters, setMaxCharacters] = useState(30);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+
+      if (width <= 880) {
+        setMaxCharacters(30);
+      } else if (width <= 1200) {
+        setMaxCharacters(10);
+      } else {
+        setMaxCharacters(30);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const [selectedCommercialManager, setSelectedCommercialManager] =
     useState<ICommercialManagerAndAnalyst | null>(null);
   const [selectedAnalyst, setSelectedAnalyst] =
@@ -505,7 +526,7 @@ function ToDo(props: ToDoProps) {
                       >
                         {truncateTextToMaxLength(
                           assignedStaff.commercialManager,
-                          30
+                          maxCharacters
                         )}
                       </Text>
                     </StyledTextField>
@@ -537,11 +558,13 @@ function ToDo(props: ToDoProps) {
                         appearance="dark"
                         textAlign="start"
                       >
-                        {truncateTextToMaxLength(assignedStaff.analyst, 30)}
+                        {truncateTextToMaxLength(
+                          assignedStaff.analyst,
+                          maxCharacters
+                        )}
                       </Text>
                     </StyledTextField>
                   </Stack>
-
                   <StyledHorizontalDivider $isMobile={isMobile} />
                 </Stack>
               </Stack>
