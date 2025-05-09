@@ -4,12 +4,15 @@ import {
   maxRetriesServices,
 } from "@config/environment";
 
-import { IApprovals } from "@pages/board/outlets/financialReporting/Approvals/types";
+import {
+  INotificationOnApprovals,
+  INotificationOnApprovalsResponse,
+} from "./types";
 
-export const getApprovalsById = async (
+export const getNotificationOnApprovals = async (
   businessUnitPublicCode: string,
-  creditRequestId: string
-): Promise<IApprovals> => {
+  payload: INotificationOnApprovals
+): Promise<INotificationOnApprovalsResponse | undefined> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -19,31 +22,32 @@ export const getApprovalsById = async (
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
 
       const options: RequestInit = {
-        method: "GET",
+        method: "PATCH",
         headers: {
-          "X-Action": "SearchAllApprovalsById",
+          "X-Action": "NotificationOnApprovals",
           "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
+        body: JSON.stringify(payload),
         signal: controller.signal,
       };
 
       const res = await fetch(
-        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/approvals/${creditRequestId}`,
+        `${environment.ICOREBANKING_API_URL_PERSISTENCE}/credit-requests`,
         options
       );
 
       clearTimeout(timeoutId);
 
       if (res.status === 204) {
-        throw new Error("No hay aprobaciones disponibles.");
+        return;
       }
 
       const data = await res.json();
 
       if (!res.ok) {
         throw {
-          message: "Error al obtener las aprobaciones.",
+          message: "Error al traer las notificaciones.",
           status: res.status,
           data,
         };
@@ -51,16 +55,11 @@ export const getApprovalsById = async (
 
       return data;
     } catch (error) {
-      console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
         throw new Error(
-          "Todos los intentos fallaron. No se logro obtener las aprobaciones"
+          "Todos los intentos fallaron. No se pudo traer los errores las notificaciones."
         );
       }
     }
   }
-
-  throw new Error(
-    "No se logro obtener las aprobaciones después de varios intentos."
-  );
 };

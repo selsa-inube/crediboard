@@ -1,15 +1,16 @@
 import { useState, useEffect, useCallback, useContext } from "react";
-import { useFlag } from "@inubekit/inubekit";
+import { Text, useFlag } from "@inubekit/inubekit";
 
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { Fieldset } from "@components/data/Fieldset";
 import { TableBoard } from "@components/data/TableBoard";
+import { BaseModal } from "@components/modals/baseModal";
 import { IEntries } from "@components/data/TableBoard/types";
-import { ListModal } from "@components/modals/ListModal";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
-import { getAprovalsById } from "@services/financialReporting/getApprovals";
+import { getNotificationOnApprovals } from "@services/notificationOnApprovals";
+import { getApprovalsById } from "@services/financialReporting/getApprovals";
 import { ICreditRequest } from "@services/types";
 import {
   actionMobileApprovals,
@@ -25,6 +26,8 @@ import {
 import { AppContext } from "@context/AppContext";
 
 import { errorObserver, errorMessages } from "../config";
+import { dataInfoApprovals } from "./config";
+
 interface IApprovalsProps {
   user: string;
   isMobile: boolean;
@@ -63,12 +66,12 @@ export const Approvals = (props: IApprovalsProps) => {
     if (id) fetchCreditRequest();
   }, [fetchCreditRequest, id]);
 
-  const fetchAprovalsData = useCallback(async () => {
+  const fetchApprovalsData = useCallback(async () => {
     if (!requests?.creditRequestId) return;
     setLoading(true);
     setError(null);
     try {
-      const data = await getAprovalsById(
+      const data = await getApprovalsById(
         businessUnitPublicCode,
         requests.creditRequestId
       );
@@ -92,8 +95,8 @@ export const Approvals = (props: IApprovalsProps) => {
   }, [businessUnitPublicCode, requests?.creditRequestId]);
 
   useEffect(() => {
-    fetchAprovalsData();
-  }, [fetchAprovalsData]);
+    fetchApprovalsData();
+  }, [fetchApprovalsData]);
 
   const handleNotificationClickBound = (data: IEntries) => {
     handleNotificationClick(data, setSelectedData, setShowNotificationModal);
@@ -115,15 +118,30 @@ export const Approvals = (props: IApprovalsProps) => {
     handleErrorClickBound
   );
 
-  const handleSubmit = () => {
-    addFlag({
-      title: "Solicitud enviada",
-      description:
-        "La solicitud ha sido enviada exitosamente para su aprobación.",
-      appearance: "success",
-      duration: 5000,
-    });
-    setShowNotificationModal(false);
+  const handleSubmit = async () => {
+    try {
+      const code = await getNotificationOnApprovals("test", {
+        approvalId: selectedData?.approvalId?.toString() ?? "",
+        creditRequestId: requests?.creditRequestId ?? "",
+      });
+
+      addFlag({
+        title: dataInfoApprovals.notifySend,
+        description: `${dataInfoApprovals.notidyDescription} ${code?.codeNotification}.`,
+        appearance: "success",
+        duration: 5000,
+      });
+      setShowNotificationModal(false);
+    } catch (error) {
+      console.error("Error:", error);
+      addFlag({
+        title: dataInfoApprovals.error,
+        description: `${error}.`,
+        appearance: "danger",
+        duration: 5000,
+      });
+      setShowNotificationModal(false);
+    }
   };
 
   const handleCloseNotificationModal = () => {
@@ -131,7 +149,7 @@ export const Approvals = (props: IApprovalsProps) => {
   };
 
   const handleRetry = () => {
-    fetchAprovalsData();
+    fetchApprovalsData();
   };
 
   return (
@@ -170,13 +188,15 @@ export const Approvals = (props: IApprovalsProps) => {
         )}
       </Fieldset>
       {showNotificationModal && selectedData && (
-        <ListModal
-          title="Notificación"
-          content="¿Está seguro que desea enviar esta solicitud para aprobación? Se necesita evaluar esta solicitud."
-          buttonLabel="Enviar"
+        <BaseModal
+          title={dataInfoApprovals.notify}
+          nextButton="Enviar"
+          handleNext={handleSubmit}
           handleClose={handleCloseNotificationModal}
-          onSubmit={handleSubmit}
-        />
+          width="400px"
+        >
+          <Text>{dataInfoApprovals.notifyModal}</Text>
+        </BaseModal>
       )}
       {showErrorModal && selectedData && (
         <TextAreaModal
