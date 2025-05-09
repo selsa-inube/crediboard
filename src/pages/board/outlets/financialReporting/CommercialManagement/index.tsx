@@ -17,7 +17,11 @@ import {
   Divider,
   useMediaQuery,
   Button,
+  useFlag,
 } from "@inubekit/inubekit";
+
+import { ICreditRequest, IModeOfDisbursement } from "@services/types";
+import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
 import { MenuProspect } from "@components/navigation/MenuProspect";
 import {
   truncateTextToMaxLength,
@@ -31,7 +35,6 @@ import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInsta
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
-import { ICreditRequest, IModeOfDisbursement } from "@services/types";
 import { IProspect, ICreditProduct } from "@services/prospects/types";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { getModeOfDisbursement } from "@services/creditRequets/getModeOfDisbursement";
@@ -90,7 +93,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const [requests, setRequests] = useState<ICreditRequest | null>(null);
 
   const navigation = useNavigate();
-
+  const { addFlag } = useFlag();
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   const { businessUnitSigla } = useContext(AppContext);
@@ -132,6 +135,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           businessUnitPublicCode,
           requests.creditRequestId
         );
+
         const internalData =
           disbursement.find(
             (item) => item.modeOfDisbursementType === "Internal_account"
@@ -151,7 +155,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         const cashData =
           disbursement.find((item) => item.modeOfDisbursementType === "Cash") ||
           null;
-
         setInternal(internalData);
         setExternal(externalData);
         setCheckEntity(checkEntityData);
@@ -159,6 +162,12 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         setCash(cashData);
       } catch (error) {
         console.error(error);
+        addFlag({
+          title: textFlagsUsers.titleWarning,
+          description: textFlagsUsers.descriptionWarning,
+          appearance: "danger",
+          duration: 5000,
+        });
       } finally {
         setLoading(false);
       }
@@ -519,6 +528,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   checkManagementData: checkManagement || dataDefault,
                   cash: cash || dataDefault,
                 }}
+                handleDisbursement={handleDisbursement}
               />
             )}
           </StyledFieldset>
