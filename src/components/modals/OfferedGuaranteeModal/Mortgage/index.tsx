@@ -2,18 +2,19 @@ import { Stack, Text, Grid, Divider } from "@inubekit/inubekit";
 
 import { CardGray } from "@components/cards/CardGray";
 import { Fieldset } from "@components/data/Fieldset";
-import { mockGuaranteeMortgage } from "@mocks/guarantee/offeredguarantee.mock";
+import { IMortgages } from "@services/guarantees/types";
 
 import { dataMortgage } from "./config";
 
 interface IMortgage {
   isMobile: boolean;
+  initialValues: IMortgages[];
 }
 
 export function Mortgage(props: IMortgage) {
-  const { isMobile } = props;
+  const { isMobile, initialValues } = props;
 
-  const data = mockGuaranteeMortgage[0];
+  const data = initialValues[0];
 
   return (
     <Fieldset>
@@ -33,17 +34,23 @@ export function Mortgage(props: IMortgage) {
           autoRows="auto"
           gap="20px"
         >
-          <CardGray label={dataMortgage.property} placeHolder={data.property} />
-          <CardGray label={dataMortgage.state} placeHolder={data.state} />
-          <CardGray label={dataMortgage.years} placeHolder={data.years} />
+          <CardGray
+            label={dataMortgage.property}
+            placeHolder={data.propertyType}
+          />
+          <CardGray
+            label={dataMortgage.state}
+            placeHolder={data.propertyState}
+          />
+          <CardGray label={dataMortgage.years} placeHolder={data.propertyAge} />
           <CardGray
             label={dataMortgage.value}
-            placeHolder={`$ ${data.value}`}
+            placeHolder={`$ ${data.propertyPrice}`}
           />
         </Grid>
         <CardGray
           label={dataMortgage.description}
-          placeHolder={data.description}
+          placeHolder={data.descriptionUse}
         />
       </Stack>
     </Fieldset>
