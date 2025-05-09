@@ -93,7 +93,9 @@ export const StyledHorizontalDivider = styled.hr<IStyledHorizontalDivider>`
 `;
 
 export const StyledTextField = styled.div`
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 230px;
+  @media (min-width: 800px) {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 230px;
+  }
 `;

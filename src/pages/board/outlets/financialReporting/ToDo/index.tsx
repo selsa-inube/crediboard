@@ -63,6 +63,26 @@ function ToDo(props: ToDoProps) {
   const [decisionValue, setDecisionValue] = useState({
     decision: "",
   });
+  const [maxCharacters, setMaxCharacters] = useState(30);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+
+      if (width <= 880) {
+        setMaxCharacters(30);
+      } else if (width <= 1200) {
+        setMaxCharacters(10);
+      } else {
+        setMaxCharacters(30);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const { businessUnitSigla, eventData } = useContext(AppContext);
 
@@ -376,7 +396,7 @@ function ToDo(props: ToDoProps) {
                       >
                         {truncateTextToMaxLength(
                           datamock.CommercialManager,
-                          30
+                          maxCharacters
                         )}
                       </Text>
                     </StyledTextField>
@@ -408,11 +428,13 @@ function ToDo(props: ToDoProps) {
                         appearance="dark"
                         textAlign="start"
                       >
-                        {truncateTextToMaxLength(datamock.Analyst, 30)}
+                        {truncateTextToMaxLength(
+                          datamock.Analyst,
+                          maxCharacters
+                        )}
                       </Text>
                     </StyledTextField>
                   </Stack>
-
                   <StyledHorizontalDivider $isMobile={isMobile} />
                 </Stack>
               </Stack>
