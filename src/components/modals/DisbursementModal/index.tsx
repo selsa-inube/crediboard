@@ -26,13 +26,14 @@ export interface IDisbursementModalProps {
     checkManagementData: dataTabsDisbursement;
     cash: dataTabsDisbursement;
   };
+  handleDisbursement?: () => void;
 }
 
 export function DisbursementModal(
   props: IDisbursementModalProps
 ): JSX.Element | null {
-  const { handleClose, isMobile, data } = props;
-  const [error, setError] = useState(false);
+  const { handleClose, isMobile, data, handleDisbursement } = props;
+  const [error] = useState(false);
   const availableTabs = dataTabs.filter((tab) => {
     const hasValidData = (tabData: dataTabsDisbursement) =>
       tabData && Object.values(tabData).some((value) => value !== "");
@@ -69,7 +70,9 @@ export function DisbursementModal(
   const onChange = (tabId: string) => {
     setCurrentTab(tabId);
   };
-
+  const handleRetry = () => {
+    handleDisbursement?.();
+  };
   return (
     <BaseModal
       title={dataDisbursement.title}
@@ -94,7 +97,7 @@ export function DisbursementModal(
             title={errorMessages.Requirements.title}
             description={errorMessages.Requirements.description}
             buttonDescription={errorMessages.Requirements.button}
-            onRetry={() => setError(false)}
+            onRetry={handleRetry}
           />
         ) : (
           <>

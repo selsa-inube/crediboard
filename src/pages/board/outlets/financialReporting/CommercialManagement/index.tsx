@@ -155,21 +155,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         const cashData =
           disbursement.find((item) => item.modeOfDisbursementType === "Cash") ||
           null;
-        if (
-          !internalData &&
-          !externalData &&
-          !checkEntityData &&
-          !checkManagementData &&
-          !cashData
-        ) {
-          addFlag({
-            title: textFlagsUsers.titleWarning,
-            description: textFlagsUsers.descriptionWarning,
-            appearance: "danger",
-            duration: 5000,
-          });
-        }
-
         setInternal(internalData);
         setExternal(externalData);
         setCheckEntity(checkEntityData);
@@ -543,6 +528,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   checkManagementData: checkManagement || dataDefault,
                   cash: cash || dataDefault,
                 }}
+                handleDisbursement={handleDisbursement}
               />
             )}
           </StyledFieldset>
