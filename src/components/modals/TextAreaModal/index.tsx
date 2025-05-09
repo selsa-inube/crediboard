@@ -1,6 +1,7 @@
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Textarea, useMediaQuery } from "@inubekit/inubekit";
+
 import { BaseModal } from "@components/modals/baseModal";
 
 interface FormValues {
@@ -15,17 +16,20 @@ export interface TextAreaModalProps {
   inputLabel: string;
   inputPlaceholder: string;
   onSubmit?: (values: { textarea: string }) => void;
+  handleNext?: () => void;
   maxLength?: number;
   readOnly?: boolean;
   hideCharCount?: boolean;
   disableTextarea?: boolean;
   secondaryButtonText?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export function TextAreaModal(props: TextAreaModalProps) {
   const {
     onSubmit,
     onCloseModal,
+    handleNext,
     title,
     buttonText,
     inputLabel,
@@ -35,6 +39,7 @@ export function TextAreaModal(props: TextAreaModalProps) {
     readOnly = false,
     disableTextarea = false,
     secondaryButtonText = "Cancelar",
+    onChange,
   } = props;
 
   const validationSchema = Yup.object().shape({
@@ -51,25 +56,21 @@ export function TextAreaModal(props: TextAreaModalProps) {
     <Formik
       initialValues={{ textarea: "" }}
       validationSchema={validationSchema}
-      onSubmit={async (
+      onSubmit={(
         values: FormValues,
         { setSubmitting }: FormikHelpers<FormValues>
       ) => {
-        try {
-          setSubmitting(true);
-          await onSubmit?.(values);
-        } finally {
-          setSubmitting(false);
-          onCloseModal();
-        }
+        onSubmit?.(values);
+        setSubmitting(false);
+        onCloseModal?.();
       }}
     >
-      {({ errors, touched, isSubmitting, submitForm }) => (
+      {({ errors, touched, isSubmitting }) => (
         <BaseModal
           title={title}
           nextButton={buttonText}
           backButton={secondaryButtonText}
-          handleNext={readOnly ? onCloseModal : submitForm}
+          handleNext={handleNext ?? (() => {})}
           handleBack={onSecondaryButtonClick}
           handleClose={onCloseModal}
           width={isMobile ? "300px" : "500px"}
@@ -95,6 +96,10 @@ export function TextAreaModal(props: TextAreaModalProps) {
                   onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setFieldTouched("textarea");
                     field.onBlur(e);
+                  }}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    onChange?.(e);
                   }}
                 />
               )}
