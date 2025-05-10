@@ -11,10 +11,10 @@ import { Stack, Icon, Tag } from "@inubekit/inubekit";
 import { IEntries } from "@components/data/TableBoard/types";
 import { CreditRequest } from "@services/types";
 
-export const dataButton = {
+export const DataButton = (onClick: () => void) => ({
   title: "Agregar Requisito",
-  onClick: () => console.log("Agregar"),
-};
+  onClick,
+});
 
 const receiveData = (data: IEntries) => {
   console.log(data, "function que recibe data");

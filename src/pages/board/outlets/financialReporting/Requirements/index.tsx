@@ -8,21 +8,27 @@ import { TableBoard } from "@components/data/TableBoard";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { TraceDetailsModal } from "@components/modals/TraceDetailsModal";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
-import { CreditRequest } from "@services/types";
+import {
+  CreditRequest,
+  IPatchOfRequirements,
+  IRequirement,
+} from "@services/types";
 import { addItem } from "@mocks/utils/dataMock.service";
 import { traceDetailsMock } from "@mocks/financialReporting/trace-details/tracedetails.mock";
 import { getAllPackagesOfRequirementsById } from "@services/packagesOfRequirements";
+import { AddRequirementMock } from "@mocks/addRequirement";
 
 import {
-  dataButton,
   infoItems,
   maperDataRequirements,
   maperEntries,
   getAcctionMobile,
   dataFlags,
+  DataButton,
 } from "./config";
 import { AprovalsModal } from "./AprovalsModal";
 import { traceObserver, errorMessages } from "../config";
+import { AddRequirement } from "./AddRequirement";
 
 interface IRequirementsData {
   id: string;
@@ -44,14 +50,16 @@ export const Requirements = (props: IRequirementsProps) => {
     props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
+  const [showAddRequirementModal, setShowAddRequirementModal] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [dataRequirements, setDataRequirements] = useState<IRequirementsData[]>(
     []
   );
   const [error, setError] = useState(false);
+  const [rawRequirements, setRawRequirements] = useState<IRequirement[]>([]);
+  const [sentData, setSentData] = useState<IPatchOfRequirements | null>(null);
 
   const { addFlag } = useFlag();
-
   useEffect(() => {
     const fetchRequirements = async () => {
       try {
@@ -63,7 +71,7 @@ export const Requirements = (props: IRequirementsProps) => {
           businessUnitPublicCode,
           creditRequestCode
         );
-
+        setRawRequirements(data);
         if (!Array.isArray(data) || data.length === 0) {
           throw new Error("No hay requisitos disponibles.");
         }
@@ -104,7 +112,7 @@ export const Requirements = (props: IRequirementsProps) => {
 
     fetchRequirements();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creditRequestCode]);
+  }, [creditRequestCode, sentData]);
 
   const renderAccion = getAcctionMobile(
     setShowSeeDetailsModal,
@@ -157,7 +165,9 @@ export const Requirements = (props: IRequirementsProps) => {
       }
     }
   };
-
+  const closeAdd = () => {
+    setShowAddRequirementModal(false);
+  };
   const renderAddIcon = () => {
     return (
       <Stack justifyContent="center">
@@ -197,12 +207,12 @@ export const Requirements = (props: IRequirementsProps) => {
     { id: "agregar", content: renderAddIcon },
     { id: "aprobar", content: renderCheckIcon },
   ];
-
+  const openAddRequirementModal = () => setShowAddRequirementModal(true);
   return (
     <>
       <Fieldset
         title={errorMessages.Requirements.titleCard}
-        activeButton={dataButton}
+        activeButton={DataButton(openAddRequirementModal)}
         heightFieldset="100%"
         hasTable={!error}
         hasError={error ? true : false}
@@ -250,6 +260,15 @@ export const Requirements = (props: IRequirementsProps) => {
           onCloseModal={toggleAprovalsModal}
           onChangeApprove={changeApprove}
           onSubmit={(values) => handleSubmitAprovals(id!, user, values)}
+        />
+      )}
+      {showAddRequirementModal && (
+        <AddRequirement
+          accountdRequirement={AddRequirementMock}
+          onCloseModal={closeAdd}
+          rawRequirements={rawRequirements}
+          creditRequestCode={creditRequestCode}
+          setSentData={setSentData}
         />
       )}
     </>
