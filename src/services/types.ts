@@ -8,6 +8,26 @@ export interface IUsersByCreditRequests {
   role: string;
 }
 
+export interface IlistsOfRequirementsByPackage {
+  packageId: string;
+  requirementCatalogName: string;
+  requirementDate: string;
+  requirementStatus: string;
+  descriptionEvaluationRequirement: string;
+  descriptionUse: string;
+  typeOfRequirementToEvaluated: string;
+  transactionOperation: string;
+}
+
+export interface IPatchOfRequirements {
+  packageId: string;
+  uniqueReferenceNumber: string;
+  packageDate: string;
+  packageDescription: string;
+  modifyJustification?: string;
+  listsOfRequirementsByPackage: IlistsOfRequirementsByPackage[];
+}
+
 export interface IAccountingVouchers {
   documentCode: string;
   obligationCode: string;
@@ -82,6 +102,12 @@ export interface IToDo {
   stage: string;
   taskToBeDone: string;
   usersByCreditRequestResponse: IStaff[];
+}
+
+export interface IRequirement {
+  packageId: string;
+  packageDate: string;
+  uniqueReferenceNumber: string;
 }
 
 export interface IKeyRiskScoring {
