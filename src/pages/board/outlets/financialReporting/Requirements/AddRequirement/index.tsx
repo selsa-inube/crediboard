@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 import { MdClear } from "react-icons/md";
+import { useContext, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import {
@@ -15,27 +16,28 @@ import {
   Textarea,
 } from "@inubekit/inubekit";
 
-import { IOptionsSelect } from "@pages/SubmitCreditApplication/types";
-
-import { StyledContainerClose, StyledModal } from "./styles";
-import { IPatchOfRequirements, IRequirement } from "@services/types";
-import { saveRequirements } from "./utils";
-import { useContext, useState } from "react";
 import { AppContext } from "@context/AppContext";
 import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
 import { useNavigate, useParams } from "react-router-dom";
 import { dataAddRequirement } from "@config/components/addRequirement";
+import { IOptionsSelect } from "@pages/SubmitCreditApplication/types";
+import { IPatchOfRequirements, IRequirement } from "@services/types";
+
+import { StyledContainerClose, StyledModal } from "./styles";
+import { saveRequirements } from "./utils";
 
 export interface StaffModalProps {
   accountdRequirement: IOptionsSelect[];
   rawRequirements: IRequirement[];
   creditRequestCode: string;
-  commercialManager?: string;
-  analyst?: string;
   portalId?: string;
   onChange?: (key: string) => void;
   onSubmit?: (values: { typeOfRequirementToEvaluated: string }) => void;
   onCloseModal?: () => void;
+  disabledBack?: boolean;
+  setSentData: React.Dispatch<
+    React.SetStateAction<IPatchOfRequirements | null>
+  >;
 }
 
 export function AddRequirement(props: StaffModalProps) {
@@ -46,6 +48,8 @@ export function AddRequirement(props: StaffModalProps) {
     accountdRequirement,
     rawRequirements,
     creditRequestCode,
+    setSentData,
+    disabledBack = false,
   } = props;
   const [selectedCommercialManager, setSelectedCommercialManager] =
     useState<string>("");
@@ -62,7 +66,12 @@ export function AddRequirement(props: StaffModalProps) {
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
   const node = document.getElementById(portalId);
   const validationSchema = Yup.object().shape({
-    typeOfRequirementToEvaluated: Yup.string(),
+    typeOfRequirementToEvaluated: Yup.string().required(
+      "Este campo es obligatorio"
+    ),
+    requirementCatalogName: Yup.string().required("Este campo es obligatorio"),
+    descriptionUse: Yup.string().required("Este campo es obligatorio"),
+    modifyJustification: Yup.string().required("Este campo es obligatorio"),
   });
 
   if (!node) {
@@ -70,6 +79,30 @@ export function AddRequirement(props: StaffModalProps) {
       "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
     );
   }
+  const isButtonDisabled = (
+    values: {
+      typeOfRequirementToEvaluated: string;
+      requirementCatalogName: string;
+      descriptionUse: string;
+      modifyJustification: string;
+    },
+    isSubmitting: boolean
+  ): boolean => {
+    return (
+      !values.typeOfRequirementToEvaluated ||
+      !values.requirementCatalogName ||
+      !values.descriptionUse ||
+      !values.modifyJustification ||
+      isSubmitting
+    );
+  };
+  const handleResetForm = (resetForm: () => void) => {
+    setRequirementName("");
+    setDescriptionUseValue("");
+    setModifyJustification("");
+    setSelectedCommercialManager("");
+    resetForm();
+  };
 
   const handleAccountdRequirementChange = (
     name: string,
@@ -92,6 +125,7 @@ export function AddRequirement(props: StaffModalProps) {
       value: official.value,
     })),
   };
+
   const handleCreditRequests = async (creditRequests: IPatchOfRequirements) => {
     await saveRequirements(businessUnitPublicCode, creditRequests)
       .then(() => {
@@ -101,6 +135,7 @@ export function AddRequirement(props: StaffModalProps) {
           appearance: "success",
           duration: 5000,
         });
+        setSentData(creditRequests);
       })
       .catch(() => {
         addFlag({
@@ -123,6 +158,7 @@ export function AddRequirement(props: StaffModalProps) {
   const handleToggleModal = () => {
     setShowModal(!showModal);
   };
+
   const initialValues: IPatchOfRequirements = {
     packageId: rawRequirements[0].packageId,
     uniqueReferenceNumber: creditRequestCode,
@@ -176,7 +212,7 @@ export function AddRequirement(props: StaffModalProps) {
             setSubmitting(false);
           }}
         >
-          {({ isSubmitting, setFieldValue, values }) => (
+          {({ isSubmitting, setFieldValue, values, resetForm }) => (
             <Form>
               <Stack direction="column" gap="24px">
                 <Select
@@ -235,13 +271,23 @@ export function AddRequirement(props: StaffModalProps) {
                   maxLength={300}
                 />
               </Stack>
-              <Stack justifyContent="flex-end" margin="16px 0">
+              <Stack justifyContent="flex-end" margin="16px 0" gap="16px">
+                <Button
+                  type="button"
+                  onClick={() => handleResetForm(resetForm)}
+                  disabled={disabledBack}
+                  variant="outlined"
+                  appearance="gray"
+                >
+                  {dataAddRequirement.cancel}
+                </Button>
+
                 <Button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isButtonDisabled(values, isSubmitting)}
                   onClick={() => handleCreditRequests(initialValues)}
                 >
-                  Agregar
+                  {dataAddRequirement.add}
                 </Button>
               </Stack>
             </Form>

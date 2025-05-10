@@ -8,10 +8,15 @@ import { TableBoard } from "@components/data/TableBoard";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { TraceDetailsModal } from "@components/modals/TraceDetailsModal";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
-import { CreditRequest, IRequirement } from "@services/types";
+import {
+  CreditRequest,
+  IPatchOfRequirements,
+  IRequirement,
+} from "@services/types";
 import { addItem } from "@mocks/utils/dataMock.service";
 import { traceDetailsMock } from "@mocks/financialReporting/trace-details/tracedetails.mock";
 import { getAllPackagesOfRequirementsById } from "@services/packagesOfRequirements";
+import { AddRequirementMock } from "@mocks/addRequirement";
 
 import {
   infoItems,
@@ -24,7 +29,6 @@ import {
 import { AprovalsModal } from "./AprovalsModal";
 import { traceObserver, errorMessages } from "../config";
 import { AddRequirement } from "./AddRequirement";
-import { AddRequirementMock } from "@mocks/addRequirement";
 
 interface IRequirementsData {
   id: string;
@@ -53,6 +57,7 @@ export const Requirements = (props: IRequirementsProps) => {
   );
   const [error, setError] = useState(false);
   const [rawRequirements, setRawRequirements] = useState<IRequirement[]>([]);
+  const [sentData, setSentData] = useState<IPatchOfRequirements | null>(null);
 
   const { addFlag } = useFlag();
   useEffect(() => {
@@ -107,7 +112,7 @@ export const Requirements = (props: IRequirementsProps) => {
 
     fetchRequirements();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creditRequestCode]);
+  }, [creditRequestCode, sentData]);
 
   const renderAccion = getAcctionMobile(
     setShowSeeDetailsModal,
@@ -263,6 +268,7 @@ export const Requirements = (props: IRequirementsProps) => {
           onCloseModal={closeAdd}
           rawRequirements={rawRequirements}
           creditRequestCode={creditRequestCode}
+          setSentData={setSentData}
         />
       )}
     </>
