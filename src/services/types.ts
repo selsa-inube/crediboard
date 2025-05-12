@@ -7,7 +7,10 @@ export interface IUsersByCreditRequests {
   identificationNumber: string;
   role: string;
 }
-
+export interface IDeleteCreditRequest {
+  creditRequestId: string;
+  removalJustification: string;
+}
 export interface IAccountingVouchers {
   documentCode: string;
   obligationCode: string;
