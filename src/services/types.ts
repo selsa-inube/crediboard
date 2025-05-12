@@ -7,6 +7,11 @@ export interface IUsersByCreditRequests {
   identificationNumber: string;
   role: string;
 }
+export interface IUploadedFile {
+  id: string;
+  name: string;
+  file?: File;
+}
 export interface IDeleteCreditRequest {
   creditRequestId: string;
   removalJustification: string;
