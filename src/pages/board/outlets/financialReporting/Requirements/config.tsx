@@ -255,11 +255,11 @@ const actionsMobile = [
 
 const generateTag = (value: string): JSX.Element => {
   if (value === "Y") {
-    return <Tag label="Cumple" appearance="success" weight="strong" />;
+    return <Tag label="Cumple" appearance="success" />;
   } else if (value === "N") {
-    return <Tag label="No Cumple" appearance="danger" weight="strong" />;
+    return <Tag label="No Cumple" appearance="danger" />;
   } else {
-    return <Tag label="Sin Evaluar" appearance="warning" weight="strong" />;
+    return <Tag label="Sin Evaluar" appearance="warning" />;
   }
 };
 

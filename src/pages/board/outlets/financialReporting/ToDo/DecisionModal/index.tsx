@@ -34,7 +34,6 @@ export interface DecisionModalProps {
   onSecondaryButtonClick?: () => void;
   maxLength?: number;
   readOnly?: boolean;
-  hideCharCount?: boolean;
   disableTextarea?: boolean;
   secondaryButtonText?: string;
 }
@@ -161,9 +160,10 @@ export function DecisionModal(props: DecisionModalProps) {
                 <Field name="selectedOptions">
                   {({ field, form }: FieldProps) => (
                     <Checkpicker
+                      id="selectedOptions"
                       name="selectedOptions"
                       options={soporteInvalidOptions}
-                      values={field.value}
+                      values={field.name}
                       onChange={(name, values) =>
                         form.setFieldValue(name, values)
                       }
