@@ -14,7 +14,7 @@ import { BaseModal } from "@components/modals/baseModal";
 import { IOptionsSelect } from "@pages/SubmitCreditApplication/types";
 
 export interface IRequirement {
-  accountdRequirement: IOptionsSelect[];
+  optionsRequirement: IOptionsSelect[];
   creditRequestCode: string;
   title: string;
   setTypeOfRequirementToEvaluated: React.Dispatch<React.SetStateAction<string>>;
@@ -43,7 +43,7 @@ export function AddRequirement(props: IRequirement) {
     buttonText,
     onCloseModal,
     onSecondaryButtonClick,
-    accountdRequirement,
+    optionsRequirement,
     setTypeOfRequirementToEvaluated,
     setDescriptionUseValue,
     setModifyJustification,
@@ -93,7 +93,7 @@ export function AddRequirement(props: IRequirement) {
   };
 
   const options = {
-    Requirement: accountdRequirement.map((official) => ({
+    Requirement: optionsRequirement.map((official) => ({
       id: official.id,
       label: official.label,
       value: official.value,

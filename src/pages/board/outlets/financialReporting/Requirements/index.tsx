@@ -328,7 +328,7 @@ export const Requirements = (props: IRequirementsProps) => {
         <AddRequirement
           title={dataAddRequirement.title}
           buttonText={dataAddRequirement.add}
-          accountdRequirement={AddRequirementMock}
+          optionsRequirement={AddRequirementMock}
           onCloseModal={closeAdd}
           creditRequestCode={creditRequestCode}
           setSentData={setSentData}
