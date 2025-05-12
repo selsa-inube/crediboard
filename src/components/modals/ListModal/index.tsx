@@ -244,8 +244,8 @@ export const ListModal = (props: IListModalProps) => {
     }
 
     try {
-      if (uploadedFiles && uploadedFiles.length > 0) {
-        for (const fileData of uploadedFiles) {
+      if (uploadedFiles!.length) {
+        for (const fileData of uploadedFiles!) {
           const abbreviatedName = fileData.name
             .split(".")
             .slice(0, -1)
