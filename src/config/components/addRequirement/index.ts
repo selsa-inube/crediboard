@@ -7,7 +7,7 @@ export const dataAddRequirement = {
   labelName: "Nombre del requisito",
   labelAmount: "Cantidad",
   labelValue: "Valor",
-  labelTextarea: "Tipo",
+  labelTextarea: "Descripción",
   labelJustification: "Justificacion",
   labelFrequency: "Frecuencia de pago",
   labelDate: "Primer pago",

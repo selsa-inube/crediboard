@@ -19,7 +19,6 @@ import { traceDetailsMock } from "@mocks/financialReporting/trace-details/traced
 import { AddRequirementMock } from "@mocks/addRequirement";
 import { getAllPackagesOfRequirementsById } from "@services/packagesOfRequirements";
 import { dataAddRequirement } from "@config/components/addRequirement";
-import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
 
 import {
   infoItems,
@@ -27,7 +26,8 @@ import {
   maperEntries,
   getAcctionMobile,
   dataFlags,
-  DataButton,
+  dataButton,
+  textFlagsRequirements,
 } from "./config";
 import { AprovalsModal } from "./AprovalsModal";
 import { traceObserver, errorMessages } from "../config";
@@ -223,8 +223,8 @@ export const Requirements = (props: IRequirementsProps) => {
     await saveRequirements(businessUnitPublicCode, creditRequests)
       .then(() => {
         addFlag({
-          title: textFlagsUsers.titleSuccess,
-          description: textFlagsUsers.descriptionSuccess,
+          title: textFlagsRequirements.titleSuccess,
+          description: textFlagsRequirements.descriptionSuccess,
           appearance: "success",
           duration: 5000,
         });
@@ -232,8 +232,8 @@ export const Requirements = (props: IRequirementsProps) => {
       })
       .catch(() => {
         addFlag({
-          title: textFlagsUsers.titleError,
-          description: textFlagsUsers.descriptionError,
+          title: textFlagsRequirements.titleError,
+          description: textFlagsRequirements.descriptionError,
           appearance: "danger",
           duration: 5000,
         });
@@ -274,7 +274,7 @@ export const Requirements = (props: IRequirementsProps) => {
     <>
       <Fieldset
         title={errorMessages.Requirements.titleCard}
-        activeButton={DataButton(openAddRequirementModal)}
+        activeButton={dataButton(openAddRequirementModal)}
         heightFieldset="100%"
         hasTable={!error}
         hasError={error ? true : false}

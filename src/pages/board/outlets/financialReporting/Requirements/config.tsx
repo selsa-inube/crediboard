@@ -11,7 +11,7 @@ import { Stack, Icon, Tag } from "@inubekit/inubekit";
 import { IEntries } from "@components/data/TableBoard/types";
 import { CreditRequest } from "@services/types";
 
-export const DataButton = (onClick: () => void) => ({
+export const dataButton = (onClick: () => void) => ({
   title: "Agregar Requisito",
   onClick,
 });
@@ -58,7 +58,12 @@ export const titlesRequirements = [
     },
   ],
 ];
-
+export const textFlagsRequirements = {
+  titleSuccess: "Cambios guardados con éxito!",
+  descriptionSuccess: `Hemos creado el campo exitosamente.`,
+  titleError: "¡Uy, algo ha salido mal!",
+  descriptionError: "No se han podido guardar los cambios.",
+};
 export const infoItems = [
   { icon: <MdAddCircleOutline />, text: "Adjuntar", appearance: "help" },
   {
