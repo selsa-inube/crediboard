@@ -99,11 +99,11 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
                 >
                   {consolidatedCredits.map((item) => (
                     <InvestmentCreditCard
-                      code={ModalConfig.code}
+                      code="Código"
                       codeValue={item.credit_product_code}
                       expired={ModalConfig.terminated}
                       expiredValue={item.consolidated_amount}
-                      title={ModalConfig.creditInvestment}
+                      title={item.line_of_credit_description}
                     />
                   ))}
                 </Grid>
