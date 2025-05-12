@@ -147,8 +147,6 @@ export const TableExtraordinaryInstallment = (
     }
   };
 
-  console.log(selectedDebtor, "selectedDebtor");
-
   return (
     <Table>
       <Thead>
