@@ -15,7 +15,7 @@ import { makeDecisions } from "@services/todo/makeDecisions";
 import { validationMessages } from "@validations/validationMessages";
 
 import { IMakeDecisionsCreditRequestWithXAction } from "./types";
-import { StyledCheckpicker, StyledContainerTextField } from "./styles";
+import { StyledContainerTextField } from "./styles";
 import { soporteInvalidOptions, txtFlags, txtOthersOptions } from "./../config";
 
 interface FormValues {
@@ -157,7 +157,7 @@ export function DecisionModal(props: DecisionModalProps) {
               </Stack>
             </StyledContainerTextField>
             {data.makeDecision.humanDecision === "SOPORTES_INVALIDOS" && (
-              <StyledCheckpicker>
+              <Stack margin="0 0 20px 0">
                 <Field name="selectedOptions">
                   {({ field, form }: FieldProps) => (
                     <Checkpicker
@@ -171,7 +171,7 @@ export function DecisionModal(props: DecisionModalProps) {
                     />
                   )}
                 </Field>
-              </StyledCheckpicker>
+              </Stack>
             )}
             <Field name="textarea">
               {({ field, form: { setFieldTouched } }: FieldProps) => (
