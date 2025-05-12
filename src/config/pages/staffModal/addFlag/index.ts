@@ -3,6 +3,8 @@ export const textFlagsUsers = {
   descriptionSuccess: `Hemos creado el campo exitosamente.`,
   titleError: "¡Uy, algo ha salido mal!",
   descriptionError: "No se han podido guardar los cambios.",
+  titleWarning: "¡Uy, algo ha salido mal!",
+  descriptionWarning: "No hay datos disponibles.",
 };
 
 export const textFlagsReject = {

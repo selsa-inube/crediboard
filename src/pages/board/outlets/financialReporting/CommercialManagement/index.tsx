@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   MdOutlineAdd,
   MdOutlineChevronRight,
@@ -17,7 +17,11 @@ import {
   Divider,
   useMediaQuery,
   Button,
+  useFlag,
 } from "@inubekit/inubekit";
+
+import { ICreditRequest, IModeOfDisbursement } from "@services/types";
+import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
 import { MenuProspect } from "@components/navigation/MenuProspect";
 import {
   truncateTextToMaxLength,
@@ -28,15 +32,10 @@ import { ExtraordinaryPaymentModal } from "@components/modals/ExtraordinaryPayme
 import { DisbursementModal } from "@components/modals/DisbursementModal";
 import { Fieldset } from "@components/data/Fieldset";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
-import { getById } from "@mocks/utils/dataMock.service";
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
 import { CreditProspect } from "@pages/prospect/components/CreditProspect";
-import {
-  ICreditProductProspect,
-  ICreditRequest,
-  IModeOfDisbursement,
-} from "@services/types";
+import { IProspect, ICreditProduct } from "@services/prospects/types";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { getModeOfDisbursement } from "@services/creditRequets/getModeOfDisbursement";
 import { AppContext } from "@context/AppContext";
@@ -56,6 +55,7 @@ import {
 
 interface ComercialManagementProps {
   data: ICreditRequest;
+  prospectData: IProspect;
   collapse: boolean;
   setCollapse: React.Dispatch<React.SetStateAction<boolean>>;
   print: () => void;
@@ -73,11 +73,13 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
     setCollapse,
     id,
     hideContactIcons,
+    prospectData,
   } = props;
   const [showMenu, setShowMenu] = useState(false);
   const [modalHistory, setModalHistory] = useState<string[]>([]);
-  const [prospectProducts, setProspectProducts] =
-    useState<ICreditProductProspect>();
+  const [prospectProducts, setProspectProducts] = useState<ICreditProduct[]>(
+    []
+  );
 
   const [internal, setInternal] = useState<IModeOfDisbursement | null>(null);
   const [external, setExternal] = useState<IModeOfDisbursement | null>(null);
@@ -90,10 +92,8 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
 
   const [requests, setRequests] = useState<ICreditRequest | null>(null);
 
-  const { prospectCode } = useParams();
-
   const navigation = useNavigate();
-
+  const { addFlag } = useFlag();
   const isMobile = useMediaQuery("(max-width: 720px)");
 
   const { businessUnitSigla } = useContext(AppContext);
@@ -105,28 +105,12 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   const handleOpenModal = (modalName: string) => {
     setModalHistory((prevHistory) => [...prevHistory, modalName]);
   };
+
   useEffect(() => {
-    try {
-      Promise.allSettled([
-        getById("prospects", "public_code", prospectCode!, true),
-      ]).then(([prospects]) => {
-        if (
-          prospects.status === "fulfilled" &&
-          Array.isArray(prospects.value)
-        ) {
-          if (!(prospects.value instanceof Error)) {
-            setProspectProducts(
-              prospects.value
-                .map((dataPropects) => dataPropects.credit_product)
-                .flat()[0] as ICreditProductProspect
-            );
-          }
-        }
-      });
-    } catch (error) {
-      console.log("error", error);
+    if (prospectData && Array.isArray(prospectData.credit_products)) {
+      setProspectProducts(prospectData.credit_products as ICreditProduct[]);
     }
-  }, [prospectCode]);
+  }, [prospectData]);
 
   useEffect(() => {
     const fetchCreditRequest = async () => {
@@ -151,6 +135,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
           businessUnitPublicCode,
           requests.creditRequestId
         );
+
         const internalData =
           disbursement.find(
             (item) => item.modeOfDisbursementType === "Internal_account"
@@ -170,7 +155,6 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         const cashData =
           disbursement.find((item) => item.modeOfDisbursementType === "Cash") ||
           null;
-
         setInternal(internalData);
         setExternal(externalData);
         setCheckEntity(checkEntityData);
@@ -178,6 +162,12 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
         setCash(cashData);
       } catch (error) {
         console.error(error);
+        addFlag({
+          title: textFlagsUsers.titleWarning,
+          description: textFlagsUsers.descriptionWarning,
+          appearance: "danger",
+          duration: 5000,
+        });
       } finally {
         setLoading(false);
       }
@@ -441,7 +431,9 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                 <>
                   {isMobile && (
                     <Stack padding="0px 0px 10px">
-                      {prospectProducts?.ordinary_installment_for_principal && (
+                      {prospectProducts?.some(
+                        (product) => product.extraordinary_installments
+                      ) && (
                         <Button
                           type="button"
                           appearance="primary"
@@ -495,7 +487,9 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                           <MenuProspect
                             options={menuOptions(
                               handleOpenModal,
-                              !prospectProducts?.ordinary_installment_for_principal
+                              !prospectProducts?.some(
+                                (product) => product.extraordinary_installments
+                              )
                             )}
                             onMouseLeave={() => setShowMenu(false)}
                           />
@@ -512,6 +506,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   isPrint={isPrint}
                   showMenu={() => setShowMenu(false)}
                   showPrint
+                  prospectData={prospectData}
                 />
               )}
             </Stack>
@@ -533,6 +528,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   checkManagementData: checkManagement || dataDefault,
                   cash: cash || dataDefault,
                 }}
+                handleDisbursement={handleDisbursement}
               />
             )}
           </StyledFieldset>
