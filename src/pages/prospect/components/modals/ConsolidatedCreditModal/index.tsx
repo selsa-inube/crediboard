@@ -99,7 +99,6 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
                 >
                   {consolidatedCredits.map((item) => (
                     <InvestmentCreditCard
-                      code="Código"
                       codeValue={item.credit_product_code}
                       expired={ModalConfig.terminated}
                       expiredValue={item.consolidated_amount}
