@@ -1,36 +1,31 @@
-import { createPortal } from "react-dom";
-import { MdClear } from "react-icons/md";
-import { useContext, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import {
   Stack,
-  Icon,
-  Text,
   useMediaQuery,
   Select,
-  Blanket,
-  Button,
-  useFlag,
   Textfield,
   Textarea,
 } from "@inubekit/inubekit";
 
-import { AppContext } from "@context/AppContext";
-import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
-import { useNavigate, useParams } from "react-router-dom";
 import { dataAddRequirement } from "@config/components/addRequirement";
+import { IPatchOfRequirements } from "@services/types";
+import { BaseModal } from "@components/modals/baseModal";
 import { IOptionsSelect } from "@pages/SubmitCreditApplication/types";
-import { IPatchOfRequirements, IRequirement } from "@services/types";
 
-import { StyledContainerClose, StyledModal } from "./styles";
-import { saveRequirements } from "./utils";
-
-export interface StaffModalProps {
+export interface IRequirement {
   accountdRequirement: IOptionsSelect[];
-  rawRequirements: IRequirement[];
   creditRequestCode: string;
-  portalId?: string;
+  title: string;
+  setTypeOfRequirementToEvaluated: React.Dispatch<React.SetStateAction<string>>;
+  setDescriptionUseValue: React.Dispatch<React.SetStateAction<string>>;
+  setModifyJustification: React.Dispatch<React.SetStateAction<string>>;
+  setRequirementName: React.Dispatch<React.SetStateAction<string>>;
+  buttonText: string;
+  readOnly?: boolean;
+  handleNext?: () => void;
+  onSecondaryButtonClick?: () => void;
+  secondaryButtonText?: string;
   onChange?: (key: string) => void;
   onSubmit?: (values: { typeOfRequirementToEvaluated: string }) => void;
   onCloseModal?: () => void;
@@ -40,31 +35,24 @@ export interface StaffModalProps {
   >;
 }
 
-export function AddRequirement(props: StaffModalProps) {
+export function AddRequirement(props: IRequirement) {
   const {
-    portalId = "portal",
     onSubmit,
+    title,
+    readOnly,
+    buttonText,
     onCloseModal,
+    onSecondaryButtonClick,
     accountdRequirement,
-    rawRequirements,
-    creditRequestCode,
-    setSentData,
-    disabledBack = false,
+    setTypeOfRequirementToEvaluated,
+    setDescriptionUseValue,
+    setModifyJustification,
+    setRequirementName,
+    handleNext,
+    secondaryButtonText = "Cancelar",
   } = props;
-  const [selectedCommercialManager, setSelectedCommercialManager] =
-    useState<string>("");
+
   const isMobile = useMediaQuery("(max-width: 700px)");
-  const { businessUnitSigla } = useContext(AppContext);
-  const { addFlag } = useFlag();
-  const [requirementName, setRequirementName] = useState("");
-  const [descriptionUseValue, setDescriptionUseValue] = useState("");
-  const [modifyJustification, setModifyJustification] = useState("");
-  const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
-  const { id } = useParams();
-  const businessUnitPublicCode: string =
-    JSON.parse(businessUnitSigla).businessUnitPublicCode;
-  const node = document.getElementById(portalId);
   const validationSchema = Yup.object().shape({
     typeOfRequirementToEvaluated: Yup.string().required(
       "Este campo es obligatorio"
@@ -73,12 +61,6 @@ export function AddRequirement(props: StaffModalProps) {
     descriptionUse: Yup.string().required("Este campo es obligatorio"),
     modifyJustification: Yup.string().required("Este campo es obligatorio"),
   });
-
-  if (!node) {
-    throw new Error(
-      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
-    );
-  }
   const isButtonDisabled = (
     values: {
       typeOfRequirementToEvaluated: string;
@@ -96,15 +78,7 @@ export function AddRequirement(props: StaffModalProps) {
       isSubmitting
     );
   };
-  const handleResetForm = (resetForm: () => void) => {
-    setRequirementName("");
-    setDescriptionUseValue("");
-    setModifyJustification("");
-    setSelectedCommercialManager("");
-    resetForm();
-  };
-
-  const handleAccountdRequirementChange = (
+  const handleRequirementChange = (
     name: string,
     value: string,
     setFieldValue: (field: string, value: string) => void
@@ -114,7 +88,7 @@ export function AddRequirement(props: StaffModalProps) {
       (option) => option.value === value
     );
     if (selectedOption) {
-      setSelectedCommercialManager(selectedOption.id);
+      setTypeOfRequirementToEvaluated(selectedOption.id);
     }
   };
 
@@ -126,175 +100,92 @@ export function AddRequirement(props: StaffModalProps) {
     })),
   };
 
-  const handleCreditRequests = async (creditRequests: IPatchOfRequirements) => {
-    await saveRequirements(businessUnitPublicCode, creditRequests)
-      .then(() => {
-        addFlag({
-          title: textFlagsUsers.titleSuccess,
-          description: textFlagsUsers.descriptionSuccess,
-          appearance: "success",
-          duration: 5000,
-        });
-        setSentData(creditRequests);
-      })
-      .catch(() => {
-        addFlag({
-          title: textFlagsUsers.titleError,
-          description: textFlagsUsers.descriptionError,
-          appearance: "danger",
-          duration: 5000,
-        });
-      })
-      .finally(() => {
-        if (onCloseModal) onCloseModal();
-        handleToggleModal();
-      });
-
-    setTimeout(() => {
-      navigate(`/extended-card/${id}`);
-    }, 6000);
-  };
-
-  const handleToggleModal = () => {
-    setShowModal(!showModal);
-  };
-
-  const initialValues: IPatchOfRequirements = {
-    packageId: rawRequirements[0].packageId,
-    uniqueReferenceNumber: creditRequestCode,
-    packageDate: rawRequirements[0].packageDate,
-    packageDescription:
-      "Requisitos para la solicitud de crédito SC-12225464610",
-    modifyJustification: modifyJustification,
-    listsOfRequirementsByPackage: [
-      {
-        packageId: rawRequirements[0].packageId,
-        requirementCatalogName: requirementName,
-        requirementDate: rawRequirements[0].packageDate,
-        requirementStatus: "UNVALIDATED",
-        descriptionEvaluationRequirement: "Requisitos no evaluados",
-        descriptionUse: descriptionUseValue,
-        typeOfRequirementToEvaluated: selectedCommercialManager,
-        transactionOperation: "Insert",
-      },
-    ],
-  };
-  return createPortal(
-    <Blanket>
-      <StyledModal $smallScreen={isMobile}>
-        <Stack alignItems="center" justifyContent="space-between">
-          <Text type="headline" size="small">
-            {dataAddRequirement.title}
-          </Text>
-          <StyledContainerClose onClick={onCloseModal}>
-            <Stack alignItems="center" gap="8px">
-              <Text>{dataAddRequirement.close}</Text>
-              <Icon
-                icon={<MdClear />}
-                size="24px"
-                cursorHover
-                appearance="dark"
+  return (
+    <Formik
+      initialValues={{
+        typeOfRequirementToEvaluated: "",
+        requirementCatalogName: "",
+        descriptionUse: "",
+        modifyJustification: "",
+      }}
+      validationSchema={validationSchema}
+      onSubmit={(values, { setSubmitting }) => {
+        onSubmit?.(values);
+        setSubmitting(false);
+      }}
+    >
+      {({ isSubmitting, setFieldValue, values }) => (
+        <BaseModal
+          title={title}
+          nextButton={buttonText}
+          backButton={secondaryButtonText}
+          handleNext={handleNext ?? (() => {})}
+          handleBack={onSecondaryButtonClick}
+          handleClose={onCloseModal}
+          width={isMobile ? "300px" : "500px"}
+          disabledNext={isButtonDisabled(values, isSubmitting) && !readOnly}
+        >
+          <Form>
+            <Stack direction="column" gap="24px">
+              <Select
+                name="typeOfRequirementToEvaluated"
+                id="typeOfRequirementToEvaluated"
+                label={dataAddRequirement.labelPaymentMethod}
+                placeholder={
+                  options.Requirement.length > 0
+                    ? "Seleccione una opción"
+                    : "No hay disponibles"
+                }
+                options={options.Requirement}
+                onChange={(name, value) =>
+                  handleRequirementChange(name, value, setFieldValue)
+                }
+                value={values.typeOfRequirementToEvaluated}
+                fullwidth
+                disabled={options.Requirement.length === 0}
+              />
+              <Textfield
+                name="requirementCatalogName"
+                id="requirementCatalogName"
+                label={dataAddRequirement.labelName}
+                placeholder={dataAddRequirement.placeHolderDate}
+                onChange={(e) => {
+                  setRequirementName(e.target.value);
+                  setFieldValue("requirementCatalogName", e.target.value);
+                }}
+                value={values.requirementCatalogName}
+                size="wide"
+                fullwidth
+              />
+              <Textarea
+                id={"descriptionUse"}
+                name={"descriptionUse"}
+                label={dataAddRequirement.labelTextarea}
+                placeholder={dataAddRequirement.placeHolderTextarea}
+                value={values.descriptionUse}
+                onChange={(e) => {
+                  setDescriptionUseValue(e.target.value);
+                  setFieldValue("descriptionUse", e.target.value);
+                }}
+                fullwidth
+              />
+              <Textarea
+                id={"modifyJustification"}
+                name={"modifyJustification"}
+                label={dataAddRequirement.labelJustification}
+                placeholder={dataAddRequirement.placeHolderJustification}
+                value={values.modifyJustification}
+                onChange={(e) => {
+                  setModifyJustification(e.target.value);
+                  setFieldValue("modifyJustification", e.target.value);
+                }}
+                fullwidth
+                maxLength={300}
               />
             </Stack>
-          </StyledContainerClose>
-        </Stack>
-
-        <Formik
-          initialValues={{
-            typeOfRequirementToEvaluated: "",
-            requirementCatalogName: "",
-            descriptionUse: "",
-            modifyJustification: "",
-          }}
-          validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            onSubmit?.(values);
-            setSubmitting(false);
-          }}
-        >
-          {({ isSubmitting, setFieldValue, values, resetForm }) => (
-            <Form>
-              <Stack direction="column" gap="24px">
-                <Select
-                  name="typeOfRequirementToEvaluated"
-                  id="typeOfRequirementToEvaluated"
-                  label={dataAddRequirement.labelPaymentMethod}
-                  placeholder={
-                    options.Requirement.length > 0
-                      ? "Seleccione una opción"
-                      : "No hay disponibles"
-                  }
-                  options={options.Requirement}
-                  onChange={(name, value) =>
-                    handleAccountdRequirementChange(name, value, setFieldValue)
-                  }
-                  value={values.typeOfRequirementToEvaluated}
-                  fullwidth
-                  disabled={options.Requirement.length === 0}
-                />
-                <Textfield
-                  name="requirementCatalogName"
-                  id="requirementCatalogName"
-                  label={dataAddRequirement.labelName}
-                  placeholder={dataAddRequirement.placeHolderDate}
-                  onChange={(e) => {
-                    setRequirementName(e.target.value);
-                    setFieldValue("requirementCatalogName", e.target.value);
-                  }}
-                  value={values.requirementCatalogName}
-                  size="wide"
-                  fullwidth
-                />
-                <Textarea
-                  id={"descriptionUse"}
-                  name={"descriptionUse"}
-                  label={dataAddRequirement.labelTextarea}
-                  placeholder={dataAddRequirement.placeHolderTextarea}
-                  value={values.descriptionUse}
-                  onChange={(e) => {
-                    setDescriptionUseValue(e.target.value);
-                    setFieldValue("descriptionUse", e.target.value);
-                  }}
-                  fullwidth
-                />
-                <Textarea
-                  id={"modifyJustification"}
-                  name={"modifyJustification"}
-                  label={dataAddRequirement.labelJustification}
-                  placeholder={dataAddRequirement.placeHolderJustification}
-                  value={values.modifyJustification}
-                  onChange={(e) => {
-                    setModifyJustification(e.target.value);
-                    setFieldValue("modifyJustification", e.target.value);
-                  }}
-                  fullwidth
-                  maxLength={300}
-                />
-              </Stack>
-              <Stack justifyContent="flex-end" margin="16px 0" gap="16px">
-                <Button
-                  type="button"
-                  onClick={() => handleResetForm(resetForm)}
-                  disabled={disabledBack}
-                  variant="outlined"
-                  appearance="gray"
-                >
-                  {dataAddRequirement.cancel}
-                </Button>
-
-                <Button
-                  type="submit"
-                  disabled={isButtonDisabled(values, isSubmitting)}
-                  onClick={() => handleCreditRequests(initialValues)}
-                >
-                  {dataAddRequirement.add}
-                </Button>
-              </Stack>
-            </Form>
-          )}
-        </Formik>
-      </StyledModal>
-    </Blanket>,
-    node
+          </Form>
+        </BaseModal>
+      )}
+    </Formik>
   );
 }

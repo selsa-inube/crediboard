@@ -33,14 +33,14 @@ const patchOfRequirements = async (
     }
 
     if (!res.ok) {
-      const errorMessage = `Error al crear . Status: ${
+      const errorMessage = `Error al crear requisito . Status: ${
         res.status
       }, Data: ${JSON.stringify(data)}`;
       throw new Error(errorMessage);
     }
     return data;
   } catch (error) {
-    console.error("Failed:", error);
+    console.error("Failed to create requirement:", error);
     throw error;
   }
 };

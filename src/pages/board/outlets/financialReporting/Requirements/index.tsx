@@ -1,4 +1,5 @@
 import { useState, isValidElement, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
 import { Stack, Icon, useFlag } from "@inubekit/inubekit";
 
@@ -15,8 +16,10 @@ import {
 } from "@services/types";
 import { addItem } from "@mocks/utils/dataMock.service";
 import { traceDetailsMock } from "@mocks/financialReporting/trace-details/tracedetails.mock";
-import { getAllPackagesOfRequirementsById } from "@services/packagesOfRequirements";
 import { AddRequirementMock } from "@mocks/addRequirement";
+import { getAllPackagesOfRequirementsById } from "@services/packagesOfRequirements";
+import { dataAddRequirement } from "@config/components/addRequirement";
+import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
 
 import {
   infoItems,
@@ -29,6 +32,7 @@ import {
 import { AprovalsModal } from "./AprovalsModal";
 import { traceObserver, errorMessages } from "../config";
 import { AddRequirement } from "./AddRequirement";
+import { saveRequirements } from "./AddRequirement/utils";
 
 interface IRequirementsData {
   id: string;
@@ -55,10 +59,16 @@ export const Requirements = (props: IRequirementsProps) => {
   const [dataRequirements, setDataRequirements] = useState<IRequirementsData[]>(
     []
   );
+  const [requirementName, setRequirementName] = useState("");
+  const [descriptionUseValue, setDescriptionUseValue] = useState("");
+  const [modifyJustification, setModifyJustification] = useState("");
+  const [typeOfRequirementToEvaluated, setTypeOfRequirementToEvaluated] =
+    useState<string>("");
+  const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(false);
   const [rawRequirements, setRawRequirements] = useState<IRequirement[]>([]);
   const [sentData, setSentData] = useState<IPatchOfRequirements | null>(null);
-
+  const navigate = useNavigate();
   const { addFlag } = useFlag();
   useEffect(() => {
     const fetchRequirements = async () => {
@@ -208,6 +218,58 @@ export const Requirements = (props: IRequirementsProps) => {
     { id: "aprobar", content: renderCheckIcon },
   ];
   const openAddRequirementModal = () => setShowAddRequirementModal(true);
+
+  const handleAddRequirement = async (creditRequests: IPatchOfRequirements) => {
+    await saveRequirements(businessUnitPublicCode, creditRequests)
+      .then(() => {
+        addFlag({
+          title: textFlagsUsers.titleSuccess,
+          description: textFlagsUsers.descriptionSuccess,
+          appearance: "success",
+          duration: 5000,
+        });
+        setSentData(creditRequests);
+      })
+      .catch(() => {
+        addFlag({
+          title: textFlagsUsers.titleError,
+          description: textFlagsUsers.descriptionError,
+          appearance: "danger",
+          duration: 5000,
+        });
+      })
+      .finally(() => {
+        if (closeAdd) closeAdd();
+        handleToggleModal();
+      });
+
+    setTimeout(() => {
+      navigate(`/extended-card/${id}`);
+    }, 6000);
+  };
+  const initialValues: IPatchOfRequirements = {
+    packageId: rawRequirements[0]?.packageId,
+    uniqueReferenceNumber: creditRequestCode,
+    packageDate: rawRequirements[0]?.packageDate,
+    packageDescription:
+      "Requisitos para la solicitud de crédito SC-12225464610",
+    modifyJustification: modifyJustification,
+    listsOfRequirementsByPackage: [
+      {
+        packageId: rawRequirements[0]?.packageId,
+        requirementCatalogName: requirementName,
+        requirementDate: rawRequirements[0]?.packageDate,
+        requirementStatus: "UNVALIDATED",
+        descriptionEvaluationRequirement: "Requisitos no evaluados",
+        descriptionUse: descriptionUseValue,
+        typeOfRequirementToEvaluated: typeOfRequirementToEvaluated,
+        transactionOperation: "Insert",
+      },
+    ],
+  };
+  const handleToggleModal = () => {
+    setShowModal(!showModal);
+  };
   return (
     <>
       <Fieldset
@@ -264,11 +326,19 @@ export const Requirements = (props: IRequirementsProps) => {
       )}
       {showAddRequirementModal && (
         <AddRequirement
+          title={dataAddRequirement.title}
+          buttonText={dataAddRequirement.add}
           accountdRequirement={AddRequirementMock}
           onCloseModal={closeAdd}
-          rawRequirements={rawRequirements}
           creditRequestCode={creditRequestCode}
           setSentData={setSentData}
+          setRequirementName={setRequirementName}
+          setDescriptionUseValue={setDescriptionUseValue}
+          setModifyJustification={setModifyJustification}
+          setTypeOfRequirementToEvaluated={setTypeOfRequirementToEvaluated}
+          handleNext={() => {
+            handleAddRequirement(initialValues);
+          }}
         />
       )}
     </>
