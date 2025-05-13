@@ -21,7 +21,6 @@ export const StyledModal = styled.div<IStyledModal>`
 export const StyledContainerClose = styled.div`
   cursor: pointer;
 `;
-
 export const StyledContainerTextField = styled.div<IStyledModal>`
   height: 65px;
   width: auto;

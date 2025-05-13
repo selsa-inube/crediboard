@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import localforage from "localforage";
 import {
   Text,
   SkeletonLine,
@@ -17,8 +16,8 @@ import {
 import { ActionMobile } from "@components/feedback/ActionMobile";
 import { ListModal } from "@components/modals/ListModal";
 import { EditSeriesModal } from "@components/modals/EditSeriesModal";
-import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { formatPrimaryDate } from "@utils/formatData/date";
+import { IProspect } from "@services/prospects/types";
 
 import { Detail } from "./Detail";
 import {
@@ -29,16 +28,18 @@ import {
 } from "./config";
 
 export interface TableExtraordinaryInstallmentProps {
-  [key: string]: React.ReactNode;
+  [key: string]: unknown;
+  prospectData?: IProspect;
   refreshKey?: number;
+  id?: string;
 }
 
-const usePagination = () => {
+const usePagination = (data: TableExtraordinaryInstallmentProps[] = []) => {
   const [currentPage, setCurrentPage] = useState(0);
-
   const pageLength = 5;
-  const totalRecords = extraordinaryInstallmentMock.length;
+  const totalRecords = data.length;
   const totalPages = Math.ceil(totalRecords / pageLength);
+
   const handleStartPage = () => setCurrentPage(0);
   const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 0));
   const handleNextPage = () =>
@@ -48,10 +49,7 @@ const usePagination = () => {
   const firstEntryInPage = currentPage * pageLength;
   const lastEntryInPage = Math.min(firstEntryInPage + pageLength, totalRecords);
 
-  const currentData = extraordinaryInstallmentMock.slice(
-    firstEntryInPage,
-    lastEntryInPage
-  );
+  const currentData = data.slice(firstEntryInPage, lastEntryInPage);
 
   return {
     currentPage,
@@ -70,11 +68,11 @@ const usePagination = () => {
 export const TableExtraordinaryInstallment = (
   props: TableExtraordinaryInstallmentProps
 ) => {
-  const { refreshKey } = props;
+  const { refreshKey, prospectData } = props;
 
   const headers = headersTableExtraordinaryInstallment;
 
-  const [extraDebtors, setExtraDebtors] = useState<
+  const [extraordinaryInstallments, setExtraordinaryInstallments] = useState<
     TableExtraordinaryInstallmentProps[]
   >([]);
   const [selectedDebtor, setSelectedDebtor] =
@@ -88,10 +86,6 @@ export const TableExtraordinaryInstallment = (
   const [loading, setLoading] = useState(true);
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
   const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
-
-  setTimeout(() => {
-    setLoading(false);
-  }, 500);
 
   const isMobile = useMediaQuery("(max-width:880px)");
 
@@ -110,30 +104,33 @@ export const TableExtraordinaryInstallment = (
     handleEndPage,
     firstEntryInPage,
     lastEntryInPage,
-  } = usePagination();
+  } = usePagination(extraordinaryInstallments);
 
   useEffect(() => {
-    const loadExtraDebtors = async () => {
-      const storedData =
-        (await localforage.getItem<TableExtraordinaryInstallmentProps[]>(
-          "extraordinary_installments"
-        )) || [];
-      setExtraDebtors(storedData);
-    };
+    if (prospectData?.credit_products) {
+      const extraordinaryInstallmentsDB = prospectData.credit_products.flatMap(
+        (product) =>
+          product.extraordinary_installments.map((installment) => ({
+            id: `${product.credit_product_code}-${installment.installment_date}`,
+            datePayment: installment.installment_date,
+            value: installment.installment_amount,
+            paymentMethod: installment.payment_channel_abbreviated_name,
+          }))
+      );
 
-    loadExtraDebtors();
-  }, [refreshKey]);
+      setExtraordinaryInstallments(extraordinaryInstallmentsDB);
+    }
+    setLoading(false);
+  }, [prospectData, refreshKey]);
 
   const handleDelete = async (id: string) => {
     try {
-      const updatedDebtors = extraDebtors.filter((debtor) => debtor.id !== id);
-      setExtraDebtors(updatedDebtors);
-
-      await localforage.setItem("extraordinary_installments", updatedDebtors);
-
-      console.log(`Debtor with ID ${id} deleted successfully.`);
+      const updatedExtraordinaryInstallments = extraordinaryInstallments.filter(
+        (debtor) => debtor.id !== id
+      );
+      setExtraordinaryInstallments(updatedExtraordinaryInstallments);
     } catch (error) {
-      console.error("Failed to delete debtor:", error);
+      console.error("Failed to delete extraordinary installment:", error);
     }
   };
 
@@ -141,11 +138,10 @@ export const TableExtraordinaryInstallment = (
     updatedDebtor: TableExtraordinaryInstallmentProps
   ) => {
     try {
-      const updatedDebtors = extraDebtors.map((debtor) =>
-        debtor.id === updatedDebtor.id ? updatedDebtor : debtor
+      const updatedExtraordinaryInstallments = extraordinaryInstallments.map(
+        (debtor) => (debtor.id === updatedDebtor.id ? updatedDebtor : debtor)
       );
-      setExtraDebtors(updatedDebtors);
-      await localforage.setItem("extraordinary_installments", updatedDebtors);
+      setExtraordinaryInstallments(updatedExtraordinaryInstallments);
       setIsOpenModalEdit(false);
     } catch (error) {
       console.error("Error updating debtor:", error);
@@ -158,7 +154,7 @@ export const TableExtraordinaryInstallment = (
         <Tr>
           {!loading &&
             visbleHeaders.map((header) => (
-              <Th key={header.key} align="left">
+              <Th key={header.key} align="center">
                 {header.label}
               </Th>
             ))}
@@ -197,9 +193,9 @@ export const TableExtraordinaryInstallment = (
           </Tr>
         )}
         {!loading &&
-          extraDebtors &&
-          extraDebtors.length > 0 &&
-          extraDebtors.map((row, indx) => (
+          extraordinaryInstallments &&
+          extraordinaryInstallments.length > 0 &&
+          extraordinaryInstallments.map((row, indx) => (
             <Tr key={indx} zebra={indx % 2 !== 0}>
               {visbleHeaders.map((header) => (
                 <Td key={header.key} align="left">
@@ -212,7 +208,7 @@ export const TableExtraordinaryInstallment = (
                     if (header.mask) {
                       return header.mask(row[header.key] as string | number);
                     }
-                    return row[header.key];
+                    return row[header.key] as React.ReactNode;
                   })()}
                 </Td>
               ))}
@@ -235,7 +231,7 @@ export const TableExtraordinaryInstallment = (
                 ))}
             </Tr>
           ))}
-        {!loading && extraDebtors.length === 0 && (
+        {!loading && extraordinaryInstallments.length === 0 && (
           <Tr>
             <Td
               colSpan={visbleHeaders.length + visbleActions.length}
@@ -254,7 +250,7 @@ export const TableExtraordinaryInstallment = (
           </Tr>
         )}
       </Tbody>
-      {extraordinaryInstallmentMock.length > 0 && !loading && (
+      {extraordinaryInstallments.length > 0 && !loading && (
         <Tfoot>
           <Tr border="bottom">
             <Td
