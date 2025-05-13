@@ -28,7 +28,7 @@ import {
   textFlagsReject,
   textFlagsUsers,
 } from "@config/pages/staffModal/addFlag";
-import { getSearchProspectById } from "@services/prospects";
+import { getSearchProspectByCode } from "@services/prospects/ProspectByCode";
 import { IProspect } from "@services/prospects/types";
 
 import { infoIcon } from "./ToDo/config";
@@ -140,9 +140,9 @@ export const FinancialReporting = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getSearchProspectById(
+        const result = await getSearchProspectByCode(
           businessUnitPublicCode,
-          "67eb62079cdd4c16064c45be" //ojo
+          id!
         );
         setDataProspect(Array.isArray(result) ? result[0] : result);
       } catch (error) {
