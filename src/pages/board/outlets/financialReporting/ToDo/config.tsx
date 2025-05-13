@@ -5,6 +5,20 @@ export const infoIcon = {
   onClick: () => console.log("info"),
 };
 
+export const staffConfig = {
+  title: "Gestor Comercial y Analista",
+  confirm: "Aceptar",
+  meets: "Cumple el requisito",
+  doesNotComply: "No cumple el requisito",
+  observations: "Observaciones",
+  observationdetails:
+    "Proporcione detalles acerca de la evaluación del requisito",
+  closeBtn: "Cerrar",
+  Cancel: "Cancelar",
+
+  maxLength: 120,
+};
+
 export const errorMessagge =
   "Ups, algo salió mal. No se puede cargar la información. Intente nuevamente más tarde.";
 
@@ -51,6 +65,11 @@ export const txtOthersOptions = {
   txtDecision: "Decisión",
   txtNoSelect: "No se seleccionó una decisión disponible.",
 };
+export const soporteInvalidOptions = [
+  { id: "1", label: "Firma de pagares", value: "op1" },
+  { id: "2", label: "Firma de libranza", value: "op2" },
+  { id: "3", label: "Gestión de garantías.", value: "op3" },
+];
 
 export const txtTaskQuery = {
   txtCommercialManager: "Gestor Comercial",

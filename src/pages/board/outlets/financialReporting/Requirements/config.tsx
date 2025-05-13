@@ -261,11 +261,11 @@ const generateTag = (value: string): JSX.Element => {
     value === "DOCUMENT_VALIDATED_BY_THE_USER" ||
     value === "IGNORED_BY_THE_USER"
   ) {
-    return <Tag label="Cumple" appearance="success" weight="strong" />;
+    return <Tag label="Cumple" appearance="success" />;
   } else if (value === "FAILED_SYSTEM_VALIDATION") {
-    return <Tag label="No Cumple" appearance="danger" weight="strong" />;
+    return <Tag label="No Cumple" appearance="danger" />;
   } else {
-    return <Tag label="Sin Evaluar" appearance="warning" weight="strong" />;
+    return <Tag label="Sin Evaluar" appearance="warning" />;
   }
 };
 
