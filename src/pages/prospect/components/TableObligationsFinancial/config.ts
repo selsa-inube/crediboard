@@ -32,8 +32,6 @@ export const dataReport = {
   noData: "No existen obligaciones financieras",
   descriptionTotalFee: "Cuota total.",
   descriptionTotalBalance: "Saldo total.",
-  totalFee: "$ 3.300.000",
-  totalBalance: "$ 87.000.000",
   close: "Cerrar",
   restore: "Restablecer",
   descriptionModal:
