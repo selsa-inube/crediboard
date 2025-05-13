@@ -3,12 +3,12 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { IProspect } from "./types";
+import { IPackagesOfRequirementsById } from "./types";
 
-const getSearchProspectById = async (
+const getAllPackagesOfRequirementsById = async (
   businessUnitPublicCode: string,
-  prospectCode: string
-): Promise<IProspect> => {
+  uniqueReferenceNumber: string
+): Promise<IPackagesOfRequirementsById[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
 
@@ -16,11 +16,14 @@ const getSearchProspectById = async (
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
+      const queryParams = new URLSearchParams({
+        uniqueReferenceNumber: uniqueReferenceNumber,
+      });
 
       const options: RequestInit = {
         method: "GET",
         headers: {
-          "X-Action": "SearchByIdProspect",
+          "X-Action": "SearchAllPackagesOfRequirementsToManage",
           "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -28,41 +31,44 @@ const getSearchProspectById = async (
       };
 
       const res = await fetch(
-        `${environment.VITE_IPROSPECT_QUERY_PROCESS_SERVICE}/prospects/${prospectCode}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/packages-of-requirements-to-manage?${queryParams.toString()}`,
         options
       );
 
       clearTimeout(timeoutId);
 
       if (res.status === 204) {
-        throw new Error("No hay tarea disponible.");
+        throw new Error("No hay requisitos disponibles.");
       }
 
       const data = await res.json();
+
       if (!res.ok) {
         throw {
-          message: "Error al obtener la tarea.",
+          message: "Error al obtener los requisitos.",
           status: res.status,
           data,
         };
       }
 
-      if (Array.isArray(data) && data.length > 0) {
-        return data[0];
+      if (Array.isArray(data)) {
+        return data;
       }
 
-      return data;
+      throw new Error("La respuesta no contiene un array de requisitos.");
     } catch (error) {
       console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
         throw new Error(
-          "Todos los intentos fallaron. No se pudo obtener la tarea."
+          "Todos los intentos fallaron. No se pudo obtener los requisitos."
         );
       }
     }
   }
 
-  throw new Error("No se pudo obtener la tarea después de varios intentos.");
+  throw new Error(
+    "No se pudo obtener los requisitos después de varios intentos."
+  );
 };
 
-export { getSearchProspectById };
+export { getAllPackagesOfRequirementsById };

@@ -4,11 +4,9 @@ import { Stack, Tabs } from "@inubekit/inubekit";
 import { BaseModal } from "@components/modals/baseModal";
 import { CardBorrower } from "@components/cards/CardBorrower";
 import { IProspect } from "@services/prospects/types";
-import {
-  getPropertyValue,
-  getTotalFinancialObligations,
-} from "@pages/SubmitCreditApplication/util";
+import { getTotalFinancialObligations } from "@pages/SubmitCreditApplication/util";
 import { currencyFormat } from "@utils/formatData/currency";
+import { getPropertyValue } from "@utils/mappingData/mappings";
 
 import { Mortgage } from "./Mortgage";
 import { Pledge } from "./Pledge";

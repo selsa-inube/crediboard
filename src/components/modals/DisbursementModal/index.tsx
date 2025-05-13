@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { Stack, Tabs } from "@inubekit/inubekit";
 
+import userNotFound from "@assets/images/ItemNotFound.png";
 import { BaseModal } from "@components/modals/baseModal";
 import { Fieldset } from "@components/data/Fieldset";
+import { errorMessages } from "@pages/board/outlets/financialReporting/config";
+import { ItemNotFound } from "@components/layout/ItemNotFound";
 
 import { dataDisbursement, dataTabs } from "./config";
 import { DisbursementInternal } from "./Internal";
@@ -23,13 +26,14 @@ export interface IDisbursementModalProps {
     checkManagementData: dataTabsDisbursement;
     cash: dataTabsDisbursement;
   };
+  handleDisbursement?: () => void;
 }
 
 export function DisbursementModal(
   props: IDisbursementModalProps
 ): JSX.Element | null {
-  const { handleClose, isMobile, data } = props;
-
+  const { handleClose, isMobile, data, handleDisbursement } = props;
+  const [error] = useState(false);
   const availableTabs = dataTabs.filter((tab) => {
     const hasValidData = (tabData: dataTabsDisbursement) =>
       tabData && Object.values(tabData).some((value) => value !== "");
@@ -66,7 +70,9 @@ export function DisbursementModal(
   const onChange = (tabId: string) => {
     setCurrentTab(tabId);
   };
-
+  const handleRetry = () => {
+    handleDisbursement?.();
+  };
   return (
     <BaseModal
       title={dataDisbursement.title}
@@ -75,7 +81,6 @@ export function DisbursementModal(
       handleNext={handleClose}
       nextButton={dataDisbursement.close}
       width={isMobile ? "300px" : "652px"}
-      height={isMobile ? "566px" : "662px"}
     >
       <Stack>
         <Tabs
@@ -85,30 +90,40 @@ export function DisbursementModal(
           onChange={onChange}
         />
       </Stack>
-      <Fieldset heightFieldset="469px">
-        <>
-          {currentTab === "Internal" && (
-            <DisbursementInternal isMobile={isMobile} data={data.internal} />
-          )}
-          {currentTab === "External" && (
-            <DisbursementExternal isMobile={isMobile} data={data.external} />
-          )}
-          {currentTab === "CheckEntity" && (
-            <DisbursementCheckEntity
-              isMobile={isMobile}
-              data={data.CheckEntity}
-            />
-          )}
-          {currentTab === "CheckManagement" && (
-            <DisbursementChequeManagement
-              isMobile={isMobile}
-              data={data.checkManagementData}
-            />
-          )}
-          {currentTab === "Cash" && (
-            <DisbursementCash isMobile={isMobile} data={data.cash} />
-          )}
-        </>
+      <Fieldset heightFieldset="469px" alignContent="center">
+        {error || availableTabs.length === 0 ? (
+          <ItemNotFound
+            image={userNotFound}
+            title={errorMessages.Requirements.title}
+            description={errorMessages.Requirements.description}
+            buttonDescription={errorMessages.Requirements.button}
+            onRetry={handleRetry}
+          />
+        ) : (
+          <>
+            {currentTab === "Internal" && (
+              <DisbursementInternal isMobile={isMobile} data={data.internal} />
+            )}
+            {currentTab === "External" && (
+              <DisbursementExternal isMobile={isMobile} data={data.external} />
+            )}
+            {currentTab === "CheckEntity" && (
+              <DisbursementCheckEntity
+                isMobile={isMobile}
+                data={data.CheckEntity}
+              />
+            )}
+            {currentTab === "CheckManagement" && (
+              <DisbursementChequeManagement
+                isMobile={isMobile}
+                data={data.checkManagementData}
+              />
+            )}
+            {currentTab === "Cash" && (
+              <DisbursementCash isMobile={isMobile} data={data.cash} />
+            )}
+          </>
+        )}
       </Fieldset>
     </BaseModal>
   );
