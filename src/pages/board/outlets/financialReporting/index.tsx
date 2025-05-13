@@ -11,7 +11,11 @@ import { ListModal } from "@components/modals/ListModal";
 import { MobileMenu } from "@components/modals/MobileMenu";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ComercialManagement } from "@pages/board/outlets/financialReporting/CommercialManagement";
-import { IErrorService, ICreditRequest } from "@services/types";
+import {
+  IErrorService,
+  ICreditRequest,
+  IDeleteCreditRequest,
+} from "@services/types";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { getUnreadErrorsById } from "@services/unreadErrors";
 import { getSearchAllDocumentsById } from "@services/documents/SearchAllDocuments";
@@ -20,17 +24,16 @@ import { AppContext } from "@context/AppContext";
 import { saveAssignAccountManager } from "@services/creditRequets/pacthAssignAccountManager";
 import { lateRejectionOfACreditRequest } from "@services/creditRequets/lateRejectionCreditRequest";
 import {
+  textFlagsCancel,
   textFlagsReject,
   textFlagsUsers,
 } from "@config/pages/staffModal/addFlag";
+import { getSearchProspectByCode } from "@services/prospects/ProspectByCode";
+import { IProspect } from "@services/prospects/types";
 
 import { infoIcon } from "./ToDo/config";
 import { ToDo } from "./ToDo";
-import {
-  configHandleactions,
-  handleConfirmCancel,
-  optionButtons,
-} from "./config";
+import { configHandleactions, optionButtons } from "./config";
 import {
   StyledMarginPrint,
   StyledPageBreak,
@@ -43,6 +46,7 @@ import { Management } from "./management";
 import { PromissoryNotes } from "./PromissoryNotes";
 import { Postingvouchers } from "./Postingvouchers";
 import { IErrorsUnread } from "./types";
+import { deleteCreditRequest } from "./utils";
 
 interface IListdataProps {
   data: { id: string; name: string }[];
@@ -72,6 +76,8 @@ export const FinancialReporting = () => {
 
   const [document, setDocument] = useState<IListdataProps["data"]>([]);
 
+  const [dataProspect, setDataProspect] = useState<IProspect>();
+
   const [uploadedFiles, setUploadedFiles] = useState<
     { id: string; name: string; file: File }[]
   >([]);
@@ -86,9 +92,9 @@ export const FinancialReporting = () => {
   const dataCommercialManagementRef = useRef<HTMLDivElement>(null);
 
   const [errorsService, setErrorsService] = useState<IErrorService[]>([]);
-
+  const [removalJustification, setRemovalJustification] = useState("");
   const { businessUnitSigla, eventData } = useContext(AppContext);
-
+  const [showModal, setShowModal] = useState(false);
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
 
@@ -130,6 +136,22 @@ export const FinancialReporting = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getSearchProspectByCode(
+          businessUnitPublicCode,
+          id!
+        );
+        setDataProspect(Array.isArray(result) ? result[0] : result);
+      } catch (error) {
+        console.error("Error al obtener los prospectos:", error);
+      }
+    };
+
+    fetchData();
+  }, [businessUnitPublicCode, id]);
 
   const handleGeneratePDF = () => {
     setTimeout(() => {
@@ -183,15 +205,16 @@ export const FinancialReporting = () => {
     setShowMenu(false);
   };
 
-  const handleSubmit = async (justification: string) => {
+  const handleSubmit = async () => {
     try {
       await lateRejectionOfACreditRequest(
         data?.creditRequestId || "",
         user?.email || "",
         businessUnitPublicCode,
-        "RECHAZAR_SOLICITUD", //"RECHAZO_HUMANO",
-        justification
+        "RECHAZAR_SOLICITUD", // o "RECHAZO_HUMANO"
+        removalJustification
       );
+
       addFlag({
         title: textFlagsReject.titleSuccess,
         description: textFlagsReject.descriptionSuccess,
@@ -209,20 +232,10 @@ export const FinancialReporting = () => {
     }
   };
 
-  const handleCancelSubmit = () => {
-    addFlag({
-      title: "Anulación confirmada",
-      description: "La solicitud ha sido anulada exitosamente.",
-      appearance: "success",
-      duration: 5000,
-    });
-  };
-
   const handleOnViewAttachments = () => {
     setAttachDocuments(true);
     setShowMenu(false);
   };
-  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       if (!data?.creditRequestId || !businessUnitPublicCode || !user?.email)
@@ -242,9 +255,6 @@ export const FinancialReporting = () => {
         });
       } finally {
         handleToggleModal();
-        setTimeout(() => {
-          navigate(`/extended-card/${id}`);
-        }, 6000);
       }
     };
 
@@ -280,6 +290,39 @@ export const FinancialReporting = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
+  const handleDeleteCreditRequest = async () => {
+    const creditRequests: IDeleteCreditRequest = {
+      creditRequestId: data?.creditRequestId ?? "",
+      removalJustification,
+    };
+    await deleteCreditRequest(businessUnitPublicCode, creditRequests)
+      .then(() => {
+        addFlag({
+          title: textFlagsUsers.titleSuccess,
+          description: textFlagsUsers.descriptionSuccess,
+          appearance: "success",
+          duration: 5000,
+        });
+      })
+      .catch(() => {
+        addFlag({
+          title: textFlagsCancel.titleError,
+          description: textFlagsCancel.descriptionError,
+          appearance: "danger",
+          duration: 5000,
+        });
+      })
+      .finally(() => {
+        handleToggleModal();
+        setTimeout(() => {
+          navigation("/");
+        }, 1000);
+      });
+  };
+  const handleToggleModal = () => {
+    setShowModal(!showModal);
+  };
+
   return (
     <StyledMarginPrint $isMobile={isMobile}>
       <Stack direction="column">
@@ -301,7 +344,7 @@ export const FinancialReporting = () => {
             <StockTray
               isMobile={isMobile}
               actionButtons={handleActions}
-              navigation={() => navigation(-1)}
+              navigation={() => navigation("/")}
               hasPermitRejection={hasPermitRejection}
             />
           }
@@ -317,6 +360,7 @@ export const FinancialReporting = () => {
                     setCollapse={setCollapse}
                     id={id!}
                     hideContactIcons={true}
+                    prospectData={dataProspect!}
                   />
                 </Stack>
               </Stack>
@@ -338,6 +382,8 @@ export const FinancialReporting = () => {
                     isMobile={isMobile}
                     id={id!}
                     user={user!.nickname!}
+                    businessUnitPublicCode={businessUnitPublicCode}
+                    creditRequestCode={data.creditRequestCode!}
                   />
                 </Stack>
                 <Stack direction="column">
@@ -350,9 +396,10 @@ export const FinancialReporting = () => {
                 <Stack direction="column" height={isMobile ? "auto" : "163px"}>
                   <Postingvouchers user={id!} id={id!} isMobile={isMobile} />
                 </Stack>
+                <StyledPageBreak />
+                <StyledPageBreak />
               </StyledScreenPrint>
             </Stack>
-
             {showAttachments && (
               <ListModal
                 title="Adjuntar"
@@ -384,17 +431,18 @@ export const FinancialReporting = () => {
             inputLabel="Motivo del Rechazo."
             inputPlaceholder="Describa el motivo del Rechazo."
             onCloseModal={() => setShowRejectModal(false)}
-            onSubmit={(values) => {
-              handleSubmit(values.textarea);
+            handleNext={() => {
+              handleSubmit();
+              setShowRejectModal(false);
             }}
+            onChange={(e) => setRemovalJustification(e.target.value)}
           />
         )}
         {showGuarantee && (
           <OfferedGuaranteeModal
             handleClose={() => setShowGuarantee(false)}
             isMobile={isMobile}
-            id={id || ""}
-            businessUnitPublicCode={businessUnitPublicCode}
+            prospectData={dataProspect!}
           />
         )}
         {showCancelModal && (
@@ -404,11 +452,11 @@ export const FinancialReporting = () => {
             inputLabel="Motivo de la anulación."
             inputPlaceholder="Describa el motivo de la anulación."
             onCloseModal={() => setShowCancelModal(false)}
-            onSubmit={(values) => {
-              handleConfirmCancel(id!, user!.nickname!, values);
-              handleCancelSubmit();
+            handleNext={() => {
+              handleDeleteCreditRequest();
               setShowCancelModal(false);
             }}
+            onChange={(e) => setRemovalJustification(e.target.value)}
           />
         )}
         {showMenu && isMobile && (
@@ -425,6 +473,3 @@ export const FinancialReporting = () => {
     </StyledMarginPrint>
   );
 };
-function handleToggleModal() {
-  throw new Error("Function not implemented.");
-}

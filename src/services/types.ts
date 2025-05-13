@@ -7,7 +7,15 @@ export interface IUsersByCreditRequests {
   identificationNumber: string;
   role: string;
 }
-
+export interface IUploadedFile {
+  id: string;
+  name: string;
+  file?: File;
+}
+export interface IDeleteCreditRequest {
+  creditRequestId: string;
+  removalJustification: string;
+}
 export interface IAccountingVouchers {
   documentCode: string;
   obligationCode: string;
@@ -401,9 +409,9 @@ type ItemValidation = {
 
 export interface CreditRequest {
   credit_request_id: string;
-  system_validations: ItemValidation;
-  documentary_requirements: ItemValidation;
-  human_validations: ItemValidation;
+  SYSTEM_VALIDATION: ItemValidation;
+  DOCUMENT: ItemValidation;
+  HUMAN_VALIDATION: ItemValidation;
 }
 
 export interface IRiskScoringRangeRequered {

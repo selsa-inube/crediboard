@@ -5,17 +5,13 @@ const meta: Meta<typeof InvestmentCreditCard> = {
   title: "pages/addProspect/components/InvestmentCreditCard",
   component: InvestmentCreditCard,
   argTypes: {
-    title: { 
-      control: "text", 
-      description: "Título del card." 
+    title: {
+      control: "text",
+      description: "Título del card.",
     },
-    code: { 
-      control: "text", description: 
-      "Código que se muestra en el card." 
-    },
-    codeValue: { 
-      control: "text", description: 
-      "Valor asociado al código." 
+    codeValue: {
+      control: "text",
+      description: "Valor asociado al código.",
     },
     expired: {
       control: "text",
@@ -35,7 +31,6 @@ type Story = StoryObj<typeof InvestmentCreditCard>;
 export const Default: Story = {
   args: {
     title: "Crédito libre inversión",
-    code: "Código",
     codeValue: "10-12345",
     expired: "Valor vencido",
     expiredValue: 120000,

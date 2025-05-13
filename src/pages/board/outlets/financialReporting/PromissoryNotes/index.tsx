@@ -101,7 +101,6 @@ export const PromissoryNotes = (props: IPromissoryNotesProps) => {
                 <Tag
                   label={entry.documentState}
                   appearance={appearanceTag(entry.documentState)}
-                  weight="strong"
                 />
               ),
             }))

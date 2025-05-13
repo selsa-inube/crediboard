@@ -251,12 +251,12 @@ export const entriesApprovals = (data: IApprovals[]) => {
     id: entry?.approverName?.toString(),
     usuarios: entry?.approverName,
     concept: entry?.concept,
+    identificationNumber: entry?.approverIdentificationNumber,
+    identificationType: entry?.approverIdentificationType,
+    approvalId: entry?.approvalId,
+    approverId: entry?.approverId,
     tag: (
-      <Tag
-        label={entry.concept}
-        appearance={appearanceTag(entry.concept)}
-        weight="strong"
-      />
+      <Tag label={entry.concept} appearance={appearanceTag(entry.concept)} />
     ),
     error: entry.error,
   }));

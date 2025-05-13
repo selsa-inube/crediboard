@@ -185,7 +185,6 @@ export function SourceIncome(props: ISourceIncomeProps) {
                 {incomeCardData.income}
               </Text>
             </Stack>
-
             <Stack
               width={isMobile ? "100%" : "auto"}
               gap="16px"
@@ -258,6 +257,7 @@ export function SourceIncome(props: ISourceIncomeProps) {
         <IncomeModal
           handleClose={() => setIsOpenEditModal(false)}
           disabled={false}
+          onSubmit={() => {}}
         />
       )}
     </StyledContainer>

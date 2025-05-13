@@ -6,7 +6,7 @@ import {
 
 import { IApprovals } from "@pages/board/outlets/financialReporting/Approvals/types";
 
-export const getAprovalsById = async (
+export const getApprovalsById = async (
   businessUnitPublicCode: string,
   creditRequestId: string
 ): Promise<IApprovals> => {
@@ -21,7 +21,7 @@ export const getAprovalsById = async (
       const options: RequestInit = {
         method: "GET",
         headers: {
-          "X-Action": "SearchAllAprovalsById",
+          "X-Action": "SearchAllApprovalsById",
           "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -29,7 +29,7 @@ export const getAprovalsById = async (
       };
 
       const res = await fetch(
-        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/aprovals/${creditRequestId}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/approvals/${creditRequestId}`,
         options
       );
 
