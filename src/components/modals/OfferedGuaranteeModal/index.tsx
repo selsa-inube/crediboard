@@ -83,7 +83,8 @@ export function OfferedGuaranteeModal(props: IOfferedGuaranteeModalProps) {
       nextButton={dataGuarantee.close}
       handleNext={handleClose}
       handleClose={handleClose}
-      width={isMobile ? "300px" : "630px"}
+      width={isMobile ? "300px" : "602px"}
+      height="529px"
       finalDivider={true}
     >
       <Stack>
@@ -149,10 +150,10 @@ export function OfferedGuaranteeModal(props: IOfferedGuaranteeModalProps) {
         ) : (
           <></>
         )}
-        {currentTab === "mortgage" && mortgageData.length > 0 && (
+        {currentTab === "mortgage" && (
           <Mortgage isMobile={isMobile} initialValues={mortgageData} />
         )}
-        {currentTab === "pledge" && pledgeData.length > 0 && (
+        {currentTab === "pledge" && (
           <Pledge isMobile={isMobile} initialValues={pledgeData} />
         )}
         {currentTab === "bail" && <Bail data={dataResponse.bond_value || 0} />}

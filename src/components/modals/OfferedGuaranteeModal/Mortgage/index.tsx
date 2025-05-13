@@ -20,38 +20,49 @@ export function Mortgage(props: IMortgage) {
     <Fieldset>
       <Stack
         direction="column"
-        width={isMobile ? "265px" : "582px"}
-        height={isMobile ? "294px" : "auto"}
+        width={isMobile ? "265px" : "568px"}
+        height="274px"
         padding="8px"
         gap="16px"
       >
-        <Text type="label" weight="bold" size="large">
-          {dataMortgage.title}
-        </Text>
-        <Divider dashed />
-        <Grid
-          templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"}
-          autoRows="auto"
-          gap="20px"
-        >
-          <CardGray
-            label={dataMortgage.property}
-            placeHolder={data.propertyType}
-          />
-          <CardGray
-            label={dataMortgage.state}
-            placeHolder={data.propertyState}
-          />
-          <CardGray label={dataMortgage.years} placeHolder={data.propertyAge} />
-          <CardGray
-            label={dataMortgage.value}
-            placeHolder={`$ ${data.propertyPrice}`}
-          />
-        </Grid>
-        <CardGray
-          label={dataMortgage.description}
-          placeHolder={data.descriptionUse}
-        />
+        {data ? (
+          <>
+            <Text type="label" weight="bold" size="large">
+              {dataMortgage.title}
+            </Text>
+            <Divider dashed />
+            <Grid
+              templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"}
+              autoRows="auto"
+              gap="20px"
+            >
+              <CardGray
+                label={dataMortgage.property}
+                placeHolder={data.propertyType}
+              />
+              <CardGray
+                label={dataMortgage.state}
+                placeHolder={data.propertyState}
+              />
+              <CardGray
+                label={dataMortgage.years}
+                placeHolder={data.propertyAge}
+              />
+              <CardGray
+                label={dataMortgage.value}
+                placeHolder={`$ ${data.propertyPrice}`}
+              />
+            </Grid>
+            <CardGray
+              label={dataMortgage.description}
+              placeHolder={data.descriptionUse}
+            />
+          </>
+        ) : (
+          <Stack margin="auto">
+            <Text>{dataMortgage.noContent}</Text>
+          </Stack>
+        )}
       </Stack>
     </Fieldset>
   );
