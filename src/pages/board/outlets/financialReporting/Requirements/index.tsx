@@ -18,7 +18,6 @@ import { addItem } from "@mocks/utils/dataMock.service";
 import { traceDetailsMock } from "@mocks/financialReporting/trace-details/tracedetails.mock";
 import { AddRequirementMock } from "@mocks/addRequirement";
 import { getAllPackagesOfRequirementsById } from "@services/packagesOfRequirements";
-import { dataAddRequirement } from "@config/components/addRequirement";
 
 import {
   infoItems,
@@ -28,6 +27,7 @@ import {
   dataFlags,
   dataButton,
   textFlagsRequirements,
+  dataAddRequirement,
 } from "./config";
 import { AprovalsModal } from "./AprovalsModal";
 import { traceObserver, errorMessages } from "../config";

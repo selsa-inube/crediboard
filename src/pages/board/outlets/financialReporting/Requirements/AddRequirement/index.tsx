@@ -8,10 +8,11 @@ import {
   Textarea,
 } from "@inubekit/inubekit";
 
-import { dataAddRequirement } from "@config/components/addRequirement";
 import { IPatchOfRequirements } from "@services/types";
 import { BaseModal } from "@components/modals/baseModal";
 import { IOptionsSelect } from "@pages/SubmitCreditApplication/types";
+
+import { dataAddRequirement } from "../config";
 
 export interface IRequirement {
   optionsRequirement: IOptionsSelect[];
