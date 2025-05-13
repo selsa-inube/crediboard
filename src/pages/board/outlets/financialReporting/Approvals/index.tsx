@@ -11,6 +11,7 @@ import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { getNotificationOnApprovals } from "@services/notificationOnApprovals";
 import { getApprovalsById } from "@services/financialReporting/getApprovals";
+import { IApprovals } from "./types";
 import { ICreditRequest } from "@services/types";
 import {
   actionMobileApprovals,
@@ -71,7 +72,7 @@ export const Approvals = (props: IApprovalsProps) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getApprovalsById(
+      const data: IApprovals = await getApprovalsById(
         businessUnitPublicCode,
         requests.creditRequestId
       );
