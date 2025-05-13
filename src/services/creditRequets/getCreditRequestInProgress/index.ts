@@ -1,18 +1,18 @@
 import {
   environment,
   fetchTimeoutServices,
-  maxDataBoardServices,
   maxRetriesServices,
 } from "@config/environment";
 import { ICreditRequest } from "@services/types";
 import { mapCreditRequestToEntities } from "./mapper";
 
 export const getCreditRequestInProgress = async (
-  businessUnitPublicCode: string
+  businessUnitPublicCode: string,
+  maxDataBoardServices: number
 ): Promise<ICreditRequest[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
-  const maxDataBoard = maxDataBoardServices
+  const maxDataBoard = maxDataBoardServices;
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const controller = new AbortController();
