@@ -1,6 +1,4 @@
-import { CreditRequest } from "@services/types";
-
-export const requirementsMock: CreditRequest[] = [
+export const requirementsMock = [
   {
     credit_request_id: "SC-171008156",
     system_validations: {

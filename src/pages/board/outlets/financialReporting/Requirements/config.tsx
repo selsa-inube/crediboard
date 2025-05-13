@@ -254,9 +254,15 @@ const actionsMobile = [
 ];
 
 const generateTag = (value: string): JSX.Element => {
-  if (value === "Y") {
+  if (
+    value === "PASSED_WITH_SYSTEM_VALIDATION" ||
+    value === "DOCUMENT_STORED_WITHOUT_VALIDATION" ||
+    value === "PASSED_WITH_HUMAN_VALIDATION" ||
+    value === "DOCUMENT_VALIDATED_BY_THE_USER" ||
+    value === "IGNORED_BY_THE_USER"
+  ) {
     return <Tag label="Cumple" appearance="success" />;
-  } else if (value === "N") {
+  } else if (value === "FAILED_SYSTEM_VALIDATION") {
     return <Tag label="No Cumple" appearance="danger" />;
   } else {
     return <Tag label="Sin Evaluar" appearance="warning" />;
@@ -267,23 +273,23 @@ export const maperEntries = (data: CreditRequest): IEntries[][] => {
   const result: IEntries[][] = [];
 
   const systemValidations: IEntries[] = Object.entries(
-    data.system_validations
+    data.SYSTEM_VALIDATION
   ).map(([key, value], index) => ({
     id: `sistema-${index + 1}`,
     "Validaciones del sistema": key,
     tag: generateTag(value),
   }));
 
-  const documentaryRequirements: IEntries[] = Object.entries(
-    data.documentary_requirements
-  ).map(([key, value], index) => ({
-    id: `documento-${index + 1}`,
-    "Requisitos documentales": key,
-    tag: generateTag(value),
-  }));
+  const documentaryRequirements: IEntries[] = Object.entries(data.DOCUMENT).map(
+    ([key, value], index) => ({
+      id: `documento-${index + 1}`,
+      "Requisitos documentales": key,
+      tag: generateTag(value),
+    })
+  );
 
   const humanValidations: IEntries[] = Object.entries(
-    data.human_validations
+    data.HUMAN_VALIDATION
   ).map(([key, value], index) => ({
     id: `humano-${index + 1}`,
     "Validaciones humanas": key,
@@ -316,4 +322,19 @@ export const maperDataRequirements = (processedEntries: IEntries[][]) => {
       actionsMovile: actionsMobile,
     },
   ];
+};
+
+export const dataFlags = {
+  requirements: {
+    title: "Error al cargar requisitos",
+    description: "No se encontraron requisitos disponibles.",
+  },
+  documentApproved: {
+    title: "Éxito",
+    description: "Documentación aprobada correctamente.",
+  },
+  documentRejected: {
+    title: "Error",
+    description: "Ocurrió un error al aprobar el documento.",
+  },
 };
