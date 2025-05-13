@@ -119,7 +119,6 @@ export function BaseModal(props: IBaseModalProps) {
         </Stack>
       </StyledContainer>
     </Blanket>,
-
     node
   );
 }
