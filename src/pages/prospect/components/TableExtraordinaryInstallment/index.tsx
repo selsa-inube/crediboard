@@ -72,7 +72,7 @@ export const TableExtraordinaryInstallment = (
 
   const headers = headersTableExtraordinaryInstallment;
 
-  const [extraDebtors, setExtraDebtors] = useState<
+  const [extraordinaryInstallments, setExtraordinaryInstallments] = useState<
     TableExtraordinaryInstallmentProps[]
   >([]);
   const [selectedDebtor, setSelectedDebtor] =
@@ -104,11 +104,11 @@ export const TableExtraordinaryInstallment = (
     handleEndPage,
     firstEntryInPage,
     lastEntryInPage,
-  } = usePagination(extraDebtors);
+  } = usePagination(extraordinaryInstallments);
 
   useEffect(() => {
     if (prospectData?.credit_products) {
-      const extraordinaryInstallments = prospectData.credit_products.flatMap(
+      const extraordinaryInstallmentsDB = prospectData.credit_products.flatMap(
         (product) =>
           product.extraordinary_installments.map((installment) => ({
             id: `${product.credit_product_code}-${installment.installment_date}`,
@@ -118,18 +118,19 @@ export const TableExtraordinaryInstallment = (
           }))
       );
 
-      setExtraDebtors(extraordinaryInstallments);
+      setExtraordinaryInstallments(extraordinaryInstallmentsDB);
     }
     setLoading(false);
   }, [prospectData, refreshKey]);
 
   const handleDelete = async (id: string) => {
     try {
-      const updatedDebtors = extraDebtors.filter((debtor) => debtor.id !== id);
-      setExtraDebtors(updatedDebtors);
-      console.log(`Debtor with ID ${id} deleted successfully.`);
+      const updatedExtraordinaryInstallments = extraordinaryInstallments.filter(
+        (debtor) => debtor.id !== id
+      );
+      setExtraordinaryInstallments(updatedExtraordinaryInstallments);
     } catch (error) {
-      console.error("Failed to delete debtor:", error);
+      console.error("Failed to delete extraordinary installment:", error);
     }
   };
 
@@ -137,10 +138,10 @@ export const TableExtraordinaryInstallment = (
     updatedDebtor: TableExtraordinaryInstallmentProps
   ) => {
     try {
-      const updatedDebtors = extraDebtors.map((debtor) =>
-        debtor.id === updatedDebtor.id ? updatedDebtor : debtor
+      const updatedExtraordinaryInstallments = extraordinaryInstallments.map(
+        (debtor) => (debtor.id === updatedDebtor.id ? updatedDebtor : debtor)
       );
-      setExtraDebtors(updatedDebtors);
+      setExtraordinaryInstallments(updatedExtraordinaryInstallments);
       setIsOpenModalEdit(false);
     } catch (error) {
       console.error("Error updating debtor:", error);
@@ -192,9 +193,9 @@ export const TableExtraordinaryInstallment = (
           </Tr>
         )}
         {!loading &&
-          extraDebtors &&
-          extraDebtors.length > 0 &&
-          extraDebtors.map((row, indx) => (
+          extraordinaryInstallments &&
+          extraordinaryInstallments.length > 0 &&
+          extraordinaryInstallments.map((row, indx) => (
             <Tr key={indx} zebra={indx % 2 !== 0}>
               {visbleHeaders.map((header) => (
                 <Td key={header.key} align="left">
@@ -230,7 +231,7 @@ export const TableExtraordinaryInstallment = (
                 ))}
             </Tr>
           ))}
-        {!loading && extraDebtors.length === 0 && (
+        {!loading && extraordinaryInstallments.length === 0 && (
           <Tr>
             <Td
               colSpan={visbleHeaders.length + visbleActions.length}
@@ -249,7 +250,7 @@ export const TableExtraordinaryInstallment = (
           </Tr>
         )}
       </Tbody>
-      {extraDebtors.length > 0 && !loading && (
+      {extraordinaryInstallments.length > 0 && !loading && (
         <Tfoot>
           <Tr border="bottom">
             <Td
