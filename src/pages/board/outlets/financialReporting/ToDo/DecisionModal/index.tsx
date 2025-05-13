@@ -7,6 +7,7 @@ import {
   useFlag,
   useMediaQuery,
   Textarea,
+  Checkpicker,
 } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
@@ -15,10 +16,11 @@ import { validationMessages } from "@validations/validationMessages";
 
 import { IMakeDecisionsCreditRequestWithXAction } from "./types";
 import { StyledContainerTextField } from "./styles";
-import { txtFlags, txtOthersOptions } from "./../config";
+import { soporteInvalidOptions, txtFlags, txtOthersOptions } from "./../config";
 
 interface FormValues {
   textarea: string;
+  selectedOptions?: string[];
 }
 
 export interface DecisionModalProps {
@@ -32,7 +34,6 @@ export interface DecisionModalProps {
   onSecondaryButtonClick?: () => void;
   maxLength?: number;
   readOnly?: boolean;
-  hideCharCount?: boolean;
   disableTextarea?: boolean;
   secondaryButtonText?: string;
 }
@@ -105,10 +106,13 @@ export function DecisionModal(props: DecisionModalProps) {
       onCloseModal?.();
     }
   };
-
+  const initialValues: FormValues = {
+    textarea: "",
+    selectedOptions: [],
+  };
   return (
     <Formik
-      initialValues={{ textarea: "" }}
+      initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(
         values: FormValues,
@@ -151,6 +155,24 @@ export function DecisionModal(props: DecisionModalProps) {
                 </Text>
               </Stack>
             </StyledContainerTextField>
+            {data.makeDecision.humanDecision === "SOPORTES_INVALIDOS" && (
+              <Stack margin="0 0 20px 0">
+                <Field name="selectedOptions">
+                  {({ field, form }: FieldProps) => (
+                    <Checkpicker
+                      id="selectedOptions"
+                      name="selectedOptions"
+                      options={soporteInvalidOptions}
+                      values={field.name}
+                      onChange={(name, values) =>
+                        form.setFieldValue(name, values)
+                      }
+                      fullwidth
+                    />
+                  )}
+                </Field>
+              </Stack>
+            )}
             <Field name="textarea">
               {({ field, form: { setFieldTouched } }: FieldProps) => (
                 <Textarea
