@@ -121,7 +121,7 @@ export const Approvals = (props: IApprovalsProps) => {
 
   const handleSubmit = async () => {
     try {
-      const code = await getNotificationOnApprovals("test", {
+      const code = await getNotificationOnApprovals(businessUnitPublicCode, {
         approvalId: selectedData?.approvalId?.toString() ?? "",
         creditRequestId: requests?.creditRequestId ?? "",
       });
