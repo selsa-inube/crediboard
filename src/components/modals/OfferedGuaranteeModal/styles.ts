@@ -6,7 +6,7 @@ interface IScrollableContainer {
 }
 
 export const ScrollableContainer = styled.div<IScrollableContainer>`
-  height: ${({ $isMobile }) => ($isMobile ? "auto" : "340px")};
+  height: ${({ $isMobile }) => ($isMobile ? "auto" : "332px")};
   width: 100%;
   overflow: auto;
 

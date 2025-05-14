@@ -4,4 +4,5 @@ export const dataPledge = {
   years: "Modelo (año)",
   value: "Valor estimado",
   description: "Descripción del vehículo",
+  noContent: "No hay contenido",
 };

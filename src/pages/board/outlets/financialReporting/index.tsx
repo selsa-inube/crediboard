@@ -443,6 +443,8 @@ export const FinancialReporting = () => {
             handleClose={() => setShowGuarantee(false)}
             isMobile={isMobile}
             prospectData={dataProspect!}
+            businessUnitPublicCode={businessUnitPublicCode}
+            requestId={data.creditRequestId!}
           />
         )}
         {showCancelModal && (
