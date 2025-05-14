@@ -20,12 +20,11 @@ import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestI
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { truncateTextToMaxLength } from "@utils/formatData/text";
 import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
-import { TodoConsult } from "@mocks/financialReporting/to-doconsult.mock";
 import { AppContext } from "@context/AppContext";
 import userNotFound from "@assets/images/ItemNotFound.png";
 
 import { StaffModal } from "./StaffModal";
-import { errorMessagge, txtLabels, txtTaskQuery } from "./config";
+import { errorMessagge, staffConfig, txtLabels, txtTaskQuery } from "./config";
 import { IICon, IButton } from "./types";
 import { getXAction } from "./util/utils";
 import { StyledHorizontalDivider, StyledTextField } from "../styles";
@@ -146,11 +145,11 @@ function ToDo(props: ToDoProps) {
       setStaff(formattedStaff);
 
       const firstAccountManager = formattedStaff.find(
-        (staffMember) => staffMember.role === "Account_manager"
+        (staffMember) => staffMember.role === "CredicarAccountManag"
       );
 
       const firstAnalyst = formattedStaff.find(
-        (staffMember) => staffMember.role === "Analyst"
+        (staffMember) => staffMember.role === "CredicarAnalyst"
       );
 
       const newStaffState = {
@@ -268,7 +267,6 @@ function ToDo(props: ToDoProps) {
     ),
     humanDecisionDescription: selectedDecision?.label || "",
   };
-  const datamock = TodoConsult[0];
 
   return (
     <>
@@ -368,14 +366,10 @@ function ToDo(props: ToDoProps) {
                 gap="16px"
                 justifyContent="flex-start"
                 direction={isMobile ? "column" : "row"}
+                width="100%"
               >
-                <Stack justifyContent="start">
-                  <Stack
-                    direction="column"
-                    alignItems="flex-start"
-                    gap="16px"
-                    padding={isMobile ? "0px" : "0px 100px 0px 0px"}
-                  >
+                <Stack justifyContent="space-between" width="50%">
+                  <Stack direction="column" alignItems="flex-start" gap="16px">
                     <StyledTextField>
                       <Text
                         type="body"
@@ -395,7 +389,7 @@ function ToDo(props: ToDoProps) {
                         textAlign="start"
                       >
                         {truncateTextToMaxLength(
-                          datamock.CommercialManager,
+                          assignedStaff.commercialManager,
                           maxCharacters
                         )}
                       </Text>
@@ -403,13 +397,8 @@ function ToDo(props: ToDoProps) {
                   </Stack>
                   <StyledHorizontalDivider $isMobile={isMobile} />
                 </Stack>
-                <Stack>
-                  <Stack
-                    direction="column"
-                    alignItems="flex-start"
-                    gap="16px"
-                    padding={isMobile ? "0px" : "0px 100px 0px 0px"}
-                  >
+                <Stack justifyContent="space-between" width="50%">
+                  <Stack direction="column" alignItems="flex-start" gap="16px">
                     <StyledTextField>
                       <Text
                         type="body"
@@ -429,7 +418,7 @@ function ToDo(props: ToDoProps) {
                         textAlign="start"
                       >
                         {truncateTextToMaxLength(
-                          datamock.Analyst,
+                          assignedStaff.analyst,
                           maxCharacters
                         )}
                       </Text>
@@ -462,6 +451,9 @@ function ToDo(props: ToDoProps) {
           onSubmit={handleSubmit}
           onCloseModal={handleToggleStaffModal}
           taskData={taskData}
+          setAssignedStaff={setAssignedStaff}
+          buttonText={staffConfig.confirm}
+          title={staffConfig.title}
         />
       )}
     </>

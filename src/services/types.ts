@@ -46,6 +46,15 @@ export interface IAccountingVouchers {
   payrollDiscountAuthorizationCode?: string;
   promissoryNoteCode?: string;
 }
+export interface ISearchToDo {
+  creditRequestId: string;
+  creditRequestCode: string;
+  CreditRequestStateId: string;
+  creditRequestStateAbbreviatedName: string;
+  stage: string;
+  taskToBeDone: string;
+  usersByCreditRequestResponse: IStaff[];
+}
 export interface ICreditRequest {
   creditRequestId?: string;
   creditRequestCode: string;
