@@ -182,4 +182,21 @@ export const mockRiskScoring: IRiskScoring[] = [
       economic_activity_score: 160,
     },
   },
+  {
+    credit_request_id: "SC-122254646",
+    risk_scoring: {
+      total_score: 540,
+      minimum_score: 500,
+      seniority: 45,
+      seniority_score: 200,
+      risk_center: 330,
+      risk_center_score: -10,
+      job_stability_index: 980,
+      job_stability_index_score: 380,
+      marital_status: MaritalStatus.Married,
+      marital_status_score: 110,
+      economic_activity: EconomicActivity.Pensioner,
+      economic_activity_score: 160,
+    },
+  },
 ];
