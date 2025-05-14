@@ -2,7 +2,7 @@ import { environment } from "@config/environment";
 import { ICreditRequests } from "@pages/SubmitCreditApplication/types";
 import { mapCreditRequestsEntity } from "./mappers";
 
-const saveCreditRequests = async (
+const patchChangeUsersByCreditRequest = async (
   creditRequest: ICreditRequests,
   businessUnitPublicCode: string,
   userAccount: string
@@ -47,4 +47,4 @@ const saveCreditRequests = async (
   }
 };
 
-export { saveCreditRequests };
+export { patchChangeUsersByCreditRequest };

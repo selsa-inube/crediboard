@@ -17,7 +17,7 @@ import { getUnreadErrorsById } from "@services/unreadErrors";
 import { getSearchAllDocumentsById } from "@services/documents/SearchAllDocuments";
 import { generatePDF } from "@utils/pdf/generetePDF";
 import { AppContext } from "@context/AppContext";
-import { saveAssignAccountManager } from "@services/creditRequets/pacthAssignAccountManager";
+import { patchAssignAccountManager } from "@services/creditRequets/patchAssignAccountManager";
 import { lateRejectionOfACreditRequest } from "@services/creditRequets/lateRejectionCreditRequest";
 import {
   textFlagsReject,
@@ -248,7 +248,7 @@ export const FinancialReporting = () => {
       if (!data?.creditRequestId || !businessUnitPublicCode || !user?.email)
         return;
       try {
-        await saveAssignAccountManager(
+        await patchAssignAccountManager(
           data?.creditRequestId ?? "",
           businessUnitPublicCode,
           user?.email ?? ""

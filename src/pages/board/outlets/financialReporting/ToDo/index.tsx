@@ -30,7 +30,7 @@ import {
 import { getCommercialManagerAndAnalyst } from "@services/commercialManagerAndAnalyst";
 import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
 
-import { saveCredit } from "./StaffModal/utils";
+import { changeUsersByCreditRequest } from "./StaffModal/utils";
 import { StaffModal } from "./StaffModal";
 import { errorMessagge, txtLabels, txtTaskQuery } from "./config";
 import { IICon, IButton } from "./types";
@@ -342,7 +342,11 @@ function ToDo(props: ToDoProps) {
 
     try {
       if (managerRequest) {
-        await saveCredit(businessUnitPublicCode, managerRequest, userAccount);
+        await changeUsersByCreditRequest(
+          businessUnitPublicCode,
+          managerRequest,
+          userAccount
+        );
         setAssignedStaff((prev) => ({
           ...prev,
           commercialManager: selectedCommercialManager?.staffName || "",
@@ -350,7 +354,11 @@ function ToDo(props: ToDoProps) {
       }
 
       if (analystRequest) {
-        await saveCredit(businessUnitPublicCode, analystRequest, userAccount);
+        await changeUsersByCreditRequest(
+          businessUnitPublicCode,
+          analystRequest,
+          userAccount
+        );
         setAssignedStaff((prev) => ({
           ...prev,
           analyst: selectedAnalyst?.staffName || "",
