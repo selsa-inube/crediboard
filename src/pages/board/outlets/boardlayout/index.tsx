@@ -59,11 +59,16 @@ function BoardLayout() {
 
   const errorData = mockErrorBoard[0];
 
-  const fetchBoardData = async (businessUnitPublicCode: string) => {
+  const [recordsToFetch, setRecordsToFetch] = useState(79);
+
+  const fetchBoardData = async (
+    businessUnitPublicCode: string,
+    limit: number
+  ) => {
     try {
       const [boardRequestsResult, requestsPinnedResult] =
         await Promise.allSettled([
-          getCreditRequestInProgress(businessUnitPublicCode),
+          getCreditRequestInProgress(businessUnitPublicCode, limit),
           getCreditRequestPinned(businessUnitPublicCode),
         ]);
 
@@ -90,9 +95,13 @@ function BoardLayout() {
   };
 
   useEffect(() => {
-    fetchBoardData(businessUnitPublicCode);
+    fetchBoardData(businessUnitPublicCode, recordsToFetch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [businessUnitPublicCode]);
+  }, [businessUnitPublicCode, recordsToFetch]);
+
+  const handleLoadMoreData = () => {
+    setRecordsToFetch((prev) => prev + 50);
+  };
 
   useEffect(() => {
     const filteredRequests = boardData.boardRequests.filter((request) => {
@@ -249,7 +258,7 @@ function BoardLayout() {
           creditRequestId,
           isPinned
         );
-        await fetchBoardData(businessUnitPublicCode);
+        await fetchBoardData(businessUnitPublicCode, recordsToFetch);
       } else {
         setIsOpenModal(true);
         return;
@@ -271,6 +280,7 @@ function BoardLayout() {
         showPinnedOnly={filters.showPinnedOnly}
         pinnedRequests={boardData.requestsPinned}
         errorLoadingPins={errorLoadingPins}
+        handleLoadMoreData={handleLoadMoreData}
         handleSelectCheckChange={(e) =>
           handleFiltersChange({
             selectOptions: filters.selectOptions.map((option) =>
