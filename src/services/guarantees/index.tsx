@@ -3,30 +3,24 @@ import {
   fetchTimeoutServices,
   maxRetriesServices,
 } from "@config/environment";
-import { ICreditRequest } from "@services/types";
-import { mapCreditRequestToEntities } from "./mapper";
+import { IGuarantees } from "./types";
 
-export const getCreditRequestInProgress = async (
+const getGuaranteesById = async (
   businessUnitPublicCode: string,
-  maxDataBoardServices: number
-): Promise<ICreditRequest[]> => {
+  creditRequest: string
+): Promise<IGuarantees[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
-  const maxDataBoard = maxDataBoardServices;
+
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
-      const queryParams = new URLSearchParams({
-        page: "1",
-        per_page: maxDataBoard.toString(),
-      });
-      queryParams.set("sort", "desc.isPinned,asc.creditRequestDateOfCreation");
 
       const options: RequestInit = {
         method: "GET",
         headers: {
-          "X-Action": "SearchAllCreditRequestsInProgress",
+          "X-Action": "SearchAllGuaranteesById",
           "X-Business-Unit": businessUnitPublicCode,
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -34,39 +28,43 @@ export const getCreditRequestInProgress = async (
       };
 
       const res = await fetch(
-        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests?${queryParams.toString()}`,
+        `${environment.ICOREBANKING_API_URL_QUERY}/credit-requests/guarantees/${creditRequest}`,
         options
       );
 
       clearTimeout(timeoutId);
 
       if (res.status === 204) {
-        return [];
+        throw new Error("No hay garantias disponibles.");
       }
 
       const data = await res.json();
-
       if (!res.ok) {
         throw {
-          message: "Error al obtener los ",
+          message: "Error al obtener las garantias.",
           status: res.status,
           data,
         };
       }
 
-      const normalizedCredit = Array.isArray(data)
-        ? mapCreditRequestToEntities(data)
-        : [];
+      if (Array.isArray(data) && data.length > 0) {
+        return data;
+      }
 
-      return normalizedCredit;
+      return data;
     } catch (error) {
+      console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
         throw new Error(
-          "Todos los intentos fallaron. No se pudieron obtener los procesos de consulta."
+          "Todos los intentos fallaron. No se pudo obtener las garantias."
         );
       }
     }
   }
 
-  return [];
+  throw new Error(
+    "No se pudo obtener las garantias después de varios intentos."
+  );
 };
+
+export { getGuaranteesById };

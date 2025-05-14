@@ -346,7 +346,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                       <Icon
                         icon={<MdOutlineChevronRight />}
                         appearance="primary"
-                        size={isMobile ? "32px" : "24px"}
+                        size={"26px"}
                         cursorHover
                       />
                     </StyledPrint>

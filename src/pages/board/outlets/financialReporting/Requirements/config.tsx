@@ -11,10 +11,10 @@ import { Stack, Icon, Tag } from "@inubekit/inubekit";
 import { IEntries } from "@components/data/TableBoard/types";
 import { CreditRequest } from "@services/types";
 
-export const dataButton = {
+export const dataButton = (onClick: () => void) => ({
   title: "Agregar Requisito",
-  onClick: () => console.log("Agregar"),
-};
+  onClick,
+});
 
 const receiveData = (data: IEntries) => {
   console.log(data, "function que recibe data");
@@ -58,6 +58,33 @@ export const titlesRequirements = [
     },
   ],
 ];
+export const textFlagsRequirements = {
+  titleSuccess: "Cambios guardados con éxito!",
+  descriptionSuccess: `Hemos creado el campo exitosamente.`,
+  titleError: "¡Uy, algo ha salido mal!",
+  descriptionError: "No se han podido guardar los cambios.",
+};
+
+export const dataAddRequirement = {
+  title: "Agregar Requisito",
+  close: "Cerrar",
+  cancel: "Cancelar",
+  add: "Agregar",
+  labelPaymentMethod: "Tipo de requisito",
+  labelName: "Nombre del requisito",
+  labelAmount: "Cantidad",
+  labelValue: "Valor",
+  labelTextarea: "Descripción",
+  labelJustification: "Justificacion",
+  labelFrequency: "Frecuencia de pago",
+  labelDate: "Primer pago",
+  placeHolderSelect: "Seleccione una opción",
+  placeHolderAmount: "Número de pagos",
+  placeHolderValue: "Valor a pagar",
+  placeHolderDate: "Seleccione un requisito",
+  placeHolderTextarea: "Descripción del requisito",
+  placeHolderJustification: "Justificación del requisito",
+};
 
 export const infoItems = [
   { icon: <MdAddCircleOutline />, text: "Adjuntar", appearance: "help" },

@@ -5,4 +5,5 @@ export const dataMortgage = {
   years: "Antigüedad (años)",
   value: "Valor estimado",
   description: "Descripción del inmueble",
+  noContent: "No hay contenido",
 };

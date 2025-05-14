@@ -20,25 +20,38 @@ export function Bail(props: IBailProps) {
         justifyContent="center"
         padding="12px"
         gap="20px"
-        height="286px"
+        height="266px"
       >
-        <Stack direction="column" gap="8px">
-          <Text type="headline" weight="bold" size="large" appearance="primary">
-            $ {data}
-          </Text>
-          <Text type="body" size="small" appearance="gray">
-            {dataBail.bail}
-          </Text>
-        </Stack>
-        <Text type="label" size="large">
-          {dataBail.customer}
-        </Text>
-        <Stack gap="4px">
-          <Icon icon={<MdInfoOutline />} appearance="dark" size="16px" />
-          <Text type="body" size="medium" appearance="gray">
-            {dataBail.disbursement}
-          </Text>
-        </Stack>
+        {data ? (
+          <>
+            <Stack direction="column" gap="8px">
+              <Text
+                type="headline"
+                weight="bold"
+                size="large"
+                appearance="primary"
+              >
+                $ {data}
+              </Text>
+              <Text type="body" size="small" appearance="gray">
+                {dataBail.bail}
+              </Text>
+            </Stack>
+            <Text type="label" size="large">
+              {dataBail.customer}
+            </Text>
+            <Stack gap="4px">
+              <Icon icon={<MdInfoOutline />} appearance="dark" size="16px" />
+              <Text type="body" size="medium" appearance="gray">
+                {dataBail.disbursement}
+              </Text>
+            </Stack>
+          </>
+        ) : (
+          <Stack margin="auto">
+            <Text>{dataBail.noContent}</Text>
+          </Stack>
+        )}
       </Stack>
     </Fieldset>
   );

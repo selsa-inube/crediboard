@@ -1,14 +1,14 @@
 import { ICreditRequests } from "@pages/SubmitCreditApplication/types";
-import { saveCreditRequests } from "@services/creditRequets/postCreditRequests";
+import { patchChangeUsersByCreditRequest } from "@services/creditRequets/patchChangeUsersByCreditRequest";
 
-export const saveCredit = async (
+export const changeUsersByCreditRequest = async (
   businessUnitPublicCode: string,
   creditRequests: ICreditRequests,
   userAccount: string
 ) => {
   let confirmationType = true;
   try {
-    await saveCreditRequests(
+    await patchChangeUsersByCreditRequest(
       creditRequests,
       businessUnitPublicCode,
       userAccount

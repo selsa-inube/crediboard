@@ -1,18 +1,12 @@
 import { useState, useEffect } from "react";
 import localforage from "localforage";
-import {
-  MdAdd,
-  MdCached,
-  MdDeleteOutline,
-  MdOutlineEdit,
-} from "react-icons/md";
+import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
 import {
   Stack,
   Icon,
   Text,
   SkeletonLine,
   SkeletonIcon,
-  Button,
   useMediaQuery,
   Pagination,
   Table,
@@ -46,13 +40,7 @@ export interface ITableFinancialObligationsProps {
 export function TableFinancialObligations(
   props: ITableFinancialObligationsProps
 ) {
-  const {
-    refreshKey,
-    showActions,
-    showOnlyEdit,
-    initialValues,
-    showButtons = true,
-  } = props;
+  const { refreshKey, showActions, showOnlyEdit, initialValues } = props;
   const [loading, setLoading] = useState(true);
   const [extraDebtors, setExtraDebtors] = useState<
     ITableFinancialObligationsProps[]
@@ -144,14 +132,6 @@ export function TableFinancialObligations(
 
   return (
     <>
-      {showButtons && (
-        <Stack gap="16px" justifyContent="end">
-          <Button iconAfter={<MdCached />} variant="outlined">
-            {dataReport.restore}
-          </Button>
-          <Button iconAfter={<MdAdd />}>{dataReport.addObligations}</Button>
-        </Stack>
-      )}
       <Table tableLayout="auto">
         <Thead>
           <Tr>

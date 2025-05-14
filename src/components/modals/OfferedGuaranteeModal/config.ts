@@ -12,4 +12,5 @@ export const dataGuarantee = {
   title: "Garantías ofrecidas",
   close: "Cerrar",
   borrower: "Codeudor",
+  noContent: "No hay contenido",
 };

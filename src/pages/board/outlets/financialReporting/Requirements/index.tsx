@@ -1,4 +1,5 @@
 import { useState, isValidElement, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
 import { Stack, Icon, useFlag } from "@inubekit/inubekit";
 
@@ -8,21 +9,30 @@ import { TableBoard } from "@components/data/TableBoard";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
 import { TraceDetailsModal } from "@components/modals/TraceDetailsModal";
 import { IAction, IEntries, ITitle } from "@components/data/TableBoard/types";
-import { CreditRequest } from "@services/types";
+import {
+  CreditRequest,
+  IPatchOfRequirements,
+  IRequirement,
+} from "@services/types";
 import { addItem } from "@mocks/utils/dataMock.service";
 import { traceDetailsMock } from "@mocks/financialReporting/trace-details/tracedetails.mock";
+import { AddRequirementMock } from "@mocks/addRequirement";
 import { getAllPackagesOfRequirementsById } from "@services/packagesOfRequirements";
 
 import {
-  dataButton,
   infoItems,
   maperDataRequirements,
   maperEntries,
   getAcctionMobile,
   dataFlags,
+  dataButton,
+  textFlagsRequirements,
+  dataAddRequirement,
 } from "./config";
 import { AprovalsModal } from "./AprovalsModal";
 import { traceObserver, errorMessages } from "../config";
+import { AddRequirement } from "./AddRequirement";
+import { saveRequirements } from "./AddRequirement/utils";
 
 interface IRequirementsData {
   id: string;
@@ -44,14 +54,22 @@ export const Requirements = (props: IRequirementsProps) => {
     props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
+  const [showAddRequirementModal, setShowAddRequirementModal] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [dataRequirements, setDataRequirements] = useState<IRequirementsData[]>(
     []
   );
+  const [requirementName, setRequirementName] = useState("");
+  const [descriptionUseValue, setDescriptionUseValue] = useState("");
+  const [modifyJustification, setModifyJustification] = useState("");
+  const [typeOfRequirementToEvaluated, setTypeOfRequirementToEvaluated] =
+    useState<string>("");
+  const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(false);
-
+  const [rawRequirements, setRawRequirements] = useState<IRequirement[]>([]);
+  const [sentData, setSentData] = useState<IPatchOfRequirements | null>(null);
+  const navigate = useNavigate();
   const { addFlag } = useFlag();
-
   useEffect(() => {
     const fetchRequirements = async () => {
       try {
@@ -63,7 +81,7 @@ export const Requirements = (props: IRequirementsProps) => {
           businessUnitPublicCode,
           creditRequestCode
         );
-
+        setRawRequirements(data);
         if (!Array.isArray(data) || data.length === 0) {
           throw new Error("No hay requisitos disponibles.");
         }
@@ -104,7 +122,7 @@ export const Requirements = (props: IRequirementsProps) => {
 
     fetchRequirements();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creditRequestCode]);
+  }, [creditRequestCode, sentData]);
 
   const renderAccion = getAcctionMobile(
     setShowSeeDetailsModal,
@@ -157,7 +175,9 @@ export const Requirements = (props: IRequirementsProps) => {
       }
     }
   };
-
+  const closeAdd = () => {
+    setShowAddRequirementModal(false);
+  };
   const renderAddIcon = () => {
     return (
       <Stack justifyContent="center">
@@ -197,12 +217,64 @@ export const Requirements = (props: IRequirementsProps) => {
     { id: "agregar", content: renderAddIcon },
     { id: "aprobar", content: renderCheckIcon },
   ];
+  const openAddRequirementModal = () => setShowAddRequirementModal(true);
 
+  const handleAddRequirement = async (creditRequests: IPatchOfRequirements) => {
+    await saveRequirements(businessUnitPublicCode, creditRequests)
+      .then(() => {
+        addFlag({
+          title: textFlagsRequirements.titleSuccess,
+          description: textFlagsRequirements.descriptionSuccess,
+          appearance: "success",
+          duration: 5000,
+        });
+        setSentData(creditRequests);
+      })
+      .catch(() => {
+        addFlag({
+          title: textFlagsRequirements.titleError,
+          description: textFlagsRequirements.descriptionError,
+          appearance: "danger",
+          duration: 5000,
+        });
+      })
+      .finally(() => {
+        if (closeAdd) closeAdd();
+        handleToggleModal();
+      });
+
+    setTimeout(() => {
+      navigate(`/extended-card/${id}`);
+    }, 6000);
+  };
+  const initialValues: IPatchOfRequirements = {
+    packageId: rawRequirements[0]?.packageId,
+    uniqueReferenceNumber: creditRequestCode,
+    packageDate: rawRequirements[0]?.packageDate,
+    packageDescription:
+      "Requisitos para la solicitud de crédito SC-12225464610",
+    modifyJustification: modifyJustification,
+    listsOfRequirementsByPackage: [
+      {
+        packageId: rawRequirements[0]?.packageId,
+        requirementCatalogName: requirementName,
+        requirementDate: rawRequirements[0]?.packageDate,
+        requirementStatus: "UNVALIDATED",
+        descriptionEvaluationRequirement: "Requisitos no evaluados",
+        descriptionUse: descriptionUseValue,
+        typeOfRequirementToEvaluated: typeOfRequirementToEvaluated,
+        transactionOperation: "Insert",
+      },
+    ],
+  };
+  const handleToggleModal = () => {
+    setShowModal(!showModal);
+  };
   return (
     <>
       <Fieldset
         title={errorMessages.Requirements.titleCard}
-        activeButton={dataButton}
+        activeButton={dataButton(openAddRequirementModal)}
         heightFieldset="100%"
         hasTable={!error}
         hasError={error ? true : false}
@@ -250,6 +322,23 @@ export const Requirements = (props: IRequirementsProps) => {
           onCloseModal={toggleAprovalsModal}
           onChangeApprove={changeApprove}
           onSubmit={(values) => handleSubmitAprovals(id!, user, values)}
+        />
+      )}
+      {showAddRequirementModal && (
+        <AddRequirement
+          title={dataAddRequirement.title}
+          buttonText={dataAddRequirement.add}
+          optionsRequirement={AddRequirementMock}
+          onCloseModal={closeAdd}
+          creditRequestCode={creditRequestCode}
+          setSentData={setSentData}
+          setRequirementName={setRequirementName}
+          setDescriptionUseValue={setDescriptionUseValue}
+          setModifyJustification={setModifyJustification}
+          setTypeOfRequirementToEvaluated={setTypeOfRequirementToEvaluated}
+          handleNext={() => {
+            handleAddRequirement(initialValues);
+          }}
         />
       )}
     </>

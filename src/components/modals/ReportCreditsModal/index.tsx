@@ -1,32 +1,23 @@
 import { useState, useEffect } from "react";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdCached } from "react-icons/md";
 
-import {
-  Stack,
-  SkeletonLine,
-  useMediaQuery,
-  Select,
-  Button,
-} from "@inubekit/inubekit";
+import { Stack, useMediaQuery, Select, Button } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
 import { dataReport } from "@pages/prospect/components/TableObligationsFinancial/config";
 
-import { NewPrice } from "./components/newPrice";
-
 export interface ReportCreditsModalProps {
   handleClose: () => void;
   onChange: (name: string, newValue: string) => void;
   options: { id: string; label: string; value: string }[];
-  totalBalance: number;
+  totalBalance?: number;
   totalFee: number;
   debtor: string;
 }
 
 export function ReportCreditsModal(props: ReportCreditsModalProps) {
-  const { handleClose, onChange, options, totalBalance, totalFee, debtor } =
-    props;
+  const { handleClose, onChange, options, debtor } = props;
 
   const [loading, setLoading] = useState(true);
 
@@ -67,28 +58,15 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
               onChange={(name, value) => onChange(name, value)}
               size="compact"
             />
-            <Stack alignItems="end">
-              <Button
-                children={dataReport.addObligations}
-                iconBefore={<MdAdd />}
-                fullwidth={isMobile}
-              />
+            <Stack alignItems="end" gap="16px">
+              <Button iconAfter={<MdCached />} variant="outlined">
+                {dataReport.restore}
+              </Button>
+              <Button iconAfter={<MdAdd />}>{dataReport.addObligations}</Button>
             </Stack>
           </Stack>
         )}
         <TableFinancialObligations showActions={true} />
-        <Stack gap="15px" direction={!isMobile ? "row" : "column"}>
-          {loading ? (
-            <SkeletonLine />
-          ) : (
-            <NewPrice value={totalFee} label={dataReport.totalFee} />
-          )}
-          {loading ? (
-            <SkeletonLine />
-          ) : (
-            <NewPrice value={totalBalance} label={dataReport.totalBalance} />
-          )}
-        </Stack>
       </Stack>
     </BaseModal>
   );
