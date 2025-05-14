@@ -13,9 +13,15 @@ import { registerNewsToCreditRequest } from "@services/trace/registerNewsToCredi
 import { ICreditRequest } from "@services/types";
 import { DetailsModal } from "@pages/board/outlets/financialReporting/management/DetailsModal";
 import { AppContext } from "@context/AppContext";
+import { ListModal } from "@components/modals/ListModal";
 
 import { ChatContent, SkeletonContainer, SkeletonLine } from "./styles";
-import { traceObserver, errorObserver, errorMessages } from "../config";
+import {
+  traceObserver,
+  errorObserver,
+  errorMessages,
+  optionButtons,
+} from "../config";
 
 interface IManagementProps {
   id: string;
@@ -35,6 +41,10 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
   const [selectedMessage, setSelectedMessage] = useState<ITraceType | null>(
     null
   );
+  const [uploadedFiles, setUploadedFiles] = useState<
+    { id: string; name: string; file: File }[]
+  >([]);
+  const [showAttachments, setShowAttachments] = useState(false);
   const { businessUnitSigla, eventData } = useContext(AppContext);
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
@@ -197,7 +207,9 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
                   cursorHover
                   size="24px"
                   icon={<MdAttachFile />}
+                  onClick={() => setShowAttachments(true)}
                 />
+
                 <Textfield
                   id="text"
                   placeholder="Ej.: Escriba su mensaje"
@@ -219,6 +231,18 @@ export const Management = ({ id, isMobile, updateData }: IManagementProps) => {
             <DetailsModal
               data={selectedMessage as ITraceType}
               handleClose={() => setDetailsOpen(false)}
+            />
+          )}
+          {showAttachments && (
+            <ListModal
+              title="Adjuntar"
+              handleClose={() => setShowAttachments(false)}
+              optionButtons={optionButtons}
+              buttonLabel="Guardar"
+              id={creditRequest.creditRequestId}
+              isViewing={false}
+              uploadedFiles={uploadedFiles}
+              setUploadedFiles={setUploadedFiles}
             />
           )}
         </>
