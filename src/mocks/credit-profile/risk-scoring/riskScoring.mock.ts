@@ -13,7 +13,7 @@ export const mockRangeRequeredByTheBusinessUnit: IRiskScoringRangeRequered[] = [
 
 export const mockRiskScoring: IRiskScoring[] = [
   {
-    credit_request_id: "999990",
+    credit_request_id: "SC-122254646",
     risk_scoring: {
       total_score: 456,
       minimum_score: 500,

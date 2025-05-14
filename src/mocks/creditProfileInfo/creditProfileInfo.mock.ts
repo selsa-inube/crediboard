@@ -1,6 +1,6 @@
 export const credit_profileInfo = [
   {
-    credit_request_id: "999990",
+    credit_request_id: "SC-122254646",
     labor_stability: {
       company_seniority: 5,
       labor_stability_index: 900,
