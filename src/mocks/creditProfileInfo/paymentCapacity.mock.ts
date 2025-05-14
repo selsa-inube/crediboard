@@ -63,4 +63,12 @@ export const payment_capacity = [
       percentage_used: 10,
     },
   },
+    {
+    credit_request_id: "SC-122254646",
+    payment_capacity: {
+      available_value: 955500,
+      base_income: 3000000,
+      percentage_used: 50,
+    },
+  },
 ];
