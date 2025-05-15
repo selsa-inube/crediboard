@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { MdOutlineChevronRight } from "react-icons/md";
 import {
   Stack,
@@ -12,6 +12,9 @@ import {
 import { SummaryCard } from "@components/cards/SummaryCard";
 import { ICreditRequestPinned, ICreditRequest } from "@services/types";
 import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
+import { patchChangeTracesToReadById } from "@services/creditRequets/patchChangeTracesToReadById";
+import { AppContext } from "@context/AppContext";
+import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
@@ -54,7 +57,7 @@ function BoardSection(props: BoardSectionProps) {
   const [collapse, setCollapse] = useState(false);
 
   const flagMessage = useRef(false);
-
+  const { businessUnitSigla } = useContext(AppContext);
   const handleCollapse = () => {
     if (!disabledCollapse) {
       setCollapse(!collapse);
@@ -70,7 +73,6 @@ function BoardSection(props: BoardSectionProps) {
     );
     return pinnedRequest && pinnedRequest.isPinned === "Y" ? true : false;
   }
-
   const { addFlag } = useFlag();
 
   const handleFlag = (title: string, description: string) => {
@@ -92,7 +94,8 @@ function BoardSection(props: BoardSectionProps) {
   };
 
   const errorData = mockErrorBoard[0];
-
+  const businessUnitPublicCode: string =
+    JSON.parse(businessUnitSigla).businessUnitPublicCode;
   useEffect(() => {
     const timeout = setTimeout(() => {
       const hasUnreadNoveltiesError = sectionInformation.some(
@@ -108,6 +111,24 @@ function BoardSection(props: BoardSectionProps) {
     return () => clearTimeout(timeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sectionInformation]);
+
+  const handleCardClick = async (creditRequestId: string | undefined) => {
+    if (!businessUnitPublicCode || !creditRequestId) return;
+
+    try {
+      await patchChangeTracesToReadById(
+        creditRequestId,
+        businessUnitPublicCode
+      );
+    } catch (error) {
+      addFlag({
+        title: textFlagsUsers.titleError,
+        description: textFlagsUsers.descriptionError,
+        appearance: "danger",
+        duration: 5000,
+      });
+    }
+  };
 
   return (
     <StyledBoardSection
@@ -193,6 +214,7 @@ function BoardSection(props: BoardSectionProps) {
                     );
                   }
                 }}
+                onCardClick={() => handleCardClick(request.creditRequestId)}
                 errorLoadingPins={errorLoadingPins}
               />
             ))
