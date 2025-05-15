@@ -546,8 +546,6 @@ export function CreditProspect(props: ICreditProspectProps) {
       {currentModal === "reportCreditsModal" && (
         <ReportCreditsModal
           handleClose={handleCloseModal}
-          totalBalance={87000000}
-          totalFee={3300000}
           options={incomeOptions}
           onChange={onChanges}
           debtor={form.borrower}
