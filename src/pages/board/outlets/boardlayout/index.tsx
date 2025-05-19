@@ -187,8 +187,7 @@ function BoardLayout() {
     updatedEventData.enumRole = enumerators;
 
     setEventData(updatedEventData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [enumerators, eventData, setEventData]);
 
   const handleFiltersChange = (newFilters: Partial<typeof filters>) => {
     setFilters((prevFilters) => ({
