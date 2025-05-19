@@ -7,6 +7,7 @@ import { ICreditRequest } from "@services/types";
 import { getCreditRequestPinned } from "@services/isPinned";
 import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
 import { patchChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
+import { getEnumerators } from "@services/enumerators";
 import { AppContext } from "@context/AppContext";
 import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
 
@@ -14,8 +15,7 @@ import { dataInformationModal } from "./config/board";
 import { BoardLayoutUI } from "./interface";
 import { selectCheckOptions } from "./config/select";
 import { IBoardData } from "./types";
-import { getEnumerators } from "@services/enumerators";
-import { IEnumerator } from "@pages/SubmitCreditApplication/types";
+import { IEnumerator } from "./types";
 
 function BoardLayout() {
   const { businessUnitSigla, eventData, setEventData } = useContext(AppContext);

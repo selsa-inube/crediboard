@@ -34,7 +34,7 @@ import { Fieldset } from "@components/data/Fieldset";
 import { extraordinaryInstallmentMock } from "@mocks/prospect/extraordinaryInstallment.mock";
 import { formatPrimaryDate } from "@utils/formatData/date";
 import { currencyFormat } from "@utils/formatData/currency";
-import { CreditProspect } from "@pages/prospect/components/CreditProspect";
+import { CreditProspect } from "@components/layout/CreditProspect";
 import { IProspect, ICreditProduct } from "@services/prospects/types";
 import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
 import { getModeOfDisbursement } from "@services/creditRequets/getModeOfDisbursement";

@@ -24,10 +24,10 @@ import { saveDocument } from "@services/saveDocument";
 import { validationMessages } from "@validations/validationMessages";
 import { AppContext } from "@context/AppContext";
 import { getSearchDocumentById } from "@services/documents/SearchDocumentById";
-import { IDocumentUpload } from "@pages/SubmitCreditApplication/types";
 import { formatFileSize } from "@utils/size";
 import { IUploadedFile } from "@services/types";
 
+import { DocumentViewer } from "../DocumentViewer";
 import {
   StyledAttachContainer,
   StyledContainerClose,
@@ -35,8 +35,8 @@ import {
   StyledFileBox,
   StyledModal,
 } from "./styles";
-import { DocumentViewer } from "../DocumentViewer";
 import { listModalData } from "./config";
+import { IDocumentUpload } from "./types";
 
 export interface IOptionButtons {
   label: string;

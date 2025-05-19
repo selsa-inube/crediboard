@@ -10,8 +10,8 @@ import {
 
 import { IPatchOfRequirements } from "@services/types";
 import { BaseModal } from "@components/modals/baseModal";
-import { IOptionsSelect } from "@pages/SubmitCreditApplication/types";
 
+import { IOptionsSelect } from "../types";
 import { dataAddRequirement } from "../config";
 
 export interface IRequirement {

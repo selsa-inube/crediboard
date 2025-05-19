@@ -1,4 +1,4 @@
-import { ICreditRequests } from "@pages/SubmitCreditApplication/types";
+import { ICreditRequests } from "@services/types";
 import { patchChangeUsersByCreditRequest } from "@services/creditRequets/patchChangeUsersByCreditRequest";
 
 export const changeUsersByCreditRequest = async (
