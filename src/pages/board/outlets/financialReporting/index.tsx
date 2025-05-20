@@ -16,13 +16,13 @@ import {
   ICreditRequest,
   IDeleteCreditRequest,
 } from "@services/types";
-import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
-import { getUnreadErrorsById } from "@services/unreadErrors";
-import { getSearchAllDocumentsById } from "@services/documents/SearchAllDocuments";
+import { getCreditRequestByCode } from "@services/credit-request/query/getCreditRequestByCode";
+import { getUnreadErrorsById } from "@services/credit-request/command/unreadErrors";
+import { getSearchAllDocumentsById } from "@services/credit-request/query/SearchAllDocuments";
 import { generatePDF } from "@utils/pdf/generetePDF";
 import { AppContext } from "@context/AppContext";
-import { patchAssignAccountManager } from "@services/creditRequets/patchAssignAccountManager";
-import { lateRejectionOfACreditRequest } from "@services/creditRequets/lateRejectionCreditRequest";
+import { patchAssignAccountManager } from "@services/credit-request/command/patchAssignAccountManager";
+import { lateRejectionOfACreditRequest } from "@services/credit-request/command/lateRejectionCreditRequest";
 import {
   textFlagsCancel,
   textFlagsReject,

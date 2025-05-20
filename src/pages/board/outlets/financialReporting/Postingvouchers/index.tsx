@@ -3,8 +3,8 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { Stack } from "@inubekit/inubekit";
 
 import { IAccountingVouchers, ICreditRequest } from "@services/types";
-import { getAccountingVouchers } from "@services/accountingVouchers";
-import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { getAccountingVouchers } from "@services/credit-request/query/accountingVouchers";
+import { getCreditRequestByCode } from "@services/credit-request/query/getCreditRequestByCode";
 import { AppContext } from "@context/AppContext";
 import { IEntries } from "@components/data/TableBoard/types";
 import { UnfoundData } from "@components/layout/UnfoundData";

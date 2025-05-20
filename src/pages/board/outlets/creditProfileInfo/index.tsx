@@ -7,7 +7,7 @@ import { ICreditRequest, IRiskScoring } from "@services/types";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { currencyFormat } from "@utils/formatData/currency";
 import { generatePDF } from "@utils/pdf/generetePDF";
-import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { getCreditRequestByCode } from "@services/credit-request/query/getCreditRequestByCode";
 import { AppContext } from "@context/AppContext";
 import { CreditBehavior } from "./CreditBehaviorCard";
 import { Guarantees } from "./Guarantees";

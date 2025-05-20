@@ -3,8 +3,8 @@ import { Stack, Tabs, useFlag } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { CardBorrower } from "@components/cards/CardBorrower";
-import { getGuaranteesById } from "@services/guarantees";
-import { IGuarantees } from "@services/guarantees/types";
+import { getGuaranteesById } from "@services/credit-request/query/guarantees";
+import { IGuarantees } from "@services/credit-request/query/guarantees/types";
 import { IProspect } from "@services/prospects/types";
 import { getTotalFinancialObligations } from "@pages/SubmitCreditApplication/util";
 import { currencyFormat } from "@utils/formatData/currency";

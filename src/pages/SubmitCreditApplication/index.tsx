@@ -4,7 +4,7 @@ import { useFlag, useMediaQuery } from "@inubekit/inubekit";
 
 import { CustomerContext } from "@context/CustomerContext/CustomerContextProvider";
 import { AppContext } from "@context/AppContext";
-import { postSubmitCredit } from "@services/submitCredit";
+import { postSubmitCredit } from "@services/credit-request/command/submitCredit";
 import { getSearchProspectById } from "@services/prospects";
 import { postBusinessUnitRules } from "@services/businessUnitRules";
 import { getMonthsElapsed } from "@utils/formatData/currency";
