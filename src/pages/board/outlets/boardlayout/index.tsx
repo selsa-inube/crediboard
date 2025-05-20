@@ -31,7 +31,6 @@ function BoardLayout() {
     selectOptions: selectCheckOptions,
     boardOrientation: eventData.user.preferences.boardOrientation || "vertical",
   });
-
   const [filteredRequests, setFilteredRequests] = useState<ICreditRequest[]>(
     []
   );
@@ -60,15 +59,23 @@ function BoardLayout() {
   const errorData = mockErrorBoard[0];
 
   const [recordsToFetch, setRecordsToFetch] = useState(79);
-
   const fetchBoardData = async (
     businessUnitPublicCode: string,
-    limit: number
+    limit: number,
+    numberCard?: string,
+    stage?: string,
+    creditRequestStateAbbreviatedName?: string
   ) => {
     try {
       const [boardRequestsResult, requestsPinnedResult] =
         await Promise.allSettled([
-          getCreditRequestInProgress(businessUnitPublicCode, limit),
+          getCreditRequestInProgress(
+            businessUnitPublicCode,
+            limit,
+            numberCard,
+            stage,
+            creditRequestStateAbbreviatedName
+          ),
           getCreditRequestPinned(businessUnitPublicCode),
         ]);
 
@@ -95,13 +102,50 @@ function BoardLayout() {
   };
 
   useEffect(() => {
-    fetchBoardData(businessUnitPublicCode, recordsToFetch);
+    fetchBoardData(
+      businessUnitPublicCode,
+      recordsToFetch,
+      filters.searchRequestValue
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [businessUnitPublicCode, recordsToFetch]);
+  }, [businessUnitPublicCode, recordsToFetch, filters.searchRequestValue]);
 
   const handleLoadMoreData = () => {
     setRecordsToFetch((prev) => prev + 50);
   };
+  useEffect(() => {
+    const hasFiltersActive = filters.selectOptions.some(
+      (option) => option.checked
+    );
+    if (hasFiltersActive) {
+      const activeFilterStages = filters.selectOptions
+        .filter((option) => option.checked)
+        .map((option) => option.id);
+
+      const stageMap: Record<string, string> = {
+        "3": "GESTION_COMERCIAL",
+        "4": "VERIFICACION_APROBACION",
+        "5": "FORMALIZACION_GARANTIAS",
+        "6": "TRAMITE_DESEMBOLSO",
+        "7": "CUMPLIMIENTO_REQUISITOS",
+      };
+
+      const foundStage = activeFilterStages.find((stageId) =>
+        stageMap.hasOwnProperty(stageId)
+      );
+
+      if (foundStage) {
+        fetchBoardData(businessUnitPublicCode, 0, "", stageMap[foundStage]);
+        return;
+      }
+    }
+
+    fetchBoardData(
+      businessUnitPublicCode,
+      recordsToFetch,
+      filters.searchRequestValue
+    );
+  }, [filters.selectOptions, businessUnitPublicCode, recordsToFetch]);
 
   useEffect(() => {
     const filteredRequests = boardData.boardRequests.filter((request) => {
@@ -112,7 +156,6 @@ function BoardLayout() {
         request.creditRequestCode
           .toString()
           .includes(filters.searchRequestValue);
-      request.creditRequestCode.toString().includes(filters.searchRequestValue);
 
       const isPinned =
         !filters.showPinnedOnly ||
@@ -144,6 +187,7 @@ function BoardLayout() {
             ].includes(request.stage);
           case "3":
             return request.stage === "GESTION_COMERCIAL";
+
           case "4":
             return request.stage === "VERIFICACION_APROBACION";
           case "5":
@@ -153,7 +197,13 @@ function BoardLayout() {
           case "7":
             return request.stage === "CUMPLIMIENTO_REQUISITOS";
           case "9":
-            return request.stage === "GESTION_COMERCIAL";
+            return fetchBoardData(
+              businessUnitPublicCode,
+              0,
+              "",
+              "",
+              "REVISION_CLIENTE"
+            );
           case "10":
             return request.unreadNovelties === "Y";
           default:
@@ -161,6 +211,7 @@ function BoardLayout() {
         }
       });
     });
+
     setFilteredRequests(finalFilteredRequests);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, boardData]);
@@ -187,9 +238,9 @@ function BoardLayout() {
     updatedEventData.enumRole = enumerators;
 
     setEventData(updatedEventData);
-  }, [enumerators, eventData, setEventData]);
+  }, []);
 
-  const handleFiltersChange = (newFilters: Partial<typeof filters>) => {
+  const handleFiltersChange = async (newFilters: Partial<typeof filters>) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       ...newFilters,
