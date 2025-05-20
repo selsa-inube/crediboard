@@ -11,24 +11,30 @@ export const getCreditRequestInProgress = async (
   maxDataBoardServices?: number,
   creditRequestCode?: string,
   stage?: string,
-  creditRequestStateAbbreviatedName?: string
+  creditRequestStateAbbreviatedName?: string,
+  inStage?: string[]
 ): Promise<ICreditRequest[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
   const maxDataBoard = maxDataBoardServices;
+
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
+
       const queryParams = new URLSearchParams({
         page: "1",
         per_page: maxDataBoard?.toString() ?? "",
-        creditRequestCode: creditRequestCode ? creditRequestCode : "",
-        stage: stage ? stage : "",
-        creditRequestStateAbbreviatedName: creditRequestStateAbbreviatedName
-          ? creditRequestStateAbbreviatedName
-          : "",
+        creditRequestCode: creditRequestCode || "",
+        stage: stage || "",
+        creditRequestStateAbbreviatedName:
+          creditRequestStateAbbreviatedName || "",
       });
+      if (inStage?.length) {
+        queryParams.set("stage", `in.${inStage.join(",")}`);
+      }
+
       queryParams.set("sort", "desc.isPinned,asc.creditRequestDateOfCreation");
 
       const options: RequestInit = {

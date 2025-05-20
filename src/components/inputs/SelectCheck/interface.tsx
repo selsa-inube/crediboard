@@ -4,7 +4,7 @@ import {
   MdCheckCircle,
   MdOutlineArrowDropDown,
 } from "react-icons/md";
-import { Stack, Icon, Text, Label } from "@inubekit/inubekit";
+import { Stack, Icon, Text, Label, Checkpicker } from "@inubekit/inubekit";
 
 import { OptionItemChecked } from "./OptionItem";
 import { OptionList } from "./OptionList";
@@ -104,7 +104,12 @@ export const SelectcheckUI = forwardRef<HTMLDivElement, ISelectcheckUIProps>(
             )}
           </Stack>
         )}
-
+        {/* <Checkpicker
+          name={""}
+          onChange={onChangeCheck}
+          options={[]}
+          values={""}
+        ></Checkpicker> */}
         <StyledInputContainer
           disabled={disabled}
           $focused={focused!}

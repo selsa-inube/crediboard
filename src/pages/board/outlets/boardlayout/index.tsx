@@ -58,13 +58,16 @@ function BoardLayout() {
 
   const errorData = mockErrorBoard[0];
 
-  const [recordsToFetch, setRecordsToFetch] = useState(79);
+  const [recordsToFetch, setRecordsToFetch] = useState(0);
+  const [recordsToFetchInitial, setRecordsToFetchInitial] = useState(79);
+
   const fetchBoardData = async (
     businessUnitPublicCode: string,
     limit: number,
     numberCard?: string,
     stage?: string,
-    creditRequestStateAbbreviatedName?: string
+    creditRequestStateAbbreviatedName?: string,
+    inStage?: string
   ) => {
     try {
       const [boardRequestsResult, requestsPinnedResult] =
@@ -74,7 +77,8 @@ function BoardLayout() {
             limit,
             numberCard,
             stage,
-            creditRequestStateAbbreviatedName
+            creditRequestStateAbbreviatedName,
+            inStage?.split(",")
           ),
           getCreditRequestPinned(businessUnitPublicCode),
         ]);
@@ -101,53 +105,107 @@ function BoardLayout() {
     }
   };
 
-  useEffect(() => {
-    fetchBoardData(
-      businessUnitPublicCode,
-      recordsToFetch,
-      filters.searchRequestValue
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [businessUnitPublicCode, recordsToFetch, filters.searchRequestValue]);
-
   const handleLoadMoreData = () => {
     setRecordsToFetch((prev) => prev + 50);
+    setRecordsToFetchInitial((prev) => prev + 50);
+  };
+
+  const specialFilterMap: Record<
+    string,
+    {
+      stage?: string;
+      creditRequestStateAbbreviatedName?: string;
+      inStage?: string;
+    }
+  > = {
+    "2": {
+      inStage:
+        "GESTION_COMERCIAL,VERIFICACION_APROBACION,FORMALIZACION_GARANTIAS,TRAMITE_DESEMBOLSO",
+    },
+    "3": { stage: "GESTION_COMERCIAL" },
+    "4": { stage: "VERIFICACION_APROBACION" },
+    "5": { stage: "FORMALIZACION_GARANTIAS" },
+    "6": { stage: "TRAMITE_DESEMBOLSO" },
+    "7": { stage: "CUMPLIMIENTO_REQUISITOS" },
+    "9": { creditRequestStateAbbreviatedName: "REVISION_CLIENTE" },
   };
   useEffect(() => {
-    const hasFiltersActive = filters.selectOptions.some(
-      (option) => option.checked
-    );
-    if (hasFiltersActive) {
-      const activeFilterStages = filters.selectOptions
-        .filter((option) => option.checked)
-        .map((option) => option.id);
+    const hasFiltersActive = filters.selectOptions.some((o) => o.checked);
 
-      const stageMap: Record<string, string> = {
-        "3": "GESTION_COMERCIAL",
-        "4": "VERIFICACION_APROBACION",
-        "5": "FORMALIZACION_GARANTIAS",
-        "6": "TRAMITE_DESEMBOLSO",
-        "7": "CUMPLIMIENTO_REQUISITOS",
-      };
-
-      const foundStage = activeFilterStages.find((stageId) =>
-        stageMap.hasOwnProperty(stageId)
+    if (!hasFiltersActive) {
+      fetchBoardData(
+        businessUnitPublicCode,
+        recordsToFetchInitial,
+        filters.searchRequestValue
       );
-
-      if (foundStage) {
-        fetchBoardData(businessUnitPublicCode, 0, "", stageMap[foundStage]);
-        return;
-      }
+      return;
     }
 
-    fetchBoardData(
-      businessUnitPublicCode,
-      recordsToFetch,
-      filters.searchRequestValue
-    );
-  }, [filters.selectOptions, businessUnitPublicCode, recordsToFetch]);
+    const fetchDataForActiveFilters = async () => {
+      const activeFilterIds = filters.selectOptions
+        .filter((o) => o.checked)
+        .map((o) => o.id);
 
-  useEffect(() => {
+      const specialFilterIds = activeFilterIds.filter(
+        (id) => id in specialFilterMap
+      );
+
+      if (specialFilterIds.length > 0) {
+        const specialFilters = specialFilterIds.map(
+          (id) => specialFilterMap[id]
+        );
+
+
+        const combineValues = (
+          keys: (keyof (typeof specialFilterMap)[string])[]
+        ) => {
+          const combinedSet = new Set<string>();
+          specialFilters.forEach((filter) => {
+            keys.forEach((key) => {
+              const value = filter[key];
+              if (value) {
+                value
+                  .split(",")
+                  .map((v) => v.trim())
+                  .forEach((v) => combinedSet.add(v));
+              }
+            });
+          });
+          return combinedSet.size > 0
+            ? Array.from(combinedSet).join(",")
+            : undefined;
+        };
+
+        
+        const allStages = combineValues(["stage", "inStage"]);
+        const allCreditStates = combineValues([
+          "creditRequestStateAbbreviatedName",
+        ]);
+
+        await fetchBoardData(
+          businessUnitPublicCode,
+          recordsToFetch,
+          "",
+          allStages,
+          allCreditStates, 
+          undefined
+        );
+        return;
+      }
+
+      applyLocalFilter();
+    };
+
+    fetchDataForActiveFilters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    filters.selectOptions,
+    businessUnitPublicCode,
+    recordsToFetch,
+    filters.searchRequestValue,
+  ]);
+
+  const applyLocalFilter = () => {
     const filteredRequests = boardData.boardRequests.filter((request) => {
       const isSearchMatch =
         request.clientName
@@ -178,32 +236,7 @@ function BoardLayout() {
         switch (filterId) {
           case "1":
             return request.userWhoPinnnedId === staffId;
-          case "2":
-            return [
-              "GESTION_COMERCIAL",
-              "VERIFICACION_APROBACION",
-              "FORMALIZACION_GARANTIAS",
-              "TRAMITE_DESEMBOLSO",
-            ].includes(request.stage);
-          case "3":
-            return request.stage === "GESTION_COMERCIAL";
 
-          case "4":
-            return request.stage === "VERIFICACION_APROBACION";
-          case "5":
-            return request.stage === "FORMALIZACION_GARANTIAS";
-          case "6":
-            return request.stage === "TRAMITE_DESEMBOLSO";
-          case "7":
-            return request.stage === "CUMPLIMIENTO_REQUISITOS";
-          case "9":
-            return fetchBoardData(
-              businessUnitPublicCode,
-              0,
-              "",
-              "",
-              "REVISION_CLIENTE"
-            );
           case "10":
             return request.unreadNovelties === "Y";
           default:
@@ -213,8 +246,7 @@ function BoardLayout() {
     });
 
     setFilteredRequests(finalFilteredRequests);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, boardData]);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
