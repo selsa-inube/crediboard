@@ -36,7 +36,6 @@ interface BoardLayoutProps {
   showPinnedOnly: boolean;
   pinnedRequests: ICreditRequestPinned[];
   errorLoadingPins: boolean;
-  loading: boolean;
   handleSelectCheckChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handlePinRequest: (
     requestId: string,

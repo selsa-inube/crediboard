@@ -6,4 +6,5 @@ export const dataCreditProspect = {
   close: "Cerrar",
   error: "Error",
   errorDescription: "Error al obtener los prospectos: ",
+  noDataIncome: "No se han encontrado fuentes de ingreso.",
 };

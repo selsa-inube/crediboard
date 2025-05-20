@@ -7,7 +7,7 @@ import {
   MdOutlinePictureAsPdf,
   MdOutlineShare,
 } from "react-icons/md";
-import { Stack, Icon, Button, Select } from "@inubekit/inubekit";
+import { Stack, Icon, Button, Select, Text } from "@inubekit/inubekit";
 
 import { MenuProspect } from "@components/navigation/MenuProspect";
 import { PaymentCapacity } from "@components/modals/PaymentCapacityModal";
@@ -500,37 +500,46 @@ export function CreditProspect(props: ICreditProspectProps) {
           handleNext={handleCloseModal}
           handleClose={handleCloseModal}
         >
-          <Stack
-            justifyContent="space-between"
-            alignItems="end"
-            width="400px"
-            gap="16px"
-          >
-            <Select
-              label="Deudor"
-              id="borrower"
-              name="borrower"
-              options={borrowerOptions}
-              value={borrowerOptions[selectedIndex]?.value}
-              onChange={handleChange}
-              size="compact"
-            />
-            <Button
-              onClick={() => {
-                handleCloseModal();
-                setOpenModal("IncomeModalEdit");
-              }}
-            >
-              {dataCreditProspect.edit}
-            </Button>
-          </Stack>
-          <IncomeDebtor
-            initialValues={
-              dataProspect[0]?.borrowers?.find(
-                (b) => b.borrower_name === borrowerOptions[selectedIndex]?.value
-              ) || selectedBorrower
-            }
-          />
+          {borrowersProspect ? (
+            <>
+              <Stack
+                justifyContent="space-between"
+                alignItems="end"
+                width="400px"
+                gap="16px"
+              >
+                <Select
+                  label="Deudor"
+                  id="borrower"
+                  name="borrower"
+                  options={borrowerOptions}
+                  value={borrowerOptions[selectedIndex]?.value}
+                  onChange={handleChange}
+                  size="compact"
+                />
+                <Button
+                  onClick={() => {
+                    handleCloseModal();
+                    setOpenModal("IncomeModalEdit");
+                  }}
+                >
+                  {dataCreditProspect.edit}
+                </Button>
+              </Stack>
+              <IncomeDebtor
+                initialValues={
+                  dataProspect[0]?.borrowers?.find(
+                    (b) =>
+                      b.borrower_name === borrowerOptions[selectedIndex]?.value
+                  ) || selectedBorrower
+                }
+              />
+            </>
+          ) : (
+            <Stack width="400px">
+              <Text>{dataCreditProspect.noDataIncome}</Text>
+            </Stack>
+          )}
         </BaseModal>
       )}
       {openModal === "IncomeModalEdit" && (
