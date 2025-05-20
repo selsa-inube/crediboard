@@ -8,7 +8,10 @@ import { mapCreditRequestToEntities } from "./mapper";
 
 export const getCreditRequestInProgress = async (
   businessUnitPublicCode: string,
-  maxDataBoardServices: number
+  maxDataBoardServices?: number,
+  creditRequestCode?: string,
+  stage?: string,
+  creditRequestStateAbbreviatedName?: string
 ): Promise<ICreditRequest[]> => {
   const maxRetries = maxRetriesServices;
   const fetchTimeout = fetchTimeoutServices;
@@ -19,7 +22,12 @@ export const getCreditRequestInProgress = async (
       const timeoutId = setTimeout(() => controller.abort(), fetchTimeout);
       const queryParams = new URLSearchParams({
         page: "1",
-        per_page: maxDataBoard.toString(),
+        per_page: maxDataBoard?.toString() ?? "",
+        creditRequestCode: creditRequestCode ? creditRequestCode : "",
+        stage: stage ? stage : "",
+        creditRequestStateAbbreviatedName: creditRequestStateAbbreviatedName
+          ? creditRequestStateAbbreviatedName
+          : "",
       });
       queryParams.set("sort", "desc.isPinned,asc.creditRequestDateOfCreation");
 
