@@ -1,32 +1,32 @@
-export const TareasPrs = [
+export const taskPrs = [
   {
     Code: "ASESORAR_CLIENTE",
-    Value: "Asesorar al Cliente.",
+    Value: "Asesorar Cliente",
     Role: "CredicarAccountManager",
   },
   {
     Code: "CONFIRMAR_APROBACION",
-    Value: "Confirmar que se surtió el trámite de análisis de aprobación.",
+    Value: "Confirmar Aprobación",
     Role: "CredicarAnalyst",
   },
   {
     Code: "CONFIRMAR_DESEMBOLSO",
-    Value: "Confirmar que el trámite de desembolso se ha efectuado.",
+    Value: "Confirmar Desembolso",
     Role: "CredicarAnalyst",
   },
   {
     Code: "GARANTIZAR_SOPORTES_POS",
-    Value: "Garantizar la recepción de soportes posteriores requeridos.",
+    Value: "Garantizar Soportes Pos",
     Role: "CredicarAccountManager",
   },
   {
     Code: "VALIDAR_REQUISITOS",
-    Value: "Validar requisitos y riesgos.",
+    Value: "Validar Requisitos",
     Role: "CredicarAnalyst",
   },
   {
     Code: "VALIDAR_SOPORTES_JURIDICOS",
-    Value: "Validar soportes jurídicos y garantías.",
+    Value: "Validar Soportes jurídicos",
     Role: "CredicarAnalyst",
   },
   {

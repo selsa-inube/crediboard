@@ -23,7 +23,7 @@ import { truncateTextToMaxLength } from "@utils/formatData/text";
 import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
 import { AppContext } from "@context/AppContext";
 import userNotFound from "@assets/images/ItemNotFound.png";
-import { TareasPrs } from "@services/enum/icorebanking-vi-crediboard/dmtareas/dmtareasprs";
+import { taskPrs } from "@services/enum/icorebanking-vi-crediboard/dmtareas/dmtareasprs";
 import { BaseModal } from "@components/modals/baseModal";
 
 import { StaffModal } from "./StaffModal";
@@ -280,13 +280,11 @@ function ToDo(props: ToDoProps) {
     humanDecisionDescription: selectedDecision?.label || "",
   };
 
-  const taskRole = TareasPrs.find(
-    (t) => t.Code === taskData?.taskToBeDone
-  )?.Role;
+  const taskRole = taskPrs.find((t) => t.Code === taskData?.taskToBeDone)?.Role;
 
   const getTaskLabel = (code: string): string => {
-    const tarea = TareasPrs.find((t) => t.Code === code);
-    return tarea ? `${tarea.Code} - ${tarea.Value}` : code;
+    const task = taskPrs.find((t) => t.Code === code);
+    return task ? `${task.Value}` : code;
   };
 
   const handleInfo = () => {
