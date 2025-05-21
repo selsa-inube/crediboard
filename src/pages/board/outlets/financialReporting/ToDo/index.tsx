@@ -25,6 +25,7 @@ import { AppContext } from "@context/AppContext";
 import userNotFound from "@assets/images/ItemNotFound.png";
 import { taskPrs } from "@services/enum/icorebanking-vi-crediboard/dmtareas/dmtareasprs";
 import { BaseModal } from "@components/modals/baseModal";
+import { decisions as decisionsEnum } from "@services/enum/icorebanking-vi-crediboard/decisions/decisions";
 
 import { StaffModal } from "./StaffModal";
 import {
@@ -237,12 +238,18 @@ function ToDo(props: ToDoProps) {
           requests.creditRequestId
         );
         const formattedDecisions = Array.isArray(decision)
-          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            decision.map((decisions: any, index: number) => ({
-              id: `decision-${index}`,
-              label: decisions.decision + ": " + decisions.value,
-              value: decisions.value,
-            }))
+          ? decision.map((decisions, index: number) => {
+              const enumItem = decisionsEnum.find(
+          (item) => item.Code === decisions.decision
+              );
+              return {
+          id: `decision-${index}`,
+          label: enumItem
+            ? `${enumItem.Value}: ${enumItem.Description}`
+            : decisions.value,
+          value: enumItem ? enumItem.Value : decisions.value,
+              };
+            })
           : [];
         setTaskDecisions(formattedDecisions);
       } catch (error) {
