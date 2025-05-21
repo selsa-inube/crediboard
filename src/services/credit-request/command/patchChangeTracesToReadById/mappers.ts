@@ -1,4 +1,4 @@
-import { ICreditRequests } from "@pages/SubmitCreditApplication/types";
+import { ICreditRequests } from "@services/types";
 
 const mapChangeTracesToReadByIdEntity = (data: string): ICreditRequests => {
   const creditRequest: ICreditRequests = {

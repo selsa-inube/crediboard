@@ -10,12 +10,11 @@ import { getCreditRequestInProgress } from "@services/credit-request/query/getCr
 import { patchChangeAnchorToCreditRequest } from "@services/credit-request/command/anchorCreditRequest";
 import { AppContext } from "@context/AppContext";
 import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
-import { IEnumerator } from "@pages/SubmitCreditApplication/types";
 
 import { dataInformationModal } from "./config/board";
 import { BoardLayoutUI } from "./interface";
 import { selectCheckOptions } from "./config/select";
-import { IBoardData } from "./types";
+import { IBoardData, IEnumerator } from "./types";
 
 function BoardLayout() {
   const { businessUnitSigla, eventData, setEventData } = useContext(AppContext);
