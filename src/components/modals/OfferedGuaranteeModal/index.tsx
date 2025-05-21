@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Stack, Tabs, useFlag } from "@inubekit/inubekit";
+import { Stack, Tabs, Text, useFlag } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { CardBorrower } from "@components/cards/CardBorrower";
+import { Fieldset } from "@components/data/Fieldset";
 import { getGuaranteesById } from "@services/credit-request/query/guarantees";
 import { IGuarantees } from "@services/credit-request/query/guarantees/types";
 import { IProspect } from "@services/prospects/types";
@@ -94,59 +95,74 @@ export function OfferedGuaranteeModal(props: IOfferedGuaranteeModalProps) {
         />
       </Stack>
       <Stack width="100%">
-        {currentTab === "borrower" && dataResponse ? (
+        {currentTab === "borrower" && (
           <ScrollableContainer>
-            {dataResponse.borrowers.map((borrower, index) => (
-              <Stack
-                key={index}
-                justifyContent="center"
-                margin="8px 0px"
-                width="100%"
-              >
-                <CardBorrower
+            {dataResponse?.borrowers && dataResponse.borrowers.length > 0 ? (
+              dataResponse.borrowers.map((borrower, index) => (
+                <Stack
                   key={index}
-                  title={`${dataGuarantee.borrower} ${index + 1}`}
-                  name={getPropertyValue(borrower.borrower_properties, "name")}
-                  lastName={getPropertyValue(
-                    borrower.borrower_properties,
-                    "surname"
-                  )}
-                  email={getPropertyValue(
-                    borrower.borrower_properties,
-                    "email"
-                  )}
-                  income={currencyFormat(
-                    Number(
-                      getPropertyValue(
-                        borrower.borrower_properties,
-                        "PeriodicSalary"
-                      ) || 0
-                    ) +
+                  justifyContent="center"
+                  margin="8px 0px"
+                  width="100%"
+                >
+                  <CardBorrower
+                    key={index}
+                    title={`${dataGuarantee.borrower} ${index + 1}`}
+                    name={getPropertyValue(
+                      borrower.borrower_properties,
+                      "name"
+                    )}
+                    lastName={getPropertyValue(
+                      borrower.borrower_properties,
+                      "surname"
+                    )}
+                    email={getPropertyValue(
+                      borrower.borrower_properties,
+                      "email"
+                    )}
+                    income={currencyFormat(
                       Number(
                         getPropertyValue(
                           borrower.borrower_properties,
-                          "OtherNonSalaryEmoluments"
+                          "PeriodicSalary"
                         ) || 0
                       ) +
-                      Number(
-                        getPropertyValue(
-                          borrower.borrower_properties,
-                          "PensionAllowances"
-                        ) || 0
+                        Number(
+                          getPropertyValue(
+                            borrower.borrower_properties,
+                            "OtherNonSalaryEmoluments"
+                          ) || 0
+                        ) +
+                        Number(
+                          getPropertyValue(
+                            borrower.borrower_properties,
+                            "PensionAllowances"
+                          ) || 0
+                        ),
+                      false
+                    )}
+                    obligations={currencyFormat(
+                      getTotalFinancialObligations(
+                        borrower.borrower_properties
                       ),
-                    false
-                  )}
-                  obligations={currencyFormat(
-                    getTotalFinancialObligations(borrower.borrower_properties),
-                    false
-                  )}
-                  showIcons={false}
-                />
-              </Stack>
-            ))}
+                      false
+                    )}
+                    showIcons={false}
+                  />
+                </Stack>
+              ))
+            ) : (
+              <Fieldset>
+                <Stack
+                  justifyContent="center"
+                  alignItems="center"
+                  height="290px"
+                >
+                  <Text>{dataGuarantee.noContent}</Text>
+                </Stack>
+              </Fieldset>
+            )}
           </ScrollableContainer>
-        ) : (
-          <></>
         )}
         {currentTab === "mortgage" && (
           <Mortgage isMobile={isMobile} initialValues={mortgageData} />
@@ -154,7 +170,7 @@ export function OfferedGuaranteeModal(props: IOfferedGuaranteeModalProps) {
         {currentTab === "pledge" && (
           <Pledge isMobile={isMobile} initialValues={pledgeData} />
         )}
-        {currentTab === "bail" && <Bail data={dataResponse.bond_value || 0} />}
+        {currentTab === "bail" && <Bail data={dataResponse?.bond_value ?? 0} />}
       </Stack>
     </BaseModal>
   );

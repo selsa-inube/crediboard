@@ -4,7 +4,6 @@ import { Stack, Icon, Text, useMediaQuery, useFlag } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { ICreditRequest } from "@services/types";
-import { getEnumerators } from "@services/enumerators";
 import { getCreditRequestPinned } from "@services/credit-request/query/isPinned";
 import { getCreditRequestInProgress } from "@services/credit-request/query/getCreditRequestInProgress";
 import { patchChangeAnchorToCreditRequest } from "@services/credit-request/command/anchorCreditRequest";
@@ -14,11 +13,10 @@ import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
 import { dataInformationModal } from "./config/board";
 import { BoardLayoutUI } from "./interface";
 import { selectCheckOptions } from "./config/select";
-import { IBoardData, IEnumerator } from "./types";
+import { IBoardData } from "./types";
 
 function BoardLayout() {
   const { businessUnitSigla, eventData, setEventData } = useContext(AppContext);
-  const [enumerators, setEnumerators] = useState<IEnumerator[]>([]);
   const [boardData, setBoardData] = useState<IBoardData>({
     boardRequests: [],
     requestsPinned: [],
@@ -36,7 +34,6 @@ function BoardLayout() {
   );
   const [errorLoadingPins, setErrorLoadingPins] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [loading, setLoading] = useState(true);
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
   const identificationStaff = eventData.user.staff.identificationDocumentNumber;
@@ -164,30 +161,6 @@ function BoardLayout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, boardData]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const accountManagers = await getEnumerators(businessUnitPublicCode);
-
-        setEnumerators(accountManagers);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [businessUnitPublicCode]);
-
-  useEffect(() => {
-    const updatedEventData = { ...eventData };
-    updatedEventData.enumRole = enumerators;
-
-    setEventData(updatedEventData);
-  }, [enumerators, eventData, setEventData]);
-
   const handleFiltersChange = (newFilters: Partial<typeof filters>) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -271,7 +244,6 @@ function BoardLayout() {
     <>
       <BoardLayoutUI
         isMobile={isMobile}
-        loading={loading}
         selectOptions={filters.selectOptions}
         boardOrientation={filters.boardOrientation}
         BoardRequests={filteredRequests}

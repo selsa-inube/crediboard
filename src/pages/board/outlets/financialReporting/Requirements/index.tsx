@@ -61,7 +61,6 @@ export const Requirements = (props: IRequirementsProps) => {
   );
   const [requirementName, setRequirementName] = useState("");
   const [descriptionUseValue, setDescriptionUseValue] = useState("");
-  const [modifyJustification, setModifyJustification] = useState("");
   const [typeOfRequirementToEvaluated, setTypeOfRequirementToEvaluated] =
     useState<string>("");
   const [showModal, setShowModal] = useState(false);
@@ -253,7 +252,7 @@ export const Requirements = (props: IRequirementsProps) => {
     packageDate: rawRequirements[0]?.packageDate,
     packageDescription:
       "Requisitos para la solicitud de crédito SC-12225464610",
-    modifyJustification: modifyJustification,
+    modifyJustification: "modifyJustification",
     listsOfRequirementsByPackage: [
       {
         packageId: rawRequirements[0]?.packageId,
@@ -334,7 +333,6 @@ export const Requirements = (props: IRequirementsProps) => {
           setSentData={setSentData}
           setRequirementName={setRequirementName}
           setDescriptionUseValue={setDescriptionUseValue}
-          setModifyJustification={setModifyJustification}
           setTypeOfRequirementToEvaluated={setTypeOfRequirementToEvaluated}
           handleNext={() => {
             handleAddRequirement(initialValues);

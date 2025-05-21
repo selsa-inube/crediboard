@@ -9,8 +9,8 @@ import {
 } from "@context/AppContext/utils";
 import { ICrediboardData } from "@context/AppContext/types";
 import { IBusinessUnitsPortalStaff } from "@services/businessUnitsPortalStaff/types";
+import { getEnumerators } from "@services/enumerators";
 import { getStaff } from "@services/staffs";
-
 import { decrypt } from "@utils/encrypt/encrypt";
 
 interface IBusinessUnits {
@@ -239,16 +239,22 @@ function useAppContext() {
         return;
       }
 
-      setEventData((prev) => ({
-        ...prev,
-        businessUnit: {
-          ...prev.businessUnit,
-          abbreviatedName: businessUnit?.abbreviatedName || "",
-          businessUnitPublicCode: businessUnit?.businessUnitPublicCode || "",
-          languageId: businessUnit?.languageId || "",
-          urlLogo: businessUnit?.urlLogo || "",
-        },
-      }));
+      (async () => {
+        const enumRoles = await getEnumerators(
+          businessUnit.businessUnitPublicCode
+        );
+        setEventData((prev) => ({
+          ...prev,
+          businessUnit: {
+            ...prev.businessUnit,
+            abbreviatedName: businessUnit?.abbreviatedName || "",
+            businessUnitPublicCode: businessUnit?.businessUnitPublicCode || "",
+            languageId: businessUnit?.languageId || "",
+            urlLogo: businessUnit?.urlLogo || "",
+          },
+          enumRole: enumRoles,
+        }));
+      })();
     }
   }, [businessUnitSigla, businessUnitsToTheStaff]);
 

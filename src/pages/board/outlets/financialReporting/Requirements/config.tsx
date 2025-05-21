@@ -87,7 +87,7 @@ export const dataAddRequirement = {
 };
 
 export const infoItems = [
-  { icon: <MdAddCircleOutline />, text: "Adjuntar", appearance: "help" },
+  { icon: <MdAddCircleOutline />, text: "Ver Detalles", appearance: "help" },
   {
     icon: <MdOutlineCheckCircle />,
     text: "Forzar Aprobación",
@@ -135,9 +135,9 @@ export const actionsRequirements = [
 ];
 
 const iconActionsMobile = (tag: string) => {
-  if (tag === "Aprobado") {
+  if (tag === "Cumple") {
     return <MdCheck />;
-  } else if (tag === "Pendiente") {
+  } else if (tag === "Sin Evaluar") {
     return <MdRemove />;
   } else {
     return <MdClose />;
