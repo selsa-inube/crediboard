@@ -24,11 +24,12 @@ function SummaryCardUI(props: SummaryCardProps) {
     isPinned,
     hasMessage,
     onPinChange,
+    onCardClick,
     errorLoadingPins,
   } = props;
 
   return (
-    <StyledSummaryCard>
+    <StyledSummaryCard onClick={onCardClick}>
       <StyledLink to={path}>
         <Stack justifyContent="space-between">
           <Text size="small" appearance="gray">

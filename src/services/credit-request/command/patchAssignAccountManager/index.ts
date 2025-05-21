@@ -1,5 +1,5 @@
 import { environment } from "@config/environment";
-import { ICreditRequests } from "@pages/SubmitCreditApplication/types";
+import { ICreditRequests } from "@services/types";
 import { mapCreditRequestsEntity } from "./mappers";
 
 const patchAssignAccountManager = async (
