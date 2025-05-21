@@ -4,18 +4,18 @@ import { Stack, Icon, Text, useMediaQuery, useFlag } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { ICreditRequest } from "@services/types";
+import { getEnumerators } from "@services/enumerators";
 import { getCreditRequestPinned } from "@services/credit-request/query/isPinned";
 import { getCreditRequestInProgress } from "@services/credit-request/query/getCreditRequestInProgress";
 import { patchChangeAnchorToCreditRequest } from "@services/credit-request/command/anchorCreditRequest";
 import { AppContext } from "@context/AppContext";
 import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
+import { IEnumerator } from "@pages/SubmitCreditApplication/types";
 
 import { dataInformationModal } from "./config/board";
 import { BoardLayoutUI } from "./interface";
 import { selectCheckOptions } from "./config/select";
 import { IBoardData } from "./types";
-import { getEnumerators } from "@services/enumerators";
-import { IEnumerator } from "@pages/SubmitCreditApplication/types";
 
 function BoardLayout() {
   const { businessUnitSigla, eventData, setEventData } = useContext(AppContext);

@@ -103,7 +103,6 @@ export const CreditProfileInfo = () => {
           uncovered_wallet,
           riskScoringMaximum,
         ] = await Promise.allSettled([
-          getById("requests", "creditRequestCode", id!),
           getById<IRiskScoring>("risk-scoring", "credit_request_id", id!, true),
           getById("credit_profileInfo", "credit_request_id", id!, true),
           getById("payment_capacity", "credit_request_id", id!, true),
@@ -376,7 +375,7 @@ export const CreditProfileInfo = () => {
             economicActivity={riskScoring.economic_activity}
             isLoading={loading}
             isMobile={isMobile}
-            dataWereObtained={dataWereObtained}
+            dataWereObtained={Object.keys(riskScoring).length === 0}
             dataRiskScoringMax={riskScoringMax}
             setWataWereObtained={setWataWereObtained}
           />

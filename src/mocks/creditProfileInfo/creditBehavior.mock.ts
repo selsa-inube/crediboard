@@ -71,4 +71,13 @@ export const credit_behavior = [
       maximum_number_of_installments_in_arrears: 7,
     },
   },
+  {
+    credit_request_id: "SC-122254646",
+    credit_behavior: {
+      core_risk_score: 217,
+      central_risk_score_date: "2023-05-31",
+      number_of_internal_arrears: 5,
+      maximum_number_of_installments_in_arrears: 7,
+    },
+  },
 ];

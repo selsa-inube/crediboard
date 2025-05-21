@@ -60,6 +60,10 @@ interface IStyledGrid {
 }
 
 export const StyledGridPrint = styled.div<IStyledGrid>`
+  & > div {
+  max-width: 500px;
+  }
+
   @media print {
     & > div {
       width: 250px;
