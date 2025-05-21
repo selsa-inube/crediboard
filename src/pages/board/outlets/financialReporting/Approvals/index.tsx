@@ -8,9 +8,9 @@ import { BaseModal } from "@components/modals/baseModal";
 import { IEntries } from "@components/data/TableBoard/types";
 import { TextAreaModal } from "@components/modals/TextAreaModal";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
-import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
+import { getCreditRequestByCode } from "@services/credit-request/query/getCreditRequestByCode";
 import { getNotificationOnApprovals } from "@services/notificationOnApprovals";
-import { getApprovalsById } from "@services/financialReporting/getApprovals";
+import { getApprovalsById } from "@services/credit-request/query/getApprovals";
 import { IApprovals } from "./types";
 import { ICreditRequest } from "@services/types";
 import {

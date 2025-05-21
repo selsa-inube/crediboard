@@ -12,7 +12,7 @@ import {
 import { SummaryCard } from "@components/cards/SummaryCard";
 import { ICreditRequestPinned, ICreditRequest } from "@services/types";
 import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
-import { patchChangeTracesToReadById } from "@services/creditRequets/patchChangeTracesToReadById";
+import { patchChangeTracesToReadById } from "@services/credit-request/command/patchChangeTracesToReadById";
 import { AppContext } from "@context/AppContext";
 import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
 
