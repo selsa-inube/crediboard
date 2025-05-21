@@ -3,6 +3,7 @@ import { inube } from "@inubekit/inubekit";
 
 interface IStyledCollapseIcon {
   $collapse: boolean;
+  $isMobile?: boolean;
 }
 
 interface IStyledCardsCredit {
@@ -23,6 +24,8 @@ export const StyledIcon = styled.div`
 
 export const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
   display: flex;
+  width: 26px;
+  height: 26px;
   transition: all 500ms ease;
   transform: ${({ $collapse }) =>
     $collapse ? "rotate(-90deg)" : "rotate(90deg)"};
@@ -30,6 +33,7 @@ export const StyledCollapseIcon = styled.div<IStyledCollapseIcon>`
 
 export const StyledFieldset = styled.div`
   padding: "4px";
+  position: relative;
 `;
 
 export const StyledCardsCredit = styled.div<IStyledCardsCredit>`

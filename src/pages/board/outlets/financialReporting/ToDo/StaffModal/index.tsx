@@ -1,68 +1,70 @@
 import { useState, useEffect, useContext } from "react";
-import { createPortal } from "react-dom";
-import { MdClear } from "react-icons/md";
+import { useNavigate, useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import {
-  Stack,
-  Icon,
-  Text,
-  Spinner,
-  useMediaQuery,
-  Select,
-  Blanket,
-  Button,
-  useFlag,
-} from "@inubekit/inubekit";
+import { Stack, useMediaQuery, Select, useFlag } from "@inubekit/inubekit";
 
 import { getCommercialManagerAndAnalyst } from "@services/commercialManagerAndAnalyst";
+
+import { AppContext } from "@context/AppContext";
 import {
   ICommercialManagerAndAnalyst,
   ICreditRequests,
-} from "@pages/SubmitCreditApplication/types";
-
-import { StyledModal, StyledContainerClose } from "./styles";
-import { saveCredit } from "./utils";
-import { useNavigate, useParams } from "react-router-dom";
-import { AppContext } from "@context/AppContext";
-import { IToDo } from "@services/types";
+  IToDo,
+} from "@services/types";
 import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
+import { BaseModal } from "@components/modals/baseModal";
+
+import { changeUsersByCreditRequest } from "./utils";
+import { txtFlags } from "../config";
 
 export interface StaffModalProps {
   commercialManager: string;
   analyst: string;
+  buttonText: string;
+  title: string;
   portalId?: string;
+  handleNext?: () => void;
   onChange: (key: string) => void;
   onSubmit?: (values: { commercialManager: string; analyst: string }) => void;
   onCloseModal?: () => void;
   taskData?: IToDo | null;
+  setAssignedStaff: React.Dispatch<
+    React.SetStateAction<{
+      commercialManager: string;
+      analyst: string;
+    }>
+  >;
 }
 
 export function StaffModal(props: StaffModalProps) {
-  const { portalId = "portal", onSubmit, onCloseModal, taskData } = props;
+  const {
+    portalId = "portal",
+    onSubmit,
+    onCloseModal,
+    taskData,
+    setAssignedStaff,
+    title,
+    buttonText,
+  } = props;
   const [analystList, setAnalystList] = useState<
     ICommercialManagerAndAnalyst[]
   >([]);
   const [accountManagerList, setAccountManagerList] = useState<
     ICommercialManagerAndAnalyst[]
   >([]);
-  const [loading, setLoading] = useState(true);
   const [selectedCommercialManager, setSelectedCommercialManager] =
+    useState<ICommercialManagerAndAnalyst | null>(null);
+  const [selectedAnalyst, setSelectedAnalyst] =
     useState<ICommercialManagerAndAnalyst | null>(null);
   const isMobile = useMediaQuery("(max-width: 700px)");
   const [showModal, setShowModal] = useState(false);
-  const node = document.getElementById(portalId);
   const validationSchema = Yup.object().shape({
     commercialManager: Yup.string(),
     analyst: Yup.string(),
   });
   const { id } = useParams();
   const navigate = useNavigate();
-  if (!node) {
-    throw new Error(
-      "The portal node is not defined. This can occur when the specific node used to render the portal has not been defined correctly."
-    );
-  }
   const { businessUnitSigla, eventData } = useContext(AppContext);
   const { userAccount } =
     typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
@@ -74,25 +76,27 @@ export function StaffModal(props: StaffModalProps) {
     setFieldValue: (field: string, value: string) => void
   ) => {
     setFieldValue(name, value);
-
     const selectedManager = accountManagerList.find(
       (manager) => manager.staffName === value
     );
-
     if (selectedManager) {
-      setSelectedCommercialManager({
-        staffId: selectedManager.staffId,
-        identificationDocumentNumber:
-          selectedManager.identificationDocumentNumber,
-        staffName: selectedManager.staffName,
-        userAccount: selectedManager.userAccount,
-      });
+      setSelectedCommercialManager(selectedManager);
+    }
+  };
+  const handleAnalystChange = (
+    name: string,
+    value: string,
+    setFieldValue: (field: string, value: string) => void
+  ) => {
+    setFieldValue(name, value);
+    const selected = analystList.find((analyst) => analyst.staffName === value);
+    if (selected) {
+      setSelectedAnalyst(selected);
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       try {
         const [accountManagers, analysts] = await Promise.all([
           getCommercialManagerAndAnalyst("CredicarAccountManager", "Selsa"),
@@ -102,40 +106,95 @@ export function StaffModal(props: StaffModalProps) {
         setAccountManagerList(accountManagers);
         setAnalystList(analysts);
       } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-  const { addFlag } = useFlag();
-  const handleCreditRequests = async (creditRequests: ICreditRequests) => {
-    await saveCredit(businessUnitPublicCode, creditRequests, userAccount)
-      .then(() => {
         addFlag({
-          title: textFlagsUsers.titleSuccess,
-          description: textFlagsUsers.descriptionSuccess,
-          appearance: "success",
-          duration: 5000,
-        });
-      })
-      .catch(() => {
-        addFlag({
-          title: textFlagsUsers.titleError,
-          description: textFlagsUsers.descriptionError,
+          title: txtFlags.titleDanger,
+          description: txtFlags.descriptionDanger,
           appearance: "danger",
           duration: 5000,
         });
-      })
-      .finally(() => {
-        handleToggleModal();
-      });
+      }
+    };
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const { addFlag } = useFlag();
 
-    setTimeout(() => {
-      navigate(`/extended-card/${id}`);
-    }, 6000);
+  const buildCreditRequest = (
+    role: string,
+    user: ICommercialManagerAndAnalyst | null
+  ): ICreditRequests | null => {
+    if (!user) return null;
+
+    return {
+      creditRequestId: taskData?.creditRequestId || "",
+      executed_task: taskData?.taskToBeDone || "",
+      execution_date: new Date().toISOString().split("T")[0],
+      identificationNumber: user.identificationDocumentNumber || "",
+      identificationType: "C",
+      role: role,
+      transactionOperation: "Insert",
+      userId: user.staffId || "",
+      userName: user.staffName || "",
+      justification: "Justificacion",
+      creditRequestCode: "",
+    };
+  };
+  const handleCreditRequests = async () => {
+    const managerRequest = buildCreditRequest(
+      "CredicarAccountManager".substring(0, 20),
+      selectedCommercialManager
+    );
+
+    const analystRequest = buildCreditRequest(
+      "CredicarAnalyst",
+      selectedAnalyst
+    );
+
+    try {
+      if (managerRequest) {
+        await changeUsersByCreditRequest(
+          businessUnitPublicCode,
+          managerRequest,
+          userAccount
+        );
+        setAssignedStaff((prev) => ({
+          ...prev,
+          commercialManager: selectedCommercialManager?.staffName || "",
+        }));
+      }
+
+      if (analystRequest) {
+        await changeUsersByCreditRequest(
+          businessUnitPublicCode,
+          analystRequest,
+          userAccount
+        );
+        setAssignedStaff((prev) => ({
+          ...prev,
+          analyst: selectedAnalyst?.staffName || "",
+        }));
+      }
+
+      addFlag({
+        title: textFlagsUsers.titleSuccess,
+        description: textFlagsUsers.descriptionSuccess,
+        appearance: "success",
+        duration: 5000,
+      });
+    } catch (error) {
+      addFlag({
+        title: textFlagsUsers.titleError,
+        description: textFlagsUsers.descriptionError,
+        appearance: "danger",
+        duration: 5000,
+      });
+    } finally {
+      if (onCloseModal) onCloseModal();
+      handleToggleModal();
+      setTimeout(() => {
+        navigate(`/extended-card/${id}`);
+      }, 6000);
+    }
   };
   const handleToggleModal = () => {
     setShowModal(!showModal);
@@ -153,107 +212,65 @@ export function StaffModal(props: StaffModalProps) {
       value: official.staffName,
     })),
   };
-  const initialValues: ICreditRequests = {
-    creditRequestId: taskData?.creditRequestId || "",
-    executed_task: taskData?.taskToBeDone || "",
-    execution_date: "2025-04-28",
-    identificationNumber:
-      selectedCommercialManager?.identificationDocumentNumber || "",
-    identificationType: "C",
-    role: taskData?.stage || "",
-    transactionOperation: "Insert",
-    userId: selectedCommercialManager?.staffId || "",
-    userName: selectedCommercialManager?.staffName || "",
-    justification: "Justificacion",
-    creditRequestCode: "",
-  };
-
-  return createPortal(
-    <Blanket>
-      <StyledModal $smallScreen={isMobile}>
-        <Stack alignItems="center" justifyContent="space-between">
-          <Text type="headline" size="small">
-            Gestor Comercial y Analista
-          </Text>
-          <StyledContainerClose onClick={onCloseModal}>
-            <Stack alignItems="center" gap="8px">
-              <Text>Cerrar</Text>
-              <Icon
-                icon={<MdClear />}
-                size="24px"
-                cursorHover
-                appearance="dark"
+  return (
+    <Formik
+      initialValues={{ commercialManager: "", analyst: "" }}
+      validationSchema={validationSchema}
+      onSubmit={(values, { setSubmitting }) => {
+        onSubmit?.(values);
+        setSubmitting(false);
+      }}
+    >
+      {({ setFieldValue, values }) => (
+        <Form>
+          <BaseModal
+            title={title}
+            handleNext={handleCreditRequests}
+            width={isMobile ? "280px" : "500px"}
+            handleBack={onCloseModal}
+            handleClose={onCloseModal}
+            portalId={portalId}
+            nextButton={buttonText}
+          >
+            <Stack direction="column" gap="24px">
+              <Select
+                name="commercialManager"
+                id="commercialManager"
+                label="Gestor Comercial"
+                placeholder={
+                  options.commercialManager.length > 0
+                    ? "Seleccione una opción"
+                    : "No hay gestores disponibles"
+                }
+                options={options.commercialManager}
+                onChange={(name, value) =>
+                  handleCommercialManagerChange(name, value, setFieldValue)
+                }
+                value={values.commercialManager}
+                fullwidth
+                disabled={options.commercialManager.length === 0}
+              />
+              <Select
+                name="analyst"
+                id="analyst"
+                label="Analista"
+                placeholder={
+                  options.analyst.length > 0
+                    ? "Seleccione una opción"
+                    : "No hay analistas disponibles"
+                }
+                options={options.analyst}
+                onChange={(name, value) =>
+                  handleAnalystChange(name, value, setFieldValue)
+                }
+                value={values.analyst}
+                fullwidth
+                disabled={options.analyst.length === 0}
               />
             </Stack>
-          </StyledContainerClose>
-        </Stack>
-
-        {loading ? (
-          <Stack justifyContent="center">
-            <Spinner size="large" appearance="primary" transparent={false} />
-          </Stack>
-        ) : (
-          <Formik
-            initialValues={{ commercialManager: "", analyst: "" }}
-            validationSchema={validationSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              onSubmit?.(values);
-              setSubmitting(false);
-            }}
-          >
-            {({ isSubmitting, setFieldValue, values }) => (
-              <Form>
-                <Stack direction="column" gap="24px">
-                  <Select
-                    name="commercialManager"
-                    id="commercialManager"
-                    label="Gestor Comercial"
-                    placeholder={
-                      options.commercialManager.length > 0
-                        ? "Seleccione una opción"
-                        : "No hay gestores disponibles"
-                    }
-                    options={options.commercialManager}
-                    onChange={(name, value) =>
-                      handleCommercialManagerChange(name, value, setFieldValue)
-                    }
-                    value={values.commercialManager}
-                    fullwidth
-                    disabled={options.commercialManager.length === 0}
-                  />
-                  <Select
-                    name="analyst"
-                    id="analyst"
-                    label="Analista"
-                    placeholder={
-                      options.analyst.length > 0
-                        ? "Seleccione una opción"
-                        : "No hay analistas disponibles"
-                    }
-                    options={options.analyst}
-                    value={values.analyst}
-                    onChange={(name, value) =>
-                      handleCommercialManagerChange(name, value, setFieldValue)
-                    }
-                    fullwidth
-                    disabled={options.analyst.length === 0}
-                  />
-                </Stack>
-                <Stack justifyContent="flex-end" margin="16px 0">
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    onClick={() => handleCreditRequests(initialValues)}
-                  >
-                    Aceptar
-                  </Button>
-                </Stack>
-              </Form>
-            )}
-          </Formik>
-        )}
-      </StyledModal>
-    </Blanket>,
-    node
+          </BaseModal>
+        </Form>
+      )}
+    </Formik>
   );
 }

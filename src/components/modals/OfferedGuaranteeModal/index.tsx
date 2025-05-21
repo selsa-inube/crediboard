@@ -1,10 +1,12 @@
-import { useState } from "react";
-import { Stack, Tabs } from "@inubekit/inubekit";
+import { useEffect, useState } from "react";
+import { Stack, Tabs, useFlag } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { CardBorrower } from "@components/cards/CardBorrower";
+import { getGuaranteesById } from "@services/credit-request/query/guarantees";
+import { IGuarantees } from "@services/credit-request/query/guarantees/types";
 import { IProspect } from "@services/prospects/types";
-import { getTotalFinancialObligations } from "@pages/SubmitCreditApplication/util";
+import { getTotalFinancialObligations } from "@utils/formatData/currency";
 import { currencyFormat } from "@utils/formatData/currency";
 import { getPropertyValue } from "@utils/mappingData/mappings";
 
@@ -18,12 +20,21 @@ export interface IOfferedGuaranteeModalProps {
   handleClose: () => void;
   isMobile: boolean;
   prospectData: IProspect;
+  businessUnitPublicCode: string;
+  requestId: string;
 }
 
 export function OfferedGuaranteeModal(props: IOfferedGuaranteeModalProps) {
-  const { handleClose, isMobile, prospectData } = props;
+  const {
+    handleClose,
+    isMobile,
+    prospectData,
+    businessUnitPublicCode,
+    requestId,
+  } = props;
 
   const [currentTab, setCurrentTab] = useState(dataTabs[0].id);
+  const [dataProperty, setDataProperty] = useState<IGuarantees[]>();
 
   const onChange = (tabId: string) => {
     setCurrentTab(tabId);
@@ -31,13 +42,47 @@ export function OfferedGuaranteeModal(props: IOfferedGuaranteeModalProps) {
 
   const dataResponse = prospectData;
 
+  const { addFlag } = useFlag();
+
+  const handleFlag = (error: unknown) => {
+    addFlag({
+      title: "Error al obtener los datos de la garantia",
+      description: `${error}`,
+      appearance: "danger",
+      duration: 5000,
+    });
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getGuaranteesById(
+          businessUnitPublicCode,
+          requestId
+        );
+        setDataProperty(result);
+      } catch (error) {
+        handleFlag(error);
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [businessUnitPublicCode, requestId]);
+
+  const [pledgeData, mortgageData] = [
+    dataProperty?.find((i) => i.guaranteeType === "pledge")?.pledges ?? [],
+    dataProperty?.find((i) => i.guaranteeType === "mortgage")?.mortgages ?? [],
+  ];
+
   return (
     <BaseModal
       title={dataGuarantee.title}
       nextButton={dataGuarantee.close}
       handleNext={handleClose}
       handleClose={handleClose}
-      width={isMobile ? "300px" : "630px"}
+      width={isMobile ? "300px" : "602px"}
+      height="529px"
       finalDivider={true}
     >
       <Stack>
@@ -103,8 +148,12 @@ export function OfferedGuaranteeModal(props: IOfferedGuaranteeModalProps) {
         ) : (
           <></>
         )}
-        {currentTab === "mortgage" && <Mortgage isMobile={isMobile} />}
-        {currentTab === "pledge" && <Pledge isMobile={isMobile} />}
+        {currentTab === "mortgage" && (
+          <Mortgage isMobile={isMobile} initialValues={mortgageData} />
+        )}
+        {currentTab === "pledge" && (
+          <Pledge isMobile={isMobile} initialValues={pledgeData} />
+        )}
         {currentTab === "bail" && <Bail data={dataResponse.bond_value || 0} />}
       </Stack>
     </BaseModal>

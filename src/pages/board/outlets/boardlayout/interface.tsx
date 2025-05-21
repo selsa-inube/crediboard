@@ -35,6 +35,8 @@ interface BoardLayoutProps {
   searchRequestValue: string;
   showPinnedOnly: boolean;
   pinnedRequests: ICreditRequestPinned[];
+  errorLoadingPins: boolean;
+  loading: boolean;
   handleSelectCheckChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handlePinRequest: (
     requestId: string,
@@ -45,8 +47,7 @@ interface BoardLayoutProps {
   handleShowPinnedOnly: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSearchRequestsValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOrientationChange: (orientation: SectionOrientation) => void;
-  errorLoadingPins: boolean;
-  loading: boolean;
+  handleLoadMoreData: () => void;
 }
 
 function BoardLayoutUI(props: BoardLayoutProps) {
@@ -58,12 +59,13 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     searchRequestValue,
     showPinnedOnly,
     pinnedRequests,
+    errorLoadingPins,
+    handleLoadMoreData,
     handleSelectCheckChange,
     handlePinRequest,
     handleShowPinnedOnly,
     handleSearchRequestsValue,
     onOrientationChange,
-    errorLoadingPins,
   } = props;
 
   const selectProps = selectConfig(selectOptions, handleSelectCheckChange);
@@ -95,6 +97,37 @@ function BoardLayoutUI(props: BoardLayoutProps) {
   useEffect(() => {
     setIsExpanded(Boolean(searchRequestValue));
   }, [searchRequestValue]);
+
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            handleLoadMoreData();
+          }
+        },
+        { threshold: 1.0 }
+      );
+
+      const currentRef = observerRef.current;
+
+      if (currentRef) {
+        observer.observe(currentRef);
+      }
+
+      return () => {
+        if (currentRef) {
+          observer.unobserve(currentRef);
+        }
+      };
+    }, 3000);
+
+    return () => clearTimeout(timeout);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <StyledContainerToCenter>
       <Stack
@@ -239,12 +272,14 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                 (request) => request.stage === column.id
               )}
               pinnedRequests={pinnedRequests}
-              handlePinRequest={handlePinRequest}
               errorLoadingPins={errorLoadingPins}
               searchRequestValue={searchRequestValue}
+              handlePinRequest={handlePinRequest}
+              handleLoadMoreData={handleLoadMoreData}
             />
           ))}
         </StyledBoardContainer>
+        {boardOrientation === "vertical" && <div ref={observerRef} />}
       </Stack>
     </StyledContainerToCenter>
   );

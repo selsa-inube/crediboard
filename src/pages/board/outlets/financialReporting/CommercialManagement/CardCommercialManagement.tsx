@@ -5,13 +5,13 @@ import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { NewCreditProductCard } from "@components/cards/CreditProductCard/newCard";
 import { CardValues } from "@components/cards/cardValues";
 import { DeleteModal } from "@components/modals/DeleteModal";
-import { ConsolidatedCredits } from "@pages/prospect/components/modals/ConsolidatedCreditModal";
+import { ConsolidatedCredits } from "@components/modals/ConsolidatedCreditModal";
 import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.service";
 import { mockCommercialManagement } from "@mocks/financialReporting/commercialmanagement.mock";
 import { IProspect, ICreditProduct } from "@services/prospects/types";
 import { Schedule } from "@services/enums";
-import { DeductibleExpensesModal } from "@pages/prospect/components/modals/DeductibleExpensesModal";
+import { DeductibleExpensesModal } from "@components/modals/DeductibleExpensesModal";
 
 import { StyledCardsCredit, StyledPrint } from "./styles";
 

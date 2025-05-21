@@ -7,9 +7,9 @@ import { TableBoard } from "@components/data/TableBoard";
 import { IEntries } from "@components/data/TableBoard/types";
 import { PromissoryNotesModal } from "@components/modals/PromissoryNotesModal";
 import { UnfoundData } from "@components/layout/UnfoundData";
-import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
-import { getPayrollDiscountAuthorizationsById } from "@services/payroll_discount_authorizations";
-import { getPromissoryNotesById } from "@services/promissory_notes";
+import { getCreditRequestByCode } from "@services/credit-request/query/getCreditRequestByCode";
+import { getPayrollDiscountAuthorizationsById } from "@services/credit-request/query/payroll_discount_authorizations";
+import { getPromissoryNotesById } from "@services/credit-request/query/promissory_notes";
 import {
   IPayrollDiscountAuthorization,
   IPromissoryNotes,

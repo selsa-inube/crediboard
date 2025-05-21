@@ -1,5 +1,6 @@
 import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { MdOutlineInfo } from "react-icons/md";
 import {
   Stack,
   Icon,
@@ -13,19 +14,26 @@ import {
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
-import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
-import { getSearchDecisionById } from "@services/todo/SearchDecisionById";
+import { getCreditRequestByCode } from "@services/credit-request/query/getCreditRequestByCode";
+import { getSearchDecisionById } from "@services/credit-request/query/SearchDecisionById";
 import { IStaff, IToDo, ICreditRequest } from "@services/types";
-import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
+import { getToDoByCreditRequestId } from "@services/credit-request/query/getToDoByCreditRequestId";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { truncateTextToMaxLength } from "@utils/formatData/text";
 import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
-import { TodoConsult } from "@mocks/financialReporting/to-doconsult.mock";
 import { AppContext } from "@context/AppContext";
 import userNotFound from "@assets/images/ItemNotFound.png";
+import { taskPrs } from "@services/enum/icorebanking-vi-crediboard/dmtareas/dmtareasprs";
+import { BaseModal } from "@components/modals/baseModal";
 
 import { StaffModal } from "./StaffModal";
-import { errorMessagge, txtLabels, txtTaskQuery } from "./config";
+import {
+  errorMessagge,
+  staffConfig,
+  txtLabels,
+  txtTaskQuery,
+  titlesModal,
+} from "./config";
 import { IICon, IButton } from "./types";
 import { getXAction } from "./util/utils";
 import { StyledHorizontalDivider, StyledTextField } from "../styles";
@@ -54,6 +62,7 @@ function ToDo(props: ToDoProps) {
   const [loading, setLoading] = useState(true);
   const [taskData, setTaskData] = useState<IToDo | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalInfo, setIsModalInfo] = useState(false);
 
   const [assignedStaff, setAssignedStaff] = useState({
     commercialManager: "",
@@ -91,6 +100,8 @@ function ToDo(props: ToDoProps) {
 
   const { userAccount } =
     typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
+
+  const hasPermitSend = Boolean(eventData.user.staff.useCases.canSendDecision);
 
   useEffect(() => {
     const fetchCreditRequest = async () => {
@@ -146,11 +157,11 @@ function ToDo(props: ToDoProps) {
       setStaff(formattedStaff);
 
       const firstAccountManager = formattedStaff.find(
-        (staffMember) => staffMember.role === "Account_manager"
+        (staffMember) => staffMember.role === "CredicarAccountManag"
       );
 
       const firstAnalyst = formattedStaff.find(
-        (staffMember) => staffMember.role === "Analyst"
+        (staffMember) => staffMember.role === "CredicarAnalyst"
       );
 
       const newStaffState = {
@@ -268,13 +279,27 @@ function ToDo(props: ToDoProps) {
     ),
     humanDecisionDescription: selectedDecision?.label || "",
   };
-  const datamock = TodoConsult[0];
+
+  const taskRole = taskPrs.find((t) => t.Code === taskData?.taskToBeDone)?.Role;
+
+  const getTaskLabel = (code: string): string => {
+    const task = taskPrs.find((t) => t.Code === code);
+    return task ? `${task.Value}` : code;
+  };
+
+  const handleInfo = () => {
+    setIsModalInfo(true);
+  };
 
   return (
     <>
       <Fieldset
         title={errorMessages.toDo.titleCard}
-        descriptionTitle={assignedStaff.commercialManager}
+        descriptionTitle={
+          taskRole === "CredicarAccountManager"
+            ? assignedStaff.commercialManager
+            : assignedStaff.analyst
+        }
         heightFieldset="241px"
         hasOverflow
         aspectRatio={isMobile ? "auto" : "1"}
@@ -307,7 +332,9 @@ function ToDo(props: ToDoProps) {
                   size={isMobile ? "medium" : "large"}
                   appearance={taskData?.taskToBeDone ? "dark" : "gray"}
                 >
-                  {taskData?.taskToBeDone ?? errorMessagge}
+                  {taskData?.taskToBeDone
+                    ? getTaskLabel(taskData.taskToBeDone)
+                    : errorMessagge}
                 </Text>
               )}
             </Stack>
@@ -332,16 +359,28 @@ function ToDo(props: ToDoProps) {
                 />
               </Stack>
               <Stack padding="16px 0px 0px 0px" width="100%">
-                <Button
-                  onClick={handleSend}
-                  cursorHover
-                  loading={button?.loading || false}
-                  type="submit"
-                  fullwidth={isMobile}
-                  spacing="compact"
-                >
-                  {button?.label || txtLabels.buttonText}
-                </Button>
+                <Stack gap="2px" alignItems="center">
+                  <Button
+                    onClick={handleSend}
+                    cursorHover
+                    loading={button?.loading || false}
+                    type="submit"
+                    fullwidth={isMobile}
+                    spacing="compact"
+                    disabled={!hasPermitSend ? true : false}
+                  >
+                    {button?.label || txtLabels.buttonText}
+                  </Button>
+                  {!hasPermitSend && (
+                    <Icon
+                      icon={<MdOutlineInfo />}
+                      appearance="primary"
+                      size="16px"
+                      cursorHover
+                      onClick={handleInfo}
+                    />
+                  )}
+                </Stack>
               </Stack>
             </Stack>
             <Divider />
@@ -368,14 +407,10 @@ function ToDo(props: ToDoProps) {
                 gap="16px"
                 justifyContent="flex-start"
                 direction={isMobile ? "column" : "row"}
+                width="100%"
               >
-                <Stack justifyContent="start">
-                  <Stack
-                    direction="column"
-                    alignItems="flex-start"
-                    gap="16px"
-                    padding={isMobile ? "0px" : "0px 100px 0px 0px"}
-                  >
+                <Stack justifyContent="space-between" width="50%">
+                  <Stack direction="column" alignItems="flex-start" gap="16px">
                     <StyledTextField>
                       <Text
                         type="body"
@@ -395,7 +430,7 @@ function ToDo(props: ToDoProps) {
                         textAlign="start"
                       >
                         {truncateTextToMaxLength(
-                          datamock.CommercialManager,
+                          assignedStaff.commercialManager,
                           maxCharacters
                         )}
                       </Text>
@@ -403,13 +438,8 @@ function ToDo(props: ToDoProps) {
                   </Stack>
                   <StyledHorizontalDivider $isMobile={isMobile} />
                 </Stack>
-                <Stack>
-                  <Stack
-                    direction="column"
-                    alignItems="flex-start"
-                    gap="16px"
-                    padding={isMobile ? "0px" : "0px 100px 0px 0px"}
-                  >
+                <Stack justifyContent="space-between" width="50%">
+                  <Stack direction="column" alignItems="flex-start" gap="16px">
                     <StyledTextField>
                       <Text
                         type="body"
@@ -429,7 +459,7 @@ function ToDo(props: ToDoProps) {
                         textAlign="start"
                       >
                         {truncateTextToMaxLength(
-                          datamock.Analyst,
+                          assignedStaff.analyst,
                           maxCharacters
                         )}
                       </Text>
@@ -462,7 +492,32 @@ function ToDo(props: ToDoProps) {
           onSubmit={handleSubmit}
           onCloseModal={handleToggleStaffModal}
           taskData={taskData}
+          setAssignedStaff={setAssignedStaff}
+          buttonText={staffConfig.confirm}
+          title={staffConfig.title}
         />
+      )}
+      {isModalInfo && (
+        <>
+          <BaseModal
+            title={titlesModal.title}
+            nextButton={titlesModal.textButtonNext}
+            handleNext={() => setIsModalInfo(false)}
+            handleClose={() => setIsModalInfo(false)}
+            width={isMobile ? "290px" : "400px"}
+          >
+            <Stack gap="16px" direction="column">
+              <Stack direction="column" gap="8px">
+                <Text weight="bold" size="large">
+                  {titlesModal.subTitle}
+                </Text>
+                <Text weight="normal" size="medium" appearance="gray">
+                  {titlesModal.description}
+                </Text>
+              </Stack>
+            </Stack>
+          </BaseModal>
+        </>
       )}
     </>
   );

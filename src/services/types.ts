@@ -46,6 +46,43 @@ export interface IAccountingVouchers {
   payrollDiscountAuthorizationCode?: string;
   promissoryNoteCode?: string;
 }
+export interface ISearchToDo {
+  creditRequestId: string;
+  creditRequestCode: string;
+  CreditRequestStateId: string;
+  creditRequestStateAbbreviatedName: string;
+  stage: string;
+  taskToBeDone: string;
+  usersByCreditRequestResponse: IStaff[];
+}
+
+export interface ICommercialManagerAndAnalyst {
+  identificationDocumentNumber: string;
+  staffId: string;
+  staffName: string;
+  userAccount: string;
+}
+
+export interface ICreditRequests {
+  creditRequestId: string;
+  creditRequestCode?: string;
+  executed_task?: string;
+  execution_date?: string;
+  identificationNumber?: string;
+  identificationType?: string;
+  justification?: string;
+  role?: string;
+  transactionOperation?: string;
+  userId?: string;
+  userName?: string;
+  staffName?: string;
+}
+
+export interface IEnumerator {
+  code: string;
+  description: string;
+}
+
 export interface ICreditRequest {
   creditRequestId?: string;
   creditRequestCode: string;

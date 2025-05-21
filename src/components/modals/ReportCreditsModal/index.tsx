@@ -3,8 +3,8 @@ import { MdAdd, MdCached } from "react-icons/md";
 import { Stack, useMediaQuery, Button, Select } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
-import { TableFinancialObligations } from "@pages/prospect/components/TableObligationsFinancial";
-import { dataReport } from "@pages/prospect/components/TableObligationsFinancial/config";
+import { TableFinancialObligations } from "@components/data/TableObligationsFinancial";
+import { dataReport } from "@components/data/TableObligationsFinancial/config";
 
 export interface ReportCreditsModalProps {
   handleClose: () => void;

@@ -4,18 +4,17 @@ import { Stack, Icon, Text, useMediaQuery, useFlag } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { ICreditRequest } from "@services/types";
-import { getCreditRequestPinned } from "@services/isPinned";
-import { getCreditRequestInProgress } from "@services/creditRequets/getCreditRequestInProgress";
-import { patchChangeAnchorToCreditRequest } from "@services/anchorCreditRequest";
+import { getEnumerators } from "@services/enumerators";
+import { getCreditRequestPinned } from "@services/credit-request/query/isPinned";
+import { getCreditRequestInProgress } from "@services/credit-request/query/getCreditRequestInProgress";
+import { patchChangeAnchorToCreditRequest } from "@services/credit-request/command/anchorCreditRequest";
 import { AppContext } from "@context/AppContext";
 import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
 
 import { dataInformationModal } from "./config/board";
 import { BoardLayoutUI } from "./interface";
 import { selectCheckOptions } from "./config/select";
-import { IBoardData } from "./types";
-import { getEnumerators } from "@services/enumerators";
-import { IEnumerator } from "@pages/SubmitCreditApplication/types";
+import { IBoardData, IEnumerator } from "./types";
 
 function BoardLayout() {
   const { businessUnitSigla, eventData, setEventData } = useContext(AppContext);
@@ -59,11 +58,16 @@ function BoardLayout() {
 
   const errorData = mockErrorBoard[0];
 
-  const fetchBoardData = async (businessUnitPublicCode: string) => {
+  const [recordsToFetch, setRecordsToFetch] = useState(79);
+
+  const fetchBoardData = async (
+    businessUnitPublicCode: string,
+    limit: number
+  ) => {
     try {
       const [boardRequestsResult, requestsPinnedResult] =
         await Promise.allSettled([
-          getCreditRequestInProgress(businessUnitPublicCode),
+          getCreditRequestInProgress(businessUnitPublicCode, limit),
           getCreditRequestPinned(businessUnitPublicCode),
         ]);
 
@@ -90,9 +94,13 @@ function BoardLayout() {
   };
 
   useEffect(() => {
-    fetchBoardData(businessUnitPublicCode);
+    fetchBoardData(businessUnitPublicCode, recordsToFetch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [businessUnitPublicCode]);
+  }, [businessUnitPublicCode, recordsToFetch]);
+
+  const handleLoadMoreData = () => {
+    setRecordsToFetch((prev) => prev + 50);
+  };
 
   useEffect(() => {
     const filteredRequests = boardData.boardRequests.filter((request) => {
@@ -249,7 +257,7 @@ function BoardLayout() {
           creditRequestId,
           isPinned
         );
-        await fetchBoardData(businessUnitPublicCode);
+        await fetchBoardData(businessUnitPublicCode, recordsToFetch);
       } else {
         setIsOpenModal(true);
         return;
@@ -271,6 +279,7 @@ function BoardLayout() {
         showPinnedOnly={filters.showPinnedOnly}
         pinnedRequests={boardData.requestsPinned}
         errorLoadingPins={errorLoadingPins}
+        handleLoadMoreData={handleLoadMoreData}
         handleSelectCheckChange={(e) =>
           handleFiltersChange({
             selectOptions: filters.selectOptions.map((option) =>
