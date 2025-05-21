@@ -63,4 +63,12 @@ export const uncovered_wallet = [
       reciprocity: 2,
     },
   },
+   {
+    credit_request_id: "SC-122254646",
+    uncovered_wallet: {
+      overdraft_factor: 14,
+      discovered_value: 22000000,
+      reciprocity: 2,
+    },
+  },
 ];
