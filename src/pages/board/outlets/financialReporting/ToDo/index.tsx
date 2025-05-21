@@ -13,10 +13,10 @@ import {
 import { Fieldset } from "@components/data/Fieldset";
 import { Divider } from "@components/layout/Divider";
 import { ItemNotFound } from "@components/layout/ItemNotFound";
-import { getCreditRequestByCode } from "@services/creditRequets/getCreditRequestByCode";
-import { getSearchDecisionById } from "@services/todo/SearchDecisionById";
+import { getCreditRequestByCode } from "@services/credit-request/query/getCreditRequestByCode";
+import { getSearchDecisionById } from "@services/credit-request/query/SearchDecisionById";
 import { IStaff, IToDo, ICreditRequest } from "@services/types";
-import { getToDoByCreditRequestId } from "@services/todo/getToDoByCreditRequestId";
+import { getToDoByCreditRequestId } from "@services/credit-request/query/getToDoByCreditRequestId";
 import { capitalizeFirstLetterEachWord } from "@utils/formatData/text";
 import { truncateTextToMaxLength } from "@utils/formatData/text";
 import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
