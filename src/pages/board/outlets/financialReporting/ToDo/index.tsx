@@ -1,5 +1,6 @@
 import { useState, useEffect, ChangeEvent, useContext, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { MdOutlineInfo } from "react-icons/md";
 import {
   Stack,
   Icon,
@@ -22,9 +23,17 @@ import { truncateTextToMaxLength } from "@utils/formatData/text";
 import { DecisionModal } from "@pages/board/outlets/financialReporting/ToDo/DecisionModal";
 import { AppContext } from "@context/AppContext";
 import userNotFound from "@assets/images/ItemNotFound.png";
+import { TareasPrs } from "@services/enum/icorebanking-vi-crediboard/dmtareas/dmtareasprs";
+import { BaseModal } from "@components/modals/baseModal";
 
 import { StaffModal } from "./StaffModal";
-import { errorMessagge, staffConfig, txtLabels, txtTaskQuery } from "./config";
+import {
+  errorMessagge,
+  staffConfig,
+  txtLabels,
+  txtTaskQuery,
+  titlesModal,
+} from "./config";
 import { IICon, IButton } from "./types";
 import { getXAction } from "./util/utils";
 import { StyledHorizontalDivider, StyledTextField } from "../styles";
@@ -53,6 +62,7 @@ function ToDo(props: ToDoProps) {
   const [loading, setLoading] = useState(true);
   const [taskData, setTaskData] = useState<IToDo | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalInfo, setIsModalInfo] = useState(false);
 
   const [assignedStaff, setAssignedStaff] = useState({
     commercialManager: "",
@@ -90,6 +100,8 @@ function ToDo(props: ToDoProps) {
 
   const { userAccount } =
     typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
+
+  const hasPermitSend = Boolean(eventData.user.staff.useCases.canSendDecision);
 
   useEffect(() => {
     const fetchCreditRequest = async () => {
@@ -268,11 +280,28 @@ function ToDo(props: ToDoProps) {
     humanDecisionDescription: selectedDecision?.label || "",
   };
 
+  const taskRole = TareasPrs.find(
+    (t) => t.Code === taskData?.taskToBeDone
+  )?.Role;
+
+  const getTaskLabel = (code: string): string => {
+    const tarea = TareasPrs.find((t) => t.Code === code);
+    return tarea ? `${tarea.Code} - ${tarea.Value}` : code;
+  };
+
+  const handleInfo = () => {
+    setIsModalInfo(true);
+  };
+
   return (
     <>
       <Fieldset
         title={errorMessages.toDo.titleCard}
-        descriptionTitle={assignedStaff.commercialManager}
+        descriptionTitle={
+          taskRole === "CredicarAccountManager"
+            ? assignedStaff.commercialManager
+            : assignedStaff.analyst
+        }
         heightFieldset="241px"
         hasOverflow
         aspectRatio={isMobile ? "auto" : "1"}
@@ -305,7 +334,9 @@ function ToDo(props: ToDoProps) {
                   size={isMobile ? "medium" : "large"}
                   appearance={taskData?.taskToBeDone ? "dark" : "gray"}
                 >
-                  {taskData?.taskToBeDone ?? errorMessagge}
+                  {taskData?.taskToBeDone
+                    ? getTaskLabel(taskData.taskToBeDone)
+                    : errorMessagge}
                 </Text>
               )}
             </Stack>
@@ -330,16 +361,28 @@ function ToDo(props: ToDoProps) {
                 />
               </Stack>
               <Stack padding="16px 0px 0px 0px" width="100%">
-                <Button
-                  onClick={handleSend}
-                  cursorHover
-                  loading={button?.loading || false}
-                  type="submit"
-                  fullwidth={isMobile}
-                  spacing="compact"
-                >
-                  {button?.label || txtLabels.buttonText}
-                </Button>
+                <Stack gap="2px" alignItems="center">
+                  <Button
+                    onClick={handleSend}
+                    cursorHover
+                    loading={button?.loading || false}
+                    type="submit"
+                    fullwidth={isMobile}
+                    spacing="compact"
+                    disabled={!hasPermitSend ? true : false}
+                  >
+                    {button?.label || txtLabels.buttonText}
+                  </Button>
+                  {!hasPermitSend && (
+                    <Icon
+                      icon={<MdOutlineInfo />}
+                      appearance="primary"
+                      size="16px"
+                      cursorHover
+                      onClick={handleInfo}
+                    />
+                  )}
+                </Stack>
               </Stack>
             </Stack>
             <Divider />
@@ -455,6 +498,28 @@ function ToDo(props: ToDoProps) {
           buttonText={staffConfig.confirm}
           title={staffConfig.title}
         />
+      )}
+      {isModalInfo && (
+        <>
+          <BaseModal
+            title={titlesModal.title}
+            nextButton={titlesModal.textButtonNext}
+            handleNext={() => setIsModalInfo(false)}
+            handleClose={() => setIsModalInfo(false)}
+            width={isMobile ? "290px" : "400px"}
+          >
+            <Stack gap="16px" direction="column">
+              <Stack direction="column" gap="8px">
+                <Text weight="bold" size="large">
+                  {titlesModal.subTitle}
+                </Text>
+                <Text weight="normal" size="medium" appearance="gray">
+                  {titlesModal.description}
+                </Text>
+              </Stack>
+            </Stack>
+          </BaseModal>
+        </>
       )}
     </>
   );
