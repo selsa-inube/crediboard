@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import localforage from "localforage";
-import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
 import {
-  Stack,
-  Icon,
-  Text,
-  SkeletonLine,
-  SkeletonIcon,
-  useMediaQuery,
+  MdAdd,
+  MdCached,
+  MdDeleteOutline,
+  MdOutlineEdit,
+} from "react-icons/md";
+import {
   Pagination,
   Table,
   Tbody,
@@ -16,15 +15,23 @@ import {
   Th,
   Thead,
   Tr,
+  Stack,
+  Icon,
+  Text,
+  SkeletonLine,
+  SkeletonIcon,
+  Button,
+  useMediaQuery,
 } from "@inubekit/inubekit";
 
 import { EditFinancialObligationModal } from "@components/modals/editFinancialObligationModal";
-import { ListModal } from "@components/modals/ListModal";
 import { NewPrice } from "@components/modals/ReportCreditsModal/components/newPrice";
+import { BaseModal } from "@components/modals/baseModal";
 import { currencyFormat } from "@utils/formatData/currency";
 
 import { headers, dataReport } from "./config";
 import { usePagination } from "./utils";
+import { IDataInformationItem } from "./types";
 
 export interface ITableFinancialObligationsProps {
   type?: string;
@@ -40,7 +47,8 @@ export interface ITableFinancialObligationsProps {
 export function TableFinancialObligations(
   props: ITableFinancialObligationsProps
 ) {
-  const { refreshKey, showActions, showOnlyEdit, initialValues } = props;
+  const { refreshKey, showActions, showOnlyEdit, initialValues, showButtons } =
+    props;
   const [loading, setLoading] = useState(true);
   const [extraDebtors, setExtraDebtors] = useState<
     ITableFinancialObligationsProps[]
@@ -81,16 +89,18 @@ export function TableFinancialObligations(
     : headers.filter((header) => showActions || header.key !== "actions");
 
   useEffect(() => {
-    const loadExtraDebtors = async () => {
-      const storedData =
-        (await localforage.getItem<ITableFinancialObligationsProps[]>(
-          "financial_obligation"
-        )) || [];
-      setExtraDebtors(storedData);
-    };
+    if (initialValues && initialValues.length > 0) {
+      const dataFromInitialValues =
+        initialValues?.[0]?.borrowers?.[0]?.borrower_properties?.filter(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (prop: any) => prop.property_name === "FinancialObligation"
+        ) || [];
 
-    loadExtraDebtors();
-  }, [refreshKey]);
+      setExtraDebtors(dataFromInitialValues);
+    } else {
+      setExtraDebtors([]);
+    }
+  }, [refreshKey, initialValues]);
 
   const handleDelete = async (id: string) => {
     try {
@@ -120,18 +130,52 @@ export function TableFinancialObligations(
     }
   };
 
-  const dataInformation = initialValues?.borrower_properties?.length
-    ? initialValues.borrower_properties.filter(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (prop: any) => prop.property_name === "FinancialObligation"
-      )
-    : extraDebtors;
+  const dataInformation =
+    (initialValues?.[0]?.borrowers?.[0]?.borrower_properties?.filter(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (prop: any) => prop.property_name === "FinancialObligation"
+    ) ??
+      extraDebtors) ||
+    [];
 
-  let totalFee = 0;
-  let totalBalance = 0;
+  const totalBalance = dataInformation.reduce(
+    (sum: number, item: IDataInformationItem) => {
+      let balance = 0;
+      if (typeof item.balance === "number") {
+        balance = item.balance;
+      } else if (typeof item.property_value === "string") {
+        const parts = item.property_value.split(",");
+        balance = parseFloat(parts[1]) || 0;
+      }
+      return sum + balance;
+    },
+    0
+  );
+
+  const totalFee = dataInformation.reduce(
+    (sum: number, item: IDataInformationItem) => {
+      let fee = 0;
+      if (typeof item.fee === "number") {
+        fee = item.fee;
+      } else if (typeof item.property_value === "string") {
+        const parts = item.property_value.split(",");
+        fee = parseFloat(parts[2]) || 0;
+      }
+      return sum + fee;
+    },
+    0
+  );
 
   return (
-    <>
+    <Stack direction="column" width="100%" gap="16px">
+      {showButtons && (
+        <Stack gap="16px" justifyContent="end">
+          <Button iconAfter={<MdCached />} variant="outlined">
+            {dataReport.restore}
+          </Button>
+          <Button iconAfter={<MdAdd />}>{dataReport.addObligations}</Button>
+        </Stack>
+      )}
       <Table tableLayout="auto">
         <Thead>
           <Tr>
@@ -193,12 +237,6 @@ export function TableFinancialObligations(
                     .split(",")
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     .map((val: any) => val.trim());
-
-                  const balance = Number(values[1]) || 0;
-                  totalBalance += balance;
-
-                  const fee = Number(values[2]) || 0;
-                  totalFee += fee;
                 } else if (Array.isArray(prop.property_value)) {
                   values = prop.property_value.map(String);
                 } else {
@@ -299,20 +337,22 @@ export function TableFinancialObligations(
           />
         )}
         {isDeleteModal && (
-          <ListModal
+          <BaseModal
             title={dataReport.deletion}
-            handleClose={() => setIsDeleteModal(false)}
-            handleSubmit={() => setIsDeleteModal(false)}
-            onSubmit={() => {
+            nextButton={dataReport.delete}
+            backButton={dataReport.cancel}
+            handleNext={() => {
               if (selectedDebtor) {
                 handleDelete(selectedDebtor.id as string);
                 setIsDeleteModal(false);
               }
             }}
-            buttonLabel={dataReport.delete}
-            content={dataReport.content}
-            cancelButton={dataReport.cancel}
-          />
+            handleClose={() => setIsDeleteModal(false)}
+          >
+            <Stack width="400px">
+              <Text>{dataReport.content}</Text>
+            </Stack>
+          </BaseModal>
         )}
       </Table>
       <Stack
@@ -334,6 +374,6 @@ export function TableFinancialObligations(
           <NewPrice value={totalFee} label={dataReport.descriptionTotalFee} />
         )}
       </Stack>
-    </>
+    </Stack>
   );
 }
