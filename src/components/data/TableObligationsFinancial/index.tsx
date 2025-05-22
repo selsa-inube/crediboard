@@ -32,10 +32,14 @@ import { currencyFormat } from "@utils/formatData/currency";
 import { headers, dataReport } from "./config";
 import { usePagination } from "./utils";
 import { IDataInformationItem } from "./types";
+import { FormikValues } from "formik";
 
 export interface ITableFinancialObligationsProps {
   type?: string;
   id?: string;
+  property_value?: string;
+  fee?: string;
+  balance?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialValues?: any;
   refreshKey?: number;
@@ -57,11 +61,24 @@ export function TableFinancialObligations(
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [selectedDebtor, setSelectedDebtor] =
     useState<ITableFinancialObligationsProps | null>(null);
-
   const handleEdit = (debtor: ITableFinancialObligationsProps) => {
-    setSelectedDebtor(debtor);
+    let balance = "";
+    let fee = "";
+
+    if (typeof debtor.property_value === "string") {
+      const values = debtor.property_value.split(",");
+      balance = values[1]?.trim() || "";
+      fee = values[2]?.trim() || "";
+    }
+
+    setSelectedDebtor({
+      ...debtor,
+      balance, 
+      fee, 
+    });
     setIsModalOpen(true);
   };
+
 
   const {
     handleStartPage,
@@ -329,8 +346,13 @@ export function TableFinancialObligations(
           <EditFinancialObligationModal
             title={`${dataReport.edit} ${selectedDebtor.type || ""}`}
             onCloseModal={() => setIsModalOpen(false)}
-            onConfirm={async (updatedDebtor) => {
-              await handleUpdate(updatedDebtor);
+            onConfirm={async (updatedDebtor: FormikValues) => {
+              const updatedDebtorWithFee: ITableFinancialObligationsProps = {
+                ...updatedDebtor,
+                fee: updatedDebtor.fee,
+                balance: updatedDebtor.balance,
+              };
+              await handleUpdate(updatedDebtorWithFee);
             }}
             initialValues={selectedDebtor}
             confirmButtonText={dataReport.save}
