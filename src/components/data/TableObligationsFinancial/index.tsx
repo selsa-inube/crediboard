@@ -61,24 +61,28 @@ export function TableFinancialObligations(
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [selectedDebtor, setSelectedDebtor] =
     useState<ITableFinancialObligationsProps | null>(null);
+  const formatter = new Intl.NumberFormat("es-ES", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+
   const handleEdit = (debtor: ITableFinancialObligationsProps) => {
     let balance = "";
     let fee = "";
 
     if (typeof debtor.property_value === "string") {
       const values = debtor.property_value.split(",");
-      balance = values[1]?.trim() || "";
-      fee = values[2]?.trim() || "";
+      balance = formatter.format(Number(values[1]?.trim() || 0));
+      fee = formatter.format(Number(values[2]?.trim() || 0));
     }
 
     setSelectedDebtor({
       ...debtor,
-      balance, 
-      fee, 
+      balance,
+      fee,
     });
     setIsModalOpen(true);
   };
-
 
   const {
     handleStartPage,
