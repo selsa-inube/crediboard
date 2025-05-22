@@ -359,7 +359,7 @@ export const SummaryProspectCredit = [
         operation: "-",
       },
       {
-        id: "approvedAmount",
+        id: "totalConsolidatedAmount",
         title: "Obligaciones recogidas",
         miniIcon: true,
         icon: <MdOutlineEdit />,
