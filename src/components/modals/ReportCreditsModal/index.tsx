@@ -35,7 +35,7 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
     feePaid: "",
     term: "",
   };
-  console.log("prospectData", prospectData);
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setLoading(false);
