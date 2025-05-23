@@ -107,14 +107,14 @@ export const TableExtraordinaryInstallment = (
   } = usePagination(extraordinaryInstallments);
 
   useEffect(() => {
-    if (prospectData?.credit_products) {
-      const extraordinaryInstallmentsDB = prospectData.credit_products.flatMap(
+    if (prospectData?.creditProducts) {
+      const extraordinaryInstallmentsDB = prospectData.creditProducts.flatMap(
         (product) =>
-          product.extraordinary_installments.map((installment) => ({
-            id: `${product.credit_product_code}-${installment.installment_date}`,
-            datePayment: installment.installment_date,
-            value: installment.installment_amount,
-            paymentMethod: installment.payment_channel_abbreviated_name,
+          product.extraordinaryInstallments.map((installment) => ({
+            id: `${product.creditProductCode}-${installment.installmentDate}`,
+            datePayment: installment.installmentDate,
+            value: installment.installmentAmount,
+            paymentMethod: installment.paymentChannelAbbreviatedName,
           }))
       );
 
