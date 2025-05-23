@@ -353,11 +353,13 @@ export const SummaryProspectCredit = [
   {
     item: [
       {
-        title: "Monto préstamo",
+        id: "requestedAmount",
+        title: "Monto solicitado",
         miniIcon: false,
         operation: "-",
       },
       {
+        id: "totalConsolidatedAmount",
         title: "Obligaciones recogidas",
         miniIcon: true,
         icon: <MdOutlineEdit />,
@@ -365,6 +367,7 @@ export const SummaryProspectCredit = [
         operation: "-",
       },
       {
+        id: "deductibleExpenses",
         title: "Gastos descontables",
         miniIcon: true,
         icon: <MdOutlineRemoveRedEye />,
@@ -372,11 +375,13 @@ export const SummaryProspectCredit = [
         operation: "=",
       },
       {
+        id: "netAmountToDisburse",
         title: "Neto a girar",
         miniIcon: false,
         operation: "|",
       },
       {
+        id: "totalRegularInstallment",
         title: "Cuota ordinaria",
         miniIcon: true,
         icon: <MdOutlineRemoveRedEye />,
@@ -443,4 +448,6 @@ export const tittleOptions = {
   titleVideoCall: "Videollamada",
   titleAddProduct: "Agregar producto",
   titleExtraPayments: "Pagos extras",
+  titleError: "¡Uy, algo ha salido mal!",
+  descriptionError: "No se han podido guardar los cambios.",
 };
