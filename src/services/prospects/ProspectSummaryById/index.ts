@@ -34,14 +34,14 @@ const getSearchProspectSummaryById = async (
       clearTimeout(timeoutId);
 
       if (res.status === 204) {
-        throw new Error("No hay tarea disponible.");
+        throw new Error("No hay resumen de montos disponibles.");
       }
 
       const data = await res.json();
 
       if (!res.ok) {
         throw {
-          message: "Error al obtener ProspectSummaryById.",
+          message: "Error al obtener el resumen de montos.",
           status: res.status,
           data,
         };
@@ -56,13 +56,15 @@ const getSearchProspectSummaryById = async (
       console.error(`Intento ${attempt} fallido:`, error);
       if (attempt === maxRetries) {
         throw new Error(
-          "Todos los intentos fallaron. No se pudo obtener la tarea."
+          "Todos los intentos fallaron. No se pudo traer el resumen de montos"
         );
       }
     }
   }
 
-  throw new Error("No se pudo obtener la tarea después de varios intentos.");
+  throw new Error(
+    "No se pudo obtener el resumen de montos después de varios intentos."
+  );
 };
 
 export { getSearchProspectSummaryById };

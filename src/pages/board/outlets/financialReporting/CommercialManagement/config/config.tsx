@@ -448,4 +448,6 @@ export const tittleOptions = {
   titleVideoCall: "Videollamada",
   titleAddProduct: "Agregar producto",
   titleExtraPayments: "Pagos extras",
+  titleError: "¡Uy, algo ha salido mal!",
+  descriptionError: "No se han podido guardar los cambios.",
 };

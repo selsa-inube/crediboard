@@ -1,12 +1,15 @@
 import { useContext, useEffect, useState } from "react";
-import { Stack, Divider, useMediaQuery } from "@inubekit/inubekit";
+import { Stack, Divider, useMediaQuery, useFlag } from "@inubekit/inubekit";
 
 import { CreditProductCard } from "@components/cards/CreditProductCard";
 import { NewCreditProductCard } from "@components/cards/CreditProductCard/newCard";
 import { CardValues } from "@components/cards/cardValues";
 import { DeleteModal } from "@components/modals/DeleteModal";
 import { ConsolidatedCredits } from "@components/modals/ConsolidatedCreditModal";
-import { SummaryProspectCredit } from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
+import {
+  SummaryProspectCredit,
+  tittleOptions,
+} from "@pages/board/outlets/financialReporting/CommercialManagement/config/config";
 import { deleteCreditProductMock } from "@mocks/utils/deleteCreditProductMock.service";
 import { getSearchProspectSummaryById } from "@services/prospects/ProspectSummaryById";
 import { AppContext } from "@context/AppContext";
@@ -32,6 +35,7 @@ export const CardCommercialManagement = (
   const [prospectProducts, setProspectProducts] = useState<ICreditProduct[]>(
     []
   );
+  const { addFlag } = useFlag();
   const { businessUnitSigla } = useContext(AppContext);
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
@@ -77,11 +81,17 @@ export const CardCommercialManagement = (
           setProspectSummaryData(result);
         }
       } catch (error) {
-        console.error("Error al obtener los prospectos:", error);
+        addFlag({
+          title: tittleOptions.titleError,
+          description: tittleOptions.descriptionError,
+          appearance: "danger",
+          duration: 5000,
+        });
       }
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [businessUnitPublicCode, id]);
 
   return (
