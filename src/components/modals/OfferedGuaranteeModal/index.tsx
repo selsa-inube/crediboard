@@ -108,43 +108,38 @@ export function OfferedGuaranteeModal(props: IOfferedGuaranteeModalProps) {
                   <CardBorrower
                     key={index}
                     title={`${dataGuarantee.borrower} ${index + 1}`}
-                    name={getPropertyValue(
-                      borrower.borrower_properties,
-                      "name"
-                    )}
+                    name={getPropertyValue(borrower.borrowerProperties, "name")}
                     lastName={getPropertyValue(
-                      borrower.borrower_properties,
+                      borrower.borrowerProperties,
                       "surname"
                     )}
                     email={getPropertyValue(
-                      borrower.borrower_properties,
+                      borrower.borrowerProperties,
                       "email"
                     )}
                     income={currencyFormat(
                       Number(
                         getPropertyValue(
-                          borrower.borrower_properties,
+                          borrower.borrowerProperties,
                           "PeriodicSalary"
                         ) || 0
                       ) +
                         Number(
                           getPropertyValue(
-                            borrower.borrower_properties,
+                            borrower.borrowerProperties,
                             "OtherNonSalaryEmoluments"
                           ) || 0
                         ) +
                         Number(
                           getPropertyValue(
-                            borrower.borrower_properties,
+                            borrower.borrowerProperties,
                             "PensionAllowances"
                           ) || 0
                         ),
                       false
                     )}
                     obligations={currencyFormat(
-                      getTotalFinancialObligations(
-                        borrower.borrower_properties
-                      ),
+                      getTotalFinancialObligations(borrower.borrowerProperties),
                       false
                     )}
                     showIcons={false}
@@ -170,7 +165,7 @@ export function OfferedGuaranteeModal(props: IOfferedGuaranteeModalProps) {
         {currentTab === "pledge" && (
           <Pledge isMobile={isMobile} initialValues={pledgeData} />
         )}
-        {currentTab === "bail" && <Bail data={dataResponse?.bond_value ?? 0} />}
+        {currentTab === "bail" && <Bail data={dataResponse?.bondValue ?? 0} />}
       </Stack>
     </BaseModal>
   );

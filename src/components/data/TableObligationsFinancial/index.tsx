@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
+import { FormikValues } from "formik";
 import localforage from "localforage";
-import {
-  MdAdd,
-  MdCached,
-  MdDeleteOutline,
-  MdOutlineEdit,
-} from "react-icons/md";
+import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
 import {
   Pagination,
   Table,
@@ -20,7 +16,6 @@ import {
   Text,
   SkeletonLine,
   SkeletonIcon,
-  Button,
   useMediaQuery,
 } from "@inubekit/inubekit";
 
@@ -32,12 +27,11 @@ import { currencyFormat } from "@utils/formatData/currency";
 import { headers, dataReport } from "./config";
 import { usePagination } from "./utils";
 import { IDataInformationItem } from "./types";
-import { FormikValues } from "formik";
 
 export interface ITableFinancialObligationsProps {
   type?: string;
   id?: string;
-  property_value?: string;
+  propertyValue?: string;
   fee?: string;
   balance?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,8 +45,7 @@ export interface ITableFinancialObligationsProps {
 export function TableFinancialObligations(
   props: ITableFinancialObligationsProps
 ) {
-  const { refreshKey, showActions, showOnlyEdit, initialValues, showButtons } =
-    props;
+  const { refreshKey, showActions, showOnlyEdit, initialValues } = props;
   const [loading, setLoading] = useState(true);
   const [extraDebtors, setExtraDebtors] = useState<
     ITableFinancialObligationsProps[]
@@ -61,19 +54,14 @@ export function TableFinancialObligations(
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [selectedDebtor, setSelectedDebtor] =
     useState<ITableFinancialObligationsProps | null>(null);
-  const formatter = new Intl.NumberFormat("es-ES", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
 
   const handleEdit = (debtor: ITableFinancialObligationsProps) => {
     let balance = "";
     let fee = "";
-
-    if (typeof debtor.property_value === "string") {
-      const values = debtor.property_value.split(",");
-      balance = formatter.format(Number(values[1]?.trim() || 0));
-      fee = formatter.format(Number(values[2]?.trim() || 0));
+    if (typeof debtor.propertyValue === "string") {
+      const values = debtor.propertyValue.split(",");
+      balance = currencyFormat(Number(values[1]?.trim() || 0));
+      fee = currencyFormat(Number(values[2]?.trim() || 0));
     }
 
     setSelectedDebtor({
@@ -108,13 +96,18 @@ export function TableFinancialObligations(
           (showActions || header.key !== "actions")
       )
     : headers.filter((header) => showActions || header.key !== "actions");
-
   useEffect(() => {
-    if (initialValues && initialValues.length > 0) {
+    const data = Array.isArray(initialValues) ? initialValues : [initialValues];
+
+    if (data && data.length > 0) {
+      const borrowerList = Array.isArray(data[0]?.borrowers)
+        ? data[0]?.borrowers
+        : data;
+
       const dataFromInitialValues =
-        initialValues?.[0]?.borrowers?.[0]?.borrower_properties?.filter(
+        borrowerList?.[0]?.borrowerProperties?.filter(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (prop: any) => prop.property_name === "FinancialObligation"
+          (prop: any) => prop.propertyName === "FinancialObligation"
         ) || [];
 
       setExtraDebtors(dataFromInitialValues);
@@ -152,9 +145,9 @@ export function TableFinancialObligations(
   };
 
   const dataInformation =
-    (initialValues?.[0]?.borrowers?.[0]?.borrower_properties?.filter(
+    (initialValues?.[0]?.borrowers?.[0]?.borrowerProperties?.filter(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (prop: any) => prop.property_name === "FinancialObligation"
+      (prop: any) => prop.propertyName === "FinancialObligation"
     ) ??
       extraDebtors) ||
     [];
@@ -164,8 +157,8 @@ export function TableFinancialObligations(
       let balance = 0;
       if (typeof item.balance === "number") {
         balance = item.balance;
-      } else if (typeof item.property_value === "string") {
-        const parts = item.property_value.split(",");
+      } else if (typeof item.propertyValue === "string") {
+        const parts = item.propertyValue.split(",");
         balance = parseFloat(parts[1]) || 0;
       }
       return sum + balance;
@@ -178,8 +171,8 @@ export function TableFinancialObligations(
       let fee = 0;
       if (typeof item.fee === "number") {
         fee = item.fee;
-      } else if (typeof item.property_value === "string") {
-        const parts = item.property_value.split(",");
+      } else if (typeof item.propertyValue === "string") {
+        const parts = item.propertyValue.split(",");
         fee = parseFloat(parts[2]) || 0;
       }
       return sum + fee;
@@ -188,15 +181,7 @@ export function TableFinancialObligations(
   );
 
   return (
-    <Stack direction="column" width="100%" gap="16px">
-      {showButtons && (
-        <Stack gap="16px" justifyContent="end">
-          <Button iconAfter={<MdCached />} variant="outlined">
-            {dataReport.restore}
-          </Button>
-          <Button iconAfter={<MdAdd />}>{dataReport.addObligations}</Button>
-        </Stack>
-      )}
+    <>
       <Table tableLayout="auto">
         <Thead>
           <Tr>
@@ -253,13 +238,13 @@ export function TableFinancialObligations(
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               return dataInformation.map((prop: any, rowIndex: number) => {
                 let values: string[] = [];
-                if (typeof prop.property_value === "string") {
-                  values = prop.property_value
+                if (typeof prop.propertyValue === "string") {
+                  values = prop.propertyValue
                     .split(",")
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     .map((val: any) => val.trim());
-                } else if (Array.isArray(prop.property_value)) {
-                  values = prop.property_value.map(String);
+                } else if (Array.isArray(prop.propertyValue)) {
+                  values = prop.propertyValue.map(String);
                 } else {
                   values = Object.entries(prop)
                     .filter(([key]) => key !== "id")
@@ -400,6 +385,6 @@ export function TableFinancialObligations(
           <NewPrice value={totalFee} label={dataReport.descriptionTotalFee} />
         )}
       </Stack>
-    </Stack>
+    </>
   );
 }

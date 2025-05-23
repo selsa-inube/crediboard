@@ -107,8 +107,8 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
   };
 
   useEffect(() => {
-    if (prospectData && Array.isArray(prospectData.credit_products)) {
-      setProspectProducts(prospectData.credit_products as ICreditProduct[]);
+    if (prospectData && Array.isArray(prospectData.creditProducts)) {
+      setProspectProducts(prospectData.creditProducts as ICreditProduct[]);
     }
   }, [prospectData]);
 
@@ -432,7 +432,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                   {isMobile && (
                     <Stack padding="0px 0px 10px">
                       {prospectProducts?.some(
-                        (product) => product.extraordinary_installments
+                        (product) => product.extraordinaryInstallments
                       ) && (
                         <Button
                           type="button"
@@ -488,7 +488,7 @@ export const ComercialManagement = (props: ComercialManagementProps) => {
                             options={menuOptions(
                               handleOpenModal,
                               !prospectProducts?.some(
-                                (product) => product.extraordinary_installments
+                                (product) => product.extraordinaryInstallments
                               )
                             )}
                             onMouseLeave={() => setShowMenu(false)}

@@ -30,7 +30,7 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
   const isMobile = useMediaQuery("(max-width:880px)");
   const debtorData = mockConsolidatedCreditModal[0];
   const [editOpen, setEditOpen] = useState(true);
-  const consolidatedCredits = prospectData?.consolidated_credits || [];
+  const consolidatedCredits = prospectData?.consolidatedCredits || [];
 
   return (
     <BaseModal
@@ -99,10 +99,10 @@ export function ConsolidatedCredits(props: ConsolidatedCreditsProps) {
                 >
                   {consolidatedCredits.map((item) => (
                     <InvestmentCreditCard
-                      codeValue={item.credit_product_code}
+                      codeValue={item.creditProductCode}
                       expired={ModalConfig.terminated}
-                      expiredValue={item.consolidated_amount}
-                      title={item.line_of_credit_description}
+                      expiredValue={item.consolidatedAmount}
+                      title={item.lineOfCreditDescription}
                     />
                   ))}
                 </Grid>
