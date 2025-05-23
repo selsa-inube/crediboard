@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { MdAdd, MdCached } from "react-icons/md";
-
-import { Stack, useMediaQuery, Select, Button } from "@inubekit/inubekit";
+import { Stack, useMediaQuery, Button, Select } from "@inubekit/inubekit";
 
 import { BaseModal } from "@components/modals/baseModal";
 import { TableFinancialObligations } from "@components/data/TableObligationsFinancial";
@@ -11,8 +10,6 @@ export interface ReportCreditsModalProps {
   handleClose: () => void;
   onChange: (name: string, newValue: string) => void;
   options: { id: string; label: string; value: string }[];
-  totalBalance?: number;
-  totalFee: number;
   debtor: string;
 }
 
@@ -58,11 +55,15 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
               onChange={(name, value) => onChange(name, value)}
               size="compact"
             />
-            <Stack alignItems="end" gap="16px">
+            <Stack gap="16px" alignItems="end">
               <Button iconAfter={<MdCached />} variant="outlined">
                 {dataReport.restore}
               </Button>
-              <Button iconAfter={<MdAdd />}>{dataReport.addObligations}</Button>
+              <Button
+                children={dataReport.addObligations}
+                iconBefore={<MdAdd />}
+                fullwidth={isMobile}
+              />
             </Stack>
           </Stack>
         )}
