@@ -556,6 +556,7 @@ export function CreditProspect(props: ICreditProspectProps) {
           options={incomeOptions}
           onChange={onChanges}
           debtor={form.borrower}
+          dataProspect={dataProspect}
         />
       )}
       {currentModal === "extraPayments" && (

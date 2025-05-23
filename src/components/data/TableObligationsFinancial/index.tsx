@@ -1,13 +1,8 @@
 import { useState, useEffect } from "react";
+import { FormikValues } from "formik";
 import localforage from "localforage";
 import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
 import {
-  Stack,
-  Icon,
-  Text,
-  SkeletonLine,
-  SkeletonIcon,
-  useMediaQuery,
   Pagination,
   Table,
   Tbody,
@@ -16,19 +11,29 @@ import {
   Th,
   Thead,
   Tr,
+  Stack,
+  Icon,
+  Text,
+  SkeletonLine,
+  SkeletonIcon,
+  useMediaQuery,
 } from "@inubekit/inubekit";
 
 import { EditFinancialObligationModal } from "@components/modals/editFinancialObligationModal";
-import { ListModal } from "@components/modals/ListModal";
 import { NewPrice } from "@components/modals/ReportCreditsModal/components/newPrice";
+import { BaseModal } from "@components/modals/baseModal";
 import { currencyFormat } from "@utils/formatData/currency";
 
 import { headers, dataReport } from "./config";
 import { usePagination } from "./utils";
+import { IDataInformationItem } from "./types";
 
 export interface ITableFinancialObligationsProps {
   type?: string;
   id?: string;
+  propertyValue?: string;
+  fee?: string;
+  balance?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialValues?: any;
   refreshKey?: number;
@@ -51,7 +56,19 @@ export function TableFinancialObligations(
     useState<ITableFinancialObligationsProps | null>(null);
 
   const handleEdit = (debtor: ITableFinancialObligationsProps) => {
-    setSelectedDebtor(debtor);
+    let balance = "";
+    let fee = "";
+    if (typeof debtor.propertyValue === "string") {
+      const values = debtor.propertyValue.split(",");
+      balance = currencyFormat(Number(values[1]?.trim() || 0));
+      fee = currencyFormat(Number(values[2]?.trim() || 0));
+    }
+
+    setSelectedDebtor({
+      ...debtor,
+      balance,
+      fee,
+    });
     setIsModalOpen(true);
   };
 
@@ -79,18 +96,25 @@ export function TableFinancialObligations(
           (showActions || header.key !== "actions")
       )
     : headers.filter((header) => showActions || header.key !== "actions");
-
   useEffect(() => {
-    const loadExtraDebtors = async () => {
-      const storedData =
-        (await localforage.getItem<ITableFinancialObligationsProps[]>(
-          "financial_obligation"
-        )) || [];
-      setExtraDebtors(storedData);
-    };
+    const data = Array.isArray(initialValues) ? initialValues : [initialValues];
 
-    loadExtraDebtors();
-  }, [refreshKey]);
+    if (data && data.length > 0) {
+      const borrowerList = Array.isArray(data[0]?.borrowers)
+        ? data[0]?.borrowers
+        : data;
+
+      const dataFromInitialValues =
+        borrowerList?.[0]?.borrowerProperties?.filter(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (prop: any) => prop.propertyName === "FinancialObligation"
+        ) || [];
+
+      setExtraDebtors(dataFromInitialValues);
+    } else {
+      setExtraDebtors([]);
+    }
+  }, [refreshKey, initialValues]);
 
   const handleDelete = async (id: string) => {
     try {
@@ -120,15 +144,41 @@ export function TableFinancialObligations(
     }
   };
 
-  const dataInformation = initialValues?.borrower_properties?.length
-    ? initialValues.borrower_properties.filter(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (prop: any) => prop.property_name === "FinancialObligation"
-      )
-    : extraDebtors;
+  const dataInformation =
+    (initialValues?.[0]?.borrowers?.[0]?.borrowerProperties?.filter(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (prop: any) => prop.propertyName === "FinancialObligation"
+    ) ??
+      extraDebtors) ||
+    [];
 
-  let totalFee = 0;
-  let totalBalance = 0;
+  const totalBalance = dataInformation.reduce(
+    (sum: number, item: IDataInformationItem) => {
+      let balance = 0;
+      if (typeof item.balance === "number") {
+        balance = item.balance;
+      } else if (typeof item.propertyValue === "string") {
+        const parts = item.propertyValue.split(",");
+        balance = parseFloat(parts[1]) || 0;
+      }
+      return sum + balance;
+    },
+    0
+  );
+
+  const totalFee = dataInformation.reduce(
+    (sum: number, item: IDataInformationItem) => {
+      let fee = 0;
+      if (typeof item.fee === "number") {
+        fee = item.fee;
+      } else if (typeof item.propertyValue === "string") {
+        const parts = item.propertyValue.split(",");
+        fee = parseFloat(parts[2]) || 0;
+      }
+      return sum + fee;
+    },
+    0
+  );
 
   return (
     <>
@@ -188,19 +238,13 @@ export function TableFinancialObligations(
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               return dataInformation.map((prop: any, rowIndex: number) => {
                 let values: string[] = [];
-                if (typeof prop.property_value === "string") {
-                  values = prop.property_value
+                if (typeof prop.propertyValue === "string") {
+                  values = prop.propertyValue
                     .split(",")
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     .map((val: any) => val.trim());
-
-                  const balance = Number(values[1]) || 0;
-                  totalBalance += balance;
-
-                  const fee = Number(values[2]) || 0;
-                  totalFee += fee;
-                } else if (Array.isArray(prop.property_value)) {
-                  values = prop.property_value.map(String);
+                } else if (Array.isArray(prop.propertyValue)) {
+                  values = prop.propertyValue.map(String);
                 } else {
                   values = Object.entries(prop)
                     .filter(([key]) => key !== "id")
@@ -291,28 +335,35 @@ export function TableFinancialObligations(
           <EditFinancialObligationModal
             title={`${dataReport.edit} ${selectedDebtor.type || ""}`}
             onCloseModal={() => setIsModalOpen(false)}
-            onConfirm={async (updatedDebtor) => {
-              await handleUpdate(updatedDebtor);
+            onConfirm={async (updatedDebtor: FormikValues) => {
+              const updatedDebtorWithFee: ITableFinancialObligationsProps = {
+                ...updatedDebtor,
+                fee: updatedDebtor.fee,
+                balance: updatedDebtor.balance,
+              };
+              await handleUpdate(updatedDebtorWithFee);
             }}
             initialValues={selectedDebtor}
             confirmButtonText={dataReport.save}
           />
         )}
         {isDeleteModal && (
-          <ListModal
+          <BaseModal
             title={dataReport.deletion}
-            handleClose={() => setIsDeleteModal(false)}
-            handleSubmit={() => setIsDeleteModal(false)}
-            onSubmit={() => {
+            nextButton={dataReport.delete}
+            backButton={dataReport.cancel}
+            handleNext={() => {
               if (selectedDebtor) {
                 handleDelete(selectedDebtor.id as string);
                 setIsDeleteModal(false);
               }
             }}
-            buttonLabel={dataReport.delete}
-            content={dataReport.content}
-            cancelButton={dataReport.cancel}
-          />
+            handleClose={() => setIsDeleteModal(false)}
+          >
+            <Stack width="400px">
+              <Text>{dataReport.content}</Text>
+            </Stack>
+          </BaseModal>
         )}
       </Table>
       <Stack

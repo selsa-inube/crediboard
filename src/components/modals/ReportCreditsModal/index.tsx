@@ -6,6 +6,7 @@ import { Stack, useMediaQuery, Select, Button } from "@inubekit/inubekit";
 import { BaseModal } from "@components/modals/baseModal";
 import { TableFinancialObligations } from "@components/data/TableObligationsFinancial";
 import { dataReport } from "@components/data/TableObligationsFinancial/config";
+import { IProspect } from "@services/prospects/types";
 
 export interface ReportCreditsModalProps {
   handleClose: () => void;
@@ -14,11 +15,11 @@ export interface ReportCreditsModalProps {
   totalBalance?: number;
   totalFee: number;
   debtor: string;
+  dataProspect: IProspect[];
 }
 
 export function ReportCreditsModal(props: ReportCreditsModalProps) {
-  const { handleClose, onChange, options, debtor } = props;
-
+  const { handleClose, onChange, options, debtor, dataProspect } = props;
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -66,7 +67,10 @@ export function ReportCreditsModal(props: ReportCreditsModalProps) {
             </Stack>
           </Stack>
         )}
-        <TableFinancialObligations showActions={true} />
+        <TableFinancialObligations
+          showActions={true}
+          initialValues={dataProspect}
+        />
       </Stack>
     </BaseModal>
   );
