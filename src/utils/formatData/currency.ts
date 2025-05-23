@@ -86,7 +86,7 @@ const getTotalFinancialObligations = (properties: any[]) => {
   return properties
     .filter((prop) => prop.propertyName === "FinancialObligation")
     .reduce((total, prop) => {
-      const values = Array.isArray(prop.property_value)
+      const values = Array.isArray(prop.propertyValue)
         ? prop.propertyValue
         : prop.propertyValue.split(",").map((v: string) => v.trim());
 
