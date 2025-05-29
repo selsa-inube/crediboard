@@ -1,6 +1,6 @@
 import { useState, isValidElement, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { MdAddCircleOutline, MdOutlineCheckCircle } from "react-icons/md";
+import { MdOutlineHowToReg, MdOutlineRemoveRedEye } from "react-icons/md";
 import { Stack, Icon, useFlag } from "@inubekit/inubekit";
 
 import userNotFound from "@assets/images/ItemNotFound.png";
@@ -28,6 +28,7 @@ import {
   dataButton,
   textFlagsRequirements,
   dataAddRequirement,
+  getActionsMobileIcon,
 } from "./config";
 import { AprovalsModal } from "./AprovalsModal";
 import { traceObserver, errorMessages } from "../config";
@@ -181,7 +182,7 @@ export const Requirements = (props: IRequirementsProps) => {
     return (
       <Stack justifyContent="center">
         <Icon
-          icon={<MdAddCircleOutline />}
+          icon={<MdOutlineRemoveRedEye />}
           appearance="primary"
           onClick={() => handleToggleSeeDetailsModal()}
           spacing="compact"
@@ -196,7 +197,7 @@ export const Requirements = (props: IRequirementsProps) => {
   const renderCheckIcon = (entry: IEntries) => (
     <Stack justifyContent="center">
       <Icon
-        icon={<MdOutlineCheckCircle />}
+        icon={<MdOutlineHowToReg />}
         appearance="primary"
         spacing="compact"
         cursorHover
@@ -269,6 +270,7 @@ export const Requirements = (props: IRequirementsProps) => {
   const handleToggleModal = () => {
     setShowModal(!showModal);
   };
+
   return (
     <>
       <Fieldset
@@ -277,6 +279,7 @@ export const Requirements = (props: IRequirementsProps) => {
         heightFieldset="100%"
         hasTable={!error}
         hasError={error ? true : false}
+        hasOverflow={isMobile}
       >
         {error ? (
           <ItemNotFound
@@ -295,6 +298,7 @@ export const Requirements = (props: IRequirementsProps) => {
               entries={item.entriesRequirements}
               actions={actionsRequirements}
               actionMobile={renderAccion}
+              actionMobileIcon={getActionsMobileIcon()}
               appearanceTable={{
                 widthTd: !isMobile ? "75%" : "70%",
                 efectzebra: true,
