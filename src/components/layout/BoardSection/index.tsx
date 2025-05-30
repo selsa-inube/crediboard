@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState, useCallback } from "react";
 import { MdOutlineChevronRight } from "react-icons/md";
 import {
   Stack,
@@ -15,6 +15,10 @@ import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
 import { patchChangeTracesToReadById } from "@services/credit-request/command/patchChangeTracesToReadById";
 import { AppContext } from "@context/AppContext";
 import { textFlagsUsers } from "@config/pages/staffModal/addFlag";
+import { getCanUnpin } from "@utils/configRules/permissions";
+import { ruleConfig } from "@utils/configRules/configRules";
+import { evaluateRule } from "@utils/configRules/evaluateRules";
+import { postBusinessUnitRules } from "@services/businessUnitRules";
 
 import { StyledBoardSection, StyledCollapseIcon } from "./styles";
 import { SectionBackground, SectionOrientation } from "./types";
@@ -30,7 +34,6 @@ interface BoardSectionProps {
   searchRequestValue: string;
   handlePinRequest: (
     requestId: string,
-    identificationNumber: string[],
     userWhoPinnnedId: string,
     isPinned: string
   ) => void;
@@ -57,7 +60,12 @@ function BoardSection(props: BoardSectionProps) {
   const [collapse, setCollapse] = useState(false);
 
   const flagMessage = useRef(false);
-  const { businessUnitSigla } = useContext(AppContext);
+  const { businessUnitSigla, eventData } = useContext(AppContext);
+
+  const missionName = eventData.user.staff.missionName;
+  const staffId = eventData.user.staff.staffId;
+  const [valueRule, setValueRule] = useState<Record<string, string[]>>({});
+
   const handleCollapse = () => {
     if (!disabledCollapse) {
       setCollapse(!collapse);
@@ -96,6 +104,7 @@ function BoardSection(props: BoardSectionProps) {
   const errorData = mockErrorBoard[0];
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       const hasUnreadNoveltiesError = sectionInformation.some(
@@ -129,6 +138,46 @@ function BoardSection(props: BoardSectionProps) {
       });
     }
   };
+
+  const fetchValidationRulesData = useCallback(async () => {
+    const rulesValidate = ["PositionsAuthorizedToRemoveAnchorsPlacedByOther"];
+    await Promise.all(
+      rulesValidate.map(async (ruleName) => {
+        const rule = ruleConfig[ruleName]?.({});
+        if (!rule) return;
+
+        try {
+          const values = await evaluateRule(
+            rule,
+            postBusinessUnitRules,
+            "value",
+            businessUnitPublicCode
+          );
+
+          const extractedValues = Array.isArray(values)
+            ? values
+                .map((v) => (typeof v === "string" ? v : (v?.value ?? "")))
+                .filter((val): val is string => val !== "")
+            : [];
+
+          setValueRule((prev) => {
+            const current = prev[ruleName] || [];
+            const merged = [...current, ...extractedValues];
+            const unique = Array.from(new Set(merged));
+            return { ...prev, [ruleName]: unique };
+          });
+        } catch (error: unknown) {
+          console.error(`Error evaluando ${ruleName} para producto`);
+        }
+      })
+    );
+  }, [businessUnitPublicCode]);
+
+  useEffect(() => {
+    if (businessUnitPublicCode) {
+      fetchValidationRulesData();
+    }
+  }, [businessUnitPublicCode, fetchValidationRulesData]);
 
   return (
     <StyledBoardSection
@@ -203,10 +252,6 @@ function BoardSection(props: BoardSectionProps) {
                   if (request.creditRequestId) {
                     handlePinRequest(
                       request.creditRequestId,
-                      Object.values(request.usersByCreditRequests || {}).map(
-                        (user: { identificationNumber: string }) =>
-                          user.identificationNumber
-                      ),
                       request.userWhoPinnnedId || "",
                       isRequestPinned(request.creditRequestId, pinnedRequests)
                         ? "N"
@@ -214,6 +259,12 @@ function BoardSection(props: BoardSectionProps) {
                     );
                   }
                 }}
+                canUnpin={getCanUnpin(
+                  staffId,
+                  request.userWhoPinnnedId || "",
+                  missionName || "",
+                  valueRule
+                )}
                 onCardClick={() => handleCardClick(request.creditRequestId)}
                 errorLoadingPins={errorLoadingPins}
               />
