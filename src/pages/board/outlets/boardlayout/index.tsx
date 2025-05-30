@@ -9,14 +9,14 @@ import { getCreditRequestInProgress } from "@services/credit-request/query/getCr
 import { patchChangeAnchorToCreditRequest } from "@services/credit-request/command/anchorCreditRequest";
 import { AppContext } from "@context/AppContext";
 import { mockErrorBoard } from "@mocks/error-board/errorborad.mock";
+import { ruleConfig } from "@utils/configRules/configRules";
+import { evaluateRule } from "@utils/configRules/evaluateRules";
+import { postBusinessUnitRules } from "@services/businessUnitRules";
 
 import { dataInformationModal } from "./config/board";
 import { BoardLayoutUI } from "./interface";
 import { selectCheckOptions } from "./config/select";
 import { IBoardData } from "./types";
-import { ruleConfig } from "@utils/configRules/configRules";
-import { evaluateRule } from "@utils/configRules/evaluateRules";
-import { postBusinessUnitRules } from "@services/businessUnitRules";
 
 function BoardLayout() {
   const { businessUnitSigla, eventData, setEventData } = useContext(AppContext);
@@ -208,6 +208,40 @@ function BoardLayout() {
     [addFlag]
   );
 
+  const fetchValidationRulesData = useCallback(async () => {
+    const rulesValidate = ["PositionsAuthorizedToRemoveAnchorsPlacedByOther"];
+    await Promise.all(
+      rulesValidate.map(async (ruleName) => {
+        const rule = ruleConfig[ruleName]?.({});
+        if (!rule) return;
+
+        try {
+          const values = await evaluateRule(
+            rule,
+            postBusinessUnitRules,
+            "value",
+            businessUnitPublicCode
+          );
+
+          const extractedValues = Array.isArray(values)
+            ? values
+                .map((v) => (typeof v === "string" ? v : (v?.value ?? "")))
+                .filter((val): val is string => val !== "")
+            : [];
+
+          setValueRule((prev) => {
+            const current = prev[ruleName] || [];
+            const merged = [...current, ...extractedValues];
+            const unique = Array.from(new Set(merged));
+            return { ...prev, [ruleName]: unique };
+          });
+        } catch (error: unknown) {
+          console.error(`Error evaluando ${ruleName} para producto`);
+        }
+      })
+    );
+  }, [businessUnitPublicCode]);
+
   const handlePinRequest = async (
     creditRequestId: string | undefined,
     userWhoPinnnedId: string,
@@ -246,41 +280,6 @@ function BoardLayout() {
       handleFlag(errorData.anchor[0], errorData.anchor[1]);
     }
   };
-
-  const fetchValidationRulesData = useCallback(async () => {
-    const rulesValidate = ["PositionsAuthorizedToRemoveAnchorsPlacedByOther"];
-    await Promise.all(
-      rulesValidate.map(async (ruleName) => {
-        const rule = ruleConfig[ruleName]?.({});
-        if (!rule) return;
-
-        try {
-          const values = await evaluateRule(
-            rule,
-            postBusinessUnitRules,
-            "value",
-            businessUnitPublicCode
-          );
-
-          const extractedValues = Array.isArray(values)
-            ? values
-                .map((v) => (typeof v === "string" ? v : (v?.value ?? "")))
-                .filter((val): val is string => val !== "")
-            : [];
-
-          setValueRule((prev) => {
-            const current = prev[ruleName] || [];
-            const merged = [...current, ...extractedValues];
-            const unique = Array.from(new Set(merged));
-            return { ...prev, [ruleName]: unique };
-          });
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-          console.error(`Error evaluando ${ruleName} para producto`);
-        }
-      })
-    );
-  }, [businessUnitPublicCode]);
 
   return (
     <>
