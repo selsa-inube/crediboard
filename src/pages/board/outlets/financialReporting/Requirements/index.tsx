@@ -43,16 +43,23 @@ interface IRequirementsData {
 }
 
 export interface IRequirementsProps {
-  isMobile?: boolean;
   id: string;
   user: string;
   businessUnitPublicCode: string;
   creditRequestCode: string;
+  isMobile?: boolean;
+  hasPermitRejection?: boolean;
 }
 
 export const Requirements = (props: IRequirementsProps) => {
-  const { isMobile, id, user, businessUnitPublicCode, creditRequestCode } =
-    props;
+  const {
+    isMobile,
+    id,
+    user,
+    businessUnitPublicCode,
+    creditRequestCode,
+    hasPermitRejection,
+  } = props;
   const [showSeeDetailsModal, setShowSeeDetailsModal] = useState(false);
   const [showAprovalsModal, setShowAprovalsModal] = useState(false);
   const [showAddRequirementModal, setShowAddRequirementModal] = useState(false);
@@ -276,6 +283,7 @@ export const Requirements = (props: IRequirementsProps) => {
       <Fieldset
         title={errorMessages.Requirements.titleCard}
         activeButton={dataButton(openAddRequirementModal)}
+        disabledButton={hasPermitRejection}
         heightFieldset="100%"
         hasTable={!error}
         hasError={error ? true : false}
