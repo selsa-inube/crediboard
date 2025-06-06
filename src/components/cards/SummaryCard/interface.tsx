@@ -33,7 +33,6 @@ function SummaryCardUI(props: SummaryCardProps) {
     errorLoadingPins,
     canUnpin,
   } = props;
-  //console.log("canUnpin", canUnpin + rad);
   return (
     <StyledSummaryCard>
       <StyledLink to={path} onClick={onCardClick}>

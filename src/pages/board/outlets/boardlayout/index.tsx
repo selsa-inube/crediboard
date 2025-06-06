@@ -236,7 +236,7 @@ function BoardLayout() {
             return { ...prev, [ruleName]: unique };
           });
         } catch (error: unknown) {
-          console.error(`Error evaluando ${ruleName} para producto`);
+          console.error(`Error evaluando ${ruleName} para este usuario.`);
         }
       })
     );
