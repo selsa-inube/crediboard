@@ -4,6 +4,7 @@ import { StyledOptionItemChecked } from "./styles";
 export interface IOptionItemCheckedProps {
   id: string;
   label: string;
+  value?: string;
   checked?: boolean;
   onchange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }

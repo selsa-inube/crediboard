@@ -38,7 +38,7 @@ const StyledSearch = styled.div<IStyledSearch>`
   cursor: pointer;
   width: ${({ $isMobile, $isExpanded }) => getWidth($isMobile, $isExpanded)};
 
-  & > div > div > div{
+  & > div > div > div {
     padding-left: ${({ $isMobile }) => ($isMobile ? "9px" : "16px")};
   }
 `;
@@ -84,4 +84,9 @@ const StyledError = styled.div<IStyledError>`
   }
 `;
 
-export { StyledInputsContainer, StyledBoardContainer, StyledError, StyledSearch };
+export {
+  StyledInputsContainer,
+  StyledBoardContainer,
+  StyledError,
+  StyledSearch,
+};
