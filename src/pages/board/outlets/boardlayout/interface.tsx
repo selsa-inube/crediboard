@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
 
@@ -17,7 +17,7 @@ import { ICreditRequestPinned, ICreditRequest } from "@services/types";
 import { IOptionItemCheckedProps } from "@components/inputs/SelectCheck/OptionItem";
 import { ErrorAlert } from "@components/ErrorAlert";
 import { FilterFields } from "@components/feedback/FilterFields";
-import { IOptionItemChecked } from "@components/feedback/FilterFields/FilterFields.Controller";
+// import { IOptionItemChecked } from "@components/feedback/FilterFields/FilterFields.Controller";
 
 import {
   StyledInputsContainer,
@@ -215,9 +215,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
               title="Filtrar"
               showModal={false}
               selectedOptions={[]}
-              setSelectedOptions={function (
-                value: SetStateAction<IOptionItemChecked[]>
-              ): void {
+              setSelectedOptions={function (): void {
                 throw new Error("Function not implemented.");
               }}
               handleClearModal={function (): void {
@@ -229,9 +227,7 @@ function BoardLayoutUI(props: BoardLayoutProps) {
               onClick={function (): void {
                 throw new Error("Function not implemented.");
               }}
-              onSelectChange={function (options: IOptionItemChecked[]): void {
-                throw new Error("Function not implemented.");
-              }}
+              onSelectChange={() => {}}
             />
 
             {/* {!isMobile && (
