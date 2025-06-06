@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import { MdOutlinePushPin, MdSearch } from "react-icons/md";
 import { RxDragHandleVertical, RxDragHandleHorizontal } from "react-icons/rx";
 
@@ -14,9 +14,10 @@ import {
 import { SectionOrientation } from "@components/layout/BoardSection/types";
 import { BoardSection } from "@components/layout/BoardSection";
 import { ICreditRequestPinned, ICreditRequest } from "@services/types";
-import { Selectcheck } from "@components/inputs/SelectCheck";
 import { IOptionItemCheckedProps } from "@components/inputs/SelectCheck/OptionItem";
 import { ErrorAlert } from "@components/ErrorAlert";
+import { FilterFields } from "@components/feedback/FilterFields";
+import { IOptionItemChecked } from "@components/feedback/FilterFields/FilterFields.Controller";
 
 import {
   StyledInputsContainer,
@@ -25,7 +26,7 @@ import {
   StyledError,
   StyledSearch,
 } from "./styles";
-import { boardColumns, selectConfig, seePinned } from "./config/board";
+import { boardColumns, seePinned } from "./config/board";
 
 interface BoardLayoutProps {
   isMobile: boolean;
@@ -52,7 +53,7 @@ interface BoardLayoutProps {
 function BoardLayoutUI(props: BoardLayoutProps) {
   const {
     isMobile,
-    selectOptions,
+    // selectOptions,
     boardOrientation,
     BoardRequests,
     searchRequestValue,
@@ -60,14 +61,14 @@ function BoardLayoutUI(props: BoardLayoutProps) {
     pinnedRequests,
     errorLoadingPins,
     handleLoadMoreData,
-    handleSelectCheckChange,
+    // handleSelectCheckChange,
     handlePinRequest,
     handleShowPinnedOnly,
     handleSearchRequestsValue,
     onOrientationChange,
   } = props;
 
-  const selectProps = selectConfig(selectOptions, handleSelectCheckChange);
+  // const selectProps = selectConfig(selectOptions, handleSelectCheckChange);
   const [showErrorAlert, setShowErrorAlert] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const stackRef = useRef<HTMLDivElement>(null);
@@ -193,11 +194,47 @@ function BoardLayoutUI(props: BoardLayoutProps) {
             width="100%"
             justifyContent={isMobile ? "end" : "space-between"}
             margin={isMobile ? "16px 0px" : "auto"}
+            gap="10px"
           >
-            <Stack width={isMobile ? "100%" : "400px"}>
-              <Selectcheck size="compact" {...selectProps} />
-            </Stack>
             {!isMobile && (
+              <Stack alignItems="end">
+                <Textfield
+                  id="SearchCardsDesktop"
+                  name="SearchCardsDesktop"
+                  placeholder="Buscar..."
+                  size="compact"
+                  iconAfter={<MdSearch />}
+                  value={searchRequestValue}
+                  onChange={handleSearchRequestsValue}
+                />
+              </Stack>
+            )}
+            <FilterFields
+              options={[]}
+              actionText={""}
+              title="Filtrar"
+              showModal={false}
+              selectedOptions={[]}
+              setSelectedOptions={function (
+                value: SetStateAction<IOptionItemChecked[]>
+              ): void {
+                throw new Error("Function not implemented.");
+              }}
+              handleClearModal={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+              handleClearFilters={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+              onSelectChange={function (options: IOptionItemChecked[]): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+
+            {/* {!isMobile && (
               <Stack width="400px" alignItems="end">
                 <Textfield
                   id="SearchCardsDesktop"
@@ -207,10 +244,10 @@ function BoardLayoutUI(props: BoardLayoutProps) {
                   iconAfter={<MdSearch />}
                   value={searchRequestValue}
                   onChange={handleSearchRequestsValue}
-                  fullwidth
                 />
               </Stack>
-            )}
+            )} */}
+
             <Stack alignItems="center" margin="25px 0px 0px">
               <Stack gap="16px">
                 {!isMobile && (
