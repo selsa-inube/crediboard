@@ -1,5 +1,9 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { MdOutlineChevronRight } from "react-icons/md";
+import {
+  MdOutlineChevronRight,
+  MdOutlineFilterAlt,
+  MdOutlineFilterAltOff,
+} from "react-icons/md";
 import {
   Stack,
   Icon,
@@ -35,6 +39,8 @@ interface BoardSectionProps {
     isPinned: string
   ) => void;
   handleLoadMoreData: () => void;
+  dragIcon?: React.ReactElement;
+  onOrientationChange: (orientation: SectionOrientation) => void;
 }
 
 function BoardSection(props: BoardSectionProps) {
@@ -48,6 +54,8 @@ function BoardSection(props: BoardSectionProps) {
     searchRequestValue,
     handlePinRequest,
     handleLoadMoreData,
+    dragIcon,
+    onOrientationChange,
   } = props;
   const disabledCollapse = sectionInformation.length === 0;
 
@@ -55,6 +63,8 @@ function BoardSection(props: BoardSectionProps) {
     useMediaQueries(["(max-width: 1024px)", "(max-width: 595px)"]);
 
   const [collapse, setCollapse] = useState(false);
+  const [currentOrientation, setCurrentOrientation] =
+    useState<SectionOrientation>(orientation);
 
   const flagMessage = useRef(false);
   const { businessUnitSigla } = useContext(AppContext);
@@ -91,6 +101,16 @@ function BoardSection(props: BoardSectionProps) {
         : `${configOption.textNodata}`;
     }
     return "";
+  };
+  const handleToggleOrientation = () => {
+    const newOrientation =
+      currentOrientation === "vertical" ? "horizontal" : "vertical";
+    if (newOrientation === "horizontal") {
+      setCollapse(true);
+    }
+
+    setCurrentOrientation(newOrientation);
+    onOrientationChange(newOrientation);
   };
 
   const errorData = mockErrorBoard[0];
@@ -144,7 +164,7 @@ function BoardSection(props: BoardSectionProps) {
         gap="24px"
       >
         <Stack
-          alignItems="end"
+          alignItems="center"
           gap="8px"
           width={orientation === "vertical" ? "180px" : "auto"}
           height={orientation === "vertical" ? "56px" : "auto"}
@@ -164,6 +184,21 @@ function BoardSection(props: BoardSectionProps) {
               />
             </StyledCollapseIcon>
           )}
+          {dragIcon && (
+            <Icon
+              icon={
+                currentOrientation === "vertical" ? (
+                  <MdOutlineFilterAlt />
+                ) : (
+                  <MdOutlineFilterAltOff />
+                )
+              }
+              appearance="primary"
+              size="24px"
+              onClick={handleToggleOrientation}
+            />
+          )}
+
           <Text
             type={orientation === "vertical" || isMobile ? "title" : "headline"}
             size={orientation === "vertical" || isMobile ? "large" : "medium"}
@@ -171,6 +206,7 @@ function BoardSection(props: BoardSectionProps) {
             {sectionTitle}
           </Text>
         </Stack>
+
         <Text type="title" size="medium">
           {sectionInformation.length}
         </Text>
