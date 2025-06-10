@@ -101,9 +101,6 @@ function ToDo(props: ToDoProps) {
 
   const { userAccount } =
     typeof eventData === "string" ? JSON.parse(eventData).user : eventData.user;
-
-  const hasPermitSend = Boolean(eventData.user.staff.useCases.canSendDecision);
-
   useEffect(() => {
     const fetchCreditRequest = async () => {
       try {
@@ -240,14 +237,14 @@ function ToDo(props: ToDoProps) {
         const formattedDecisions = Array.isArray(decision)
           ? decision.map((decisions, index: number) => {
               const enumItem = decisionsEnum.find(
-          (item) => item.Code === decisions.decision
+                (item) => item.Code === decisions.decision
               );
               return {
-          id: `decision-${index}`,
-          label: enumItem
-            ? `${enumItem.Value}: ${enumItem.Description}`
-            : decisions.value,
-          value: enumItem ? enumItem.Value : decisions.value,
+                id: `decision-${index}`,
+                label: enumItem
+                  ? `${enumItem.Value}: ${enumItem.Description}`
+                  : decisions.value,
+                value: enumItem ? enumItem.Value : decisions.value,
               };
             })
           : [];
@@ -297,6 +294,12 @@ function ToDo(props: ToDoProps) {
   const handleInfo = () => {
     setIsModalInfo(true);
   };
+
+  const hasPermitSend = staff.some(
+    (s) =>
+      s.role === taskRole?.substring(0, 20) &&
+      s.userId === eventData?.user?.staff?.staffId
+  );
 
   return (
     <>

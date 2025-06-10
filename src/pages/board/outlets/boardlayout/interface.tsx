@@ -52,7 +52,6 @@ interface BoardLayoutProps {
   handleSelectCheckChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handlePinRequest: (
     requestId: string,
-    identificationNumber: string[],
     userWhoPinnnedId: string,
     isPinned: string
   ) => void;
