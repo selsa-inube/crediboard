@@ -17,6 +17,7 @@ import { IProspect, ICreditProduct } from "@services/prospects/types";
 import { Schedule } from "@services/enums";
 import { DeductibleExpensesModal } from "@components/modals/DeductibleExpensesModal";
 import { IProspectSummaryById } from "@services/prospects/ProspectSummaryById/types";
+import { getAllDeductibleExpensesById } from "@services/iProspect/deductibleExpenses";
 
 import { StyledCardsCredit, StyledPrint } from "./styles";
 
@@ -39,6 +40,7 @@ export const CardCommercialManagement = (
   const { businessUnitSigla } = useContext(AppContext);
   const businessUnitPublicCode: string =
     JSON.parse(businessUnitSigla).businessUnitPublicCode;
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState("");
   const [prospectSummaryData, setProspectSummaryData] =
@@ -46,6 +48,10 @@ export const CardCommercialManagement = (
   const [showConsolidatedModal, setShowConsolidatedModal] = useState(false);
   const [showDeductibleExpensesModal, setDeductibleExpensesModal] =
     useState(false);
+  const [deductibleExpenses, setDeductibleExpenses] = useState<
+    { expenseName: string; expenseValue: number }[]
+  >([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (prospectData?.creditProducts) {
@@ -93,6 +99,30 @@ export const CardCommercialManagement = (
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [businessUnitPublicCode, id]);
+
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const data = await getAllDeductibleExpensesById(
+          businessUnitPublicCode,
+          prospectData?.prospectId || ""
+        );
+        setDeductibleExpenses(data);
+      } catch (error) {
+        addFlag({
+          title: tittleOptions.deductibleExpensesErrorTitle,
+          description: `${error}`,
+          appearance: "danger",
+          duration: 5000,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchExpenses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [businessUnitPublicCode, prospectData?.prospectId]);
 
   return (
     <div ref={dataRef}>
@@ -163,6 +193,9 @@ export const CardCommercialManagement = (
       {showDeductibleExpensesModal && (
         <DeductibleExpensesModal
           handleClose={() => setDeductibleExpensesModal(false)}
+          initialValues={deductibleExpenses}
+          loading={isLoading}
+          isMobile={isMobile}
         />
       )}
     </div>
